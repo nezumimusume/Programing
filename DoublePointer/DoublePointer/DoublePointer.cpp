@@ -30,7 +30,7 @@ int main()
 
 	//bulletとbullet2に入っているアドレスを表示。
 	printf("bullet  addr = %x\n", (unsigned int)bullet );
-	printf("bullet2 addr = %x\n", (unsigned int)bullet2 );
+	//printf("bullet2 addr = %x\n", (unsigned int)bullet2 );
     return 0;
 }
 
