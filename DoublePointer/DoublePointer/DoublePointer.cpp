@@ -18,7 +18,7 @@ void CreateBullet( SBullet** bullet )
 void CreateBullet2(SBullet* bullet)
 {
 	bullet = new SBullet();
-	bullet->velocity = 10;
+	//bullet->velocity = 10;
 }
 int main()
 {
