@@ -9,11 +9,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Platform">
-      <UniqueIdentifier>{68039ecf-c669-4ffc-820d-fe30261e70d3}</UniqueIdentifier>
+    <Filter Include="Source Files\graphics">
+      <UniqueIdentifier>{c1535188-8823-4935-976e-8bd7c0b73699}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Platform\DX9">
-      <UniqueIdentifier>{b27ab45d-986f-44c1-b6ec-34b0d239a74d}</UniqueIdentifier>
+    <Filter Include="Source Files\debug">
+      <UniqueIdentifier>{04314229-1a3c-4ce7-b308-c02d10624720}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -26,9 +26,6 @@
     <ClCompile Include="tkEnginePreCompile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Platform\DX9\tkEngineInitializerDX9.cpp">
-      <Filter>Source Files\Platform\DX9</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -40,11 +37,9 @@
     <ClInclude Include="typedef.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Platform\DX9\tkEngineInitializerDX9.h">
-      <Filter>Source Files\Platform\DX9</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform\DX9\tkEngineFinalizerDX9.h">
-      <Filter>Source Files\Platform\DX9</Filter>
+    <ClInclude Include="graphics\CRenderContext.h" />
+    <ClInclude Include="debug\tkAssert.h">
+      <Filter>Source Files\debug</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

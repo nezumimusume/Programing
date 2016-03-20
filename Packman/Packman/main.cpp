@@ -11,10 +11,10 @@ int WINAPI wWinMain(
 	int nCmdShow 
 ){
 	//初期化。
-	InitParam initParam;
+	SInitParam initParam;
 	initParam.hInstance = hInst;
-	Engine::GetInstance()->Init( initParam );	//初期化。
-	Engine::GetInstance()->RunGameLoop();		//ゲームループを実行。
-	Engine::GetInstance()->Final();				//終了処理。
+	CEngine::GetInstance().Init( initParam );	//初期化。
+	CEngine::GetInstance().RunGameLoop();		//ゲームループを実行。
+	
 	return 0;
 }

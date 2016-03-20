@@ -10,50 +10,28 @@ namespace tkEngine{
 	/*!
 	 * @brief	初期化用のパラメータ。
 	 */
-	struct InitParam{
-#if defined(TK_PLATFORM_DX9)
+	struct SInitParam{
 		HINSTANCE hInstance;
-#else //#if defined(TK_PLATFORM_DX9)
- #error "サポートされていないプラットフォームです。"
-#endif //
-	};
-	/*!
-	 * @brief	エンジン初期化のインターフェース。
-	 */
-	class IEngineInitializer : Noncopyable{
-	public:
-		IEngineInitializer(){}
-		virtual ~IEngineInitializer(){}
-		/*!
-		 * @brief	初期化処理の実行。
-		 */
-		virtual void Execute( const InitParam& initParam ) = 0;
 	};
 	
 	/*!
-	 * @brief	エンジンの終了処理のインターフェース。
-	 */
-	class IEngineFinalizer : Noncopyable{
-	public:
-		IEngineFinalizer() {}
-		virtual ~IEngineFinalizer() {}
-		/*!
-		 * @brief	終了処理の実行。
-		 */
-		virtual void Execute() = 0;
-	};
-	/*!
 	 * @brief	エンジン。
 	 */
-	class Engine : Noncopyable {
-		Engine() {}
-		~Engine() {}
+	class CEngine : Noncopyable {
+		CEngine() : 
+			m_hWnd(NULL),
+			m_pD3D(NULL),
+			m_pD3DDevice(NULL)
+		{}
+		~CEngine() {}
 	public:
 		/*!
 		 * @brief	初期化。
 		 *@param[in]	初期化パラメータ
+		 *@retval	true	初期化に成功。
+		 *@retval	false	初期化に失敗。
 		 */
-		void Init( const InitParam& initParam );
+		bool Init( const SInitParam& initParam );
 		/*!
 		 * @brief	終了処理。
 		 */
@@ -65,23 +43,34 @@ namespace tkEngine{
 		/*!
 		 * @brief	インスタンスの取得。
 		 */
-		static Engine* GetInstance()
+		static CEngine& GetInstance()
 		{
-			static Engine instance;
-			return &instance;
+			static CEngine instance;
+			return instance;
 		}
 	private:
-		std::unique_ptr<IEngineInitializer>	m_initializer;	//!<初期化処理。
-		std::unique_ptr<IEngineFinalizer>	m_finalizer;	//!<終了処理。
+		/*!
+		* @brief	ウィンドウ初期化。
+		* @retval	true	初期化に成功。
+		* @retval	false	初期化に失敗。
+		*/
+		bool InitWindow();
+		/*!
+		* @brief	DirectXの初期化。
+		* @retval	true	初期化に成功。
+		* @retval	false	初期化に失敗。
+		*/
+		bool InitDirectX();
+		/*!
+		* @brief	ウィンドウプロシージャ。
+		*/
+		static LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	private:
+		HWND				m_hWnd;			//!<ウィンドウハンドル。
+		LPDIRECT3D9			m_pD3D;			//!<D3DDevice
+		LPDIRECT3DDEVICE9	m_pD3DDevice;	//!<Rendering device
 	};
 	
 }
 
-#if defined(TK_PLATFORM_DX9)
-	#include "tkEngine/Platform/DX9/tkEngineInitializerDX9.h"
-	#include "tkEngine/Platform/DX9/tkEngineFinalizerDX9.h"
-#else // #if defined(TK_PLATFORM_DX9)
-
-#error "対応されていないプラットフォームです。"
-#endif //#if defined(TK_PLATFORM_DX9)
 #endif // _TKENGINE_TKENGINE_H_
