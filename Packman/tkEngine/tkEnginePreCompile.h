@@ -20,6 +20,7 @@
 #include <memory>
 #include <d3dx9.h>
 #include <list>
+#include <vector>
 #include "typedef.h"
 #include "tkEngine/policy/tkNoncopyable.h"
 #include "tkEngine/debug/tkAssert.h"

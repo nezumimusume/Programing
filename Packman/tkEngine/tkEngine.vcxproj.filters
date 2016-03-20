@@ -15,6 +15,9 @@
     <Filter Include="Source Files\debug">
       <UniqueIdentifier>{04314229-1a3c-4ce7-b308-c02d10624720}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\gameObject">
+      <UniqueIdentifier>{ccc04095-1959-45da-98d0-f25e7e9c86ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -25,6 +28,12 @@
     </ClCompile>
     <ClCompile Include="tkEnginePreCompile.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\tkGameObject.cpp">
+      <Filter>Source Files\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\tkgameobjectmanager.cpp">
+      <Filter>Source Files\gameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +49,12 @@
     <ClInclude Include="graphics\CRenderContext.h" />
     <ClInclude Include="debug\tkAssert.h">
       <Filter>Source Files\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\tkGameObject.h">
+      <Filter>Source Files\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\tkGameObjectManager.h">
+      <Filter>Source Files\gameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

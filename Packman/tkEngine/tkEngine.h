@@ -12,6 +12,7 @@ namespace tkEngine{
 	 */
 	struct SInitParam{
 		HINSTANCE hInstance;
+		u8 gameObjectPrioMax;	//!<ゲームオブジェクトの優先度の最大値(255まで)
 	};
 	
 	/*!

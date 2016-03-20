@@ -149,6 +149,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="gameObject\tkGameObject.cpp" />
+    <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
     <ClCompile Include="tkEngine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -165,6 +167,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug\tkAssert.h" />
+    <ClInclude Include="gameObject\tkGameObject.h" />
+    <ClInclude Include="gameObject\tkGameObjectManager.h" />
     <ClInclude Include="graphics\CRenderContext.h" />
     <ClInclude Include="tkEngine.h" />
     <ClInclude Include="tkEnginePreCompile.h" />

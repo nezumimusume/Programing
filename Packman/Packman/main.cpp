@@ -12,7 +12,9 @@ int WINAPI wWinMain(
 ){
 	//初期化。
 	SInitParam initParam;
+	memset(&initParam, 0, sizeof(initParam));
 	initParam.hInstance = hInst;
+	initParam.gameObjectPrioMax = 255;
 	CEngine::GetInstance().Init( initParam );	//初期化。
 	CEngine::GetInstance().RunGameLoop();		//ゲームループを実行。
 	

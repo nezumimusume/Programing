@@ -3,6 +3,7 @@
  */
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/tkEngine.h"
+#include "tkEngine/gameObject/tkGameObjectManager.h"
 
 namespace tkEngine{
 	LRESULT CALLBACK CEngine::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -35,8 +36,6 @@ namespace tkEngine{
 	}
 	bool CEngine::InitDirectX()
 	{
-		TK_LOG("test %d\n", 3);
-		TK_ASSERT( false, "エラーが発生しました。" );
 		if( NULL == ( m_pD3D = Direct3DCreate9( D3D_SDK_VERSION ) ) ){
 			//D3Dオブジェクトを作成できなかった。
 	        return false;
@@ -71,6 +70,7 @@ namespace tkEngine{
 		}
 		ShowWindow(m_hWnd, SW_SHOWDEFAULT);
 		UpdateWindow(m_hWnd);
+		CGameObjectManager::GetInstance().Init( initParam.gameObjectPrioMax );
 		return true;
 	}
 	void CEngine::RunGameLoop()
@@ -86,7 +86,8 @@ namespace tkEngine{
 				DispatchMessage(&msg);
 			}
 			else {
-				//Render();
+				CGameObjectManager& goMgr = CGameObjectManager::GetInstance();
+				goMgr.Execute();
 			}
 		}
 	}

@@ -3,8 +3,8 @@
  */
 
 #include "tkEngine/tkEnginePreCompile.h"
-#include "tkEngine/GameObject/CGameObjectManager.h"
-#include "tkEngine/GameObject/CGameObject.h"
+#include "tkEngine/GameObject/tkGameObjectManager.h"
+#include "tkEngine/GameObject/tkGameObject.h"
 
 namespace tkEngine{
 	
