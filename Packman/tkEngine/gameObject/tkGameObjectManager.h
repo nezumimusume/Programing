@@ -33,7 +33,7 @@ namespace tkEngine{
 		*@brief	実行。
 		*@param[in]	renderContext	レンダリングコンテキスト。
 		*/
-		void Execute( const CRenderContext& renderContext );
+		void Execute( CRenderContext& renderContext );
 		/*!
 		 *@brief	初期化。
 		 *@param[in]	gameObjectPrioMax	ゲームオブジェクトの優先度の最大値。(255まで)
@@ -44,11 +44,12 @@ namespace tkEngine{
 		 *@param	prio	実行優先順位。
 		 */
 		template<class T>
-		T* NewGameObject( u32 prio )
+		T* NewGameObject(GameObjectPrio prio )
 		{
 			TK_ASSERT( prio <= m_gameObjectPriorityMax, "ゲームオブジェクトの優先度の最大数が大きすぎます。");
 			T* newObject = new T();
 			newObject->Awake();
+			m_gameObjectListArray.at(prio).push_back(newObject);
 			return newObject;
 		}
 		/*!
@@ -57,12 +58,18 @@ namespace tkEngine{
 		void DeleteGameObject( IGameObject* gameObject )
 		{
 			gameObject->OnDestroy();
+			m_deleteObjectArray.at(gameObject->GetPriority()).push_back(gameObject);
 		}
+	private:
+		/*!
+		 *@brief	ゲームオブジェクトの削除を実行。
+		 */
+		void ExecuteDeleteGameObjects();
 	private:
 		typedef std::list<IGameObject*>	GameObjectList;
 		std::vector<GameObjectList>	m_gameObjectListArray;	//!<ゲームオブジェクトの優先度付きリスト。
 		std::vector<GameObjectList>	m_deleteObjectArray;	//!<削除するオブジェクトのリスト。
-		u8 							m_gameObjectPriorityMax;			//!<ゲームオブジェクトの優先度の最大数。
+		GameObjectPrio				m_gameObjectPriorityMax;			//!<ゲームオブジェクトの優先度の最大数。
 		static const u8 			GAME_OBJECT_PRIO_MAX = 255;			//!<ゲームオブジェクトの優先度の最大値。
 	};
 }

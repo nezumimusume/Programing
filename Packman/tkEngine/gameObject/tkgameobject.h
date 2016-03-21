@@ -9,12 +9,14 @@
 namespace tkEngine{
 	class CGameObjectManager;
 	class CRenderContext;
+	typedef u8	GameObjectPrio;
 	/*!
 	 *@brief	ゲームオブジェクト。
 	 */
 	class IGameObject : Noncopyable{
 	public:
-		IGameObject()
+		IGameObject() :
+			m_priority(0)
 		{
 		}
 		/*!
@@ -31,13 +33,20 @@ namespace tkEngine{
 		/*!
 		 *@brief	描画
 		 */
-		virtual void Render( const CRenderContext& renderContext ) = 0;
+		virtual void Render( CRenderContext& renderContext ) = 0;
 		/*!
 		 *@brief	削除されるときに呼ばれる。
 		 *@details	CGameManager::DeleteGameObjectを呼んだときに実行されます。
 		 * デストラクタより前に実行されます。
 		 */
 		virtual void OnDestroy(){} 
+		/*!
+		*@brief	実行優先度を取得。
+		*/
+		GameObjectPrio GetPriority() const
+		{
+			return m_priority;
+		}
 	public:
 		/*!
 		 *@brief	インスタンスが生成された直後に呼ばれる関数。
@@ -55,13 +64,15 @@ namespace tkEngine{
 		/*!
 		 *@brief	Render関数が実行される前に呼ばれる描画処理。
 		 */
-		virtual void PreRender( const CRenderContext& renderContext ) {}
+		virtual void PreRender( CRenderContext& renderContext ) {}
 		/*!
 		 *@brief	Render関数が実行された後で呼ばれる描画処理
 		 */
-		virtual void PostRender(const CRenderContext& renderContext ) {}
+		virtual void PostRender(CRenderContext& renderContext ) {}
 
 		friend class CGameObjectManager;
+	protected:
+		GameObjectPrio	m_priority;		//!<実行優先度。
 		
 	};
 }

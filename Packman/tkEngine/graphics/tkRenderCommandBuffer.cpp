@@ -30,5 +30,8 @@ namespace tkEngine{
 				break;
 			}
 		}
+
+		m_command.clear();
+		m_writePos = 0;
 	}
 }

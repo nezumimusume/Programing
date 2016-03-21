@@ -41,13 +41,42 @@ namespace tkEngine{
 	 *@brief	クリアのレンダリングコマンド。
 	 */
 	class CRenderCommand_Clear : public CRenderCommandBase {
+	private:
+		DWORD m_Count;
+		const D3DRECT *m_pRects;
+		DWORD m_Flags;
+		D3DCOLOR m_Color;
+		float m_Z;
+		DWORD m_Stencil;
 	public:
-		CRenderCommand_Clear() :
-			CRenderCommandBase(eRendeCommand_Clear)
+		/*!
+		 *@brief	コンストラクタ。
+		 *@details
+		 * 引数の意味はIDirect3DDevice9::Clearと同じ。詳細はMSDNヘルプを参照してください。
+		 */
+		CRenderCommand_Clear( 
+			DWORD Count,
+			const D3DRECT *pRects,
+			DWORD Flags,
+			D3DCOLOR Color,
+			float Z,
+			DWORD Stencil
+
+		) :
+			CRenderCommandBase(eRendeCommand_Clear),
+			m_Count(Count),
+			m_pRects(pRects),
+			m_Flags(Flags),
+			m_Color(Color),
+			m_Z(Z),
+			m_Stencil(Stencil)
 		{
 		}
 		void Execute( LPDIRECT3DDEVICE9 pD3DDevice )
 		{
+			/*pD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
+				D3DCOLOR_XRGB(0, 0, 255), 1.0f, 0);*/
+			pD3DDevice->Clear(m_Count, m_pRects, m_Flags, m_Color, m_Z, m_Stencil);
 		}
 	};
 };

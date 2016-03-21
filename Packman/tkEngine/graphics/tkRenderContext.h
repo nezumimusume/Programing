@@ -31,8 +31,8 @@ namespace tkEngine{
 		template<class T>
 		void SetRenderCommand( T& command )
 		{
-			static_assert( sizeof(T) <= 128, "command size is over 128byte" );
-			m_commandBuffer.WriteCommand128( command );
+			static_assert( sizeof(T) <= 32, "command size is over 32byte" );
+			m_commandBuffer.WriteCommand32( command );
 		}
 		/*!
 		 *@brief	コマンドバッファをサブミット

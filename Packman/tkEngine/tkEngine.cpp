@@ -94,10 +94,14 @@ namespace tkEngine{
 			else {
 				CGameObjectManager& goMgr = CGameObjectManager::GetInstance();
 				goMgr.Execute(m_renderContextArray[0] );	//取りあえず一本。並列実行は後日・・・。
+
+				m_pD3DDevice->BeginScene();
 				//レンダリングコマンドのサブミット
 				for( u32 i = 0; i < m_numRenderContext; i++ ){
 					m_renderContextArray[i].SubmitCommandBuffer();
 				}
+				m_pD3DDevice->EndScene();
+				m_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 			}
 		}
 	}

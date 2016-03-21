@@ -77,5 +77,8 @@
     <ClInclude Include="graphics\tkRenderCommandBuffer.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="debug\tkLog.h">
+      <Filter>Source Files\debug</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

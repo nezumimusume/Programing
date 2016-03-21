@@ -169,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug\tkAssert.h" />
+    <ClInclude Include="debug\tkLog.h" />
     <ClInclude Include="gameObject\tkGameObject.h" />
     <ClInclude Include="gameObject\tkGameObjectManager.h" />
     <ClInclude Include="graphics\CRenderContext.h" />

@@ -15,9 +15,12 @@ class CTestGameObject : public IGameObject {
 	/*!
 	*@brief	•`‰æ
 	*/
-	virtual void Render(const CRenderContext& renderContext) override
+	virtual void Render(CRenderContext& renderContext) override
 	{
-
+		renderContext.SetRenderCommand(CRenderCommand_Clear(
+			0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
+			D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0
+		));
 	}
 };
 int WINAPI wWinMain(
