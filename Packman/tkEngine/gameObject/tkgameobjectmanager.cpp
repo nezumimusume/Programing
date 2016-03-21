@@ -3,10 +3,13 @@
  */
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/gameObject/tkgameobjectmanager.h"
+#include "tkEngine/graphics/tkRenderContext.h"
+#include <future>
 
 namespace tkEngine{
-	void CGameObjectManager::Execute(CRenderContext& renderContext )
+	void CGameObjectManager::Execute(CRenderContext* renderContext, u32 numRenderContext, const SRenderContextMap* renderContextMap)
 	{
+		
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
 				obj->PreUpdate();
@@ -22,20 +25,28 @@ namespace tkEngine{
 				obj->PostUpdate();
 			}
 		}
-
+		
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
-				obj->PreRender(renderContext);
+				obj->PreRender(renderContext[0]);
 			}
+		}
+		if (numRenderContext == 1) {
+			//シングルスレッド描画。
+			for (GameObjectList objList : m_gameObjectListArray) {
+				for (IGameObject* obj : objList) {
+					obj->Render(renderContext[0]);
+				}
+			}
+		}
+		else {
+			//マルチスレッド描画。
+			TK_ASSERT(0, "not implement!!");
+			
 		}
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
-				obj->Render(renderContext);
-			}
-		}
-		for (GameObjectList objList : m_gameObjectListArray) {
-			for (IGameObject* obj : objList) {
-				obj->PostRender(renderContext);
+				obj->PostRender(renderContext[numRenderContext-1]);
 			}
 		}
 		ExecuteDeleteGameObjects();

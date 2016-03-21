@@ -18,7 +18,7 @@ class CTestGameObject : public IGameObject {
 	virtual void Render(CRenderContext& renderContext) override
 	{
 		renderContext.SetRenderCommand(CRenderCommand_Clear(
-			0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
+			0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
 			D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0
 		));
 	}
@@ -40,7 +40,6 @@ int WINAPI wWinMain(
 	initParam.gameObjectPrioMax = 255;
 	initParam.numRenderContext = 1;	//レンダリングコンテキストは一本
 	initParam.commandBufferSizeTbl = commandBufferSizeTbl;
-
 	CEngine::GetInstance().Init( initParam );	//初期化。
 	CGameObjectManager::GetInstance().NewGameObject<CTestGameObject>(0);
 	CEngine::GetInstance().RunGameLoop();		//ゲームループを実行。

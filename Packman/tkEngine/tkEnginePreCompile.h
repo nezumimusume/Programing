@@ -19,6 +19,7 @@
 #endif // #if defined( TK_PLATFORM_DX9 )
 #include <memory>
 #include <d3dx9.h>
+#include <d3d9.h>
 #include <list>
 #include <vector>
 #include "typedef.h"

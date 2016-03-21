@@ -44,6 +44,9 @@
     <ClCompile Include="graphics\tkRenderCommandBuffer.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\tkVertexBuffe.cpp">
+      <Filter>Source Files\gameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -55,7 +58,6 @@
     <ClInclude Include="typedef.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\CRenderContext.h" />
     <ClInclude Include="debug\tkAssert.h">
       <Filter>Source Files\debug</Filter>
     </ClInclude>
@@ -79,6 +81,9 @@
     </ClInclude>
     <ClInclude Include="debug\tkLog.h">
       <Filter>Source Files\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkVertexBuffer.h">
+      <Filter>Source Files\gameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

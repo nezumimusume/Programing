@@ -8,6 +8,7 @@
 #include "tkEngine/gameObject/tkGameObject.h"
 
 namespace tkEngine{
+	struct SRenderContextMap;
 	/*!
 	 *@brief	CGameObjectのマネージャ
 	 */
@@ -31,9 +32,11 @@ namespace tkEngine{
 		}
 		/*!
 		*@brief	実行。
-		*@param[in]	renderContext	レンダリングコンテキスト。
+		*@param[in]	renderContext		レンダリングコンテキスト。
+		*@param[in]	numRenderContext	レンダリングコンテキストの数。
+		*@param[in]	renderContextMap	レンダリングコンテキストのマップ。
 		*/
-		void Execute( CRenderContext& renderContext );
+		void Execute( CRenderContext* renderContext, u32 numRenderContext, const SRenderContextMap* renderContextMap );
 		/*!
 		 *@brief	初期化。
 		 *@param[in]	gameObjectPrioMax	ゲームオブジェクトの優先度の最大値。(255まで)
@@ -69,8 +72,8 @@ namespace tkEngine{
 		typedef std::list<IGameObject*>	GameObjectList;
 		std::vector<GameObjectList>	m_gameObjectListArray;	//!<ゲームオブジェクトの優先度付きリスト。
 		std::vector<GameObjectList>	m_deleteObjectArray;	//!<削除するオブジェクトのリスト。
-		GameObjectPrio				m_gameObjectPriorityMax;			//!<ゲームオブジェクトの優先度の最大数。
-		static const u8 			GAME_OBJECT_PRIO_MAX = 255;			//!<ゲームオブジェクトの優先度の最大値。
+		GameObjectPrio				m_gameObjectPriorityMax;		//!<ゲームオブジェクトの優先度の最大数。
+		static const u8 			GAME_OBJECT_PRIO_MAX = 255;		//!<ゲームオブジェクトの優先度の最大値。
 	};
 }
 #endif // _CGAMEOBJECTMANAGER_H_

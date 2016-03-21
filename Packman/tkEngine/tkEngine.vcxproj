@@ -72,12 +72,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
-    <IntDir>$(Configuration)Objects</IntDir>
+    <IntDir>$(Configuration)Objects\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
-    <IntDir>$(Configuration)Objects</IntDir>
+    <IntDir>$(Configuration)Objects\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -153,6 +153,7 @@
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
     <ClCompile Include="graphics\tkRenderCommandBuffer.cpp" />
     <ClCompile Include="graphics\tkRenderContext.cpp" />
+    <ClCompile Include="graphics\tkVertexBuffe.cpp" />
     <ClCompile Include="tkEngine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -172,10 +173,10 @@
     <ClInclude Include="debug\tkLog.h" />
     <ClInclude Include="gameObject\tkGameObject.h" />
     <ClInclude Include="gameObject\tkGameObjectManager.h" />
-    <ClInclude Include="graphics\CRenderContext.h" />
     <ClInclude Include="graphics\tkRenderCommand.h" />
     <ClInclude Include="graphics\tkRenderCommandBuffer.h" />
     <ClInclude Include="graphics\tkRenderContext.h" />
+    <ClInclude Include="graphics\tkVertexBuffer.h" />
     <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="tkEngine.h" />
     <ClInclude Include="tkEnginePreCompile.h" />

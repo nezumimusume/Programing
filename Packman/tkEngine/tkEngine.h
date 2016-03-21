@@ -10,13 +10,25 @@
 
 namespace tkEngine{
 	/*!
+	* @brief	描画優先ごとに対応するレンダリングコンテキストの番号のマップを定義するための構造体。
+	*/
+	struct SRenderContextMap {
+		u8	startPrio;			//!<開始プライオリティ
+		u32 renderContextNo;	//!<レンダリングコンテキストNo
+	};
+	/*!
 	 * @brief	初期化用のパラメータ。
 	 */
 	struct SInitParam{
+		SInitParam()
+		{
+			memset(this, 0, sizeof(SInitParam));
+		}
 		HINSTANCE 	hInstance;
-		u8 			gameObjectPrioMax;		//!<ゲームオブジェクトの優先度の最大値(255まで)
-		u32 		numRenderContext;		//!<レンダリングコンテキストの数
-		u32*		commandBufferSizeTbl;	//!<コマンドバッファのサイズのテーブル。レンダリングコンテキストのサイズ分必要。
+		u8 			gameObjectPrioMax;			//!<ゲームオブジェクトの優先度の最大値(255まで)
+		u32 		numRenderContext;			//!<レンダリングコンテキストの数。この数が2以上の場合、renderContextMapの指定が必ず必要になります。
+		u32*		commandBufferSizeTbl;		//!<コマンドバッファのサイズのテーブル。レンダリングコンテキストのサイズ分必要。
+		SRenderContextMap*	renderContextMap;	//!<描画優先ごとに対応するレンダリングコンテキストの番号のマップ。numRenderContextが1の場合は無視される。
 	};
 	
 	/*!
@@ -24,9 +36,9 @@ namespace tkEngine{
 	 */
 	class CEngine : Noncopyable {
 		CEngine() : 
-			m_hWnd(NULL),
-			m_pD3D(NULL),
-			m_pD3DDevice(NULL)
+			m_hWnd(nullptr),
+			m_pD3D(nullptr),
+			m_pD3DDevice(nullptr)
 		{}
 		~CEngine() {}
 	public:
@@ -71,11 +83,12 @@ namespace tkEngine{
 		*/
 		static LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	private:
-		HWND								m_hWnd;					//!<ウィンドウハンドル。
-		LPDIRECT3D9							m_pD3D;					//!<D3DDevice
-		LPDIRECT3DDEVICE9					m_pD3DDevice;			//!<Rendering device
-		std::unique_ptr<CRenderContext[]>	m_renderContextArray;	//!<レンダリングコンテキスト
-		u32									m_numRenderContext;		//!<レンダリングコンテキストの数。
+		HWND									m_hWnd;					//!<ウィンドウハンドル。
+		LPDIRECT3D9								m_pD3D;					//!<D3DDevice
+		LPDIRECT3DDEVICE9						m_pD3DDevice;			//!<Rendering device
+		std::unique_ptr<CRenderContext[]>		m_renderContextArray;	//!<レンダリングコンテキスト
+		u32										m_numRenderContext;		//!<レンダリングコンテキストの数。
+		std::unique_ptr<SRenderContextMap[]>	m_renderContextMap;		//!<レンダリングコンテキストのマップ。
 	};
 	
 }

@@ -23,20 +23,20 @@ namespace tkEngine{
 		WNDCLASSEX wc =
 		{
 			sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
-			GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
-			TEXT("D3D Tutorial"), NULL
+			GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr,
+			TEXT("D3D Tutorial"), nullptr
 		};
 		RegisterClassEx(&wc);
 		// Create the application's window
 		m_hWnd = CreateWindow(TEXT("D3D Tutorial"), TEXT("D3D Tutorial 06: Meshes"),
 			WS_OVERLAPPEDWINDOW, 100, 100, 300, 300,
-			NULL, NULL, wc.hInstance, NULL);
+			nullptr, nullptr, wc.hInstance, nullptr);
 
-		return m_hWnd != NULL;
+		return m_hWnd != nullptr;
 	}
 	bool CEngine::InitDirectX()
 	{
-		if( NULL == ( m_pD3D = Direct3DCreate9( D3D_SDK_VERSION ) ) ){
+		if( nullptr == ( m_pD3D = Direct3DCreate9( D3D_SDK_VERSION ) ) ){
 			//D3Dオブジェクトを作成できなかった。
 	        return false;
 	    }
@@ -70,11 +70,18 @@ namespace tkEngine{
 		}
 		CGameObjectManager::GetInstance().Init( initParam.gameObjectPrioMax );
 		//レンダリングコンテキストの初期化。
-		m_renderContextArray.reset( new CRenderContext[initParam.numRenderContext]);
-		for( u32 i = 0; i < initParam.numRenderContext; i++ ){
-			m_renderContextArray[i].Init( m_pD3DDevice, initParam.commandBufferSizeTbl[i] );
+		{
+			m_renderContextArray.reset(new CRenderContext[initParam.numRenderContext]);
+			for (u32 i = 0; i < initParam.numRenderContext; i++) {
+				m_renderContextArray[i].Init(m_pD3DDevice, initParam.commandBufferSizeTbl[i]);
+			}
+			m_numRenderContext = initParam.numRenderContext;
+			if (m_numRenderContext > 1) {
+				TK_ASSERT(initParam.renderContextMap != nullptr, "renderContextMap is nullptr!!!");
+				m_renderContextMap.reset( new SRenderContextMap[m_numRenderContext]);
+				memcpy(m_renderContextMap.get(), initParam.renderContextMap, sizeof(SRenderContextMap) * m_numRenderContext);
+			}
 		}
-		m_numRenderContext = initParam.numRenderContext;
 		ShowWindow(m_hWnd, SW_SHOWDEFAULT);
 		UpdateWindow(m_hWnd);
 		return true;
@@ -86,14 +93,18 @@ namespace tkEngine{
 		ZeroMemory(&msg, sizeof(msg));
 		while (msg.message != WM_QUIT)
 		{
-			if (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
+			if (PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE))
 			{
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
 			else {
 				CGameObjectManager& goMgr = CGameObjectManager::GetInstance();
-				goMgr.Execute(m_renderContextArray[0] );	//取りあえず一本。並列実行は後日・・・。
+				goMgr.Execute(
+					m_renderContextArray.get(), 
+					m_numRenderContext, 
+					m_renderContextMap.get()
+				);
 
 				m_pD3DDevice->BeginScene();
 				//レンダリングコマンドのサブミット
@@ -101,16 +112,16 @@ namespace tkEngine{
 					m_renderContextArray[i].SubmitCommandBuffer();
 				}
 				m_pD3DDevice->EndScene();
-				m_pD3DDevice->Present(NULL, NULL, NULL, NULL);
+				m_pD3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
 			}
 		}
 	}
 	void CEngine::Final()
 	{
-		if (m_pD3DDevice != NULL)
+		if (m_pD3DDevice != nullptr)
 			m_pD3DDevice->Release();
 
-		if (m_pD3D != NULL)
+		if (m_pD3D != nullptr)
 			m_pD3D->Release();
 	}
 }// namespace tkEngine
