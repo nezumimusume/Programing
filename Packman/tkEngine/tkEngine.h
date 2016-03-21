@@ -6,13 +6,17 @@
 #ifndef _TKENGINE_H_
 #define _TKENGINE_H_
 
+#include "tkEngine/graphics/tkRenderContext.h"
+
 namespace tkEngine{
 	/*!
 	 * @brief	初期化用のパラメータ。
 	 */
 	struct SInitParam{
-		HINSTANCE hInstance;
-		u8 gameObjectPrioMax;	//!<ゲームオブジェクトの優先度の最大値(255まで)
+		HINSTANCE 	hInstance;
+		u8 			gameObjectPrioMax;		//!<ゲームオブジェクトの優先度の最大値(255まで)
+		u32 		numRenderContext;		//!<レンダリングコンテキストの数
+		u32*		commandBufferSizeTbl;	//!<コマンドバッファのサイズのテーブル。レンダリングコンテキストのサイズ分必要。
 	};
 	
 	/*!
@@ -67,9 +71,11 @@ namespace tkEngine{
 		*/
 		static LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	private:
-		HWND				m_hWnd;			//!<ウィンドウハンドル。
-		LPDIRECT3D9			m_pD3D;			//!<D3DDevice
-		LPDIRECT3DDEVICE9	m_pD3DDevice;	//!<Rendering device
+		HWND								m_hWnd;					//!<ウィンドウハンドル。
+		LPDIRECT3D9							m_pD3D;					//!<D3DDevice
+		LPDIRECT3DDEVICE9					m_pD3DDevice;			//!<Rendering device
+		std::unique_ptr<CRenderContext[]>	m_renderContextArray;	//!<レンダリングコンテキスト
+		u32									m_numRenderContext;		//!<レンダリングコンテキストの数。
 	};
 	
 }

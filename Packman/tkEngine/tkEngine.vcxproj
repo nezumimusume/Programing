@@ -151,6 +151,8 @@
   <ItemGroup>
     <ClCompile Include="gameObject\tkGameObject.cpp" />
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
+    <ClCompile Include="graphics\tkRenderCommandBuffer.cpp" />
+    <ClCompile Include="graphics\tkRenderContext.cpp" />
     <ClCompile Include="tkEngine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -170,6 +172,10 @@
     <ClInclude Include="gameObject\tkGameObject.h" />
     <ClInclude Include="gameObject\tkGameObjectManager.h" />
     <ClInclude Include="graphics\CRenderContext.h" />
+    <ClInclude Include="graphics\tkRenderCommand.h" />
+    <ClInclude Include="graphics\tkRenderCommandBuffer.h" />
+    <ClInclude Include="graphics\tkRenderContext.h" />
+    <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="tkEngine.h" />
     <ClInclude Include="tkEnginePreCompile.h" />
     <ClInclude Include="typedef.h" />

@@ -18,6 +18,9 @@
     <Filter Include="Source Files\gameObject">
       <UniqueIdentifier>{ccc04095-1959-45da-98d0-f25e7e9c86ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\policy">
+      <UniqueIdentifier>{4ed3ddea-92df-402f-bef7-6a16d99b7a49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -34,6 +37,12 @@
     </ClCompile>
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp">
       <Filter>Source Files\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkRenderContext.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkRenderCommandBuffer.cpp">
+      <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +64,18 @@
     </ClInclude>
     <ClInclude Include="gameObject\tkGameObjectManager.h">
       <Filter>Source Files\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="policy\tkNoncopyable.h">
+      <Filter>Source Files\policy</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkRenderCommand.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkRenderContext.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkRenderCommandBuffer.h">
+      <Filter>Source Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

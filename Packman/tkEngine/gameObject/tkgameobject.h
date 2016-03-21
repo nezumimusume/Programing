@@ -8,6 +8,7 @@
 
 namespace tkEngine{
 	class CGameObjectManager;
+	class CRenderContext;
 	/*!
 	 *@brief	ゲームオブジェクト。
 	 */
@@ -30,7 +31,7 @@ namespace tkEngine{
 		/*!
 		 *@brief	描画
 		 */
-		virtual void Render() = 0;
+		virtual void Render( const CRenderContext& renderContext ) = 0;
 		/*!
 		 *@brief	削除されるときに呼ばれる。
 		 *@details	CGameManager::DeleteGameObjectを呼んだときに実行されます。
@@ -54,11 +55,11 @@ namespace tkEngine{
 		/*!
 		 *@brief	Render関数が実行される前に呼ばれる描画処理。
 		 */
-		virtual void PreRender() {}
+		virtual void PreRender( const CRenderContext& renderContext ) {}
 		/*!
 		 *@brief	Render関数が実行された後で呼ばれる描画処理
 		 */
-		virtual void PostRender() {}
+		virtual void PostRender(const CRenderContext& renderContext ) {}
 
 		friend class CGameObjectManager;
 		

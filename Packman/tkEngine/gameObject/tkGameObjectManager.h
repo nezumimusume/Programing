@@ -31,8 +31,9 @@ namespace tkEngine{
 		}
 		/*!
 		*@brief	実行。
+		*@param[in]	renderContext	レンダリングコンテキスト。
 		*/
-		void Execute();
+		void Execute( const CRenderContext& renderContext );
 		/*!
 		 *@brief	初期化。
 		 *@param[in]	gameObjectPrioMax	ゲームオブジェクトの優先度の最大値。(255まで)
@@ -48,6 +49,7 @@ namespace tkEngine{
 			TK_ASSERT( prio <= m_gameObjectPriorityMax, "ゲームオブジェクトの優先度の最大数が大きすぎます。");
 			T* newObject = new T();
 			newObject->Awake();
+			return newObject;
 		}
 		/*!
 		 *@brief	ゲームオブジェクトの削除。

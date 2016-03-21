@@ -68,9 +68,15 @@ namespace tkEngine{
 		if (!InitDirectX()) {
 			return false;
 		}
+		CGameObjectManager::GetInstance().Init( initParam.gameObjectPrioMax );
+		//レンダリングコンテキストの初期化。
+		m_renderContextArray.reset( new CRenderContext[initParam.numRenderContext]);
+		for( u32 i = 0; i < initParam.numRenderContext; i++ ){
+			m_renderContextArray[i].Init( m_pD3DDevice, initParam.commandBufferSizeTbl[i] );
+		}
+		m_numRenderContext = initParam.numRenderContext;
 		ShowWindow(m_hWnd, SW_SHOWDEFAULT);
 		UpdateWindow(m_hWnd);
-		CGameObjectManager::GetInstance().Init( initParam.gameObjectPrioMax );
 		return true;
 	}
 	void CEngine::RunGameLoop()
@@ -87,7 +93,11 @@ namespace tkEngine{
 			}
 			else {
 				CGameObjectManager& goMgr = CGameObjectManager::GetInstance();
-				goMgr.Execute();
+				goMgr.Execute(m_renderContextArray[0] );	//取りあえず一本。並列実行は後日・・・。
+				//レンダリングコマンドのサブミット
+				for( u32 i = 0; i < m_numRenderContext; i++ ){
+					m_renderContextArray[i].SubmitCommandBuffer();
+				}
 			}
 		}
 	}

@@ -26,5 +26,7 @@
 #include "tkEngine/debug/tkAssert.h"
 #include "tkEngine/debug/tkLog.h"
 #include "tkEngine/gameObject/tkGameObjectManager.h"
+#include "tkEngine/gameObject/tkGameObject.h"
+#include "tkEngine/graphics/tkRenderCommand.h"
 
 // TODO: reference additional headers your program requires here

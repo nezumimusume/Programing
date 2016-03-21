@@ -23,7 +23,7 @@ typedef	volatile	signed		int		vs32;	//!< 不揮発 符号あり32bit整数
 typedef	volatile	unsigned	int		vu32;	//!< 不揮発 符号無し32bit整数
 typedef	volatile	signed		__int64	vs64;	//!< 不揮発 符号あり64bit整数
 typedef	volatile	unsigned	__int64	vu64;	//!< 不揮発 符号無し64bit整数
-
+typedef uintptr_t	UIntPtr;				
 // 変数の限界
 static const s32 S32_MAX = INT_MAX; 				//!< 符号あり32bit整数の最大値
 static const s32 S32_MIN = INT_MIN; 				//!< 符号あり32bit整数の最小値

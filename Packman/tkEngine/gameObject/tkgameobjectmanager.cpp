@@ -5,7 +5,7 @@
 #include "tkEngine/gameObject/tkgameobjectmanager.h"
 
 namespace tkEngine{
-	void CGameObjectManager::Execute()
+	void CGameObjectManager::Execute(const CRenderContext& renderContext )
 	{
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
@@ -25,17 +25,17 @@ namespace tkEngine{
 
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
-				obj->PreRender();
+				obj->PreRender(renderContext);
 			}
 		}
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
-				obj->Render();
+				obj->Render(renderContext);
 			}
 		}
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
-				obj->PostRender();
+				obj->PostRender(renderContext);
 			}
 		}
 
