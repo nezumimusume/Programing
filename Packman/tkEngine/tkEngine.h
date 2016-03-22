@@ -65,6 +65,13 @@ namespace tkEngine{
 			static CEngine instance;
 			return instance;
 		}
+		/*!
+		 *@brief	Direct3DDeviceの取得。
+		 */
+		LPDIRECT3DDEVICE9 GetD3DDevice() const
+		{
+			return m_pD3DDevice;
+		}
 	private:
 		/*!
 		* @brief	ウィンドウ初期化。

@@ -44,8 +44,8 @@
     <ClCompile Include="graphics\tkRenderCommandBuffer.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\tkVertexBuffe.cpp">
-      <Filter>Source Files\gameObject</Filter>
+    <ClCompile Include="graphics\tkVertexBuffer.cpp">
+      <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,7 +83,7 @@
       <Filter>Source Files\debug</Filter>
     </ClInclude>
     <ClInclude Include="graphics\tkVertexBuffer.h">
-      <Filter>Source Files\gameObject</Filter>
+      <Filter>Source Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

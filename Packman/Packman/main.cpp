@@ -2,7 +2,7 @@
 #include <mmsystem.h>
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/tkEngine.h"
-
+#include "tkEngine/graphics/tkVertexBuffer.h"
 using namespace tkEngine;
 class CTestGameObject : public IGameObject {
 	/*!
@@ -10,6 +10,32 @@ class CTestGameObject : public IGameObject {
 	*/
 	virtual void Update() override
 	{
+		//頂点バッファの作成テスト。
+		struct SVertex {
+			float pos[4];
+			float color[4];
+		};
+		SVertex vertices[] = {
+			{
+				(10.0f, 20.0f, 15.0f, 1.0f),
+				(1.0f, 1.0f, 1.0f, 1.0f)
+			},
+			{
+				(1.0f, 2.0f, 15.0f, 1.0f),
+				(1.0f, 0.5f, 1.0f, 1.0f)
+			},
+			{
+				(1.0f, 2.0f, 15.0f, 1.0f),
+				(1.0f, 0.5f, 1.0f, 1.0f)
+			},
+			{
+				(1.0f, 2.0f, 15.0f, 1.0f),
+				(1.0f, 0.5f, 1.0f, 1.0f)
+			},
+		};
+		CVertexBuffer vb;
+		vb.Create(sizeof(vertices), D3DFVF_XYZW | D3DFVF_DIFFUSE, vertices);
+		vb.Release();
 
 	}
 	/*!

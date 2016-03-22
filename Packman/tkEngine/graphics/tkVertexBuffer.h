@@ -15,10 +15,11 @@ namespace tkEngine{
 		~CVertexBuffer();
 		/*!
 		 *@brief	頂点バッファの作成。
-		 *@param[in]	size	頂点バッファのサイズ。
-		 *@param[in]	fvf		頂点バッファのフォーマット。D3DFVFの組み合わせ。
+		 *@param[in]	size			頂点バッファのサイズ。
+		 *@param[in]	fvf				頂点バッファのフォーマット。D3DFVFの組み合わせ。
+		 *@param[in]	srcVertexBuffer	ソース頂点バッファ。作成された頂点バッファにコピーされます。NULLを指定可能。
 		 */
-		void Create( u32 size, u32 format );
+		void Create( u32 size, u32 format, const void* pSrcVertexBuffer );
 		/*!
 		 * @brief	頂点バッファの開放。
 		 */
