@@ -97,5 +97,8 @@
     <ClInclude Include="math\tkVector.h">
       <Filter>Source Files\math</Filter>
     </ClInclude>
+    <ClInclude Include="math\tkMatrix.h">
+      <Filter>Source Files\math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

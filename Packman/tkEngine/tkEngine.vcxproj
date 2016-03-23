@@ -179,6 +179,7 @@
     <ClInclude Include="graphics\tkRenderCommandBuffer.h" />
     <ClInclude Include="graphics\tkRenderContext.h" />
     <ClInclude Include="graphics\tkVertexBuffer.h" />
+    <ClInclude Include="math\tkMatrix.h" />
     <ClInclude Include="math\tkVector.h" />
     <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="tkEngine.h" />
