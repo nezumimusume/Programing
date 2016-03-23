@@ -3,12 +3,12 @@
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/tkEngine.h"
 #include "tkEngine/graphics/tkVertexBuffer.h"
+#include "tkEngine/graphics/tkIndexBuffer.h"
+#include "tkEngine/math/tkVector.h"
+
 using namespace tkEngine;
 class CTestGameObject : public IGameObject {
-	/*!
-	*@brief	更新
-	*/
-	virtual void Update() override
+	void TestCreateVertexBuffer()
 	{
 		//頂点バッファの作成テスト。
 		struct SVertex {
@@ -36,7 +36,32 @@ class CTestGameObject : public IGameObject {
 		CVertexBuffer vb;
 		vb.Create(sizeof(vertices), D3DFVF_XYZW | D3DFVF_DIFFUSE, vertices);
 		vb.Release();
+	}
+	void TestCreateIndexBuffer()
+	{
+		u16 index[] = {
+			0,1,2,3,4,5,6,7
+		};
 
+		CIndexBuffer ib;
+		ib.Create(sizeof(index), eIndexFormat16, index);
+		ib.Release();
+	}
+	void TestVector()
+	{
+		CVector3 v0, v1;
+		v0.Add(v1);
+		printf("%f %f %f", v0.x(), v0.y(), v0.z());
+		printf("%f", v0.Dot(v1));
+	}
+	/*!
+	*@brief	更新
+	*/
+	virtual void Update() override
+	{
+	//	TestCreateVertexBuffer();
+	//	TestCreateIndexBuffer();
+		TestVector();
 	}
 	/*!
 	*@brief	描画

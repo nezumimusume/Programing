@@ -6,6 +6,10 @@
 #define _TKINDEXBUFFER_H_
 
 namespace tkEngine{
+	enum EIndexFormat {
+		eIndexFormat16 = D3DFMT_INDEX16,	//16bitインデックス。
+		eIndexFormat32 = D3DFMT_INDEX32,	//32bitインデックス。
+	};
 	class CIndexBuffer{
 	public:
 		CIndexBuffer();
@@ -16,7 +20,7 @@ namespace tkEngine{
 		 *@param[in]	format			インデックスバッファのフォーマット。
 		 *@param[in]	pSrcIndexBuffer	ソースインデックスバッファ。作成されたインデックスバッファにコピーされます。NULLを指定可能。
 		 */
-		void Create( u32 size, D3DFORMAT format, const void* pSrcIndexBuffer );
+		void Create( u32 size, EIndexFormat format, const void* pSrcIndexBuffer );
 		/*!
 		 *@brief	インデックスバッファの解放。
 		 */

@@ -29,5 +29,6 @@
 #include "tkEngine/gameObject/tkGameObjectManager.h"
 #include "tkEngine/gameObject/tkGameObject.h"
 #include "tkEngine/graphics/tkRenderCommand.h"
-
+#include "tkEngine/math/tkMatrix.h"
+#include "tkEngine/math/tkVector.h"
 // TODO: reference additional headers your program requires here

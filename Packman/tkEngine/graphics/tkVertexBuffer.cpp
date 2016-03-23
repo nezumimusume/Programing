@@ -43,6 +43,7 @@ namespace tkEngine{
 	{
 		if(m_pVB != nullptr){
 			m_pVB->Release();
+			m_pVB = nullptr;
 		}
 	}
 }

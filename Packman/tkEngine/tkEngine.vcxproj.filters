@@ -21,6 +21,9 @@
     <Filter Include="Source Files\policy">
       <UniqueIdentifier>{4ed3ddea-92df-402f-bef7-6a16d99b7a49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\math">
+      <UniqueIdentifier>{0e184712-dbc4-43c0-bb8a-5087048be174}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -45,6 +48,9 @@
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
     <ClCompile Include="graphics\tkVertexBuffer.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkIndexBuffer.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -84,6 +90,12 @@
     </ClInclude>
     <ClInclude Include="graphics\tkVertexBuffer.h">
       <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkIndexBuffer.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="math\tkVector.h">
+      <Filter>Source Files\math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
