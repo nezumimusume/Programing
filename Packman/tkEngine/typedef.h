@@ -7,6 +7,7 @@
 
 #include <climits>
 #include <float.h>
+typedef char							c8;		//!< •¶ŽšŒ^
 typedef signed				char		s8;		//!< •„†‚ ‚è8bit®”
 typedef unsigned			char		u8;		//!< •„†‚È‚µ8bit®”
 typedef signed				short		s16;	//!< •„†‚ ‚è16bit®”

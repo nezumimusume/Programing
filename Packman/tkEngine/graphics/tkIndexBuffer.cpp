@@ -16,14 +16,24 @@ namespace tkEngine {
 	{
 		Release();
 	}
-	void CIndexBuffer::Create(u32 size, EIndexFormat format, const void* pSrcIndexBuffer)
+	void CIndexBuffer::Create(u32 numIndex, EIndexFormat format, const void* pSrcIndexBuffer)
 	{
 		Release();
-		LPDIRECT3DDEVICE9 d3dDevice = CEngine::GetInstance().GetD3DDevice();
+		u32 size = 0;
+		D3DFORMAT d3dFormat;
+		if (format == eIndexFormat16) {
+			d3dFormat = D3DFMT_INDEX16;
+			size = numIndex * 2;
+		}
+		else if (format == eIndexFormat32) {
+			d3dFormat = D3DFMT_INDEX32;
+			size = numIndex * 4;
+		}
+		LPDIRECT3DDEVICE9 d3dDevice = CEngine::Instance().GetD3DDevice();
 		HRESULT hr = d3dDevice->CreateIndexBuffer(
 			size,
-			D3DUSAGE_DYNAMIC,
-			(D3DFORMAT)format,
+			0,
+			(D3DFORMAT)d3dFormat,
 			D3DPOOL_DEFAULT,
 			&m_pIB,
 			nullptr

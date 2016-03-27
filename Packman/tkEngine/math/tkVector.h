@@ -29,6 +29,15 @@ namespace tkEngine{
 	public:
 		operator D3DXVECTOR3(void) { return s_cast<D3DXVECTOR3>(*this); }
 		/*!
+		* @brief	ベクトルの各要素を設定。
+		*/
+		void Set(f32 x, f32 y, f32 z)
+		{
+			this->x = x;
+			this->y = y;
+			this->z = z;
+		}
+		/*!
 		 * @brief	ベクトルを加算。
 		 */
 		void Add(const CVector3& v) 

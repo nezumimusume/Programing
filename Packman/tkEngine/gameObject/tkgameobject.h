@@ -16,7 +16,8 @@ namespace tkEngine{
 	class IGameObject : Noncopyable{
 	public:
 		IGameObject() :
-			m_priority(0)
+			m_priority(0),
+			m_isStart(false)
 		{
 		}
 		/*!
@@ -26,6 +27,7 @@ namespace tkEngine{
 		{
 		}
 	public:
+		virtual void Start() = 0;
 		/*!
 		 *@brief	更新
 		 */
@@ -69,10 +71,54 @@ namespace tkEngine{
 		 *@brief	Render関数が実行された後で呼ばれる描画処理
 		 */
 		virtual void PostRender(CRenderContext& renderContext ) {}
-
+	public:
+		void PostRenderWrapper(CRenderContext& renderContext)
+		{
+			if (m_isStart) {
+				PostRender(renderContext);
+			}
+		}
+		void RenderWrapper(CRenderContext& renderContext) 
+		{
+			if (m_isStart) {
+				Render(renderContext);
+			}
+		}
+		void PreRenderWrapper(CRenderContext& renderContext)
+		{
+			if (m_isStart) {
+				PreRender(renderContext);
+			}
+		}
+		void PostUpdateWrapper()
+		{
+			if (m_isStart) {
+				PostUpdate();
+			}
+		}
+		void PreUpdateWrapper()
+		{
+			if (m_isStart) {
+				PreUpdate();
+			}
+		}
+		void UpdateWrapper()
+		{
+			if (m_isStart) {
+				Update();
+			}
+		}
+		void StartWrapper()
+		{
+			if (!m_isStart) {
+				Start();
+				m_isStart = true;
+			}
+		}
 		friend class CGameObjectManager;
 	protected:
 		GameObjectPrio	m_priority;		//!<実行優先度。
+		bool m_isStart;					//!<Startの開始フラグ。
 		
 	};
 }

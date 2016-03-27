@@ -9,33 +9,37 @@
 namespace tkEngine{
 	void CGameObjectManager::Execute(CRenderContext* renderContext, u32 numRenderContext, const SRenderContextMap* renderContextMap)
 	{
+		for (GameObjectList objList : m_gameObjectListArray) {
+			for (IGameObject* obj : objList) {
+				obj->StartWrapper();
+			}
+		}
+		for (GameObjectList objList : m_gameObjectListArray) {
+			for (IGameObject* obj : objList) {
+				obj->PreUpdateWrapper();
+			}
+		}
+		for (GameObjectList objList : m_gameObjectListArray) {
+			for (IGameObject* obj : objList) {
+				obj->UpdateWrapper();
+			}
+		}
+		for (GameObjectList objList : m_gameObjectListArray) {
+			for (IGameObject* obj : objList) {
+				obj->PostUpdateWrapper();
+			}
+		}
 		
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
-				obj->PreUpdate();
-			}
-		}
-		for (GameObjectList objList : m_gameObjectListArray) {
-			for (IGameObject* obj : objList) {
-				obj->Update();
-			}
-		}
-		for (GameObjectList objList : m_gameObjectListArray) {
-			for (IGameObject* obj : objList) {
-				obj->PostUpdate();
-			}
-		}
-		
-		for (GameObjectList objList : m_gameObjectListArray) {
-			for (IGameObject* obj : objList) {
-				obj->PreRender(renderContext[0]);
+				obj->PreRenderWrapper(renderContext[0]);
 			}
 		}
 		if (numRenderContext == 1) {
 			//シングルスレッド描画。
 			for (GameObjectList objList : m_gameObjectListArray) {
 				for (IGameObject* obj : objList) {
-					obj->Render(renderContext[0]);
+					obj->RenderWrapper(renderContext[0]);
 				}
 			}
 		}
@@ -46,7 +50,7 @@ namespace tkEngine{
 		}
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
-				obj->PostRender(renderContext[numRenderContext-1]);
+				obj->PostRenderWrapper(renderContext[numRenderContext-1]);
 			}
 		}
 		ExecuteDeleteGameObjects();

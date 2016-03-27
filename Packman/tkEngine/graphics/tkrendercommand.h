@@ -5,13 +5,26 @@
 #ifndef _TKRENDERCOMMAND_H_
 #define _TKRENDERCOMMAND_H_
 
+#include "tkEngine/graphics/tkVertexBuffer.h"
+#include "tkEngine/graphics/tkIndexBuffer.h"
+#include "tkEngine/graphics/tkPrimitive.h"
 
 namespace tkEngine{
 	/*!
 	 *@brief	レンダリングコマンドのタイプ
 	 */
 	enum ERenderCommand{
-		eRendeCommand_Clear,	//!<クリア
+		eRenderCommand_Clear,
+		eRenderCommand_EffectBegin,
+		eRenderCommand_EffectEnd,
+		eRenderCommand_EffectBeginPass,
+		eRenderCommand_EffectEndPass,
+		eRenderCommand_EffectSetValue,
+		eRenderCommand_SetStreamSource,
+		eRenderCommand_SetIndices,
+		eRenderCommand_DrawIndexedPrimitive,
+		eRenderCommand_EffectSetTechnique,
+		eRenderCommand_SetFVF,
 		eRenderCommand_Undef
 	};
 	/*!
@@ -63,7 +76,7 @@ namespace tkEngine{
 			DWORD Stencil
 
 		) :
-			CRenderCommandBase(eRendeCommand_Clear),
+			CRenderCommandBase(eRenderCommand_Clear),
 			m_Count(Count),
 			m_pRects(pRects),
 			m_Flags(Flags),
@@ -77,5 +90,205 @@ namespace tkEngine{
 			pD3DDevice->Clear(m_Count, m_pRects, m_Flags, m_Color, m_Z, m_Stencil);
 		}
 	};
-};
+	/*!
+	 * @brief	ID3DXEffect::Begin
+	 */
+	class CRenderCommand_EffectBegin : public CRenderCommandBase
+	{
+		ID3DXEffect*	m_pEffect;
+	public:
+		CRenderCommand_EffectBegin(ID3DXEffect* pEffect) :
+			CRenderCommandBase(eRenderCommand_EffectBegin),
+			m_pEffect(pEffect)
+		{
+			TK_ASSERT( m_pEffect != nullptr, "m_pEffect is null" );
+		}
+		void Execute( LPDIRECT3DDEVICE9 pD3DDevice )
+		{
+			m_pEffect->Begin(NULL, D3DXFX_DONOTSAVESHADERSTATE);
+		}
+	};
+	/*!
+	 * @brief	ID3DXEffect::End
+	 */
+	class CRenderCommand_EffectEnd : public CRenderCommandBase
+	{
+		ID3DXEffect*	m_pEffect;
+	public:
+		CRenderCommand_EffectEnd(ID3DXEffect* pEffect) :
+			CRenderCommandBase(eRenderCommand_EffectEnd),
+			m_pEffect(pEffect)
+		{
+			TK_ASSERT( m_pEffect != nullptr, "m_pEffect is null" );
+		}
+		void Execute( LPDIRECT3DDEVICE9 pD3DDevice )
+		{
+			m_pEffect->End();
+		}
+	};
+	/*!
+	 * @brief	ID3DXEffect::BeginPass
+	 */
+	class CRenderCommand_EffectBeginPass : public CRenderCommandBase
+	{
+		ID3DXEffect*	m_pEffect;
+		s32				m_pass;
+	public:
+		CRenderCommand_EffectBeginPass(ID3DXEffect* pEffect, s32 pass) :
+			CRenderCommandBase(eRenderCommand_EffectBeginPass),
+			m_pEffect(pEffect),
+			m_pass(pass)
+		{
+			TK_ASSERT( m_pEffect != nullptr, "m_pEffect is null" );
+		}
+		void Execute( LPDIRECT3DDEVICE9 pD3DDevice )
+		{
+			m_pEffect->BeginPass(m_pass);
+		}
+	};
+	/*!
+	 * @brief	ID3DXEffect::EndPass
+	 */
+	class CRenderCommand_EffectEndPass : public CRenderCommandBase
+	{
+		ID3DXEffect*	m_pEffect;
+	public:
+		CRenderCommand_EffectEndPass(ID3DXEffect* pEffect) :
+			CRenderCommandBase(eRenderCommand_EffectEndPass),
+			m_pEffect(pEffect)
+		{
+			TK_ASSERT( m_pEffect != nullptr, "m_pEffect is null" );
+		}
+		void Execute( LPDIRECT3DDEVICE9 pD3DDevice )
+		{
+			m_pEffect->EndPass();
+		}
+	};
+	/*!
+	* @brief	ID3DXEffect::SetValue
+	*/
+	class CRenderCommand_EffectSetValue : public CRenderCommandBase
+	{
+		ID3DXEffect*	m_pEffect;
+		const c8*		m_pParameterName;
+		void*			m_pData;
+		u32				m_sizeInByte;
+	public:
+		CRenderCommand_EffectSetValue(CRenderContext& renderContext, ID3DXEffect* pEffect, const c8* pParameterName, const void* pData, u32 sizeInByte):
+			CRenderCommandBase(eRenderCommand_EffectSetValue),
+			m_pEffect(pEffect),
+			m_pParameterName(pParameterName),
+			m_sizeInByte(sizeInByte)
+		{
+			//コマンドバッファからアロック。
+			m_pData = renderContext.AllocFromCommandBuffer(sizeInByte);
+			//コピ
+			memcpy(m_pData, pData, sizeInByte);
+
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			m_pEffect->SetValue(m_pParameterName, m_pData, m_sizeInByte);
+		}
+	};
+	/*!
+	* @brief	IDirect3DDevice9::SetStreamSource
+	*/
+	class CRenderCommand_SetStreamSource : public CRenderCommandBase
+	{
+		CVertexBuffer*	m_pVB;
+		u32				m_streamNo;
+	public:
+		CRenderCommand_SetStreamSource(u32 streamNo, CVertexBuffer* pVB) :
+			CRenderCommandBase(eRenderCommand_SetStreamSource),
+			m_pVB(pVB),
+			m_streamNo( streamNo )
+		{
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			HRESULT hr = pD3DDevice->SetStreamSource(m_streamNo, m_pVB->GetBody(), 0, m_pVB->GetStride());
+			TK_ASSERT(SUCCEEDED(hr), "error");
+		}
+	};
+	/*!
+	* @brief	IDirect3DDevice9::SetIndices
+	*/
+	class CRenderCommand_SetIndices : public CRenderCommandBase
+	{
+		CIndexBuffer* m_pIB;
+	public:
+		CRenderCommand_SetIndices(CIndexBuffer* pIB) :
+			CRenderCommandBase(eRenderCommand_SetIndices),
+			m_pIB(pIB)
+		{
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			HRESULT hr = pD3DDevice->SetIndices(m_pIB->GetBody());
+			TK_ASSERT(SUCCEEDED(hr), "error");
+		}
+	};
+	/*!
+	* @brief	IDirect3DDevice9::DrawIndexPrimitive
+	*/
+	class CRenderCommand_DrawIndexedPrimitive : public CRenderCommandBase
+	{
+		CPrimitive* m_primitive;
+	public:
+		CRenderCommand_DrawIndexedPrimitive(CPrimitive* prim) :
+			CRenderCommandBase(eRenderCommand_DrawIndexedPrimitive),
+			m_primitive(prim)
+		{
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			pD3DDevice->SetFVF(D3DFVF_XYZW | D3DFVF_DIFFUSE);
+			HRESULT hr = pD3DDevice->DrawIndexedPrimitive(
+				m_primitive->GetD3DPrimitiveType(), 
+				0, 
+				0,
+				m_primitive->GetNumVertex(), 
+				0, 
+				m_primitive->GetNumPolygon() 
+			);
+			TK_ASSERT(SUCCEEDED(hr), "error");
+		}
+	};
+	class CRenderCommand_SetFVF : public CRenderCommandBase
+	{
+		u32 m_fvf;
+	public:
+		CRenderCommand_SetFVF(u32 fvf) :
+			CRenderCommandBase(eRenderCommand_SetFVF),
+			m_fvf(fvf)
+		{
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			pD3DDevice->SetFVF(m_fvf);
+		}
+	};
+	/*!
+	* @brief	ID3DXEffect::SetTechnique
+	*/
+	class CRenderCommand_EffectSetTechnique : public CRenderCommandBase
+	{
+		c8* m_tecName;
+		ID3DXEffect* m_pEffect;
+	public:
+		CRenderCommand_EffectSetTechnique(tkEngine::CRenderContext& renderContext, ID3DXEffect* pEffect, const c8* tecName) :
+			CRenderCommandBase(eRenderCommand_EffectSetTechnique),
+			m_pEffect(pEffect)
+		{
+			u32 nameLen = strlen(tecName);
+			m_tecName = s_cast<c8*>(renderContext.AllocFromCommandBuffer(nameLen + 1));
+			memcpy(m_tecName, tecName, nameLen + 1);
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			m_pEffect->SetTechnique(m_tecName);
+		}
+	};
+}
 #endif // _TKRENDERCOMMAND_H_

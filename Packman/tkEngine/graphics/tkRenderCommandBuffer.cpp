@@ -25,8 +25,41 @@ namespace tkEngine{
 		for( void* cmd : m_command ){
 			CRenderCommandBase* cmdBase = reinterpret_cast<CRenderCommandBase*>(cmd);
 			switch(cmdBase->GetType()){
-			case eRendeCommand_Clear:
+			case eRenderCommand_Clear:
 				((CRenderCommand_Clear*)(cmdBase))->Execute(pD3DDevice);
+				break;
+			case eRenderCommand_EffectBegin:
+				((CRenderCommand_EffectBegin*)(cmdBase))->Execute(pD3DDevice);
+				break;
+			case eRenderCommand_EffectEnd:
+				((CRenderCommand_EffectEnd*)(cmdBase))->Execute(pD3DDevice);
+				break;
+			case eRenderCommand_EffectBeginPass:
+				((CRenderCommand_EffectBeginPass*)(cmdBase))->Execute(pD3DDevice);
+				break;
+			case eRenderCommand_EffectEndPass:
+				((CRenderCommand_EffectEndPass*)(cmdBase))->Execute(pD3DDevice);
+				break;
+			case eRenderCommand_EffectSetValue:
+				((CRenderCommand_EffectSetValue*)(cmdBase))->Execute(pD3DDevice);
+				break;
+			case eRenderCommand_SetStreamSource:
+				((CRenderCommand_SetStreamSource*)(cmdBase))->Execute(pD3DDevice);
+				break;
+			case eRenderCommand_SetIndices:
+				((CRenderCommand_SetIndices*)(cmdBase))->Execute(pD3DDevice);
+				break;
+			case eRenderCommand_DrawIndexedPrimitive:
+				((CRenderCommand_DrawIndexedPrimitive*)(cmdBase))->Execute(pD3DDevice);
+				break;
+			case eRenderCommand_EffectSetTechnique:
+				((CRenderCommand_EffectSetTechnique*)(cmdBase))->Execute(pD3DDevice);
+				break;
+			case eRenderCommand_SetFVF:
+				((CRenderCommand_SetFVF*)(cmdBase))->Execute(pD3DDevice);
+				break;
+			default:
+				TK_ASSERT(false, "not implement renderCommand");
 				break;
 			}
 		}

@@ -26,7 +26,7 @@ namespace tkEngine{
 	public:
 		/*!
 		* @brief	プロジェクション行列を作成。
-		*@param[in]	viewAngle	画角。
+		*@param[in]	viewAngle	画角。(ラジアン)。
 		*@param[in]	aspect		アスペクト比。
 		*@param[in]	fNear		近平面。
 		*@param[in]	fFar		遠平面。
@@ -64,7 +64,6 @@ namespace tkEngine{
 		/*!
 		 *@brief	行列と行列の乗算
 		 *@details
-		 * 行列の計算順序は数学の記述に準拠する。
 		 * *this = m0 * m1
 		 */
 		void Mul( const CMatrix& m0, const CMatrix& m1 )
@@ -86,6 +85,10 @@ namespace tkEngine{
 				NULL,
 				r_cast<const D3DXMATRIX*>(&m)
 			);
+		}
+		void Transpose()
+		{
+			D3DXMatrixTranspose(r_cast<D3DXMATRIX*>(this), r_cast<D3DXMATRIX*>(this));
 		}
 		
 	};

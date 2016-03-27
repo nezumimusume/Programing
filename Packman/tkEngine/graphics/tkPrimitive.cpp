@@ -6,13 +6,12 @@
 #include "tkEngine/graphics/tkPrimitive.h"
 
 namespace tkEngine{
-#ifdef _DEBUG
-	#define CHECK_VALIDATION	CheckValidation
-#endif // _DEBUG
-	CPrimitive::CPrimitivex() :
+	CPrimitive::CPrimitive() :
 		m_numVertex(0),
 		m_numIndex(0),
-		m_vertexStride(0)
+		m_vertexStride(0),
+		m_type(eTriangleList),
+		m_d3dPrimitiveType(D3DPT_TRIANGLELIST)
 	{
 	}
 	CPrimitive::~CPrimitive()
@@ -23,6 +22,7 @@ namespace tkEngine{
 		EType 			primitiveType,
 		u32 			numVertex,
 		u32 			vertexStride,
+		u32				vertexFormat,
 		void*			pSrcVertexBuffer,
 		u32 			numIndex,
 		EIndexFormat	indexFormat,
@@ -33,13 +33,19 @@ namespace tkEngine{
 		TK_ASSERT( numVertex != 0, "numVertex is zero" );
 		TK_ASSERT( vertexStride != 0, "vertexStrid is zero" );
 		TK_ASSERT( numIndex != 0, "numIndex is zero" );
+		m_type = primitiveType;
+		m_numVertex = numVertex;
+		m_vertexStride = vertexStride;
+		m_numIndex = numIndex;
 		Release();
-		m_vertexBuffer.Create( numVertex * vertexStride, pSrcVertexBuffer );
+		m_vertexBuffer.Create( numVertex, vertexStride, vertexFormat, pSrcVertexBuffer );
 		m_indexBuffer.Create( numIndex, indexFormat, pSrcIndexbuffer );
 		if(primitiveType == eTriangleList){
 			m_numPolygon = numIndex / 3;
+			m_d3dPrimitiveType = D3DPT_TRIANGLELIST;
 		}else if(primitiveType == eTriangleStrip){
 			m_numPolygon = numIndex - 2;
+			m_d3dPrimitiveType = D3DPT_TRIANGLESTRIP;
 		}
 	}
 	void CPrimitive::Release()

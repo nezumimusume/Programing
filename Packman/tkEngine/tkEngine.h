@@ -7,6 +7,7 @@
 #define _TKENGINE_H_
 
 #include "tkEngine/graphics/tkRenderContext.h"
+#include "tkEngine/graphics/tkEffectManager.h"
 
 namespace tkEngine{
 	/*!
@@ -62,10 +63,17 @@ namespace tkEngine{
 		/*!
 		 * @brief	インスタンスの取得。
 		 */
-		static CEngine& GetInstance()
+		static CEngine& Instance()
 		{
 			static CEngine instance;
 			return instance;
+		}
+		/*!
+		* @brief	エフェクトマネージャの取得。
+		*/
+		static CEffectManager& EffectManager()
+		{
+			return Instance().m_effectManager;
 		}
 		/*!
 		 *@brief	Direct3DDeviceの取得。
@@ -112,6 +120,7 @@ namespace tkEngine{
 		std::unique_ptr<CRenderContext[]>		m_renderContextArray;	//!<レンダリングコンテキスト
 		u32										m_numRenderContext;		//!<レンダリングコンテキストの数。
 		std::unique_ptr<SRenderContextMap[]>	m_renderContextMap;		//!<レンダリングコンテキストのマップ。
+		CEffectManager							m_effectManager;		//!<エフェクトマネージャ。
 		s32										m_screenWidth;			//!<スクリーンの幅。
 		s32										m_screenHeight;			//!<スクリーンの高さ。
 	};

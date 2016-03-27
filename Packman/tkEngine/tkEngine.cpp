@@ -11,7 +11,7 @@ namespace tkEngine{
 		switch (msg)
 		{
 		case WM_DESTROY:
-			GetInstance().Final();
+			Instance().Final();
 			PostQuitMessage(0);
 			return 0;
 		}
@@ -126,6 +126,7 @@ namespace tkEngine{
 	}
 	void CEngine::Final()
 	{
+		m_effectManager.Release();
 		if (m_pD3DDevice != nullptr)
 			m_pD3DDevice->Release();
 

@@ -20,15 +20,23 @@
 #include <memory>
 #include <d3dx9.h>
 #include <d3d9.h>
+#ifdef _DEBUG
+#include <DxErr.h>
+#pragma comment(lib, "dxerr.lib")
+#endif
 #include <list>
 #include <vector>
-#include "typedef.h"
+#include <map>
+#include "tkEngine/typedef.h"
+#include "tkEngine/math/tkMath.h"
 #include "tkEngine/policy/tkNoncopyable.h"
 #include "tkEngine/debug/tkAssert.h"
 #include "tkEngine/debug/tkLog.h"
+#include "tkEngine/tkEngine.h"
 #include "tkEngine/gameObject/tkGameObjectManager.h"
 #include "tkEngine/gameObject/tkGameObject.h"
 #include "tkEngine/graphics/tkRenderCommand.h"
+#include "tkEngine/graphics/tkRenderContext.h"
 #include "tkEngine/math/tkMatrix.h"
 #include "tkEngine/math/tkVector.h"
 // TODO: reference additional headers your program requires here

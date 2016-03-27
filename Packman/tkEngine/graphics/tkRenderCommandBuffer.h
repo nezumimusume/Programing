@@ -44,6 +44,16 @@ namespace tkEngine{
 			m_writePos += 32;
 		}
 		/*!
+		*@brief	コマンドバッファからアロケート
+		*/
+		void* Alloc(u32 sizeInByte)
+		{
+			TK_ASSERT(m_writePos + sizeInByte <= m_size, "command buffer size over!!!");
+			void* p = &m_buffer[m_writePos];
+			m_writePos += sizeInByte;
+			return p;
+		}
+		/*!
 		 *@brief	コマンドバッファをサブミット。
 		 */
 		void Submit(LPDIRECT3DDEVICE9 pD3DDevice);

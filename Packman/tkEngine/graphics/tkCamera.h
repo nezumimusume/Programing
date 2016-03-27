@@ -109,6 +109,20 @@ namespace tkEngine{
 		{
 			return m_near;
 		}
+		/*!
+		* @brief	画角を設定。
+		*/
+		void SetViewAngle(f32 viewAngle)
+		{
+			m_viewAngle = viewAngle;
+		}
+		/*!
+		* @brief	画角を取得。
+		*/
+		f32 GetViewAngle() const
+		{
+			return m_viewAngle;
+		}
 	private:
 		CVector3	m_position;							//!<カメラ位置。
 		CVector3	m_up;								//!<カメラの上方向。
@@ -119,7 +133,7 @@ namespace tkEngine{
 		CMatrix		m_viewMatrixInv;					//!<ビュー行列の逆行列。
 		f32			m_near;								//!<近平面。
 		f32			m_far;								//!<遠平面。
-		f32			m_viewAngle;						//!<画角(Y方向)。
+		f32			m_viewAngle;						//!<画角(ラジアン)。
 		f32			m_aspect;							//!<アスペクト比。
 		bool		m_isNeedUpdateProjectionMatrix;
 	};

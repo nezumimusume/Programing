@@ -41,6 +41,13 @@ namespace tkEngine{
 		{
 			m_commandBuffer.Submit(m_pD3DDevice);
 		}
+		/*!
+		*@brief	コマンドバッファからアロケート
+		*/
+		void* AllocFromCommandBuffer(u32 sizeInByte)
+		{
+			return m_commandBuffer.Alloc(sizeInByte);
+		}
 	private:
 		LPDIRECT3DDEVICE9		m_pD3DDevice;
 		CRenderCommandBuffer 	m_commandBuffer;
