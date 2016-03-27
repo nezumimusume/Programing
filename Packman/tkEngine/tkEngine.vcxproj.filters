@@ -27,6 +27,9 @@
     <Filter Include="Source Files\util">
       <UniqueIdentifier>{56dfb282-7afb-47fd-a48e-130bda2e0e0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\shape">
+      <UniqueIdentifier>{c696cbe9-8c0e-4bfb-afdd-a05db245cbde}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -76,6 +79,12 @@
     </ClCompile>
     <ClCompile Include="graphics\tkEffectManager.cpp">
       <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkMaterial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shape\tkBoxShape.cpp">
+      <Filter>Source Files\shape</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +150,10 @@
     </ClInclude>
     <ClInclude Include="util\tkUtil.h">
       <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkMaterial.h" />
+    <ClInclude Include="shape\tkBoxShape.h">
+      <Filter>Source Files\shape</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

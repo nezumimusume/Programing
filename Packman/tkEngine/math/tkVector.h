@@ -28,6 +28,14 @@ namespace tkEngine{
 		static const CVector3 AxisZ;
 	public:
 		operator D3DXVECTOR3(void) { return s_cast<D3DXVECTOR3>(*this); }
+		CVector3() {}
+		/*!
+		* @brief	コンストラクタ。
+		*/
+		CVector3(f32 x, f32 y, f32 z)
+		{
+			Set(x, y, z);
+		}
 		/*!
 		* @brief	ベクトルの各要素を設定。
 		*/
@@ -108,6 +116,15 @@ namespace tkEngine{
 		float LengthSq()
 		{
 			return x * x + y * y + z * z;
+		}
+		/*!
+		* @brief	拡大。
+		*/
+		void Scale(f32 s)
+		{
+			x *= s;
+			y *= s;
+			z *= s;
 		}
 	};
 }

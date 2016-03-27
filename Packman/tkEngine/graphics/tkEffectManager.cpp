@@ -32,31 +32,32 @@ namespace tkEngine{
 	 */
 	CEffect* CEffectManager::LoadEffect( const c8* filePath )
 	{
-		LPD3DXEFFECT effect;
-		HRESULT hr = D3DXCreateEffectFromFile(
-			CEngine::Instance().GetD3DDevice(),
-			filePath,
-			NULL,
-			NULL,
-#ifdef _DEBUG
-			D3DXSHADER_DEBUG,
-#else
-			D3DXSHADER_SKIPVALIDATION,
-#endif
-			NULL,
-			&effect,
-			NULL
-			);
-		TK_ASSERT(SUCCEEDED(hr), "Failed D3DXCreateEffectFromFile");
+		
 		CEffect* pEffect = nullptr;
 		u32 hash = CUtil::MakeHash(filePath);
 		
 		auto it = m_effectDictinary.find(hash);
 		if (it == m_effectDictinary.end()) {
 			//êVãKÅB
+			LPD3DXEFFECT effect;
+			HRESULT hr = D3DXCreateEffectFromFile(
+				CEngine::Instance().GetD3DDevice(),
+				filePath,
+				NULL,
+				NULL,
+#ifdef _DEBUG
+				D3DXSHADER_DEBUG,
+#else
+				D3DXSHADER_SKIPVALIDATION,
+#endif
+				NULL,
+				&effect,
+				NULL
+				);
+			TK_ASSERT(SUCCEEDED(hr), "Failed D3DXCreateEffectFromFile");
+			pEffect = new CEffect(effect);
 			std::pair<u32, CEffect*> node(hash, pEffect);
 			m_effectDictinary.insert(node);
-			pEffect = new CEffect(effect);
 		}
 		else {
 			//ìoò^çœÇ›ÅB

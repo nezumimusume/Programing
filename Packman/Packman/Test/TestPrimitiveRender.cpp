@@ -64,7 +64,7 @@ void CTestPrimitiveRender::Start()
 		m_camera.Update();
 	}
 	//シェーダーをロード。
-	m_pEffect = CEngine::Instance().EffectManager().LoadEffect("C:/GitHub/Programing/Packman/tkEngine/presetShader/test.fx");
+	m_pEffect = CEngine::Instance().EffectManager().LoadEffect("C:/GitHub/Programing/Packman/tkEngine/presetShader/ColorPrim.fx");
 
 }
 void CTestPrimitiveRender::Update()
@@ -74,7 +74,7 @@ void CTestPrimitiveRender::Render(tkEngine::CRenderContext& renderContext)
 {
 	//プリミティブを描画。
 	const CMatrix& mMVP = m_camera.GetViewProjectionMatrix();
-	m_pEffect->SetTechnique(renderContext, "Test");
+	m_pEffect->SetTechnique(renderContext, "ColorPrim");
 	m_pEffect->SetValue(renderContext, "g_mWVP", &mMVP, sizeof(mMVP));
 	m_pEffect->Begin(renderContext);
 	m_pEffect->BeginPass(renderContext, 0);

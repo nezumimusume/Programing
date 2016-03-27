@@ -155,6 +155,7 @@
     <ClCompile Include="graphics\tkEffect.cpp" />
     <ClCompile Include="graphics\tkEffectManager.cpp" />
     <ClCompile Include="graphics\tkIndexBuffer.cpp" />
+    <ClCompile Include="graphics\tkMaterial.cpp" />
     <ClCompile Include="graphics\tkPrimitive.cpp" />
     <ClCompile Include="graphics\tkRenderCommandBuffer.cpp" />
     <ClCompile Include="graphics\tkRenderContext.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="math\tkMath.cpp" />
     <ClCompile Include="math\tkMatrix.cpp" />
     <ClCompile Include="math\tkVector.cpp" />
+    <ClCompile Include="shape\tkBoxShape.cpp" />
     <ClCompile Include="tkEngine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -185,6 +187,7 @@
     <ClInclude Include="graphics\tkEffect.h" />
     <ClInclude Include="graphics\tkEffectManager.h" />
     <ClInclude Include="graphics\tkIndexBuffer.h" />
+    <ClInclude Include="graphics\tkMaterial.h" />
     <ClInclude Include="graphics\tkPrimitive.h" />
     <ClInclude Include="graphics\tkRenderCommand.h" />
     <ClInclude Include="graphics\tkRenderCommandBuffer.h" />
@@ -194,6 +197,7 @@
     <ClInclude Include="math\tkMatrix.h" />
     <ClInclude Include="math\tkVector.h" />
     <ClInclude Include="policy\tkNoncopyable.h" />
+    <ClInclude Include="shape\tkBoxShape.h" />
     <ClInclude Include="tkEngine.h" />
     <ClInclude Include="tkEnginePreCompile.h" />
     <ClInclude Include="typedef.h" />

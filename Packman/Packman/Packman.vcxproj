@@ -157,11 +157,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Test\Test.cpp" />
+    <ClCompile Include="Test\TestBoxRender.cpp" />
     <ClCompile Include="Test\TestPrimitiveRender.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Test\test.h" />
+    <ClInclude Include="Test\TestBoxRender.h" />
     <ClInclude Include="Test\TestPrimitiveRender.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

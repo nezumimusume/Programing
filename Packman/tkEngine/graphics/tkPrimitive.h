@@ -9,6 +9,7 @@
 #include "tkEngine/graphics/tkVertexBuffer.h"
 
 namespace tkEngine{
+	class CMaterial;
 	/*!
 	 * @brief	プリミティブ。
 	 */

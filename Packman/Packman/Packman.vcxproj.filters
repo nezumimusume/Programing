@@ -30,6 +30,9 @@
     <ClCompile Include="Test\TestPrimitiveRender.cpp">
       <Filter>Source Files\Test</Filter>
     </ClCompile>
+    <ClCompile Include="Test\TestBoxRender.cpp">
+      <Filter>Source Files\Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -39,6 +42,9 @@
       <Filter>Source Files\Test</Filter>
     </ClInclude>
     <ClInclude Include="Test\TestPrimitiveRender.h">
+      <Filter>Source Files\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Test\TestBoxRender.h">
       <Filter>Source Files\Test</Filter>
     </ClInclude>
   </ItemGroup>

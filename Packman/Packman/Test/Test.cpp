@@ -4,11 +4,14 @@
 #include "stdafx.h"
 #include "test.h"
 #include "TestPrimitiveRender.h"
+#include "TestBoxRender.h"
+
 using namespace tkEngine;
 
 void CTest::Start()
 {
 	CGameObjectManager::GetInstance().NewGameObject<CTestPrimitiveRender>(0);
+	CGameObjectManager::GetInstance().NewGameObject<CTestBoxRender>(0);
 }
 void CTest::Update()
 {
