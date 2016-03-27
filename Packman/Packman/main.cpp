@@ -51,7 +51,7 @@ class CTestGameObject : public IGameObject {
 	{
 		CVector3 v0, v1;
 		v0.Add(v1);
-		printf("%f %f %f", v0.x(), v0.y(), v0.z());
+		printf("%f %f %f", v0.x, v0.y, v0.z);
 		printf("%f", v0.Dot(v1));
 	}
 	/*!
@@ -91,6 +91,8 @@ int WINAPI wWinMain(
 	initParam.gameObjectPrioMax = 255;
 	initParam.numRenderContext = 1;	//レンダリングコンテキストは一本
 	initParam.commandBufferSizeTbl = commandBufferSizeTbl;
+	initParam.screenHeight = 720;
+	initParam.screenWidth = 1280;
 	CEngine::GetInstance().Init( initParam );	//初期化。
 	CGameObjectManager::GetInstance().NewGameObject<CTestGameObject>(0);
 	CEngine::GetInstance().RunGameLoop();		//ゲームループを実行。
