@@ -15,14 +15,14 @@ namespace tkEngine{
 	{
 		Release();
 	}
-	void CVertexBuffer::Create( u32 size, u32 format, const void* pSrcVertexBuffer )
+	void CVertexBuffer::Create( u32 size, const void* pSrcVertexBuffer )
 	{
 		Release();
 		LPDIRECT3DDEVICE9 d3dDevice = CEngine::GetInstance().GetD3DDevice();
 		HRESULT hr = d3dDevice->CreateVertexBuffer(
 			size,
 			D3DUSAGE_DYNAMIC,
-			format,
+			0,
 			D3DPOOL_DEFAULT,
 			&m_pVB,
 			NULL

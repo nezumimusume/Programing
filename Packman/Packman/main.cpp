@@ -34,7 +34,7 @@ class CTestGameObject : public IGameObject {
 			},
 		};
 		CVertexBuffer vb;
-		vb.Create(sizeof(vertices), D3DFVF_XYZW | D3DFVF_DIFFUSE, vertices);
+		vb.Create(sizeof(vertices), vertices);
 		vb.Release();
 	}
 	void TestCreateIndexBuffer()
