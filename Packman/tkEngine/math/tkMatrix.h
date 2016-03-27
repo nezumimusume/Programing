@@ -38,7 +38,7 @@ namespace tkEngine{
 			f32 fFar
 			)
 		{
-			D3DXMatrixPerspectiveFovRH(
+			D3DXMatrixPerspectiveFovLH(
 				r_cast<D3DXMATRIX*>(this),
 				viewAngle,
 				aspect,
@@ -54,7 +54,7 @@ namespace tkEngine{
 		 */
 		void MakeLookAt( const CVector3& position, const CVector3& target, const CVector3& up )
 		{
-			D3DXMatrixLookAtRH(
+			D3DXMatrixLookAtLH(
 				r_cast<D3DXMATRIX*>(this),
 				r_cast<const D3DXVECTOR3*>(&position),
 				r_cast<const D3DXVECTOR3*>(&target),
