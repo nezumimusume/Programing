@@ -53,6 +53,15 @@
     <ClCompile Include="graphics\tkIndexBuffer.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\tkCamera.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="math\tkVector.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="math\tkMatrix.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -99,6 +108,9 @@
     </ClInclude>
     <ClInclude Include="math\tkMatrix.h">
       <Filter>Source Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkCamera.h">
+      <Filter>Source Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

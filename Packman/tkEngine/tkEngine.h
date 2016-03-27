@@ -24,11 +24,13 @@ namespace tkEngine{
 		{
 			memset(this, 0, sizeof(SInitParam));
 		}
-		HINSTANCE 	hInstance;
-		u8 			gameObjectPrioMax;			//!<ゲームオブジェクトの優先度の最大値(255まで)
-		u32 		numRenderContext;			//!<レンダリングコンテキストの数。この数が2以上の場合、renderContextMapの指定が必ず必要になります。
-		u32*		commandBufferSizeTbl;		//!<コマンドバッファのサイズのテーブル。レンダリングコンテキストのサイズ分必要。
-		SRenderContextMap*	renderContextMap;	//!<描画優先ごとに対応するレンダリングコンテキストの番号のマップ。numRenderContextが1の場合は無視される。
+		HINSTANCE 			hInstance;
+		u8 					gameObjectPrioMax;		//!<ゲームオブジェクトの優先度の最大値(255まで)
+		u32 				numRenderContext;		//!<レンダリングコンテキストの数。この数が2以上の場合、renderContextMapの指定が必ず必要になります。
+		u32*				commandBufferSizeTbl;	//!<コマンドバッファのサイズのテーブル。レンダリングコンテキストのサイズ分必要。
+		SRenderContextMap*	renderContextMap;		//!<描画優先ごとに対応するレンダリングコンテキストの番号のマップ。numRenderContextが1の場合は無視される。
+		s32					screenWidth;			//!<スクリーンの幅。
+		s32					screenHeight;			//!<スクリーンの高さ。
 	};
 	
 	/*!
@@ -72,13 +74,27 @@ namespace tkEngine{
 		{
 			return m_pD3DDevice;
 		}
+		/*!
+		*@brief		スクリーンの幅を取得
+		*/
+		s32 GetScreenWidth() const
+		{
+			return m_screenWidth;
+		}
+		/*!
+		*@brief		スクリーンの高さを取得
+		*/
+		s32 GetScreenHeight() const
+		{
+			return m_screenHeight;
+		}
 	private:
 		/*!
 		* @brief	ウィンドウ初期化。
 		* @retval	true	初期化に成功。
 		* @retval	false	初期化に失敗。
 		*/
-		bool InitWindow();
+		bool InitWindow(const SInitParam& initParam);
 		/*!
 		* @brief	DirectXの初期化。
 		* @retval	true	初期化に成功。
@@ -96,6 +112,8 @@ namespace tkEngine{
 		std::unique_ptr<CRenderContext[]>		m_renderContextArray;	//!<レンダリングコンテキスト
 		u32										m_numRenderContext;		//!<レンダリングコンテキストの数。
 		std::unique_ptr<SRenderContextMap[]>	m_renderContextMap;		//!<レンダリングコンテキストのマップ。
+		s32										m_screenWidth;			//!<スクリーンの幅。
+		s32										m_screenHeight;			//!<スクリーンの高さ。
 	};
 	
 }

@@ -18,8 +18,16 @@ namespace tkEngine{
 
 		return DefWindowProc(hWnd, msg, wParam, lParam);
 	}
-	bool CEngine::InitWindow()
+	bool CEngine::InitWindow(const SInitParam& initParam)
 	{
+		TK_ASSERT(initParam.screenHeight != 0, "screenHeight is zero");
+		TK_ASSERT(initParam.screenWidth != 0, "screenWidth is zero");
+		TK_ASSERT(initParam.gameObjectPrioMax != 0, "gameObjectPrioMax is zero");
+		TK_ASSERT(initParam.numRenderContext != 0, "numRenderContext is zero");
+		TK_ASSERT(initParam.commandBufferSizeTbl != nullptr, "commandBufferSizeTbl is null");
+
+		m_screenHeight = initParam.screenHeight;
+		m_screenWidth = initParam.screenWidth;
 		WNDCLASSEX wc =
 		{
 			sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
@@ -29,7 +37,7 @@ namespace tkEngine{
 		RegisterClassEx(&wc);
 		// Create the application's window
 		m_hWnd = CreateWindow(TEXT("D3D Tutorial"), TEXT("D3D Tutorial 06: Meshes"),
-			WS_OVERLAPPEDWINDOW, 100, 100, 300, 300,
+			WS_OVERLAPPEDWINDOW, 0, 0, m_screenWidth, m_screenHeight,
 			nullptr, nullptr, wc.hInstance, nullptr);
 
 		return m_hWnd != nullptr;
@@ -61,7 +69,7 @@ namespace tkEngine{
 	bool CEngine::Init(const SInitParam& initParam)
 	{
 		//ウィンドウ初期化。
-		if (!InitWindow()) {
+		if (!InitWindow(initParam)) {
 			return false;
 		}
 		//DirectX初期化。

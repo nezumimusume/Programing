@@ -151,10 +151,13 @@
   <ItemGroup>
     <ClCompile Include="gameObject\tkGameObject.cpp" />
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
+    <ClCompile Include="graphics\tkCamera.cpp" />
     <ClCompile Include="graphics\tkIndexBuffer.cpp" />
     <ClCompile Include="graphics\tkRenderCommandBuffer.cpp" />
     <ClCompile Include="graphics\tkRenderContext.cpp" />
     <ClCompile Include="graphics\tkVertexBuffer.cpp" />
+    <ClCompile Include="math\tkMatrix.cpp" />
+    <ClCompile Include="math\tkVector.cpp" />
     <ClCompile Include="tkEngine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -174,6 +177,7 @@
     <ClInclude Include="debug\tkLog.h" />
     <ClInclude Include="gameObject\tkGameObject.h" />
     <ClInclude Include="gameObject\tkGameObjectManager.h" />
+    <ClInclude Include="graphics\tkCamera.h" />
     <ClInclude Include="graphics\tkIndexBuffer.h" />
     <ClInclude Include="graphics\tkRenderCommand.h" />
     <ClInclude Include="graphics\tkRenderCommandBuffer.h" />

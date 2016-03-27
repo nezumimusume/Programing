@@ -13,6 +13,7 @@ typedef signed				short		s16;	//!< 符号あり16bit整数
 typedef unsigned			short		u16;	//!< 符号なし16bit整数
 typedef	signed		int					s32;	//!< 符号あり32bit整数
 typedef	unsigned	int					u32;	//!< 符号無し32bit整数
+typedef	float							f32;	//!< 32bit浮動小数点
 typedef	signed		__int64				s64;	//!< 符号あり64bit整数
 typedef	unsigned	__int64				u64;	//!< 符号無し64bit整数
 typedef	const	signed		int			cs32;	//!< 符号あり32bit整数定数
@@ -31,5 +32,9 @@ static const u32 U32_MAX = UINT_MAX;				//!< 符号無し32bit整数の最大値
 static const s64 S64_MAX = _I64_MAX;				//!< 符号あり64bit整数の最大値
 static const s64 S64_MIN = _I64_MIN;				//!< 符号あり64bit整数の最小値
 static const u64 U64_MAX = _UI64_MAX;				//!< 符号無し64bit整数の最大値
+
+#define		r_cast		reinterpret_cast
+#define		s_cast		static_cast
+#define		c_cast		const_cast
 
 #endif // #ifndef TK_ENGINE_TYPEDEF_H

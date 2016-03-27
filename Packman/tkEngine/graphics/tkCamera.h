@@ -51,7 +51,7 @@ namespace tkEngine{
 		 */
 		void SetUp( const CVector3& up )
 		{
-			m_up = up
+			m_up = up;
 		}
 		/*!
 		 * @brief	カメラの上方向を取得
@@ -72,7 +72,7 @@ namespace tkEngine{
 		 */
 		const CMatrix& GetProjectionMatrix() const
 		{
-			return m_projectionMatrix();
+			return m_projectionMatrix;
 		}
 		/*!
 		 * @brief	ビュープロジェクション行列を取得。
@@ -84,16 +84,16 @@ namespace tkEngine{
 		/*!
 		 * @brief	遠平面を設定。
 		 */
-		void SetFar( f32 far )
+		void SetFar( f32 fFar )
 		{
-			m_far = far;
+			m_far = fFar;
 		}
 		/*!
 		 * @brief	近平面を設定。
 		 */
-		void SetNear( f32 near )
+		void SetNear( f32 fNear )
 		{
-			m_near = near;
+			m_near = fNear;
 		}
 		/*!
 		 * @brief	遠平面を取得。
@@ -110,18 +110,18 @@ namespace tkEngine{
 			return m_near;
 		}
 	private:
-		CVector3	m_position;				//!<カメラ位置。
-		CVector3	m_up;					//!<カメラの上方向。
-		CVector3	m_target;				//!<カメラの中止点。
-		CMatrix		m_viewMatrix;			//!<ビュー行列。
-		CMatrix		m_projectionMatrix;		//!<プロジェクション行列。
-		CMatrix		m_viewProjectionMatrix;	//!<ビュープロジェクション行列。
-		CMatrix		m_viewMatrixInv;		//!<ビュー行列の逆行列。
-		f32			m_near;					//!<近平面。
-		f32			m_far;					//!<遠平面。
-		f32			m_viewAngle;			//!<画角(Y方向)。
-		f32			m_aspect;				//!<アスペクト比。
-		
+		CVector3	m_position;							//!<カメラ位置。
+		CVector3	m_up;								//!<カメラの上方向。
+		CVector3	m_target;							//!<カメラの中止点。
+		CMatrix		m_viewMatrix;						//!<ビュー行列。
+		CMatrix		m_projectionMatrix;					//!<プロジェクション行列。
+		CMatrix		m_viewProjectionMatrix;				//!<ビュープロジェクション行列。
+		CMatrix		m_viewMatrixInv;					//!<ビュー行列の逆行列。
+		f32			m_near;								//!<近平面。
+		f32			m_far;								//!<遠平面。
+		f32			m_viewAngle;						//!<画角(Y方向)。
+		f32			m_aspect;							//!<アスペクト比。
+		bool		m_isNeedUpdateProjectionMatrix;
 	};
 }
 #endif //_TKCAMERA_H_
