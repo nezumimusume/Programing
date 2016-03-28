@@ -52,10 +52,9 @@ namespace tkEngine{
 	    ZeroMemory( &d3dpp, sizeof( d3dpp ) );
     	d3dpp.Windowed = TRUE;
 	    d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-	    d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
+	    d3dpp.BackBufferFormat = D3DFMT_A8R8G8B8;
 	    d3dpp.EnableAutoDepthStencil = TRUE;
     	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
-    	
     	// Create the D3DDevice
 	    if( FAILED( m_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hWnd,
 	                                      D3DCREATE_SOFTWARE_VERTEXPROCESSING,

@@ -13,7 +13,7 @@ namespace tkEngine{
 	/*!
 	 *@brief	レンダリングコマンドのタイプ
 	 */
-	enum ERenderCommand{
+	enum ERenderCommand {
 		eRenderCommand_Clear,
 		eRenderCommand_EffectBegin,
 		eRenderCommand_EffectEnd,
@@ -25,6 +25,7 @@ namespace tkEngine{
 		eRenderCommand_DrawIndexedPrimitive,
 		eRenderCommand_EffectSetTechnique,
 		eRenderCommand_SetFVF,
+		eRenderCommand_SetViewport,
 		eRenderCommand_Undef
 	};
 	/*!
@@ -51,7 +52,7 @@ namespace tkEngine{
 		}
 	};
 	/*!
-	 *@brief	クリアのレンダリングコマンド。
+	 *@brief	IDirect3DDevice9::Clear
 	 */
 	class CRenderCommand_Clear : public CRenderCommandBase {
 	private:
@@ -288,6 +289,23 @@ namespace tkEngine{
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
 		{
 			m_pEffect->SetTechnique(m_tecName);
+		}
+	};
+	/*!
+	* @brief	IDirect3DDevice9::Setviewport
+	*/
+	class CRenderCommand_SetViewport : public CRenderCommandBase
+	{
+		D3DVIEWPORT9 m_viewport;
+	public:
+		CRenderCommand_SetViewport(const D3DVIEWPORT9& viewport) :
+			CRenderCommandBase(eRenderCommand_SetViewport),
+			m_viewport(viewport)
+		{
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			pD3DDevice->SetViewport(&m_viewport);
 		}
 	};
 }

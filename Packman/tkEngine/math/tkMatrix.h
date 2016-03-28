@@ -30,9 +30,9 @@ namespace tkEngine{
 		void MakeTranslation( const CVector3& trans ) 
 		{
 			*this = Identity;
-			_14 = trans.x; 
-			_24 = trans.y; 
-			_34 = trans.z;
+			m[3][0] = trans.x; 
+			m[3][1] = trans.y;
+			m[3][2] = trans.z;
 		}
 		/*!
 		 *@brief	クォータニオンから回転行列を作成。
@@ -43,10 +43,6 @@ namespace tkEngine{
 			D3DXMatrixRotationQuaternion(
 				r_cast<D3DXMATRIX*>(this),
 				r_cast<const D3DXQUATERNION*>(&q)
-			);
-			D3DXMatrixTranspose(
-				r_cast<D3DXMATRIX*>(this), 
-				r_cast<D3DXMATRIX*>(this)
 			);
 		}
 		/*!

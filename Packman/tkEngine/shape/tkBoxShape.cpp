@@ -125,7 +125,7 @@ namespace tkEngine{
 		mRot.MakeRotationFromQuaternion(m_rotation);
 		CMatrix mTrans;
 		mTrans.MakeTranslation(m_position);
-		m_worldMatrix.Mul(mRot, mTrans);
+		m_worldMatrix.Mul(mRot, mTrans );
 	}
 	/*!
 	*@brief	ï`âÊÅB

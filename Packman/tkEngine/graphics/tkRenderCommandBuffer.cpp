@@ -58,6 +58,9 @@ namespace tkEngine{
 			case eRenderCommand_SetFVF:
 				((CRenderCommand_SetFVF*)(cmdBase))->Execute(pD3DDevice);
 				break;
+			case eRenderCommand_SetViewport:
+				((CRenderCommand_SetViewport*)(cmdBase))->Execute(pD3DDevice);
+				break;
 			default:
 				TK_ASSERT(false, "not implement renderCommand");
 				break;

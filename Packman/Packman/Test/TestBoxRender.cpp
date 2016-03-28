@@ -33,31 +33,27 @@ void CTestBoxRender::Update()
 {
 	m_angle += CMath::PI / 360.0f;
 	CQuaternion rot;
-	rot.SetRotation(CVector3::Up, m_angle);
+	CVector3 pos;
+	pos.Set(10.0f, 0.0f, 0.0f);
+	rot.SetRotation(CVector3::AxisY, m_angle);
 	m_box.SetRotation(rot);
+	m_box.SetPosition(pos);
 	m_box.UpdateWorldMatrix();
 }
 void CTestBoxRender::Render(tkEngine::CRenderContext& renderContext) 
 {
 	CMatrix mMVP = m_camera.GetViewProjectionMatrix();
 	const CMatrix& mWorld = m_box.GetWorldMatrix();
+
 	mMVP.Mul(mWorld, mMVP);
+	mMVP.Transpose();
 	m_pEffect->SetTechnique(renderContext, "ColorPrim");
 	m_pEffect->SetValue(renderContext, "g_mWVP", &mMVP, sizeof(mMVP));
 	m_pEffect->Begin(renderContext);
 	m_pEffect->BeginPass(renderContext, 0);
-	CPrimitive* prim = m_box.GetPrimitive();
-	renderContext.SetRenderCommand(CRenderCommand_SetFVF(prim->GetVertexFormat()));
-	renderContext.SetRenderCommand(CRenderCommand_SetStreamSource(
-		0,
-		prim->GetVertexBuffer()
-	));
-	renderContext.SetRenderCommand(CRenderCommand_SetIndices(
-		prim->GetIndexBuffer()
-	));
-	renderContext.SetRenderCommand(CRenderCommand_DrawIndexedPrimitive(
-		prim
-	));
+
+	m_box.Render(renderContext);
+
 	m_pEffect->EndPass(renderContext);
 	m_pEffect->End(renderContext);
 }
