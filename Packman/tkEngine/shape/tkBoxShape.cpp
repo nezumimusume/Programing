@@ -66,31 +66,137 @@ namespace tkEngine{
 				//— –ÊB
 				{
 					halfSize.x, halfSize.y, halfSize.z, 1.0f,
-					color/2,
+					color,
 				},
 				{
 					-halfSize.x, halfSize.y, halfSize.z, 1.0f,
-					color/2,
+					color,
 				},
 				{
 					-halfSize.x, -halfSize.y, halfSize.z, 1.0f,
-					color/2,
+					color,
 				},
 				{
 					halfSize.x, -halfSize.y, halfSize.z, 1.0f,
-					color/2,
+					color,
 				},
 				{
 					halfSize.x, halfSize.y, halfSize.z, 1.0f,
-					color/2,
+					color,
 				},
 				{
 					-halfSize.x, -halfSize.y, halfSize.z, 1.0f,
-					color/2,
+					color,
 				},
+				//¶–ÊB
+				{
+					-halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+					color 
+				},
+				{
+					-halfSize.x, halfSize.y, halfSize.z, 1.0f,
+					color 
+				},
+				{
+					-halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+					color 
+				},
+				{
+					-halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+					color 
+				},
+				{
+					-halfSize.x, halfSize.y, halfSize.z, 1.0f,
+					color 
+				},
+				{
+					-halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+					color 
+				},
+				//‰E–Ê
+				{
+					halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+					color
+				},
+				{
+					halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+					color
+				},
+				{
+					halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+					color
+				},
+				{
+					halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+					color
+				},
+				{
+					halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+					color
+				},
+				{
+					halfSize.x, halfSize.y, halfSize.z, 1.0f,
+					color
+				},
+				//‰º–Ê
+				{
+					-halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+					color
+				},
+				{
+					-halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+					color
+				},
+				{
+					halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+					color
+				},
+				{
+					halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+					color
+				},
+				{
+					-halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+					color
+				},
+				{
+					halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+					color
+				},
+				//ã–Ê
+				{
+					halfSize.x, halfSize.y, halfSize.z, 1.0f,
+					color
+				},
+				{
+					halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+					color
+				},
+				{
+					-halfSize.x, halfSize.y, halfSize.z, 1.0f,
+					color
+				},
+				{
+					-halfSize.x, halfSize.y, halfSize.z, 1.0f,
+					color
+				},
+				{
+					halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+					color
+				},
+				{
+					-halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+					color
+				},
+
 			};
 			static u16 index[] = {
-				0,1,2,3,4,5,6,7,8,9,10,11,12
+				0,  1, 2, 3, 4, 5, 
+				6,  7, 8, 9,10,11,
+				12,13,14,15,16,17,
+				18,19,20,21,22,23,
+				24,25,26,27,28,29,
+				30,31,32,33,34,35,
 			};
 			m_pPrimitive = new CPrimitive;
 			m_pPrimitive->Create(

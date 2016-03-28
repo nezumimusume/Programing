@@ -11,7 +11,7 @@ using namespace tkEngine;
 void CTestBoxRender::Start()
 {
 	m_angle = 0;
-	m_box.Create(CVector3(20.0f, 20.0f, 20.0f), 0xFFFFFFFF);
+	m_box.Create(CVector3(20.0f, 20.0f, 20.0f), 0xFFF00FFF);
 	m_pEffect = CEngine::Instance().EffectManager().LoadEffect("../tkEngine/presetShader/ColorPrim.fx");
 	//ÉJÉÅÉâÇèâä˙âª
 	{
@@ -35,7 +35,7 @@ void CTestBoxRender::Update()
 	CQuaternion rot;
 	CVector3 pos;
 	pos.Set(10.0f, 0.0f, 0.0f);
-	rot.SetRotation(CVector3::AxisY, m_angle);
+	rot.SetRotation(CVector3::AxisX, m_angle);
 	m_box.SetRotation(rot);
 	m_box.SetPosition(pos);
 	m_box.UpdateWorldMatrix();
