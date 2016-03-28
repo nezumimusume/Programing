@@ -164,6 +164,7 @@
     <ClCompile Include="math\tkMatrix.cpp" />
     <ClCompile Include="math\tkVector.cpp" />
     <ClCompile Include="shape\tkBoxShape.cpp" />
+    <ClCompile Include="shape\tkSphereShape.cpp" />
     <ClCompile Include="tkEngine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -198,6 +199,8 @@
     <ClInclude Include="math\tkVector.h" />
     <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="shape\tkBoxShape.h" />
+    <ClInclude Include="shape\tkShapeVertex.h" />
+    <ClInclude Include="shape\tkSphereShape.h" />
     <ClInclude Include="tkEngine.h" />
     <ClInclude Include="tkEnginePreCompile.h" />
     <ClInclude Include="typedef.h" />

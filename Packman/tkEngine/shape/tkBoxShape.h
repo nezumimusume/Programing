@@ -6,15 +6,9 @@
 #define _CBOXSHAPE_H_
 
 #include "tkEngine/graphics/tkMaterial.h"
+#include "tkEngine/shape/tkShapeVertex.h"
 
 namespace tkEngine{
-	/*!
-	 * @brief	
-	 */
-	struct ShapeVertex_Color{
-		f32		pos[4];
-		u32		color;
-	};
 	/*!
 	 * @brief	ボックス
 	 */
