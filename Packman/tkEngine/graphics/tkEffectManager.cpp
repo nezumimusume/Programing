@@ -73,5 +73,6 @@ namespace tkEngine{
 		for (auto p : m_effectDictinary) {
 			delete p.second;
 		}
+		m_effectDictinary.clear();
 	}
 }

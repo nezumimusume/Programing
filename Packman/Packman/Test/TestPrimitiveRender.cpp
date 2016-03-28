@@ -64,7 +64,7 @@ void CTestPrimitiveRender::Start()
 		m_camera.Update();
 	}
 	//シェーダーをロード。
-	m_pEffect = CEngine::Instance().EffectManager().LoadEffect("C:/GitHub/Programing/Packman/tkEngine/presetShader/ColorPrim.fx");
+	m_pEffect = CEngine::Instance().EffectManager().LoadEffect("../tkEngine/presetShader/ColorPrim.fx");
 
 }
 void CTestPrimitiveRender::Update()

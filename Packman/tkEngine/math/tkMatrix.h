@@ -25,6 +25,31 @@ namespace tkEngine{
 		static const CMatrix Identity;	//!<単位行列。
 	public:
 		/*!
+		 *@brief	平行移動行列を作成。
+		 */
+		void MakeTranslation( const CVector3& trans ) 
+		{
+			*this = Identity;
+			_14 = trans.x; 
+			_24 = trans.y; 
+			_34 = trans.z;
+		}
+		/*!
+		 *@brief	クォータニオンから回転行列を作成。
+		 *@param[in]	q		クォータニオン
+		 */
+		void MakeRotationFromQuaternion( const CQuaternion& q )
+		{
+			D3DXMatrixRotationQuaternion(
+				r_cast<D3DXMATRIX*>(this),
+				r_cast<const D3DXQUATERNION*>(&q)
+			);
+			D3DXMatrixTranspose(
+				r_cast<D3DXMATRIX*>(this), 
+				r_cast<D3DXMATRIX*>(this)
+			);
+		}
+		/*!
 		* @brief	プロジェクション行列を作成。
 		*@param[in]	viewAngle	画角。(ラジアン)。
 		*@param[in]	aspect		アスペクト比。

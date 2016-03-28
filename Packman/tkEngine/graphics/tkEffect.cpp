@@ -20,6 +20,7 @@ namespace tkEngine{
 	{
 		if (m_pEffect) {
 			m_pEffect->Release();
+			m_pEffect = nullptr;
 		}
 	}
 }

@@ -66,27 +66,27 @@ namespace tkEngine{
 				//ó†ñ ÅB
 				{
 					halfSize.x, halfSize.y, halfSize.z, 1.0f,
-					color,
+					color/2,
 				},
 				{
 					-halfSize.x, halfSize.y, halfSize.z, 1.0f,
-					color,
+					color/2,
 				},
 				{
 					-halfSize.x, -halfSize.y, halfSize.z, 1.0f,
-					color,
+					color/2,
 				},
 				{
 					halfSize.x, -halfSize.y, halfSize.z, 1.0f,
-					color,
+					color/2,
 				},
 				{
 					halfSize.x, halfSize.y, halfSize.z, 1.0f,
-					color,
+					color/2,
 				},
 				{
 					-halfSize.x, -halfSize.y, halfSize.z, 1.0f,
-					color,
+					color/2,
 				},
 			};
 			static u16 index[] = {
@@ -121,6 +121,11 @@ namespace tkEngine{
 	*/
 	void CBoxShape::UpdateWorldMatrix()
 	{
+		CMatrix mRot;
+		mRot.MakeRotationFromQuaternion(m_rotation);
+		CMatrix mTrans;
+		mTrans.MakeTranslation(m_position);
+		m_worldMatrix.Mul(mRot, mTrans);
 	}
 	/*!
 	*@brief	ï`âÊÅB

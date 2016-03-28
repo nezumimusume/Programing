@@ -62,6 +62,13 @@ namespace tkEngine{
 			m_position = position;
 		}
 		/*!
+		*@brief	回転を設定。
+		*/
+		void SetRotation(const CQuaternion& rotation)
+		{
+			m_rotation = rotation;
+		}
+		/*!
 		*@brief	プリミティブを取得。
 		*/
 		CPrimitive* GetPrimitive()
@@ -72,6 +79,7 @@ namespace tkEngine{
 		bool m_isCreatePrimitive;	//!<内部でプリミティブを作成したかどうかのフラグ。
 		CPrimitive*	m_pPrimitive;	//!<プリミティブ。
 		CVector3	m_position;		//!<座標。
+		CQuaternion	m_rotation;		//!<回転。
 		CMatrix		m_worldMatrix;	//!<ワールド行列。
 	};
 }
