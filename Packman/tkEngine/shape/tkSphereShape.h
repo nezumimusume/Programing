@@ -32,6 +32,12 @@ namespace tkEngine{
 		 *@brief	リリース。
 		 */
 		void Release();
+	private:
+		bool m_isCreatePrimitive;		//!<内部でプリミティブを作成したかどうかのフラグ。
+		CPrimitive* m_pPrimitive;		//!<プリミティブ。
+		CVector3	m_position;			//!<座標。
+		CQuaternion m_rotation;			//!<回転。
+		CMatrix		m_worldMatrix;		//!<ワールド行列。
 	};
 }
 #endif // _TKSPHERESHAPE_H_
