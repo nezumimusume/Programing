@@ -188,6 +188,7 @@
     <ClInclude Include="graphics\tkCamera.h" />
     <ClInclude Include="graphics\tkEffect.h" />
     <ClInclude Include="graphics\tkEffectManager.h" />
+    <ClInclude Include="graphics\tkGraphicsType.h" />
     <ClInclude Include="graphics\tkIndexBuffer.h" />
     <ClInclude Include="graphics\tkMaterial.h" />
     <ClInclude Include="graphics\tkPrimitive.h" />

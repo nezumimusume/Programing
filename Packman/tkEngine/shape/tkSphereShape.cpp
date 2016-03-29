@@ -8,32 +8,33 @@ namespace tkEngine {
 	CSphereShape::CSphereShape()
 	{
 	}
-	CSphereShape::~CSphereShape() 
+	CSphereShape::~CSphereShape()
 	{
 	}
 	void CSphereShape::Create(f32 radius, u32 grid, u32 color)
 	{
 		Release();
 		m_isCreatePrimitive = true;
-		std::vector<ShapeVertex_Color> vertexBuffer;
+		std::vector<SShapeVertex_PC> vertexBuffer;
 		u32 numVertex = (grid + 1)*(grid + 1);
 		vertexBuffer.reserve(numVertex);
 		//球体形状の作成。
 		f32 deltaAngle = 2.0f * CMath::PI / grid;
-		for (u32 i = 0; i < grid; i++) 
+		for (u32 i = 0; i < grid+1; i++)
 		{
-			for (u32 k = 0; k < grid; k++)
+			float y_angle = deltaAngle * i;
+			for (u32 k = 0; k < grid+1; k++)
 			{
 				CVector3 t(0.0f, 0.0f, 0.0f);
 				//Z軸周りの回転。
-				float angle = deltaAngle * k;
-				t.y = sin(angle);
-				t.z = cos(angle);
+				float z_angle = deltaAngle * k;
+				t.y = sin(z_angle);
+				t.z = cos(z_angle);
 				//Y軸周りの回転。
-				t.x = t.z * sin(angle);
-				t.z = t.z * cos(angle);
+				t.x = t.z * sin(y_angle);
+				t.z = t.z * cos(y_angle);
 				t.Scale(radius);
-				ShapeVertex_Color vtx;
+				SShapeVertex_PC vtx;
 				vtx.pos[0] = t.x;
 				vtx.pos[1] = t.y;
 				vtx.pos[2] = t.z;
@@ -43,37 +44,52 @@ namespace tkEngine {
 			}
 		}
 		std::vector<u32>	indexBuffer;	//!<インデックスバッファ
-		u32 vertNo[3] = {0, 1, grid+2};
-		for( u32 k = 0; k < grid+2; k++ ){
-			if (k != 0) {
-				u32 vertNoTmp[3] = { vertNo[0], vertNo[1], vertNo[2] };
-				if (k % 2 != 0) {
-					//奇数
-					vertNo[0] = vertNoTmp[1];
-					vertNo[1] = vertNoTmp[2];
-					vertNo[2] = vertNoTmp[1] + 1;
+		for (u32 i = 0; i < grid; i++) {
+			u32 baseVertNo = (grid + 1) * i;
+			u32 vertNo[3] = {
+				baseVertNo ,
+				baseVertNo + 1,
+				baseVertNo + grid + 2
+			};
+			u32 vertNo2[3] = {
+				baseVertNo + grid + 3,
+				baseVertNo + grid + 2,
+				baseVertNo + 2,
+			};
+			for (u32 k = 0; k < grid; k++) {
+				if (k == 0) {
+					indexBuffer.push_back(vertNo[0]);
+					indexBuffer.push_back(vertNo[1]);
+					indexBuffer.push_back(vertNo[2]);
+					vertNo[0]++;
+					vertNo[1]++;
 				}
-				else {
-					//偶数
-					vertNo[0] = vertNoTmp[1];
-					vertNo[1] = vertNoTmp[1] + 1;
-					vertNo[2] = vertNoTmp[2];
+				else if (k == grid - 1) {
+					indexBuffer.push_back(vertNo[1]);
+					indexBuffer.push_back(vertNo[0]);
+					indexBuffer.push_back(vertNo[2]);
+				}else if (k != 0) {
+					indexBuffer.push_back(vertNo[0]++);
+					indexBuffer.push_back(vertNo[1]++);
+					indexBuffer.push_back(vertNo[2]++);
+
+					indexBuffer.push_back(vertNo2[0]++);
+					indexBuffer.push_back(vertNo2[1]++);
+					indexBuffer.push_back(vertNo2[2]++);
 				}
+
 			}
-			indexBuffer.push_back(vertNo[0]);
-			indexBuffer.push_back(vertNo[1]);
-			indexBuffer.push_back(vertNo[2]);
 		}
 		m_pPrimitive = new CPrimitive;
 		m_pPrimitive->Create(
 			CPrimitive::eTriangleList,
 			numVertex,
-			sizeof(ShapeVertex_Color),
+			sizeof(SShapeVertex_PC),
 			eVertexFormat_diffuse | eVertexFormat_xyzw,
 			&vertexBuffer.at(0),
 			indexBuffer.size(),
 			eIndexFormat32,
 			&indexBuffer.at(0)
-		);
+			);
 	}
 }

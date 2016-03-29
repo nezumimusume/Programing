@@ -42,7 +42,6 @@ void CTestBoxRender::Update()
 }
 void CTestBoxRender::Render(tkEngine::CRenderContext& renderContext) 
 {
-	return;
 	CMatrix mMVP = m_camera.GetViewProjectionMatrix();
 	const CMatrix& mWorld = m_box.GetWorldMatrix();
 

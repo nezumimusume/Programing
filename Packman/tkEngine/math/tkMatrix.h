@@ -25,6 +25,17 @@ namespace tkEngine{
 		static const CMatrix Identity;	//!<単位行列。
 	public:
 		/*!
+		*@brief	ベクトルと行列の乗算
+		*@param[in,out]		v	乗算されるベクトル。
+		*/
+		void Mul(CVector3& vOut)
+		{
+			CVector3 vTmp = vOut;
+			vOut.x = vTmp.x * m[0][0] + vTmp.y * m[0][1] + vTmp.z * m[0][2];
+			vOut.y = vTmp.x * m[1][0] + vTmp.y * m[1][1] + vTmp.z * m[1][2];
+			vOut.z = vTmp.x * m[2][0] + vTmp.y * m[2][1] + vTmp.z * m[2][2];
+		}
+		/*!
 		 *@brief	平行移動行列を作成。
 		 */
 		void MakeTranslation( const CVector3& trans ) 
@@ -33,6 +44,17 @@ namespace tkEngine{
 			m[3][0] = trans.x; 
 			m[3][1] = trans.y;
 			m[3][2] = trans.z;
+		}
+		/*!
+		*@brief	Y軸周りの回転行列を作成。
+		*@param[in]	angle	回転角度(単位ラジアン)
+		*/
+		void MakeRotationY(f32 angle)
+		{
+			D3DXMatrixRotationY(
+				r_cast<D3DXMATRIX*>(this),
+				angle
+			);
 		}
 		/*!
 		 *@brief	クォータニオンから回転行列を作成。

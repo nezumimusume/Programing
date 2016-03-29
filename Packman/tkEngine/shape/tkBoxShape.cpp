@@ -19,7 +19,7 @@ namespace tkEngine{
 		m_isCreatePrimitive = true;
 		CVector3 halfSize = size;
 		halfSize.Scale(0.5f);
-		ShapeVertex_Color vertex[] = {
+		SShapeVertex_PC vertex[] = {
 			//‘O–Ê
 			{
 				-halfSize.x, halfSize.y, -halfSize.z, 1.0f,

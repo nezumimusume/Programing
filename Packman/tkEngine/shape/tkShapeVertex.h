@@ -7,11 +7,19 @@
 
 namespace tkEngine{
 	/*!
-	 *@brief	カラーのみ頂点。
+	 *@brief	カラー。
 	 */
-	struct ShapeVertex_Color{
+	struct SShapeVertex_PC{
 		f32		pos[4];
 		u32		color;
 	}; 
+	/*!
+	*@brief	カラー＋法線。
+	*/
+	struct SShapeVertex_PCN {
+		f32		pos[4];
+		f32		normal[4];
+		u32		color;	
+	};
 }
 #endif // _TKSHAPE_H_

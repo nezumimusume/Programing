@@ -27,6 +27,7 @@ namespace tkEngine{
 		eRenderCommand_EffectSetTechnique,
 		eRenderCommand_SetFVF,
 		eRenderCommand_SetViewport,
+		eRenderCommand_SetRenderState,
 		eRenderCommand_Undef
 	};
 	/*!
@@ -306,12 +307,31 @@ namespace tkEngine{
 			m_viewport.Y		= viewport.y;
 			m_viewport.Width	= viewport.width;
 			m_viewport.Height	= viewport.height;
-			m_viewport.Width	= viewport.width;
-			m_viewport.Height	= viewport.height;
+			m_viewport.MinZ		= viewport.minZ;
+			m_viewport.MaxZ		= viewport.maxZ;
 		}
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
 		{
 			pD3DDevice->SetViewport(&m_viewport);
+		}
+	};
+	/*!
+	* @brief	IDirect3DDevice9::SetRenderState
+	*/
+	class CRenderCommand_SetRenderState : public CRenderCommandBase
+	{
+		ERenderStateType m_renderStateType;
+		u32 m_value;
+	public:
+		CRenderCommand_SetRenderState(ERenderStateType renderStateType, u32 value) :
+			CRenderCommandBase(eRenderCommand_SetRenderState),
+			m_renderStateType(renderStateType),
+			m_value(value)
+		{
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			pD3DDevice->SetRenderState(s_cast<D3DRENDERSTATETYPE>(m_renderStateType), m_value);
 		}
 	};
 }
