@@ -6,30 +6,13 @@
 #include "tkEngine/shape/tkBoxShape.h"
 
 namespace tkEngine{
-	namespace {
-	}
-	/*!
-	 * @brief	コンストラクタ。
-	 */
-	CBoxShape::CBoxShape() :
-		m_isCreatePrimitive(false),
-		m_pPrimitive(nullptr),
-		m_position(CVector3::Zero),
-		m_worldMatrix(CMatrix::Identity)
+	CBoxShape::CBoxShape() 
 	{
 	}
-	/*!
-	 * @brief	デストラクタ。
-	 */
 	CBoxShape::~CBoxShape()
 	{
 		Release();
 	}
-	/*!
-	 *@brief	カラーボックスを作成。
-	 *@param[in]	size	サイズ。
-	 *@param[in]	color	カラー。
-	 */
 	void CBoxShape::Create( CVector3 size, u32 color )
 	{
 		Release();
@@ -210,45 +193,5 @@ namespace tkEngine{
 				index
 			);
 		}
-	}
-	/*!
-	 * @brief	リリース。
-	 */
-	void CBoxShape::Release()
-	{
-		if(!m_isCreatePrimitive){
-			delete m_pPrimitive;
-			m_pPrimitive = nullptr;
-			m_isCreatePrimitive = false;
-		}
-	}
-	/*!
-	*@brief	ワールド行列の更新
-	*/
-	void CBoxShape::UpdateWorldMatrix()
-	{
-		CMatrix mRot;
-		mRot.MakeRotationFromQuaternion(m_rotation);
-		CMatrix mTrans;
-		mTrans.MakeTranslation(m_position);
-		m_worldMatrix.Mul(mRot, mTrans );
-	}
-	/*!
-	*@brief	描画。
-	*@param[in]	renderContext	レンダリングコンテキスト。
-	*/
-	void CBoxShape::Render(CRenderContext& renderContext)
-	{
-		renderContext.SetRenderCommand(CRenderCommand_SetFVF(m_pPrimitive->GetVertexFormat()));
-		renderContext.SetRenderCommand(CRenderCommand_SetStreamSource(
-			0,
-			m_pPrimitive->GetVertexBuffer()
-		));
-		renderContext.SetRenderCommand(CRenderCommand_SetIndices(
-			m_pPrimitive->GetIndexBuffer()
-		));
-		renderContext.SetRenderCommand(CRenderCommand_DrawIndexedPrimitive(
-			m_pPrimitive
-		));
 	}
 }

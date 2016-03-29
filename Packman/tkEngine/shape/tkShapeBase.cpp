@@ -33,4 +33,18 @@ namespace tkEngine{
 		mTrans.MakeTranslation(m_position);
 		m_worldMatrix.Mul(mRot, mTrans );
 	}
+	void CShapeBase::Render(CRenderContext& renderContext)
+	{
+		renderContext.SetRenderCommand(CRenderCommand_SetFVF(m_pPrimitive->GetVertexFormat()));
+		renderContext.SetRenderCommand(CRenderCommand_SetStreamSource(
+			0,
+			m_pPrimitive->GetVertexBuffer()
+			));
+		renderContext.SetRenderCommand(CRenderCommand_SetIndices(
+			m_pPrimitive->GetIndexBuffer()
+			));
+		renderContext.SetRenderCommand(CRenderCommand_DrawIndexedPrimitive(
+			m_pPrimitive
+			));
+	}
 }

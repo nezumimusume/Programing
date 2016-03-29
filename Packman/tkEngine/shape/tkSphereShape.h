@@ -6,12 +6,13 @@
 #define _TKSPHERESHAPE_H_
 
 #include "tkEngine/shape/tkShapeVertex.h"
+#include "tkEngine/shape/tkShapeBase.h"
 
 namespace tkEngine{
 	/*!
 	 *@brief	球。
 	 */
-	class CSphereShape{
+	class CSphereShape : public CShapeBase{
 	public:
 		/*!
 		 *@brief	コンストラクタ。
@@ -28,16 +29,6 @@ namespace tkEngine{
 		 *@param[in]	color	カラー。
 		 */
 		void Create(f32 radius, f32 grid, u32 color);
-		/*!
-		 *@brief	リリース。
-		 */
-		void Release();
-	private:
-		bool m_isCreatePrimitive;		//!<内部でプリミティブを作成したかどうかのフラグ。
-		CPrimitive* m_pPrimitive;		//!<プリミティブ。
-		CVector3	m_position;			//!<座標。
-		CQuaternion m_rotation;			//!<回転。
-		CMatrix		m_worldMatrix;		//!<ワールド行列。
 	};
 }
 #endif // _TKSPHERESHAPE_H_

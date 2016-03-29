@@ -89,6 +89,9 @@
     <ClCompile Include="shape\tkSphereShape.cpp">
       <Filter>Source Files\shape</Filter>
     </ClCompile>
+    <ClCompile Include="shape\tkShapeBase.cpp">
+      <Filter>Source Files\shape</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -162,6 +165,9 @@
       <Filter>Source Files\shape</Filter>
     </ClInclude>
     <ClInclude Include="shape\tkShapeVertex.h">
+      <Filter>Source Files\shape</Filter>
+    </ClInclude>
+    <ClInclude Include="shape\tkShapeBase.h">
       <Filter>Source Files\shape</Filter>
     </ClInclude>
   </ItemGroup>

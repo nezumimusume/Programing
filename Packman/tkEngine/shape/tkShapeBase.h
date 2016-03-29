@@ -54,6 +54,11 @@ namespace tkEngine{
 		*@brief	更新
 		*/
 		void UpdateWorldMatrix();
+		/*!
+		*@brief	描画。
+		*@param[in]	renderContext	レンダリングコンテキスト。
+		*/
+		void Render(CRenderContext& renderContext);
 	protected:
 		bool m_isCreatePrimitive;	//!<内部でプリミティブを作成したかどうかのフラグ。
 		CPrimitive*	m_pPrimitive;	//!<プリミティブ。
