@@ -16,7 +16,7 @@ namespace tkEngine{
 	/*!
 	*@brief	カラー＋法線。
 	*/
-	struct SShapeVertex_PCN {
+	struct SShapeVertex_PNC {
 		f32		pos[4];
 		f32		normal[4];
 		u32		color;	

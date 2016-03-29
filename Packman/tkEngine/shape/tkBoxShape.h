@@ -29,7 +29,6 @@ namespace tkEngine{
 		 *@param[in]	color	ƒJƒ‰[B
 		 */
 		void Create( CVector3 size, u32 color );
-
 	};
 }
 
