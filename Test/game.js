@@ -213,8 +213,6 @@ window.onload = function(){
      var CEnemy = enchant.Class.create(enchant.Sprite, {
         initialize: function(x, y) {
 			enchant.Sprite.call(this, SPRITE_SIZE, SPRITE_SIZE);
-			this.initPos_x = x;				//初期のX座標。。。戻ってくるときに使う予定・・・。
-			this.initPos_y = y;				//初期のY座標・・・戻ってくるときに使う予定・・・。
 			this.x = x;
             this.y = y;
             this.updateCenterPosition();
