@@ -30,8 +30,8 @@ namespace tkEngine{
 		u32 				numRenderContext;		//!<レンダリングコンテキストの数。この数が2以上の場合、renderContextMapの指定が必ず必要になります。
 		u32*				commandBufferSizeTbl;	//!<コマンドバッファのサイズのテーブル。レンダリングコンテキストのサイズ分必要。
 		SRenderContextMap*	renderContextMap;		//!<描画優先ごとに対応するレンダリングコンテキストの番号のマップ。numRenderContextが1の場合は無視される。
-		s32					screenWidth;			//!<スクリーンの幅。
-		s32					screenHeight;			//!<スクリーンの高さ。
+		u32					screenWidth;			//!<スクリーンの幅。
+		u32					screenHeight;			//!<スクリーンの高さ。
 	};
 	
 	/*!
@@ -85,14 +85,14 @@ namespace tkEngine{
 		/*!
 		*@brief		スクリーンの幅を取得
 		*/
-		s32 GetScreenWidth() const
+		u32 GetScreenWidth() const
 		{
 			return m_screenWidth;
 		}
 		/*!
 		*@brief		スクリーンの高さを取得
 		*/
-		s32 GetScreenHeight() const
+		u32 GetScreenHeight() const
 		{
 			return m_screenHeight;
 		}
@@ -121,8 +121,8 @@ namespace tkEngine{
 		u32										m_numRenderContext;		//!<レンダリングコンテキストの数。
 		std::unique_ptr<SRenderContextMap[]>	m_renderContextMap;		//!<レンダリングコンテキストのマップ。
 		CEffectManager							m_effectManager;		//!<エフェクトマネージャ。
-		s32										m_screenWidth;			//!<スクリーンの幅。
-		s32										m_screenHeight;			//!<スクリーンの高さ。
+		u32										m_screenWidth;			//!<スクリーンの幅。
+		u32										m_screenHeight;			//!<スクリーンの高さ。
 	};
 	
 }

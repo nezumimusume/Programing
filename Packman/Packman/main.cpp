@@ -26,7 +26,7 @@ int WINAPI wWinMain(
 	initParam.screenHeight = 720;
 	initParam.screenWidth = 1280;
 	CEngine::Instance().Init( initParam );	//初期化。
-	CGameObjectManager::GetInstance().NewGameObject<CTest>(0);
+	CGameObjectManager::Instance().NewGameObject<CTest>(0);
 	CEngine::Instance().RunGameLoop();		//ゲームループを実行。
 	
 	return 0;

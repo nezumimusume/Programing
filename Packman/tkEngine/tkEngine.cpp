@@ -75,7 +75,7 @@ namespace tkEngine{
 		if (!InitDirectX()) {
 			return false;
 		}
-		CGameObjectManager::GetInstance().Init( initParam.gameObjectPrioMax );
+		CGameObjectManager::Instance().Init( initParam.gameObjectPrioMax );
 		//レンダリングコンテキストの初期化。
 		{
 			m_renderContextArray.reset(new CRenderContext[initParam.numRenderContext]);
@@ -106,7 +106,7 @@ namespace tkEngine{
 				DispatchMessage(&msg);
 			}
 			else {
-				CGameObjectManager& goMgr = CGameObjectManager::GetInstance();
+				CGameObjectManager& goMgr = CGameObjectManager::Instance();
 				goMgr.Execute(
 					m_renderContextArray.get(), 
 					m_numRenderContext, 

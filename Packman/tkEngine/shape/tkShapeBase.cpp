@@ -35,6 +35,9 @@ namespace tkEngine{
 	}
 	void CShapeBase::Render(CRenderContext& renderContext)
 	{
+		if (m_pPrimitive == nullptr) {
+			return;
+		}
 		renderContext.SetRenderCommand(CRenderCommand_SetFVF(m_pPrimitive->GetVertexFormat()));
 		renderContext.SetRenderCommand(CRenderCommand_SetStreamSource(
 			0,

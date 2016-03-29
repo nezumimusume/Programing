@@ -25,7 +25,7 @@ namespace tkEngine{
 		/*!
 		 *@brief	インスタンスの取得。
 		 */
-		static CGameObjectManager& GetInstance()
+		static CGameObjectManager& Instance()
 		{
 			static CGameObjectManager instance;
 			return instance;

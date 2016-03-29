@@ -8,6 +8,7 @@
 #include "tkEngine/graphics/tkVertexBuffer.h"
 #include "tkEngine/graphics/tkIndexBuffer.h"
 #include "tkEngine/graphics/tkPrimitive.h"
+#include "tkEngine/graphics/tkGraphicsType.h"
 
 namespace tkEngine{
 	/*!
@@ -298,10 +299,15 @@ namespace tkEngine{
 	{
 		D3DVIEWPORT9 m_viewport;
 	public:
-		CRenderCommand_SetViewport(const D3DVIEWPORT9& viewport) :
-			CRenderCommandBase(eRenderCommand_SetViewport),
-			m_viewport(viewport)
+		CRenderCommand_SetViewport(const tkEngine::SViewport& viewport) :
+			CRenderCommandBase(eRenderCommand_SetViewport)
 		{
+			m_viewport.X		= viewport.x;
+			m_viewport.Y		= viewport.y;
+			m_viewport.Width	= viewport.width;
+			m_viewport.Height	= viewport.height;
+			m_viewport.Width	= viewport.width;
+			m_viewport.Height	= viewport.height;
 		}
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
 		{

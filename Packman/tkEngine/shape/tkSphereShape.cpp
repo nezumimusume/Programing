@@ -11,8 +11,10 @@ namespace tkEngine {
 	CSphereShape::~CSphereShape() 
 	{
 	}
-	void CSphereShape::Create(f32 radius, f32 grid, u32 color)
+	void CSphereShape::Create(f32 radius, u32 grid, u32 color)
 	{
+		Release();
+		m_isCreatePrimitive = true;
 		std::vector<ShapeVertex_Color> vertexBuffer;
 		u32 numVertex = (grid + 1)*(grid + 1);
 		vertexBuffer.reserve(numVertex);
@@ -28,8 +30,9 @@ namespace tkEngine {
 				t.y = sin(angle);
 				t.z = cos(angle);
 				//Y軸周りの回転。
-				t.x = cos(angle) + t.z * sin(angle);
-				t.z = -sin(angle) + t.z * cos(angle);
+				t.x = t.z * sin(angle);
+				t.z = t.z * cos(angle);
+				t.Scale(radius);
 				ShapeVertex_Color vtx;
 				vtx.pos[0] = t.x;
 				vtx.pos[1] = t.y;
@@ -39,5 +42,38 @@ namespace tkEngine {
 				vertexBuffer.push_back(vtx);
 			}
 		}
+		std::vector<u32>	indexBuffer;	//!<インデックスバッファ
+		u32 vertNo[3] = {0, 1, grid+2};
+		for( u32 k = 0; k < grid+2; k++ ){
+			if (k != 0) {
+				u32 vertNoTmp[3] = { vertNo[0], vertNo[1], vertNo[2] };
+				if (k % 2 != 0) {
+					//奇数
+					vertNo[0] = vertNoTmp[1];
+					vertNo[1] = vertNoTmp[2];
+					vertNo[2] = vertNoTmp[1] + 1;
+				}
+				else {
+					//偶数
+					vertNo[0] = vertNoTmp[1];
+					vertNo[1] = vertNoTmp[1] + 1;
+					vertNo[2] = vertNoTmp[2];
+				}
+			}
+			indexBuffer.push_back(vertNo[0]);
+			indexBuffer.push_back(vertNo[1]);
+			indexBuffer.push_back(vertNo[2]);
+		}
+		m_pPrimitive = new CPrimitive;
+		m_pPrimitive->Create(
+			CPrimitive::eTriangleList,
+			numVertex,
+			sizeof(ShapeVertex_Color),
+			eVertexFormat_diffuse | eVertexFormat_xyzw,
+			&vertexBuffer.at(0),
+			indexBuffer.size(),
+			eIndexFormat32,
+			&indexBuffer.at(0)
+		);
 	}
 }

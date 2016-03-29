@@ -28,7 +28,7 @@ namespace tkEngine{
 		 *@param[in]	grid	グリッド。
 		 *@param[in]	color	カラー。
 		 */
-		void Create(f32 radius, f32 grid, u32 color);
+		void Create(f32 radius, u32 grid, u32 color);
 	};
 }
 #endif // _TKSPHERESHAPE_H_
