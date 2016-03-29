@@ -1,14 +1,19 @@
 
 enchant();
 
-const SCREEN_WIDTH 	= 512;					//ƒXƒNƒŠ[ƒ“‚Ì•B
-const SCREEN_HEIGHT = 512;					//ƒXƒNƒŠ[ƒ“‚Ì‚‚³B
-const SPRITE_SIZE 	= 32;					//ƒXƒvƒ‰ƒCƒg‚Ì•
-const MOVE_SPEED 		= SPRITE_SIZE / 4;	//ƒvƒŒƒCƒ„[‚ÌˆÚ“®‘¬“xB
-const ENEMY_MOVE_SPEED 	= SPRITE_SIZE / 8;	//“G‚ÌˆÚ“®‘¬“xB
-const ENEMY_IDLE_TIME   = 10;				//“G‚Ì‘Ò‹@ŠÔB(’PˆÊ‚ÍƒtƒŒ[ƒ€B)
-const NUM_CLEAR_ITEM	= 3;				//ƒNƒŠƒAƒAƒCƒeƒ€‚Ì”B
-//ƒ}ƒbƒv’è‹`B
+const SCREEN_WIDTH 	= 512;					//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã®å¹…ã€‚
+const SCREEN_HEIGHT = 512;					//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã®é«˜ã•ã€‚
+const SPRITE_SIZE 	= 32;					//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®å¹…
+const MOVE_SPEED 		= SPRITE_SIZE / 4;	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•é€Ÿåº¦ã€‚
+const ENEMY_MOVE_SPEED 	= SPRITE_SIZE / 8;	//æ•µã®ç§»å‹•é€Ÿåº¦ã€‚
+const ENEMY_IDLE_TIME   = 10;				//æ•µã®å¾…æ©Ÿæ™‚é–“ã€‚(å˜ä½ã¯ãƒ•ãƒ¬ãƒ¼ãƒ ã€‚)
+const NUM_CLEAR_ITEM	= 3;				//ã‚¯ãƒªã‚¢ã‚¢ã‚¤ãƒ†ãƒ ã®æ•°ã€‚
+const ENEMY_MOVE_RIGHT	= 0;				//æ•µã®å³ç§»å‹•ã€‚
+const ENEMY_MOVE_LEFT	= 1;				//æ•µã®å·¦ç§»å‹•ã€‚
+const ENEMY_MOVE_UP		= 2;				//æ•µã®ä¸Šç§»å‹•ã€‚
+const ENEMY_MOVE_DOWN	= 3;				//æ•µã®ä¸‹ç§»å‹•ã€‚
+const MAP_GRID 			= 16;				//ãƒãƒƒãƒ—ã®ã‚°ãƒªãƒƒãƒ‰ã€‚
+//ãƒãƒƒãƒ—å®šç¾©ã€‚
 var map = [
 	[16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
 	[16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,16], 
@@ -26,12 +31,11 @@ var map = [
 	[16, 0, 0,16, 0, 0, 0,16, 0, 0, 0,16, 0, 0, 4,16],
 	[16, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0,16],
 	[16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16],
-];
-    
+];    
 window.onload = function(){
-	/*!-------------------------------------------------------------------------------------------------
-     *@brief	ƒGƒ“ƒgƒŠƒ|ƒCƒ“ƒgB
-     -------------------------------------------------------------------------------------------------*/
+	/*!---------------------------------------------------------------------------------
+     *@brief	ã‚¨ãƒ³ãƒˆãƒªãƒã‚¤ãƒ³ãƒˆã€‚
+     ---------------------------------------------------------------------------------*/
     var game = new Core(SCREEN_WIDTH, SCREEN_HEIGHT);
     var bear;
     var enemyArray 		= new Array();
@@ -41,72 +45,84 @@ window.onload = function(){
     game.preload("image/map.png");
     game.preload("image/enemy.png");
     game.preload("image/item.png");
+    game.preload("image/over.png");
+    game.preload("image/effect.png");
+    
     game.onload = function(){
         var mapArray 		= new Array();
         var gamManager		= new CGameManager();
-        //ƒ}ƒbƒv‚ğì¬B
+        //ãƒãƒƒãƒ—ã‚’ä½œæˆã€‚
         for( var i = 0; i < map.length; i++ ){
 			for( var j = 0; j < map[0].length; j++ ){
 				var mapId = map[j][i];
 				if(map[j][i] == -1 || map[j][i] == -2){
-					//“G‚ÆƒAƒCƒeƒ€‚ª’u‚©‚ê‚Ä‚¢‚é‚Æ‚±‚ë‚Í’n–Ê‚Í•½–ì‚É‚·‚éB
-					mapId = 0;	//“G‚ª‚¢‚é‚Æ‚±‚ë‚Ìƒ}ƒbƒv‚Í‚O”Ô–Ú‚É‚·‚éB
+					//æ•µã¨ã‚¢ã‚¤ãƒ†ãƒ ãŒç½®ã‹ã‚Œã¦ã„ã‚‹ã¨ã“ã‚ã¯åœ°é¢ã¯å¹³é‡ã«ã™ã‚‹ã€‚
+					mapId = 0;	//æ•µãŒã„ã‚‹ã¨ã“ã‚ã®ãƒãƒƒãƒ—ã¯ï¼ç•ªç›®ã«ã™ã‚‹ã€‚
 				}
 				mapArray.push( new CMap(SPRITE_SIZE * i, SPRITE_SIZE * j, mapId) );
 			}
 		}
-		//“G‚ÆƒNƒŠƒAƒAƒCƒeƒ€‚ğì‚éB
+		//æ•µã¨ã‚¯ãƒªã‚¢ã‚¢ã‚¤ãƒ†ãƒ ã‚’ä½œã‚‹ã€‚
 		for( var i = 0; i < map.length; i++ ){
 			for( var j = 0; j < map[0].length; j++ ){
 				var mapId = map[j][i];
 				if(map[j][i] == -1){
-					//“G‚ğì¬B
+					//æ•µã‚’ä½œæˆã€‚
 					enemyArray.push( new CEnemy( SPRITE_SIZE * i, SPRITE_SIZE * j ) );
 				}else if(map[j][i] == -2){
-					//ƒNƒŠƒAƒAƒCƒeƒ€‚ğì¬B
+					//ã‚¯ãƒªã‚¢ã‚¢ã‚¤ãƒ†ãƒ ã‚’ä½œæˆã€‚
 					clearItemArray.push( new CClearItem( SPRITE_SIZE * i, SPRITE_SIZE * j, i, j ) );
 				}
 			}
 		}
-		//ŒFì¬B
+		//ç†Šä½œæˆã€‚
 		bear = new CBear(32, 32);
     };
     game.start();
-    /*!-------------------------------------------------------------------------------------------------
-     *@brief	ŒFƒNƒ‰ƒXB
-     -------------------------------------------------------------------------------------------------*/
+    /*!--------------------------------------------------------------------------------
+     *@brief	ç†Šã‚¯ãƒ©ã‚¹ã€‚
+     --------------------------------------------------------------------------------*/
     var CBear = enchant.Class.create(enchant.Sprite, {
 	    /*!
-	     * @brief	ƒQ[ƒ€ŠJn‚Éˆê“x‚¾‚¯ŒÄ‚Î‚ê‚éˆ—B
+	     * @brief	ã‚²ãƒ¼ãƒ é–‹å§‹æ™‚ã«ä¸€åº¦ã ã‘å‘¼ã°ã‚Œã‚‹å‡¦ç†ã€‚
 	     */
         initialize: function(x, y) {
             enchant.Sprite.call(this, SPRITE_SIZE, SPRITE_SIZE);
             this.x = x;
             this.y = y;
+            this.updateCenterPosition();
             this.image = game.assets['image/chara1.png'];
             this.frame = 5;
             game.rootScene.addChild(this);
             this.scale.x = 1;
         },
         /*!
-         * @brief	–ˆƒtƒŒ[ƒ€ŒÄ‚Î‚ê‚éˆ—B
+         * @brief	æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‘¼ã°ã‚Œã‚‹å‡¦ç†ã€‚
          */
         onenterframe : function()
         {
-			//ˆÚ“®B
+			//ç§»å‹•ã€‚
 			this.move();
-			//ƒAƒjƒ[ƒVƒ‡ƒ“
+			//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 			this.animation();
 		},
 		/*!
-		 * @brief	ˆÚ“®ˆ—B
+		 *@brief	ç†Šã®ä¸­å¿ƒåº§æ¨™ã‚’æ›´æ–°ã€‚
+		 */
+		updateCenterPosition : function()
+		{
+			this.center_x = this.x + SPRITE_SIZE / 2;
+			this.center_y = this.y + SPRITE_SIZE / 2;
+		},
+		/*!
+		 * @brief	ç§»å‹•å‡¦ç†ã€‚
 		 */
 		move : function()
 		{
 			var isMove = false;
 			var rectHalfW = SPRITE_SIZE * 0.1;
-            var rectHalfH = SPRITE_SIZE * 0.3;
-			//x•ûŒü‚ÌˆÚ“®ˆ—B
+            var rectHalfH = SPRITE_SIZE * 0.25;
+			//xæ–¹å‘ã®ç§»å‹•å‡¦ç†ã€‚
 			{
 				var x = this.x;
 				var y = this.y;
@@ -117,7 +133,7 @@ window.onload = function(){
 				}
 				var center_x = x + SPRITE_SIZE / 2;
 	            var center_y = y + SPRITE_SIZE / 2;
-				var hitFlag = CheckIntersectRectToMap(
+				var hitFlag = CheckIntersectRectToTree(
 					center_x - rectHalfW,
 					center_x + rectHalfW,
 					center_y - rectHalfH,
@@ -125,11 +141,11 @@ window.onload = function(){
 				);
 
 				if(!hitFlag){
-					//–Ø‚É‚ ‚½‚Á‚Ä‚¢‚È‚¢B
+					//æœ¨ã«ã‚ãŸã£ã¦ã„ãªã„ã€‚
 					this.x = x;
 				}
 			}
-			//y•ûŒü‚ÌˆÚ“®ˆ—B
+			//yæ–¹å‘ã®ç§»å‹•å‡¦ç†ã€‚
 			{
 				var x = this.x;
 				var y = this.y;
@@ -140,20 +156,21 @@ window.onload = function(){
 				}
 				var center_x = x + SPRITE_SIZE / 2;
 	            var center_y = y + SPRITE_SIZE / 2;
-				var hitFlag = CheckIntersectRectToMap(
+				var hitFlag = CheckIntersectRectToTree(
 					center_x - rectHalfW,
 					center_x + rectHalfW,
 					center_y - rectHalfH,
 					center_y + rectHalfH
 				);
 				if(!hitFlag){
-					//‚ ‚½‚Á‚Ä‚¢‚È‚¢B
+					//ã‚ãŸã£ã¦ã„ãªã„ã€‚
 					this.y = y;
 				}
 			}
+			this.updateCenterPosition();
 		},
 		/*!
-		 * @brief	ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—B
+		 * @brief	ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†ã€‚
 		 */
 		animation : function()
 		{
@@ -173,12 +190,12 @@ window.onload = function(){
 			}
 		}
     });
-    /*!-------------------------------------------------------------------------------------------------
-     *@brief	ƒ}ƒbƒvƒNƒ‰ƒXB
-     --------------------------------------------------------------------------------------------------*/
+    /*!------------------------------------------------------------------------
+     *@brief	ãƒãƒƒãƒ—ã‚¯ãƒ©ã‚¹ã€‚
+     -------------------------------------------------------------------------*/
 	var CMap = enchant.Class.create(enchant.Sprite, {
 		/*!
-	     * @brief	ƒQ[ƒ€ŠJn‚Éˆê“x‚¾‚¯ŒÄ‚Î‚ê‚éˆ—B
+	     * @brief	ã‚²ãƒ¼ãƒ é–‹å§‹æ™‚ã«ä¸€åº¦ã ã‘å‘¼ã°ã‚Œã‚‹å‡¦ç†ã€‚
 	     */
         initialize: function(x, y, frame) {
 			enchant.Sprite.call(this, SPRITE_SIZE, SPRITE_SIZE);
@@ -190,18 +207,20 @@ window.onload = function(){
             game.rootScene.addChild(this);
 		}
 	});
-	/*!-------------------------------------------------------------------------------------------------
-     *@brief	“GƒNƒ‰ƒXB
-    -------------------------------------------------------------------------------------------------*/
+	/*!----------------------------------------------------------------------
+     *@brief	æ•µã‚¯ãƒ©ã‚¹ã€‚
+    ----------------------------------------------------------------------*/
      var CEnemy = enchant.Class.create(enchant.Sprite, {
         initialize: function(x, y) {
 			enchant.Sprite.call(this, SPRITE_SIZE, SPRITE_SIZE);
-			this.initPos_x = x;				//‰Šú‚ÌXÀ•WBBB–ß‚Á‚Ä‚­‚é‚Æ‚«‚Ég‚¤—\’èEEEB
-			this.initPos_y = y;				//‰Šú‚ÌYÀ•WEEE–ß‚Á‚Ä‚­‚é‚Æ‚«‚Ég‚¤—\’èEEEB
+			this.initPos_x = x;				//åˆæœŸã®Xåº§æ¨™ã€‚ã€‚ã€‚æˆ»ã£ã¦ãã‚‹ã¨ãã«ä½¿ã†äºˆå®šãƒ»ãƒ»ãƒ»ã€‚
+			this.initPos_y = y;				//åˆæœŸã®Yåº§æ¨™ãƒ»ãƒ»ãƒ»æˆ»ã£ã¦ãã‚‹ã¨ãã«ä½¿ã†äºˆå®šãƒ»ãƒ»ãƒ»ã€‚
 			this.x = x;
             this.y = y;
-            this.moveDir = -1;				//is•ûŒüB
-            this.enemyState = "‘Ò‹@";		//“G‚Ìó‘ÔB
+            this.updateCenterPosition();
+            this.moveDir = -1;				//é€²è¡Œæ–¹å‘ã€‚
+            this.enemyState = "å¾…æ©Ÿ";		//æ•µã®çŠ¶æ…‹ã€‚
+            this.count = 0;
             this.idelCount = ENEMY_IDLE_TIME;
             this.image = game.assets['image/enemy.png'];
             this.frame = 0;
@@ -209,45 +228,86 @@ window.onload = function(){
             game.rootScene.addChild(this);
 		},
 		/*!
-         * @brief	“G‚Ì–ˆƒtƒŒ[ƒ€ŒÄ‚Î‚ê‚éˆ—B
+		 *@brief	ä¸­å¿ƒåº§æ¨™ã®æ›´æ–°ã€‚
+		 */
+		updateCenterPosition : function()
+		{
+			this.center_x = this.x + SPRITE_SIZE / 2;
+			this.center_y = this.y + SPRITE_SIZE / 2;
+		},
+		/*!
+         * @brief	æ•µã®æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‘¼ã°ã‚Œã‚‹å‡¦ç†ã€‚
          */
         onenterframe : function()
         {
-			if(this.enemyState == '‘Ò‹@'){
-				//“G‚ª‘Ò‹@ó‘ÔB
+		
+			if(this.enemyState == 'å¾…æ©Ÿ'){
+				//æ•µãŒå¾…æ©ŸçŠ¶æ…‹ã€‚
 				this.idelCount++;
 				if( this.idelCount > ENEMY_IDLE_TIME ){
-					//ˆÚ“®ó‘Ô‚É‘JˆÚ‚·‚éB
-					this.enemyState = "ˆÚ“®";
+					//ç§»å‹•çŠ¶æ…‹ã«é·ç§»ã™ã‚‹ã€‚
+					this.enemyState = "ç§»å‹•";
 					this.moveDir = parseInt( (Math.random() * 10) % 4 );
 					if( this.moveDir == 0){
-						//‰EˆÚ“®B
+						//å³ç§»å‹•ã€‚
 						this.baseFrame = 6;
 					}else if( this.moveDir == 1){
-						//¶ˆÚ“®
+						//å·¦ç§»å‹•
 						this.baseFrame = 3;
 					}else if( this.moveDir == 2){
-						//ãˆÚ“®B
+						//ä¸Šç§»å‹•ã€‚
 						this.baseFrame = 9;
 					}else if( this.moveDir == 3){
-						//‰ºˆÚ“®B
+						//ä¸‹ç§»å‹•ã€‚
 						this.baseFrame = 0;
 					}
 					this.idelCount = 0;
 				}
-			}else if(this.enemyState == 'ˆÚ“®'){
+			}else if(this.enemyState == 'ç§»å‹•'){
 				if((this.age % 10) == 0 || this.moveDir == -1 ){
-					//‘Ò‹@ó‘Ô‚É‘@ˆÛ‚·‚é
-					this.enemyState = '‘Ò‹@';
+					//å¾…æ©ŸçŠ¶æ…‹ã«ç¹Šç¶­ã™ã‚‹
+					this.enemyState = 'å¾…æ©Ÿ';
 					return ;
 				}
-				//ˆÚ“®ˆ—B
+				//ç§»å‹•å‡¦ç†ã€‚
 				this.move();
-				this.frame = this.baseFrame + this.age % 2;
+			}else if(this.enemyState == 'ç™ºè¦‹'){
+				this.count++;
+				if(this.count > 10){	//10ãƒ•ãƒ¬ãƒ¼ãƒ ãã‚‰ã„ã¯åœæ­¢ã•ã›ã‚‹ã€‚
+					this.move();
+					if(this.count > 20){
+						//çµ‚ã‚ã‚Šã€‚
+						this.enemyState = "å¾…æ©Ÿ";
+					}
+				}
+			}
+			//ç†Šã‚’ç´¢æ•µã€‚
+			this.searchBear();
+			this.updateCenterPosition();
+			this.checkHitBear();
+			this.frame = this.baseFrame + this.age % 2;
+		},
+		/*!
+		 *@brief	ç†Šã¨ã®æ¥è§¦åˆ¤å®šã€‚
+		 */
+		checkHitBear : function()
+		{
+			//è‡ªåˆ†ã®ã„ã‚‹ãƒãƒƒãƒ—ã‚’èª¿ã¹ã‚‹ã€‚
+			var mapCol = parseInt( this.center_x / SPRITE_SIZE );
+			var mapRow = parseInt( this.center_y / SPRITE_SIZE );
+			//ã‚¯ãƒã®ç¾åœ¨åœ°ã‚’èª¿ã¹ã‚‹ã€‚
+			var bearMapCol = parseInt(bear.center_x / SPRITE_SIZE);
+			var bearMapRow = parseInt(bear.center_y / SPRITE_SIZE);
+			if( mapCol == bearMapCol 
+				&& mapRow == bearMapRow
+			){
+				//æ•µã¨æ¥è§¦ã€‚
+				//ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒã€‚
+				game.end(0, 'over', game.assets['image/over.png'] );
 			}
 		},
 		/*!
-		 * @brief	“G‚ÌˆÚ“®ˆ—B
+		 * @brief	æ•µã®ç§»å‹•å‡¦ç†ã€‚
 		 */
 		move : function()
 		{
@@ -255,54 +315,157 @@ window.onload = function(){
             var rectHalfH = SPRITE_SIZE * 0.4;
 			var x = this.x;
 			var y = this.y;
-			if(this.moveDir == 0){
-				//‰E‚É“®‚©‚·B
-				x += ENEMY_MOVE_SPEED;
-			}else if( this.moveDir == 1 ){
-				//¶‚É“®‚©‚·B
-				x -= ENEMY_MOVE_SPEED;
+			var moveSpeed = ENEMY_MOVE_SPEED;
+			if(this.enemyState == 'ç™ºè¦‹'){
+				//ç™ºè¦‹çŠ¶æ…‹ã¯ç§»å‹•é€Ÿåº¦ã‚’å€ã«ã™ã‚‹ã€‚
+				moveSpeed *= 4;
 			}
-			//Õ“Ë”»’èB
+			if(this.moveDir == ENEMY_MOVE_RIGHT){
+				//å³ã«å‹•ã‹ã™ã€‚
+				x += moveSpeed;
+			}else if( this.moveDir == ENEMY_MOVE_LEFT ){
+				//å·¦ã«å‹•ã‹ã™ã€‚
+				x -= moveSpeed;
+			}
+			//è¡çªåˆ¤å®šã€‚
 			var center_x = x + SPRITE_SIZE / 2;
             var center_y = y + SPRITE_SIZE / 2;
-			var hitFlag = CheckIntersectRectToMap(
+			var hitFlag = CheckIntersectRectToTree(
 				center_x - rectHalfW,
 				center_x + rectHalfW,
 				center_y - rectHalfH,
 				center_y + rectHalfH
 			);
 			if( !hitFlag ){
-				//–Ø‚É‚ ‚½‚Á‚Ä‚¢‚È‚¢B
+				//æœ¨ã«ã‚ãŸã£ã¦ã„ãªã„ã€‚
 				this.x = x;
 			}
-			if( this.moveDir == 2 ){
-				//ã‚É“®‚©‚·B
-				y -= ENEMY_MOVE_SPEED;
-			}else if( this.moveDir == 3){
-				//‰º‚É“®‚©‚·B
-				y += ENEMY_MOVE_SPEED;
+			if( this.moveDir == ENEMY_MOVE_UP ){
+				//ä¸Šã«å‹•ã‹ã™ã€‚
+				y -= moveSpeed;
+			}else if( this.moveDir == ENEMY_MOVE_DOWN){
+				//ä¸‹ã«å‹•ã‹ã™ã€‚
+				y += moveSpeed;
 			}
-			//Õ“Ë”»’èB
+			//è¡çªåˆ¤å®šã€‚
 			var center_x = x + SPRITE_SIZE / 2;
             var center_y = y + SPRITE_SIZE / 2;
-			var hitFlag = CheckIntersectRectToMap(
+			var hitFlag = CheckIntersectRectToTree(
 				center_x - rectHalfW,
 				center_x + rectHalfW,
 				center_y - rectHalfH,
 				center_y + rectHalfH
 			);
 			if( !hitFlag ){
-				//–Ø‚É‚ ‚½‚Á‚Ä‚¢‚È‚¢B
+				//æœ¨ã«ã‚ãŸã£ã¦ã„ãªã„ã€‚
 				this.y = y;
 			}
+		},
+		/*!
+		 *@brief	ç†Šã‚’ç´¢æ•µã€‚
+		 */
+		searchBear : function()
+		{
+			if( this.enemyState == 'ç™ºè¦‹' ){
+				//ç™ºè¦‹çŠ¶æ…‹ãªã‚‰å®Ÿè¡Œã—ãªã„ã€‚
+				return ;
+			}
+			//è‡ªåˆ†ã®ã„ã‚‹ãƒãƒƒãƒ—ã‚’èª¿ã¹ã‚‹ã€‚
+			var mapCol = parseInt( this.center_x / SPRITE_SIZE );
+			var mapRow = parseInt( this.center_y / SPRITE_SIZE );
+			//ã‚¯ãƒã®ç¾åœ¨åœ°ã‚’èª¿ã¹ã‚‹ã€‚
+			var bearMapCol = parseInt(bear.center_x / SPRITE_SIZE);
+			var bearMapRow = parseInt(bear.center_y / SPRITE_SIZE);
+			var searchRange = 4;	//ç´¢æ•µç¯„å›²ã€‚
+			if( this.moveDir == ENEMY_MOVE_RIGHT ){
+				//å³å´ã‚’èª¿ã¹ã‚‹ã€‚
+				for(var i = 0; i < searchRange; i++ ){
+					mapCol++;
+					mapCol = Math.min(mapCol, MAP_GRID - 1 );
+					if( map[mapRow][mapCol] == 16){
+						//è¦–ç·šã®å…ˆã«æœ¨ãŒã‚ã£ãŸ
+						break;
+					}
+					if( mapCol == bearMapCol
+						&& mapRow == bearMapRow
+					){
+						//ç™ºè¦‹ã€‚
+						this.changeStateFind();
+						return ;
+					}
+				}
+			}else if( this.moveDir == ENEMY_MOVE_LEFT ){
+				//å·¦å‰æ–¹ã‚’èª¿ã¹ã‚‹ã€‚
+				for(var i = 0; i < searchRange; i++ ){
+					mapCol--;
+					mapCol = Math.max(mapCol, 0 );
+					if( map[mapRow][mapCol] == 16){
+						//è¦–ç·šã®å…ˆã«æœ¨ãŒã‚ã£ãŸ
+						break;
+					}
+					if( mapCol == bearMapCol
+						&& mapRow == bearMapRow
+					){
+						//ç™ºè¦‹ã€‚
+						this.changeStateFind();
+						return ;
+					}
+				}
+			}else if( this.moveDir == ENEMY_MOVE_UP ){
+				//ä¸Šå´ã‚’èª¿ã¹ã‚‹ã€‚
+				for(var i = 0; i < searchRange; i++ ){
+					mapRow--;
+					mapRow = Math.max(mapRow, 0 );
+					if( map[mapRow][mapCol] == 16){
+						//è¦–ç·šã®å…ˆã«æœ¨ãŒã‚ã£ãŸ
+						break;
+					}
+					if( mapCol == bearMapCol
+						&& mapRow == bearMapRow
+					){
+						//ç™ºè¦‹ã€‚
+						this.changeStateFind();
+						return ;
+					}
+				}
+			}else if( this.moveDir == ENEMY_MOVE_DOWN ){
+				//ä¸‹å´ã‚’èª¿ã¹ã‚‹ã€‚
+				for(var i = 0; i < searchRange; i++ ){
+					mapRow++;
+					mapRow = Math.min(mapRow, MAP_GRID - 1 );
+					if( map[mapRow][mapCol] == 16){
+						//è¦–ç·šã®å…ˆã«æœ¨ãŒã‚ã£ãŸ
+						break;
+					}
+					if( mapCol == bearMapCol
+						&& mapRow == bearMapRow
+					){
+						//ç™ºè¦‹ã€‚
+						this.changeStateFind();
+						return ;
+					}
+				}
+			}
+		},
+		/*!
+		 *@brief	ç™ºè¦‹çŠ¶æ…‹ã«é·ç§»
+		 */
+		changeStateFind : function()
+		{
+			//ç™ºè¦‹ã€‚
+			this.enemyState = "ç™ºè¦‹";
+			this.count = 0;
+			
+			new CEffect( this.x, 
+						this.y - SPRITE_SIZE / 2 );
 		}
 	});
 	/*!--------------------------------------------------------
-	 * @brief	ƒNƒŠƒA‚Ì‚½‚ß‚ÌƒAƒCƒeƒ€B
+	 * @brief	ã‚¯ãƒªã‚¢ã®ãŸã‚ã®ã‚¢ã‚¤ãƒ†ãƒ ã€‚
 	 --------------------------------------------------------*/
 	var CClearItem = enchant.Class.create(enchant.Sprite, {
 		/*!
-	     * @brief	ƒQ[ƒ€ŠJn‚Éˆê“x‚¾‚¯ŒÄ‚Î‚ê‚éˆ—B
+	     * @brief	ã‚²ãƒ¼ãƒ é–‹å§‹æ™‚ã«ä¸€åº¦ã ã‘å‘¼ã°ã‚Œã‚‹å‡¦ç†ã€‚
 	     */
         initialize: function(x, y, mapCol, mapRow) {
 			enchant.Sprite.call(this, SPRITE_SIZE, SPRITE_SIZE);
@@ -315,20 +478,21 @@ window.onload = function(){
             game.rootScene.addChild(this);
 		},
 		/*!
-		 * @brief	–ˆƒtƒŒ[ƒ€ŒÄ‚Î‚ê‚éˆ—B
+		 * @brief	æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‘¼ã°ã‚Œã‚‹å‡¦ç†ã€‚
 		 */
 		onenterframe : function()
         {
-			this.scaleX = Math.sin(this.age * 0.2);		//x²‚ÉŠg‘åk¬‚ğ‚·‚é‚Æ‚QŸŒ³‚Å‚Í‰ñ“]‚µ‚Ä‚¢‚é‚æ‚¤‚ÉŒ©‚¦‚é‚Æ‚¢‚¤ƒgƒŠƒbƒN‚ğg‚¤B
+			//xè»¸ã«æ‹¡å¤§ç¸®å°ã‚’ã™ã‚‹ã¨ï¼’æ¬¡å…ƒã§ã¯å›è»¢ã—ã¦ã„ã‚‹ã‚ˆã†ã«è¦‹ãˆã‚‹ã¨ã„ã†ãƒˆãƒªãƒƒã‚¯ã‚’ä½¿ã†ã€‚
+			this.scaleX = Math.sin(this.age * 0.2);
 		}
 	});
 	/*!--------------------------------------------------------
-	 * @brief	ƒQ[ƒ€‚ÌisŠÇ—B
+	 * @brief	ã‚²ãƒ¼ãƒ ã®é€²è¡Œç®¡ç†ã€‚
 	 --------------------------------------------------------*/
 	var CGameManager = enchant.Class.create( enchant.Sprite,{
 		initialize: function() {
 			enchant.Sprite.call(this, SPRITE_SIZE, SPRITE_SIZE);
-			this.getClearItemCount = 0;		//ƒNƒŠƒAƒAƒCƒeƒ€‚ğƒQƒbƒg‚µ‚½”B
+			this.getClearItemCount = 0;		//ã‚¯ãƒªã‚¢ã‚¢ã‚¤ãƒ†ãƒ ã‚’ã‚²ãƒƒãƒˆã—ãŸæ•°ã€‚
 			game.rootScene.addChild(this);
 		},
 		onenterframe : function()
@@ -336,10 +500,10 @@ window.onload = function(){
 			var mapCol = parseInt( bear.x / SPRITE_SIZE );
 			var mapRow = parseInt( bear.y / SPRITE_SIZE );
 			if( map[mapRow][mapCol] == -2 ){
-				//ƒAƒCƒeƒ€ƒQƒbƒgB
+				//ã‚¢ã‚¤ãƒ†ãƒ ã‚²ãƒƒãƒˆã€‚
 				this.getClearItemCount++;
-				map[mapRow][mapCol] = 0;	//ƒAƒCƒeƒ€æ“¾Ï‚İ‚É‚·‚éB
-				//ƒQƒbƒg‚µ‚½ƒAƒCƒeƒ€‚ğíœ
+				map[mapRow][mapCol] = 0;	//ã‚¢ã‚¤ãƒ†ãƒ å–å¾—æ¸ˆã¿ã«ã™ã‚‹ã€‚
+				//ã‚²ãƒƒãƒˆã—ãŸã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤
 				for( var i = 0; i < clearItemArray.length; i++ ){
 					if(clearItemArray[i].mapCol == mapCol
 					 	&& clearItemArray[i].mapRow == mapRow 
@@ -351,43 +515,65 @@ window.onload = function(){
 				}
 			}
 			if(this.getClearItemCount == NUM_CLEAR_ITEM){
-				//ƒQ[ƒ€ƒNƒŠƒA
-				game.end(0, 'ƒNƒŠƒA');
+				//ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢
+				game.end(0, 'ã‚¯ãƒªã‚¢');
+			}
+		}
+	});
+	/*!
+	 *@brief	ãƒ“ãƒƒã‚¯ãƒªãƒãƒ¼ã‚¯ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã€‚
+	 */
+	var CEffect = enchant.Class.create( enchant.Sprite,{
+		initialize: function( x, y ) {
+			enchant.Sprite.call(this, 32, 32);
+			this.image = game.assets['image/effect.png'];
+            this.frame = 0;
+            this.x = x;
+            this.y = y;
+            this.count = 0;
+            game.rootScene.addChild(this);
+        },
+        onenterframe : function()
+        {
+			this.count++;
+			if(this.count > 10){
+				//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆçµ‚äº†ã€‚
+				game.rootScene.removeChild(this);
 			}
 		}
 	});
 };
 /*!
- * @brief	’nŒ`‚Æ‚ÌÕ“Ë”»’è
+ * @brief	æœ¨ã¨ã®è¡çªåˆ¤å®š
  */
-function CheckIntersectRectToMap( left, right, top, bottom )
+function CheckIntersectRectToTree( left, right, top, bottom )
 {
-	//¶ã
+	//å·¦ä¸Š
 	var mapCol = parseInt( left / SPRITE_SIZE );
 	var mapRow = parseInt( top / SPRITE_SIZE );
 	if( map[mapRow][mapCol] == 16 ){
-		//‚ ‚½‚Á‚Ä‚¢‚éB
+		//ã‚ãŸã£ã¦ã„ã‚‹ã€‚
 		return 1;
 	}
-	//¶‰º
+	//å·¦ä¸‹
 	mapCol = parseInt( left / SPRITE_SIZE );
 	mapRow = parseInt( bottom / SPRITE_SIZE );
 	if( map[mapRow][mapCol] == 16 ){
-		//‚ ‚½‚Á‚Ä‚¢‚éB
+		//ã‚ãŸã£ã¦ã„ã‚‹ã€‚
 		return 1;
 	}
-	//‰Eã
+	//å³ä¸Š
 	var mapCol = parseInt( right / SPRITE_SIZE );
 	var mapRow = parseInt( top / SPRITE_SIZE );
 	if( map[mapRow][mapCol] == 16 ){
-		//‚ ‚½‚Á‚Ä‚¢‚éB
+		//ã‚ãŸã£ã¦ã„ã‚‹ã€‚
 		return 1;
 	}
-	//‰E‰º
+	//å³ä¸‹
 	var mapCol = parseInt( right / SPRITE_SIZE );
 	var mapRow = parseInt( bottom / SPRITE_SIZE );
 	if( map[mapRow][mapCol] == 16 ){
-		//‚ ‚½‚Á‚Ä‚¢‚éB
+		//ã‚ãŸã£ã¦ã„ã‚‹ã€‚
 		return 1;
 	}
 	return 0;
