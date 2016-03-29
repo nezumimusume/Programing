@@ -159,12 +159,14 @@
     <ClCompile Include="Test\Test.cpp" />
     <ClCompile Include="Test\TestBoxRender.cpp" />
     <ClCompile Include="Test\TestPrimitiveRender.cpp" />
+    <ClCompile Include="Test\TestSphereRender.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Test\test.h" />
     <ClInclude Include="Test\TestBoxRender.h" />
     <ClInclude Include="Test\TestPrimitiveRender.h" />
+    <ClInclude Include="Test\TestSphereRender.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

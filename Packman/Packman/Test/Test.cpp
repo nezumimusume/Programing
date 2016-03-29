@@ -6,7 +6,7 @@
 #include "TestPrimitiveRender.h"
 #include "TestBoxRender.h"
 #include "tkEngine/tkEngine.h"
-
+#include "TestSphereRender.h"
 using namespace tkEngine;
 
 void CTest::Start()
