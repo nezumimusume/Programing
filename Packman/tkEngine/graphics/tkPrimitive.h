@@ -100,11 +100,6 @@ namespace tkEngine{
 			return m_vertexBuffer.GetVertexFormat();
 		}
 	private:
-		/*!
-		 * @brief	バリデーションチェック。
-		 */
-		void CheckValidation();
-	private:
 		u32					m_numVertex;		//!<頂点数。
 		u32					m_vertexStride;		//!<頂点ストライド。
 		u32					m_numIndex;			//!<インデックス数。
