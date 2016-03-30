@@ -22,7 +22,7 @@ namespace tkEngine {
 			std::vector<SShapeVertex_PNC> vertexBuffer;
 			CreateVertexPosition(vertexBuffer, radius, grid, color);
 			//頂点マージ
-			//@todo for debug MergeVertex(vertexBuffer, indexBuffer, 0.1f );
+			MergeVertex(vertexBuffer, indexBuffer, 0.1f );
 			//法線を計算。
 			u32 numPoly = indexBuffer.size() / 3;
 			for (u32 i = 0; i < numPoly; i++) {
@@ -37,7 +37,7 @@ namespace tkEngine {
 			std::vector<SShapeVertex_PC> vertexBuffer;
 			CreateVertexPosition(vertexBuffer, radius, grid, color);
 			//頂点マージ
-			//@todo for debug MergeVertex(vertexBuffer, indexBuffer, 0.01f );
+			MergeVertex(vertexBuffer, indexBuffer, 0.01f );
 			
 			//プリミティブの作成。
 			m_pPrimitive = new CPrimitive;
@@ -56,7 +56,7 @@ namespace tkEngine {
 	void CSphereShape::CreateIndexBuffer(std::vector<u32>& indexBuffer, u32 grid)
 	{
 		//@todo デバッグのため。
-		for (u32 i = 0; i < 1/*grid*/; i++) {
+		for (u32 i = 0; i < grid; i++) {
 			u32 baseVertNo = (grid + 1) * i;
 			u32 vertNo[3] = {
 				baseVertNo ,
@@ -104,27 +104,28 @@ namespace tkEngine {
 		vertexBuffer.reserve(numVertex);
 		//球体形状の作成。
 		f32 deltaAngle = 2.0f * CMath::PI / grid;
+		f32 deltaAngle2 = CMath::PI / grid;
 		for (u32 i = 0; i < grid + 1; i++)
 		{
 			float y_angle = deltaAngle * i;
 			for (u32 k = 0; k < grid + 1; k++)
 			{
 				CVector3 t(0.0f, 0.0f, 0.0f);
-				//Z軸周りの回転。
-				float z_angle = deltaAngle * k;
+				//X軸周りの回転。
+				float z_angle = deltaAngle2 * k;
 				t.y = sin(z_angle);
 				t.z = cos(z_angle);
-				//Y軸周りの回転。
-				t.x = t.z * sin(y_angle);
-				t.z = t.z * cos(y_angle);
+				//Z軸周りの回転。
+				t.x = t.y * -sin(y_angle);
+				t.y = t.y * cos(y_angle);
 				t.Scale(radius);
 				TVertex vtx;
 				vtx.pos[0] = t.x;
 				vtx.pos[1] = t.y;
 				vtx.pos[2] = t.z;
 				vtx.pos[3] = 1.0f;
-				vertexBuffer.push_back(vtx);
 				vtx.color = color;
+				vertexBuffer.push_back(vtx);
 			}
 		}
 	}
