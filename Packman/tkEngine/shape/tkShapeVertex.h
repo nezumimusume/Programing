@@ -18,7 +18,7 @@ namespace tkEngine{
 	*/
 	struct SShapeVertex_PNC {
 		f32		pos[4];
-		f32		normal[4];
+		f32		normal[3];
 		u32		color;	
 	};
 }

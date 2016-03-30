@@ -167,11 +167,11 @@
     <ClInclude Include="shape\tkShapeVertex.h">
       <Filter>Source Files\shape</Filter>
     </ClInclude>
-    <ClInclude Include="shape\tkShapeBase.h">
-      <Filter>Source Files\shape</Filter>
-    </ClInclude>
     <ClInclude Include="graphics\tkGraphicsType.h">
       <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="shape\tkShapeBase.h">
+      <Filter>Source Files\shape</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

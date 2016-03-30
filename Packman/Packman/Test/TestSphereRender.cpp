@@ -10,8 +10,8 @@ using namespace tkEngine;
 
 void CTestSphereRender::Start()
 {
-	m_sphere.Create( 10.0f, 10, 0xFFF00FFF, false );
-	m_pEffect = CEngine::Instance().EffectManager().LoadEffect("../tkEngine/presetShader/ColorPrim.fx");
+	m_sphere.Create( 10.0f, 10, 0xFFF00FFF, true );
+	m_pEffect = CEngine::Instance().EffectManager().LoadEffect("../tkEngine/presetShader/ColorNormalPrim.fx");
 	//ƒJƒƒ‰‚ð‰Šú‰»B
 	{
 		CVector3 cameraPos;
@@ -46,7 +46,7 @@ void CTestSphereRender::Render(tkEngine::CRenderContext& renderContext)
 
 	mMVP.Mul(mWorld, mMVP);
 	mMVP.Transpose();
-	m_pEffect->SetTechnique(renderContext, "ColorPrim");
+	m_pEffect->SetTechnique(renderContext, "ColorNormalPrim.fx");
 	m_pEffect->SetValue(renderContext, "g_mWVP", &mMVP, sizeof(mMVP));
 	m_pEffect->Begin(renderContext);
 	m_pEffect->BeginPass(renderContext, 0);

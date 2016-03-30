@@ -126,6 +126,26 @@ namespace tkEngine{
 			y *= s;
 			z *= s;
 		}
+		/*!
+		* @brief	法線を正規化。
+		*/
+		void Normalize()
+		{
+			f32 len = Length();
+			TK_ASSERT( len > 0.0f, "zero vector!!!");
+			x /= len;
+			y /= len;
+			z /= len;
+		}
+		/*!
+		* @brief	除算。
+		*/
+		void Div(f32 d)
+		{
+			x /= d;
+			y /= d;
+			z /= d;
+		}
 	};
 	/*!
 	 *@brief	4要素のベクトルクラス。
