@@ -35,5 +35,5 @@ void CTest::Render(tkEngine::CRenderContext& renderContext)
 		1.0f
 	};
 	renderContext.SetRenderCommand(CRenderCommand_SetViewport(vp));
-//	renderContext.SetRenderCommand(CRenderCommand_SetRenderState(RS_CULLMODE, CULL_NONE));
+	renderContext.SetRenderCommand(CRenderCommand_SetRenderState(RS_CULLMODE, CULL_NONE));
 }

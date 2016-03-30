@@ -27,6 +27,7 @@
 #include <list>
 #include <vector>
 #include <map>
+#include <algorithm>
 #include "tkEngine/typedef.h"
 #include "tkEngine/math/tkMath.h"
 #include "tkEngine/policy/tkNoncopyable.h"

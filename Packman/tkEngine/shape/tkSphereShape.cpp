@@ -21,6 +21,8 @@ namespace tkEngine {
 		if (hasNormal) {
 			std::vector<SShapeVertex_PNC> vertexBuffer;
 			CreateVertexPosition(vertexBuffer, radius, grid, color);
+			//頂点マージ
+			//@todo for debug MergeVertex(vertexBuffer, indexBuffer, 0.1f );
 			//法線を計算。
 			u32 numPoly = indexBuffer.size() / 3;
 			for (u32 i = 0; i < numPoly; i++) {
@@ -34,7 +36,9 @@ namespace tkEngine {
 			//ポジション+座標頂点バッファの作成。
 			std::vector<SShapeVertex_PC> vertexBuffer;
 			CreateVertexPosition(vertexBuffer, radius, grid, color);
-
+			//頂点マージ
+			//@todo for debug MergeVertex(vertexBuffer, indexBuffer, 0.01f );
+			
 			//プリミティブの作成。
 			m_pPrimitive = new CPrimitive;
 			m_pPrimitive->Create(
@@ -51,7 +55,8 @@ namespace tkEngine {
 	}
 	void CSphereShape::CreateIndexBuffer(std::vector<u32>& indexBuffer, u32 grid)
 	{
-		for (u32 i = 0; i < grid; i++) {
+		//@todo デバッグのため。
+		for (u32 i = 0; i < 1/*grid*/; i++) {
 			u32 baseVertNo = (grid + 1) * i;
 			u32 vertNo[3] = {
 				baseVertNo ,
@@ -72,9 +77,12 @@ namespace tkEngine {
 					vertNo[1]++;
 				}
 				else if (k == grid - 1) {
-					indexBuffer.push_back(vertNo[1]);
+					/*indexBuffer.push_back(vertNo[1]);
 					indexBuffer.push_back(vertNo[0]);
-					indexBuffer.push_back(grid + 2);
+					indexBuffer.push_back(grid + 2);*/
+					indexBuffer.push_back(vertNo[0]);
+					indexBuffer.push_back(vertNo[1]);
+					indexBuffer.push_back(vertNo[2]);
 				}
 				else if (k != 0) {
 					indexBuffer.push_back(vertNo[0]++);

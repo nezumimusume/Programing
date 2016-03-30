@@ -10,7 +10,7 @@ using namespace tkEngine;
 
 void CTestSphereRender::Start()
 {
-	m_sphere.Create( 10.0f, 100, 0xFFF00FFF, false );
+	m_sphere.Create( 10.0f, 20, 0xFFF00FFF, false );
 	m_pEffect = CEngine::Instance().EffectManager().LoadEffect("../tkEngine/presetShader/ColorPrim.fx");
 	//ƒJƒƒ‰‚ğ‰Šú‰»B
 	{
@@ -34,10 +34,10 @@ void CTestSphereRender::Update()
 	CQuaternion rot;
 	CVector3 pos;
 	pos.Set(-10.0f, 0.0f, 0.0f);
-	rot.SetRotation(CVector3::AxisY, m_angle);
+	rot.SetRotation(CVector3::AxisX, m_angle);
 	m_sphere.SetRotation(rot);
 	m_sphere.SetPosition(pos);
-	m_sphere.UpdateWorldMatrix();
+	//m_sphere.UpdateWorldMatrix();
 }
 void CTestSphereRender::Render(tkEngine::CRenderContext& renderContext)
 {
