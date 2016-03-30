@@ -246,7 +246,6 @@ namespace tkEngine{
 		}
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
 		{
-			pD3DDevice->SetFVF(D3DFVF_XYZW | D3DFVF_DIFFUSE);
 			HRESULT hr = pD3DDevice->DrawIndexedPrimitive(
 				m_primitive->GetD3DPrimitiveType(), 
 				0, 

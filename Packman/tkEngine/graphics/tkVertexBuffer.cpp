@@ -22,6 +22,7 @@ namespace tkEngine{
 	void CVertexBuffer::Create(u32 numVertex, u32 stride, u32 vertexFormat, const void* pSrcVertexBuffer)
 	{
 		Release();
+		m_vertexFormat = vertexFormat;
 		m_numVertex = numVertex;
 		m_stride = stride;
 		m_size = m_numVertex * m_stride;

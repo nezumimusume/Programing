@@ -19,7 +19,7 @@ VS_OUTPUT VSMain( VS_INPUT In )
 {
 	VS_OUTPUT Out;
 	Out.pos = mul(g_mWVP, In.pos);
-	Out.color = In.color;
+	Out.color = float4( In.normal.xyz, 1.0f );
 	return Out;
 }
 float4 PSMain( VS_OUTPUT In ) : COLOR0
