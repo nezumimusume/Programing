@@ -10,7 +10,8 @@ namespace tkEngine{
 		m_isCreatePrimitive(false),
 		m_pPrimitive(nullptr),
 		m_position(CVector3::Zero),
-		m_worldMatrix(CMatrix::Identity)
+		m_worldMatrix(CMatrix::Identity),
+		m_rotationMatrix(CMatrix::Identity)
 	{
 	}
 	CShapeBase::~CShapeBase()
@@ -27,11 +28,10 @@ namespace tkEngine{
 	}
 	void CShapeBase::UpdateWorldMatrix()
 	{
-		CMatrix mRot;
-		mRot.MakeRotationFromQuaternion(m_rotation);
+		m_rotationMatrix.MakeRotationFromQuaternion(m_rotation);
 		CMatrix mTrans;
 		mTrans.MakeTranslation(m_position);
-		m_worldMatrix.Mul(mRot, mTrans );
+		m_worldMatrix.Mul(m_rotationMatrix, mTrans );
 	}
 	void CShapeBase::Render(CRenderContext& renderContext)
 	{

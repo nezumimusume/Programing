@@ -173,5 +173,8 @@
     <ClInclude Include="shape\tkShapeBase.h">
       <Filter>Source Files\shape</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\tkLight.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

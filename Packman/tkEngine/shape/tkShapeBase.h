@@ -26,6 +26,13 @@ namespace tkEngine{
 			return m_worldMatrix;
 		}
 		/*!
+		*@brief	回転行列を取得。
+		*/
+		const CMatrix& GetRotationMatrix() const
+		{
+			return m_rotationMatrix;
+		}
+		/*!
 		*@brief	座標を設定。
 		*/
 		void SetPosition(const CVector3& position)
@@ -60,11 +67,12 @@ namespace tkEngine{
 		*/
 		void Render(CRenderContext& renderContext);
 	protected:
-		bool m_isCreatePrimitive;	//!<内部でプリミティブを作成したかどうかのフラグ。
-		CPrimitive*	m_pPrimitive;	//!<プリミティブ。
-		CVector3	m_position;		//!<座標。
-		CQuaternion	m_rotation;		//!<回転。
-		CMatrix		m_worldMatrix;	//!<ワールド行列。
+		bool m_isCreatePrimitive;		//!<内部でプリミティブを作成したかどうかのフラグ。
+		CPrimitive*	m_pPrimitive;		//!<プリミティブ。
+		CVector3	m_position;			//!<座標。
+		CQuaternion	m_rotation;			//!<回転。
+		CMatrix		m_worldMatrix;		//!<ワールド行列。
+		CMatrix		m_rotationMatrix;	//!<ワールド回転行列。
 	};
 	struct SMergeInfo{
 		u32	delVertNo;

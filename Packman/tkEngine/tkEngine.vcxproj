@@ -190,6 +190,7 @@
     <ClInclude Include="graphics\tkEffectManager.h" />
     <ClInclude Include="graphics\tkGraphicsType.h" />
     <ClInclude Include="graphics\tkIndexBuffer.h" />
+    <ClInclude Include="graphics\tkLight.h" />
     <ClInclude Include="graphics\tkMaterial.h" />
     <ClInclude Include="graphics\tkPrimitive.h" />
     <ClInclude Include="graphics\tkRenderCommand.h" />

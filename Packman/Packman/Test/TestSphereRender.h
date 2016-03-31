@@ -7,6 +7,7 @@
 
 #include "tkEngine/shape/tkSphereShape.h"
 #include "tkEngine/graphics/tkCamera.h"
+#include "tkEngine/graphics/tkLight.h"
 
 class CTestSphereRender : public tkEngine::IGameObject{
 	void Start() override final;
@@ -16,6 +17,7 @@ private:
 	tkEngine::CSphereShape	m_sphere;
 	tkEngine::CEffect*		m_pEffect;
 	tkEngine::CCamera		m_camera;
+	tkEngine::CLight		m_light;
 	f32						m_angle;
 };
 
