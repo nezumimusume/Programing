@@ -159,6 +159,7 @@
     <ClCompile Include="graphics\tkPrimitive.cpp" />
     <ClCompile Include="graphics\tkRenderCommandBuffer.cpp" />
     <ClCompile Include="graphics\tkRenderContext.cpp" />
+    <ClCompile Include="graphics\tkRenderTarget.cpp" />
     <ClCompile Include="graphics\tkVertexBuffer.cpp" />
     <ClCompile Include="math\tkMath.cpp" />
     <ClCompile Include="math\tkMatrix.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="graphics\tkRenderCommand.h" />
     <ClInclude Include="graphics\tkRenderCommandBuffer.h" />
     <ClInclude Include="graphics\tkRenderContext.h" />
+    <ClInclude Include="graphics\tkRenderTarget.h" />
     <ClInclude Include="graphics\tkVertexBuffer.h" />
     <ClInclude Include="math\tkMath.h" />
     <ClInclude Include="math\tkMatrix.h" />

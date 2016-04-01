@@ -92,6 +92,9 @@
     <ClCompile Include="shape\tkShapeBase.cpp">
       <Filter>Source Files\shape</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\tkRenderTarget.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -174,6 +177,9 @@
       <Filter>Source Files\shape</Filter>
     </ClInclude>
     <ClInclude Include="graphics\tkLight.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkRenderTarget.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
