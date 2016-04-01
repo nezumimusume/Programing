@@ -7,6 +7,7 @@
 
 #include "tkEngine/shape/tkBoxShape.h"
 #include "tkEngine/graphics/tkCamera.h"
+#include "tkEngine/graphics/tkLight.h"
 
 class CTestBoxRender : public tkEngine::IGameObject{
 	void Start() override final;
@@ -16,6 +17,7 @@ private:
 	tkEngine::CBoxShape	m_box;
 	tkEngine::CEffect*	m_pEffect;
 	tkEngine::CCamera	m_camera;		//ÉJÉÅÉâÅB
+	tkEngine::CLight	m_light;
 	f32					m_angle;		//
 };
 #endif //_TESTBOXRENDER_H_

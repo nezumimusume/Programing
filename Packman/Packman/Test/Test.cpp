@@ -14,8 +14,8 @@ using namespace tkEngine;
 
 void CTest::Start()
 {
-	//CGameObjectManager::Instance().NewGameObject<CTestBoxRender>(0);
-	CGameObjectManager::Instance().NewGameObject<CTestSphereRender>(0);
+	CGameObjectManager::Instance().NewGameObject<CTestBoxRender>(0);
+	//CGameObjectManager::Instance().NewGameObject<CTestSphereRender>(0);
 	CGameObjectManager::Instance().NewGameObject<CTestCreateRenderTarget>(0);
 }
 void CTest::Update()

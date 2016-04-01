@@ -11,18 +11,20 @@ namespace tkEngine{
 		m_pVB(nullptr),
 		m_stride(0),
 		m_numVertex(0),
-		m_size(0),
-		m_vertexFormat(eVertexFormat_invalid)
+		m_size(0)
 	{
 	}
 	CVertexBuffer::~CVertexBuffer()
 	{
 		Release();
 	}
-	void CVertexBuffer::Create(u32 numVertex, u32 stride, u32 vertexFormat, const void* pSrcVertexBuffer)
+	void CVertexBuffer::Create(
+			u32 numVertex, 
+			u32 stride, 
+			const SVertexElement* vertexLayout, 
+			const void* pSrcVertexBuffer )
 	{
 		Release();
-		m_vertexFormat = vertexFormat;
 		m_numVertex = numVertex;
 		m_stride = stride;
 		m_size = m_numVertex * m_stride;
@@ -46,6 +48,8 @@ namespace tkEngine{
 			memcpy( pDstVertexBuffer, pSrcVertexBuffer, m_size);
 			m_pVB->Unlock();
 		}
+		//’¸“_’è‹`‚ðì¬B
+		d3dDevice->CreateVertexDeclaration(vertexLayout, &m_pVertexDecl);
 	}
 	void CVertexBuffer::Release()
 	{

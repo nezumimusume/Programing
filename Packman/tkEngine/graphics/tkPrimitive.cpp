@@ -19,14 +19,14 @@ namespace tkEngine{
 		Release();
 	}
 	void CPrimitive::Create( 
-		EType 			primitiveType,
-		u32 			numVertex,
-		u32 			vertexStride,
-		u32				vertexFormat,
-		void*			pSrcVertexBuffer,
-		u32 			numIndex,
-		EIndexFormat	indexFormat,
-		void*			pSrcIndexbuffer
+		EType 					primitiveType,
+		u32 					numVertex,
+		u32 					vertexStride,
+		const SVertexElement*	vertexLayout,
+		void*					pSrcVertexBuffer,
+		u32 					numIndex,
+		EIndexFormat			indexFormat,
+		void*					pSrcIndexbuffer
 	)
 	{
 		TK_ASSERT( primitiveType < eTypeNum, "primitiveType is invalid" );
@@ -38,7 +38,7 @@ namespace tkEngine{
 		m_vertexStride = vertexStride;
 		m_numIndex = numIndex;
 		Release();
-		m_vertexBuffer.Create( numVertex, vertexStride, vertexFormat, pSrcVertexBuffer );
+		m_vertexBuffer.Create( numVertex, vertexStride, vertexLayout, pSrcVertexBuffer );
 		m_indexBuffer.Create( numIndex, indexFormat, pSrcIndexbuffer );
 		if(primitiveType == eTriangleList){
 			m_numPolygon = numIndex / 3;

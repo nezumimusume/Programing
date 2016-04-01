@@ -25,10 +25,11 @@ namespace tkEngine{
 		~CBoxShape();
 		/*!
 		 *@brief	カラーボックスを作成。
-		 *@param[in]	size	サイズ。
-		 *@param[in]	color	カラー。
+		 *@param[in]	size		サイズ。
+		 *@param[in]	color		カラー。
+		 *@param[in]	hasNormal	法線があるかどうかのフラグ。
 		 */
-		void Create( CVector3 size, u32 color );
+		void Create( CVector3 size, u32 color, bool hasNormal );
 	};
 }
 

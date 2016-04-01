@@ -38,7 +38,7 @@ namespace tkEngine{
 		if (m_pPrimitive == nullptr) {
 			return;
 		}
-		renderContext.SetRenderCommand(CRenderCommand_SetFVF(m_pPrimitive->GetVertexFormat()));
+		renderContext.SetRenderCommand(CRenderCommand_SetVertexDeclaration(m_pPrimitive->GetVertexDecl()));
 		renderContext.SetRenderCommand(CRenderCommand_SetStreamSource(
 			0,
 			m_pPrimitive->GetVertexBuffer()

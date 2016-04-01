@@ -13,6 +13,11 @@ namespace tkEngine{
 		f32		pos[4];
 		u32		color;
 	}; 
+	static const SVertexElement scShapeVertex_PC_Element[] = {
+		{ 0, 0 ,   DECLTYPE_FLOAT4		, DECLMETHOD_DEFAULT, DECLUSAGE_POSITION	, 0 },
+		{ 0, 16 ,  DECLTYPE_D3DCOLOR		, DECLMETHOD_DEFAULT, DECLUSAGE_COLOR	, 0 },
+		D3DDECL_END()
+	};
 	/*!
 	*@brief	カラー＋法線。
 	*/
@@ -20,6 +25,12 @@ namespace tkEngine{
 		f32		pos[4];
 		f32		normal[4];
 		u32		color;	
+	};
+	static const SVertexElement scShapeVertex_PNC_Element[] = {
+		{ 0, 0 ,  DECLTYPE_FLOAT4		, DECLMETHOD_DEFAULT, DECLUSAGE_POSITION	, 0 },
+		{ 0, 16 ,  DECLTYPE_FLOAT4		, DECLMETHOD_DEFAULT, DECLUSAGE_NORMAL	, 0 },
+		{ 0, 32 ,  DECLTYPE_D3DCOLOR		, DECLMETHOD_DEFAULT, DECLUSAGE_COLOR	, 0 },
+		D3DDECL_END()
 	};
 }
 #endif // _TKSHAPE_H_

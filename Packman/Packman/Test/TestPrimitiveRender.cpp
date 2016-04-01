@@ -3,6 +3,7 @@
  */
 #include "stdafx.h"
 #include "TestPrimitiveRender.h"
+#include "tkEngine/shape/tkShapeVertex.h"
 
 using namespace tkEngine;
 
@@ -41,7 +42,7 @@ void CTestPrimitiveRender::Start()
 			CPrimitive::eTriangleStrip, 
 			4, 
 			sizeof(SColorVertex), 
-			eVertexFormat_xyzw | eVertexFormat_diffuse,
+			scShapeVertex_PC_Element,
 			vertex, 
 			4, 
 			eIndexFormat16, 
@@ -78,7 +79,7 @@ void CTestPrimitiveRender::Render(tkEngine::CRenderContext& renderContext)
 	m_pEffect->SetValue(renderContext, "g_mWVP", &mMVP, sizeof(mMVP));
 	m_pEffect->Begin(renderContext);
 	m_pEffect->BeginPass(renderContext, 0);
-	renderContext.SetRenderCommand(CRenderCommand_SetFVF(m_primitive.GetVertexFormat()));
+	renderContext.SetRenderCommand(CRenderCommand_SetVertexDeclaration(m_primitive.GetVertexDecl()));
 	renderContext.SetRenderCommand(CRenderCommand_SetStreamSource(
 		0,
 		m_primitive.GetVertexBuffer()

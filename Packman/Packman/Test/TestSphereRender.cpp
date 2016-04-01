@@ -11,7 +11,7 @@ using namespace tkEngine;
 
 void CTestSphereRender::Start()
 {
-	m_sphere.Create( 10.0f, 50, 0xFFF00FFF, true );
+	m_sphere.Create( 10.0f, 10, 0xFFF00FFF, true );
 	m_pEffect = CEngine::Instance().EffectManager().LoadEffect("../tkEngine/presetShader/ColorNormalPrim.fx");
 	//ƒJƒƒ‰‚ð‰Šú‰»B
 	{
@@ -63,7 +63,7 @@ void CTestSphereRender::Render(tkEngine::CRenderContext& renderContext)
 	mMVP.Transpose();
 	CMatrix mRot = m_sphere.GetRotationMatrix();
 	mRot.Transpose();
-	m_pEffect->SetTechnique(renderContext, "ColorNormalPrim.fx");
+	m_pEffect->SetTechnique(renderContext, "ColorNormalPrim");
 	m_pEffect->SetValue(renderContext, "g_mWVP", &mMVP, sizeof(mMVP));
 	m_pEffect->SetValue(renderContext, "g_worldRotationMatrix", &mRot, sizeof(mRot));
 	m_pEffect->SetValue(

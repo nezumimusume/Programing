@@ -35,10 +35,15 @@ namespace tkEngine{
 		 *@brief	頂点バッファの作成。
 		 *@param[in]	numVertex		頂点数。
 		 *@param[in]	stride			頂点ストライド。
-		 *@param[in]	vertexFormat	頂点フォーマット。EVertexFormatの論理和を渡す。
+		 *@param[in]	vertexLayout	頂点レイアウト。
 		 *@param[in]	srcVertexBuffer	ソース頂点バッファ。作成された頂点バッファにコピーされます。NULLを指定可能。
 		 */
-		void Create( u32 numVertex, u32 stride, u32 vertexFormat, const void* pSrcVertexBuffer );
+		void Create( 
+			u32 numVertex, 
+			u32 stride, 
+			const SVertexElement* vertexLayout, 
+			const void* pSrcVertexBuffer 
+		);
 		/*!
 		 * @brief	頂点バッファの開放。
 		 */
@@ -58,18 +63,18 @@ namespace tkEngine{
 			return m_stride;
 		}
 		/*!
-		* @brief	頂点フォーマットを取得
-		*/
-		u32 GetVertexFormat() const
+		 * @brief	頂点定義を取得。
+		 */
+		SVertexDecralation* GetVertexDecl() 
 		{
-			return m_vertexFormat;
+			return m_pVertexDecl;
 		}
 	private:
-		LPDIRECT3DVERTEXBUFFER9	m_pVB;	//!<頂点バッファ。
-		u32 m_stride;					//!<頂点ストライド。
-		u32 m_numVertex;				//!<頂点数。
-		u32 m_size;						//!<バッファサイズ。
-		u32	m_vertexFormat;	//!<頂点フォーマット。
+		LPDIRECT3DVERTEXBUFFER9			m_pVB;				//!<頂点バッファ。
+		SVertexDecralation* 			m_pVertexDecl;		//!<頂点定義。
+		u32 							m_stride;			//!<頂点ストライド。
+		u32 							m_numVertex;		//!<頂点数。
+		u32 							m_size;				//!<バッファサイズ。
 	};
 }
 #endif // #define _TKRENDERBUFFER_H_

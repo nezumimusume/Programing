@@ -37,21 +37,21 @@ namespace tkEngine{
 		 *@param[in]	primitiveType		プリミティブタイプ。
 		 *@param[in]	numVertex			頂点数
 		 *@param[in]	vertexStride		頂点ストライド
-		 *@param[in]	vertexFormat		頂点フォーマット。EVertexFormatの論理和を渡す。
+		 *@param[in]	vertexLayout		頂点レイアウト。EVertexFormatの論理和を渡す。
 		 *@param[in]	pSrcVertexBuffer	ソース頂点バッファ。
 		 *@param[in]	numIndex			インデックスの数
 		 *@param[in]	indexFormat			インデックスバッファのフォーマット。
 		 *@param[in]	pSrcIndexBuffer		ソースインデックスバッファ。
 		 */
 		void Create( 
-			EType 			primitiveType,
-			u32 			numVertex,
-			u32 			vertexStride,
-			u32				vertexFormat,
-			void*			pSrcVertexBuffer,
-			u32 			numIndex,
-			EIndexFormat	indexFormat,
-			void*			pSrcIndexbuffer
+			EType 					primitiveType,
+			u32 					numVertex,
+			u32 					vertexStride,
+			const SVertexElement*	vertexLayout,
+			void*					pSrcVertexBuffer,
+			u32 					numIndex,
+			EIndexFormat			indexFormat,
+			void*					pSrcIndexbuffer
 		);
 		/*!
 		 * @brief	リリース。
@@ -93,11 +93,11 @@ namespace tkEngine{
 			return m_numPolygon;
 		}
 		/*!
-		* @brief	頂点フォーマットの取得。
+		* @brief	頂点定義を取得。
 		*/
-		u32 GetVertexFormat() const
+		SVertexDecralation* GetVertexDecl()
 		{
-			return m_vertexBuffer.GetVertexFormat();
+			return m_vertexBuffer.GetVertexDecl();
 		}
 	private:
 		u32					m_numVertex;		//!<頂点数。

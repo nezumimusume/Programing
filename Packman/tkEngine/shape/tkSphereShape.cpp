@@ -5,6 +5,7 @@
 #include "tkEngine/shape/tkSphereShape.h"
 #include <vector>
 namespace tkEngine {
+	
 	CSphereShape::CSphereShape()
 	{
 	}
@@ -25,14 +26,14 @@ namespace tkEngine {
 			MergeVertex(vertexBuffer, indexBuffer, 0.1f );
 			//法線を計算。
 			CreateVertexNormal(vertexBuffer, indexBuffer, CPrimitive::eTriangleList);
-
+			
 			//プリミティブの作成。
 			m_pPrimitive = new CPrimitive;
 			m_pPrimitive->Create(
 				CPrimitive::eTriangleList,
 				vertexBuffer.size(),
 				sizeof(SShapeVertex_PNC),
-				eVertexFormat_diffuse | eVertexFormat_xyzw  | eVertexFormat_normal,
+				scShapeVertex_PNC_Element,
 				&vertexBuffer.at(0),
 				indexBuffer.size(),
 				eIndexFormat32,
@@ -52,7 +53,7 @@ namespace tkEngine {
 				CPrimitive::eTriangleList,
 				vertexBuffer.size(),
 				sizeof(SShapeVertex_PC),
-				eVertexFormat_diffuse | eVertexFormat_xyzw,
+				scShapeVertex_PC_Element,
 				&vertexBuffer.at(0),
 				indexBuffer.size(),
 				eIndexFormat32,

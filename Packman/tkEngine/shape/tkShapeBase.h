@@ -84,7 +84,7 @@ namespace tkEngine{
 		u32			vertNos[3];		//!<面を構成する頂点。
 	};
 	/*!
-	*@brief	頂点バッファの法線を作成。
+	*@brief	頂点バッファの法線を作成。(頂点バッファとインデックスバッファにstd::vectorを使用した版)
 	*@param[out]	vertexBuffer	頂点バッファ。
 	*@param[in]		indexBuffer		インデックスバッファ。
 	*@param[in]		primType		プリミティブタイプ
@@ -140,6 +140,74 @@ namespace tkEngine{
 			}
 			normal.Div(s_cast<f32>(polygonInfo.size()));
 			f32* pNormal = vertexBuffer.at(vertNo).normal;
+			pNormal[0] = normal.x;
+			pNormal[1] = normal.y;
+			pNormal[2] = normal.z;
+			pNormal[3] = 1.0f;
+		}
+
+	}
+	/*!
+	*@brief	頂点バッファの法線を作成。(頂点バッファとインデックスバッファに配列を使用した版)
+	*@param[out]	vertexBuffer	頂点バッファ。
+	*@param[in]		numVertex		頂点数。
+	*@param[in]		indexBuffer		インデックスバッファ。
+	*@param[in]		numIndex		インデックス数。
+	*@param[in]		primType		プリミティブタイプ
+	*/
+	template<class TVertex, class TIndex>
+	void CreateVertexNormalArray(
+		TVertex* vertexBuffer,
+		u32 numVertex,
+		TIndex* indexBuffer,
+		u32 numIndex,
+		CPrimitive::EType primType)
+	{
+		//面法線を求める。
+		TK_ASSERT(primType == CPrimitive::eTriangleList, "not implement TraiangleStrip yet...");
+		u32 numFace = numIndex / 3;
+		std::unique_ptr<SPolygonInfo[]> polygonInfo;
+		std::vector<std::list<SPolygonInfo>>	polygoninfos;
+		polygoninfos.resize(numVertex);
+		for (u32 i = 0; i < numFace; i++) {
+			CVector3 pos[3];
+			u32 t = i * 3;
+			SPolygonInfo polyInfo;
+			polyInfo.vertNos[0] = indexBuffer[t];
+			polyInfo.vertNos[1] = indexBuffer[t + 1];
+			polyInfo.vertNos[2] = indexBuffer[t + 2];
+			if (polyInfo.vertNos[0] == polyInfo.vertNos[1]
+				|| polyInfo.vertNos[0] == polyInfo.vertNos[2]
+				|| polyInfo.vertNos[1] == polyInfo.vertNos[2]
+				) {
+				//縮退ポリゴン。
+				continue;
+			}
+			CVector3 normal(0.0f, 0.0f, 0.0f);
+			CVector3 vertPos[3];
+			for (u32 k = 0; k < 3; k++) {
+				const TVertex& vtx = vertexBuffer[polyInfo.vertNos[k]];
+				vertPos[k].Set(vtx.pos[0], vtx.pos[1], vtx.pos[2]);
+			}
+			CVector3 t0, t1;
+			t0.Subtract(vertPos[1], vertPos[0]);
+			t1.Subtract(vertPos[2], vertPos[0]);
+			t0.Normalize();
+			t1.Normalize();
+			polyInfo.normal.Cross(t0, t1);
+			polygoninfos.at(polyInfo.vertNos[0]).push_back(polyInfo);
+			polygoninfos.at(polyInfo.vertNos[1]).push_back(polyInfo);
+			polygoninfos.at(polyInfo.vertNos[2]).push_back(polyInfo);
+		}
+		//頂点法線を求める。
+		for (u32 vertNo = 0; vertNo < numVertex; vertNo++) {
+			std::list<SPolygonInfo>& polygonInfo = polygoninfos.at(vertNo);
+			CVector3 normal(0.0f, 0.0f, 0.0f);
+			for (const auto& p : polygonInfo) {
+				normal.Add(p.normal);
+			}
+			normal.Div(s_cast<f32>(polygonInfo.size()));
+			f32* pNormal = vertexBuffer[vertNo].normal;
 			pNormal[0] = normal.x;
 			pNormal[1] = normal.y;
 			pNormal[2] = normal.z;

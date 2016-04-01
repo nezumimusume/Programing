@@ -36,6 +36,7 @@
 #include "tkEngine/tkEngine.h"
 #include "tkEngine/gameObject/tkGameObjectManager.h"
 #include "tkEngine/gameObject/tkGameObject.h"
+#include "tkEngine/graphics/tkGraphicsType.h"
 #include "tkEngine/graphics/tkRenderCommand.h"
 #include "tkEngine/graphics/tkRenderContext.h"
 #include "tkEngine/math/tkMatrix.h"

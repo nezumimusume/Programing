@@ -13,7 +13,7 @@ namespace tkEngine{
 	{
 		Release();
 	}
-	void CBoxShape::Create( CVector3 size, u32 color )
+	void CBoxShape::Create( CVector3 size, u32 color, bool hasNormal )
 	{
 		Release();
 		m_isCreatePrimitive = true;
@@ -172,6 +172,197 @@ namespace tkEngine{
 			},
 
 		};
+
+		SShapeVertex_PNC vertexPNC[] = {
+			//前面
+			{
+				-halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color,
+			},
+			{
+				halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color,
+			},
+			{
+				halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color,
+			},
+			{
+				-halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color,
+			},
+			{
+				-halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color,
+			},
+			{
+				halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color,
+			},
+			//裏面。
+			{
+				halfSize.x, halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color,
+			},
+			{
+				-halfSize.x, halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color,
+			},
+			{
+				-halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color,
+			},
+			{
+				halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color,
+			},
+			{
+				halfSize.x, halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color,
+			},
+			{
+				-halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color,
+			},
+			//左面。
+			{
+				-halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				-halfSize.x, halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				-halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				-halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				-halfSize.x, halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				-halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			//右面
+			{
+				halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				halfSize.x, halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			//下面
+			{
+				-halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				-halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				halfSize.x, -halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				-halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				halfSize.x, -halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			//上面
+			{
+				halfSize.x, halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				-halfSize.x, halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				-halfSize.x, halfSize.y, halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+			{
+				-halfSize.x, halfSize.y, -halfSize.z, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f,
+				color
+			},
+
+		};
+
 		static u16 index[] = {
 			0,  1, 2, 3, 4, 5, 
 			6,  7, 8, 9,10,11,
@@ -181,15 +372,37 @@ namespace tkEngine{
 			30,31,32,33,34,35,
 		};
 		m_pPrimitive = new CPrimitive;
-		m_pPrimitive->Create(
-			CPrimitive::eTriangleList,
-			sizeof(vertex) / sizeof(vertex[0]),
-			sizeof(vertex[0]),
-			eVertexFormat_diffuse | eVertexFormat_xyzw,
-			vertex,
-			sizeof(index) / sizeof(index[0]),
-			eIndexFormat16,
-			index
-		);
+		if (hasNormal) {
+			//法線を作成。
+			CreateVertexNormalArray(
+				vertexPNC,
+				sizeof(vertexPNC) / sizeof(vertexPNC[0]),
+				index,
+				sizeof(index)/sizeof(index[0]),
+				CPrimitive::eTriangleList
+			);
+			m_pPrimitive->Create(
+				CPrimitive::eTriangleList,
+				sizeof(vertexPNC) / sizeof(vertexPNC[0]),
+				sizeof(vertexPNC[0]),
+				scShapeVertex_PNC_Element,
+				vertexPNC,
+				sizeof(index) / sizeof(index[0]),
+				eIndexFormat16,
+				index
+				);
+		}
+		else {
+			m_pPrimitive->Create(
+				CPrimitive::eTriangleList,
+				sizeof(vertex) / sizeof(vertex[0]),
+				sizeof(vertex[0]),
+				scShapeVertex_PC_Element,
+				vertex,
+				sizeof(index) / sizeof(index[0]),
+				eIndexFormat16,
+				index
+				);
+		}
 	}
 }

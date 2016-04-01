@@ -28,6 +28,7 @@ namespace tkEngine{
 		eRenderCommand_SetFVF,
 		eRenderCommand_SetViewport,
 		eRenderCommand_SetRenderState,
+		eRenderCommand_SetVertexDeclaration,
 		eRenderCommand_Undef
 	};
 	/*!
@@ -257,6 +258,9 @@ namespace tkEngine{
 			TK_ASSERT(SUCCEEDED(hr), "error");
 		}
 	};
+	/*!
+	* @brief	IDirect3DDevice9::SetFVF
+	*/
 	class CRenderCommand_SetFVF : public CRenderCommandBase
 	{
 		u32 m_fvf;
@@ -302,12 +306,7 @@ namespace tkEngine{
 		CRenderCommand_SetViewport(const tkEngine::SViewport& viewport) :
 			CRenderCommandBase(eRenderCommand_SetViewport)
 		{
-			m_viewport.X		= viewport.x;
-			m_viewport.Y		= viewport.y;
-			m_viewport.Width	= viewport.width;
-			m_viewport.Height	= viewport.height;
-			m_viewport.MinZ		= viewport.minZ;
-			m_viewport.MaxZ		= viewport.maxZ;
+			m_viewport = viewport;
 		}
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
 		{
@@ -331,6 +330,21 @@ namespace tkEngine{
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
 		{
 			pD3DDevice->SetRenderState(s_cast<D3DRENDERSTATETYPE>(m_renderStateType), m_value);
+		}
+	};
+	/*!
+	* @brief	IDirect3DDevice9::SetVertexDeclaration
+	*/
+	class CRenderCommand_SetVertexDeclaration : public CRenderCommandBase
+	{
+		IDirect3DVertexDeclaration9*	m_pVertexDecl;
+	public:
+		CRenderCommand_SetVertexDeclaration(SVertexDecralation* vertexDecl) :
+			CRenderCommandBase(eRenderCommand_SetVertexDeclaration),
+			m_pVertexDecl(vertexDecl) {}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			pD3DDevice->SetVertexDeclaration(m_pVertexDecl);
 		}
 	};
 }

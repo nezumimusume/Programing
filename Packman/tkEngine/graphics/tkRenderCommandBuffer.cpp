@@ -64,6 +64,10 @@ namespace tkEngine{
 			case eRenderCommand_SetRenderState:
 				((CRenderCommand_SetRenderState*)(cmdBase))->Execute(pD3DDevice);
 				break;
+			case eRenderCommand_SetVertexDeclaration:
+				((CRenderCommand_SetVertexDeclaration*)(cmdBase))->Execute(pD3DDevice);
+				break;
+				break;
 			default:
 				TK_ASSERT(false, "not implement renderCommand");
 				break;
