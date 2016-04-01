@@ -11,7 +11,7 @@ using namespace tkEngine;
 
 void CTestSphereRender::Start()
 {
-	m_sphere.Create( 10.0f, 20, 0xFFF00FFF, true );
+	m_sphere.Create( 10.0f, 50, 0xFFF00FFF, true );
 	m_pEffect = CEngine::Instance().EffectManager().LoadEffect("../tkEngine/presetShader/ColorNormalPrim.fx");
 	//ƒJƒƒ‰‚ğ‰Šú‰»B
 	{

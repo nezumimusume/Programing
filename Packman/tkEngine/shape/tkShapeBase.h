@@ -108,6 +108,13 @@ namespace tkEngine{
 			polyInfo.vertNos[0] = indexBuffer.at(t);
 			polyInfo.vertNos[1] = indexBuffer.at(t+1);
 			polyInfo.vertNos[2] = indexBuffer.at(t+2);
+			if (polyInfo.vertNos[0] == polyInfo.vertNos[1]
+				|| polyInfo.vertNos[0] == polyInfo.vertNos[2]
+				|| polyInfo.vertNos[1] == polyInfo.vertNos[2]
+				) {
+				//èkëﬁÉ|ÉäÉSÉìÅB
+				continue;
+			}
 			CVector3 normal(0.0f, 0.0f, 0.0f);
 			CVector3 vertPos[3];
 			for (u32 k = 0; k < 3; k++) {
