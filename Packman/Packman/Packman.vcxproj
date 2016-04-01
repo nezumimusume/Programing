@@ -158,6 +158,7 @@
     </ClCompile>
     <ClCompile Include="Test\Test.cpp" />
     <ClCompile Include="Test\TestBoxRender.cpp" />
+    <ClCompile Include="Test\TestCreateRenderTarget.cpp" />
     <ClCompile Include="Test\TestPrimitiveRender.cpp" />
     <ClCompile Include="Test\TestSphereRender.cpp" />
   </ItemGroup>
@@ -165,6 +166,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Test\test.h" />
     <ClInclude Include="Test\TestBoxRender.h" />
+    <ClInclude Include="Test\TestCreateRenderTarget.h" />
     <ClInclude Include="Test\TestPrimitiveRender.h" />
     <ClInclude Include="Test\TestSphereRender.h" />
   </ItemGroup>

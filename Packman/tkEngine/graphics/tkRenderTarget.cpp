@@ -39,6 +39,8 @@ namespace tkEngine{
 			&m_depthSurface,
 			NULL
 		);
+		D3DCAPS9 caps;
+		d3dDevice->GetDeviceCaps(&caps);
 		TK_ASSERT( SUCCEEDED(hr), "failed CreateDepthStencilSurface");
 		//カラーバッファを作成。
 		hr = d3dDevice->CreateTexture(

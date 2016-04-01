@@ -5,7 +5,7 @@
 #ifndef _TESTCREATERENDERTARGET_H_
 #define _TESTCREATERENDERTARGET_H_
 
-#include "tkEngine/graphics/tkRenderTarget.h
+#include "tkEngine/graphics/tkRenderTarget.h"
 
 class CTestCreateRenderTarget : public tkEngine::IGameObject{
 	void Start() override final;

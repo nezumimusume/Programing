@@ -36,6 +36,9 @@
     <ClCompile Include="Test\TestSphereRender.cpp">
       <Filter>Source Files\Test</Filter>
     </ClCompile>
+    <ClCompile Include="Test\TestCreateRenderTarget.cpp">
+      <Filter>Source Files\Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -51,6 +54,9 @@
       <Filter>Source Files\Test</Filter>
     </ClInclude>
     <ClInclude Include="Test\TestSphereRender.h">
+      <Filter>Source Files\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Test\TestCreateRenderTarget.h">
       <Filter>Source Files\Test</Filter>
     </ClInclude>
   </ItemGroup>
