@@ -42,7 +42,7 @@ namespace tkEngine{
 
 		return m_hWnd != nullptr;
 	}
-	bool CEngine::InitDirectX()
+	bool CEngine::InitDirectX(const SInitParam& initParam)
 	{
 		if( nullptr == ( m_pD3D = Direct3DCreate9( D3D_SDK_VERSION ) ) ){
 			//D3Dオブジェクトを作成できなかった。
@@ -55,6 +55,12 @@ namespace tkEngine{
 	    d3dpp.BackBufferFormat = D3DFMT_A8R8G8B8;
 	    d3dpp.EnableAutoDepthStencil = TRUE;
     	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
+		d3dpp.BackBufferWidth = initParam.frameBufferWidth;
+		d3dpp.BackBufferHeight = initParam.frameBufferHeight;
+
+		m_frameBufferWidth = initParam.frameBufferWidth;
+		m_frameBufferHeight = initParam.frameBufferHeight;
+
     	// Create the D3DDevice
 	    if( FAILED( m_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hWnd,
 	                                      D3DCREATE_SOFTWARE_VERTEXPROCESSING,
@@ -72,9 +78,19 @@ namespace tkEngine{
 			return false;
 		}
 		//DirectX初期化。
-		if (!InitDirectX()) {
+		if (!InitDirectX(initParam)) {
 			return false;
 		}
+		//メインレンダリングターゲットを作成。
+		m_mainRenderTarget.Create(
+			m_frameBufferWidth,
+			m_frameBufferHeight,
+			1,
+			FMT_A8R8G8B8,
+			FMT_D16,
+			MULTISAMPLE_NONE,
+			0
+		);
 		CGameObjectManager::Instance().Init( initParam.gameObjectPrioMax );
 		//レンダリングコンテキストの初期化。
 		{
@@ -89,9 +105,14 @@ namespace tkEngine{
 				memcpy(m_renderContextMap.get(), initParam.renderContextMap, sizeof(SRenderContextMap) * m_numRenderContext);
 			}
 		}
+		//トランスフォーム済みプリミティブを描画するシェーダーをロード。
+		m_pTransformedPrimEffect = m_effectManager.LoadEffect("");
 		ShowWindow(m_hWnd, SW_SHOWDEFAULT);
 		UpdateWindow(m_hWnd);
 		return true;
+	}
+	void CEngine::CopyMainRenderTargetToBackBuffer()
+	{
 	}
 	void CEngine::RunGameLoop()
 	{
@@ -114,10 +135,20 @@ namespace tkEngine{
 				);
 
 				m_pD3DDevice->BeginScene();
+				LPDIRECT3DSURFACE9 renderTargetBackup;
+				LPDIRECT3DSURFACE9 depthStencilBackup;
+				m_pD3DDevice->GetRenderTarget(0, &renderTargetBackup);
+				m_pD3DDevice->GetDepthStencilSurface(&depthStencilBackup);
+				m_pD3DDevice->SetRenderTarget(0, m_mainRenderTarget.GetSurfaceDx());
+				m_pD3DDevice->SetDepthStencilSurface(m_mainRenderTarget.GetDepthSurfaceDx());
 				//レンダリングコマンドのサブミット
 				for( u32 i = 0; i < m_numRenderContext; i++ ){
 					m_renderContextArray[i].SubmitCommandBuffer();
 				}
+
+				m_pD3DDevice->SetRenderTarget(0, renderTargetBackup);
+				m_pD3DDevice->SetDepthStencilSurface(depthStencilBackup);
+				CopyMainRenderTargetToBackBuffer();
 				m_pD3DDevice->EndScene();
 				m_pD3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
 			}
@@ -125,6 +156,7 @@ namespace tkEngine{
 	}
 	void CEngine::Final()
 	{
+		m_mainRenderTarget.Release();
 		m_effectManager.Release();
 		if (m_pD3DDevice != nullptr)
 			m_pD3DDevice->Release();

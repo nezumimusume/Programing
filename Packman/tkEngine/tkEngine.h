@@ -8,6 +8,7 @@
 
 #include "tkEngine/graphics/tkRenderContext.h"
 #include "tkEngine/graphics/tkEffectManager.h"
+#include "tkEngine/graphics/tkRenderTarget.h"
 
 namespace tkEngine{
 	/*!
@@ -32,6 +33,8 @@ namespace tkEngine{
 		SRenderContextMap*	renderContextMap;		//!<描画優先ごとに対応するレンダリングコンテキストの番号のマップ。numRenderContextが1の場合は無視される。
 		u32					screenWidth;			//!<スクリーンの幅。
 		u32					screenHeight;			//!<スクリーンの高さ。
+		u32					frameBufferWidth;		//!<フレームバッファの幅。これが内部解像度。
+		u32					frameBufferHeight;		//!<フレームバッファの高さ。これが内部解像度。
 	};
 	
 	/*!
@@ -41,7 +44,13 @@ namespace tkEngine{
 		CEngine() : 
 			m_hWnd(nullptr),
 			m_pD3D(nullptr),
-			m_pD3DDevice(nullptr)
+			m_pD3DDevice(nullptr),
+			m_frameBufferHeight(0),
+			m_frameBufferWidth(0),
+			m_screenHeight(0),
+			m_screenWidth(0),
+			m_numRenderContext(0),
+			m_pTransformedPrimEffect(nullptr)
 		{}
 		~CEngine() {}
 	public:
@@ -96,7 +105,25 @@ namespace tkEngine{
 		{
 			return m_screenHeight;
 		}
+		/*!
+		*@brief		フレームバッファの幅を取得。
+		*/
+		u32 GetFrameBufferWidth() const
+		{
+			return m_frameBufferWidth;
+		}
+		/*!
+		*@brief		フレームバッファの高さを取得。
+		*/
+		u32 GetFrameBufferHeight() const
+		{
+			return m_frameBufferHeight;
+		}
 	private:
+		/*!
+		* @brief	メインレンダリングターゲットの内容をバックバッファにコピー。
+		*/
+		void CopyMainRenderTargetToBackBuffer();
 		/*!
 		* @brief	ウィンドウ初期化。
 		* @retval	true	初期化に成功。
@@ -108,7 +135,7 @@ namespace tkEngine{
 		* @retval	true	初期化に成功。
 		* @retval	false	初期化に失敗。
 		*/
-		bool InitDirectX();
+		bool InitDirectX(const SInitParam& initParam);
 		/*!
 		* @brief	ウィンドウプロシージャ。
 		*/
@@ -123,6 +150,10 @@ namespace tkEngine{
 		CEffectManager							m_effectManager;		//!<エフェクトマネージャ。
 		u32										m_screenWidth;			//!<スクリーンの幅。
 		u32										m_screenHeight;			//!<スクリーンの高さ。
+		u32										m_frameBufferWidth;		//!<フレームバッファの幅。これが内部解像度。
+		u32										m_frameBufferHeight;	//!<フレームバッファの高さ。これが内部解像度。
+		CRenderTarget							m_mainRenderTarget;		//!<メインレンダリングターゲット
+		CEffect*								m_pTransformedPrimEffect;	//!<トランスフォーム済みプリミティブを描画するためのエフェクト。
 	};
 	
 }

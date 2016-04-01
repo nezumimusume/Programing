@@ -31,8 +31,8 @@ void CTest::Render(tkEngine::CRenderContext& renderContext)
 	tkEngine::SViewport vp = {
 		0,
 		0,
-		tkEngine::CEngine::Instance().GetScreenWidth(),
-		tkEngine::CEngine::Instance().GetScreenHeight(),
+		tkEngine::CEngine::Instance().GetFrameBufferWidth(),
+		tkEngine::CEngine::Instance().GetFrameBufferHeight(),
 		0.0f,
 		1.0f
 	};

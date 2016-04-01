@@ -41,6 +41,14 @@ namespace tkEngine{
 		 *@brief	レンダリングターゲットの破棄。
 		 */
 		void Release();
+		LPDIRECT3DSURFACE9 GetDepthSurfaceDx()
+		{
+			return m_depthSurface;
+		}
+		LPDIRECT3DSURFACE9 GetSurfaceDx()
+		{
+			return m_surface;
+		}
 	private:
 		LPDIRECT3DSURFACE9		m_depthSurface;		//!<深度バッファ用のサーフェイス
 		LPDIRECT3DTEXTURE9		m_texture;			//!<書き込み先のテクスチャ。

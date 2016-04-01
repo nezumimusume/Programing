@@ -16,7 +16,7 @@ int WINAPI wWinMain(
 	LPWSTR lpCmdLine, 
 	int nCmdShow 
 ){
-	//初期化。
+	//エンジンを使用するための初期設定を行う。
 	SInitParam initParam;
 	memset(&initParam, 0, sizeof(initParam));
 	//コマンドバッファのサイズのテーブル。
@@ -29,6 +29,9 @@ int WINAPI wWinMain(
 	initParam.commandBufferSizeTbl = commandBufferSizeTbl;
 	initParam.screenHeight = 720;
 	initParam.screenWidth = 1280;
+	initParam.frameBufferHeight = 720;
+	initParam.frameBufferWidth = 1280;
+
 	CEngine::Instance().Init( initParam );	//初期化。
 #ifdef TEST_BUILD
 	CGameObjectManager::Instance().NewGameObject<CTest>(0);
