@@ -49,6 +49,14 @@ namespace tkEngine{
 		{
 			return m_surface;
 		}
+		void SetDepthSurfaceDX(LPDIRECT3DSURFACE9 depthSurface)
+		{
+			m_depthSurface = depthSurface;
+		}
+		void SetSurfaceDX(LPDIRECT3DSURFACE9 surface)
+		{
+			m_surface = surface;
+		}
 	private:
 		LPDIRECT3DSURFACE9		m_depthSurface;		//!<深度バッファ用のサーフェイス
 		LPDIRECT3DTEXTURE9		m_texture;			//!<書き込み先のテクスチャ。

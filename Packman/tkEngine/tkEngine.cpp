@@ -70,6 +70,12 @@ namespace tkEngine{
 	    {
 	        return false;
 	    }
+		//バックバッファのレンダリングターゲットと深度ステンシルバッファを取得しておいて覚えておく。
+		LPDIRECT3DSURFACE9 rt, depth;
+		m_pD3DDevice->GetRenderTarget(0, &rt);
+		m_pD3DDevice->GetDepthStencilSurface(&depth);
+		m_backBufferRT.SetSurfaceDX(rt);
+		m_backBufferRT.SetDepthSurfaceDX(depth);
 	    return true;
 	    
 	}
@@ -175,27 +181,28 @@ namespace tkEngine{
 				DispatchMessage(&msg);
 			}
 			else {
+				CRenderContext& topRenderContext = m_renderContextArray[0];
+				CRenderContext& lastRenderContext = m_renderContextArray[m_numRenderContext - 1];
+				topRenderContext.SetRenderTarget(0, &m_mainRenderTarget);
+				topRenderContext.SetDepthStencilSurface(&m_mainRenderTarget);
 				CGameObjectManager& goMgr = CGameObjectManager::Instance();
 				goMgr.Execute(
 					m_renderContextArray.get(), 
 					m_numRenderContext, 
 					m_renderContextMap.get()
 				);
+				lastRenderContext.SetRenderTarget(0, &m_backBufferRT);
+				lastRenderContext.SetDepthStencilSurface(&m_backBufferRT);
+				CopyMainRenderTargetToBackBuffer(lastRenderContext);
 
 				m_pD3DDevice->BeginScene();
-				LPDIRECT3DSURFACE9 renderTargetBackup;
-				LPDIRECT3DSURFACE9 depthStencilBackup;
-				m_pD3DDevice->GetRenderTarget(0, &renderTargetBackup);
-				m_pD3DDevice->GetDepthStencilSurface(&depthStencilBackup);
 				m_pD3DDevice->SetRenderTarget(0, m_mainRenderTarget.GetSurfaceDx());
 				m_pD3DDevice->SetDepthStencilSurface(m_mainRenderTarget.GetDepthSurfaceDx());
 				//レンダリングコマンドのサブミット
 				for( u32 i = 0; i < m_numRenderContext; i++ ){
 					m_renderContextArray[i].SubmitCommandBuffer();
 				}
-				m_pD3DDevice->SetRenderTarget(0, renderTargetBackup);
-				m_pD3DDevice->SetDepthStencilSurface(depthStencilBackup);
-				//CopyMainRenderTargetToBackBuffer(m_renderContextArray[m_numRenderContext-1]);
+				//
 				m_pD3DDevice->EndScene();
 				m_pD3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
 			}

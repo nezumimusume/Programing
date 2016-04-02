@@ -159,6 +159,7 @@ namespace tkEngine{
 		CRenderTarget							m_mainRenderTarget;		//!<メインレンダリングターゲット
 		CEffect*								m_pTransformedPrimEffect;	//!<トランスフォーム済みプリミティブを描画するためのエフェクト。
 		CPrimitive								m_copyBackBufferPrim;		//!<メインレンダーターゲットをバックバッファにコピーするときに使うプリミティブ。
+		CRenderTarget							m_backBufferRT;				//!<バックバッファのレンダリングターゲット。
 	};
 	
 }

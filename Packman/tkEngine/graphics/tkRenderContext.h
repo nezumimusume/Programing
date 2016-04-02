@@ -7,6 +7,7 @@ namespace tkEngine{
 	class CVertexBuffer;
 	class CIndexBuffer;
 	class CPrimitive;
+	class CRenderTarget;
 	/*!
 	* @brief	レンダリングコンテキスト。
 	*/
@@ -69,6 +70,17 @@ namespace tkEngine{
 		*@param[in]	value				設定する値。
 		*/
 		__inline void SetRenderState(ERenderStateType renderStateType, u32 value);
+		/*!
+		* @brief	レンダリングターゲットを設定。
+		*@param[in]	renderTargetIndex	レンダリングターゲットのインデックス。
+		*@param[in]	pRT					レンダリングターゲット。
+		*/
+		__inline void SetRenderTarget(u32 renderTargetIndex, CRenderTarget* pRT);
+		/*!
+		* @brief	深度ステンシルバッファを設定。
+		*@param[in]	pRT					レンダリングターゲット。
+		*/
+		__inline void SetDepthStencilSurface(CRenderTarget* pRT);
 		/*!
 		 *@brief	初期化。
 		 *@param[in]	pD3DDevice			Direct3Dデバイス
@@ -154,6 +166,14 @@ namespace tkEngine {
 	__inline void CRenderContext::SetRenderState(ERenderStateType renderStateType, u32 value)
 	{
 		SetRenderCommand(CRenderCommand_SetRenderState(renderStateType, value));
+	}
+	__inline void CRenderContext::SetRenderTarget(u32 renderTargetIndex, CRenderTarget* pRT)
+	{
+		SetRenderCommand(CRenderCommand_SetRenderTarget(renderTargetIndex, pRT));
+	}
+	__inline void CRenderContext::SetDepthStencilSurface(CRenderTarget* pRT)
+	{
+		SetRenderCommand(CRenderCommand_SetDepthStencilSurface(pRT));
 	}
 }
 

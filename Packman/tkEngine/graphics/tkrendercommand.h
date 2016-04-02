@@ -9,6 +9,7 @@
 #include "tkEngine/graphics/tkIndexBuffer.h"
 #include "tkEngine/graphics/tkPrimitive.h"
 #include "tkEngine/graphics/tkGraphicsType.h"
+#include "tkEngine/graphics/tkRenderTarget.h"
 
 namespace tkEngine{
 	/*!
@@ -29,6 +30,8 @@ namespace tkEngine{
 		eRenderCommand_SetViewport,
 		eRenderCommand_SetRenderState,
 		eRenderCommand_SetVertexDeclaration,
+		eRenderCommand_SetRenderTarget,
+		eRenderCommand_SetDepthStencilSurface,
 		eRenderCommand_Undef
 	};
 	/*!
@@ -345,6 +348,43 @@ namespace tkEngine{
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
 		{
 			pD3DDevice->SetVertexDeclaration(m_pVertexDecl);
+		}
+	};
+	/*!
+	* @brief	IDirect3DDevice9::SetRenderTarget
+	*/
+	class CRenderCommand_SetRenderTarget : public CRenderCommandBase
+	{
+		CRenderTarget*	m_pRT;
+		u32	m_renderTargetIndex;
+	public:
+		CRenderCommand_SetRenderTarget( u32 renderTargetIndex, CRenderTarget* rt) :
+			CRenderCommandBase(eRenderCommand_SetRenderTarget),
+			m_pRT(rt),
+			m_renderTargetIndex(renderTargetIndex)
+		{
+
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice )
+		{
+			pD3DDevice->SetRenderTarget(0, m_pRT->GetSurfaceDx());
+		}
+	};
+	/*!
+	* @brief	IDirect3DDevice9::SetDepthStencilSurface
+	*/
+	class CRenderCommand_SetDepthStencilSurface : public CRenderCommandBase
+	{
+		CRenderTarget*	m_pRT;
+	public:
+		CRenderCommand_SetDepthStencilSurface(CRenderTarget* pRT) :
+			CRenderCommandBase(eRenderCommand_SetDepthStencilSurface),
+			m_pRT(pRT)
+		{
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			pD3DDevice->SetDepthStencilSurface(m_pRT->GetDepthSurfaceDx());
 		}
 	};
 }
