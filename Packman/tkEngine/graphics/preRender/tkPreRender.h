@@ -5,7 +5,7 @@
 #ifndef _TKPRERENDER_H_
 #define _TKPRERENDER_H_
 
-#include "tkEngine/graphics/preRender/tkPreRender.h"
+#include "tkEngine/graphics/tkGraphicsConfig.h"
 
 namespace tkEngine{
 	/*!
@@ -15,7 +15,7 @@ namespace tkEngine{
 	public:
 		CPreRender();
 		~CPreRender();
-		void Create( u32 effectFlags );
+		void Create( const SGraphicsConfig& config );
 	private:
 		CIDMap		m_idMap;		//!<IDƒ}ƒbƒv
 	};

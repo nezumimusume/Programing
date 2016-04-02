@@ -117,7 +117,7 @@ namespace tkEngine{
 		//トランスフォーム済みプリミティブを描画するシェーダーをロード。
 		m_pTransformedPrimEffect = m_effectManager.LoadEffect("Assets/presetShader/TransformedPrim.fx");
 		//プリレンダリングを作成。
-		m_preRender.Create( initParam.renderEffectFlag );
+		m_preRender.Create( initParam.graphicsConfig );
 		
 		ShowWindow(m_hWnd, SW_SHOWDEFAULT);
 		UpdateWindow(m_hWnd);

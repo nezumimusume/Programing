@@ -11,6 +11,7 @@
 #include "tkEngine/graphics/tkRenderTarget.h"
 #include "tkEngine/graphics/tkPrimitive.h"
 #include "tkEngine/graphics/preRender/tkPreRender.h"
+#include "tkEngine/graphics/tkGraphicsConfig.h"
 
 namespace tkEngine{
 	/*!
@@ -38,7 +39,7 @@ namespace tkEngine{
 		u32					screenHeight;			//!<スクリーンの高さ。
 		u32					frameBufferWidth;		//!<フレームバッファの幅。これが内部解像度。
 		u32					frameBufferHeight;		//!<フレームバッファの高さ。これが内部解像度。
-		u32					renderEffectFlag;		//!<描画エフェクトのフラグ。
+		SGraphicsConfig		graphicsConfig;			//!<描画コンフィグ。
 	};
 	
 	/*!
