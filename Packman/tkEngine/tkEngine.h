@@ -145,18 +145,18 @@ namespace tkEngine{
 		*/
 		static LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	private:
-		HWND									m_hWnd;					//!<ウィンドウハンドル。
-		LPDIRECT3D9								m_pD3D;					//!<D3DDevice
-		LPDIRECT3DDEVICE9						m_pD3DDevice;			//!<Rendering device
-		std::unique_ptr<CRenderContext[]>		m_renderContextArray;	//!<レンダリングコンテキスト
-		u32										m_numRenderContext;		//!<レンダリングコンテキストの数。
-		std::unique_ptr<SRenderContextMap[]>	m_renderContextMap;		//!<レンダリングコンテキストのマップ。
-		CEffectManager							m_effectManager;		//!<エフェクトマネージャ。
-		u32										m_screenWidth;			//!<スクリーンの幅。
-		u32										m_screenHeight;			//!<スクリーンの高さ。
-		u32										m_frameBufferWidth;		//!<フレームバッファの幅。これが内部解像度。
-		u32										m_frameBufferHeight;	//!<フレームバッファの高さ。これが内部解像度。
-		CRenderTarget							m_mainRenderTarget;		//!<メインレンダリングターゲット
+		HWND									m_hWnd;						//!<ウィンドウハンドル。
+		LPDIRECT3D9								m_pD3D;						//!<D3DDevice
+		LPDIRECT3DDEVICE9						m_pD3DDevice;				//!<Rendering device
+		std::unique_ptr<CRenderContext[]>		m_renderContextArray;		//!<レンダリングコンテキスト
+		u32										m_numRenderContext;			//!<レンダリングコンテキストの数。
+		std::unique_ptr<SRenderContextMap[]>	m_renderContextMap;			//!<レンダリングコンテキストのマップ。
+		CEffectManager							m_effectManager;			//!<エフェクトマネージャ。
+		u32										m_screenWidth;				//!<スクリーンの幅。
+		u32										m_screenHeight;				//!<スクリーンの高さ。
+		u32										m_frameBufferWidth;			//!<フレームバッファの幅。これが内部解像度。
+		u32										m_frameBufferHeight;		//!<フレームバッファの高さ。これが内部解像度。
+		CRenderTarget							m_mainRenderTarget;			//!<メインレンダリングターゲット
 		CEffect*								m_pTransformedPrimEffect;	//!<トランスフォーム済みプリミティブを描画するためのエフェクト。
 		CPrimitive								m_copyBackBufferPrim;		//!<メインレンダーターゲットをバックバッファにコピーするときに使うプリミティブ。
 		CRenderTarget							m_backBufferRT;				//!<バックバッファのレンダリングターゲット。

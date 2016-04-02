@@ -13,7 +13,9 @@ namespace tkEngine{
 	*/
 	class CRenderContext : Noncopyable{
 	public:
-		CRenderContext() {}
+		CRenderContext() {
+			memset(m_pCurrentRT, 0, sizeof(m_pCurrentRT));
+		}
 		~CRenderContext() {}
 		/*!
 		 *@brief	インスタンスの取得。
@@ -77,11 +79,6 @@ namespace tkEngine{
 		*/
 		__inline void SetRenderTarget(u32 renderTargetIndex, CRenderTarget* pRT);
 		/*!
-		* @brief	深度ステンシルバッファを設定。
-		*@param[in]	pRT					レンダリングターゲット。
-		*/
-		__inline void SetDepthStencilSurface(CRenderTarget* pRT);
-		/*!
 		 *@brief	初期化。
 		 *@param[in]	pD3DDevice			Direct3Dデバイス
 		 *@param[in]	commandBufferSize	コマンドバッファのサイズ。
@@ -110,9 +107,20 @@ namespace tkEngine{
 		{
 			return m_commandBuffer.Alloc(sizeInByte);
 		}
+		/*!
+		 * @brief	現在のレンダリングターゲットを取得。
+		 *@param[in]	rtIndex		レンダリングターゲットのインデックス。
+		 */
+		CRenderTarget* GetRenderTarget( u32 rtIndex ) const
+		{
+			TK_ASSERT( rtIndex < NUM_MRT, "rtIndex is invalid!!" );
+			return m_pCurrentRT[rtIndex];
+		}
 	private:
+		static const u32 NUM_MRT = 4;					//!<MRTはとりあえず４に制限。
 		LPDIRECT3DDEVICE9		m_pD3DDevice;
 		CRenderCommandBuffer 	m_commandBuffer;
+		CRenderTarget*			m_pCurrentRT[NUM_MRT];	//!<現在のレンダリングターゲット。
 	};
 }
 
@@ -169,10 +177,8 @@ namespace tkEngine {
 	}
 	__inline void CRenderContext::SetRenderTarget(u32 renderTargetIndex, CRenderTarget* pRT)
 	{
+		m_pCurrentRT[renderTargetIndex] = pRT;
 		SetRenderCommand(CRenderCommand_SetRenderTarget(renderTargetIndex, pRT));
-	}
-	__inline void CRenderContext::SetDepthStencilSurface(CRenderTarget* pRT)
-	{
 		SetRenderCommand(CRenderCommand_SetDepthStencilSurface(pRT));
 	}
 }

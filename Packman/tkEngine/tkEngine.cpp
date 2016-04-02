@@ -184,7 +184,6 @@ namespace tkEngine{
 				CRenderContext& topRenderContext = m_renderContextArray[0];
 				CRenderContext& lastRenderContext = m_renderContextArray[m_numRenderContext - 1];
 				topRenderContext.SetRenderTarget(0, &m_mainRenderTarget);
-				topRenderContext.SetDepthStencilSurface(&m_mainRenderTarget);
 				CGameObjectManager& goMgr = CGameObjectManager::Instance();
 				goMgr.Execute(
 					m_renderContextArray.get(), 
@@ -192,7 +191,6 @@ namespace tkEngine{
 					m_renderContextMap.get()
 				);
 				lastRenderContext.SetRenderTarget(0, &m_backBufferRT);
-				lastRenderContext.SetDepthStencilSurface(&m_backBufferRT);
 				CopyMainRenderTargetToBackBuffer(lastRenderContext);
 
 				m_pD3DDevice->BeginScene();

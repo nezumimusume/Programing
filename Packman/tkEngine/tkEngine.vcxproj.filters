@@ -30,6 +30,9 @@
     <Filter Include="Source Files\shape">
       <UniqueIdentifier>{c696cbe9-8c0e-4bfb-afdd-a05db245cbde}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphics\prerender">
+      <UniqueIdentifier>{b596251c-8fcc-4636-a132-785715761d63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -80,9 +83,6 @@
     <ClCompile Include="graphics\tkEffectManager.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\tkMaterial.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="shape\tkBoxShape.cpp">
       <Filter>Source Files\shape</Filter>
     </ClCompile>
@@ -94,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="graphics\tkRenderTarget.cpp">
       <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkMaterial.cpp">
+      <Filter>Source Files\math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -160,7 +163,6 @@
     <ClInclude Include="util\tkUtil.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\tkMaterial.h" />
     <ClInclude Include="shape\tkBoxShape.h">
       <Filter>Source Files\shape</Filter>
     </ClInclude>
@@ -180,9 +182,6 @@
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
     <ClInclude Include="graphics\tkRenderTarget.h">
-      <Filter>Source Files\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="graphics\tkRenderContextMethod.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
