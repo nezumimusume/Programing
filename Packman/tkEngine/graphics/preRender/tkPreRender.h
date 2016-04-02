@@ -15,7 +15,7 @@ namespace tkEngine{
 	public:
 		CPreRender();
 		~CPreRender();
-		void Create();
+		void Create( u32 effectFlags );
 	private:
 		CIDMap		m_idMap;		//!<IDƒ}ƒbƒv
 	};

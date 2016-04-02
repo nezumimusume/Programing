@@ -10,6 +10,8 @@
 #include "tkEngine/graphics/tkEffectManager.h"
 #include "tkEngine/graphics/tkRenderTarget.h"
 #include "tkEngine/graphics/tkPrimitive.h"
+#include "tkEngine/graphics/preRender/tkPreRender.h"
+
 namespace tkEngine{
 	/*!
 	* @brief	描画優先ごとに対応するレンダリングコンテキストの番号のマップを定義するための構造体。
@@ -18,6 +20,7 @@ namespace tkEngine{
 		u8	startPrio;			//!<開始プライオリティ
 		u32 renderContextNo;	//!<レンダリングコンテキストNo
 	};
+
 	/*!
 	 * @brief	初期化用のパラメータ。
 	 */
@@ -35,6 +38,7 @@ namespace tkEngine{
 		u32					screenHeight;			//!<スクリーンの高さ。
 		u32					frameBufferWidth;		//!<フレームバッファの幅。これが内部解像度。
 		u32					frameBufferHeight;		//!<フレームバッファの高さ。これが内部解像度。
+		u32					renderEffectFlag;		//!<描画エフェクトのフラグ。
 	};
 	
 	/*!
@@ -160,6 +164,7 @@ namespace tkEngine{
 		CEffect*								m_pTransformedPrimEffect;	//!<トランスフォーム済みプリミティブを描画するためのエフェクト。
 		CPrimitive								m_copyBackBufferPrim;		//!<メインレンダーターゲットをバックバッファにコピーするときに使うプリミティブ。
 		CRenderTarget							m_backBufferRT;				//!<バックバッファのレンダリングターゲット。
+		CPreRender								m_preRender;				//!<プリレンダー。
 	};
 	
 }
