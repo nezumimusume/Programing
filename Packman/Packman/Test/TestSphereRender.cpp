@@ -11,8 +11,8 @@ using namespace tkEngine;
 
 void CTestSphereRender::Start()
 {
-	m_sphere.Create( 10.0f, 10, 0xFFF00FFF, true );
-	m_pEffect = CEngine::Instance().EffectManager().LoadEffect("../tkEngine/presetShader/ColorNormalPrim.fx");
+	m_sphere.Create( 10.0f, 10, 0xFFF666F, true );
+	m_pEffect = CEngine::Instance().EffectManager().LoadEffect("Assets/presetShader/ColorNormalPrim.fx");
 	//ƒJƒƒ‰‚ð‰Šú‰»B
 	{
 		CVector3 cameraPos;
@@ -42,6 +42,8 @@ void CTestSphereRender::Start()
 	lightDir.Add( CVector3::AxisX, CVector3::AxisZ);
 	lightDir.Normalize();
 	m_light.SetDiffuseLightDirection(2, lightDir);
+	m_light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
+	m_idMapModel.Create(m_sphere.GetPrimitive());
 }
 void CTestSphereRender::Update()
 {
@@ -53,6 +55,13 @@ void CTestSphereRender::Update()
 	m_sphere.SetRotation(rot);
 	m_sphere.SetPosition(pos);
 	m_sphere.UpdateWorldMatrix();
+
+	CMatrix mMVP = m_camera.GetViewProjectionMatrix();
+	const CMatrix& mWorld = m_sphere.GetWorldMatrix();
+
+	mMVP.Mul(mWorld, mMVP);
+	m_idMapModel.SetWVPMatrix(mMVP);
+	tkEngine::CEngine::Instance().IDMap().Entry(&m_idMapModel);
 }
 void CTestSphereRender::Render(tkEngine::CRenderContext& renderContext)
 {
@@ -60,9 +69,7 @@ void CTestSphereRender::Render(tkEngine::CRenderContext& renderContext)
 	const CMatrix& mWorld = m_sphere.GetWorldMatrix();
 
 	mMVP.Mul(mWorld, mMVP);
-	mMVP.Transpose();
 	CMatrix mRot = m_sphere.GetRotationMatrix();
-	mRot.Transpose();
 	m_pEffect->SetTechnique(renderContext, "ColorNormalPrim");
 	m_pEffect->SetValue(renderContext, "g_mWVP", &mMVP, sizeof(mMVP));
 	m_pEffect->SetValue(renderContext, "g_worldRotationMatrix", &mRot, sizeof(mRot));

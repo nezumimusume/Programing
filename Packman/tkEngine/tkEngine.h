@@ -11,6 +11,7 @@
 #include "tkEngine/graphics/tkRenderTarget.h"
 #include "tkEngine/graphics/tkPrimitive.h"
 #include "tkEngine/graphics/preRender/tkPreRender.h"
+#include "tkEngine/graphics/postEffect/tkPostEffect.h"
 #include "tkEngine/graphics/tkGraphicsConfig.h"
 
 namespace tkEngine{
@@ -55,7 +56,8 @@ namespace tkEngine{
 			m_screenHeight(0),
 			m_screenWidth(0),
 			m_numRenderContext(0),
-			m_pTransformedPrimEffect(nullptr)
+			m_pTransformedPrimEffect(nullptr),
+			m_currentMainRenderTarget(0)
 		{}
 		~CEngine() {}
 	public:
@@ -131,6 +133,20 @@ namespace tkEngine{
 		{
 			return m_preRender.GetIDMap();
 		}
+		/*!
+		* @brief	メインレンダリングターゲットを切り替え。
+		*/
+		void ToggleMainRenderTarget()
+		{
+			m_currentMainRenderTarget ^= 1;
+		}
+		/*!
+		* @brief	メインレンダリングターゲットを取得。
+		*/
+		CRenderTarget& GetMainRenderTarget()
+		{
+			return m_mainRenderTarget[m_currentMainRenderTarget];
+		}
 	private:
 		/*!
 		* @brief	メインレンダリングターゲットの内容をバックバッファにコピー。
@@ -168,11 +184,13 @@ namespace tkEngine{
 		u32										m_screenHeight;				//!<スクリーンの高さ。
 		u32										m_frameBufferWidth;			//!<フレームバッファの幅。これが内部解像度。
 		u32										m_frameBufferHeight;		//!<フレームバッファの高さ。これが内部解像度。
-		CRenderTarget							m_mainRenderTarget;			//!<メインレンダリングターゲット
+		u8										m_currentMainRenderTarget;	//!<現在使用されているメインレンダーターゲット。
+		CRenderTarget							m_mainRenderTarget[2];		//!<メインレンダリングターゲット
 		CEffect*								m_pTransformedPrimEffect;	//!<トランスフォーム済みプリミティブを描画するためのエフェクト。
 		CPrimitive								m_copyBackBufferPrim;		//!<メインレンダーターゲットをバックバッファにコピーするときに使うプリミティブ。
 		CRenderTarget							m_backBufferRT;				//!<バックバッファのレンダリングターゲット。
 		CPreRender								m_preRender;				//!<プリレンダー。
+		CPostEffect								m_postEffect;				//!<ポストエフェクト。
 	};
 	
 }

@@ -7,7 +7,13 @@
 #include <future>
 
 namespace tkEngine{
-	void CGameObjectManager::Execute(CRenderContext* renderContext, u32 numRenderContext, const SRenderContextMap* renderContextMap, CPreRender& preRender )
+	void CGameObjectManager::Execute(
+		CRenderContext* renderContext, 
+		u32 numRenderContext,
+		const SRenderContextMap* renderContextMap, 
+		CPreRender& preRender,
+		CPostEffect& postEffect
+	)
 	{
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
@@ -31,7 +37,7 @@ namespace tkEngine{
 		}
 		
 		renderContext[0].Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
-			D3DCOLOR_XRGB(0, 0, 255), 1.0f, 0
+			D3DCOLOR_XRGB(128, 128, 128), 1.0f, 0
 			);
 		tkEngine::SViewport vp = {
 			0,
@@ -64,6 +70,8 @@ namespace tkEngine{
 			TK_ASSERT(0, "not implement!!");
 			
 		}
+		
+		postEffect.Render(renderContext[numRenderContext-1]);
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
 				obj->PostRenderWrapper(renderContext[numRenderContext-1]);

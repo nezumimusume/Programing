@@ -9,7 +9,9 @@ namespace tkEngine{
 	CRenderTarget::CRenderTarget() :
 		m_depthSurface(nullptr),
 		m_textureDX(nullptr),
-		m_surface(nullptr)
+		m_surface(nullptr),
+		m_width(0),
+		m_height(0)
 	{
 	}
 	CRenderTarget::~CRenderTarget()
@@ -27,6 +29,8 @@ namespace tkEngine{
 	)
 	{
 		Release();
+		m_width = w;
+		m_height = h;
 		LPDIRECT3DDEVICE9 d3dDevice = CEngine::Instance().GetD3DDevice();
 		//深度バッファの作成。
 		HRESULT hr = d3dDevice->CreateDepthStencilSurface(

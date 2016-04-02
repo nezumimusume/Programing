@@ -19,6 +19,7 @@ private:
 	tkEngine::CCamera		m_camera;
 	tkEngine::CLight		m_light;
 	f32						m_angle;
+	tkEngine::CIDMapModel	m_idMapModel;
 };
 
 

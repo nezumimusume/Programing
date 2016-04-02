@@ -10,7 +10,7 @@ namespace tkEngine{
 	/*!
 	 *@brief	レンダリングターゲット
 	 */
-	class CRenderTarget{
+	class CRenderTarget : Noncopyable{
 	public:
 		/*!
 		 *@brief	コンストラクタ
@@ -50,6 +50,20 @@ namespace tkEngine{
 		{
 			return &m_texture;
 		}
+		/*!
+		*@brief	レンダリングターゲットの幅を取得。
+		*/
+		u32 GetWidth() const
+		{
+			return m_width;
+		}
+		/*!
+		*@brief	レンダリングターゲットの高さを取得。
+		*/
+		u32 GtHeight() const
+		{
+			return m_height;
+		}
 		LPDIRECT3DSURFACE9 GetDepthSurfaceDx()
 		{
 			return m_depthSurface;
@@ -66,12 +80,14 @@ namespace tkEngine{
 		{
 			m_surface = surface;
 		}
-		
+
 	private:
 		LPDIRECT3DSURFACE9		m_depthSurface;		//!<深度バッファ用のサーフェイス
 		LPDIRECT3DTEXTURE9		m_textureDX;		//!<書き込み先のテクスチャ。
 		LPDIRECT3DSURFACE9		m_surface;			//!<サーフェイス
 		CTexture				m_texture;			//!<テクスチャ。
+		u32						m_width;			//!<幅。
+		u32						m_height;			//!<高さ。
 	};
 }
 #endif // _TKRENDERTARGET_H_

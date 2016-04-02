@@ -30,7 +30,7 @@ VS_OUTPUT VSMain( VS_INPUT In )
 	VS_OUTPUT Out;
 	Out.pos = mul(In.pos, g_mWVP);
 	Out.color = In.color;
-	Out.normal = mul(g_worldRotationMatrix, In.normal);
+	Out.normal = mul(In.normal, g_worldRotationMatrix);
 	//ñ@ê¸ÇâÒì]ÅB
 	return Out;
 }

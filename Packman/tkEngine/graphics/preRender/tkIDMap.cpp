@@ -24,12 +24,13 @@ namespace tkEngine{
 	void CIDMapModel::Render(CRenderContext& renderContext, CEffect* pEffect )
 	{
 		if (m_prim) {
-			m_mWVP.Transpose();
 			pEffect->SetValue(renderContext, "g_mWVP", &m_mWVP, sizeof(m_mWVP));
 			renderContext.SetVertexDeclaration(m_prim->GetVertexDecl());
 			renderContext.SetStreamSource(0, m_prim->GetVertexBuffer());
 			renderContext.SetIndices(m_prim->GetIndexBuffer());
+			pEffect->BeginPass(renderContext, 0);
 			renderContext.DrawIndexedPrimitive(m_prim);
+			pEffect->EndPass(renderContext);
 		}
 
 	}
@@ -59,13 +60,10 @@ namespace tkEngine{
 			renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,0, 1.0f, 0);
 			m_pIDMapEffect->SetTechnique(renderContext, "RenderIDMap");
 			m_pIDMapEffect->Begin(renderContext);
-			m_pIDMapEffect->BeginPass(renderContext, 0);
 			for (auto model : m_idMapModels) {
 				model->Render( renderContext, m_pIDMapEffect );
 			}
-			m_pIDMapEffect->EndPass(renderContext);
 			m_pIDMapEffect->End(renderContext);
-
 			renderContext.SetRenderTarget(0, pRTBackup);
 			m_idMapModels.clear();
 		}

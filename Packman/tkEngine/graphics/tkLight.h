@@ -70,7 +70,7 @@ namespace tkEngine {
 		 */
 		void SetAmbinetLight( const CVector3& ambient )
 		{
-			m_ambientLight;
+			m_ambientLight = ambient;
 		}
 	private:
 		CVector3		m_diffuseLightDirection[NUM_DIFFUSE_LIGHT];		//!<ディフューズライトの向き。

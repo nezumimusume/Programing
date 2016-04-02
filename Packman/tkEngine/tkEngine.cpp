@@ -90,15 +90,18 @@ namespace tkEngine{
 			return false;
 		}
 		//メインレンダリングターゲットを作成。
-		m_mainRenderTarget.Create(
-			m_frameBufferWidth,
-			m_frameBufferHeight,
-			1,
-			FMT_A8R8G8B8,
-			FMT_D16,
-			MULTISAMPLE_NONE,
-			0
-		);
+		for (u32 i = 0; i < 2; i++) {
+			m_mainRenderTarget[0].Create(
+				m_frameBufferWidth,
+				m_frameBufferHeight,
+				1,
+				FMT_A8R8G8B8,
+				FMT_D16,
+				MULTISAMPLE_NONE,
+				0
+			);
+		}
+
 		CGameObjectManager::Instance().Init( initParam.gameObjectPrioMax );
 		InitCopyBackBufferPrimitive();
 		//レンダリングコンテキストの初期化。
@@ -118,6 +121,8 @@ namespace tkEngine{
 		m_pTransformedPrimEffect = m_effectManager.LoadEffect("Assets/presetShader/TransformedPrim.fx");
 		//プリレンダリングを作成。
 		m_preRender.Create( initParam.graphicsConfig );
+		//ポストエフェクトをレンダリング。
+		m_postEffect.Create( initParam.graphicsConfig );
 		
 		ShowWindow(m_hWnd, SW_SHOWDEFAULT);
 		UpdateWindow(m_hWnd);
@@ -159,10 +164,11 @@ namespace tkEngine{
 	}
 	void CEngine::CopyMainRenderTargetToBackBuffer(CRenderContext& renderContext)
 	{
+		CRenderTarget& rt = m_mainRenderTarget[m_currentMainRenderTarget];
 		m_pTransformedPrimEffect->SetTechnique(renderContext, "ColorNormalPrim");
 		m_pTransformedPrimEffect->Begin(renderContext);
 		m_pTransformedPrimEffect->BeginPass(renderContext, 0);
-		m_pTransformedPrimEffect->SetTexture(renderContext, "g_tex", m_mainRenderTarget.GetTexture());
+		m_pTransformedPrimEffect->SetTexture(renderContext, "g_tex", rt.GetTexture());
 		renderContext.SetVertexDeclaration(m_copyBackBufferPrim.GetVertexDecl());
 		renderContext.SetStreamSource(0, m_copyBackBufferPrim.GetVertexBuffer());
 		renderContext.SetIndices(m_copyBackBufferPrim.GetIndexBuffer());
@@ -186,21 +192,20 @@ namespace tkEngine{
 			else {
 				CRenderContext& topRenderContext = m_renderContextArray[0];
 				CRenderContext& lastRenderContext = m_renderContextArray[m_numRenderContext - 1];
-				topRenderContext.SetRenderTarget(0, &m_mainRenderTarget);
+				topRenderContext.SetRenderTarget(0, &m_mainRenderTarget[m_currentMainRenderTarget]);
 				
 				CGameObjectManager& goMgr = CGameObjectManager::Instance();
 				goMgr.Execute(
 					m_renderContextArray.get(), 
 					m_numRenderContext, 
 					m_renderContextMap.get(),
-					m_preRender
+					m_preRender,
+					m_postEffect
 				);
 				lastRenderContext.SetRenderTarget(0, &m_backBufferRT);
 				CopyMainRenderTargetToBackBuffer(lastRenderContext);
 
 				m_pD3DDevice->BeginScene();
-				m_pD3DDevice->SetRenderTarget(0, m_mainRenderTarget.GetSurfaceDx());
-				m_pD3DDevice->SetDepthStencilSurface(m_mainRenderTarget.GetDepthSurfaceDx());
 				//レンダリングコマンドのサブミット
 				for( u32 i = 0; i < m_numRenderContext; i++ ){
 					m_renderContextArray[i].SubmitCommandBuffer();
@@ -213,7 +218,9 @@ namespace tkEngine{
 	}
 	void CEngine::Final()
 	{
-		m_mainRenderTarget.Release();
+		for (u32 i = 0; i < 2; i++) {
+			m_mainRenderTarget[i].Release();
+		}
 		m_effectManager.Release();
 		if (m_pD3DDevice != nullptr)
 			m_pD3DDevice->Release();

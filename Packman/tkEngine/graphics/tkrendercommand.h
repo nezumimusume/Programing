@@ -192,7 +192,6 @@ namespace tkEngine{
 			m_pData = renderContext.AllocFromCommandBuffer(sizeInByte);
 			//ÉRÉs
 			memcpy(m_pData, pData, sizeInByte);
-
 		}
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
 		{

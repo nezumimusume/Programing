@@ -63,6 +63,27 @@ namespace tkEngine{
 		 *@param[in]	renderContext	レンダリングコンテキスト。
 		 */
 		void RenderToIDMap( CRenderContext& renderContext );
+		/*!
+		* @brief	IDマップのテクスチャを取得。
+		*/
+		CTexture* GetTexture()
+		{
+			return m_idMapRT.GetTexture();
+		}
+		/*!
+		* @brief	IDマップの幅を取得。
+		*/
+		u32 GetWitdh() const
+		{
+			return m_idMapRT.GetWidth();
+		}
+		/*!
+		* @brief	IDマップの高さを取得。
+		*/
+		u32 GetHeight() const
+		{
+			return m_idMapRT.GtHeight();
+		}
 	private:
 		bool						m_isEnable;		//!<有効？
 		CRenderTarget				m_idMapRT;		//!<IDマップを書き込むレンダリングターゲット。
