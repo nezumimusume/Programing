@@ -6,6 +6,7 @@
 #define _TKPOSTEFFECT_H_
 
 #include "tkEngine/graphics/postEffect/tkEdgeRender.h"
+#include "tkEngine/graphics/postEffect/tkBloomRender.h"
 
 namespace tkEngine{
 	/*!
@@ -35,6 +36,7 @@ namespace tkEngine{
 		void RenderFullScreen(CRenderContext& renderContext);
 	private:
 		CEdgeRender		m_edgeRender;		//!<エッジ描画。
+		CBloomRender	m_bloomRender;		//!<Bloom。
 		CPrimitive		m_fullscreenRenderPrim;	//!<フルスクリーンをレンダリングするためのプリミティブ。
 	};
 }

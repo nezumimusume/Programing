@@ -35,7 +35,8 @@ int WINAPI wWinMain(
 	initParam.graphicsConfig.edgeRenderConfig.isEnable = true;
 	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
-	
+	//Bloom
+	initParam.graphicsConfig.bloomConfig.isEnable = true;
 	CEngine::Instance().Init( initParam );	//èâä˙âªÅB
 #ifdef TEST_BUILD
 	CGameObjectManager::Instance().NewGameObject<CTest>(0);

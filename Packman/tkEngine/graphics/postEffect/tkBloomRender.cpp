@@ -1,0 +1,154 @@
+/*!
+ * @brief	ブルーム
+ */
+#include "tkEngine/tkEnginePreCompile.h"
+#include "tkEngine/graphics/postEffect/tkBloomRender.h"
+#include "tkEngine/graphics/tkEffect.h"
+#include "tkEngine/graphics/tkRenderTarget.h"
+
+namespace tkEngine{
+	/*!
+	 * @brief	コンストラクタ。
+	 */
+	CBloomRender::CBloomRender()
+	{
+	}
+	/*!
+	 * @brief	デストラクタ。
+	 */
+	CBloomRender::~CBloomRender()
+	{
+	}
+	void CBloomRender::UpdateWeight(f32 dispersion)
+	{
+		f32 total = 0;
+		for (u32 i = 0; i<NUM_WEIGHTS; i++) {
+			f32 pos = 1.0f + 2.0f*(f32)i;
+			m_weights[i] = expf(-0.5f*(f32)(pos*pos) / dispersion);
+			total += 2.0f*m_weights[i];
+		}
+		// 規格化
+		for (u32 i = 0; i < NUM_WEIGHTS; i++) {
+			m_weights[i] /= total;
+		}
+	}
+	/*!
+	 * @brief	描画。
+	 */
+	void CBloomRender::Render( CRenderContext& renderContext, CPostEffect* postEffect )
+	{
+
+		if (m_isEnable) {
+			UpdateWeight(25.0f);
+			CRenderTarget* rt = renderContext.GetRenderTarget(0);
+			
+			//輝度抽出
+			{
+				renderContext.SetRenderTarget(0, &m_luminanceRenderTarget);
+				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0, 1.0f, 0);
+				m_pEffect->SetTechnique(renderContext, "SamplingLuminance");
+				m_pEffect->Begin(renderContext);
+				m_pEffect->BeginPass(renderContext, 0);
+				m_pEffect->SetTexture(renderContext, "g_scene", rt->GetTexture());
+				m_pEffect->CommitChanges(renderContext);
+				postEffect->RenderFullScreen(renderContext);
+
+				m_pEffect->EndPass(renderContext);
+				m_pEffect->End(renderContext);
+				
+			}
+			//XBlur
+			{
+				renderContext.SetRenderTarget(0, &m_downSamplingRenderTarget[0]);
+				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0, 1.0f, 0);
+				m_pEffect->SetTechnique(renderContext, "XBlur");
+				m_pEffect->Begin(renderContext);
+				m_pEffect->BeginPass(renderContext, 0);
+				float size[2] = {
+					s_cast<f32>(m_luminanceRenderTarget.GetWidth()),
+					s_cast<f32>(m_luminanceRenderTarget.GetHeight())
+				};
+				float offset[] = {
+					16.0f / s_cast<f32>(m_luminanceRenderTarget.GetWidth()),
+					0.0f
+				};
+				m_pEffect->SetValue(renderContext, "g_luminanceTexSize", size, sizeof(size));
+				m_pEffect->SetValue(renderContext, "g_offset", offset, sizeof(size));
+				m_pEffect->SetValue(renderContext, "g_weight", m_weights, sizeof(m_weights));
+				
+				m_pEffect->SetTexture(renderContext, "g_blur", m_luminanceRenderTarget.GetTexture());
+				m_pEffect->CommitChanges(renderContext);
+				postEffect->RenderFullScreen(renderContext);
+
+				m_pEffect->EndPass(renderContext);
+				m_pEffect->End(renderContext);
+
+			}
+			//YBlur
+			{
+				renderContext.SetRenderTarget(0, &m_downSamplingRenderTarget[1]);
+				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0, 1.0f, 0);
+				m_pEffect->SetTechnique(renderContext, "YBlur");
+				m_pEffect->Begin(renderContext);
+				m_pEffect->BeginPass(renderContext, 0);
+				float size[2] = {
+					s_cast<f32>(m_downSamplingRenderTarget[0].GetWidth()),
+					s_cast<f32>(m_downSamplingRenderTarget[0].GetHeight())
+				};
+				float offset[] = {
+					0.0f,
+					16.0f / s_cast<f32>(m_downSamplingRenderTarget[0].GetWidth()),
+				};
+				m_pEffect->SetValue(renderContext, "g_luminanceTexSize", size, sizeof(size));
+				m_pEffect->SetValue(renderContext, "g_offset", offset, sizeof(size));
+				m_pEffect->SetValue(renderContext, "g_weight", m_weights, sizeof(m_weights));
+
+				m_pEffect->SetTexture(renderContext, "g_blur", m_downSamplingRenderTarget[0].GetTexture());
+				m_pEffect->CommitChanges(renderContext);
+				postEffect->RenderFullScreen(renderContext);
+
+				m_pEffect->EndPass(renderContext);
+				m_pEffect->End(renderContext);
+			}
+			{
+				//戻す。
+				renderContext.SetRenderTarget(0, rt);
+				//加算合成。
+				renderContext.SetRenderState(RS_ALPHABLENDENABLE, TRUE);
+				renderContext.SetRenderState(RS_SRCBLEND, D3DBLEND_ONE);
+				renderContext.SetRenderState(RS_DESTBLEND, D3DBLEND_ONE);
+				m_pEffect->SetTechnique(renderContext, "Final");
+				m_pEffect->Begin(renderContext);
+				m_pEffect->BeginPass(renderContext, 0);
+				m_pEffect->SetTexture(renderContext, "g_blur", m_downSamplingRenderTarget[1].GetTexture());
+				m_pEffect->CommitChanges(renderContext);
+				postEffect->RenderFullScreen(renderContext);
+
+				m_pEffect->EndPass(renderContext);
+				m_pEffect->End(renderContext);
+
+				renderContext.SetRenderState(RS_ALPHABLENDENABLE, FALSE);
+				renderContext.SetRenderState(RS_SRCBLEND, D3DBLEND_SRCALPHA);
+				renderContext.SetRenderState(RS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+			}
+		}
+
+	}
+	/*!
+	 * @brief	作成。
+	 */
+	void CBloomRender::Create( const SGraphicsConfig& config )
+	{
+		if (config.bloomConfig.isEnable) {
+			u32 w = CEngine::Instance().GetFrameBufferWidth();
+			u32 h = CEngine::Instance().GetFrameBufferHeight();
+			//輝度抽出用のレンダリングターゲットを作成。
+			m_luminanceRenderTarget.Create(w, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);
+			//ダウンサンプリング用のレンダリングターゲットを作成。
+			m_downSamplingRenderTarget[0].Create(w >> 1, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);		//横ブラー用。
+			m_downSamplingRenderTarget[1].Create(w >> 1, h >> 1, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);	//縦ブラー用。
+			m_pEffect = CEngine::Instance().EffectManager().LoadEffect("Assets/presetShader/bloom.fx");
+			m_isEnable = true;
+		}
+	}
+}

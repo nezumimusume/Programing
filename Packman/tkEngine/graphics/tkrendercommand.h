@@ -33,6 +33,7 @@ namespace tkEngine{
 		eRenderCommand_SetRenderTarget,
 		eRenderCommand_SetDepthStencilSurface,
 		eRenderCommand_EffectSetTexture,
+		eRenderCommand_EffectCommitChanges,
 		eRenderCommand_Undef
 	};
 	/*!
@@ -170,6 +171,24 @@ namespace tkEngine{
 		void Execute( LPDIRECT3DDEVICE9 pD3DDevice )
 		{
 			m_pEffect->EndPass();
+		}
+	};
+	/*!
+	* @brief	ID3DXEffect::CommitChanges
+	*/
+	class CRenderCommand_EffectCommitChanges : public CRenderCommandBase
+	{
+		ID3DXEffect*	m_pEffect;
+	public:
+		CRenderCommand_EffectCommitChanges(ID3DXEffect* pEffect) :
+			CRenderCommandBase(eRenderCommand_EffectCommitChanges),
+			m_pEffect(pEffect)
+		{
+			TK_ASSERT(m_pEffect != nullptr, "m_pEffect is null");
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			m_pEffect->CommitChanges();
 		}
 	};
 	/*!

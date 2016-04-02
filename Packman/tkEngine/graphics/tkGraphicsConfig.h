@@ -23,13 +23,19 @@ namespace tkEngine{
 		u32		shadowMapWidth;		//!<シャドウマップの幅。
 		u32		shadowMapHeight;	//!<シャドウマップの高さ。
 	};
-	
+	/*!
+	* @brief	Bloomのコンフィグ
+	*/
+	struct SBloomConfig {
+		bool	isEnable;		//!<ブルームが有効かどうかのフラグ。
+	};
 	/*!
 	 * @brief	グラフィックスコンフィグ。
 	 */
 	struct SGraphicsConfig{
 		SEdgeRenderConfig		edgeRenderConfig;		//!<エッジ抽出処理のコンフィグ。
 		SShadowRenderConfig		shadowRenderConfig;		//!<影の処理のコンフィグ。
+		SBloomConfig			bloomConfig;			//!<Bloomのコンフィグ。
 	};
 }
 

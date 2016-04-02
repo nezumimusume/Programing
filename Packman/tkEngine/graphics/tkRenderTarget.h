@@ -60,7 +60,7 @@ namespace tkEngine{
 		/*!
 		*@brief	レンダリングターゲットの高さを取得。
 		*/
-		u32 GtHeight() const
+		u32 GetHeight() const
 		{
 			return m_height;
 		}

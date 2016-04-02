@@ -82,7 +82,7 @@ namespace tkEngine{
 		*/
 		u32 GetHeight() const
 		{
-			return m_idMapRT.GtHeight();
+			return m_idMapRT.GetHeight();
 		}
 	private:
 		bool						m_isEnable;		//!<—LŒøH

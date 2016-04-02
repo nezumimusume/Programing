@@ -76,6 +76,9 @@ namespace tkEngine{
 			case eRenderCommand_EffectSetTexture:
 				((CRenderCommand_EffectSetTexture*)(cmdBase))->Execute(pD3DDevice);
 				break;
+			case eRenderCommand_EffectCommitChanges:
+				((CRenderCommand_EffectCommitChanges*)(cmdBase))->Execute(pD3DDevice);
+				break;
 			default:
 				TK_ASSERT(false, "not implement renderCommand");
 				break;

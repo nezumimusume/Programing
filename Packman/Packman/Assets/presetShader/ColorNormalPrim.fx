@@ -47,20 +47,19 @@ float4 DiffuseLight( VS_OUTPUT In )
 	color.a = 1.0f;
 	return color;
 }
-float4 PSMain( VS_OUTPUT In ) : COLOR0
+float4 PSMain( VS_OUTPUT In, uniform bool isIuminance  ) : COLOR0
 {
 	float4 color = DiffuseLight(In);
 	color.xyz += g_light.ambient;
 	color.xyz *= In.color.xyz;
-	//トゥーン
-/*	float t = dot(In.normal, g_light.diffuseLightDir[0]);
-	t = t * 0.5f + 0.5f;
-	if(t < 0.3f){
-		color = In.color * 0.8f;
+	
+	if(isIuminance){
+		//αに輝度を埋め込む。
+		float iuminance = log(dot( color.xyz, float3(float3(0.2125f, 0.7154f, 0.0721f) +0.0001f)));
+		color.a = 1.0f / iuminance;
 	}else{
-		color = In.color;
+		color.a = 1.0f;
 	}
-	color.w = 1.0f;*/
 	return color;
 }
 
@@ -69,6 +68,17 @@ technique ColorNormalPrim
     pass P0
     {          
         VertexShader = compile vs_2_0 VSMain();
-        PixelShader  = compile ps_2_0 PSMain();
+        PixelShader  = compile ps_2_0 PSMain(false);
     }
+}
+/*!
+ * @brief	自己発光を行うオブジェクトで使ってね。
+ */
+technique ColorNormalPrimIuminance
+{
+	pass P0
+    {          
+        VertexShader = compile vs_2_0 VSMain();
+        PixelShader  = compile ps_2_0 PSMain(true);
+	}
 }

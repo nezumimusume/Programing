@@ -151,6 +151,7 @@
   <ItemGroup>
     <ClCompile Include="gameObject\tkGameObject.cpp" />
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
+    <ClCompile Include="graphics\postEffect\tkBloomRender.cpp" />
     <ClCompile Include="graphics\postEffect\tkEdgeRender.cpp" />
     <ClCompile Include="graphics\postEffect\tkPostEffect.cpp" />
     <ClCompile Include="graphics\preRender\tkIDMap.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="debug\tkLog.h" />
     <ClInclude Include="gameObject\tkGameObject.h" />
     <ClInclude Include="gameObject\tkGameObjectManager.h" />
+    <ClInclude Include="graphics\postEffect\tkBloomRender.h" />
     <ClInclude Include="graphics\postEffect\tkEdgeRender.h" />
     <ClInclude Include="graphics\postEffect\tkPostEffect.h" />
     <ClInclude Include="graphics\preRender\tkIDMap.h" />

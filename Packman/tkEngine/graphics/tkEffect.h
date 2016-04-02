@@ -78,6 +78,13 @@ namespace tkEngine{
 		{
 			renderContext.SetRenderCommand(CRenderCommand_EffectEndPass(m_pEffect));
 		}
+		/*!
+		* @brief	ID3DXEffect::CommitChangesと同じ。
+		*/
+		void CommitChanges(CRenderContext& renderContext)
+		{
+			renderContext.SetRenderCommand(CRenderCommand_EffectCommitChanges(m_pEffect));
+		}
 	private:
 		ID3DXEffect*	m_pEffect;		//!<D3Dエフェクト
 	};

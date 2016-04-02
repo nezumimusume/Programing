@@ -17,6 +17,9 @@ namespace tkEngine{
 		if(config.edgeRenderConfig.isEnable){
 			m_edgeRender.Create(config );
 		}
+		if (config.bloomConfig.isEnable) {
+			m_bloomRender.Create(config);
+		}
 		static SShapeVertex_PT vertex[]{
 			{
 				-1.0f, 1.0f, 0.0f, 1.0f,
@@ -52,6 +55,7 @@ namespace tkEngine{
 	void CPostEffect::Render(CRenderContext& renderContext)
 	{
 		m_edgeRender.Render(renderContext, this);
+		m_bloomRender.Render(renderContext, this);
 	}
 	/*!
 	* @brief	フルスクリーン描画。
