@@ -30,15 +30,16 @@
 #include <algorithm>
 #include "tkEngine/typedef.h"
 #include "tkEngine/math/tkMath.h"
-#include "tkEngine/policy/tkNoncopyable.h"
 #include "tkEngine/debug/tkAssert.h"
 #include "tkEngine/debug/tkLog.h"
+#include "tkEngine/policy/tkNoncopyable.h"
+#include "tkEngine/math/tkMatrix.h"
+#include "tkEngine/math/tkVector.h"
 #include "tkEngine/graphics/tkGraphicsType.h"
 #include "tkEngine/tkEngine.h"
 #include "tkEngine/gameObject/tkGameObjectManager.h"
 #include "tkEngine/gameObject/tkGameObject.h"
 #include "tkEngine/graphics/tkRenderCommand.h"
 #include "tkEngine/graphics/tkRenderContext.h"
-#include "tkEngine/math/tkMatrix.h"
-#include "tkEngine/math/tkVector.h"
+
 // TODO: reference additional headers your program requires here

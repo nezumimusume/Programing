@@ -31,7 +31,11 @@ int WINAPI wWinMain(
 	initParam.screenWidth = 1280;
 	initParam.frameBufferHeight = 720;
 	initParam.frameBufferWidth = 1280;
-
+	//—ÖŠsü’Šoˆ—‚Ìİ’èB
+	initParam.graphicsConfig.edgeRenderConfig.isEnable = true;
+	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
+	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
+	
 	CEngine::Instance().Init( initParam );	//‰Šú‰»B
 #ifdef TEST_BUILD
 	CGameObjectManager::Instance().NewGameObject<CTest>(0);

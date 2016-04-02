@@ -7,7 +7,7 @@
 #include <future>
 
 namespace tkEngine{
-	void CGameObjectManager::Execute(CRenderContext* renderContext, u32 numRenderContext, const SRenderContextMap* renderContextMap)
+	void CGameObjectManager::Execute(CRenderContext* renderContext, u32 numRenderContext, const SRenderContextMap* renderContextMap, CPreRender& preRender )
 	{
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
@@ -30,6 +30,22 @@ namespace tkEngine{
 			}
 		}
 		
+		renderContext[0].Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
+			D3DCOLOR_XRGB(0, 0, 255), 1.0f, 0
+			);
+		tkEngine::SViewport vp = {
+			0,
+			0,
+			tkEngine::CEngine::Instance().GetFrameBufferWidth(),
+			tkEngine::CEngine::Instance().GetFrameBufferHeight(),
+			0.0f,
+			1.0f
+		};
+		renderContext[0].SetViewport(vp);
+		renderContext[0].SetRenderState(RS_CULLMODE, CULL_NONE);
+		//プリレンダリング。
+		preRender.Render(renderContext[0]);
+
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
 				obj->PreRenderWrapper(renderContext[0]);

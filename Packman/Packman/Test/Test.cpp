@@ -24,17 +24,5 @@ void CTest::Update()
 }
 void CTest::Render(tkEngine::CRenderContext& renderContext)
 {
-	renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
-		D3DCOLOR_XRGB(0, 0, 255), 1.0f, 0
-	);
-	tkEngine::SViewport vp = {
-		0,
-		0,
-		tkEngine::CEngine::Instance().GetFrameBufferWidth(),
-		tkEngine::CEngine::Instance().GetFrameBufferHeight(),
-		0.0f,
-		1.0f
-	};
-	renderContext.SetViewport(vp);
-	renderContext.SetRenderState(RS_CULLMODE, CULL_NONE);
+	
 }

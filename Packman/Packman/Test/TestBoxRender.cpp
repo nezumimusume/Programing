@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "test/TestBoxRender.h"
 #include "tkEngine/graphics/tkEffect.h"
+#include "tkEngine/graphics/preRender/tkIDMap.h"
 
 using namespace tkEngine;
 
@@ -45,6 +46,7 @@ void CTestBoxRender::Start()
 		lightDir.Normalize();
 		m_light.SetDiffuseLightDirection(2, lightDir);
 	}
+	m_idMapModel.Create( m_box.GetPrimitive() );
 }
 void CTestBoxRender::Update() 
 {
@@ -56,6 +58,13 @@ void CTestBoxRender::Update()
 	m_box.SetRotation(rot);
 	m_box.SetPosition(pos);
 	m_box.UpdateWorldMatrix();
+	
+	CMatrix mMVP = m_camera.GetViewProjectionMatrix();
+	const CMatrix& mWorld = m_box.GetWorldMatrix();
+
+	mMVP.Mul(mWorld, mMVP);
+	m_idMapModel.SetWVPMatrix(mMVP);
+	tkEngine::CEngine::Instance().IDMap().Entry(&m_idMapModel);
 }
 void CTestBoxRender::Render(tkEngine::CRenderContext& renderContext) 
 {

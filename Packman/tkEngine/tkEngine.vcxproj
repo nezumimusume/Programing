@@ -151,6 +151,8 @@
   <ItemGroup>
     <ClCompile Include="gameObject\tkGameObject.cpp" />
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
+    <ClCompile Include="graphics\preRender\tkIDMap.cpp" />
+    <ClCompile Include="graphics\preRender\tkPreRender.cpp" />
     <ClCompile Include="graphics\tkCamera.cpp" />
     <ClCompile Include="graphics\tkEffect.cpp" />
     <ClCompile Include="graphics\tkEffectManager.cpp" />
@@ -186,6 +188,8 @@
     <ClInclude Include="debug\tkLog.h" />
     <ClInclude Include="gameObject\tkGameObject.h" />
     <ClInclude Include="gameObject\tkGameObjectManager.h" />
+    <ClInclude Include="graphics\preRender\tkIDMap.h" />
+    <ClInclude Include="graphics\preRender\tkPreRender.h" />
     <ClInclude Include="graphics\tkCamera.h" />
     <ClInclude Include="graphics\tkEffect.h" />
     <ClInclude Include="graphics\tkEffectManager.h" />

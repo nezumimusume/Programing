@@ -98,6 +98,12 @@
     <ClCompile Include="graphics\tkMaterial.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\preRender\tkPreRender.cpp">
+      <Filter>Source Files\graphics\prerender</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\preRender\tkIDMap.cpp">
+      <Filter>Source Files\graphics\prerender</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -183,6 +189,12 @@
     </ClInclude>
     <ClInclude Include="graphics\tkRenderTarget.h">
       <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\preRender\tkPreRender.h">
+      <Filter>Source Files\graphics\prerender</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\preRender\tkIDMap.h">
+      <Filter>Source Files\graphics\prerender</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

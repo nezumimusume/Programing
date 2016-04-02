@@ -35,8 +35,14 @@ namespace tkEngine{
 		*@param[in]	renderContext		レンダリングコンテキスト。
 		*@param[in]	numRenderContext	レンダリングコンテキストの数。
 		*@param[in]	renderContextMap	レンダリングコンテキストのマップ。
+		*@param[in]	preRender			プリレンダー
 		*/
-		void Execute( CRenderContext* renderContext, u32 numRenderContext, const SRenderContextMap* renderContextMap );
+		void Execute( 
+			CRenderContext* renderContext, 
+			u32 numRenderContext, 
+			const SRenderContextMap* renderContextMap,
+			CPreRender& preRender
+			);
 		/*!
 		 *@brief	初期化。
 		 *@param[in]	gameObjectPrioMax	ゲームオブジェクトの優先度の最大値。(255まで)

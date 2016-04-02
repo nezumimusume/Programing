@@ -14,5 +14,8 @@ namespace tkEngine{
 	}
 	void CPreRender::Create( const SGraphicsConfig& config )
 	{
+		if (config.edgeRenderConfig.isEnable) {
+			m_idMap.Create(config.edgeRenderConfig.idMapWidth, config.edgeRenderConfig.idMapHeight);
+		}
 	}
 }

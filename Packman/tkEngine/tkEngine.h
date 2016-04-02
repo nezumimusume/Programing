@@ -124,6 +124,13 @@ namespace tkEngine{
 		{
 			return m_frameBufferHeight;
 		}
+		/*!
+		*@brief		IDMapの取得。
+		*/
+		CIDMap& IDMap()
+		{
+			return m_preRender.GetIDMap();
+		}
 	private:
 		/*!
 		* @brief	メインレンダリングターゲットの内容をバックバッファにコピー。

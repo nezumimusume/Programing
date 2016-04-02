@@ -8,7 +8,35 @@
 #include "tkEngine/graphics/tkRenderTarget.h"
 
 namespace tkEngine{
-	class CIDMap{
+	/*!
+	 * @brief	IDMapモデル。
+	 */
+	class CIDMapModel {
+	public:
+		CIDMapModel();
+		~CIDMapModel();
+		/*!
+		 * @brief	プリミティブから作成。
+		 */
+		void Create(CPrimitive* prim);
+		/*!
+		* @brief	ワールドビュープロジェクション行列を設定。
+		*/
+		void SetWVPMatrix(const CMatrix& mWVP)
+		{
+			m_mWVP = mWVP;
+		}
+		/*!
+		* @brief	描画。
+		*@param[in]	renderContext	レンダーコンテキスト。
+		*@param[in]	pEffect			エフェクト
+		*/
+		void Render(CRenderContext& renderContext, CEffect* pEffect );
+	private:
+		CPrimitive*		m_prim;		//!<プリミティブ。
+		CMatrix			m_mWVP;		//!<ワールドビュープロジェクション行列。
+	};
+	class CIDMap : Noncopyable{
 	public:
 		/*!
 		 * @brief	コンストラクタ
@@ -27,14 +55,19 @@ namespace tkEngine{
 		 */
 		void Release();
 		/*!
+		 * @brief	モデルをエントリー。
+		 */
+		void Entry( CIDMapModel* model );
+		/*!
 		 * @brief	IDマップに書き込み
 		 *@param[in]	renderContext	レンダリングコンテキスト。
 		 */
-		void RenderToIDMap( CRendeContext& renderContext );
+		void RenderToIDMap( CRenderContext& renderContext );
 	private:
-		CRenderTarget				m_idMapRT;	//!<IDマップを書き込むレンダリングターゲット。
-		std::vector<IGameObject>	
-		
+		bool						m_isEnable;		//!<有効？
+		CRenderTarget				m_idMapRT;		//!<IDマップを書き込むレンダリングターゲット。
+		std::vector<CIDMapModel*>	m_idMapModels;	//!<IDマップの描画を行うモデルのリスト。
+		CEffect*					m_pIDMapEffect;	//!<
 	};
 }
 #endif // _TKIDMAP_H_
