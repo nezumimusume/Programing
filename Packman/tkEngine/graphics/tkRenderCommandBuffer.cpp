@@ -73,6 +73,9 @@ namespace tkEngine{
 			case eRenderCommand_SetDepthStencilSurface:
 				((CRenderCommand_SetDepthStencilSurface*)(cmdBase))->Execute(pD3DDevice);
 				break;
+			case eRenderCommand_EffectSetTexture:
+				((CRenderCommand_EffectSetTexture*)(cmdBase))->Execute(pD3DDevice);
+				break;
 			default:
 				TK_ASSERT(false, "not implement renderCommand");
 				break;

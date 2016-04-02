@@ -8,7 +8,7 @@
 namespace tkEngine{
 	CRenderTarget::CRenderTarget() :
 		m_depthSurface(nullptr),
-		m_texture(nullptr),
+		m_textureDX(nullptr),
 		m_surface(nullptr)
 	{
 	}
@@ -50,19 +50,20 @@ namespace tkEngine{
 			D3DUSAGE_RENDERTARGET,
 			s_cast<D3DFORMAT>(colorFormat),
 			D3DPOOL_DEFAULT,
-			&m_texture,
+			&m_textureDX,
 			NULL
 		);
 		TK_ASSERT(SUCCEEDED(hr), "Failed CreateTexture");
 
-		hr = m_texture->GetSurfaceLevel(0, &m_surface);
+		hr = m_textureDX->GetSurfaceLevel(0, &m_surface);
 		TK_ASSERT(SUCCEEDED(hr), "Failed GetSurfaceLevel" );
+		m_texture.SetTextureDX(m_textureDX);
 	}
 	void CRenderTarget::Release()
 	{
-		if (m_texture != nullptr) {
-			m_texture->Release();
-			m_texture = nullptr;
+		if (m_textureDX != nullptr) {
+			m_textureDX->Release();
+			m_textureDX = nullptr;
 		}
 		if (m_depthSurface != nullptr) {
 			m_depthSurface->Release();

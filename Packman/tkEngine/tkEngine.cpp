@@ -124,20 +124,20 @@ namespace tkEngine{
 	{
 		static SShapeVertex_PT vertex[]{
 			{
-				-1.0f, -1.0f, 0.0f, 1.0f,
+				-1.0f, 1.0f, 0.0f, 1.0f,
 				0.0f, 0.0f
 			},
 			{
-				1.0f, -1.0f, 0.0f, 1.0f,
+				1.0f, 1.0f, 0.0f, 1.0f,
 				1.0f, 0.0f
 			},
 			{
-				1.0f, 1.0f, 0.0f, 1.0f,
-				1.0f, 1.0f
+				-1.0f, -1.0f, 0.0f, 1.0f,
+				0.0f, 1.0f
 			},
 			{
-				-1.0f, 1.0f, 0.0f, 1.0f,
-				0.0f, 1.0f
+				1.0f, -1.0f, 0.0f, 1.0f,
+				1.0f, 1.0f
 			},
 		};
 		static u16 index[] = {
@@ -159,7 +159,7 @@ namespace tkEngine{
 		m_pTransformedPrimEffect->SetTechnique(renderContext, "ColorNormalPrim");
 		m_pTransformedPrimEffect->Begin(renderContext);
 		m_pTransformedPrimEffect->BeginPass(renderContext, 0);
-
+		m_pTransformedPrimEffect->SetTexture(renderContext, "g_tex", m_mainRenderTarget.GetTexture());
 		renderContext.SetVertexDeclaration(m_copyBackBufferPrim.GetVertexDecl());
 		renderContext.SetStreamSource(0, m_copyBackBufferPrim.GetVertexBuffer());
 		renderContext.SetIndices(m_copyBackBufferPrim.GetIndexBuffer());

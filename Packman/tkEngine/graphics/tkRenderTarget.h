@@ -4,6 +4,8 @@
 #ifndef _TKRENDERTARGET_H_
 #define _TKRENDERTARGET_H_
 
+#include "tkEngine/graphics/tkTexture.h"
+
 namespace tkEngine{
 	/*!
 	 *@brief	レンダリングターゲット
@@ -41,6 +43,13 @@ namespace tkEngine{
 		 *@brief	レンダリングターゲットの破棄。
 		 */
 		void Release();
+		/*!
+		*@brief	テクスチャを取得。
+		*/
+		CTexture* GetTexture()
+		{
+			return &m_texture;
+		}
 		LPDIRECT3DSURFACE9 GetDepthSurfaceDx()
 		{
 			return m_depthSurface;
@@ -57,10 +66,12 @@ namespace tkEngine{
 		{
 			m_surface = surface;
 		}
+		
 	private:
 		LPDIRECT3DSURFACE9		m_depthSurface;		//!<深度バッファ用のサーフェイス
-		LPDIRECT3DTEXTURE9		m_texture;			//!<書き込み先のテクスチャ。
+		LPDIRECT3DTEXTURE9		m_textureDX;		//!<書き込み先のテクスチャ。
 		LPDIRECT3DSURFACE9		m_surface;			//!<サーフェイス
+		CTexture				m_texture;			//!<テクスチャ。
 	};
 }
 #endif // _TKRENDERTARGET_H_

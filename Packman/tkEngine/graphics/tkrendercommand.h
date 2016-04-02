@@ -32,6 +32,7 @@ namespace tkEngine{
 		eRenderCommand_SetVertexDeclaration,
 		eRenderCommand_SetRenderTarget,
 		eRenderCommand_SetDepthStencilSurface,
+		eRenderCommand_EffectSetTexture,
 		eRenderCommand_Undef
 	};
 	/*!
@@ -385,6 +386,29 @@ namespace tkEngine{
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
 		{
 			pD3DDevice->SetDepthStencilSurface(m_pRT->GetDepthSurfaceDx());
+		}
+	};
+	/*!
+	* @brief	ID3DXEffect::SetTexture
+	*/
+	class CRenderCommand_EffectSetTexture : public CRenderCommandBase
+	{
+		CTexture*	m_pTex;
+		c8* m_textureName;
+		ID3DXEffect*	m_pEffect;		//!<D3Dエフェクト
+	public:
+		CRenderCommand_EffectSetTexture(CRenderContext& renderContext, ID3DXEffect* pEffect, const c8* parameterName, CTexture* tex) :
+			CRenderCommandBase(eRenderCommand_EffectSetTexture),
+			m_pTex(tex),
+			m_pEffect(pEffect)
+		{
+			u32 nameLen = strlen(parameterName);
+			m_textureName = s_cast<c8*>(renderContext.AllocFromCommandBuffer(nameLen + 1));
+			memcpy(m_textureName, parameterName, nameLen + 1);
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			m_pEffect->SetTexture(m_textureName, m_pTex->GetTextureDX());
 		}
 	};
 }
