@@ -56,6 +56,7 @@ namespace tkEngine{
 		if(m_isEnable){
 			CRenderTarget* pRTBackup = renderContext.GetRenderTarget(0);
 			renderContext.SetRenderTarget(0, &m_idMapRT);
+			renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,0, 1.0f, 0);
 			m_pIDMapEffect->SetTechnique(renderContext, "RenderIDMap");
 			m_pIDMapEffect->Begin(renderContext);
 			m_pIDMapEffect->BeginPass(renderContext, 0);

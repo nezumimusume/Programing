@@ -28,7 +28,7 @@ struct VS_OUTPUT{
 VS_OUTPUT VSMain( VS_INPUT In )
 {
 	VS_OUTPUT Out;
-	Out.pos = mul(g_mWVP, In.pos);
+	Out.pos = mul(In.pos, g_mWVP);
 	Out.color = In.color;
 	Out.normal = mul(g_worldRotationMatrix, In.normal);
 	//ñ@ê¸ÇâÒì]ÅB
