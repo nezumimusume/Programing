@@ -182,5 +182,8 @@
     <ClInclude Include="graphics\tkRenderTarget.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\tkRenderContextMethod.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,6 +4,8 @@
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/tkEngine.h"
 #include "tkEngine/gameObject/tkGameObjectManager.h"
+#include "tkEngine/shape/tkShapeVertex.h"
+#include "tkEngine/graphics/tkEffect.h"
 
 namespace tkEngine{
 	LRESULT CALLBACK CEngine::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -92,6 +94,7 @@ namespace tkEngine{
 			0
 		);
 		CGameObjectManager::Instance().Init( initParam.gameObjectPrioMax );
+		InitCopyBackBufferPrimitive();
 		//レンダリングコンテキストの初期化。
 		{
 			m_renderContextArray.reset(new CRenderContext[initParam.numRenderContext]);
@@ -106,13 +109,58 @@ namespace tkEngine{
 			}
 		}
 		//トランスフォーム済みプリミティブを描画するシェーダーをロード。
-		m_pTransformedPrimEffect = m_effectManager.LoadEffect("");
+		m_pTransformedPrimEffect = m_effectManager.LoadEffect("Assets/presetShader/TransformedPrim.fx");
 		ShowWindow(m_hWnd, SW_SHOWDEFAULT);
 		UpdateWindow(m_hWnd);
 		return true;
 	}
-	void CEngine::CopyMainRenderTargetToBackBuffer()
+	void CEngine::InitCopyBackBufferPrimitive()
 	{
+		static SShapeVertex_PT vertex[]{
+			{
+				-1.0f, -1.0f, 0.0f, 1.0f,
+				0.0f, 0.0f
+			},
+			{
+				1.0f, -1.0f, 0.0f, 1.0f,
+				1.0f, 0.0f
+			},
+			{
+				1.0f, 1.0f, 0.0f, 1.0f,
+				1.0f, 1.0f
+			},
+			{
+				-1.0f, 1.0f, 0.0f, 1.0f,
+				0.0f, 1.0f
+			},
+		};
+		static u16 index[] = {
+			0,1,2,3
+		};
+		m_copyBackBufferPrim.Create(
+			CPrimitive::eTriangleStrip,
+			4,
+			sizeof(SShapeVertex_PT),
+			scShapeVertex_PT_Element,
+			vertex,
+			4,
+			eIndexFormat16,
+			index
+			);
+	}
+	void CEngine::CopyMainRenderTargetToBackBuffer(CRenderContext& renderContext)
+	{
+		m_pTransformedPrimEffect->SetTechnique(renderContext, "ColorNormalPrim");
+		m_pTransformedPrimEffect->Begin(renderContext);
+		m_pTransformedPrimEffect->BeginPass(renderContext, 0);
+
+		renderContext.SetVertexDeclaration(m_copyBackBufferPrim.GetVertexDecl());
+		renderContext.SetStreamSource(0, m_copyBackBufferPrim.GetVertexBuffer());
+		renderContext.SetIndices(m_copyBackBufferPrim.GetIndexBuffer());
+		renderContext.DrawIndexedPrimitive(&m_copyBackBufferPrim);
+		
+		m_pTransformedPrimEffect->EndPass(renderContext);
+		m_pTransformedPrimEffect->End(renderContext);
 	}
 	void CEngine::RunGameLoop()
 	{
@@ -145,10 +193,9 @@ namespace tkEngine{
 				for( u32 i = 0; i < m_numRenderContext; i++ ){
 					m_renderContextArray[i].SubmitCommandBuffer();
 				}
-
 				m_pD3DDevice->SetRenderTarget(0, renderTargetBackup);
 				m_pD3DDevice->SetDepthStencilSurface(depthStencilBackup);
-				CopyMainRenderTargetToBackBuffer();
+				//CopyMainRenderTargetToBackBuffer(m_renderContextArray[m_numRenderContext-1]);
 				m_pD3DDevice->EndScene();
 				m_pD3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
 			}

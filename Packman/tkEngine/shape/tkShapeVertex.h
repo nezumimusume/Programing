@@ -7,6 +7,18 @@
 
 namespace tkEngine{
 	/*!
+	*@brief	座標とUV座標
+	*/
+	struct SShapeVertex_PT {
+		f32		pos[4];
+		f32		uv[2];
+	};
+	static const SVertexElement scShapeVertex_PT_Element[] = {
+		{ 0, 0 ,   DECLTYPE_FLOAT4		, DECLMETHOD_DEFAULT, DECLUSAGE_POSITION	, 0 },
+		{ 0, 16 ,  DECLTYPE_FLOAT2		, DECLMETHOD_DEFAULT, DECLUSAGE_TEXCOORD	, 0 },
+		D3DDECL_END()
+	};
+	/*!
 	 *@brief	カラー。
 	 */
 	struct SShapeVertex_PC{

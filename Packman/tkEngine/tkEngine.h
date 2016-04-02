@@ -9,7 +9,7 @@
 #include "tkEngine/graphics/tkRenderContext.h"
 #include "tkEngine/graphics/tkEffectManager.h"
 #include "tkEngine/graphics/tkRenderTarget.h"
-
+#include "tkEngine/graphics/tkPrimitive.h"
 namespace tkEngine{
 	/*!
 	* @brief	描画優先ごとに対応するレンダリングコンテキストの番号のマップを定義するための構造体。
@@ -123,7 +123,7 @@ namespace tkEngine{
 		/*!
 		* @brief	メインレンダリングターゲットの内容をバックバッファにコピー。
 		*/
-		void CopyMainRenderTargetToBackBuffer();
+		void CopyMainRenderTargetToBackBuffer(CRenderContext& renderContext);
 		/*!
 		* @brief	ウィンドウ初期化。
 		* @retval	true	初期化に成功。
@@ -136,6 +136,10 @@ namespace tkEngine{
 		* @retval	false	初期化に失敗。
 		*/
 		bool InitDirectX(const SInitParam& initParam);
+		/*!
+		* @brief	メインレンダーターゲットをバックバッファにコピーするときに使うプリミティブを初期化。
+		*/
+		void InitCopyBackBufferPrimitive();
 		/*!
 		* @brief	ウィンドウプロシージャ。
 		*/
@@ -154,6 +158,7 @@ namespace tkEngine{
 		u32										m_frameBufferHeight;	//!<フレームバッファの高さ。これが内部解像度。
 		CRenderTarget							m_mainRenderTarget;		//!<メインレンダリングターゲット
 		CEffect*								m_pTransformedPrimEffect;	//!<トランスフォーム済みプリミティブを描画するためのエフェクト。
+		CPrimitive								m_copyBackBufferPrim;		//!<メインレンダーターゲットをバックバッファにコピーするときに使うプリミティブ。
 	};
 	
 }

@@ -10,7 +10,7 @@ struct VS_INPUT{
 
 struct VS_OUTPUT{
 	float4		pos		: POSITION;
-	float2		uv		: TEXCOORD0
+	float2		uv		: TEXCOORD0;
 };
 
 texture g_tex;
@@ -31,7 +31,7 @@ VS_OUTPUT VSMain( VS_INPUT In )
 }
 float4 PSMain( VS_OUTPUT In ) : COLOR0
 {
-	return tex2D( TextureSampler, g_tex );
+	return tex2D( TextureSampler, In.uv );
 }
 
 technique TransformedPrim

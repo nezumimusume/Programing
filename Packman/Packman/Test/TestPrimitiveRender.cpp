@@ -79,17 +79,10 @@ void CTestPrimitiveRender::Render(tkEngine::CRenderContext& renderContext)
 	m_pEffect->SetValue(renderContext, "g_mWVP", &mMVP, sizeof(mMVP));
 	m_pEffect->Begin(renderContext);
 	m_pEffect->BeginPass(renderContext, 0);
-	renderContext.SetRenderCommand(CRenderCommand_SetVertexDeclaration(m_primitive.GetVertexDecl()));
-	renderContext.SetRenderCommand(CRenderCommand_SetStreamSource(
-		0,
-		m_primitive.GetVertexBuffer()
-	));
-	renderContext.SetRenderCommand(CRenderCommand_SetIndices(
-		m_primitive.GetIndexBuffer()
-	));
-	renderContext.SetRenderCommand(CRenderCommand_DrawIndexedPrimitive(
-		&m_primitive
-	));
+	renderContext.SetVertexDeclaration(m_primitive.GetVertexDecl());
+	renderContext.SetStreamSource(0,m_primitive.GetVertexBuffer());
+	renderContext.SetIndices(m_primitive.GetIndexBuffer());
+	renderContext.DrawIndexedPrimitive(&m_primitive);
 	m_pEffect->EndPass(renderContext);
 	m_pEffect->End(renderContext);
 }

@@ -40,6 +40,7 @@ namespace tkEngine{
 		if (it == m_effectDictinary.end()) {
 			//êVãKÅB
 			LPD3DXEFFECT effect;
+			LPD3DXBUFFER  compileErrorBuffer = nullptr;
 			HRESULT hr = D3DXCreateEffectFromFile(
 				CEngine::Instance().GetD3DDevice(),
 				filePath,
@@ -52,9 +53,13 @@ namespace tkEngine{
 #endif
 				NULL,
 				&effect,
-				NULL
+				&compileErrorBuffer
 				);
-			TK_ASSERT(SUCCEEDED(hr), "Failed D3DXCreateEffectFromFile");
+			if (FAILED(hr)) {
+				MessageBox(nullptr, r_cast<char*>(compileErrorBuffer->GetBufferPointer()), "error", MB_OK);
+				TK_ASSERT(SUCCEEDED(hr), "error");
+			}
+			
 			pEffect = new CEffect(effect);
 			std::pair<u32, CEffect*> node(hash, pEffect);
 			m_effectDictinary.insert(node);

@@ -197,6 +197,7 @@
     <ClInclude Include="graphics\tkRenderCommand.h" />
     <ClInclude Include="graphics\tkRenderCommandBuffer.h" />
     <ClInclude Include="graphics\tkRenderContext.h" />
+    <ClInclude Include="graphics\tkRenderContextMethod.h" />
     <ClInclude Include="graphics\tkRenderTarget.h" />
     <ClInclude Include="graphics\tkVertexBuffer.h" />
     <ClInclude Include="math\tkMath.h" />
