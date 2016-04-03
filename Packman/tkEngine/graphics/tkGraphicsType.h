@@ -322,6 +322,33 @@ namespace tkEngine{
 		DECLUSAGE_DEPTH				= D3DDECLUSAGE_DEPTH,         // 12
 		DECLUSAGE_SAMPLE			= D3DDECLUSAGE_SAMPLE,        // 13
 	};
+	enum BLEND {
+	    BLEND_ZERO                  = D3DBLEND_ZERO              ,
+	    BLEND_ONE                   =D3DBLEND_ONE                ,
+	    BLEND_SRCCOLOR              =D3DBLEND_SRCCOLOR           ,
+	    BLEND_INVSRCCOLOR           =D3DBLEND_INVSRCCOLOR        ,
+	    BLEND_SRCALPHA              =D3DBLEND_SRCALPHA           ,
+	    BLEND_INVSRCALPHA           =D3DBLEND_INVSRCALPHA        ,
+	    BLEND_DESTALPHA             =D3DBLEND_DESTALPHA          ,
+	    BLEND_INVDESTALPHA          =D3DBLEND_INVDESTALPHA       ,
+	    BLEND_DESTCOLOR             =D3DBLEND_DESTCOLOR          ,
+	    BLEND_INVDESTCOLOR          =D3DBLEND_INVDESTCOLOR       ,
+	    BLEND_SRCALPHASAT           =D3DBLEND_SRCALPHASAT        ,
+	    BLEND_BOTHSRCALPHA          =D3DBLEND_BOTHSRCALPHA       ,
+	    BLEND_BOTHINVSRCALPHA       =D3DBLEND_BOTHINVSRCALPHA    ,
+	    BLEND_BLENDFACTOR           =D3DBLEND_BLENDFACTOR        ,
+	    BLEND_INVBLENDFACTOR        =D3DBLEND_INVBLENDFACTOR     ,
+	/* D3D9Ex only -- *//* D3D9Ex only -- */
+	#if !defined(D3D_DISABLE_9EX)
+    
+	    BLEND_SRCCOLOR2             =D3DBLEND_SRCCOLOR2          ,
+	    BLEND_INVSRCCOLOR2          =D3DBLEND_INVSRCCOLOR2       ,
+    
+	#endif // !D3D_DISABLE_9EX
+	/* -- D3D9Ex only *//* -- D3D9Ex only */
+	    BLEND_FORCE_DWORD           =D3DBLEND_FORCE_DWORD        ,
+	};
+
 
 }
 

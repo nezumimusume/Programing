@@ -134,6 +134,13 @@ namespace tkEngine{
 			return m_preRender.GetIDMap();
 		}
 		/*!
+		*@brief		ShadowMapの取得。
+		*/
+		CShadowMap& ShadowMap()
+		{
+			return m_preRender.GetShadowMap();
+		}
+		/*!
 		* @brief	メインレンダリングターゲットを切り替え。
 		*/
 		void ToggleMainRenderTarget()

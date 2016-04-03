@@ -116,6 +116,9 @@
     <ClCompile Include="graphics\postEffect\tkBloomRender.cpp">
       <Filter>Source Files\graphics\postEffect</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\preRender\tkShadowMap.cpp">
+      <Filter>Source Files\graphics\prerender</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -216,6 +219,9 @@
     </ClInclude>
     <ClInclude Include="graphics\postEffect\tkBloomRender.h">
       <Filter>Source Files\graphics\postEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\preRender\tkShadowMap.h">
+      <Filter>Source Files\graphics\prerender</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

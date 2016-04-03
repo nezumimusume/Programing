@@ -25,6 +25,8 @@ namespace tkEngine{
 				obj->PreUpdateWrapper();
 			}
 		}
+		//プリレンダリング。
+		preRender.Update();
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
 				obj->UpdateWrapper();
@@ -35,24 +37,26 @@ namespace tkEngine{
 				obj->PostUpdateWrapper();
 			}
 		}
-		
-		renderContext[0].Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
-			D3DCOLOR_RGBA(128, 128, 128, 0), 1.0f, 0
-			);
-		tkEngine::SViewport vp = {
-			0,
-			0,
-			tkEngine::CEngine::Instance().GetFrameBufferWidth(),
-			tkEngine::CEngine::Instance().GetFrameBufferHeight(),
-			0.0f,
-			1.0f
-		};
-		renderContext[0].SetViewport(vp);
-		renderContext[0].SetRenderState(RS_CULLMODE, CULL_NONE);
-		renderContext[0].SetRenderState(RS_ALPHABLENDENABLE, TRUE);
-		renderContext[0].SetRenderState(RS_SRCBLEND, D3DBLEND_ONE);
-		renderContext[0].SetRenderState(RS_DESTBLEND, D3DBLEND_ZERO);
-		renderContext[0].SetRenderState(RS_ALPHATESTENABLE, FALSE);
+		{
+			//レンダリングステートの初期化。
+			renderContext[0].Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
+				D3DCOLOR_RGBA(128, 128, 128, 0), 1.0f, 0
+				);
+			tkEngine::SViewport vp = {
+				0,
+				0,
+				tkEngine::CEngine::Instance().GetFrameBufferWidth(),
+				tkEngine::CEngine::Instance().GetFrameBufferHeight(),
+				0.0f,
+				1.0f
+			};
+			renderContext[0].SetViewport(vp);
+			renderContext[0].SetRenderState(RS_CULLMODE, CULL_NONE);
+			renderContext[0].SetRenderState(RS_ALPHABLENDENABLE, TRUE);
+			renderContext[0].SetRenderState(RS_SRCBLEND, BLEND_ONE);
+			renderContext[0].SetRenderState(RS_DESTBLEND, BLEND_ZERO);
+			renderContext[0].SetRenderState(RS_ALPHATESTENABLE, FALSE);
+		}
 		//プリレンダリング。
 		preRender.Render(renderContext[0]);
 

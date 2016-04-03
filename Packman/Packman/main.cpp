@@ -37,6 +37,10 @@ int WINAPI wWinMain(
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
 	//Bloom
 	initParam.graphicsConfig.bloomConfig.isEnable = true;
+	//Shadow
+	initParam.graphicsConfig.shadowRenderConfig.isEnable = true;
+	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 1280;
+	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 720;
 	CEngine::Instance().Init( initParam );	//èâä˙âªÅB
 #ifdef TEST_BUILD
 	CGameObjectManager::Instance().NewGameObject<CTest>(0);

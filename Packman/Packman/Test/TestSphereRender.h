@@ -20,6 +20,7 @@ private:
 	tkEngine::CLight		m_light;
 	f32						m_angle;
 	tkEngine::CIDMapModel	m_idMapModel;
+	tkEngine::CShadowModel	m_shadowModel;
 };
 
 

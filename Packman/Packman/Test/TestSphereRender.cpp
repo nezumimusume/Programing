@@ -11,13 +11,13 @@ using namespace tkEngine;
 
 void CTestSphereRender::Start()
 {
-	m_sphere.Create( 10.0f, 10, 0x8844FFF, true );
+	m_sphere.Create( 1.0f, 20, 0x8844FFF, true );
 	m_pEffect = CEngine::Instance().EffectManager().LoadEffect("Assets/presetShader/ColorNormalPrim.fx");
 	//ÉJÉÅÉâÇèâä˙âªÅB
 	{
 		CVector3 cameraPos;
 		CVector3 cameraTarget;
-		cameraPos.Set(0.0f, 0.0f, -100.0f);
+		cameraPos.Set(0.0f, 5.0f, -10.0f);
 		cameraTarget = cameraPos;
 		cameraTarget.z = 0.0f;
 		m_camera.SetPosition(cameraPos);
@@ -28,36 +28,16 @@ void CTestSphereRender::Start()
 		m_camera.SetViewAngle(CMath::DegToRad(45.0f));
 		m_camera.Update();
 	}
-	CVector3 lightDir;
-	/*m_light.SetDiffuseLightColor(0, CVector4(0.6f, 0.6f, 0.6f, 1.0f));
-	lightDir = CVector3::AxisY;
-	m_light.SetDiffuseLightDirection(0, lightDir);
-	
-	m_light.SetDiffuseLightColor(1, CVector4(5.6f, 0.6f, 0.6f, 1.0f));
-	lightDir = CVector3::AxisX;
-	lightDir.Scale(-1.0f);
-	m_light.SetDiffuseLightDirection(1, lightDir);
-
-	m_light.SetDiffuseLightColor(2, CVector4(10.6f, 0.6f, 0.6f, 1.0f));
-	lightDir.Add( CVector3::AxisX, CVector3::AxisZ);
-	lightDir.Normalize();
-	m_light.SetDiffuseLightDirection(2, lightDir);
-
-	m_light.SetDiffuseLightColor(3, CVector4(1.0f, 1.0f, 0.6f, 1.0f));
-	lightDir = CVector3::AxisY;
-	lightDir.Scale(-1.0f);
-	lightDir.Normalize();
-	m_light.SetDiffuseLightDirection(3, lightDir);*/
-
 	m_light.SetAmbinetLight(CVector3(10.0f, 0.5f, 0.0f));
 	m_idMapModel.Create(m_sphere.GetPrimitive());
+	m_shadowModel.Create(m_sphere.GetPrimitive());
 }
 void CTestSphereRender::Update()
 {
 	m_angle += CMath::PI / 360.0f;
 	CQuaternion rot;
 	CVector3 pos;
-	pos.Set(-10.0f, 0.0f, 0.0f);
+	pos.Set(0.0f, 1.0f, 0.0f);
 	rot.SetRotation(CVector3::AxisX, m_angle);
 	m_sphere.SetRotation(rot);
 	m_sphere.SetPosition(pos);
@@ -68,7 +48,11 @@ void CTestSphereRender::Update()
 
 	mMVP.Mul(mWorld, mMVP);
 	m_idMapModel.SetWVPMatrix(mMVP);
-//	tkEngine::CEngine::Instance().IDMap().Entry(&m_idMapModel);
+	m_shadowModel.SetWorldMatrix(mWorld);
+	tkEngine::CEngine::Instance().IDMap().Entry(&m_idMapModel);
+	tkEngine::CEngine::Instance().ShadowMap().Entry(&m_shadowModel);
+	tkEngine::CEngine::Instance().ShadowMap().SetLightPosition(CVector3(0.0f, 20.0f, 0.0f));
+	tkEngine::CEngine::Instance().ShadowMap().SetLightDirection(CVector3(0.0f, -1.0f, 0.0f));
 }
 void CTestSphereRender::Render(tkEngine::CRenderContext& renderContext)
 {
