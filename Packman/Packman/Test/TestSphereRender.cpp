@@ -11,7 +11,7 @@ using namespace tkEngine;
 
 void CTestSphereRender::Start()
 {
-	m_sphere.Create( 10.0f, 10, 0xFFF666F, true );
+	m_sphere.Create( 10.0f, 10, 0x8844FFF, true );
 	m_pEffect = CEngine::Instance().EffectManager().LoadEffect("Assets/presetShader/ColorNormalPrim.fx");
 	//ƒJƒƒ‰‚ð‰Šú‰»B
 	{
@@ -29,20 +29,27 @@ void CTestSphereRender::Start()
 		m_camera.Update();
 	}
 	CVector3 lightDir;
-	m_light.SetDiffuseLightColor(0, CVector4(1.0f, 1.0f, 1.0f, 1.0f));
+	/*m_light.SetDiffuseLightColor(0, CVector4(0.6f, 0.6f, 0.6f, 1.0f));
 	lightDir = CVector3::AxisY;
 	m_light.SetDiffuseLightDirection(0, lightDir);
-
-	m_light.SetDiffuseLightColor(1, CVector4(2.4f, 2.4f, 0.8f, 1.0f));
+	
+	m_light.SetDiffuseLightColor(1, CVector4(5.6f, 0.6f, 0.6f, 1.0f));
 	lightDir = CVector3::AxisX;
 	lightDir.Scale(-1.0f);
 	m_light.SetDiffuseLightDirection(1, lightDir);
 
-	m_light.SetDiffuseLightColor(2, CVector4(1.4f, 1.3f, 1.3f, 1.0f));
+	m_light.SetDiffuseLightColor(2, CVector4(10.6f, 0.6f, 0.6f, 1.0f));
 	lightDir.Add( CVector3::AxisX, CVector3::AxisZ);
 	lightDir.Normalize();
 	m_light.SetDiffuseLightDirection(2, lightDir);
-	m_light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
+
+	m_light.SetDiffuseLightColor(3, CVector4(1.0f, 1.0f, 0.6f, 1.0f));
+	lightDir = CVector3::AxisY;
+	lightDir.Scale(-1.0f);
+	lightDir.Normalize();
+	m_light.SetDiffuseLightDirection(3, lightDir);*/
+
+	m_light.SetAmbinetLight(CVector3(10.0f, 0.5f, 0.0f));
 	m_idMapModel.Create(m_sphere.GetPrimitive());
 }
 void CTestSphereRender::Update()
@@ -61,7 +68,7 @@ void CTestSphereRender::Update()
 
 	mMVP.Mul(mWorld, mMVP);
 	m_idMapModel.SetWVPMatrix(mMVP);
-	tkEngine::CEngine::Instance().IDMap().Entry(&m_idMapModel);
+//	tkEngine::CEngine::Instance().IDMap().Entry(&m_idMapModel);
 }
 void CTestSphereRender::Render(tkEngine::CRenderContext& renderContext)
 {
@@ -71,6 +78,8 @@ void CTestSphereRender::Render(tkEngine::CRenderContext& renderContext)
 	mMVP.Mul(mWorld, mMVP);
 	CMatrix mRot = m_sphere.GetRotationMatrix();
 	m_pEffect->SetTechnique(renderContext, "ColorNormalPrimIuminance");
+	m_pEffect->Begin(renderContext);
+	m_pEffect->BeginPass(renderContext, 0);
 	m_pEffect->SetValue(renderContext, "g_mWVP", &mMVP, sizeof(mMVP));
 	m_pEffect->SetValue(renderContext, "g_worldRotationMatrix", &mRot, sizeof(mRot));
 	m_pEffect->SetValue(
@@ -79,9 +88,8 @@ void CTestSphereRender::Render(tkEngine::CRenderContext& renderContext)
 		&m_light,
 		sizeof(m_light)
 	);
-	m_pEffect->Begin(renderContext);
-	m_pEffect->BeginPass(renderContext, 0);
-
+	
+	m_pEffect->CommitChanges(renderContext);
 	m_sphere.Render(renderContext);
 
 	m_pEffect->EndPass(renderContext);

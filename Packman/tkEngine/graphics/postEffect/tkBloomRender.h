@@ -35,7 +35,7 @@ namespace tkEngine{
 		static const u32 NUM_WEIGHTS = 8;
 		CEffect*		m_pEffect;						//!<エフェクト。
 		CRenderTarget	m_luminanceRenderTarget;		//!<輝度を抽出するレンダリングターゲット。
-		CRenderTarget	m_downSamplingRenderTarget[2];	//!<輝度をダウンサンプリングするためのレンダリングターゲット。
+		CRenderTarget	m_downSamplingRenderTarget[4];	//!<輝度をダウンサンプリングするためのレンダリングターゲット。
 		bool			m_isEnable;						//!<有効？
 		f32				m_weights[NUM_WEIGHTS];
 	};

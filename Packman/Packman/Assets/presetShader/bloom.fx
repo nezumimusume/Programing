@@ -9,9 +9,9 @@ sampler g_SceneSampler =
 sampler_state
 {
     Texture = <g_scene>;
-    MipFilter = LINEAR;
-    MinFilter = LINEAR;
-    MagFilter = LINEAR;
+    MipFilter = POINT;
+    MinFilter = POINT;
+    MagFilter = POINT;
 };
 
 
@@ -78,6 +78,7 @@ VS_BlurOutput VSXBlur(VS_INPUT In)
 	Out.pos = In.pos;
 	float2 tex = (In.pos * 0.5f) + 0.5f;;
 	tex.y = 1.0f - tex.y;
+	tex += float2( 0.5/g_luminanceTexSize.x, 0.5/g_luminanceTexSize.y);
 	Out.tex0 = tex + float2( - 1.0f/g_luminanceTexSize.x, 0.0f );
     Out.tex1 = tex + float2( - 3.0f/g_luminanceTexSize.x, 0.0f );
     Out.tex2 = tex + float2( - 5.0f/g_luminanceTexSize.x, 0.0f );
@@ -121,6 +122,7 @@ VS_BlurOutput VSYBlur(VS_INPUT In)
 	Out.pos = In.pos;
 	float2 tex = (In.pos * 0.5f) + 0.5f;
 	tex.y = 1.0f - tex.y;
+	tex += float2( 0.5/g_luminanceTexSize.x, 0.5/g_luminanceTexSize.y);
 	Out.tex0 = tex + float2( 0.0f,- 1.0f/g_luminanceTexSize.y  );
     Out.tex1 = tex + float2( 0.0f,- 3.0f/g_luminanceTexSize.y  );
     Out.tex2 = tex + float2( 0.0f,- 5.0f/g_luminanceTexSize.y  );
@@ -164,11 +166,13 @@ VS_OUTPUT VSFinal( VS_INPUT In )
 	Out.pos = In.pos;		//トランスフォーム済み頂点なのでそのまま
 	Out.tex = (In.pos.xy * 0.5f) + 0.5f;
 	Out.tex.y = 1.0f - Out.tex.y;
+	Out.tex += g_offset;
 	return Out;
 }
 float4 PSFinal( VS_OUTPUT In ) : COLOR
 {
-	return tex2D(g_blurSampler, In.tex );
+	float2 uv = In.tex + g_offset;
+	return tex2D(g_blurSampler, uv );
 }
 /*!
  * @brief	輝度抽出テクニック。

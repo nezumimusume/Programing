@@ -23,9 +23,14 @@ namespace tkEngine{
 	{
 		f32 total = 0;
 		for (u32 i = 0; i<NUM_WEIGHTS; i++) {
-			f32 pos = 1.0f + 2.0f*(f32)i;
-			m_weights[i] = expf(-0.5f*(f32)(pos*pos) / dispersion);
-			total += 2.0f*m_weights[i];
+			m_weights[i] = expf(-0.5f*(f32)(i*i) / dispersion);
+			if (0 == i) {
+				total += m_weights[i];
+			}
+			else {
+				// 中心以外は、２回同じ係数を使うので２倍
+				total += 2.0f*m_weights[i];
+			}
 		}
 		// 規格化
 		for (u32 i = 0; i < NUM_WEIGHTS; i++) {
@@ -97,10 +102,10 @@ namespace tkEngine{
 				};
 				float offset[] = {
 					0.0f,
-					16.0f / s_cast<f32>(m_downSamplingRenderTarget[0].GetWidth()),
+					16.0f / s_cast<f32>(m_downSamplingRenderTarget[0].GetHeight()),
 				};
 				m_pEffect->SetValue(renderContext, "g_luminanceTexSize", size, sizeof(size));
-				m_pEffect->SetValue(renderContext, "g_offset", offset, sizeof(size));
+				m_pEffect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
 				m_pEffect->SetValue(renderContext, "g_weight", m_weights, sizeof(m_weights));
 
 				m_pEffect->SetTexture(renderContext, "g_blur", m_downSamplingRenderTarget[0].GetTexture());
@@ -110,7 +115,66 @@ namespace tkEngine{
 				m_pEffect->EndPass(renderContext);
 				m_pEffect->End(renderContext);
 			}
+
+			//XBlur2
 			{
+				renderContext.SetRenderTarget(0, &m_downSamplingRenderTarget[2]);
+				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0, 1.0f, 0);
+				m_pEffect->SetTechnique(renderContext, "XBlur");
+				m_pEffect->Begin(renderContext);
+				m_pEffect->BeginPass(renderContext, 0);
+				float size[2] = {
+					s_cast<f32>(m_downSamplingRenderTarget[1].GetWidth()),
+					s_cast<f32>(m_downSamplingRenderTarget[1].GetHeight())
+				};
+				float offset[] = {
+					16.0f / s_cast<f32>(m_downSamplingRenderTarget[1].GetWidth()),
+					0.0f
+				};
+				m_pEffect->SetValue(renderContext, "g_luminanceTexSize", size, sizeof(size));
+				m_pEffect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
+				m_pEffect->SetValue(renderContext, "g_weight", m_weights, sizeof(m_weights));
+
+				m_pEffect->SetTexture(renderContext, "g_blur", m_downSamplingRenderTarget[1].GetTexture());
+				m_pEffect->CommitChanges(renderContext);
+				postEffect->RenderFullScreen(renderContext);
+
+				m_pEffect->EndPass(renderContext);
+				m_pEffect->End(renderContext);
+
+			}
+			//YBlur2
+			{
+				renderContext.SetRenderTarget(0, &m_downSamplingRenderTarget[3]);
+				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0, 1.0f, 0);
+				m_pEffect->SetTechnique(renderContext, "YBlur");
+				m_pEffect->Begin(renderContext);
+				m_pEffect->BeginPass(renderContext, 0);
+				float size[2] = {
+					s_cast<f32>(m_downSamplingRenderTarget[2].GetWidth()),
+					s_cast<f32>(m_downSamplingRenderTarget[2].GetHeight())
+				};
+				float offset[] = {
+					0.0f,
+					16.0f / s_cast<f32>(m_downSamplingRenderTarget[2].GetHeight()),
+				};
+				m_pEffect->SetValue(renderContext, "g_luminanceTexSize", size, sizeof(size));
+				m_pEffect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
+				m_pEffect->SetValue(renderContext, "g_weight", m_weights, sizeof(m_weights));
+
+				m_pEffect->SetTexture(renderContext, "g_blur", m_downSamplingRenderTarget[2].GetTexture());
+				m_pEffect->CommitChanges(renderContext);
+				postEffect->RenderFullScreen(renderContext);
+
+				m_pEffect->EndPass(renderContext);
+				m_pEffect->End(renderContext);
+			}
+
+			{
+				float offset[] = {
+					0.5f / m_downSamplingRenderTarget[3].GetWidth() ,
+					0.5f / m_downSamplingRenderTarget[3].GetHeight()
+				};
 				//戻す。
 				renderContext.SetRenderTarget(0, rt);
 				//加算合成。
@@ -120,7 +184,8 @@ namespace tkEngine{
 				m_pEffect->SetTechnique(renderContext, "Final");
 				m_pEffect->Begin(renderContext);
 				m_pEffect->BeginPass(renderContext, 0);
-				m_pEffect->SetTexture(renderContext, "g_blur", m_downSamplingRenderTarget[1].GetTexture());
+				m_pEffect->SetTexture(renderContext, "g_blur", m_downSamplingRenderTarget[3].GetTexture());
+				m_pEffect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
 				m_pEffect->CommitChanges(renderContext);
 				postEffect->RenderFullScreen(renderContext);
 
@@ -145,8 +210,10 @@ namespace tkEngine{
 			//輝度抽出用のレンダリングターゲットを作成。
 			m_luminanceRenderTarget.Create(w, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);
 			//ダウンサンプリング用のレンダリングターゲットを作成。
-			m_downSamplingRenderTarget[0].Create(w >> 1, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);		//横ブラー用。
+			m_downSamplingRenderTarget[0].Create(w >> 1, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);			//横ブラー用。
 			m_downSamplingRenderTarget[1].Create(w >> 1, h >> 1, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);	//縦ブラー用。
+			m_downSamplingRenderTarget[2].Create(w >> 2, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);			//横ブラー用。
+			m_downSamplingRenderTarget[3].Create(w >> 2, h >> 2, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);	//縦ブラー用。
 			m_pEffect = CEngine::Instance().EffectManager().LoadEffect("Assets/presetShader/bloom.fx");
 			m_isEnable = true;
 		}

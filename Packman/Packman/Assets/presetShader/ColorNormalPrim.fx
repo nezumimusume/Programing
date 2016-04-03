@@ -55,10 +55,14 @@ float4 PSMain( VS_OUTPUT In, uniform bool isIuminance  ) : COLOR0
 	
 	if(isIuminance){
 		//ƒ¿‚É‹P“x‚ð–„‚ßž‚ÞB
-		float iuminance = log(dot( color.xyz, float3(float3(0.2125f, 0.7154f, 0.0721f) +0.0001f)));
-		color.a = 1.0f / iuminance;
+		float iuminance = dot( color.xyz, float3(0.2125f, 0.7154f, 0.0721f) );
+		if(iuminance > 1.0f ){
+			color.a = 1.0f / iuminance;
+		}else{
+			color.a = 0.0f;
+		}
 	}else{
-		color.a = 1.0f;
+		color.a = 0.0f;
 	}
 	return color;
 }

@@ -31,21 +31,21 @@ void CTestBoxRender::Start()
 	}
 	//ƒ‰ƒCƒg‚ð‰Šú‰»B
 	{
-		CVector3 lightDir;
-		m_light.SetDiffuseLightColor(0, CVector4(0.5f, 0.5f, 0.5f, 1.0f));
+	/*	CVector3 lightDir;
+		m_light.SetDiffuseLightColor(0, CVector4(0.1f, 0.1f, 0.1f, 1.0f));
 		lightDir = CVector3::AxisY;
 		m_light.SetDiffuseLightDirection(0, lightDir);
 
-		m_light.SetDiffuseLightColor(1, CVector4(0.4f, 0.5f, 0.8f, 1.0f));
+		m_light.SetDiffuseLightColor(1, CVector4(0.1f, 0.1f, 0.1f, 1.0f));
 		lightDir = CVector3::AxisX;
 		lightDir.Scale(-1.0f);
 		m_light.SetDiffuseLightDirection(1, lightDir);
 
-		m_light.SetDiffuseLightColor(2, CVector4(0.4f, 0.6f, 0.4f, 1.0f));
+		m_light.SetDiffuseLightColor(2, CVector4(0.1f, 0.1f, 0.1f, 1.0f));
 		lightDir.Add(CVector3::AxisX, CVector3::AxisZ);
 		lightDir.Normalize();
-		m_light.SetDiffuseLightDirection(2, lightDir);
-		m_light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
+		m_light.SetDiffuseLightDirection(2, lightDir);*/
+		m_light.SetAmbinetLight(CVector3(0.2f, 0.2f, 0.2f));
 	}
 	m_idMapModel.Create( m_box.GetPrimitive() );
 }
@@ -54,7 +54,7 @@ void CTestBoxRender::Update()
 	m_angle += CMath::PI / 360.0f;
 	CQuaternion rot;
 	CVector3 pos;
-	pos.Set(10.0f, 0.0f, 0.0f);
+	pos.Set(20.0f, 0.0f, 0.0f);
 	rot.SetRotation(CVector3::AxisX, m_angle);
 	m_box.SetRotation(rot);
 	m_box.SetPosition(pos);
@@ -75,6 +75,8 @@ void CTestBoxRender::Render(tkEngine::CRenderContext& renderContext)
 	mMVP.Mul(mWorld, mMVP);
 	CMatrix mRot = m_box.GetRotationMatrix();
 	m_pEffect->SetTechnique(renderContext, "ColorNormalPrim");
+	m_pEffect->Begin(renderContext);
+	m_pEffect->BeginPass(renderContext, 0);
 	m_pEffect->SetValue(renderContext, "g_mWVP", &mMVP, sizeof(mMVP));
 	m_pEffect->SetValue(renderContext, "g_worldRotationMatrix", &mRot, sizeof(mRot));
 	m_pEffect->SetValue(
@@ -83,9 +85,8 @@ void CTestBoxRender::Render(tkEngine::CRenderContext& renderContext)
 		&m_light,
 		sizeof(m_light)
 		);
-	m_pEffect->Begin(renderContext);
-	m_pEffect->BeginPass(renderContext, 0);
-
+	
+	m_pEffect->CommitChanges(renderContext);
 	m_box.Render(renderContext);
 
 	m_pEffect->EndPass(renderContext);

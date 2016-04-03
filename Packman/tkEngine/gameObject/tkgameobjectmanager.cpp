@@ -49,6 +49,10 @@ namespace tkEngine{
 		};
 		renderContext[0].SetViewport(vp);
 		renderContext[0].SetRenderState(RS_CULLMODE, CULL_NONE);
+		renderContext[0].SetRenderState(RS_ALPHABLENDENABLE, TRUE);
+		renderContext[0].SetRenderState(RS_SRCBLEND, D3DBLEND_ONE);
+		renderContext[0].SetRenderState(RS_DESTBLEND, D3DBLEND_ZERO);
+		renderContext[0].SetRenderState(RS_ALPHATESTENABLE, FALSE);
 		//プリレンダリング。
 		preRender.Render(renderContext[0]);
 
