@@ -152,6 +152,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="game\CCamera.cpp" />
+    <ClCompile Include="game\CGameManager.cpp" />
+    <ClCompile Include="game\Map\CGround.cpp" />
+    <ClCompile Include="game\Map\CMapBuilder.cpp" />
+    <ClCompile Include="game\Map\CWall.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -163,6 +168,11 @@
     <ClCompile Include="Test\TestSphereRender.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="game\ccamera.h" />
+    <ClInclude Include="game\CGameManager.h" />
+    <ClInclude Include="game\Map\CGround.h" />
+    <ClInclude Include="game\Map\CMapBuilder.h" />
+    <ClInclude Include="game\Map\CWall.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Test\test.h" />
     <ClInclude Include="Test\TestBoxRender.h" />

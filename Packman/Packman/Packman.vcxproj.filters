@@ -16,6 +16,12 @@
     <Filter Include="Source Files\Test">
       <UniqueIdentifier>{db1f9a26-d3af-4f86-a56b-06deaa025335}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\game">
+      <UniqueIdentifier>{e18ef791-bad4-4057-9d95-3ea5f12085c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\map">
+      <UniqueIdentifier>{716087e7-9f95-4bba-8565-2577d6dfdf5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,6 +45,21 @@
     <ClCompile Include="Test\TestCreateRenderTarget.cpp">
       <Filter>Source Files\Test</Filter>
     </ClCompile>
+    <ClCompile Include="game\CGameManager.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\CCamera.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Map\CMapBuilder.cpp">
+      <Filter>Source Files\game\map</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Map\CGround.cpp">
+      <Filter>Source Files\game\map</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Map\CWall.cpp">
+      <Filter>Source Files\game\map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -58,6 +79,21 @@
     </ClInclude>
     <ClInclude Include="Test\TestCreateRenderTarget.h">
       <Filter>Source Files\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="game\CGameManager.h">
+      <Filter>Source Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ccamera.h">
+      <Filter>Source Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Map\CMapBuilder.h">
+      <Filter>Source Files\game\map</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Map\CGround.h">
+      <Filter>Source Files\game\map</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Map\CWall.h">
+      <Filter>Source Files\game\map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

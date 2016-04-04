@@ -51,7 +51,18 @@ namespace tkEngine{
 		 */
 		void Init( u32 gameObjectPrioMax );
 		/*!
+		*@brief	ゲームオブジェクトの追加。
+		*@param	prio	実行優先順位。
+		*/
+		void AddGameObject(GameObjectPrio prio, IGameObject* go)
+		{
+			go->Awake();
+			m_gameObjectListArray.at(prio).push_back(go);
+		}
+		/*!
 		 *@brief	ゲームオブジェクトのnew
+		 *@details
+		 * この関数を使用してnewしたオブジェクトは必ずDeleteGameObjectを実行することでdeleteされます。
 		 *@param	prio	実行優先順位。
 		 */
 		template<class T>
@@ -60,6 +71,7 @@ namespace tkEngine{
 			TK_ASSERT( prio <= m_gameObjectPriorityMax, "ゲームオブジェクトの優先度の最大数が大きすぎます。");
 			T* newObject = new T();
 			newObject->Awake();
+			newObject->SetMarkNewFromGameObjectManager();
 			m_gameObjectListArray.at(prio).push_back(newObject);
 			return newObject;
 		}

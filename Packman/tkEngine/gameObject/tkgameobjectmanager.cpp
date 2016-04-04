@@ -51,11 +51,13 @@ namespace tkEngine{
 				1.0f
 			};
 			renderContext[0].SetViewport(vp);
-			renderContext[0].SetRenderState(RS_CULLMODE, CULL_NONE);
+			renderContext[0].SetRenderState(RS_CULLMODE, CULL_CCW);
 			renderContext[0].SetRenderState(RS_ALPHABLENDENABLE, TRUE);
 			renderContext[0].SetRenderState(RS_SRCBLEND, BLEND_ONE);
 			renderContext[0].SetRenderState(RS_DESTBLEND, BLEND_ZERO);
 			renderContext[0].SetRenderState(RS_ALPHATESTENABLE, FALSE);
+			renderContext[0].SetRenderState(RS_ZWRITEENABLE, TRUE);
+			renderContext[0].SetRenderState(RS_ZENABLE, TRUE);
 		}
 		//プリレンダリング。
 		preRender.Render(renderContext[0]);
@@ -94,6 +96,9 @@ namespace tkEngine{
 				GameObjectPrio prio = go->GetPriority();
 				GameObjectList& goExecList = m_gameObjectListArray.at(prio);
 				auto it = std::find( goExecList.begin(),goExecList.end(),go );
+				if ((*it)->IsNewFromGameObjectManager()) {
+					delete (*it);
+				}
 				goExecList.erase(it);
 			}
 			goList.clear();

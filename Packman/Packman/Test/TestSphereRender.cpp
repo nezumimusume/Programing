@@ -37,7 +37,7 @@ void CTestSphereRender::Update()
 	m_angle += CMath::PI / 360.0f;
 	CQuaternion rot;
 	CVector3 pos;
-	pos.Set(0.0f, 1.0f, 0.0f);
+	pos.Set(0.0f, 1.0f, 5.0f);
 	rot.SetRotation(CVector3::AxisX, m_angle);
 	m_sphere.SetRotation(rot);
 	m_sphere.SetPosition(pos);
@@ -52,7 +52,7 @@ void CTestSphereRender::Update()
 	tkEngine::CEngine::Instance().IDMap().Entry(&m_idMapModel);
 	tkEngine::CEngine::Instance().ShadowMap().Entry(&m_shadowModel);
 	tkEngine::CEngine::Instance().ShadowMap().SetLightPosition(CVector3(0.0f, 20.0f, 0.0f));
-	tkEngine::CEngine::Instance().ShadowMap().SetLightDirection(CVector3(0.0f, -1.0f, 0.0f));
+	tkEngine::CEngine::Instance().ShadowMap().SetLightDirection(CVector3(-0.2f, -1.0f, 0.0f));
 }
 void CTestSphereRender::Render(tkEngine::CRenderContext& renderContext)
 {

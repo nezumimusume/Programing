@@ -86,7 +86,7 @@ VS_OUTPUTShadow VSMainShadow( VS_INPUTShadow In )
 	//法線を回転。
 	Out.normal = mul(In.normal, g_worldRotationMatrix);
 	Out.worldPos = mul(In.pos, g_mWorld );
-	Out.worldPos = mul(In.pos, g_mLVP );
+	Out.worldPos = mul(Out.worldPos, g_mLVP );
 	return Out;
 }
 /*!
@@ -98,15 +98,18 @@ float4 PSMainShadow( VS_OUTPUTShadow In, uniform bool isIuminance ) : COLOR0
 	
 	float4 posInLVP = In.worldPos;
 	//uv座標に変換。
-	float2 shadowMapUV = (posInLVP.xy/posInLVP.w) * 0.5f + float2(0.5f, 0.5f);
-	float shadow_val = tex2D( g_shadowMapSampler, shadowMapUV ).r;
+	float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy/posInLVP.w   + float2(0.5f, 0.5f);
+	float shadow_val = 1.0f;
+	if(shadowMapUV.x <= 1.0f && shadowMapUV.y <= 1.0f){
+		shadow_val = tex2D( g_shadowMapSampler, shadowMapUV ).r;
+	}
 	float4 color = diffuse;
 	float depth = posInLVP.z / posInLVP.w;
 
 	//サンプリング。
 	color.xyz += g_light.ambient;
 	color.xyz *= In.color.xyz;
-	if( depth - shadow_val> 0.00065f){
+	if( depth - shadow_val> 0.0065f){
 		//影になっている。
 		color *= 0.5f;
 	}

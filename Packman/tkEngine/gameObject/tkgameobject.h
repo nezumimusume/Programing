@@ -17,7 +17,8 @@ namespace tkEngine{
 	public:
 		IGameObject() :
 			m_priority(0),
-			m_isStart(false)
+			m_isStart(false),
+			m_isNewFromGameObjectManager(false)
 		{
 		}
 		/*!
@@ -115,10 +116,19 @@ namespace tkEngine{
 				m_isStart = true;
 			}
 		}
+		void SetMarkNewFromGameObjectManager()
+		{
+			m_isNewFromGameObjectManager = true;
+		}
+		bool IsNewFromGameObjectManager() const
+		{
+			return m_isNewFromGameObjectManager;
+		}
 		friend class CGameObjectManager;
 	protected:
-		GameObjectPrio	m_priority;		//!<実行優先度。
-		bool m_isStart;					//!<Startの開始フラグ。
+		GameObjectPrio	m_priority;			//!<実行優先度。
+		bool m_isStart;						//!<Startの開始フラグ。
+		bool m_isNewFromGameObjectManager;	//!<GameObjectManagerでnewされた。
 		
 	};
 }

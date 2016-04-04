@@ -4,8 +4,8 @@
 #include "tkEngine/graphics/tkVertexBuffer.h"
 #include "tkEngine/graphics/tkIndexBuffer.h"
 #include "tkEngine/math/tkVector.h"
-
-#define TEST_BUILD		//定義でテストビルド
+#include "Packman/game/CGameManager.h"
+//#define TEST_BUILD		//定義でテストビルド
 #ifdef TEST_BUILD
 #include "test/test.h"
 #endif
@@ -32,11 +32,11 @@ int WINAPI wWinMain(
 	initParam.frameBufferHeight = 720;
 	initParam.frameBufferWidth = 1280;
 	//輪郭線抽出処理の設定。
-	initParam.graphicsConfig.edgeRenderConfig.isEnable = true;
+/*	initParam.graphicsConfig.edgeRenderConfig.isEnable = true;
 	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
 	//Bloom
-	initParam.graphicsConfig.bloomConfig.isEnable = true;
+	initParam.graphicsConfig.bloomConfig.isEnable = true;*/
 	//Shadow
 	initParam.graphicsConfig.shadowRenderConfig.isEnable = true;
 	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 1280;
@@ -44,7 +44,9 @@ int WINAPI wWinMain(
 	CEngine::Instance().Init( initParam );	//初期化。
 #ifdef TEST_BUILD
 	CGameObjectManager::Instance().NewGameObject<CTest>(0);
-#endif // #ifdef TEST_BUILD
+#else // #ifdef TEST_BUILD
+	CGameObjectManager::Instance().NewGameObject<CGameManager>(0);
+#endif
 	CEngine::Instance().RunGameLoop();		//ゲームループを実行。
 	
 	return 0;

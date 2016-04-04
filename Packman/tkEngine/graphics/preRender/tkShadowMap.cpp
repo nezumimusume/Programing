@@ -50,7 +50,7 @@ namespace tkEngine{
 		m_isEnable = true;
 		m_pShadowMapEffect = CEngine::EffectManager().LoadEffect( "Assets/presetshader/shadowMap.fx" );
 		m_projectionMatrix.MakeProjectionMatrix(
-			CMath::DegToRad(45.0f),
+			CMath::DegToRad(90.0f),
 			s_cast<f32>(w) / s_cast<f32>(h),
 			1.0f,
 			100.0f
@@ -72,13 +72,13 @@ namespace tkEngine{
 		if (m_isEnable) {
 			//ライトビュープロジェクション行列を作成。
 			CVector3 lightUp;
-			f32 t = fabsf(m_lightDirection.Dot(CVector3::AxisX));
+			f32 t = fabsf(m_lightDirection.Dot(CVector3::AxisY));
 			if (fabsf((t - 1.0f)) < 0.00001f) {
-				//ライトの方向がほぼX軸と並行。
-				lightUp.Cross(m_lightDirection, CVector3::AxisZ);
+				//ライトの方向がほぼY軸と並行。
+				lightUp = CVector3::AxisX;
 			}
 			else {
-				lightUp.Cross(m_lightDirection, CVector3::AxisX);
+				lightUp = CVector3::AxisY;
 			}
 			//ライトからみたビュー行列を作成。
 			CVector3 target;
@@ -95,6 +95,7 @@ namespace tkEngine{
 			CRenderTarget* pRTBackup = renderContext.GetRenderTarget(0);
 			renderContext.SetRenderTarget( 0, &m_shadowMapRT );
 			renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,0xffffffff, 1.0f, 0);
+			//renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0, 1.0f, 0);
 			m_pShadowMapEffect->SetTechnique( renderContext, "RenderShadowMap" );
 			m_pShadowMapEffect->Begin(renderContext);
 			//ライトビュープロジェクション行列を作る。

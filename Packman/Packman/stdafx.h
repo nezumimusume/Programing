@@ -5,4 +5,6 @@
 #include <mmsystem.h>
 #include "tkEngine/tkEnginePreCompile.h"
 
+using namespace tkEngine;
+
 #endif //_STDAFX_H_
