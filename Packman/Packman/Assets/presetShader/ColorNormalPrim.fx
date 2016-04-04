@@ -100,21 +100,20 @@ float4 PSMainShadow( VS_OUTPUTShadow In, uniform bool isIuminance ) : COLOR0
 	//uv座標に変換。
 	float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy/posInLVP.w   + float2(0.5f, 0.5f);
 	float shadow_val = 1.0f;
-	if(shadowMapUV.x <= 1.0f && shadowMapUV.y <= 1.0f){
+	if(shadowMapUV.x <= 1.0f && shadowMapUV.y <= 1.0f && shadowMapUV.x >= 0.0f && shadowMapUV.y >= 0.0f){
 		shadow_val = tex2D( g_shadowMapSampler, shadowMapUV ).r;
 	}
-	float4 color = diffuse;
+	
 	float depth = posInLVP.z / posInLVP.w;
 
-	//サンプリング。
-	color.xyz += g_light.ambient;
-	color.xyz *= In.color.xyz;
 	if( depth - shadow_val> 0.0065f){
 		//影になっている。
-		color *= 0.5f;
+		diffuse = 0.0f;
 	}
-	
-	
+	float4 color = diffuse;
+	color.xyz += g_light.ambient;
+	color.xyz *= In.color.xyz;
+
 	if(isIuminance){
 		//αに輝度を埋め込む。
 		color.a = CalcLuminance(color.xyz);

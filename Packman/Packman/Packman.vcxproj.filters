@@ -60,6 +60,9 @@
     <ClCompile Include="game\Map\CWall.cpp">
       <Filter>Source Files\game\map</Filter>
     </ClCompile>
+    <ClCompile Include="game\Map\CFood.cpp">
+      <Filter>Source Files\game\map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -93,6 +96,9 @@
       <Filter>Source Files\game\map</Filter>
     </ClInclude>
     <ClInclude Include="game\Map\CWall.h">
+      <Filter>Source Files\game\map</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Map\CFood.h">
       <Filter>Source Files\game\map</Filter>
     </ClInclude>
   </ItemGroup>

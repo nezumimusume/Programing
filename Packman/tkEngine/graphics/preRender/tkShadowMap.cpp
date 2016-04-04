@@ -50,7 +50,7 @@ namespace tkEngine{
 		m_isEnable = true;
 		m_pShadowMapEffect = CEngine::EffectManager().LoadEffect( "Assets/presetshader/shadowMap.fx" );
 		m_projectionMatrix.MakeProjectionMatrix(
-			CMath::DegToRad(90.0f),
+			CMath::DegToRad(45.0f),
 			s_cast<f32>(w) / s_cast<f32>(h),
 			1.0f,
 			100.0f

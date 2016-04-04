@@ -195,6 +195,7 @@ namespace tkEngine{
 			t0.Normalize();
 			t1.Normalize();
 			polyInfo.normal.Cross(t0, t1);
+			polyInfo.normal.Normalize();
 			polygoninfos.at(polyInfo.vertNos[0]).push_back(polyInfo);
 			polygoninfos.at(polyInfo.vertNos[1]).push_back(polyInfo);
 			polygoninfos.at(polyInfo.vertNos[2]).push_back(polyInfo);

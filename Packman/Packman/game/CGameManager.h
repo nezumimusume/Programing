@@ -28,9 +28,19 @@ public:
 	{
 		return m_groundLight;
 	}
+	CLight& GetWallLight()
+	{
+		return m_wallLight;
+	}
+	CLight& GetFoodLight()
+	{
+		return m_foodLight;
+	}
 private:
 	CGameCamera		m_camera;
 	CLight			m_groundLight;		//地面のライト
+	CLight			m_wallLight;		//壁のライト。
+	CLight			m_foodLight;		//食べ物のライト。
 	static CGameManager*	m_instance;	//唯一のインスタンス。
 	CMapBuilder		m_mapBuilder;
 };

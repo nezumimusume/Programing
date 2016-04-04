@@ -23,7 +23,7 @@ namespace tkEngine {
 			std::vector<SShapeVertex_PNC> vertexBuffer;
 			CreateVertexPosition(vertexBuffer, radius, grid, color);
 			//頂点マージ
-			MergeVertex(vertexBuffer, indexBuffer, 0.1f );
+			MergeVertex(vertexBuffer, indexBuffer, 0.001f );
 			//法線を計算。
 			CreateVertexNormal(vertexBuffer, indexBuffer, CPrimitive::eTriangleList);
 			

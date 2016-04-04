@@ -32,11 +32,11 @@ int WINAPI wWinMain(
 	initParam.frameBufferHeight = 720;
 	initParam.frameBufferWidth = 1280;
 	//—ÖŠsü’Šoˆ—‚Ìİ’èB
-/*	initParam.graphicsConfig.edgeRenderConfig.isEnable = true;
+	initParam.graphicsConfig.edgeRenderConfig.isEnable = true;
 	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
 	//Bloom
-	initParam.graphicsConfig.bloomConfig.isEnable = true;*/
+	initParam.graphicsConfig.bloomConfig.isEnable = true;
 	//Shadow
 	initParam.graphicsConfig.shadowRenderConfig.isEnable = true;
 	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 1280;
