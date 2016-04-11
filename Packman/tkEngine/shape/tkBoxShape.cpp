@@ -404,5 +404,6 @@ namespace tkEngine{
 				index
 				);
 		}
+		CreateEffect(hasNormal);
 	}
 }

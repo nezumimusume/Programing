@@ -5,6 +5,7 @@
 #define _TKSHAPEBASE_H_
 
 namespace tkEngine{
+	class CLight;
 	/*!
 	 *@brief	形状の基本クラス。
 	 */
@@ -66,6 +67,26 @@ namespace tkEngine{
 		*@param[in]	renderContext	レンダリングコンテキスト。
 		*/
 		void Render(CRenderContext& renderContext);
+		/*!
+		*@brief	ライティングありの描画
+		* 法線ありで生成を行っている必要あり。
+		*@param[in]	renderContext			レンダリングコンテキスト。
+		*@param[in] viewProjectionMatrix	ビュープロジェクション行列。
+		*@param[in]	light					ライト。
+		*@param[in]	isIluminance			自己発光あり。
+		*/
+		void RenderLight( 
+			CRenderContext& renderContext, 
+			const CMatrix& viewProjectionMatrix,
+			const CLight& light,
+			bool isIluminance
+		);
+	protected:
+		/*!
+		*@brief	エフェクト作成。
+		*@param[in]		hasNormal	法線を保持しているか。
+		*/
+		void CreateEffect(bool hasNormal);
 	protected:
 		bool m_isCreatePrimitive;		//!<内部でプリミティブを作成したかどうかのフラグ。
 		CPrimitive*	m_pPrimitive;		//!<プリミティブ。
@@ -73,6 +94,7 @@ namespace tkEngine{
 		CQuaternion	m_rotation;			//!<回転。
 		CMatrix		m_worldMatrix;		//!<ワールド行列。
 		CMatrix		m_rotationMatrix;	//!<ワールド回転行列。
+		CEffect*	m_pEffect;			//!<エフェクト。
 	};
 	struct SMergeInfo{
 		u32	delVertNo;

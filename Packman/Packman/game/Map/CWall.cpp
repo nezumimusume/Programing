@@ -24,24 +24,12 @@ void CWall::Update()
 void CWall::Render(tkEngine::CRenderContext& renderContext)
 {
 	CGameManager& gm = CGameManager::GetInstance();
-	const CMatrix& mRot = m_box.GetRotationMatrix();
-	
-	m_pEffect->SetTechnique(renderContext, "ColorNormalPrim");
-	m_pEffect->Begin(renderContext);
-	m_pEffect->BeginPass(renderContext, 0);
-	m_pEffect->SetValue(renderContext, "g_mWVP", &m_wvpMatrix, sizeof(m_wvpMatrix));
-	m_pEffect->SetValue(renderContext, "g_worldRotationMatrix", &mRot, sizeof(mRot));
-	m_pEffect->SetValue(
+	m_box.RenderLight(
 		renderContext,
-		"g_light",
-		&gm.GetWallLight(),
-		sizeof(CLight)
-		);
-	m_pEffect->CommitChanges(renderContext);
-	m_box.Render(renderContext);
-
-	m_pEffect->EndPass(renderContext);
-	m_pEffect->End(renderContext);
+		gm.GetGameCamera().GetViewProjectionMatrix(),
+		gm.GetWallLight(),
+		false
+	);
 }
 void CWall::Build( const CVector3& size, const CVector3& pos )
 {

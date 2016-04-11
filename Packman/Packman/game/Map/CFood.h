@@ -16,7 +16,6 @@ public:
 	void Build( f32 radius, const CVector3& pos );
 private:
 	tkEngine::CSphereShape	m_sphere;
-	tkEngine::CEffect*		m_pEffect;
 	CMatrix					m_wvpMatrix;	//<ワールドビュープロジェクション行列。
 	tkEngine::CIDMapModel	m_idMapModel;
 };

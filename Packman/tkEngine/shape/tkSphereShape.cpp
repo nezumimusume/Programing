@@ -60,6 +60,7 @@ namespace tkEngine {
 				&indexBuffer.at(0)
 			);
 		}
+		CreateEffect(hasNormal);
 	}
 	void CSphereShape::CreateIndexBuffer(std::vector<u32>& indexBuffer, u32 grid)
 	{
