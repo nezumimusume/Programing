@@ -9,7 +9,7 @@
 namespace tkEngine{
 	class CGameObjectManager;
 	class CRenderContext;
-	typedef u8	GameObjectPrio;
+	typedef unsigned char	GameObjectPrio;
 	/*!
 	 *@brief	ゲームオブジェクト。
 	 */

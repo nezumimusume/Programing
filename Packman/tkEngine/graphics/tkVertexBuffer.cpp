@@ -19,8 +19,8 @@ namespace tkEngine{
 		Release();
 	}
 	void CVertexBuffer::Create(
-			u32 numVertex, 
-			u32 stride, 
+			int numVertex, 
+			int stride, 
 			const SVertexElement* vertexLayout, 
 			const void* pSrcVertexBuffer )
 	{

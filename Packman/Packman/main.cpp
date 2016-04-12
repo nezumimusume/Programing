@@ -20,7 +20,7 @@ int WINAPI wWinMain(
 	SInitParam initParam;
 	memset(&initParam, 0, sizeof(initParam));
 	//コマンドバッファのサイズのテーブル。
-	u32 commandBufferSizeTbl[] = {
+	int commandBufferSizeTbl[] = {
 		10 * 1024 * 1024,		//10MB
 	};
 	initParam.hInstance = hInst;

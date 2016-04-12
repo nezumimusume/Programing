@@ -23,7 +23,7 @@ namespace tkEngine{
 		 *@brief	初期化。
 		 *@param[in]	size	コマンドバッファのサイズ。
 		 */
-		void Init(u32 size);
+		void Init(int size);
 		/*!
 		 *@brief	32バイトのコマンドを書き込み。
 		 *@details	コマンドは必ず32byte
@@ -35,7 +35,7 @@ namespace tkEngine{
 			static_assert( sizeof(T) <= 32, "command size error\n");
 			TK_ASSERT( m_writePos + 32 <= m_size, "command buffer size over!!!");
 			struct Write32Byte{
-				u32 data[8];
+				int data[8];
 			};
 			Write32Byte* dst = reinterpret_cast<Write32Byte*>(&m_buffer[m_writePos]);
 			Write32Byte* src = reinterpret_cast<Write32Byte*>(&command);
@@ -46,7 +46,7 @@ namespace tkEngine{
 		/*!
 		*@brief	コマンドバッファからアロケート
 		*/
-		void* Alloc(u32 sizeInByte)
+		void* Alloc(int sizeInByte)
 		{
 			TK_ASSERT(m_writePos + sizeInByte <= m_size, "command buffer size over!!!");
 			void* p = &m_buffer[m_writePos];
@@ -58,10 +58,10 @@ namespace tkEngine{
 		 */
 		void Submit(LPDIRECT3DDEVICE9 pD3DDevice);
 	private:
-		std::unique_ptr<u8[]>	m_buffer;	//!<コマンドバッファ
+		std::unique_ptr<unsigned char[]>	m_buffer;	//!<コマンドバッファ
 		std::vector<void*>		m_command;	//!<コマンド。
-		u32						m_writePos;	//!<書き込み位置
-		u32						m_size;		//!<コマンドバッファのサイズ。
+		int						m_writePos;	//!<書き込み位置
+		int						m_size;		//!<コマンドバッファのサイズ。
 	};
 }
 #endif // _TKRENDERCOMMANDBUFFER_H_

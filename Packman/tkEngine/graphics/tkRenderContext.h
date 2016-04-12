@@ -35,7 +35,7 @@ namespace tkEngine{
 		 *@param[in]	streamNo		ストリーム番号。
 		 *@param[in]	pVB				頂点バッファ。
 		 */
-		__inline void SetStreamSource(u32 streamNo, CVertexBuffer* pVB);
+		__inline void SetStreamSource(int streamNo, CVertexBuffer* pVB);
 		/*!
 		 * @brief	インデックスバッファを設定。IDirect3DDevice9::SetIndicesと同じ。
 		 *@param[in]	pIB		インデックスバッファ。
@@ -56,12 +56,12 @@ namespace tkEngine{
 		*@param[in]	Stencil		ステンシルバッファのクリア値。
 		*/
 		__inline void Clear(
-			u32 Count,
+			int Count,
 			const D3DRECT  *pRects,
-			u32 Flags,
-			u32 Color,
-			f32 Z,
-			u32 Stencil);
+			int Flags,
+			int Color,
+			float Z,
+			int Stencil);
 		/*!
 		* @brief	ビューポートを設定。。IDirect3DDevice9::SetViewportと同じ。
 		*/
@@ -71,19 +71,19 @@ namespace tkEngine{
 		*@param[in]	renderStateType		設定するレンダリングステートの種類。
 		*@param[in]	value				設定する値。
 		*/
-		__inline void SetRenderState(ERenderStateType renderStateType, u32 value);
+		__inline void SetRenderState(ERenderStateType renderStateType, int value);
 		/*!
 		* @brief	レンダリングターゲットを設定。
 		*@param[in]	renderTargetIndex	レンダリングターゲットのインデックス。
 		*@param[in]	pRT					レンダリングターゲット。
 		*/
-		__inline void SetRenderTarget(u32 renderTargetIndex, CRenderTarget* pRT);
+		__inline void SetRenderTarget(int renderTargetIndex, CRenderTarget* pRT);
 		/*!
 		 *@brief	初期化。
 		 *@param[in]	pD3DDevice			Direct3Dデバイス
 		 *@param[in]	commandBufferSize	コマンドバッファのサイズ。
 		 */
-		void Init(LPDIRECT3DDEVICE9 pD3DDevice, u32 commandBufferSize);
+		void Init(LPDIRECT3DDEVICE9 pD3DDevice, int commandBufferSize);
 		/*!
 		 *@brief	レンダリングコマンドを追加
 		 */
@@ -103,7 +103,7 @@ namespace tkEngine{
 		/*!
 		*@brief	コマンドバッファからアロケート
 		*/
-		void* AllocFromCommandBuffer(u32 sizeInByte)
+		void* AllocFromCommandBuffer(int sizeInByte)
 		{
 			return m_commandBuffer.Alloc(sizeInByte);
 		}
@@ -111,13 +111,13 @@ namespace tkEngine{
 		 * @brief	現在のレンダリングターゲットを取得。
 		 *@param[in]	rtIndex		レンダリングターゲットのインデックス。
 		 */
-		CRenderTarget* GetRenderTarget( u32 rtIndex ) const
+		CRenderTarget* GetRenderTarget( int rtIndex ) const
 		{
 			TK_ASSERT( rtIndex < NUM_MRT, "rtIndex is invalid!!" );
 			return m_pCurrentRT[rtIndex];
 		}
 	private:
-		static const u32 NUM_MRT = 4;					//!<MRTはとりあえず４に制限。
+		static const int NUM_MRT = 4;					//!<MRTはとりあえず４に制限。
 		LPDIRECT3DDEVICE9		m_pD3DDevice;
 		CRenderCommandBuffer 	m_commandBuffer;
 		CRenderTarget*			m_pCurrentRT[NUM_MRT];	//!<現在のレンダリングターゲット。
@@ -130,7 +130,7 @@ namespace tkEngine {
 	{
 		SetRenderCommand(CRenderCommand_SetVertexDeclaration(vertexDecl));
 	}
-	__inline void CRenderContext::SetStreamSource(u32 streamNo, CVertexBuffer* pVB)
+	__inline void CRenderContext::SetStreamSource(int streamNo, CVertexBuffer* pVB)
 	{
 		SetRenderCommand(CRenderCommand_SetStreamSource(
 			0,
@@ -150,12 +150,12 @@ namespace tkEngine {
 			));
 	}
 	__inline void CRenderContext::Clear(
-		u32 Count,
+		int Count,
 		const D3DRECT *pRects,
-		u32 Flags,
-		u32 Color,
-		f32 Z,
-		u32 Stencil
+		int Flags,
+		int Color,
+		float Z,
+		int Stencil
 		)
 	{
 		SetRenderCommand(CRenderCommand_Clear(
@@ -171,11 +171,11 @@ namespace tkEngine {
 	{
 		SetRenderCommand(CRenderCommand_SetViewport(viewport));
 	}
-	__inline void CRenderContext::SetRenderState(ERenderStateType renderStateType, u32 value)
+	__inline void CRenderContext::SetRenderState(ERenderStateType renderStateType, int value)
 	{
 		SetRenderCommand(CRenderCommand_SetRenderState(renderStateType, value));
 	}
-	__inline void CRenderContext::SetRenderTarget(u32 renderTargetIndex, CRenderTarget* pRT)
+	__inline void CRenderContext::SetRenderTarget(int renderTargetIndex, CRenderTarget* pRT)
 	{
 		m_pCurrentRT[renderTargetIndex] = pRT;
 		SetRenderCommand(CRenderCommand_SetRenderTarget(renderTargetIndex, pRT));

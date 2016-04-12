@@ -31,13 +31,13 @@ namespace tkEngine{
 		 *@param[in]	multiSampleQuality	マルチサンプリングのクオリティ。
 		 */
 		void Create(
-			u32 w,
-			u32 h,
-			u32 mipLevel,
+			int w,
+			int h,
+			int mipLevel,
 			EFormat colorFormat,
 			EFormat depthStencilFormat,
 			EMultisampleType multiSampleType,
-			u32 multiSampleQuality
+			int multiSampleQuality
 		);
 		/*!
 		 *@brief	レンダリングターゲットの破棄。
@@ -53,14 +53,14 @@ namespace tkEngine{
 		/*!
 		*@brief	レンダリングターゲットの幅を取得。
 		*/
-		u32 GetWidth() const
+		int GetWidth() const
 		{
 			return m_width;
 		}
 		/*!
 		*@brief	レンダリングターゲットの高さを取得。
 		*/
-		u32 GetHeight() const
+		int GetHeight() const
 		{
 			return m_height;
 		}
@@ -86,8 +86,8 @@ namespace tkEngine{
 		LPDIRECT3DTEXTURE9		m_textureDX;		//!<書き込み先のテクスチャ。
 		LPDIRECT3DSURFACE9		m_surface;			//!<サーフェイス
 		CTexture				m_texture;			//!<テクスチャ。
-		u32						m_width;			//!<幅。
-		u32						m_height;			//!<高さ。
+		int						m_width;			//!<幅。
+		int						m_height;			//!<高さ。
 	};
 }
 #endif // _TKRENDERTARGET_H_

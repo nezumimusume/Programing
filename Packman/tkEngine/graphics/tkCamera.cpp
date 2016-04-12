@@ -30,7 +30,7 @@ namespace tkEngine{
 	void CCamera::Update()
 	{
 		if(m_isNeedUpdateProjectionMatrix){
-			f32 aspect = (f32)CEngine::Instance().GetFrameBufferWidth() / (f32)CEngine::Instance().GetFrameBufferHeight();
+			float aspect = (float)CEngine::Instance().GetFrameBufferWidth() / (float)CEngine::Instance().GetFrameBufferHeight();
 			//プロジェクション行列を計算。
 			m_projectionMatrix.MakeProjectionMatrix(
 				m_viewAngle,

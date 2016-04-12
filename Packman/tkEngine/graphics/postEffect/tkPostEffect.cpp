@@ -38,7 +38,7 @@ namespace tkEngine{
 				1.0f, 1.0f
 			},
 		};
-		static u16 index[] = {
+		static unsigned short index[] = {
 			0,1,2,3
 		};
 		m_fullscreenRenderPrim.Create(

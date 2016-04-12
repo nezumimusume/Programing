@@ -39,8 +39,8 @@ namespace tkEngine{
 		 *@param[in]	srcVertexBuffer	ソース頂点バッファ。作成された頂点バッファにコピーされます。NULLを指定可能。
 		 */
 		void Create( 
-			u32 numVertex, 
-			u32 stride, 
+			int numVertex, 
+			int stride, 
 			const SVertexElement* vertexLayout, 
 			const void* pSrcVertexBuffer 
 		);
@@ -58,7 +58,7 @@ namespace tkEngine{
 		/*!
 		* @brief	頂点ストライドを取得。
 		*/
-		u32 GetStride() const
+		int GetStride() const
 		{
 			return m_stride;
 		}
@@ -72,9 +72,9 @@ namespace tkEngine{
 	private:
 		LPDIRECT3DVERTEXBUFFER9			m_pVB;				//!<頂点バッファ。
 		SVertexDecralation* 			m_pVertexDecl;		//!<頂点定義。
-		u32 							m_stride;			//!<頂点ストライド。
-		u32 							m_numVertex;		//!<頂点数。
-		u32 							m_size;				//!<バッファサイズ。
+		int 							m_stride;			//!<頂点ストライド。
+		int 							m_numVertex;		//!<頂点数。
+		int 							m_size;				//!<バッファサイズ。
 	};
 }
 #endif // #define _TKRENDERBUFFER_H_

@@ -30,9 +30,9 @@ namespace tkEngine{
 			//IDMapのテクスチャを取得。
 			CTexture* pIdMap = CEngine::Instance().IDMap().GetTexture();
 			//ポストエフェクト用のテクニックを設定。
-			f32 idMapSize[] = {
-				s_cast<f32>(CEngine::Instance().IDMap().GetWitdh()),
-				s_cast<f32>(CEngine::Instance().IDMap().GetHeight()),
+			float idMapSize[] = {
+				s_cast<float>(CEngine::Instance().IDMap().GetWitdh()),
+				s_cast<float>(CEngine::Instance().IDMap().GetHeight()),
 			};
 			m_pEffect->SetTechnique(renderContext, "RenderEdge");
 			m_pEffect->SetTexture(renderContext, "g_idMap", pIdMap);

@@ -20,7 +20,7 @@ namespace tkEngine{
 		 *@param[in]	format			インデックスバッファのフォーマット。
 		 *@param[in]	pSrcIndexBuffer	ソースインデックスバッファ。作成されたインデックスバッファにコピーされます。NULLを指定可能。
 		 */
-		void Create( u32 numIndex, EIndexFormat format, const void* pSrcIndexBuffer );
+		void Create( int numIndex, EIndexFormat format, const void* pSrcIndexBuffer );
 		/*!
 		 *@brief	インデックスバッファの解放。
 		 */

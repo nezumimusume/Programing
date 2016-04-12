@@ -9,7 +9,7 @@
 namespace tkEngine{
 	void CGameObjectManager::Execute(
 		CRenderContext* renderContext, 
-		u32 numRenderContext,
+		int numRenderContext,
 		const SRenderContextMap* renderContextMap, 
 		CPreRender& preRender,
 		CPostEffect& postEffect
@@ -45,8 +45,8 @@ namespace tkEngine{
 			tkEngine::SViewport vp = {
 				0,
 				0,
-				tkEngine::CEngine::Instance().GetFrameBufferWidth(),
-				tkEngine::CEngine::Instance().GetFrameBufferHeight(),
+				(unsigned int)tkEngine::CEngine::Instance().GetFrameBufferWidth(),
+				(unsigned int)tkEngine::CEngine::Instance().GetFrameBufferHeight(),
 				0.0f,
 				1.0f
 			};
@@ -104,7 +104,7 @@ namespace tkEngine{
 			goList.clear();
 		}
 	}
-	void CGameObjectManager::Init( u32 gameObjectPrioMax )
+	void CGameObjectManager::Init( int gameObjectPrioMax )
 	{
 		TK_ASSERT( gameObjectPrioMax <= GAME_OBJECT_PRIO_MAX, "ゲームオブジェクトの優先度の最大数が大きすぎます。");
 		m_gameObjectPriorityMax = gameObjectPrioMax;

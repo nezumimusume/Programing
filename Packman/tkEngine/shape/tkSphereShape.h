@@ -29,14 +29,14 @@ namespace tkEngine{
 		 *@param[in]	color		カラー。
 		 *@param[in]	hasNormal	法線を保持している？
 		 */
-		void Create(f32 radius, u32 grid, u32 color, bool hasNormal );
+		void Create(float radius, int grid, int color, bool hasNormal );
 	private:
 		/*!
 		*@brief	インデックスバッファの頂点を作成。
 		*@param[out]	indexBuffer		インデックスバッファ。
 		*@param[in]		grid			グリッド。
 		*/
-		void CreateIndexBuffer(std::vector<u32>& indexBuffer, u32 grid);
+		void CreateIndexBuffer(std::vector<int>& indexBuffer, int grid);
 		/*!
 		*@brief	頂点バッファの頂点を作成。
 		*@param[out]	vertexBuffer	頂点バッファ。
@@ -45,7 +45,7 @@ namespace tkEngine{
 		*@param[in]		color			カラー
 		*/
 		template<class TVertex>
-		void CreateVertexPosition(std::vector<TVertex>& vertexBuffer, f32 radius, u32 grid, u32 color);
+		void CreateVertexPosition(std::vector<TVertex>& vertexBuffer, float radius, int grid, int color);
 	};
 }
 #endif // _TKSPHERESHAPE_H_

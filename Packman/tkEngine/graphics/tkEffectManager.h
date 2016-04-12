@@ -28,13 +28,13 @@ namespace tkEngine{
 		 *@param[in]	filePath	ロードするエフェクトのファイルパス。
 		 *@return	ロードしたエフェクトファイル。
 		 */
-		CEffect* LoadEffect( const c8* filePath );
+		CEffect* LoadEffect( const char* filePath );
 		/*!
 		 * @brief	リリース。
 		 */
 		void Release();
 	private:
-		std::map<u32, CEffect*>		m_effectDictinary;	//!<CEffectのインスタンスのディクショナリ。ファイルパスのハッシュ値をキーに持ち、CEffectのインスタンスを値に持つ。
+		std::map<int, CEffect*>		m_effectDictinary;	//!<CEffectのインスタンスのディクショナリ。ファイルパスのハッシュ値をキーに持ち、CEffectのインスタンスを値に持つ。
 	};
 }
 

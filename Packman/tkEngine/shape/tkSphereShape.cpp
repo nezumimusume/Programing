@@ -12,12 +12,12 @@ namespace tkEngine {
 	CSphereShape::~CSphereShape()
 	{
 	}
-	void CSphereShape::Create(f32 radius, u32 grid, u32 color, bool hasNormal)
+	void CSphereShape::Create(float radius, int grid, int color, bool hasNormal)
 	{
 		Release();
 		m_isCreatePrimitive = true;
 		//インデックスバッファの作成。
-		std::vector<u32>	indexBuffer;
+		std::vector<int>	indexBuffer;
 		CreateIndexBuffer(indexBuffer, grid);
 		if (hasNormal) {
 			std::vector<SShapeVertex_PNC> vertexBuffer;
@@ -62,21 +62,21 @@ namespace tkEngine {
 		}
 		CreateEffect(hasNormal);
 	}
-	void CSphereShape::CreateIndexBuffer(std::vector<u32>& indexBuffer, u32 grid)
+	void CSphereShape::CreateIndexBuffer(std::vector<int>& indexBuffer, int grid)
 	{
-		for (u32 i = 0; i < grid; i++) {
-			u32 baseVertNo = (grid + 1) * i;
-			u32 vertNo[3] = {
+		for (int i = 0; i < grid; i++) {
+			int baseVertNo = (grid + 1) * i;
+			int vertNo[3] = {
 				baseVertNo ,
 				baseVertNo + 1,
 				baseVertNo + grid + 2
 			};
-			u32 vertNo2[3] = {
+			int vertNo2[3] = {
 				baseVertNo + grid + 3,
 				baseVertNo + grid + 2,
 				baseVertNo + 2,
 			};
-			for (u32 k = 0; k < grid; k++) {
+			for (int k = 0; k < grid; k++) {
 				if (k == 0) {
 					indexBuffer.push_back(0);
 					indexBuffer.push_back(vertNo[1]);
@@ -103,17 +103,17 @@ namespace tkEngine {
 		}
 	}
 	template<class TVertex>
-	void CSphereShape::CreateVertexPosition(std::vector<TVertex>& vertexBuffer, f32 radius, u32 grid, u32 color)
+	void CSphereShape::CreateVertexPosition(std::vector<TVertex>& vertexBuffer, float radius, int grid, int color)
 	{
-		u32 numVertex = (grid + 1)*(grid + 1);
+		int numVertex = (grid + 1)*(grid + 1);
 		vertexBuffer.reserve(numVertex);
 		//球体形状の作成。
-		f32 deltaAngle = 2.0f * CMath::PI / grid;
-		f32 deltaAngle2 = CMath::PI / grid;
-		for (u32 i = 0; i < grid + 1; i++)
+		float deltaAngle = 2.0f * CMath::PI / grid;
+		float deltaAngle2 = CMath::PI / grid;
+		for (int i = 0; i < grid + 1; i++)
 		{
 			float z_angle = deltaAngle * i;
-			for (u32 k = 0; k < grid + 1; k++)
+			for (int k = 0; k < grid + 1; k++)
 			{
 				CVector3 t(0.0f, 0.0f, 0.0f);
 				//X軸周りの回転。

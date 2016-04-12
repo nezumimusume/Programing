@@ -16,10 +16,10 @@ namespace tkEngine {
 	{
 		Release();
 	}
-	void CIndexBuffer::Create(u32 numIndex, EIndexFormat format, const void* pSrcIndexBuffer)
+	void CIndexBuffer::Create(int numIndex, EIndexFormat format, const void* pSrcIndexBuffer)
 	{
 		Release();
-		u32 size = 0;
+		int size = 0;
 		D3DFORMAT d3dFormat;
 		if (format == eIndexFormat16) {
 			d3dFormat = D3DFMT_INDEX16;

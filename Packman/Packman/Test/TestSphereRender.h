@@ -18,7 +18,7 @@ private:
 	tkEngine::CEffect*		m_pEffect;
 	tkEngine::CCamera		m_camera;
 	tkEngine::CLight		m_light;
-	f32						m_angle;
+	float						m_angle;
 	tkEngine::CIDMapModel	m_idMapModel;
 	tkEngine::CShadowModel	m_shadowModel;
 };

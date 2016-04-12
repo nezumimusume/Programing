@@ -11,11 +11,11 @@ namespace tkEngine {
 	 */
 	class CLight : Noncopyable{
 	public:
-		static const u32 NUM_DIFFUSE_LIGHT = 4;
+		static const int NUM_DIFFUSE_LIGHT = 4;
 	public:
 		CLight()
 		{
-			for( u32 i = 0; i < NUM_DIFFUSE_LIGHT; i++ ){
+			for( int i = 0; i < NUM_DIFFUSE_LIGHT; i++ ){
 				m_diffuseLightDirection[i] = CVector3::AxisX;
 				m_diffuseLightColor[i].Set( 0.0f, 0.0f, 0.0f, 0.0f );
 			}
@@ -26,7 +26,7 @@ namespace tkEngine {
 		 *@param[in]	no				ライトの番号。
 		 *@param[in]	lightDirection	ライトの方向。
 		 */
-		void SetDiffuseLightDirection( u32 no, const CVector3 lightDirection )
+		void SetDiffuseLightDirection( int no, const CVector3 lightDirection )
 		{
 			TK_ASSERT( no < NUM_DIFFUSE_LIGHT, "error");
 			m_diffuseLightDirection[no] = lightDirection;
@@ -36,7 +36,7 @@ namespace tkEngine {
 		 *@param[in]	no		ライトの番号。
 		 *@return	ライトの向き。
 		 */
-		const CVector3& GetDiffuseLightDirection( u32 no ) const
+		const CVector3& GetDiffuseLightDirection( int no ) const
 		{
 			return m_diffuseLightDirection[no];
 		}
@@ -45,7 +45,7 @@ namespace tkEngine {
 		 *@param[in]	no			ライトの番号。
 		 *@param[in]	lightColor	ライトのカラー。
 		 */
-		void SetDiffuseLightColor( u32 no, const CVector4& lightColor )
+		void SetDiffuseLightColor( int no, const CVector4& lightColor )
 		{
 			TK_ASSERT( no < NUM_DIFFUSE_LIGHT, "error" );
 			m_diffuseLightColor[no] = lightColor;
@@ -53,7 +53,7 @@ namespace tkEngine {
 		/*!
 		 *@brief	ディフューズライトのカラーを取得。
 		 */
-		const CVector4& GetDiffuseLightColor( u32 no ) const
+		const CVector4& GetDiffuseLightColor( int no ) const
 		{
 			TK_ASSERT( no < NUM_DIFFUSE_LIGHT, "error" );
 			return m_diffuseLightColor[no];

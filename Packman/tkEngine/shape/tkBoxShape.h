@@ -29,7 +29,7 @@ namespace tkEngine{
 		 *@param[in]	color		カラー。
 		 *@param[in]	hasNormal	法線があるかどうかのフラグ。
 		 */
-		void Create( CVector3 size, u32 color, bool hasNormal );
+		void Create( CVector3 size, int color, bool hasNormal );
 	};
 }
 

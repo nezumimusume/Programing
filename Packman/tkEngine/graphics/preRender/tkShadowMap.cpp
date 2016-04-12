@@ -43,7 +43,7 @@ namespace tkEngine{
 	{
 		Release();
 	}
-	void CShadowMap::Create( u32 w, u32 h )
+	void CShadowMap::Create( int w, int h )
 	{
 		Release();
 		m_shadowMapRT.Create( w, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0 );
@@ -51,7 +51,7 @@ namespace tkEngine{
 		m_pShadowMapEffect = CEngine::EffectManager().LoadEffect( "Assets/presetshader/shadowMap.fx" );
 		m_projectionMatrix.MakeProjectionMatrix(
 			CMath::DegToRad(45.0f),
-			s_cast<f32>(w) / s_cast<f32>(h),
+			s_cast<float>(w) / s_cast<float>(h),
 			1.0f,
 			100.0f
 		);
@@ -72,7 +72,7 @@ namespace tkEngine{
 		if (m_isEnable) {
 			//ライトビュープロジェクション行列を作成。
 			CVector3 lightUp;
-			f32 t = fabsf(m_lightDirection.Dot(CVector3::AxisY));
+			float t = fabsf(m_lightDirection.Dot(CVector3::AxisY));
 			if (fabsf((t - 1.0f)) < 0.00001f) {
 				//ライトの方向がほぼY軸と並行。
 				lightUp = CVector3::AxisX;

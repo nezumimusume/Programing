@@ -90,7 +90,7 @@ namespace tkEngine{
 			return false;
 		}
 		//メインレンダリングターゲットを作成。
-		for (u32 i = 0; i < 2; i++) {
+		for (int i = 0; i < 2; i++) {
 			m_mainRenderTarget[0].Create(
 				m_frameBufferWidth,
 				m_frameBufferHeight,
@@ -107,7 +107,7 @@ namespace tkEngine{
 		//レンダリングコンテキストの初期化。
 		{
 			m_renderContextArray.reset(new CRenderContext[initParam.numRenderContext]);
-			for (u32 i = 0; i < initParam.numRenderContext; i++) {
+			for (int i = 0; i < initParam.numRenderContext; i++) {
 				m_renderContextArray[i].Init(m_pD3DDevice, initParam.commandBufferSizeTbl[i]);
 			}
 			m_numRenderContext = initParam.numRenderContext;
@@ -148,7 +148,7 @@ namespace tkEngine{
 				1.0f, 1.0f
 			},
 		};
-		static u16 index[] = {
+		static unsigned short index[] = {
 			0,1,2,3
 		};
 		m_copyBackBufferPrim.Create(
@@ -207,7 +207,7 @@ namespace tkEngine{
 
 				m_pD3DDevice->BeginScene();
 				//レンダリングコマンドのサブミット
-				for( u32 i = 0; i < m_numRenderContext; i++ ){
+				for( int i = 0; i < m_numRenderContext; i++ ){
 					m_renderContextArray[i].SubmitCommandBuffer();
 				}
 				//
@@ -218,7 +218,7 @@ namespace tkEngine{
 	}
 	void CEngine::Final()
 	{
-		for (u32 i = 0; i < 2; i++) {
+		for (int i = 0; i < 2; i++) {
 			m_mainRenderTarget[i].Release();
 		}
 		m_effectManager.Release();

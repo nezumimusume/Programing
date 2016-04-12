@@ -14,9 +14,9 @@ namespace tkEngine{
 	CRenderCommandBuffer::~CRenderCommandBuffer()
 	{
 	}
-	void CRenderCommandBuffer::Init(u32 size)
+	void CRenderCommandBuffer::Init(int size)
 	{
-		m_buffer.reset( new u8[size] );
+		m_buffer.reset( new unsigned char[size] );
 		m_writePos = 0;
 		m_size = size;
 	}

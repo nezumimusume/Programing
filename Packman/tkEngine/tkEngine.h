@@ -19,8 +19,8 @@ namespace tkEngine{
 	* @brief	描画優先ごとに対応するレンダリングコンテキストの番号のマップを定義するための構造体。
 	*/
 	struct SRenderContextMap {
-		u8	startPrio;			//!<開始プライオリティ
-		u32 renderContextNo;	//!<レンダリングコンテキストNo
+		unsigned char	startPrio;			//!<開始プライオリティ
+		int renderContextNo;	//!<レンダリングコンテキストNo
 	};
 
 	/*!
@@ -32,14 +32,14 @@ namespace tkEngine{
 			memset(this, 0, sizeof(SInitParam));
 		}
 		HINSTANCE 			hInstance;
-		u8 					gameObjectPrioMax;		//!<ゲームオブジェクトの優先度の最大値(255まで)
-		u32 				numRenderContext;		//!<レンダリングコンテキストの数。この数が2以上の場合、renderContextMapの指定が必ず必要になります。
-		u32*				commandBufferSizeTbl;	//!<コマンドバッファのサイズのテーブル。レンダリングコンテキストのサイズ分必要。
+		unsigned char 					gameObjectPrioMax;		//!<ゲームオブジェクトの優先度の最大値(255まで)
+		int 				numRenderContext;		//!<レンダリングコンテキストの数。この数が2以上の場合、renderContextMapの指定が必ず必要になります。
+		int*				commandBufferSizeTbl;	//!<コマンドバッファのサイズのテーブル。レンダリングコンテキストのサイズ分必要。
 		SRenderContextMap*	renderContextMap;		//!<描画優先ごとに対応するレンダリングコンテキストの番号のマップ。numRenderContextが1の場合は無視される。
-		u32					screenWidth;			//!<スクリーンの幅。
-		u32					screenHeight;			//!<スクリーンの高さ。
-		u32					frameBufferWidth;		//!<フレームバッファの幅。これが内部解像度。
-		u32					frameBufferHeight;		//!<フレームバッファの高さ。これが内部解像度。
+		int					screenWidth;			//!<スクリーンの幅。
+		int					screenHeight;			//!<スクリーンの高さ。
+		int					frameBufferWidth;		//!<フレームバッファの幅。これが内部解像度。
+		int					frameBufferHeight;		//!<フレームバッファの高さ。これが内部解像度。
 		SGraphicsConfig		graphicsConfig;			//!<描画コンフィグ。
 	};
 	
@@ -101,28 +101,28 @@ namespace tkEngine{
 		/*!
 		*@brief		スクリーンの幅を取得
 		*/
-		u32 GetScreenWidth() const
+		int GetScreenWidth() const
 		{
 			return m_screenWidth;
 		}
 		/*!
 		*@brief		スクリーンの高さを取得
 		*/
-		u32 GetScreenHeight() const
+		int GetScreenHeight() const
 		{
 			return m_screenHeight;
 		}
 		/*!
 		*@brief		フレームバッファの幅を取得。
 		*/
-		u32 GetFrameBufferWidth() const
+		int GetFrameBufferWidth() const
 		{
 			return m_frameBufferWidth;
 		}
 		/*!
 		*@brief		フレームバッファの高さを取得。
 		*/
-		u32 GetFrameBufferHeight() const
+		int GetFrameBufferHeight() const
 		{
 			return m_frameBufferHeight;
 		}
@@ -184,14 +184,14 @@ namespace tkEngine{
 		LPDIRECT3D9								m_pD3D;						//!<D3DDevice
 		LPDIRECT3DDEVICE9						m_pD3DDevice;				//!<Rendering device
 		std::unique_ptr<CRenderContext[]>		m_renderContextArray;		//!<レンダリングコンテキスト
-		u32										m_numRenderContext;			//!<レンダリングコンテキストの数。
+		int										m_numRenderContext;			//!<レンダリングコンテキストの数。
 		std::unique_ptr<SRenderContextMap[]>	m_renderContextMap;			//!<レンダリングコンテキストのマップ。
 		CEffectManager							m_effectManager;			//!<エフェクトマネージャ。
-		u32										m_screenWidth;				//!<スクリーンの幅。
-		u32										m_screenHeight;				//!<スクリーンの高さ。
-		u32										m_frameBufferWidth;			//!<フレームバッファの幅。これが内部解像度。
-		u32										m_frameBufferHeight;		//!<フレームバッファの高さ。これが内部解像度。
-		u8										m_currentMainRenderTarget;	//!<現在使用されているメインレンダーターゲット。
+		int										m_screenWidth;				//!<スクリーンの幅。
+		int										m_screenHeight;				//!<スクリーンの高さ。
+		int										m_frameBufferWidth;			//!<フレームバッファの幅。これが内部解像度。
+		int										m_frameBufferHeight;		//!<フレームバッファの高さ。これが内部解像度。
+		unsigned char										m_currentMainRenderTarget;	//!<現在使用されているメインレンダーターゲット。
 		CRenderTarget							m_mainRenderTarget[2];		//!<メインレンダリングターゲット
 		CEffect*								m_pTransformedPrimEffect;	//!<トランスフォーム済みプリミティブを描画するためのエフェクト。
 		CPrimitive								m_copyBackBufferPrim;		//!<メインレンダーターゲットをバックバッファにコピーするときに使うプリミティブ。

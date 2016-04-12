@@ -10,11 +10,11 @@ namespace tkEngine{
 		/*!
 		 * @brief	文字列から32bitのハッシュ値を作成。
 		 */
-		static u32 MakeHash( const c8* string )
+		static int MakeHash( const char* string )
 		{
-			u32 hash = 0;
-			s32 l = strlen(string);
-			for( s32 i = 0; i < l; i++ ){
+			int hash = 0;
+			int l = strlen(string);
+			for( int i = 0; i < l; i++ ){
 				hash = hash * 37 + string[i];
 			}
 			return hash;

@@ -8,18 +8,18 @@
 namespace tkEngine{
 	class CMath{
 	public:
-		static const f32 PI;
+		static const float PI;
 		/*!
 		 * @brief	degree‚©‚çradian‚É•ÏŠ·B
 		 */
-		static f32 DegToRad( f32 deg )
+		static float DegToRad( float deg )
 		{
 			return deg * (PI/180.0f);
 		}
 		/*!
 		 * @brief	radian‚©‚çdegree‚É•ÏŠ·B
 		 */
-		static f32 RadToDeg( f32 rad )
+		static float RadToDeg( float rad )
 		{
 			return rad / (PI/180.0f);
 		}

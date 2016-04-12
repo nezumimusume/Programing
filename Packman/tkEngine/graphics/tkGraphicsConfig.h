@@ -11,8 +11,8 @@ namespace tkEngine{
 	 */
 	struct SEdgeRenderConfig{
 		bool isEnable;		//!<エッジ抽出処理が有効かどうかのフラグ。
-		u32	idMapWidth;		//!<IDマップの幅。
-		u32 idMapHeight;	//!<IDマップの高さ。
+		int	idMapWidth;		//!<IDマップの幅。
+		int idMapHeight;	//!<IDマップの高さ。
 	};
 	
 	/*!
@@ -20,8 +20,8 @@ namespace tkEngine{
 	 */
 	struct SShadowRenderConfig{
 		bool 	isEnable;			//!<影を落とす処理が有効かどうかのフラグ。
-		u32		shadowMapWidth;		//!<シャドウマップの幅。
-		u32		shadowMapHeight;	//!<シャドウマップの高さ。
+		int		shadowMapWidth;		//!<シャドウマップの幅。
+		int		shadowMapHeight;	//!<シャドウマップの高さ。
 	};
 	/*!
 	* @brief	Bloomのコンフィグ

@@ -13,7 +13,7 @@ namespace tkEngine{
 	{
 		Release();
 	}
-	void CBoxShape::Create( CVector3 size, u32 color, bool hasNormal )
+	void CBoxShape::Create( CVector3 size, int color, bool hasNormal )
 	{
 		Release();
 		m_isCreatePrimitive = true;
@@ -363,7 +363,7 @@ namespace tkEngine{
 
 		};
 
-		static u16 index[] = {
+		static unsigned short index[] = {
 			0,  1, 2, 3, 4, 5, 
 			6,  7, 8, 9,10,11,
 			12,13,14,15,16,17,

@@ -10,8 +10,8 @@ namespace tkEngine{
 	*@brief	座標とUV座標
 	*/
 	struct SShapeVertex_PT {
-		f32		pos[4];
-		f32		uv[2];
+		float		pos[4];
+		float		uv[2];
 	};
 	static const SVertexElement scShapeVertex_PT_Element[] = {
 		{ 0, 0 ,   DECLTYPE_FLOAT4		, DECLMETHOD_DEFAULT, DECLUSAGE_POSITION	, 0 },
@@ -22,8 +22,8 @@ namespace tkEngine{
 	 *@brief	カラー。
 	 */
 	struct SShapeVertex_PC{
-		f32		pos[4];
-		u32		color;
+		float		pos[4];
+		int		color;
 	}; 
 	static const SVertexElement scShapeVertex_PC_Element[] = {
 		{ 0, 0 ,   DECLTYPE_FLOAT4		, DECLMETHOD_DEFAULT, DECLUSAGE_POSITION	, 0 },
@@ -34,9 +34,9 @@ namespace tkEngine{
 	*@brief	カラー＋法線。
 	*/
 	struct SShapeVertex_PNC {
-		f32		pos[4];
-		f32		normal[4];
-		u32		color;	
+		float		pos[4];
+		float		normal[4];
+		int		color;	
 	};
 	static const SVertexElement scShapeVertex_PNC_Element[] = {
 		{ 0, 0 ,  DECLTYPE_FLOAT4		, DECLMETHOD_DEFAULT, DECLUSAGE_POSITION	, 0 },

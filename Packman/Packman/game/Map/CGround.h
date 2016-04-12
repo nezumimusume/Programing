@@ -12,7 +12,7 @@ public:
 	void Start() override final;
 	void Update() override final;
 	void Render(tkEngine::CRenderContext& renderContext) override final;
-	void Create( f32 xz_size );
+	void Create( float xz_size );
 private:
 	tkEngine::CBoxShape		m_box;	
 	tkEngine::CEffect*		m_pEffect;

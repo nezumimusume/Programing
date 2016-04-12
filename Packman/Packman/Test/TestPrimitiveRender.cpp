@@ -9,7 +9,7 @@ using namespace tkEngine;
 
 namespace {
 	struct SColorVertex {
-		f32			posision[4];
+		float			posision[4];
 		DWORD		color;
 	};
 }
@@ -35,7 +35,7 @@ void CTestPrimitiveRender::Start()
 				D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f)
 			},
 		};
-		u16 index[] = {
+		unsigned short index[] = {
 			0, 1, 2, 3
 		};
 		m_primitive.Create(

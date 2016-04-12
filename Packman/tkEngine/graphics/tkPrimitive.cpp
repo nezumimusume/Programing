@@ -20,11 +20,11 @@ namespace tkEngine{
 	}
 	void CPrimitive::Create( 
 		EType 					primitiveType,
-		u32 					numVertex,
-		u32 					vertexStride,
+		int 					numVertex,
+		int 					vertexStride,
 		const SVertexElement*	vertexLayout,
 		void*					pSrcVertexBuffer,
-		u32 					numIndex,
+		int 					numIndex,
 		EIndexFormat			indexFormat,
 		void*					pSrcIndexbuffer
 	)

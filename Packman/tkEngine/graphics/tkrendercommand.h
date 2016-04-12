@@ -141,9 +141,9 @@ namespace tkEngine{
 	class CRenderCommand_EffectBeginPass : public CRenderCommandBase
 	{
 		ID3DXEffect*	m_pEffect;
-		s32				m_pass;
+		int				m_pass;
 	public:
-		CRenderCommand_EffectBeginPass(ID3DXEffect* pEffect, s32 pass) :
+		CRenderCommand_EffectBeginPass(ID3DXEffect* pEffect, int pass) :
 			CRenderCommandBase(eRenderCommand_EffectBeginPass),
 			m_pEffect(pEffect),
 			m_pass(pass)
@@ -197,11 +197,11 @@ namespace tkEngine{
 	class CRenderCommand_EffectSetValue : public CRenderCommandBase
 	{
 		ID3DXEffect*	m_pEffect;
-		const c8*		m_pParameterName;
+		const char*		m_pParameterName;
 		void*			m_pData;
-		u32				m_sizeInByte;
+		int				m_sizeInByte;
 	public:
-		CRenderCommand_EffectSetValue(CRenderContext& renderContext, ID3DXEffect* pEffect, const c8* pParameterName, const void* pData, u32 sizeInByte):
+		CRenderCommand_EffectSetValue(CRenderContext& renderContext, ID3DXEffect* pEffect, const char* pParameterName, const void* pData, int sizeInByte):
 			CRenderCommandBase(eRenderCommand_EffectSetValue),
 			m_pEffect(pEffect),
 			m_pParameterName(pParameterName),
@@ -223,9 +223,9 @@ namespace tkEngine{
 	class CRenderCommand_SetStreamSource : public CRenderCommandBase
 	{
 		CVertexBuffer*	m_pVB;
-		u32				m_streamNo;
+		int				m_streamNo;
 	public:
-		CRenderCommand_SetStreamSource(u32 streamNo, CVertexBuffer* pVB) :
+		CRenderCommand_SetStreamSource(int streamNo, CVertexBuffer* pVB) :
 			CRenderCommandBase(eRenderCommand_SetStreamSource),
 			m_pVB(pVB),
 			m_streamNo( streamNo )
@@ -285,9 +285,9 @@ namespace tkEngine{
 	*/
 	class CRenderCommand_SetFVF : public CRenderCommandBase
 	{
-		u32 m_fvf;
+		int m_fvf;
 	public:
-		CRenderCommand_SetFVF(u32 fvf) :
+		CRenderCommand_SetFVF(int fvf) :
 			CRenderCommandBase(eRenderCommand_SetFVF),
 			m_fvf(fvf)
 		{
@@ -302,15 +302,15 @@ namespace tkEngine{
 	*/
 	class CRenderCommand_EffectSetTechnique : public CRenderCommandBase
 	{
-		c8* m_tecName;
+		char* m_tecName;
 		ID3DXEffect* m_pEffect;
 	public:
-		CRenderCommand_EffectSetTechnique(tkEngine::CRenderContext& renderContext, ID3DXEffect* pEffect, const c8* tecName) :
+		CRenderCommand_EffectSetTechnique(tkEngine::CRenderContext& renderContext, ID3DXEffect* pEffect, const char* tecName) :
 			CRenderCommandBase(eRenderCommand_EffectSetTechnique),
 			m_pEffect(pEffect)
 		{
-			u32 nameLen = strlen(tecName);
-			m_tecName = s_cast<c8*>(renderContext.AllocFromCommandBuffer(nameLen + 1));
+			int nameLen = strlen(tecName);
+			m_tecName = s_cast<char*>(renderContext.AllocFromCommandBuffer(nameLen + 1));
 			memcpy(m_tecName, tecName, nameLen + 1);
 		}
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
@@ -341,9 +341,9 @@ namespace tkEngine{
 	class CRenderCommand_SetRenderState : public CRenderCommandBase
 	{
 		ERenderStateType m_renderStateType;
-		u32 m_value;
+		int m_value;
 	public:
-		CRenderCommand_SetRenderState(ERenderStateType renderStateType, u32 value) :
+		CRenderCommand_SetRenderState(ERenderStateType renderStateType, int value) :
 			CRenderCommandBase(eRenderCommand_SetRenderState),
 			m_renderStateType(renderStateType),
 			m_value(value)
@@ -375,9 +375,9 @@ namespace tkEngine{
 	class CRenderCommand_SetRenderTarget : public CRenderCommandBase
 	{
 		CRenderTarget*	m_pRT;
-		u32	m_renderTargetIndex;
+		int	m_renderTargetIndex;
 	public:
-		CRenderCommand_SetRenderTarget( u32 renderTargetIndex, CRenderTarget* rt) :
+		CRenderCommand_SetRenderTarget( int renderTargetIndex, CRenderTarget* rt) :
 			CRenderCommandBase(eRenderCommand_SetRenderTarget),
 			m_pRT(rt),
 			m_renderTargetIndex(renderTargetIndex)
@@ -412,16 +412,16 @@ namespace tkEngine{
 	class CRenderCommand_EffectSetTexture : public CRenderCommandBase
 	{
 		CTexture*	m_pTex;
-		c8* m_textureName;
+		char* m_textureName;
 		ID3DXEffect*	m_pEffect;		//!<D3Dエフェクト
 	public:
-		CRenderCommand_EffectSetTexture(CRenderContext& renderContext, ID3DXEffect* pEffect, const c8* parameterName, CTexture* tex) :
+		CRenderCommand_EffectSetTexture(CRenderContext& renderContext, ID3DXEffect* pEffect, const char* parameterName, CTexture* tex) :
 			CRenderCommandBase(eRenderCommand_EffectSetTexture),
 			m_pTex(tex),
 			m_pEffect(pEffect)
 		{
-			u32 nameLen = strlen(parameterName);
-			m_textureName = s_cast<c8*>(renderContext.AllocFromCommandBuffer(nameLen + 1));
+			int nameLen = strlen(parameterName);
+			m_textureName = s_cast<char*>(renderContext.AllocFromCommandBuffer(nameLen + 1));
 			memcpy(m_textureName, parameterName, nameLen + 1);
 		}
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)

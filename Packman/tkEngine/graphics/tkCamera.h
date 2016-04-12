@@ -84,42 +84,42 @@ namespace tkEngine{
 		/*!
 		 * @brief	遠平面を設定。
 		 */
-		void SetFar( f32 fFar )
+		void SetFar( float fFar )
 		{
 			m_far = fFar;
 		}
 		/*!
 		 * @brief	近平面を設定。
 		 */
-		void SetNear( f32 fNear )
+		void SetNear( float fNear )
 		{
 			m_near = fNear;
 		}
 		/*!
 		 * @brief	遠平面を取得。
 		 */
-		f32 GetFar() const
+		float GetFar() const
 		{
 			return m_far;
 		}
 		/*!
 		 * @brief	近平面を取得。
 		 */
-		f32 GetNear() const
+		float GetNear() const
 		{
 			return m_near;
 		}
 		/*!
 		* @brief	画角を設定。
 		*/
-		void SetViewAngle(f32 viewAngle)
+		void SetViewAngle(float viewAngle)
 		{
 			m_viewAngle = viewAngle;
 		}
 		/*!
 		* @brief	画角を取得。
 		*/
-		f32 GetViewAngle() const
+		float GetViewAngle() const
 		{
 			return m_viewAngle;
 		}
@@ -131,10 +131,10 @@ namespace tkEngine{
 		CMatrix		m_projectionMatrix;					//!<プロジェクション行列。
 		CMatrix		m_viewProjectionMatrix;				//!<ビュープロジェクション行列。
 		CMatrix		m_viewMatrixInv;					//!<ビュー行列の逆行列。
-		f32			m_near;								//!<近平面。
-		f32			m_far;								//!<遠平面。
-		f32			m_viewAngle;						//!<画角(ラジアン)。
-		f32			m_aspect;							//!<アスペクト比。
+		float			m_near;								//!<近平面。
+		float			m_far;								//!<遠平面。
+		float			m_viewAngle;						//!<画角(ラジアン)。
+		float			m_aspect;							//!<アスペクト比。
 		bool		m_isNeedUpdateProjectionMatrix;
 	};
 }

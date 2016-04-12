@@ -49,7 +49,7 @@ namespace tkEngine{
 		/*!
 		 * @brief	IDマップの作成。
 		 */
-		void Create(u32 w, u32 h);
+		void Create(int w, int h);
 		/*!
 		 * @brief	開放。
 		 */
@@ -73,14 +73,14 @@ namespace tkEngine{
 		/*!
 		* @brief	IDマップの幅を取得。
 		*/
-		u32 GetWitdh() const
+		int GetWitdh() const
 		{
 			return m_idMapRT.GetWidth();
 		}
 		/*!
 		* @brief	IDマップの高さを取得。
 		*/
-		u32 GetHeight() const
+		int GetHeight() const
 		{
 			return m_idMapRT.GetHeight();
 		}

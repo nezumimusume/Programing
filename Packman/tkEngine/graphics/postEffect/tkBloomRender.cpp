@@ -19,11 +19,11 @@ namespace tkEngine{
 	CBloomRender::~CBloomRender()
 	{
 	}
-	void CBloomRender::UpdateWeight(f32 dispersion)
+	void CBloomRender::UpdateWeight(float dispersion)
 	{
-		f32 total = 0;
-		for (u32 i = 0; i<NUM_WEIGHTS; i++) {
-			m_weights[i] = expf(-0.5f*(f32)(i*i) / dispersion);
+		float total = 0;
+		for (int i = 0; i<NUM_WEIGHTS; i++) {
+			m_weights[i] = expf(-0.5f*(float)(i*i) / dispersion);
 			if (0 == i) {
 				total += m_weights[i];
 			}
@@ -33,7 +33,7 @@ namespace tkEngine{
 			}
 		}
 		// 規格化
-		for (u32 i = 0; i < NUM_WEIGHTS; i++) {
+		for (int i = 0; i < NUM_WEIGHTS; i++) {
 			m_weights[i] /= total;
 		}
 	}
@@ -70,11 +70,11 @@ namespace tkEngine{
 				m_pEffect->Begin(renderContext);
 				m_pEffect->BeginPass(renderContext, 0);
 				float size[2] = {
-					s_cast<f32>(m_luminanceRenderTarget.GetWidth()),
-					s_cast<f32>(m_luminanceRenderTarget.GetHeight())
+					s_cast<float>(m_luminanceRenderTarget.GetWidth()),
+					s_cast<float>(m_luminanceRenderTarget.GetHeight())
 				};
 				float offset[] = {
-					16.0f / s_cast<f32>(m_luminanceRenderTarget.GetWidth()),
+					16.0f / s_cast<float>(m_luminanceRenderTarget.GetWidth()),
 					0.0f
 				};
 				m_pEffect->SetValue(renderContext, "g_luminanceTexSize", size, sizeof(size));
@@ -97,12 +97,12 @@ namespace tkEngine{
 				m_pEffect->Begin(renderContext);
 				m_pEffect->BeginPass(renderContext, 0);
 				float size[2] = {
-					s_cast<f32>(m_downSamplingRenderTarget[0].GetWidth()),
-					s_cast<f32>(m_downSamplingRenderTarget[0].GetHeight())
+					s_cast<float>(m_downSamplingRenderTarget[0].GetWidth()),
+					s_cast<float>(m_downSamplingRenderTarget[0].GetHeight())
 				};
 				float offset[] = {
 					0.0f,
-					16.0f / s_cast<f32>(m_downSamplingRenderTarget[0].GetHeight()),
+					16.0f / s_cast<float>(m_downSamplingRenderTarget[0].GetHeight()),
 				};
 				m_pEffect->SetValue(renderContext, "g_luminanceTexSize", size, sizeof(size));
 				m_pEffect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
@@ -124,11 +124,11 @@ namespace tkEngine{
 				m_pEffect->Begin(renderContext);
 				m_pEffect->BeginPass(renderContext, 0);
 				float size[2] = {
-					s_cast<f32>(m_downSamplingRenderTarget[1].GetWidth()),
-					s_cast<f32>(m_downSamplingRenderTarget[1].GetHeight())
+					s_cast<float>(m_downSamplingRenderTarget[1].GetWidth()),
+					s_cast<float>(m_downSamplingRenderTarget[1].GetHeight())
 				};
 				float offset[] = {
-					16.0f / s_cast<f32>(m_downSamplingRenderTarget[1].GetWidth()),
+					16.0f / s_cast<float>(m_downSamplingRenderTarget[1].GetWidth()),
 					0.0f
 				};
 				m_pEffect->SetValue(renderContext, "g_luminanceTexSize", size, sizeof(size));
@@ -151,12 +151,12 @@ namespace tkEngine{
 				m_pEffect->Begin(renderContext);
 				m_pEffect->BeginPass(renderContext, 0);
 				float size[2] = {
-					s_cast<f32>(m_downSamplingRenderTarget[2].GetWidth()),
-					s_cast<f32>(m_downSamplingRenderTarget[2].GetHeight())
+					s_cast<float>(m_downSamplingRenderTarget[2].GetWidth()),
+					s_cast<float>(m_downSamplingRenderTarget[2].GetHeight())
 				};
 				float offset[] = {
 					0.0f,
-					16.0f / s_cast<f32>(m_downSamplingRenderTarget[2].GetHeight()),
+					16.0f / s_cast<float>(m_downSamplingRenderTarget[2].GetHeight()),
 				};
 				m_pEffect->SetValue(renderContext, "g_luminanceTexSize", size, sizeof(size));
 				m_pEffect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
@@ -205,8 +205,8 @@ namespace tkEngine{
 	void CBloomRender::Create( const SGraphicsConfig& config )
 	{
 		if (config.bloomConfig.isEnable) {
-			u32 w = CEngine::Instance().GetFrameBufferWidth();
-			u32 h = CEngine::Instance().GetFrameBufferHeight();
+			int w = CEngine::Instance().GetFrameBufferWidth();
+			int h = CEngine::Instance().GetFrameBufferHeight();
 			//輝度抽出用のレンダリングターゲットを作成。
 			m_luminanceRenderTarget.Create(w, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);
 			//ダウンサンプリング用のレンダリングターゲットを作成。

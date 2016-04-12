@@ -27,7 +27,7 @@ namespace tkEngine{
 		*@param[in]	pData			設定する値。
 		*@param[in]	sizeInByte		サイズ(単位：バイト)
 		*/
-		void SetTechnique(tkEngine::CRenderContext& renderContext, const c8* tecName)
+		void SetTechnique(tkEngine::CRenderContext& renderContext, const char* tecName)
 		{
 			TK_ASSERT(tecName != nullptr, "tecName is null");
 			renderContext.SetRenderCommand(CRenderCommand_EffectSetTechnique(renderContext, m_pEffect,tecName));
@@ -38,12 +38,12 @@ namespace tkEngine{
 		 *@param[in]	pData			設定する値。
 		 *@param[in]	sizeInByte		サイズ(単位：バイト)
 		 */
-		void SetValue(tkEngine::CRenderContext& renderContext, const c8* parameterName, const void* pData, u32 sizeInByte )
+		void SetValue(tkEngine::CRenderContext& renderContext, const char* parameterName, const void* pData, int sizeInByte )
 		{
 			TK_ASSERT( m_pEffect != nullptr, "effect is null" );
 			renderContext.SetRenderCommand( CRenderCommand_EffectSetValue(renderContext, m_pEffect, parameterName, pData, sizeInByte ) );
 		}
-		void SetTexture(tkEngine::CRenderContext& renderContext, const c8* parameterName, CTexture* tex)
+		void SetTexture(tkEngine::CRenderContext& renderContext, const char* parameterName, CTexture* tex)
 		{
 			renderContext.SetRenderCommand(CRenderCommand_EffectSetTexture(renderContext, m_pEffect, parameterName, tex ));
 		}
@@ -66,7 +66,7 @@ namespace tkEngine{
 		/*!
 		 * @brief	使用するテクニックのパスを設定して描画開始。
 		 */
-		void BeginPass(tkEngine::CRenderContext& renderContext, s32 pass )
+		void BeginPass(tkEngine::CRenderContext& renderContext, int pass )
 		{
 			TK_ASSERT(m_pEffect != nullptr, "effect is null");
 			renderContext.SetRenderCommand(CRenderCommand_EffectBeginPass(m_pEffect, pass));

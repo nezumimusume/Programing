@@ -42,7 +42,7 @@ void CFood::Build( const CVector3& pos )
 	m_idMapModel.Create(m_sphere->GetPrimitive());
 	m_position = pos;
 }
-void CFood::CreateShape(f32 radius)
+void CFood::CreateShape(float radius)
 {
 	if (m_sphere == nullptr) {
 		m_sphere = new tkEngine::CSphereShape();

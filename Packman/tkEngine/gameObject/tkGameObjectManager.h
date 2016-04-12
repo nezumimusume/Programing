@@ -40,7 +40,7 @@ namespace tkEngine{
 		*/
 		void Execute( 
 			CRenderContext* renderContext, 
-			u32 numRenderContext, 
+			int numRenderContext, 
 			const SRenderContextMap* renderContextMap,
 			CPreRender& preRender,
 			CPostEffect& postEffect
@@ -49,7 +49,7 @@ namespace tkEngine{
 		 *@brief	初期化。
 		 *@param[in]	gameObjectPrioMax	ゲームオブジェクトの優先度の最大値。(255まで)
 		 */
-		void Init( u32 gameObjectPrioMax );
+		void Init( int gameObjectPrioMax );
 		/*!
 		*@brief	ゲームオブジェクトの追加。
 		*@param	prio	実行優先順位。
@@ -93,7 +93,7 @@ namespace tkEngine{
 		std::vector<GameObjectList>	m_gameObjectListArray;	//!<ゲームオブジェクトの優先度付きリスト。
 		std::vector<GameObjectList>	m_deleteObjectArray;	//!<削除するオブジェクトのリスト。
 		GameObjectPrio				m_gameObjectPriorityMax;		//!<ゲームオブジェクトの優先度の最大数。
-		static const u8 			GAME_OBJECT_PRIO_MAX = 255;		//!<ゲームオブジェクトの優先度の最大値。
+		static const unsigned char 			GAME_OBJECT_PRIO_MAX = 255;		//!<ゲームオブジェクトの優先度の最大値。
 	};
 }
 #endif // _CGAMEOBJECTMANAGER_H_

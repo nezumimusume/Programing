@@ -42,7 +42,7 @@ namespace tkEngine{
 	{
 		Release();
 	}
-	void CIDMap::Create(u32 w, u32 h)
+	void CIDMap::Create(int w, int h)
 	{
 		m_idMapRT.Create( w, h, 1, FMT_A8, FMT_D16, MULTISAMPLE_NONE, 0);
 		m_isEnable = true;

@@ -15,12 +15,12 @@ namespace tkEngine{
 	public:
 		union {
 			struct {
-				f32 _11, _12, _13, _14;
-				f32 _21, _22, _23, _24;
-				f32 _31, _32, _33, _34;
-				f32 _41, _42, _43, _44;
+				float _11, _12, _13, _14;
+				float _21, _22, _23, _24;
+				float _31, _32, _33, _34;
+				float _41, _42, _43, _44;
 			};
-			f32 m[4][4];
+			float m[4][4];
 		};
 		static const CMatrix Identity;	//!<単位行列。
 	public:
@@ -49,7 +49,7 @@ namespace tkEngine{
 		*@brief	Y軸周りの回転行列を作成。
 		*@param[in]	angle	回転角度(単位ラジアン)
 		*/
-		void MakeRotationY(f32 angle)
+		void MakeRotationY(float angle)
 		{
 			D3DXMatrixRotationY(
 				r_cast<D3DXMATRIX*>(this),
@@ -75,10 +75,10 @@ namespace tkEngine{
 		*@param[in]	fFar		遠平面。
 		*/
 		void MakeProjectionMatrix(
-			f32 viewAngle,
-			f32 aspect,
-			f32 fNear,
-			f32 fFar
+			float viewAngle,
+			float aspect,
+			float fNear,
+			float fFar
 			)
 		{
 			D3DXMatrixPerspectiveFovLH(

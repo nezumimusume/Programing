@@ -32,14 +32,14 @@ namespace tkEngine{
 		/*!
 		* @brief	コンストラクタ。
 		*/
-		CVector3(f32 x, f32 y, f32 z)
+		CVector3(float x, float y, float z)
 		{
 			Set(x, y, z);
 		}
 		/*!
 		* @brief	ベクトルの各要素を設定。
 		*/
-		void Set(f32 x, f32 y, f32 z)
+		void Set(float x, float y, float z)
 		{
 			this->x = x;
 			this->y = y;
@@ -78,7 +78,7 @@ namespace tkEngine{
 		/*!
 		 * @brief	内積。
 		 */
-		f32 Dot( const CVector3& v )
+		float Dot( const CVector3& v )
 		{
 			return x * v.x + y * v.y + z * v.z;
 		}
@@ -87,18 +87,18 @@ namespace tkEngine{
 		 */
 		void Cross(const CVector3& v)
 		{
-			f32 _x = ( x * v.z ) - ( v.y * z );
-			f32 _y = ( z * v.x ) - ( v.z * x );
-			f32 _z = ( x * v.y ) - ( v.x * y );
+			float _x = ( x * v.z ) - ( v.y * z );
+			float _y = ( z * v.x ) - ( v.z * x );
+			float _z = ( x * v.y ) - ( v.x * y );
 			x = _x;
 			y = _y;
 			z = _z;
 		}
 		void Cross(const CVector3& v0, const CVector3& v1)
 		{
-			f32 _x = ( v0.y * v1.z ) - ( v1.y * v0.z );
-			f32 _y = ( v0.z * v1.x ) - ( v1.z * v0.x );
-			f32 _z = ( v0.x * v1.y ) - ( v1.x * v0.y );
+			float _x = ( v0.y * v1.z ) - ( v1.y * v0.z );
+			float _y = ( v0.z * v1.x ) - ( v1.z * v0.x );
+			float _z = ( v0.x * v1.y ) - ( v1.x * v0.y );
 			x = _x;
 			y = _y;
 			z = _z;
@@ -120,7 +120,7 @@ namespace tkEngine{
 		/*!
 		* @brief	拡大。
 		*/
-		void Scale(f32 s)
+		void Scale(float s)
 		{
 			x *= s;
 			y *= s;
@@ -131,7 +131,7 @@ namespace tkEngine{
 		*/
 		void Normalize()
 		{
-			f32 len = Length();
+			float len = Length();
 			TK_ASSERT( len > 0.0f, "zero vector!!!");
 			x /= len;
 			y /= len;
@@ -140,7 +140,7 @@ namespace tkEngine{
 		/*!
 		* @brief	除算。
 		*/
-		void Div(f32 d)
+		void Div(float d)
 		{
 			x /= d;
 			y /= d;
@@ -162,14 +162,14 @@ namespace tkEngine{
 		/*!
 		 *@brief	コンストラクタ
 		 */
-		CVector4(f32 x, f32 y, f32 z, f32 w)
+		CVector4(float x, float y, float z, float w)
 		{
 			Set(x, y, z, w);
 		}
 		/*!
 		 *@brief	ベクトルの各要素を設定。
 		 */
-		void Set(f32 x, f32 y, f32 z, f32 w)
+		void Set(float x, float y, float z, float w)
 		{
 			this->x = x;
 			this->y = y;
@@ -212,7 +212,7 @@ namespace tkEngine{
 		/*!
 		 *@brief	内積
 		 */
-		f32 Dot( const CVector4& v )
+		float Dot( const CVector4& v )
 		{
 			return x * v.x + y * v.y + z * v.z + w * v.w;
 		}
@@ -233,7 +233,7 @@ namespace tkEngine{
 		/*!
 		* @brief	拡大。
 		*/
-		void Scale(f32 s)
+		void Scale(float s)
 		{
 			x *= s;
 			y *= s;
@@ -247,10 +247,10 @@ namespace tkEngine{
 		/*!
 		 *@brief	任意の軸周りの回転クォータニオンを作成。
 		 */
-		void SetRotation( const CVector3& axis, f32 angle )
+		void SetRotation( const CVector3& axis, float angle )
 		{
-			f32 s;
-			f32 halfAngle = angle * 0.5f;
+			float s;
+			float halfAngle = angle * 0.5f;
 			s = sin(halfAngle);
 			w = cos(halfAngle);
 			x = axis.x * s;

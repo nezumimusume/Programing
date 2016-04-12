@@ -112,13 +112,13 @@ namespace tkEngine{
 		CEffect*	m_pEffect;			//!<エフェクト。
 	};
 	struct SMergeInfo{
-		u32	delVertNo;
-		u32 replaceVertNo;
-		u32 decReplaceVertNo;
+		int	delVertNo;
+		int replaceVertNo;
+		int decReplaceVertNo;
 	};
 	struct SPolygonInfo {
 		CVector3	normal;		//!<面法線
-		u32			vertNos[3];		//!<面を構成する頂点。
+		int			vertNos[3];		//!<面を構成する頂点。
 	};
 	/*!
 	*@brief	頂点バッファの法線を作成。(頂点バッファとインデックスバッファにstd::vectorを使用した版)
@@ -134,13 +134,13 @@ namespace tkEngine{
 	{	
 		//面法線を求める。
 		TK_ASSERT( primType == CPrimitive::eTriangleList, "not implement TraiangleStrip yet...");
-		u32 numFace = indexBuffer.size() / 3;
+		int numFace = indexBuffer.size() / 3;
 		std::unique_ptr<SPolygonInfo[]> polygonInfo;
 		std::vector<std::list<SPolygonInfo>>	polygoninfos;
 		polygoninfos.resize(vertexBuffer.size());
-		for (u32 i = 0; i < numFace; i++) {
+		for (int i = 0; i < numFace; i++) {
 			CVector3 pos[3];
-			u32 t = i * 3;
+			int t = i * 3;
 			SPolygonInfo polyInfo;
 			polyInfo.vertNos[0] = indexBuffer.at(t);
 			polyInfo.vertNos[1] = indexBuffer.at(t+1);
@@ -154,7 +154,7 @@ namespace tkEngine{
 			}
 			CVector3 normal(0.0f, 0.0f, 0.0f);
 			CVector3 vertPos[3];
-			for (u32 k = 0; k < 3; k++) {
+			for (int k = 0; k < 3; k++) {
 				const TVertex& vtx = vertexBuffer.at(polyInfo.vertNos[k]);
 				vertPos[k].Set(	vtx.pos[0], vtx.pos[1], vtx.pos[2] );
 			}
@@ -169,14 +169,14 @@ namespace tkEngine{
 			polygoninfos.at(polyInfo.vertNos[2]).push_back(polyInfo);
 		}
 		//頂点法線を求める。
-		for (u32 vertNo = 0; vertNo < vertexBuffer.size(); vertNo++) {
+		for (int vertNo = 0; vertNo < (int)vertexBuffer.size(); vertNo++) {
 			std::list<SPolygonInfo>& polygonInfo = polygoninfos.at(vertNo);
 			CVector3 normal(0.0f, 0.0f, 0.0f);
 			for (const auto& p : polygonInfo) {
 				normal.Add(p.normal);
 			}
-			normal.Div(s_cast<f32>(polygonInfo.size()));
-			f32* pNormal = vertexBuffer.at(vertNo).normal;
+			normal.Div(s_cast<float>(polygonInfo.size()));
+			float* pNormal = vertexBuffer.at(vertNo).normal;
 			pNormal[0] = normal.x;
 			pNormal[1] = normal.y;
 			pNormal[2] = normal.z;
@@ -195,20 +195,20 @@ namespace tkEngine{
 	template<class TVertex, class TIndex>
 	void CreateVertexNormalArray(
 		TVertex* vertexBuffer,
-		u32 numVertex,
+		int numVertex,
 		TIndex* indexBuffer,
-		u32 numIndex,
+		int numIndex,
 		CPrimitive::EType primType)
 	{
 		//面法線を求める。
 		TK_ASSERT(primType == CPrimitive::eTriangleList, "not implement TraiangleStrip yet...");
-		u32 numFace = numIndex / 3;
+		int numFace = numIndex / 3;
 		std::unique_ptr<SPolygonInfo[]> polygonInfo;
 		std::vector<std::list<SPolygonInfo>>	polygoninfos;
 		polygoninfos.resize(numVertex);
-		for (u32 i = 0; i < numFace; i++) {
+		for (int i = 0; i < numFace; i++) {
 			CVector3 pos[3];
-			u32 t = i * 3;
+			int t = i * 3;
 			SPolygonInfo polyInfo;
 			polyInfo.vertNos[0] = indexBuffer[t];
 			polyInfo.vertNos[1] = indexBuffer[t + 1];
@@ -222,7 +222,7 @@ namespace tkEngine{
 			}
 			CVector3 normal(0.0f, 0.0f, 0.0f);
 			CVector3 vertPos[3];
-			for (u32 k = 0; k < 3; k++) {
+			for (int k = 0; k < 3; k++) {
 				const TVertex& vtx = vertexBuffer[polyInfo.vertNos[k]];
 				vertPos[k].Set(vtx.pos[0], vtx.pos[1], vtx.pos[2]);
 			}
@@ -238,14 +238,14 @@ namespace tkEngine{
 			polygoninfos.at(polyInfo.vertNos[2]).push_back(polyInfo);
 		}
 		//頂点法線を求める。
-		for (u32 vertNo = 0; vertNo < numVertex; vertNo++) {
+		for (int vertNo = 0; vertNo < numVertex; vertNo++) {
 			std::list<SPolygonInfo>& polygonInfo = polygoninfos.at(vertNo);
 			CVector3 normal(0.0f, 0.0f, 0.0f);
 			for (const auto& p : polygonInfo) {
 				normal.Add(p.normal);
 			}
-			normal.Div(s_cast<f32>(polygonInfo.size()));
-			f32* pNormal = vertexBuffer[vertNo].normal;
+			normal.Div(s_cast<float>(polygonInfo.size()));
+			float* pNormal = vertexBuffer[vertNo].normal;
 			pNormal[0] = normal.x;
 			pNormal[1] = normal.y;
 			pNormal[2] = normal.z;
@@ -263,13 +263,13 @@ namespace tkEngine{
 	 *@param[in]		margeLenThreshold	マージする頂点同士の距離の閾値。この値以下の頂点はマージされます。
 	 */
 	template<class TVertex, class TIndex>
-	void MergeVertex( std::vector<TVertex>& vertexBuffer, std::vector<TIndex>& indexBuffer, f32 margeLenThreshold )
+	void MergeVertex( std::vector<TVertex>& vertexBuffer, std::vector<TIndex>& indexBuffer, float margeLenThreshold )
 	{
 	#if 1	//こっちはマージされた頂点は削除する。
-		f32 margeLenThresholdSq = margeLenThreshold * margeLenThreshold;
-		typedef std::pair<u32, u32>	SMergeInfo;			//マージ情報。削除する頂点番号と、置き換える頂点番号のペア情報。
+		float margeLenThresholdSq = margeLenThreshold * margeLenThreshold;
+		typedef std::pair<int, int>	SMergeInfo;			//マージ情報。削除する頂点番号と、置き換える頂点番号のペア情報。
 		typename std::vector<bool> deleteVertexFlags;	//頂点削除のフラグのリスト。
-		typename std::vector<u32>  deleteCount;			//自身より小さい番号の頂点がいくつ削除されたかのカウントする
+		typename std::vector<int>  deleteCount;			//自身より小さい番号の頂点がいくつ削除されたかのカウントする
 		std::list<SMergeInfo> mergeInfos;				//削除する頂点番号のリスト。
 		deleteVertexFlags.resize( vertexBuffer.size() );
 		deleteCount.resize( vertexBuffer.size() );
@@ -279,8 +279,8 @@ namespace tkEngine{
 		for (auto& p : deleteCount) {
 			p = 0;
 		}
-		u32 vertNo = 0;
-		for( u32 vertNo = 0; vertNo != vertexBuffer.size(); vertNo++ ){
+		int vertNo = 0;
+		for( int vertNo = 0; vertNo != vertexBuffer.size(); vertNo++ ){
 			if(deleteVertexFlags[vertNo]){
 				//削除予定の頂点なので調べる必要なし。
 				continue;
@@ -289,13 +289,13 @@ namespace tkEngine{
 			CVector3 vPos0;
 			CVector3 vLen;
 			vPos0.Set( v0.pos[0], v0.pos[1], v0.pos[2] );
-			for( u32 delVertNo = 0; delVertNo < vertexBuffer.size(); delVertNo++ ){
+			for( int delVertNo = 0; delVertNo < (int)vertexBuffer.size(); delVertNo++ ){
 				if(vertNo != delVertNo && !deleteVertexFlags[delVertNo]){
 					//頂点同士の距離を調べる。
 					const TVertex& v1 = vertexBuffer[delVertNo];
 					vLen.Set( v1.pos[0], v1.pos[1], v1.pos[2] );
 					vLen.Subtract(vPos0, vLen);
-					f32 lenSq = vLen.LengthSq();
+					float lenSq = vLen.LengthSq();
 					if(lenSq < margeLenThresholdSq ){
 						deleteVertexFlags[delVertNo] = true;	//削除する印をつける。
 						//マージ情報を作成する。
@@ -308,13 +308,13 @@ namespace tkEngine{
 			}
 		}
 		for( auto& mergeInfoIt : mergeInfos ){
-			for( TIndex index = mergeInfoIt.first+1; index < deleteCount.size(); index++ ){
+			for( TIndex index = mergeInfoIt.first+1; index < (int)deleteCount.size(); index++ ){
 				deleteCount[index]++;
 			}
 		}
 		std::vector<TVertex> vertexBufferTmp = vertexBuffer;
 		vertexBuffer.clear();
-		for( u32 i = 0; i < vertexBufferTmp.size(); i++ ){
+		for( int i = 0; i < (int)vertexBufferTmp.size(); i++ ){
 			if( !deleteVertexFlags[i] ){
 				vertexBuffer.push_back(vertexBufferTmp[i]);
 			}
@@ -335,16 +335,16 @@ namespace tkEngine{
 			indexIt -= deleteCount[indexIt];
 		}
 	#else	//こっちはマージした頂点は削除しないで、インデックスバッファを使用してマージするだけ
-		f32 margeLenThresholdSq = margeLenThreshold * margeLenThreshold;
-		typedef std::pair<u32, u32>	SMergeInfo;			//マージ情報。削除する頂点番号と、置き換える頂点番号のペア情報。
+		float margeLenThresholdSq = margeLenThreshold * margeLenThreshold;
+		typedef std::pair<int, int>	SMergeInfo;			//マージ情報。削除する頂点番号と、置き換える頂点番号のペア情報。
 		typename std::vector<bool> deleteVertexFlags;	//頂点削除のフラグのリスト。
 		std::list<SMergeInfo> mergeInfos;				//削除する頂点番号のリスト。
 		deleteVertexFlags.resize(vertexBuffer.size());
 		for (auto& p : deleteVertexFlags) {
 			p = false;
 		}
-		u32 vertNo = 0;
-		for( u32 vertNo = 0; vertNo != vertexBuffer.size(); vertNo++ ){
+		int vertNo = 0;
+		for( int vertNo = 0; vertNo != vertexBuffer.size(); vertNo++ ){
 			if(deleteVertexFlags[vertNo]){
 				//削除予定の頂点なので調べる必要なし。
 				continue;
@@ -353,13 +353,13 @@ namespace tkEngine{
 			CVector3 vPos0;
 			CVector3 vLen;
 			vPos0.Set( v0.pos[0], v0.pos[1], v0.pos[2] );
-			for( u32 delVertNo = 0; delVertNo < vertexBuffer.size(); delVertNo++ ){
+			for( int delVertNo = 0; delVertNo < vertexBuffer.size(); delVertNo++ ){
 				if(vertNo != delVertNo && !deleteVertexFlags[delVertNo]){
 					//頂点同士の距離を調べる。
 					const TVertex& v1 = vertexBuffer[delVertNo];
 					vLen.Set( v1.pos[0], v1.pos[1], v1.pos[2] );
 					vLen.Subtract(vPos0, vLen);
-					f32 lenSq = vLen.LengthSq();
+					float lenSq = vLen.LengthSq();
 					if(lenSq < margeLenThresholdSq ){
 						deleteVertexFlags[delVertNo] = true;	//削除する印をつける。
 						//マージ情報を作成する。

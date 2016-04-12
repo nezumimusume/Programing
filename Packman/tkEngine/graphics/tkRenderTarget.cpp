@@ -19,13 +19,13 @@ namespace tkEngine{
 		Release();
 	}
 	void CRenderTarget::Create( 
-		u32 w, 
-		u32 h, 
-		u32 mipLevel,
+		int w, 
+		int h, 
+		int mipLevel,
 		EFormat colorFormat,
 		EFormat depthStencilFormat,
 		EMultisampleType multiSampleType,
-		u32 multiSampleQuality
+		int multiSampleQuality
 	)
 	{
 		Release();

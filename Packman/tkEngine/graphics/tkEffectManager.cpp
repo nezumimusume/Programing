@@ -30,11 +30,11 @@ namespace tkEngine{
 	 *@param[in]	filePath	ロードするエフェクトのファイルパス。
 	 *@return	ロードしたエフェクトファイル。
 	 */
-	CEffect* CEffectManager::LoadEffect( const c8* filePath )
+	CEffect* CEffectManager::LoadEffect( const char* filePath )
 	{
 		
 		CEffect* pEffect = nullptr;
-		u32 hash = CUtil::MakeHash(filePath);
+		int hash = CUtil::MakeHash(filePath);
 		
 		auto it = m_effectDictinary.find(hash);
 		if (it == m_effectDictinary.end()) {
@@ -61,7 +61,7 @@ namespace tkEngine{
 			}
 			
 			pEffect = new CEffect(effect);
-			std::pair<u32, CEffect*> node(hash, pEffect);
+			std::pair<int, CEffect*> node(hash, pEffect);
 			m_effectDictinary.insert(node);
 		}
 		else {

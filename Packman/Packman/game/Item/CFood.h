@@ -14,7 +14,7 @@ public:
 	void Update() override final;
 	void Render(tkEngine::CRenderContext& renderContext) override final;
 	void Build( const CVector3& pos );
-	static void CreateShape(f32 radius);
+	static void CreateShape(float radius);
 	static void ReleaseShape();
 private:
 	static tkEngine::CSphereShape*	m_sphere;

@@ -45,7 +45,7 @@ namespace tkEngine{
 		/*!
 		 * @brief	ì¬B
 		 */
-		void Create( u32 w, u32 h );
+		void Create( int w, int h );
 		/*!
 		 * @brief	ŠJ•úB
 		 */

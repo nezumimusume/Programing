@@ -30,14 +30,14 @@ namespace tkEngine{
 		/*!
 		* @brief	ガウスフィルタの重みを更新。
 		*/
-		void UpdateWeight(f32 dispersion);
+		void UpdateWeight(float dispersion);
 	private:
-		static const u32 NUM_WEIGHTS = 8;
+		static const int NUM_WEIGHTS = 8;
 		CEffect*		m_pEffect;						//!<エフェクト。
 		CRenderTarget	m_luminanceRenderTarget;		//!<輝度を抽出するレンダリングターゲット。
 		CRenderTarget	m_downSamplingRenderTarget[4];	//!<輝度をダウンサンプリングするためのレンダリングターゲット。
 		bool			m_isEnable;						//!<有効？
-		f32				m_weights[NUM_WEIGHTS];
+		float				m_weights[NUM_WEIGHTS];
 	};
 }
 

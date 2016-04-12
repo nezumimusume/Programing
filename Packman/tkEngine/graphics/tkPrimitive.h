@@ -45,11 +45,11 @@ namespace tkEngine{
 		 */
 		void Create( 
 			EType 					primitiveType,
-			u32 					numVertex,
-			u32 					vertexStride,
+			int 					numVertex,
+			int 					vertexStride,
 			const SVertexElement*	vertexLayout,
 			void*					pSrcVertexBuffer,
-			u32 					numIndex,
+			int 					numIndex,
 			EIndexFormat			indexFormat,
 			void*					pSrcIndexbuffer
 		);
@@ -81,14 +81,14 @@ namespace tkEngine{
 		/*!
 		* @brief	頂点数を取得。
 		*/
-		u32 GetNumVertex() const
+		int GetNumVertex() const
 		{
 			return m_numVertex;
 		}
 		/*!
 		* @brief	ポリゴン数を取得。
 		*/
-		u32 GetNumPolygon() const
+		int GetNumPolygon() const
 		{
 			return m_numPolygon;
 		}
@@ -100,10 +100,10 @@ namespace tkEngine{
 			return m_vertexBuffer.GetVertexDecl();
 		}
 	private:
-		u32					m_numVertex;		//!<頂点数。
-		u32					m_vertexStride;		//!<頂点ストライド。
-		u32					m_numIndex;			//!<インデックス数。
-		u32					m_numPolygon;		//!<ポリゴンの数。
+		int					m_numVertex;		//!<頂点数。
+		int					m_vertexStride;		//!<頂点ストライド。
+		int					m_numIndex;			//!<インデックス数。
+		int					m_numPolygon;		//!<ポリゴンの数。
 		CVertexBuffer		m_vertexBuffer;		//!<頂点バッファ。
 		CIndexBuffer		m_indexBuffer;		//!<インデックスバッファ。
 		EType				m_type;				//!<プリミティブタイプ。

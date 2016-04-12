@@ -7,7 +7,7 @@
 #include "tkEngine/graphics/tkEffect.h"
 #include "Packman/game/CGameManager.h"
 
-void CGround::Create(f32 xz_size)
+void CGround::Create(float xz_size)
 {
 	m_box.Create(tkEngine::CVector3(xz_size*10, 1.0f, xz_size*10), 0x88888888, true);
 	m_pEffect = tkEngine::CEngine::Instance().EffectManager().LoadEffect("Assets/presetShader/ColorNormalPrim.fx");
