@@ -36,7 +36,10 @@ namespace tkEngine{
 		m_isEnable(false),
 		m_pShadowMapEffect(nullptr),
 		m_lightPosition(CVector3::Zero),
-		m_lightDirection(CVector3::AxisZ)
+		m_lightDirection(CVector3::AxisZ),
+		m_near(1.0f),
+		m_far(100.0f),
+		m_lvMatrix(CMatrix::Identity)
 	{
 	}
 	CShadowMap::~CShadowMap()
@@ -46,14 +49,16 @@ namespace tkEngine{
 	void CShadowMap::Create( int w, int h )
 	{
 		Release();
+		m_near = 1.0f;
+		m_far = 100.0f;
 		m_shadowMapRT.Create( w, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0 );
 		m_isEnable = true;
 		m_pShadowMapEffect = CEngine::EffectManager().LoadEffect( "Assets/presetshader/shadowMap.fx" );
 		m_projectionMatrix.MakeProjectionMatrix(
-			CMath::DegToRad(45.0f),
+			CMath::DegToRad(70.0f),
 			s_cast<float>(w) / s_cast<float>(h),
-			1.0f,
-			100.0f
+			m_near,
+			m_far
 		);
 	}
 	void CShadowMap::Release()
@@ -83,9 +88,8 @@ namespace tkEngine{
 			//ライトからみたビュー行列を作成。
 			CVector3 target;
 			target.Add(m_lightPosition, m_lightDirection);
-			CMatrix lightViewMatrix;
-			lightViewMatrix.MakeLookAt(m_lightPosition, target, lightUp);
-			m_LVPMatrix.Mul(lightViewMatrix, m_projectionMatrix);
+			m_lvMatrix.MakeLookAt(m_lightPosition, target, lightUp);
+			m_LVPMatrix.Mul(m_lvMatrix, m_projectionMatrix);
 		}
 
 	}
@@ -99,7 +103,11 @@ namespace tkEngine{
 			m_pShadowMapEffect->SetTechnique( renderContext, "RenderShadowMap" );
 			m_pShadowMapEffect->Begin(renderContext);
 			//ライトビュープロジェクション行列を作る。
-			
+			float farNear[] = {
+				m_far,
+				m_near
+			};
+			m_pShadowMapEffect->SetValue(renderContext, "g_farNear", farNear, sizeof(farNear));
 			for (auto model : m_shadowModels) {
 				model->Render( renderContext, m_pShadowMapEffect, m_LVPMatrix);
 			}

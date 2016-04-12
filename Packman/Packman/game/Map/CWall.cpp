@@ -28,6 +28,7 @@ void CWall::Render(tkEngine::CRenderContext& renderContext)
 		renderContext,
 		gm.GetGameCamera().GetViewProjectionMatrix(),
 		gm.GetWallLight(),
+		false,
 		false
 	);
 }

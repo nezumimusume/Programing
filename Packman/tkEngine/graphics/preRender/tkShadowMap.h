@@ -91,6 +91,20 @@ namespace tkEngine{
 		* @brief	更新。
 		*/
 		void Update();
+		/*!
+		* @brief	近平面。
+		*/
+		float GetNear() const
+		{
+			return m_near;
+		}
+		/*!
+		* @brief	遠平面
+		*/
+		float GetFar() const
+		{
+			return m_far;
+		}
 	private:
 		bool						m_isEnable;			//!<有効？
 		CRenderTarget				m_shadowMapRT;		//!<シャドウマップを書き込むレンダリングターゲット。
@@ -98,8 +112,11 @@ namespace tkEngine{
 		CEffect*					m_pShadowMapEffect;	//!<シャドウマップのエフェクト。
 		CVector3					m_lightPosition;	//!<ライトの位置。
 		CVector3					m_lightDirection;	//!<ライトの向き。
+		CMatrix						m_lvMatrix;
 		CMatrix						m_LVPMatrix;		//!<ライトビュープロジェクション行列。
-		CMatrix						m_projectionMatrix;	
+		CMatrix						m_projectionMatrix;
+		float						m_near;				//!<近平面。
+		float						m_far;				//!<遠平面。
 	};
 }
 

@@ -99,7 +99,7 @@ void CGameManager::Update()
 	}
 	/*tkEngine::CEngine::Instance().ShadowMap().SetLightPosition(CVector3(0.0f, 2.0f, -1.0f));
 	tkEngine::CEngine::Instance().ShadowMap().SetLightDirection(lightDir);*/
-	tkEngine::CEngine::Instance().ShadowMap().SetLightPosition(CVector3(1.0f, 2.5f, 1.0f));
+	tkEngine::CEngine::Instance().ShadowMap().SetLightPosition(CVector3(2.0f, 3.5f, 1.0f));
 	tkEngine::CEngine::Instance().ShadowMap().SetLightDirection(CVector3(-1.0f, -2.5f, -1.0f));
 }
 void CGameManager::Render(tkEngine::CRenderContext& renderContext)

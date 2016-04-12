@@ -33,6 +33,7 @@ void CFood::Render(tkEngine::CRenderContext& renderContext)
 		renderContext,
 		m_wvpMatrix,
 		gm.GetFoodLight(),
+		true,
 		true
 	);
 }

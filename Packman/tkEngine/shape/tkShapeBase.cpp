@@ -58,30 +58,54 @@ namespace tkEngine{
 		CRenderContext& renderContext,
 		const CMatrix& viewProjectionMatrix,
 		const CLight& light,
-		bool isIluminance
-		)
+		bool isIluminance,
+		bool isReceiveShadow
+	)
 	{
 		CMatrix mWVP;
 		mWVP.Mul(m_worldMatrix, viewProjectionMatrix);
-		RenderLightWVP(renderContext, mWVP, light, isIluminance);
+		RenderLightWVP(renderContext, mWVP, light, isIluminance, isReceiveShadow);
 	}
 	void CShapeBase::RenderLightWVP(
 		CRenderContext& renderContext,
 		const CMatrix& mWVP,
 		const CLight& light,
-		bool isIluminance
+		bool isIluminance,
+		bool isReceiveShadow
 	)
 	{
 		if (isIluminance) {
-			m_pEffect->SetTechnique(renderContext, "ColorNormalPrimIuminance");
+			if(isReceiveShadow){
+				m_pEffect->SetTechnique(renderContext, "ColorNormalShadowPrimIuminance");
+			}
+			else {
+				m_pEffect->SetTechnique(renderContext, "ColorNormalPrimIuminance");
+			}
 		}
 		else {
-			m_pEffect->SetTechnique(renderContext, "ColorNormalPrim");
+			if (isReceiveShadow) {
+				m_pEffect->SetTechnique(renderContext, "ColorNormalShadowPrim");
+			}
+			else {
+				m_pEffect->SetTechnique(renderContext, "ColorNormalPrim");
+			}
 		}
 		m_pEffect->Begin(renderContext);
 		m_pEffect->BeginPass(renderContext, 0);
 		m_pEffect->SetValue(renderContext, "g_mWVP", &mWVP, sizeof(mWVP));
 		m_pEffect->SetValue(renderContext, "g_worldRotationMatrix", &m_rotationMatrix, sizeof(m_rotationMatrix));
+		if (isReceiveShadow) {
+			CShadowMap& shadowMap = CEngine::Instance().ShadowMap();
+			const CMatrix& mLVP = shadowMap.GetLVPMatrix();
+			float farNear[] = {
+				shadowMap.GetFar(),
+				shadowMap.GetNear()
+			};
+			m_pEffect->SetValue(renderContext, "g_mLVP", &mLVP, sizeof(mLVP));
+			m_pEffect->SetValue(renderContext, "g_farNear", farNear, sizeof(farNear));
+			m_pEffect->SetTexture(renderContext, "g_shadowMap", shadowMap.GetTexture());
+			m_pEffect->SetValue(renderContext, "g_mWorld", &m_worldMatrix, sizeof(m_worldMatrix));
+		}
 		m_pEffect->SetValue(
 			renderContext,
 			"g_light",

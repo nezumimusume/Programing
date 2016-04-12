@@ -24,12 +24,30 @@ void CGround::Update()
 }
 void CGround::Render(tkEngine::CRenderContext& renderContext)
 {
+#if 1
 	CGameManager& gm = CGameManager::GetInstance();
 	CMatrix mMVP = gm.GetGameCamera().GetViewProjectionMatrix();
 	const CMatrix& mWorld = m_box.GetWorldMatrix();
-	const CMatrix& mLVP = CEngine::Instance().ShadowMap().GetLVPMatrix();
+	mMVP.Mul(mWorld, mMVP);
+	m_box.RenderLightWVP(
+		renderContext,
+		mMVP,
+		gm.GetGroundLight(),
+		false,
+		true
+		);
+#else
+	CGameManager& gm = CGameManager::GetInstance();
+	CMatrix mMVP = gm.GetGameCamera().GetViewProjectionMatrix();
+	const CMatrix& mWorld = m_box.GetWorldMatrix();
+	const CShadowMap& shadowMap = CEngine::Instance().ShadowMap();
+	const CMatrix& mLVP = shadowMap.GetLVPMatrix();
 	mMVP.Mul(mWorld, mMVP);
 	CMatrix mRot = m_box.GetRotationMatrix();
+	float farNear[] = {
+		shadowMap.GetFar(),
+		shadowMap.GetNear()
+	};
 	m_pEffect->SetTechnique(renderContext, "ColorNormalShadowPrim");
 	m_pEffect->Begin(renderContext);
 	m_pEffect->BeginPass(renderContext, 0);
@@ -37,6 +55,7 @@ void CGround::Render(tkEngine::CRenderContext& renderContext)
 	m_pEffect->SetValue(renderContext, "g_worldRotationMatrix", &mRot, sizeof(mRot));
 	m_pEffect->SetValue(renderContext, "g_mWorld", &mWorld, sizeof(mWorld));
 	m_pEffect->SetValue(renderContext, "g_mLVP", &mLVP, sizeof(mLVP));
+	m_pEffect->SetValue(renderContext, "g_farNear", farNear, sizeof(farNear));
 	m_pEffect->SetValue(
 		renderContext,
 		"g_light",
@@ -49,5 +68,6 @@ void CGround::Render(tkEngine::CRenderContext& renderContext)
 
 	m_pEffect->EndPass(renderContext);
 	m_pEffect->End(renderContext);
+#endif//
 }
 	

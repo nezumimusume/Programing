@@ -74,12 +74,14 @@ namespace tkEngine{
 		*@param[in] viewProjectionMatrix	ビュープロジェクション行列。
 		*@param[in]	light					ライト。
 		*@param[in]	isIluminance			自己発光あり。
+		*@param[in]	isReceiveShadow			影のレシーバ？
 		*/
 		void RenderLight( 
 			CRenderContext& renderContext, 
 			const CMatrix& viewProjectionMatrix,
 			const CLight& light,
-			bool isIluminance
+			bool isIluminance,
+			bool isReceiveShadow
 		);
 		/*!
 		*@brief	ライティングありの描画。WVP行列指定版。事前にWVP行列を作成しているなら、
@@ -89,12 +91,14 @@ namespace tkEngine{
 		*@param[in] mWVP					WVP行列。
 		*@param[in]	light					ライト。
 		*@param[in]	isIluminance			自己発光あり。
+		*@param[in]	isReceiveShadow			影のレシーバ？
 		*/
 		void RenderLightWVP(
 			CRenderContext& renderContext,
 			const CMatrix& mWVP,
 			const CLight& light,
-			bool isIluminance
+			bool isIluminance,
+			bool isReceiveShadow
 		);
 	protected:
 		/*!

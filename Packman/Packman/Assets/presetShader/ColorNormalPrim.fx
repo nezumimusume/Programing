@@ -46,6 +46,9 @@ sampler_state
 	AddressV = Clamp;
 };
 
+float2		g_farNear;	//遠平面と近平面。xに遠平面、yに近平面。
+
+
 /*!
  * @brief
  */
@@ -103,10 +106,9 @@ float4 PSMainShadow( VS_OUTPUTShadow In, uniform bool isIuminance ) : COLOR0
 	if(shadowMapUV.x <= 1.0f && shadowMapUV.y <= 1.0f && shadowMapUV.x >= 0.0f && shadowMapUV.y >= 0.0f){
 		shadow_val = tex2D( g_shadowMapSampler, shadowMapUV ).r;
 	}
-	
-	float depth = posInLVP.z / posInLVP.w;
+	float depth = ( posInLVP.z - g_farNear.y ) / (g_farNear.x - g_farNear.y);	
 
-	if( depth - shadow_val> 0.0065f){
+	if( depth > shadow_val){
 		//影になっている。
 		diffuse = 0.0f;
 	}
@@ -150,5 +152,16 @@ technique ColorNormalPrimIuminance
     {          
         VertexShader = compile vs_2_0 VSMain();
         PixelShader  = compile ps_2_0 PSMain(true);
+	}
+}
+/*!
+ * @brief	COLOR+ライト+シャドウ+自己発光
+ */
+technique ColorNormalShadowPrimIuminance
+{
+	pass P0
+	{
+		VertexShader = compile vs_2_0 VSMainShadow();
+		PixelShader = compile ps_2_0 PSMainShadow(true);
 	}
 }
