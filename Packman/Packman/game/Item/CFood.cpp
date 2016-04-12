@@ -29,7 +29,6 @@ void CFood::Update()
 void CFood::Render(tkEngine::CRenderContext& renderContext)
 {
 	CGameManager& gm = CGameManager::GetInstance();
-
 	m_sphere->RenderLightWVP(
 		renderContext,
 		m_wvpMatrix,
