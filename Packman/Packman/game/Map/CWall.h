@@ -16,7 +16,6 @@ public:
 	void Build( const CVector3& size, const CVector3& pos );
 private:
 	tkEngine::CBoxShape		m_box;	
-	tkEngine::CEffect*		m_pEffect;
 	tkEngine::CIDMapModel	m_idMapModel;
 	tkEngine::CShadowModel	m_shadowModel;
 	CMatrix					m_wvpMatrix;	//<ワールドビュープロジェクション行列。

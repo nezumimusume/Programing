@@ -15,6 +15,5 @@ public:
 	void Create( float xz_size );
 private:
 	tkEngine::CBoxShape		m_box;	
-	tkEngine::CEffect*		m_pEffect;
 };
 #endif 

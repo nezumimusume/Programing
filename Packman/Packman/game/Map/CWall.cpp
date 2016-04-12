@@ -34,7 +34,6 @@ void CWall::Render(tkEngine::CRenderContext& renderContext)
 void CWall::Build( const CVector3& size, const CVector3& pos )
 {
 	m_box.Create( size, 0xffff0000, true );
-	m_pEffect = tkEngine::CEngine::Instance().EffectManager().LoadEffect("Assets/presetShader/ColorNormalPrim.fx");
 	m_box.SetPosition(pos);
 	m_box.UpdateWorldMatrix();
 	m_idMapModel.Create(m_box.GetPrimitive());
