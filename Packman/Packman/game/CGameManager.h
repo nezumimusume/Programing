@@ -8,6 +8,7 @@
 #include "Packman/game/CCamera.h"
 #include "tkEngine/graphics/tkLight.h"
 #include "Packman/game/map/CMapBuilder.h"
+#include "Packman/game/map/CFoodGeom.h"
 
 class CGameManager : public tkEngine::IGameObject{
 public:
@@ -36,6 +37,10 @@ public:
 	{
 		return m_foodLight;
 	}
+	CFoodGeom& GetFoodGeom()
+	{
+		return m_foodGeom;
+	}
 private:
 	CGameCamera		m_camera;
 	CLight			m_groundLight;		//地面のライト
@@ -43,6 +48,7 @@ private:
 	CLight			m_foodLight;		//食べ物のライト。
 	static CGameManager*	m_instance;	//唯一のインスタンス。
 	CMapBuilder		m_mapBuilder;
+	CFoodGeom		m_foodGeom;			//食べ物の形状。
 };
 
 #endif //_CGAMEMANAGER_H_

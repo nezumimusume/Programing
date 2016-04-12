@@ -8,6 +8,7 @@
 #include "tkEngine/shape/tkSphereShape.h"
 
 class CFoodGeom{
+public:
 	/*!
 	 *@brief	コンストラクタ。
 	 */

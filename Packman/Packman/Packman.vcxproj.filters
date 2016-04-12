@@ -22,6 +22,9 @@
     <Filter Include="Source Files\game\map">
       <UniqueIdentifier>{716087e7-9f95-4bba-8565-2577d6dfdf5a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\game\Item">
+      <UniqueIdentifier>{8f075f46-cd31-4dbe-a7d5-16577244b5f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -63,6 +66,9 @@
     <ClCompile Include="game\Map\CFood.cpp">
       <Filter>Source Files\game\map</Filter>
     </ClCompile>
+    <ClCompile Include="game\Map\CFoodGeom.cpp">
+      <Filter>Source Files\game\map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -99,6 +105,9 @@
       <Filter>Source Files\game\map</Filter>
     </ClInclude>
     <ClInclude Include="game\Map\CFood.h">
+      <Filter>Source Files\game\map</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Map\CFoodGeom.h">
       <Filter>Source Files\game\map</Filter>
     </ClInclude>
   </ItemGroup>
