@@ -41,9 +41,8 @@ void CMapBuilder::Build()
 	//地面を作成。
 	m_ground.Create( NUM_GRID * GRID_SIZE );
 	CGameObjectManager::Instance().AddGameObject(0, &m_ground);
-	//テストで
-	/*CWall* wall = CGameObjectManager::Instance().NewGameObject<CWall>(0);
-	wall->Build(CVector3(GRID_SIZE, GRID_SIZE, GRID_SIZE), CVector3(0, GRID_SIZE, 0));*/
+	f32 radius = GRID_SIZE *0.2f;
+	CFood::CreateShape(GRID_SIZE *0.2f);
 	for (u32 i = 0; i < NUM_GRID; i++) {
 		for (u32 k = 0; k < NUM_GRID; k++) {
 			s32 x = k - NUM_GRID / 2;
@@ -56,8 +55,7 @@ void CMapBuilder::Build()
 			else if (sMap[i][k] == 0) {
 				//パックマンのエサを作成。
 				CFood* food = CGameObjectManager::Instance().NewGameObject<CFood>(0);
-				f32 radius = GRID_SIZE *0.2f;
-				food->Build(radius, CVector3(GRID_SIZE*x, radius, GRID_SIZE*-z ) );
+				food->Build(CVector3(GRID_SIZE*x, radius, GRID_SIZE*-z ) );
 			}
 		}
 	}

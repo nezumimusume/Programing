@@ -23,6 +23,7 @@ void CFood::Update()
 	CMatrix mMVP = gm.GetGameCamera().GetViewProjectionMatrix();
 	const CMatrix& mWorld = m_sphere->GetWorldMatrix();
 	m_wvpMatrix.Mul(mWorld, mMVP);
+	m_idMapModel.SetWVPMatrix(m_wvpMatrix);
 	CEngine::Instance().IDMap().Entry(&m_idMapModel);
 }
 void CFood::Render(tkEngine::CRenderContext& renderContext)
@@ -36,11 +37,20 @@ void CFood::Render(tkEngine::CRenderContext& renderContext)
 		true
 	);
 }
-void CFood::Build( f32 radius, const CVector3& pos )
+void CFood::Build( const CVector3& pos )
 {
-	if(m_sphere == nullptr){
+	m_idMapModel.Create(m_sphere->GetPrimitive());
+	m_position = pos;
+}
+void CFood::CreateShape(f32 radius)
+{
+	if (m_sphere == nullptr) {
 		m_sphere = new tkEngine::CSphereShape();
 		m_sphere->Create(radius, 10, 0xffffff55, true);
 	}
-	m_position = pos;
+}
+void CFood::ReleaseShape()
+{
+	delete m_sphere;
+	m_sphere = nullptr;
 }

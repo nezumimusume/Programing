@@ -13,7 +13,9 @@ public:
 	void Start() override final;
 	void Update() override final;
 	void Render(tkEngine::CRenderContext& renderContext) override final;
-	void Build( f32 radius, const CVector3& pos );
+	void Build( const CVector3& pos );
+	static void CreateShape(f32 radius);
+	static void ReleaseShape();
 private:
 	static tkEngine::CSphereShape*	m_sphere;
 	CMatrix							m_wvpMatrix;			//<ワールドビュープロジェクション行列。
