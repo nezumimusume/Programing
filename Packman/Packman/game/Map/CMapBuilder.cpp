@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Packman/game/Map/CMapBuilder.h"
 #include "Packman/game/Map/CWall.h"
-#include "Packman/game/Map/CFood.h"
+#include "Packman/game/item/CFood.h"
 namespace{
 	const f32 GRID_SIZE = 0.2f;
 	const u32 NUM_GRID = 15;

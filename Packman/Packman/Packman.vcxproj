@@ -154,8 +154,7 @@
   <ItemGroup>
     <ClCompile Include="game\CCamera.cpp" />
     <ClCompile Include="game\CGameManager.cpp" />
-    <ClCompile Include="game\Map\CFood.cpp" />
-    <ClCompile Include="game\Map\CFoodGeom.cpp" />
+    <ClCompile Include="game\Item\CFood.cpp" />
     <ClCompile Include="game\Map\CGround.cpp" />
     <ClCompile Include="game\Map\CMapBuilder.cpp" />
     <ClCompile Include="game\Map\CWall.cpp" />
@@ -172,8 +171,7 @@
   <ItemGroup>
     <ClInclude Include="game\ccamera.h" />
     <ClInclude Include="game\CGameManager.h" />
-    <ClInclude Include="game\Map\CFood.h" />
-    <ClInclude Include="game\Map\CFoodGeom.h" />
+    <ClInclude Include="game\Item\CFood.h" />
     <ClInclude Include="game\Map\CGround.h" />
     <ClInclude Include="game\Map\CMapBuilder.h" />
     <ClInclude Include="game\Map\CWall.h" />

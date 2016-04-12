@@ -81,6 +81,21 @@ namespace tkEngine{
 			const CLight& light,
 			bool isIluminance
 		);
+		/*!
+		*@brief	ライティングありの描画。WVP行列指定版。事前にWVP行列を作成しているなら、
+		* こちらを使用するほうが速い。
+		* 法線ありで生成を行っている必要あり。
+		*@param[in]	renderContext			レンダリングコンテキスト。
+		*@param[in] mWVP					WVP行列。
+		*@param[in]	light					ライト。
+		*@param[in]	isIluminance			自己発光あり。
+		*/
+		void RenderLightWVP(
+			CRenderContext& renderContext,
+			const CMatrix& mWVP,
+			const CLight& light,
+			bool isIluminance
+		);
 	protected:
 		/*!
 		*@brief	エフェクト作成。

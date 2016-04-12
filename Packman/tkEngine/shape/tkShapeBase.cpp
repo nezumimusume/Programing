@@ -61,9 +61,18 @@ namespace tkEngine{
 		bool isIluminance
 		)
 	{
-		CMatrix mMVP;
-		mMVP.Mul(m_worldMatrix, viewProjectionMatrix);
-		if(isIluminance){
+		CMatrix mWVP;
+		mWVP.Mul(m_worldMatrix, viewProjectionMatrix);
+		RenderLightWVP(renderContext, mWVP, light, isIluminance);
+	}
+	void CShapeBase::RenderLightWVP(
+		CRenderContext& renderContext,
+		const CMatrix& mWVP,
+		const CLight& light,
+		bool isIluminance
+	)
+	{
+		if (isIluminance) {
 			m_pEffect->SetTechnique(renderContext, "ColorNormalPrimIuminance");
 		}
 		else {
@@ -71,7 +80,7 @@ namespace tkEngine{
 		}
 		m_pEffect->Begin(renderContext);
 		m_pEffect->BeginPass(renderContext, 0);
-		m_pEffect->SetValue(renderContext, "g_mWVP", &mMVP, sizeof(mMVP));
+		m_pEffect->SetValue(renderContext, "g_mWVP", &mWVP, sizeof(mWVP));
 		m_pEffect->SetValue(renderContext, "g_worldRotationMatrix", &m_rotationMatrix, sizeof(m_rotationMatrix));
 		m_pEffect->SetValue(
 			renderContext,

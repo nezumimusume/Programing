@@ -63,11 +63,8 @@
     <ClCompile Include="game\Map\CWall.cpp">
       <Filter>Source Files\game\map</Filter>
     </ClCompile>
-    <ClCompile Include="game\Map\CFood.cpp">
-      <Filter>Source Files\game\map</Filter>
-    </ClCompile>
-    <ClCompile Include="game\Map\CFoodGeom.cpp">
-      <Filter>Source Files\game\map</Filter>
+    <ClCompile Include="game\Item\CFood.cpp">
+      <Filter>Source Files\game\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,11 +101,8 @@
     <ClInclude Include="game\Map\CWall.h">
       <Filter>Source Files\game\map</Filter>
     </ClInclude>
-    <ClInclude Include="game\Map\CFood.h">
-      <Filter>Source Files\game\map</Filter>
-    </ClInclude>
-    <ClInclude Include="game\Map\CFoodGeom.h">
-      <Filter>Source Files\game\map</Filter>
+    <ClInclude Include="game\Item\CFood.h">
+      <Filter>Source Files\game\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
