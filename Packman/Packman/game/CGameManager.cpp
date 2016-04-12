@@ -21,6 +21,9 @@ void CGameManager::Start()
 	tkEngine::CGameObjectManager::Instance().AddGameObject(0, &m_camera);
 	//マップ作成。
 	m_mapBuilder.Build();
+	m_player.Build(CVector3::Zero);
+	//プレイヤーをワールドに追加。
+	CGameObjectManager::Instance().AddGameObject(0, &m_player);
 }
 void CGameManager::Update()
 {
@@ -101,6 +104,7 @@ void CGameManager::Update()
 	tkEngine::CEngine::Instance().ShadowMap().SetLightDirection(lightDir);*/
 	tkEngine::CEngine::Instance().ShadowMap().SetLightPosition(CVector3(2.0f, 3.5f, 1.0f));
 	tkEngine::CEngine::Instance().ShadowMap().SetLightDirection(CVector3(-1.0f, -2.5f, -1.0f));
+
 }
 void CGameManager::Render(tkEngine::CRenderContext& renderContext)
 {

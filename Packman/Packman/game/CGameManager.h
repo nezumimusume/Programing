@@ -8,6 +8,7 @@
 #include "Packman/game/CCamera.h"
 #include "tkEngine/graphics/tkLight.h"
 #include "Packman/game/map/CMapBuilder.h"
+#include "Packman/game/Player/CPlayer.h"
 
 /*!
  *@brief	ゲームマネージャー。
@@ -76,6 +77,7 @@ private:
 	CLight			m_foodLight;		//食べ物のライト。
 	static CGameManager*	m_instance;	//唯一のインスタンス。
 	CMapBuilder		m_mapBuilder;		//マップ構築処理。
+	CPlayer			m_player;			//プレイヤ
 };
 
 #endif //_CGAMEMANAGER_H_

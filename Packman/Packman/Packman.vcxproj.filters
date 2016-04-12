@@ -25,6 +25,9 @@
     <Filter Include="Source Files\game\Item">
       <UniqueIdentifier>{8f075f46-cd31-4dbe-a7d5-16577244b5f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\game\player">
+      <UniqueIdentifier>{c22175cc-f3c7-4fe3-9d82-3110e6f2fe0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -66,6 +69,9 @@
     <ClCompile Include="game\Item\CFood.cpp">
       <Filter>Source Files\game\Item</Filter>
     </ClCompile>
+    <ClCompile Include="game\Player\CPlayer.cpp">
+      <Filter>Source Files\game\player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -103,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="game\Item\CFood.h">
       <Filter>Source Files\game\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Player\CPlayer.h">
+      <Filter>Source Files\game\player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
