@@ -11,7 +11,6 @@
  */
 void CPlayer::Start() 
 {
-	m_position = CVector3::Zero;
 }
 /*!
  *@brief	更新処理。60fpsなら16ミリ秒に一度。30fpsなら32ミリ秒に一度呼ばれる。
@@ -25,13 +24,28 @@ void CPlayer::Update()
 	CMatrix mMVP = gm.GetGameCamera().GetViewProjectionMatrix();
 	const CMatrix& mWorld = m_sphere.GetWorldMatrix();
 	m_wvpMatrix.Mul(mWorld, mMVP);
-
+	m_idMapModel.SetWVPMatrix(m_wvpMatrix);
+	IDMap().Entry(&m_idMapModel);
+	m_shadowModel.SetWorldMatrix(mWorld);
+	ShadowMap().Entry(&m_shadowModel);
 }
 /*!
 *@brief	移動処理。
 */
 void CPlayer::Move()
 {
+	if (KeyInput().IsUpPress()) {
+		m_position.z += 0.02f;
+	}
+	if (KeyInput().IsDownPress()) {
+		m_position.z -= 0.02f;
+	}
+	if (KeyInput().IsRightPress()) {
+		m_position.x += 0.02f;
+	}
+	if (KeyInput().IsLeftPress()) {
+		m_position.x -= 0.02f;
+	}
 }
 /*!
  *@brief	描画処理。60fpsなら16ミリ秒に一度。30fpsなら32ミリ秒に一度呼ばれる。
@@ -43,7 +57,7 @@ void CPlayer::Render(tkEngine::CRenderContext& renderContext)
 		renderContext,
 		m_wvpMatrix,
 		gm.GetFoodLight(),
-		true,
+		false,
 		true
 	);
 }
@@ -53,5 +67,8 @@ void CPlayer::Render(tkEngine::CRenderContext& renderContext)
  */
 void CPlayer::Build( const CVector3& pos )
 {
-	m_sphere.Create(0.1f, 10, 0xffff0000, true );
+	m_sphere.Create(0.08f, 10, 0xffff0000, true );
+	m_idMapModel.Create(m_sphere.GetPrimitive());
+	m_shadowModel.Create(m_sphere.GetPrimitive());
+	m_position = pos;
 }

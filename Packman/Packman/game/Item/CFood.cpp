@@ -24,7 +24,7 @@ void CFood::Update()
 	const CMatrix& mWorld = m_sphere->GetWorldMatrix();
 	m_wvpMatrix.Mul(mWorld, mMVP);
 	m_idMapModel.SetWVPMatrix(m_wvpMatrix);
-	CEngine::Instance().IDMap().Entry(&m_idMapModel);
+	IDMap().Entry(&m_idMapModel);
 }
 void CFood::Render(tkEngine::CRenderContext& renderContext)
 {
@@ -33,7 +33,7 @@ void CFood::Render(tkEngine::CRenderContext& renderContext)
 		renderContext,
 		m_wvpMatrix,
 		gm.GetFoodLight(),
-		true,
+		false,
 		true
 	);
 }

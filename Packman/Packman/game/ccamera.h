@@ -41,5 +41,6 @@ public:
 	}
 private:
 	tkEngine::CCamera	m_camera;	//!<ƒJƒƒ‰B
+	CVector3			m_playerDist;
 };
 #endif // _CCAMERA_H_

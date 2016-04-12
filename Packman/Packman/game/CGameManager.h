@@ -70,6 +70,13 @@ public:
 	{
 		return m_foodLight;
 	}
+	/*!
+	*@brief	プレイヤを取得。
+	*/
+	CPlayer& GetPlayer()
+	{
+		return m_player;
+	}
 private:
 	CGameCamera		m_camera;			//カメラ。
 	CLight			m_groundLight;		//地面のライト
@@ -79,5 +86,10 @@ private:
 	CMapBuilder		m_mapBuilder;		//マップ構築処理。
 	CPlayer			m_player;			//プレイヤ
 };
+
+static inline CPlayer& Player()
+{
+	return CGameManager::GetInstance().GetPlayer();
+}
 
 #endif //_CGAMEMANAGER_H_

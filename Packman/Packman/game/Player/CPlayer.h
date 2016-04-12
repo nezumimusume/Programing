@@ -9,7 +9,10 @@
 
 class CPlayer : public tkEngine::IGameObject{
 public:
-	CPlayer(){}
+	CPlayer() :
+		m_position(CVector3::Zero)
+	{
+	}
 	~CPlayer(){}
 	/*!
 	 *@brief	Updateが初めて呼ばれる直前に一度だけ呼ばれる処理。
@@ -32,11 +35,19 @@ public:
 	*@brief	移動処理。
 	*/
 	void Move();
+	/*!
+	*@brief	座標を取得。
+	*/
+	const CVector3& GetPosition() const
+	{
+		return m_position;
+	}
 private:
 	tkEngine::CSphereShape	m_sphere;
-	CMatrix					m_wvpMatrix;			//<ワールドビュープロジェクション行列。
+	CMatrix					m_wvpMatrix;	//<ワールドビュープロジェクション行列。
 	tkEngine::CIDMapModel	m_idMapModel;
 	CVector3				m_position;
+	tkEngine::CShadowModel	m_shadowModel;	//!<シャドウマップへの書き込み用のモデル。
 };
 
 #endif 

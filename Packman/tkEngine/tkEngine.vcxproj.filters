@@ -36,6 +36,9 @@
     <Filter Include="Source Files\graphics\postEffect">
       <UniqueIdentifier>{b468388b-67e6-43f5-9ba8-4d0acc9500d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{4fc36f17-e2aa-4063-8bb9-90dfdefb2069}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -118,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="graphics\preRender\tkShadowMap.cpp">
       <Filter>Source Files\graphics\prerender</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\tkKeyInput.cpp">
+      <Filter>Source Files\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +228,9 @@
     </ClInclude>
     <ClInclude Include="graphics\preRender\tkShadowMap.h">
       <Filter>Source Files\graphics\prerender</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\tkKeyInput.h">
+      <Filter>Source Files\Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

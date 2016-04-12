@@ -154,6 +154,13 @@ namespace tkEngine{
 		{
 			return m_mainRenderTarget[m_currentMainRenderTarget];
 		}
+		/*!
+		* @brief	キー入力の取得。
+		*/
+		CKeyInput& KeyInput()
+		{
+			return m_keyInput;
+		}
 	private:
 		/*!
 		* @brief	メインレンダリングターゲットの内容をバックバッファにコピー。
@@ -198,8 +205,24 @@ namespace tkEngine{
 		CRenderTarget							m_backBufferRT;				//!<バックバッファのレンダリングターゲット。
 		CPreRender								m_preRender;				//!<プリレンダー。
 		CPostEffect								m_postEffect;				//!<ポストエフェクト。
+		CKeyInput								m_keyInput;					//!<キー入力。
 	};
-	
+	static inline CIDMap& IDMap()
+	{
+		return CEngine::Instance().IDMap();
+	}
+	static inline CShadowMap& ShadowMap()
+	{
+		return CEngine::Instance().ShadowMap();
+	}
+	static inline CEffectManager& EffectManager()
+	{
+		return CEngine::Instance().EffectManager();
+	}
+	static inline CKeyInput& KeyInput()
+	{
+		return CEngine::Instance().KeyInput();
+	}
 }
 
 #endif // _TKENGINE_TKENGINE_H_

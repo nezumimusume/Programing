@@ -17,8 +17,8 @@ void CWall::Update()
 	const CMatrix& mWorld = m_box.GetWorldMatrix();
 	m_wvpMatrix.Mul(mWorld, mMVP);
 	m_idMapModel.SetWVPMatrix(m_wvpMatrix);
-	CEngine::Instance().IDMap().Entry(&m_idMapModel);
-	CEngine::Instance().ShadowMap().Entry(&m_shadowModel);
+	IDMap().Entry(&m_idMapModel);
+	ShadowMap().Entry(&m_shadowModel);
 	m_shadowModel.SetWorldMatrix(mWorld);
 }
 void CWall::Render(tkEngine::CRenderContext& renderContext)

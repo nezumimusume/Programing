@@ -167,6 +167,7 @@
     <ClCompile Include="graphics\tkRenderContext.cpp" />
     <ClCompile Include="graphics\tkRenderTarget.cpp" />
     <ClCompile Include="graphics\tkVertexBuffer.cpp" />
+    <ClCompile Include="Input\tkKeyInput.cpp" />
     <ClCompile Include="math\tkMath.cpp" />
     <ClCompile Include="math\tkMatrix.cpp" />
     <ClCompile Include="math\tkVector.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="graphics\tkRenderContext.h" />
     <ClInclude Include="graphics\tkRenderTarget.h" />
     <ClInclude Include="graphics\tkVertexBuffer.h" />
+    <ClInclude Include="Input\tkKeyInput.h" />
     <ClInclude Include="math\tkMath.h" />
     <ClInclude Include="math\tkMatrix.h" />
     <ClInclude Include="math\tkVector.h" />

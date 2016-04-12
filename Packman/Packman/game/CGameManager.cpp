@@ -21,7 +21,7 @@ void CGameManager::Start()
 	tkEngine::CGameObjectManager::Instance().AddGameObject(0, &m_camera);
 	//マップ作成。
 	m_mapBuilder.Build();
-	m_player.Build(CVector3::Zero);
+	m_player.Build(CVector3(0.0f,0.1f,0.0f));
 	//プレイヤーをワールドに追加。
 	CGameObjectManager::Instance().AddGameObject(0, &m_player);
 }
