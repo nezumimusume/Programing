@@ -92,13 +92,16 @@ namespace tkEngine{
 		*@param[in]	light					ライト。
 		*@param[in]	isIluminance			自己発光あり。
 		*@param[in]	isReceiveShadow			影のレシーバ？
+		*@param[in]	pmWorldMatrix			形状を使いまわして複数表示しているものに影を落とすときは、この変数にワールド行列を指定してください。
+		*									指定しないと、共通のワールド行列が使用されるため、意図しない結果になります。
 		*/
 		void RenderLightWVP(
 			CRenderContext& renderContext,
 			const CMatrix& mWVP,
 			const CLight& light,
 			bool isIluminance,
-			bool isReceiveShadow
+			bool isReceiveShadow,
+			const CMatrix* pmWorldMatrix = nullptr
 		);
 	protected:
 		/*!

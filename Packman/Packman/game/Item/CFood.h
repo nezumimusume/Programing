@@ -45,6 +45,7 @@ private:
 	CMatrix							m_wvpMatrix;			//<ワールドビュープロジェクション行列。
 	tkEngine::CIDMapModel			m_idMapModel;
 	CVector3						m_position;
+	CMatrix							m_worldMatrix;			//!<ワールド行列。
 };
 
 #endif // _CFOOD_H_

@@ -71,7 +71,8 @@ namespace tkEngine{
 		const CMatrix& mWVP,
 		const CLight& light,
 		bool isIluminance,
-		bool isReceiveShadow
+		bool isReceiveShadow,
+		const CMatrix* pmWorldMatrix
 	)
 	{
 		if (isIluminance) {
@@ -104,7 +105,12 @@ namespace tkEngine{
 			m_pEffect->SetValue(renderContext, "g_mLVP", &mLVP, sizeof(mLVP));
 			m_pEffect->SetValue(renderContext, "g_farNear", farNear, sizeof(farNear));
 			m_pEffect->SetTexture(renderContext, "g_shadowMap", shadowMap.GetTexture());
-			m_pEffect->SetValue(renderContext, "g_mWorld", &m_worldMatrix, sizeof(m_worldMatrix));
+			if (pmWorldMatrix) {
+				m_pEffect->SetValue(renderContext, "g_mWorld", pmWorldMatrix, sizeof(*pmWorldMatrix));
+			}
+			else {
+				m_pEffect->SetValue(renderContext, "g_mWorld", &m_worldMatrix, sizeof(m_worldMatrix));
+			}
 		}
 		m_pEffect->SetValue(
 			renderContext,

@@ -21,8 +21,8 @@ void CFood::Update()
 	m_sphere->UpdateWorldMatrix();
 	CGameManager& gm = CGameManager::GetInstance();
 	CMatrix mMVP = gm.GetGameCamera().GetViewProjectionMatrix();
-	const CMatrix& mWorld = m_sphere->GetWorldMatrix();
-	m_wvpMatrix.Mul(mWorld, mMVP);
+	m_worldMatrix = m_sphere->GetWorldMatrix();
+	m_wvpMatrix.Mul(m_worldMatrix, mMVP);
 	m_idMapModel.SetWVPMatrix(m_wvpMatrix);
 	IDMap().Entry(&m_idMapModel);
 }
@@ -34,7 +34,8 @@ void CFood::Render(tkEngine::CRenderContext& renderContext)
 		m_wvpMatrix,
 		gm.GetFoodLight(),
 		true,
-		true
+		true,
+		&m_worldMatrix
 	);
 }
 void CFood::Build( const CVector3& pos )
