@@ -14,7 +14,7 @@ CGameCamera::~CGameCamera()
 void CGameCamera::Start()
 {
 	CVector3 cameraTarget;
-	m_playerDist.Set(0.0f, 0.2f, -1.0f);
+	m_playerDist.Set(0.0f, 3.5f, -0.1f);
 	cameraTarget = m_playerDist;
 	cameraTarget.z = 0.0f;
 	m_camera.SetPosition(m_playerDist);
