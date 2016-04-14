@@ -19,6 +19,10 @@ public:
 	 */
 	void Start() override final;
 	/*!
+	*@brief	Update関数が実行される前に呼ばれる更新関数。
+	*/
+	void PreUpdate() override final;
+	/*!
 	 *@brief	更新処理。60fpsなら16ミリ秒に一度。30fpsなら32ミリ秒に一度呼ばれる。
 	 */
 	void Update() override final;

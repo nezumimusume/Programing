@@ -13,11 +13,17 @@ void CPlayer::Start()
 {
 }
 /*!
+*@brief	Update関数が実行される前に呼ばれる更新関数。
+*/
+void CPlayer::PreUpdate()
+{
+	Move();
+}
+/*!
  *@brief	更新処理。60fpsなら16ミリ秒に一度。30fpsなら32ミリ秒に一度呼ばれる。
  */
 void CPlayer::Update() 
 {
-	Move();
 	m_sphere.SetPosition(m_position);
 	m_sphere.UpdateWorldMatrix();
 	CGameManager& gm = CGameManager::GetInstance();
