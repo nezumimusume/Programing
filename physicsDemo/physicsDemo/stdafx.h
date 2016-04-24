@@ -7,6 +7,9 @@
 
 #include <windows.h>
 #include "tkEngine/tkEnginePreCompile.h"
+#include "tkEngine/GameObject/tkGameObject.h"
+#include "btBulletDynamicsCommon.h"
+#include "BulletCollision\CollisionDispatch\btGhostObject.h"
 
 using namespace tkEngine;
 

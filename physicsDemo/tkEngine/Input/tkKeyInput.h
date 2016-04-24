@@ -59,12 +59,20 @@ namespace tkEngine{
 		/*!
 		* @brief	キーボードのAが押された。
 		*/
-		bool IsAPress() const
+		bool IsPressA() const
 		{
 			return m_keyPressFlag[enKeyA];
 		}
+		/*!
+		* @brief	キーボードのAのトリガー判定。
+		*/
+		bool IsTrggerA() const
+		{
+			return m_keyTrigerFlag[enKeyA];
+		}
 	private:
 		bool	m_keyPressFlag[enKeyNum];
+		bool	m_keyTrigerFlag[enKeyNum];
 	};
 }
 #endif //_TKKEYINPUT_H_ 

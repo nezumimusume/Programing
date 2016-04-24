@@ -7,13 +7,13 @@
 
 namespace tkEngine{
 	CCamera::CCamera() :
-		m_near(0.0f),
-		m_far(0.0f),
-		m_viewAngle(0.0f),
+		m_near(0.1f),
+		m_far(100.0f),
+		m_viewAngle(CMath::DegToRad(60.0f)),
 		m_aspect(0.0f),
 		m_isNeedUpdateProjectionMatrix(true),
 		m_position( CVector3::Zero),
-		m_up( CVector3::Zero),
+		m_up( CVector3::Up),
 		m_target( CVector3::Zero),
 		m_viewMatrix( CMatrix::Identity ),
 		m_projectionMatrix( CMatrix::Identity ),

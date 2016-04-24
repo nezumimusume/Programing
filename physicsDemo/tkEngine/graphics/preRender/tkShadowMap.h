@@ -88,6 +88,20 @@ namespace tkEngine{
 			return m_LVPMatrix;
 		}
 		/*!
+		* @brief	遠平面を設定。
+		*/
+		void SetFar(float Far)
+		{
+			m_far = Far;
+		}
+		/*!
+		* @brief	遠平面を設定。
+		*/
+		void SetNear(float Near)
+		{
+			m_far = Near;
+		}
+		/*!
 		* @brief	更新。
 		*/
 		void Update();
