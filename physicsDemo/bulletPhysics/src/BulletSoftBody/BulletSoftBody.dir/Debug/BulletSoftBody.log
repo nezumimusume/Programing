@@ -1,1 +1,13 @@
-﻿  BulletSoftBody.vcxproj -> C:\GitHub\Programing\physicsDemo\\bulletPhysics\lib\Debug\BulletSoftBody_Debug.lib
+﻿  Building Custom Rule C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/BulletSoftBody/CMakeLists.txt
+  CMake does not need to re-run because C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeFiles\generate.stamp is up-to-date.
+  btSoftBody.cpp
+  btSoftBodyConcaveCollisionAlgorithm.cpp
+  btSoftBodyHelpers.cpp
+C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyHelpers.cpp(555): warning C4316: 'btSoftBody::Link': object allocated on the heap may not be aligned 16
+  btSoftBodyRigidBodyCollisionConfiguration.cpp
+  btSoftRigidCollisionAlgorithm.cpp
+  btSoftRigidDynamicsWorld.cpp
+  btSoftSoftCollisionAlgorithm.cpp
+  btDefaultSoftBodySolver.cpp
+  Generating Code...
+  BulletSoftBody.vcxproj -> C:\GitHub\Programing\physicsDemo\\bulletPhysics\lib\Debug\BulletSoftBody_Debug.lib

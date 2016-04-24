@@ -6,6 +6,7 @@ void CDebri::Start()
 {
 	m_light.SetDiffuseLightColor(0, CVector4(1.5f, 1.5f, 1.5f, 1.0f));
 	m_light.SetDiffuseLightDirection(0, CVector3(0.0f, -1.0f, 0.0f));
+	//m_light.SetAmbinetLight(CVector3(1.0f, 1.0f, 1.0f));
 	m_life = 0.0f;
 }
 void CDebri::Update()
