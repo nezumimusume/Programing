@@ -18,6 +18,30 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="btDefaultSoftBodySolver.h" />
+    <ClInclude Include="btSoftBody.h" />
+    <ClInclude Include="btSoftBodyConcaveCollisionAlgorithm.h" />
+    <ClInclude Include="btSoftBodyData.h" />
+    <ClInclude Include="btSoftBodyHelpers.h" />
+    <ClInclude Include="btSoftBodyInternals.h" />
+    <ClInclude Include="btSoftBodyRigidBodyCollisionConfiguration.h" />
+    <ClInclude Include="btSoftBodySolvers.h" />
+    <ClInclude Include="btSoftBodySolverVertexBuffer.h" />
+    <ClInclude Include="btSoftRigidCollisionAlgorithm.h" />
+    <ClInclude Include="btSoftRigidDynamicsWorld.h" />
+    <ClInclude Include="btSoftSoftCollisionAlgorithm.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="btDefaultSoftBodySolver.cpp" />
+    <ClCompile Include="btSoftBody.cpp" />
+    <ClCompile Include="btSoftBodyConcaveCollisionAlgorithm.cpp" />
+    <ClCompile Include="btSoftBodyHelpers.cpp" />
+    <ClCompile Include="btSoftBodyRigidBodyCollisionConfiguration.cpp" />
+    <ClCompile Include="btSoftRigidCollisionAlgorithm.cpp" />
+    <ClCompile Include="btSoftRigidDynamicsWorld.cpp" />
+    <ClCompile Include="btSoftSoftCollisionAlgorithm.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGUID>{8ECBBDCD-865E-345B-9496-62B82F2FFEC5}</ProjectGUID>
     <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
@@ -78,7 +102,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\BulletPhysics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -113,7 +137,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\BulletPhysics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
@@ -215,89 +239,6 @@
       <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <CustomBuild Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeLists.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/BulletSoftBody/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/KIYOHARA/Documents/bullet3-2.83.7 -BC:/Users/KIYOHARA/Documents/bullet3-2.83.7 --check-stamp-file C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeFiles\generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/BulletSoftBody/CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/BulletSoftBody/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/KIYOHARA/Documents/bullet3-2.83.7 -BC:/Users/KIYOHARA/Documents/bullet3-2.83.7 --check-stamp-file C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeFiles\generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/BulletSoftBody/CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/BulletSoftBody/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/KIYOHARA/Documents/bullet3-2.83.7 -BC:/Users/KIYOHARA/Documents/bullet3-2.83.7 --check-stamp-file C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeFiles\generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/BulletSoftBody/CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/BulletSoftBody/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/KIYOHARA/Documents/bullet3-2.83.7 -BC:/Users/KIYOHARA/Documents/bullet3-2.83.7 --check-stamp-file C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeFiles\generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/BulletSoftBody/CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBody.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyData.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyConcaveCollisionAlgorithm.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyHelpers.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyRigidBodyCollisionConfiguration.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftRigidCollisionAlgorithm.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftRigidDynamicsWorld.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftSoftCollisionAlgorithm.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSparseSDF.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodySolvers.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btDefaultSoftBodySolver.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodySolverVertexBuffer.h" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBody.cpp" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyConcaveCollisionAlgorithm.cpp" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyHelpers.cpp" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyRigidBodyCollisionConfiguration.cpp" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftRigidCollisionAlgorithm.cpp" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftRigidDynamicsWorld.cpp" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftSoftCollisionAlgorithm.cpp" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btDefaultSoftBodySolver.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="C:/Users/KIYOHARA/Documents/bullet3-2.83.7/ZERO_CHECK.vcxproj">
-      <Project>5E9AA8B2-7BCB-3718-BCC1-1C78A752835B</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

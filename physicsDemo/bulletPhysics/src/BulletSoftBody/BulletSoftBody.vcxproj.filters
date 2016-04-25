@@ -1,72 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBody.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyConcaveCollisionAlgorithm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyHelpers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyRigidBodyCollisionConfiguration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftRigidCollisionAlgorithm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftRigidDynamicsWorld.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftSoftCollisionAlgorithm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btDefaultSoftBodySolver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBody.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyConcaveCollisionAlgorithm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyHelpers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodyRigidBodyCollisionConfiguration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftRigidCollisionAlgorithm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftRigidDynamicsWorld.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftSoftCollisionAlgorithm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSparseSDF.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodySolvers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btDefaultSoftBodySolver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\btSoftBodySolverVertexBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\BulletSoftBody\CMakeLists.txt" />
-  </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
       <UniqueIdentifier>{2A04211F-1BB8-30D8-B268-37E7BAA2F2BA}</UniqueIdentifier>
@@ -74,5 +7,29 @@
     <Filter Include="Header Files">
       <UniqueIdentifier>{28BC13D6-E540-3536-8983-A19E4698A0B9}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="btSoftSoftCollisionAlgorithm.h" />
+    <ClInclude Include="btDefaultSoftBodySolver.h" />
+    <ClInclude Include="btSoftBody.h" />
+    <ClInclude Include="btSoftBodyConcaveCollisionAlgorithm.h" />
+    <ClInclude Include="btSoftBodyData.h" />
+    <ClInclude Include="btSoftBodyHelpers.h" />
+    <ClInclude Include="btSoftBodyInternals.h" />
+    <ClInclude Include="btSoftBodyRigidBodyCollisionConfiguration.h" />
+    <ClInclude Include="btSoftBodySolvers.h" />
+    <ClInclude Include="btSoftBodySolverVertexBuffer.h" />
+    <ClInclude Include="btSoftRigidCollisionAlgorithm.h" />
+    <ClInclude Include="btSoftRigidDynamicsWorld.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="btDefaultSoftBodySolver.cpp" />
+    <ClCompile Include="btSoftBody.cpp" />
+    <ClCompile Include="btSoftBodyConcaveCollisionAlgorithm.cpp" />
+    <ClCompile Include="btSoftBodyHelpers.cpp" />
+    <ClCompile Include="btSoftBodyRigidBodyCollisionConfiguration.cpp" />
+    <ClCompile Include="btSoftRigidCollisionAlgorithm.cpp" />
+    <ClCompile Include="btSoftRigidDynamicsWorld.cpp" />
+    <ClCompile Include="btSoftSoftCollisionAlgorithm.cpp" />
   </ItemGroup>
 </Project>

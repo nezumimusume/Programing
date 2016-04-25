@@ -18,9 +18,50 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="btAabbUtil2.h" />
+    <ClInclude Include="btAlignedAllocator.h" />
+    <ClInclude Include="btAlignedObjectArray.h" />
+    <ClInclude Include="btConvexHull.h" />
+    <ClInclude Include="btConvexHullComputer.h" />
+    <ClInclude Include="btCpuFeatureUtility.h" />
+    <ClInclude Include="btDefaultMotionState.h" />
+    <ClInclude Include="btGeometryUtil.h" />
+    <ClInclude Include="btGrahamScan2dConvexHull.h" />
+    <ClInclude Include="btHashMap.h" />
+    <ClInclude Include="btIDebugDraw.h" />
+    <ClInclude Include="btList.h" />
+    <ClInclude Include="btMatrix3x3.h" />
+    <ClInclude Include="btMatrixX.h" />
+    <ClInclude Include="btMinMax.h" />
+    <ClInclude Include="btMotionState.h" />
+    <ClInclude Include="btPolarDecomposition.h" />
+    <ClInclude Include="btPoolAllocator.h" />
+    <ClInclude Include="btQuadWord.h" />
+    <ClInclude Include="btQuaternion.h" />
+    <ClInclude Include="btQuickprof.h" />
+    <ClInclude Include="btRandom.h" />
+    <ClInclude Include="btScalar.h" />
+    <ClInclude Include="btSerializer.h" />
+    <ClInclude Include="btSpatialAlgebra.h" />
+    <ClInclude Include="btStackAlloc.h" />
+    <ClInclude Include="btTransform.h" />
+    <ClInclude Include="btTransformUtil.h" />
+    <ClInclude Include="btVector3.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="btAlignedAllocator.cpp" />
+    <ClCompile Include="btConvexHull.cpp" />
+    <ClCompile Include="btConvexHullComputer.cpp" />
+    <ClCompile Include="btGeometryUtil.cpp" />
+    <ClCompile Include="btPolarDecomposition.cpp" />
+    <ClCompile Include="btQuickprof.cpp" />
+    <ClCompile Include="btSerializer.cpp" />
+    <ClCompile Include="btVector3.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGUID>{4DCE52A5-106C-3D94-815D-C8EBC6133B5E}</ProjectGUID>
-    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
     <Keyword>Win32Proj</Keyword>
     <Platform>Win32</Platform>
     <ProjectName>LinearMath</ProjectName>
@@ -59,7 +100,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\bulletPhysics\lib\Release\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\bulletPhysics\lib\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">LinearMath.dir\Debug\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">LinearMath_Debug</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.lib</TargetExt>
@@ -78,7 +119,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\BulletPhysics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -113,7 +154,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\BulletPhysics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
@@ -215,103 +256,6 @@
       <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <CustomBuild Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeLists.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/LinearMath/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/KIYOHARA/Documents/bullet3-2.83.7 -BC:/Users/KIYOHARA/Documents/bullet3-2.83.7 --check-stamp-file C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeFiles\generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/LinearMath/CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/LinearMath/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/KIYOHARA/Documents/bullet3-2.83.7 -BC:/Users/KIYOHARA/Documents/bullet3-2.83.7 --check-stamp-file C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeFiles\generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/LinearMath/CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/LinearMath/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/KIYOHARA/Documents/bullet3-2.83.7 -BC:/Users/KIYOHARA/Documents/bullet3-2.83.7 --check-stamp-file C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeFiles\generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/LinearMath/CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/LinearMath/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -HC:/Users/KIYOHARA/Documents/bullet3-2.83.7 -BC:/Users/KIYOHARA/Documents/bullet3-2.83.7 --check-stamp-file C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeFiles\generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Users/KIYOHARA/Documents/bullet3-2.83.7/src/LinearMath/CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeLists.txt;C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btAabbUtil2.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btAlignedAllocator.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btAlignedObjectArray.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btConvexHull.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btConvexHullComputer.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btDefaultMotionState.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btGeometryUtil.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btGrahamScan2dConvexHull.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btHashMap.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btIDebugDraw.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btList.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btMatrix3x3.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btMinMax.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btMotionState.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btPolarDecomposition.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btPoolAllocator.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btQuadWord.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btQuaternion.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btQuickprof.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btRandom.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btScalar.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btSerializer.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btStackAlloc.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btTransform.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btTransformUtil.h" />
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btVector3.h" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btAlignedAllocator.cpp" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btConvexHull.cpp" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btConvexHullComputer.cpp" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btGeometryUtil.cpp" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btPolarDecomposition.cpp" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btQuickprof.cpp" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btSerializer.cpp" />
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btVector3.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="C:/Users/KIYOHARA/Documents/bullet3-2.83.7/ZERO_CHECK.vcxproj">
-      <Project>5E9AA8B2-7BCB-3718-BCC1-1C78A752835B</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

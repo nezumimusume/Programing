@@ -1,114 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btAlignedAllocator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btConvexHull.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btConvexHullComputer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btGeometryUtil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btPolarDecomposition.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btQuickprof.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btSerializer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btVector3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btAabbUtil2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btAlignedAllocator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btAlignedObjectArray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btConvexHull.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btConvexHullComputer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btDefaultMotionState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btGeometryUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btGrahamScan2dConvexHull.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btHashMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btIDebugDraw.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btMatrix3x3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btMinMax.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btMotionState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btPolarDecomposition.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btPoolAllocator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btQuadWord.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btQuaternion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btQuickprof.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btRandom.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btScalar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btSerializer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btStackAlloc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btTransform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btTransformUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\btVector3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="C:\Users\KIYOHARA\Documents\bullet3-2.83.7\src\LinearMath\CMakeLists.txt" />
-  </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
       <UniqueIdentifier>{2A04211F-1BB8-30D8-B268-37E7BAA2F2BA}</UniqueIdentifier>
@@ -116,5 +7,120 @@
     <Filter Include="Header Files">
       <UniqueIdentifier>{28BC13D6-E540-3536-8983-A19E4698A0B9}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="btQuickprof.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btRandom.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btScalar.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btSerializer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btSpatialAlgebra.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btStackAlloc.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btTransform.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btTransformUtil.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btVector3.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btAabbUtil2.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btAlignedAllocator.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btAlignedObjectArray.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btConvexHull.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btConvexHullComputer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btCpuFeatureUtility.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btDefaultMotionState.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btGeometryUtil.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btGrahamScan2dConvexHull.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btHashMap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btIDebugDraw.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btList.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btMatrix3x3.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btMatrixX.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btMinMax.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btMotionState.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btPolarDecomposition.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btPoolAllocator.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btQuadWord.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="btQuaternion.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="btSerializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="btVector3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="btAlignedAllocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="btConvexHull.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="btConvexHullComputer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="btGeometryUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="btPolarDecomposition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="btQuickprof.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
