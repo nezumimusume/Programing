@@ -12,6 +12,7 @@ namespace tkEngine{
 	CKeyInput::CKeyInput()
 	{
 		memset(m_keyPressFlag, 0, sizeof(m_keyPressFlag));
+		memset(m_keyTrigerFlag, 0, sizeof(m_keyTrigerFlag));
 	}
 	/*!
 	 * @brief	デストラクタ。
@@ -24,6 +25,7 @@ namespace tkEngine{
 	 */
 	void CKeyInput::Update()
 	{
+		memset(m_keyTrigerFlag, 0, sizeof(m_keyTrigerFlag));
 		if (GetAsyncKeyState(VK_UP) & 0x8000) {
 			m_keyPressFlag[enKeyUp] = true;
 		}
@@ -49,6 +51,9 @@ namespace tkEngine{
 			m_keyPressFlag[enKeyLeft] = false;
 		}
 		if ((GetAsyncKeyState('A') & 0x8000) | (GetAsyncKeyState('a') & 0x8000) ) {
+			if (!m_keyPressFlag[enKeyA]) {
+				m_keyTrigerFlag[enKeyA] = true;
+			}
 			m_keyPressFlag[enKeyA] = true;
 		}
 		else {

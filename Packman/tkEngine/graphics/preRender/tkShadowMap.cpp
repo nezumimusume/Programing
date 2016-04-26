@@ -35,12 +35,12 @@ namespace tkEngine{
 	CShadowMap::CShadowMap() :
 		m_isEnable(false),
 		m_pShadowMapEffect(nullptr),
-		m_lightPosition(CVector3::Zero),
-		m_lightDirection(CVector3::AxisZ),
 		m_near(1.0f),
 		m_far(100.0f),
 		m_lvMatrix(CMatrix::Identity)
 	{
+		m_lightPosition.Set(0.0f, 3.0f, 0.0f);
+		m_lightDirection.Set(0.0f, -1.0f, 0.0f);
 	}
 	CShadowMap::~CShadowMap()
 	{
@@ -60,6 +60,7 @@ namespace tkEngine{
 			m_near,
 			m_far
 		);
+		//m_projectionMatrix.MakeOrthoProjectionMatrix(w, h, m_near, m_far);
 	}
 	void CShadowMap::Release()
 	{
