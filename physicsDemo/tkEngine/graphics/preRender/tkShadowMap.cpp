@@ -54,12 +54,13 @@ namespace tkEngine{
 		m_shadowMapRT.Create( w, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0 );
 		m_isEnable = true;
 		m_pShadowMapEffect = CEngine::EffectManager().LoadEffect( "Assets/presetshader/shadowMap.fx" );
-		m_projectionMatrix.MakeProjectionMatrix(
+		/*m_projectionMatrix.MakeProjectionMatrix(
 			CMath::DegToRad(60.0f),
 			s_cast<float>(w) / s_cast<float>(h),
 			m_near,
 			m_far
-		);
+		);*/
+		m_projectionMatrix.MakeOrthoProjectionMatrix(w, h, m_near, m_far);
 	}
 	void CShadowMap::Release()
 	{

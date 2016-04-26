@@ -29,11 +29,11 @@ public:
 	*/
 	~CBulletPhysics()
 	{
-		delete m_collisionConfig;
-		delete m_collisionDispatcher;
-		delete m_overlappingPairCache;
-		delete m_constraintSolver;
 		delete m_dynamicWorld;
+		delete m_constraintSolver;
+		delete m_overlappingPairCache;
+		delete m_collisionDispatcher;
+		delete m_collisionConfig;
 	}
 	virtual void Start();
 	virtual void Update();

@@ -101,6 +101,17 @@ namespace tkEngine{
 			);
 		}
 		/*!
+		* @brief	平行投影行列を作成。
+		*@param[in]	w			ビューボリュームの幅。
+		*@param[in]	h			ビューボリュームの高さ。
+		*@param[in]	fNear		近平面。
+		*@param[in]	fFar		遠平面。
+		*/
+		void MakeOrthoProjectionMatrix( float w, float h, float fNear, float fFar )
+		{
+			D3DXMatrixOrthoLH(r_cast<D3DXMATRIX*>(this), w, h, fNear, fFar);
+		}
+		/*!
 		 * @brief	注視点、上方向、カメラ位置からカメラ行列を作成。
 		 *@param[in]	position	カメラ位置。
 		 *@param[in]	target		注視点。

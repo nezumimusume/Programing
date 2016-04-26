@@ -39,8 +39,8 @@ void InitTkEngine( HINSTANCE hInst )
 	CEngine::Instance().Init(initParam);	//èâä˙âªÅB
 	tkEngine::CEngine::Instance().ShadowMap().SetNear(2.0f);
 	tkEngine::CEngine::Instance().ShadowMap().SetFar(10.0f);
-	tkEngine::CEngine::Instance().ShadowMap().SetLightPosition(CVector3(1.0f, 3.5f, 1.0f));
-	tkEngine::CEngine::Instance().ShadowMap().SetLightDirection(CVector3(-1.0f, -2.5f, -1.0f));
+	tkEngine::CEngine::Instance().ShadowMap().SetLightPosition(CVector3(0.0f, 3.5f, 0.0f));
+	tkEngine::CEngine::Instance().ShadowMap().SetLightDirection(CVector3(0.0f, -1.0f, -0.0f));
 }
 /*!
 * @brief	ï«Çç\ízÅB
