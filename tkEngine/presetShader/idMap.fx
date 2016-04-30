@@ -57,6 +57,14 @@ VS_OUTPUT_RENDER_EDGE RenderEdgeVS( VS_INPUT In )
 	return Out;
 }
 /*!
+ * @brief	IDマップ描画のピクセルシェーダー
+ */
+float4 PSMain( VS_OUTPUT In ) : COLOR
+{
+	return float4(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
+/*!
  * @brief	エッジ描画用のピクセルシェーダー
  */
 float4 RenderEdgePS( VS_OUTPUT_RENDER_EDGE In ) : COLOR
@@ -81,13 +89,7 @@ float4 RenderEdgePS( VS_OUTPUT_RENDER_EDGE In ) : COLOR
 	return float4(0.0, 0.0f, 0.0f, 1.0f);
 }
 
-/*!
- * @brief	IDマップ描画のピクセルシェーダー
- */
-float4 PSMain( VS_OUTPUT In ) : COLOR
-{
-	return float4(0.0f, 0.0f, 0.0f, 1.0f);
-}
+
 
 technique RenderIDMap
 {
