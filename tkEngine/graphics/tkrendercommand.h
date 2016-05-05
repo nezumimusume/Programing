@@ -10,6 +10,7 @@
 #include "tkEngine/graphics/tkPrimitive.h"
 #include "tkEngine/graphics/tkGraphicsType.h"
 #include "tkEngine/graphics/tkRenderTarget.h"
+#include "tkEngine/graphics/tkSkinModel.h"
 
 namespace tkEngine{
 	/*!
@@ -34,6 +35,8 @@ namespace tkEngine{
 		eRenderCommand_SetDepthStencilSurface,
 		eRenderCommand_EffectSetTexture,
 		eRenderCommand_EffectCommitChanges,
+		eRendderCommand_MeshDrawSubset,
+		enRenderCommand_DrawSkinModel,
 		eRenderCommand_Undef
 	};
 	/*!
@@ -427,6 +430,53 @@ namespace tkEngine{
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
 		{
 			m_pEffect->SetTexture(m_textureName, m_pTex->GetTextureDX());
+		}
+	};
+	/*!
+	* @brief	ID3DXMesh::DrawSubset
+	*/
+	class CRenderCommand_MeshDrawSubset : public CRenderCommandBase
+	{
+		LPD3DXMESH	m_mesh;
+		DWORD		m_attrId;
+	public:
+		CRenderCommand_MeshDrawSubset(LPD3DXMESH mesh, DWORD attrId) :
+			CRenderCommandBase(eRendderCommand_MeshDrawSubset),
+			m_mesh(mesh),
+			m_attrId(attrId)
+		{
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			m_mesh->DrawSubset(m_attrId);
+		}
+	};
+	/*!
+	* @brief	スキンモデルを描画。
+	*/
+	class CRenderCommand_DrawSkinModel : public CRenderCommandBase
+	{
+		CSkinModel* m_skinModel;
+		CMatrix* m_viewMatrix;
+		CMatrix* m_projMatrix;
+	public:
+		CRenderCommand_DrawSkinModel(CRenderContext& renderContext, CSkinModel* skinModel, const CMatrix& viewMatrix, const CMatrix& projMatrix) :
+			CRenderCommandBase(enRenderCommand_DrawSkinModel),
+			m_skinModel(skinModel)
+		{
+			m_viewMatrix = s_cast<CMatrix*>(renderContext.AllocFromCommandBuffer(sizeof(CMatrix)));
+			m_projMatrix = s_cast<CMatrix*>(renderContext.AllocFromCommandBuffer(sizeof(CMatrix)));
+			*m_viewMatrix = viewMatrix;
+			*m_projMatrix = projMatrix;
+			
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			m_skinModel->ImmidiateDraw(
+				pD3DDevice,
+				r_cast<D3DXMATRIX*>(m_viewMatrix),
+				r_cast<D3DXMATRIX*>(m_projMatrix)
+			);
 		}
 	};
 }

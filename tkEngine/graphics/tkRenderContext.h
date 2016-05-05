@@ -8,6 +8,7 @@ namespace tkEngine{
 	class CIndexBuffer;
 	class CPrimitive;
 	class CRenderTarget;
+	class CSkinModel;
 	/*!
 	* @brief	レンダリングコンテキスト。
 	*/
@@ -78,6 +79,17 @@ namespace tkEngine{
 		*@param[in]	pRT					レンダリングターゲット。
 		*/
 		__inline void SetRenderTarget(int renderTargetIndex, CRenderTarget* pRT);
+		/*!
+		 * @brief	メッシュを描画。
+		 *@param[in]	mesh		メッシュ。
+		 *@param[in]	attrId		
+		 */
+		__inline void MeshDrawSubset(LPD3DXMESH mesh, DWORD attrId);
+		/*!
+		* @brief	スキンモデルを描画。
+		*@param[in]	skinMode		スキンモデル。
+		*/
+		__inline void DrawSkinModel(CSkinModel* skinModel, const CMatrix& viewMatrix, const CMatrix& projMatrix);
 		/*!
 		 *@brief	初期化。
 		 *@param[in]	pD3DDevice			Direct3Dデバイス
@@ -180,6 +192,22 @@ namespace tkEngine {
 		m_pCurrentRT[renderTargetIndex] = pRT;
 		SetRenderCommand(CRenderCommand_SetRenderTarget(renderTargetIndex, pRT));
 		SetRenderCommand(CRenderCommand_SetDepthStencilSurface(pRT));
+	}
+	/*!
+	* @brief	メッシュを描画。
+	*@param[in]	mesh		メッシュ。
+	*/
+	__inline void CRenderContext::MeshDrawSubset(LPD3DXMESH mesh, DWORD attrId)
+	{
+		SetRenderCommand(CRenderCommand_MeshDrawSubset(mesh, attrId));
+	}
+	/*!
+	* @brief	スキンモデルを描画。
+	*@param[in]	skinMode		スキンモデル。
+	*/
+	__inline void CRenderContext::DrawSkinModel(CSkinModel* skinModel, const CMatrix& viewMatrix, const CMatrix& projMatrix)
+	{
+		SetRenderCommand(CRenderCommand_DrawSkinModel(*this, skinModel, viewMatrix, projMatrix));
 	}
 }
 

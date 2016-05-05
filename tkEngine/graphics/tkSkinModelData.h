@@ -6,6 +6,22 @@
 
 
 namespace tkEngine{
+	struct D3DXFRAME_DERIVED : public D3DXFRAME {
+		D3DXMATRIXA16	CombinedTransformationMatrix;	//合成済み行列。
+	};
+	struct D3DXMESHCONTAINER_DERIVED : public D3DXMESHCONTAINER {
+		LPDIRECT3DTEXTURE9* ppTextures;
+		LPD3DXMESH pOrigMesh;
+		LPD3DXATTRIBUTERANGE pAttributeTable;
+		DWORD NumAttributeGroups;
+		DWORD NumInfl;
+		LPD3DXBUFFER pBoneCombinationBuf;
+		D3DXMATRIX** ppBoneMatrixPtrs;
+		D3DXMATRIX* pBoneOffsetMatrices;
+		DWORD NumPaletteEntries;
+		bool UseSoftwareVP;
+		DWORD iAttributeSW;
+	};
 	/*!
 	 *@brief	スキンモデルデータ
 	 */
@@ -19,8 +35,30 @@ namespace tkEngine{
 		 *@brief	デストラクタ。
 		 */
 		~CSkinModelData();
+		/*!
+		 * @brief	モデルデータをロード。
+		 *@param[in]	filePath	ファイルパス。
+		 */
+		void LoadModelData( const char* filePath );
+		/*!
+		* @brief	リリース。
+		*/
+		void Release();
+		LPD3DXFRAME GetFrameRoot()
+		{
+			return m_frameRoot;
+		}
+		ID3DXAnimationController* GetAnimationController()
+		{
+			return m_pAnimController;
+		}
+		/*!
+		* @brief	ボーン行列を更新。
+		*/
+		void UpdateBoneMatrix( const CMatrix& matWorld );
 	private:
-		
+		LPD3DXFRAME					m_frameRoot;		//フレームルート。
+		ID3DXAnimationController*   m_pAnimController;	//アニメーションコントローラ。
 	};
 }
 

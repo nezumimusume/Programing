@@ -207,6 +207,10 @@ namespace tkEngine{
 		CPostEffect								m_postEffect;				//!<ポストエフェクト。
 		CKeyInput								m_keyInput;					//!<キー入力。
 	};
+	static inline CEngine& Engine()
+	{
+		return CEngine::Instance();
+	}
 	static inline CIDMap& IDMap()
 	{
 		return CEngine::Instance().IDMap();

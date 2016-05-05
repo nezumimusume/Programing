@@ -85,6 +85,10 @@ namespace tkEngine{
 		{
 			renderContext.SetRenderCommand(CRenderCommand_EffectCommitChanges(m_pEffect));
 		}
+		ID3DXEffect* GetD3DXEffect()
+		{
+			return m_pEffect;
+		}
 	private:
 		ID3DXEffect*	m_pEffect;		//!<D3Dエフェクト
 	};

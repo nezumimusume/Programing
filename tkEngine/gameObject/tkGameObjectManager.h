@@ -95,6 +95,11 @@ namespace tkEngine{
 		GameObjectPrio				m_gameObjectPriorityMax;		//!<ゲームオブジェクトの優先度の最大数。
 		static const unsigned char 			GAME_OBJECT_PRIO_MAX = 255;		//!<ゲームオブジェクトの優先度の最大値。
 	};
+
+	static inline CGameObjectManager& GameObjectManager()
+	{
+		return CGameObjectManager::Instance();
+	}
 }
 #endif // _CGAMEOBJECTMANAGER_H_
  

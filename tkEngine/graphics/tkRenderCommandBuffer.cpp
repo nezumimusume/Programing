@@ -79,6 +79,12 @@ namespace tkEngine{
 			case eRenderCommand_EffectCommitChanges:
 				((CRenderCommand_EffectCommitChanges*)(cmdBase))->Execute(pD3DDevice);
 				break;
+			case eRendderCommand_MeshDrawSubset:
+				((CRenderCommand_MeshDrawSubset*)(cmdBase))->Execute(pD3DDevice);
+				break;
+			case enRenderCommand_DrawSkinModel:
+				((CRenderCommand_DrawSkinModel*)(cmdBase))->Execute(pD3DDevice);
+				break;
 			default:
 				TK_ASSERT(false, "not implement renderCommand");
 				break;
