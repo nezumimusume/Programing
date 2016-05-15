@@ -19,7 +19,7 @@ namespace tkEngine{
 		m_projectionMatrix( CMatrix::Identity ),
 		m_viewProjectionMatrix( CMatrix::Identity ),
 		m_viewMatrixInv( CMatrix::Identity ),
-		m_is2DCamera(true)
+		m_is2DCamera(false)
 	{
 	}
 	CCamera::~CCamera()
@@ -31,9 +31,10 @@ namespace tkEngine{
 	void CCamera::Update()
 	{
 		if(m_isNeedUpdateProjectionMatrix){
-			float aspect = (float)CEngine::Instance().GetFrameBufferWidth() / (float)CEngine::Instance().GetFrameBufferHeight();
-			//プロジェクション行列を計算。
 			if(!m_is2DCamera){
+				float aspect = (float)CEngine::Instance().GetFrameBufferWidth() / (float)CEngine::Instance().GetFrameBufferHeight();
+				//3Dカメラ
+				//プロジェクション行列を計算。
 				m_projectionMatrix.MakeProjectionMatrix(
 					m_viewAngle,
 					aspect,
@@ -42,9 +43,10 @@ namespace tkEngine{
 				);
 			}else{
 				//2Dカメラ
+				//プロジェクション行列を計算。
 				m_projectionMatrix.MakeOrthoProjectionMatrix(
-					aspect * 3.0f,
-					3.0f,
+					m_viewVolumeW,
+					m_viewVolumeH,
 					m_near,
 					m_far
 				);

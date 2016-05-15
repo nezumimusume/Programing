@@ -123,6 +123,18 @@ namespace tkEngine{
 		{
 			return m_viewAngle;
 		}
+		void Set2DCamera( bool flag )
+		{
+			m_is2DCamera = flag;
+		}
+		void SetViewVolumeW( float w )
+		{
+			m_viewVolumeW = w;
+		}
+		void SetViewVolumeH(float h )
+		{
+			m_viewVolumeH = h;
+		}
 	private:
 		CVector3	m_position;							//!<カメラ位置。
 		CVector3	m_up;								//!<カメラの上方向。
@@ -137,6 +149,8 @@ namespace tkEngine{
 		float			m_aspect;							//!<アスペクト比。
 		bool		m_isNeedUpdateProjectionMatrix;
 		bool		m_is2DCamera;							//!<2Dカメラ？
+		float		m_viewVolumeW;							//!<ビューボリュームの幅(2Dカメラの時だけ有効。)
+		float		m_viewVolumeH;							//!<ビューボリュームの高さ(2Dカメラの時だけ有効。)
 	};
 }
 #endif //_TKCAMERA_H_

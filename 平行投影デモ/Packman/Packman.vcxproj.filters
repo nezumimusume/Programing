@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Test">
+      <UniqueIdentifier>{db1f9a26-d3af-4f86-a56b-06deaa025335}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game">
+      <UniqueIdentifier>{e18ef791-bad4-4057-9d95-3ea5f12085c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\map">
+      <UniqueIdentifier>{716087e7-9f95-4bba-8565-2577d6dfdf5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\Item">
+      <UniqueIdentifier>{8f075f46-cd31-4dbe-a7d5-16577244b5f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\player">
+      <UniqueIdentifier>{c22175cc-f3c7-4fe3-9d82-3110e6f2fe0a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Test\Test.cpp">
+      <Filter>Source Files\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test\TestPrimitiveRender.cpp">
+      <Filter>Source Files\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test\TestBoxRender.cpp">
+      <Filter>Source Files\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test\TestSphereRender.cpp">
+      <Filter>Source Files\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test\TestCreateRenderTarget.cpp">
+      <Filter>Source Files\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="game\CGameManager.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\CCamera.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Map\CMapBuilder.cpp">
+      <Filter>Source Files\game\map</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Map\CGround.cpp">
+      <Filter>Source Files\game\map</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Map\CWall.cpp">
+      <Filter>Source Files\game\map</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Item\CFood.cpp">
+      <Filter>Source Files\game\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Player\CPlayer.cpp">
+      <Filter>Source Files\game\player</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Test\test.h">
+      <Filter>Source Files\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Test\TestPrimitiveRender.h">
+      <Filter>Source Files\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Test\TestBoxRender.h">
+      <Filter>Source Files\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Test\TestSphereRender.h">
+      <Filter>Source Files\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Test\TestCreateRenderTarget.h">
+      <Filter>Source Files\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="game\CGameManager.h">
+      <Filter>Source Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ccamera.h">
+      <Filter>Source Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Map\CMapBuilder.h">
+      <Filter>Source Files\game\map</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Map\CGround.h">
+      <Filter>Source Files\game\map</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Map\CWall.h">
+      <Filter>Source Files\game\map</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Item\CFood.h">
+      <Filter>Source Files\game\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Player\CPlayer.h">
+      <Filter>Source Files\game\player</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
