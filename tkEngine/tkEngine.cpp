@@ -6,12 +6,18 @@
 #include "tkEngine/gameObject/tkGameObjectManager.h"
 #include "tkEngine/shape/tkShapeVertex.h"
 #include "tkEngine/graphics/tkEffect.h"
+#include "tkEngine/Input/tkKeyInput.h"
 
 namespace tkEngine{
 	LRESULT CALLBACK CEngine::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg)
 		{
+		case WM_LBUTTONUP: {
+			unsigned int x = LOWORD(lParam);
+			unsigned int y = HIWORD(lParam);
+			tkEngine::KeyInput().OnMouseLButtonUp(x, y);
+		}break;
 		case WM_DESTROY:
 			Instance().Final();
 			PostQuitMessage(0);

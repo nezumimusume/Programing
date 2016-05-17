@@ -31,9 +31,17 @@ namespace tkEngine{
 		void Mul(CVector3& vOut)
 		{
 			CVector3 vTmp = vOut;
-			vOut.x = vTmp.x * m[0][0] + vTmp.y * m[0][1] + vTmp.z * m[0][2];
-			vOut.y = vTmp.x * m[1][0] + vTmp.y * m[1][1] + vTmp.z * m[1][2];
-			vOut.z = vTmp.x * m[2][0] + vTmp.y * m[2][1] + vTmp.z * m[2][2];
+			vOut.x = vTmp.x * m[0][0] + vTmp.y * m[1][0] + vTmp.z * m[2][0];
+			vOut.y = vTmp.x * m[0][1] + vTmp.y * m[1][1] + vTmp.z * m[2][1];
+			vOut.z = vTmp.x * m[0][2] + vTmp.y * m[1][2] + vTmp.z * m[2][2];
+		}
+		void Mul(CVector4& vOut)
+		{
+			CVector4 vTmp = vOut;
+			vOut.x = vTmp.x * m[0][0] + vTmp.y * m[1][0] + vTmp.z * m[2][0] + vTmp.w * m[3][0];
+			vOut.y = vTmp.x * m[0][1] + vTmp.y * m[1][1] + vTmp.z * m[2][1] + vTmp.w * m[3][1];
+			vOut.z = vTmp.x * m[0][2] + vTmp.y * m[1][2] + vTmp.z * m[2][2] + vTmp.w * m[3][2];
+			vOut.w = vTmp.x * m[0][3] + vTmp.y * m[1][3] + vTmp.z * m[2][3] + vTmp.w * m[3][3];
 		}
 		/*!
 		 *@brief	ïΩçsà⁄ìÆçsóÒÇçÏê¨ÅB

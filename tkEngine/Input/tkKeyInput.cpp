@@ -13,6 +13,10 @@ namespace tkEngine{
 	{
 		memset(m_keyPressFlag, 0, sizeof(m_keyPressFlag));
 		memset(m_keyTrigerFlag, 0, sizeof(m_keyTrigerFlag));
+		m_mousePositionX = 0;
+		m_mousePositionY = 0;
+		m_isMouseUp[0] = false;
+		m_isMouseUp[1] = false;
 	}
 	/*!
 	 * @brief	デストラクタ。
@@ -59,5 +63,8 @@ namespace tkEngine{
 		else {
 			m_keyPressFlag[enKeyA] = false;
 		}
+		//バックバッファの内容をフロントバッファにコピー。
+		m_isMouseUp[0] = m_isMouseUp[1];
+		m_isMouseUp[1] = false;
 	}
 }
