@@ -76,8 +76,8 @@ void CDebriCreator::Update()
 		int screenH = tkEngine::CEngine::Instance().GetFrameBufferHeight();
 		CMatrix mViewInv = m_pCamera->GetViewMatrix();
 		CMatrix mProjInv = m_pCamera->GetProjectionMatrix();
-		
-		/*{
+#if 1 //DirectXの関数を使用したバージョン。
+		{
 			D3DVIEWPORT9 vp;
 			Engine().GetD3DDevice()->GetViewport(&vp);
 			D3DXVec3Unproject(
@@ -98,30 +98,36 @@ void CDebriCreator::Update()
 				NULL
 				);
 		}
-		*/
+#else
 		CMatrix mVpInv = CMatrix::Identity;
 		
-		
+		//3D空間の座標をスクリーン座標系に変換するには、カメラ行列×プロジェクション行列×スクリーン行列を乗算してやればいい・・・
+		//つまり、スクリーン座標系から３Ｄ空間の座標に戻すためには、スクリーン行列の逆行列×プロジェクション行列の逆行列×カメラ行列の逆行列を
+		//乗算してやればいいことになる。(逆行列を乗算するということは、その変換を打ち消すという意味がある。）
+
+		//スクリーン座標系から正規化座標系に変換するための行列を計算する。
 		mVpInv.m[0][0] = screenW / 2.0f;
 		mVpInv.m[1][1] = -screenH / 2.0f;
 		mVpInv.m[3][0] = screenW / 2.0f;
 		mVpInv.m[3][1] = screenH / 2.0f;
-
-		mViewInv.Inverse(mViewInv);
-		mProjInv.Inverse(mProjInv);
-		mVpInv.Inverse(mVpInv);
-
+		mVpInv.Inverse(mVpInv);		//正規化座標系に変換するためにはスクリーン座標系に変換する行列の逆行列を求めたらいい。
+		//正規化座標系からカメラ座標系に変換する行列を計算する。
+		mProjInv.Inverse(mProjInv);	//カメラ座標系に変換するには、射影空間に変換する行列の逆行列を求める。
+		mViewInv.Inverse(mViewInv);	//ワールド座標系に変換するには、カメラ行列の逆行列を求める。
+		//スクリーン行列の逆行列×プロジェクション行列の逆行列×カメラ行列の逆行列を求める。
 		CMatrix mInv;
 		mInv.Mul(mVpInv, mProjInv);
 		mInv.Mul(mInv, mViewInv);
 		mInv.Mul(start);
 		mInv.Mul(end);
+		//プロジェクション行列を書けるとwで割る必要があるので、除算する。
 		start.x /= start.w;
 		start.y /= start.w;
 		start.z /= start.w;
 		end.x /= end.w;
 		end.y /= end.w;
 		end.z /= end.w;
+#endif
 		//あたりを調べる
 		btTransform btStart, btEnd;
 		btStart.setIdentity();
