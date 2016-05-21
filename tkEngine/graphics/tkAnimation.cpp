@@ -78,30 +78,32 @@ namespace tkEngine{
 	{
 		if (pAnimController) {
 			pAnimController->AdvanceTime(deltaTime, NULL);
-		}
-		if(isInterpolate){
-			//補間中。
-			interpolateTime += deltaTime;
-			float weight = 0.0f;
-			if(interpolateTime > interpolateEndTime){
-				//補間終了。
-				isInterpolate = false;
-				weight = 1.0f;
-				//現在のトラック以外を無効にする。
-				for( int i = 0; i < numMaxTracks; i++ ){
-					if( i != currentTrackNo ){
-						pAnimController->SetTrackEnable(i,  FALSE);
+			if (isInterpolate) {
+				//補間中。
+				interpolateTime += deltaTime;
+				float weight = 0.0f;
+				if (interpolateTime > interpolateEndTime) {
+					//補間終了。
+					isInterpolate = false;
+					weight = 1.0f;
+					//現在のトラック以外を無効にする。
+					for (int i = 0; i < numMaxTracks; i++) {
+						if (i != currentTrackNo) {
+							pAnimController->SetTrackEnable(i, FALSE);
+						}
 					}
 				}
-			}else{
-				weight = interpolateTime / interpolateEndTime;
-				float invWeight = 1.0f - weight;
-				//ウェイトを設定していく。
-				for( int i = 0; i < numMaxTracks; i++ ){
-					if( i != currentTrackNo ){
-						pAnimController->SetTrackWeight(i, blendRateTable[i] * invWeight );
-					}else{
-						pAnimController->SetTrackWeight(i, weight );
+				else {
+					weight = interpolateTime / interpolateEndTime;
+					float invWeight = 1.0f - weight;
+					//ウェイトを設定していく。
+					for (int i = 0; i < numMaxTracks; i++) {
+						if (i != currentTrackNo) {
+							pAnimController->SetTrackWeight(i, blendRateTable[i] * invWeight);
+						}
+						else {
+							pAnimController->SetTrackWeight(i, weight);
+						}
 					}
 				}
 			}

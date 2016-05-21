@@ -50,7 +50,7 @@ namespace tkEngine{
 					}
 					pEffect->SetMatrix("g_mViewProj", &viewProj);
 					pEffect->SetMatrixArray("g_mWorldMatrixArray", g_pBoneMatrices, pMeshContainer->NumPaletteEntries);
-					pEffect->SetFloat("g_numBone", pMeshContainer->NumInfl);
+					pEffect->SetInt("g_numBone", pMeshContainer->NumInfl);
 					// ディフューズテクスチャ。
 					pEffect->SetTexture("g_diffuseTexture", pMeshContainer->ppTextures[pBoneComb[iAttrib].AttribId]);
 
@@ -76,7 +76,7 @@ namespace tkEngine{
 				pEffect->Begin(0, D3DXFX_DONOTSAVESTATE);
 				pEffect->BeginPass(0);
 
-				for (int i = 0; i < pMeshContainer->NumMaterials; i++) {
+				for (DWORD i = 0; i < pMeshContainer->NumMaterials; i++) {
 					pEffect->SetTexture("g_diffuseTexture", pMeshContainer->ppTextures[i]);
 					pEffect->CommitChanges();
 					pMeshContainer->MeshData.pMesh->DrawSubset(i);
