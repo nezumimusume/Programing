@@ -10,14 +10,13 @@
 class CSkinModelDrawTest : public IGameObject {
 	CSkinModelData	m_skinModelData;		//スキンモデルデータ。
 	CSkinModel		m_skinModel;			//スキンモデル。
-	CEffect*		m_pEffect;
 	CCamera			m_camera;
 public:
 	void Start() override 
 	{
 		m_skinModelData.LoadModelData("Assets/modelData/tiny.x");
+		//m_skinModelData.LoadModelData("Assets/modelData/tiger.x");
 		m_skinModel.SetSkinModelData(&m_skinModelData);
-		m_pEffect = EffectManager().LoadEffect("Assets/presetShader/ColorNormalPrim.fx");
 		m_camera.SetPosition(CVector3(0.0f, 1.0f, -500.0f));
 		m_camera.SetTarget(CVector3::Zero);
 		m_camera.Update();
@@ -25,14 +24,11 @@ public:
 	}
 	void Update() override 
 	{
+		m_skinModel.AddAnimation(1.0f / 60.0f);
+		m_skinModel.UpdateWorldMatrix(CVector3::Zero, CQuaternion::Identity, CVector3::One);
 	}
 	void Render( CRenderContext& renderContext ) override
 	{
-		/*CMatrix mWorld;
-		mWorld = CMatrix::Identity;
-		CMatrix mWVP;
-		mWVP.Mul(mWorld, m_camera.GetViewProjectionMatrix());
-		*/
 		m_skinModel.Draw(renderContext, m_camera.GetViewMatrix(), m_camera.GetProjectionMatrix());
 	}
 };
@@ -60,11 +56,11 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.graphicsConfig.shadowRenderConfig.isEnable = true;
 	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 1280;
 	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 720;
-	CEngine::Instance().Init(initParam);	//初期化。
-	tkEngine::CEngine::Instance().ShadowMap().SetNear(2.0f);
-	tkEngine::CEngine::Instance().ShadowMap().SetFar(10.0f);
-	tkEngine::CEngine::Instance().ShadowMap().SetLightPosition(CVector3(0.0f, 3.5f, 0.0f));
-	tkEngine::CEngine::Instance().ShadowMap().SetLightDirection(CVector3(0.0f, -1.0f, -0.0f));
+	Engine().Init(initParam);	//初期化。
+	ShadowMap().SetNear(2.0f);
+	ShadowMap().SetFar(10.0f);
+	ShadowMap().SetLightPosition(CVector3(0.0f, 3.5f, 0.0f));
+	ShadowMap().SetLightDirection(CVector3(0.0f, -1.0f, -0.0f));
 }
 
 int WINAPI wWinMain(
@@ -77,7 +73,7 @@ int WINAPI wWinMain(
 	//tkEngineの初期化。
 	InitTkEngine( hInst );
 	GameObjectManager().NewGameObject<CSkinModelDrawTest>(0);
-	CEngine::Instance().RunGameLoop();		//ゲームループを実行。
+	Engine().RunGameLoop();		//ゲームループを実行。
 	
 	return 0;
 }

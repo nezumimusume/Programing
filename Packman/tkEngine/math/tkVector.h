@@ -127,7 +127,7 @@ namespace tkEngine{
 			z *= s;
 		}
 		/*!
-		* @brief	–@ü‚ğ³‹K‰»B
+		* @brief	³‹K‰»B
 		*/
 		void Normalize()
 		{
