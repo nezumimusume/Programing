@@ -17,4 +17,7 @@ namespace tkEngine{
 	const CVector3 CVector3::AxisX	= { 1.0f,  0.0f,  0.0f };
 	const CVector3 CVector3::AxisY	= { 0.0f,  1.0f,  0.0f };
 	const CVector3 CVector3::AxisZ	= { 0.0f,  0.0f,  1.0f };
+	const CVector3 CVector3::One = { 1.0f, 1.0f, 1.0f };
+	const CQuaternion CQuaternion::Identity = { 0.0f,  0.0f, 0.0f, 1.0f };
+
 }

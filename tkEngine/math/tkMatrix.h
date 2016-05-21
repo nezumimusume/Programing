@@ -87,6 +87,19 @@ namespace tkEngine{
 			);
 		}
 		/*!
+		*@brief	拡大行列を作成。
+		*@param[in] scale		拡大率。
+		*/
+		void MakeScaling(const CVector3& scale)
+		{
+			D3DXMatrixScaling(
+				r_cast<D3DXMATRIX*>(this),
+				scale.x,
+				scale.y,
+				scale.z
+			);
+		}
+		/*!
 		* @brief	プロジェクション行列を作成。
 		*@param[in]	viewAngle	画角。(ラジアン)。
 		*@param[in]	aspect		アスペクト比。

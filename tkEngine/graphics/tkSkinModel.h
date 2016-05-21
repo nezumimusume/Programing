@@ -33,9 +33,27 @@ namespace tkEngine {
 		* この関数を実行すると即描画コマンドがGPUに送られます。
 		*/
 		void ImmidiateDraw(LPDIRECT3DDEVICE9 pd3ddevice, D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix);
+		/*!
+		*@brief	アニメーションを進める。
+		*@details
+		* 後でCMotionクラスに移動させます。
+		*@param		deltaTime		アニメーションを進める時間。単位秒。
+		*/
+		void AddAnimation( float deltaTime );
+		/*!
+		*@brief	ワールド行列を更新。
+		*@details
+		* 後でCMotionクラスに移動させます。
+		*@param[in]		trans	平行移動。
+		*@param[in]		rot		回転。
+		*@param[in]		scale	拡大。
+		*/
+		void UpdateWorldMatrix( const CVector3& trans, const CQuaternion& rot, const CVector3& scale );
 	private:
-		CSkinModelData*		m_skinModelData;
-		CEffect*			m_pEffect;
+		CMatrix				m_worldMatrix;		//!<ワールド行列。
+		CMatrix				m_rotationMatrix;	//!<回転行列。
+		CSkinModelData*		m_skinModelData;	//!<スキンモデルデータ。
+		CEffect*			m_pEffect;			//!<エフェクト。
 	};
 }
 

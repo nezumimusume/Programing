@@ -26,6 +26,7 @@ namespace tkEngine{
 		static const CVector3 AxisX;
 		static const CVector3 AxisY;
 		static const CVector3 AxisZ;
+		static const CVector3 One;
 	public:
 		operator D3DXVECTOR3(void) { return s_cast<D3DXVECTOR3>(*this); }
 		CVector3() {}
@@ -244,6 +245,7 @@ namespace tkEngine{
 	
 	class CQuaternion : public CVector4{
 	public:
+		static const CQuaternion Identity;		//!<単位クォータニオン。
 		CQuaternion() {}
 		CQuaternion(float x, float y, float z, float w) :
 			CVector4(x, y, z, w)

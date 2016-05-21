@@ -12,6 +12,8 @@ namespace tkEngine{
 			LPD3DXMESHCONTAINER pMeshContainerBase, 
 			LPD3DXFRAME pFrameBase,
 			ID3DXEffect* pEffect,
+			D3DXMATRIX* worldMatrix,
+			D3DXMATRIX* rotationMatrix,
 			D3DXMATRIX* viewMatrix,
 			D3DXMATRIX* projMatrix
 		)
@@ -29,7 +31,6 @@ namespace tkEngine{
 			if (pMeshContainer->pSkinInfo != NULL)
 			{
 				//スキン情報有り。
-				//スキン情報なし。
 				pBoneComb = reinterpret_cast<LPD3DXBONECOMBINATION>(pMeshContainer->pBoneCombinationBuf->GetBufferPointer());
 				for (iAttrib = 0; iAttrib < pMeshContainer->NumAttributeGroups; iAttrib++)
 				{
@@ -56,7 +57,7 @@ namespace tkEngine{
 					// ボーン数。
 					pEffect->SetInt("CurNumBones", pMeshContainer->NumInfl - 1);
 
-					pEffect->SetTechnique("DiffuseLight");
+					pEffect->SetTechnique("SkinModel");
 					pEffect->Begin(0, D3DXFX_DONOTSAVESTATE);
 					pEffect->BeginPass(0);
 					// draw the subset with the current world matrix palette and material state
@@ -67,13 +68,29 @@ namespace tkEngine{
 				}
 			}
 			else {
+				pEffect->SetTechnique("NoSkinModel");
 				
+				pEffect->SetMatrix("g_mViewProj", &viewProj);
+				pEffect->SetMatrix("g_worldMatrix", worldMatrix);
+				pEffect->SetMatrix("g_rotationMatrix", rotationMatrix);
+				pEffect->Begin(0, D3DXFX_DONOTSAVESTATE);
+				pEffect->BeginPass(0);
+
+				for (int i = 0; i < pMeshContainer->NumMaterials; i++) {
+					pEffect->SetTexture("g_diffuseTexture", pMeshContainer->ppTextures[i]);
+					pEffect->CommitChanges();
+					pMeshContainer->MeshData.pMesh->DrawSubset(i);
+				}
+				pEffect->EndPass();
+				pEffect->End();
 			}
 		}
 		void DrawFrame(
 			IDirect3DDevice9* pd3dDevice, 
 			LPD3DXFRAME pFrame, 
-			ID3DXEffect* pEffect, 
+			ID3DXEffect* pEffect,
+			D3DXMATRIX* worldMatrix,
+			D3DXMATRIX* rotationMatrix,
 			D3DXMATRIX* viewMatrix, 
 			D3DXMATRIX* projMatrix)
 		{
@@ -87,6 +104,8 @@ namespace tkEngine{
 					pMeshContainer, 
 					pFrame, 
 					pEffect,
+					worldMatrix,
+					rotationMatrix,
 					viewMatrix,
 					projMatrix
 					);
@@ -100,6 +119,8 @@ namespace tkEngine{
 					pd3dDevice, 
 					pFrame->pFrameSibling, 
 					pEffect,
+					worldMatrix,
+					rotationMatrix,
 					viewMatrix,
 					projMatrix
 					);
@@ -111,6 +132,8 @@ namespace tkEngine{
 					pd3dDevice, 
 					pFrame->pFrameFirstChild, 
 					pEffect,
+					worldMatrix,
+					rotationMatrix,
 					viewMatrix,
 					projMatrix
 					);
@@ -118,7 +141,8 @@ namespace tkEngine{
 		}
 	}
 	CSkinModel::CSkinModel() :
-		m_skinModelData(nullptr)
+		m_skinModelData(nullptr),
+		m_worldMatrix(CMatrix::Identity)
 	{
 		m_pEffect = EffectManager().LoadEffect("Assets/presetShader/skinModel.fx");
 	}
@@ -126,12 +150,27 @@ namespace tkEngine{
 	{
 
 	}
+	void CSkinModel::AddAnimation(float deltaTime)
+	{
+		if (m_skinModelData && m_skinModelData->GetAnimationController()) {
+			m_skinModelData->GetAnimationController()->AdvanceTime(deltaTime, NULL);
+		}
+	}
+	void CSkinModel::UpdateWorldMatrix(const CVector3& trans, const CQuaternion& rot, const CVector3& scale)
+	{
+		CMatrix mTrans, mScale;
+		mTrans.MakeTranslation(trans);
+		m_rotationMatrix.MakeRotationFromQuaternion(rot);
+		mScale.MakeScaling(scale);
+		m_worldMatrix.Mul(mScale, m_rotationMatrix);
+		m_worldMatrix.Mul(m_worldMatrix, mTrans);
+		if (m_skinModelData) {
+			m_skinModelData->UpdateBoneMatrix(m_worldMatrix);	//ボーン行列を更新。
+		}
+	}
 	void CSkinModel::Draw(CRenderContext& renderContext, const CMatrix& viewMatrix, const CMatrix& projMatrix)
 	{
 		if (m_skinModelData) {
-			//テスト
-			m_skinModelData->GetAnimationController()->AdvanceTime(1.0f / 60.0f, NULL);
-			m_skinModelData->UpdateBoneMatrix(CMatrix::Identity);	//ボーン行列を更新。
 			renderContext.DrawSkinModel(this, viewMatrix, projMatrix);
 		}
 	}
@@ -142,6 +181,8 @@ namespace tkEngine{
 				pd3ddevice, 
 				m_skinModelData->GetFrameRoot(), 
 				m_pEffect->GetD3DXEffect(),
+				r_cast<D3DXMATRIX*>(&m_worldMatrix),
+				r_cast<D3DXMATRIX*>(&m_rotationMatrix),
 				viewMatrix,
 				projMatrix
 				);
