@@ -4,6 +4,8 @@
 #ifndef _TKSKINMODEL_H_
 #define _TKSKINMODEL_H_
 
+#include "tkEngine/graphics/tkAnimation.h"
+
 namespace tkEngine {
 	class CEffect;
 	class CSkinModelData;
@@ -33,13 +35,7 @@ namespace tkEngine {
 		* この関数を実行すると即描画コマンドがGPUに送られます。
 		*/
 		void ImmidiateDraw(LPDIRECT3DDEVICE9 pd3ddevice, D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix);
-		/*!
-		*@brief	アニメーションを進める。
-		*@details
-		* 後でCMotionクラスに移動させます。
-		*@param		deltaTime		アニメーションを進める時間。単位秒。
-		*/
-		void AddAnimation( float deltaTime );
+		
 		/*!
 		*@brief	ワールド行列を更新。
 		*@details
@@ -54,6 +50,7 @@ namespace tkEngine {
 		CMatrix				m_rotationMatrix;	//!<回転行列。
 		CSkinModelData*		m_skinModelData;	//!<スキンモデルデータ。
 		CEffect*			m_pEffect;			//!<エフェクト。
+		CAnimation			m_animation;		//!<アニメーション。
 	};
 }
 

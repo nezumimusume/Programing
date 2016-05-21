@@ -7,15 +7,17 @@
 
 namespace tkEngine{
 	class CKeyInput{
-		enum EnKey{
+		
+	public:
+		enum EnKey {
 			enKeyUp,
 			enKeyDown,
 			enKeyRight,
 			enKeyLeft,
 			enKeyA,
+			enKeyB,
 			enKeyNum,
 		};
-	public:
 		/*!
 		 * @brief	コンストラクタ。
 		 */
@@ -57,18 +59,18 @@ namespace tkEngine{
 			return m_keyPressFlag[enKeyDown];
 		}
 		/*!
-		* @brief	キーボードのAが押された。
+		* @brief	キーのプレス判定。
 		*/
-		bool IsPressA() const
+		bool IsPress(EnKey key) const
 		{
-			return m_keyPressFlag[enKeyA];
+			return m_keyPressFlag[key];
 		}
 		/*!
-		* @brief	キーボードのAのトリガー判定。
+		* @brief	キーのトリガー判定。
 		*/
-		bool IsTrggerA() const
+		bool IsTrgger(EnKey key) const
 		{
-			return m_keyTrigerFlag[enKeyA];
+			return m_keyTrigerFlag[key];
 		}
 		/*!
 		* @brief	マウスの左ボタンが離されたときの処理。

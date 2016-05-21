@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "tkEngine/graphics/tkSkinModelData.h"
 #include "tkEngine/graphics/tkSkinModel.h"
+#include "tkEngine/graphics/tkAnimation.h"
 #include "tkEngine/graphics/tkEffect.h"
 #include "tkEngine/graphics/tkCamera.h"
 
@@ -8,28 +9,40 @@
  * @brief	スキンモデル表示テスト
  */
 class CSkinModelDrawTest : public IGameObject {
-	CSkinModelData	m_skinModelData;		//スキンモデルデータ。
-	CSkinModel		m_skinModel;			//スキンモデル。
-	CCamera			m_camera;
+	CSkinModelData	skinModelData;		//スキンモデルデータ。
+	CSkinModel		skinModel;			//スキンモデル。
+	CAnimation		animation;			//アニメーション。
+	CCamera			camera;
+	int				currentAnimSetNo;		
 public:
 	void Start() override 
 	{
-		m_skinModelData.LoadModelData("Assets/modelData/tiny.x");
-		//m_skinModelData.LoadModelData("Assets/modelData/tiger.x");
-		m_skinModel.SetSkinModelData(&m_skinModelData);
-		m_camera.SetPosition(CVector3(0.0f, 1.0f, -500.0f));
-		m_camera.SetTarget(CVector3::Zero);
-		m_camera.Update();
-		m_camera.SetFar(1000.0f);
+		skinModelData.LoadModelData("Assets/modelData/PL_Girl_SSword.x", &animation);
+		skinModel.SetSkinModelData(&skinModelData);
+		camera.SetPosition(CVector3(0.0f, 1.5f, -4.0f));
+		camera.SetTarget(CVector3(0.0f, 1.0f, 0.0f));
+		camera.Update();
+		camera.SetFar(1000.0f);
+		currentAnimSetNo = 0;
 	}
 	void Update() override 
 	{
-		m_skinModel.AddAnimation(1.0f / 60.0f);
-		m_skinModel.UpdateWorldMatrix(CVector3::Zero, CQuaternion::Identity, CVector3::One);
+		animation.Update(1.0f / 60.0f);
+		skinModel.UpdateWorldMatrix(CVector3::Zero, CQuaternion::Identity, CVector3::One);
+		if (KeyInput().IsTrgger(CKeyInput::enKeyA)) {
+			currentAnimSetNo++;
+			currentAnimSetNo %= animation.GetNumAnimationSet();
+			animation.PlayAnimation(currentAnimSetNo);
+		}
+		if (KeyInput().IsTrgger(CKeyInput::enKeyB)) {
+			currentAnimSetNo++;
+			currentAnimSetNo %= animation.GetNumAnimationSet();
+			animation.PlayAnimation(currentAnimSetNo, 0.1f);
+		}
 	}
 	void Render( CRenderContext& renderContext ) override
 	{
-		m_skinModel.Draw(renderContext, m_camera.GetViewMatrix(), m_camera.GetProjectionMatrix());
+		skinModel.Draw(renderContext, camera.GetViewMatrix(), camera.GetProjectionMatrix());
 	}
 };
 /*!

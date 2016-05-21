@@ -63,6 +63,15 @@ namespace tkEngine{
 		else {
 			m_keyPressFlag[enKeyA] = false;
 		}
+		if ((GetAsyncKeyState('B') & 0x8000) | (GetAsyncKeyState('b') & 0x8000)) {
+			if (!m_keyPressFlag[enKeyB]) {
+				m_keyTrigerFlag[enKeyB] = true;
+			}
+			m_keyPressFlag[enKeyB] = true;
+		}
+		else {
+			m_keyPressFlag[enKeyB] = false;
+		}
 		//バックバッファの内容をフロントバッファにコピー。
 		m_isMouseUp[0] = m_isMouseUp[1];
 		m_isMouseUp[1] = false;

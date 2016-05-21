@@ -150,12 +150,6 @@ namespace tkEngine{
 	{
 
 	}
-	void CSkinModel::AddAnimation(float deltaTime)
-	{
-		if (m_skinModelData && m_skinModelData->GetAnimationController()) {
-			m_skinModelData->GetAnimationController()->AdvanceTime(deltaTime, NULL);
-		}
-	}
 	void CSkinModel::UpdateWorldMatrix(const CVector3& trans, const CQuaternion& rot, const CVector3& scale)
 	{
 		CMatrix mTrans, mScale;

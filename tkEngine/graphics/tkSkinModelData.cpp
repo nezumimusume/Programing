@@ -4,6 +4,7 @@
 
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/graphics/tkSkinModelData.h"
+#include "tkEngine/graphics/tkAnimation.h"
 
 #ifndef SAFE_DELETE
 #define SAFE_DELETE(p)       { if (p) { delete (p);     (p)=NULL; } }
@@ -522,23 +523,14 @@ namespace {
 
 }
 namespace tkEngine{
-	/*!
-	 *@brief	コンストラクタ。
-	 */
 	CSkinModelData::CSkinModelData() :
 		m_frameRoot(nullptr),
 		m_pAnimController(nullptr)
 	{
 	}
-	/*!
-	 *@brief	デストラクタ。
-	 */
 	CSkinModelData::~CSkinModelData()
 	{
 	}
-	/*!
-	* @brief	リリース。
-	*/
 	void CSkinModelData::Release()
 	{
 		if (m_pAnimController) {
@@ -546,11 +538,7 @@ namespace tkEngine{
 		}
 	}
 	
-	/*!
-	 * @brief	モデルデータをロード。
-	 *@param[in]	filePath	ファイルパス。
-	 */
-	void CSkinModelData::LoadModelData( const char* filePath )
+	void CSkinModelData::LoadModelData( const char* filePath, CAnimation* anim )
 	{
 		CAllocateHierarchy alloc;
 		HRESULT hr = D3DXLoadMeshHierarchyFromX(
@@ -565,10 +553,9 @@ namespace tkEngine{
 		//m_pAnimController->(0);
 		TK_ASSERT(SUCCEEDED(hr), "Failed D3DXLoadMeshHierarchyFromX");
 		SetupBoneMatrixPointers(m_frameRoot, m_frameRoot);
+		anim->Init( m_pAnimController );
 	}
-	/*!
-	* @brief	ボーン行列を更新。
-	*/
+
 	void CSkinModelData::UpdateBoneMatrix(const CMatrix& matWorld)
 	{
 		UpdateFrameMatrices(m_frameRoot, r_cast<const D3DXMATRIX*>(&matWorld));

@@ -22,6 +22,7 @@ namespace tkEngine{
 		bool UseSoftwareVP;
 		DWORD iAttributeSW;
 	};
+	class CAnimation;
 	/*!
 	 *@brief	スキンモデルデータ
 	 */
@@ -38,8 +39,9 @@ namespace tkEngine{
 		/*!
 		 * @brief	モデルデータをロード。
 		 *@param[in]	filePath	ファイルパス。
+		 *@param[out]	anim		アニメーション付きモデルデータの場合、アニメーションクラスも構築されます。
 		 */
-		void LoadModelData( const char* filePath );
+		void LoadModelData( const char* filePath, CAnimation* anim );
 		/*!
 		* @brief	リリース。
 		*/
