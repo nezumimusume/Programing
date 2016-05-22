@@ -20,6 +20,7 @@ namespace tkEngine{
 			memset(this, 0, sizeof(SParicleEmitParameter));
 			initAlpha = 1.0f;
 			uvTableSize = 1;
+			brightness = 1.0f;
 			isBillboard = true;
 		}
 		const char* texturePath;						//!<テクスチャのファイルパス。
@@ -31,14 +32,15 @@ namespace tkEngine{
 		CVector3	initPositionRandomMargin;			//!<初期位置のランダム幅。
 		CVector3	initVelocityVelocityRandomMargin;	//!<初速度のランダム幅。
 		CVector3	addVelocityRandomMargih;			//!<速度の積分のときのランダム幅。
-		CVector4	uvTable[12];						//!<UVテーブル。最大12まで保持できる。xが左上のu、yが左上のv、zが右下のu、wが右下のvになる。
+		CVector4	uvTable[4];							//!<UVテーブル。最大4まで保持できる。xが左上のu、yが左上のv、zが右下のu、wが右下のvになる。
 		int			uvTableSize;						//!<UVテーブルのサイズ。
-		float		leftTopUV[2];						//!<左上の点のuv座標。
-		float		rightBottomUV[4];					//!<右下の点のuv座標。
 		CVector3	gravity;							//!<重力。
 		bool		isFade;								//!<死ぬときにフェードアウトする？
+		float		fadeTime;							//!<フェードする時間。
 		float		initAlpha;							//!<初期アルファ値。
 		bool		isBillboard;						//!<ビルボード？
+		float		brightness;							//!<輝度。ブルームが有効になっているとこれを強くすると光が溢れます。
+		int			alphaBlendMode;						//!<0半透明合成、1加算合成。
 		
 	};
 	/*!

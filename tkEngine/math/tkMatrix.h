@@ -65,6 +65,17 @@ namespace tkEngine{
 			);
 		}
 		/*!
+		*@brief	Z軸周りの回転行列を作成。
+		*@param[in]	angle	回転角度(単位ラジアン)
+		*/
+		void MakeRotationZ(float angle)
+		{
+			D3DXMatrixRotationZ(
+				r_cast<D3DXMATRIX*>(this),
+				angle
+				);
+		}
+		/*!
 		*@brief	X軸周りの回転行列を作成。
 		*@param[in]	angle	回転角度(単位ラジアン)
 		*/

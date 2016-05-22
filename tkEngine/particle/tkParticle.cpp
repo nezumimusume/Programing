@@ -23,7 +23,7 @@ namespace tkEngine{
 		float halfW = param.w * 0.5f;
 		float halfH = param.h * 0.5f;
 		
-		TK_ASSERT(param.uvTableSize < ARRAYSIZE(param.uvTable), "uvTable size over!!!");
+		TK_ASSERT(param.uvTableSize <= ARRAYSIZE(param.uvTable), "uvTable size over!!!");
 		CVector4 uv;
 		if (param.uvTableSize > 0) {
 			uv = param.uvTable[random.GetRandInt() % param.uvTableSize];
@@ -73,7 +73,6 @@ namespace tkEngine{
 		life = param.life;
 		velocity = param.initVelocity;
 		//初速度に乱数を加える。
-		
 		velocity.x += (((float)random.GetRandDouble() - 0.5f) * 2.0f) * param.initVelocityVelocityRandomMargin.x;
 		velocity.y += (((float)random.GetRandDouble() - 0.5f) * 2.0f) * param.initVelocityVelocityRandomMargin.y;
 		velocity.z += (((float)random.GetRandDouble() - 0.5f) * 2.0f) * param.initVelocityVelocityRandomMargin.z;
@@ -81,11 +80,17 @@ namespace tkEngine{
 		position.x += (((float)random.GetRandDouble() - 0.5f) * 2.0f) * param.initPositionRandomMargin.x;
 		position.y += (((float)random.GetRandDouble() - 0.5f) * 2.0f) * param.initPositionRandomMargin.y;
 		position.z += (((float)random.GetRandDouble() - 0.5f) * 2.0f) * param.initPositionRandomMargin.z;
+		addVelocityRandomMargih = param.addVelocityRandomMargih;
 		gravity = param.gravity;
 		isFade = param.isFade;
 		state = eStateRun;
-		alpha = param.initAlpha;
+		initAlpha = param.initAlpha;
+		alpha = initAlpha;
+		fadeTIme = param.fadeTime;
 		isBillboard = param.isBillboard;
+		brightness = param.brightness;
+		alphaBlendMode = param.alphaBlendMode;
+		rotateZ = CMath::PI * 2.0f * (float)random.GetRandDouble();
 	}
 	void CParticle::Start()
 	{
@@ -97,14 +102,14 @@ namespace tkEngine{
 		addGrafity.Scale(deltaTime);
 		velocity.Add(addGrafity);
 		CVector3 force = applyForce;
+		force.x += (((float)random->GetRandDouble() - 0.5f) * 2.0f) * addVelocityRandomMargih.x;
+		force.y += (((float)random->GetRandDouble() - 0.5f) * 2.0f) * addVelocityRandomMargih.y;
+		force.z += (((float)random->GetRandDouble() - 0.5f) * 2.0f) * addVelocityRandomMargih.z;
 		force.Scale(deltaTime);
 		velocity.Add(force);
 		CVector3 addPos = velocity;
 		addPos.Scale(deltaTime);
 		applyForce = CVector3::Zero;
-		addPos.x += (((float)random->GetRandDouble() - 0.5f) * 2.0f) * addVelocityRandomMargih.x;
-		addPos.y += (((float)random->GetRandDouble() - 0.5f) * 2.0f) * addVelocityRandomMargih.y;
-		addPos.z += (((float)random->GetRandDouble() - 0.5f) * 2.0f) * addVelocityRandomMargih.z;
 
 		position.Add(addPos);
 		CMatrix mTrans;
@@ -112,7 +117,12 @@ namespace tkEngine{
 		if (isBillboard) {
 			//ビルボード処理を行う。
 			const CMatrix& mCameraRot = camera->GetCameraRotation();
-			mWorld.Mul(mCameraRot, mTrans);
+			CQuaternion qRot;
+			qRot.SetRotation(CVector3(mCameraRot.m[2][0], mCameraRot.m[2][1], mCameraRot.m[2][2]), rotateZ);
+			CMatrix rot;
+			rot.MakeRotationFromQuaternion(qRot);
+			mWorld.Mul(mCameraRot, rot);
+			mWorld.Mul(mWorld, mTrans);
 		}
 		else {
 			mWorld = mTrans;
@@ -123,19 +133,22 @@ namespace tkEngine{
 			if (timer >= life) {
 				if (isFade) {
 					state = eStateFadeOut;
+					timer = 0.0f;
 				}
 				else {
 					state = eStateDead;
 				}
 			}
 			break;
-		case eStateFadeOut:
-			alpha -= 0.05f;
+		case eStateFadeOut: {
+			float t = timer / fadeTIme;
+			timer += deltaTime;
+			alpha = initAlpha + (-initAlpha)*t;
 			if (alpha <= 0.0f) {
 				alpha = 0.0f;
 				state = eStateDead;	//死亡。
 			}
-			break;
+		}break;
 		case eStateDead:
 			GameObjectManager().DeleteGameObject(this);
 			break;
@@ -144,19 +157,32 @@ namespace tkEngine{
 	}
 	void CParticle::Render( CRenderContext& renderContext )
 	{
-		shaderEffect->Begin(renderContext);
-		shaderEffect->BeginPass(renderContext, 0);
-		shaderEffect->SetTechnique(renderContext, "ColorTexPrimAdd");
+		
+		
 		CMatrix m;
 		m.Mul(mWorld, camera->GetViewMatrix());
 		m.Mul(m, camera->GetProjectionMatrix());
 		renderContext.SetRenderState(RS_ALPHABLENDENABLE, TRUE);
+		switch (alphaBlendMode) {
+		case 0:
+			renderContext.SetRenderState(RS_SRCBLEND, BLEND_SRCALPHA);
+			renderContext.SetRenderState(RS_DESTBLEND, BLEND_INVSRCALPHA);
+			shaderEffect->SetTechnique(renderContext, "ColorTexPrimTrans");
+			break;
+		case 1:
+			renderContext.SetRenderState(RS_SRCBLEND, BLEND_ONE);
+			renderContext.SetRenderState(RS_DESTBLEND, BLEND_ONE);
+			shaderEffect->SetTechnique(renderContext, "ColorTexPrimAdd");
+			break;
+		}
+		
+		shaderEffect->Begin(renderContext);
+		shaderEffect->BeginPass(renderContext, 0);
 		renderContext.SetRenderState(RS_ZENABLE, FALSE);
-		renderContext.SetRenderState(RS_SRCBLEND, BLEND_ONE);
-		renderContext.SetRenderState(RS_DESTBLEND, BLEND_ONE);
 
 		shaderEffect->SetValue(renderContext, "g_mWVP", &m, sizeof(CMatrix));
 		shaderEffect->SetValue(renderContext, "g_alpha", &alpha, sizeof(alpha));
+		shaderEffect->SetValue(renderContext, "g_brightness", &brightness, sizeof(brightness));
 		shaderEffect->SetTexture(renderContext, "g_texture", &texture);
 		shaderEffect->CommitChanges(renderContext);
 		renderContext.SetStreamSource(0, primitive.GetVertexBuffer());
@@ -166,6 +192,8 @@ namespace tkEngine{
 		shaderEffect->EndPass(renderContext);
 		shaderEffect->End(renderContext);
 		renderContext.SetRenderState(RS_ALPHABLENDENABLE, FALSE);
+		renderContext.SetRenderState(RS_SRCBLEND, BLEND_ONE);
+		renderContext.SetRenderState(RS_DESTBLEND, BLEND_ZERO);
 		renderContext.SetRenderState(RS_ZENABLE, TRUE);
 		
 	}

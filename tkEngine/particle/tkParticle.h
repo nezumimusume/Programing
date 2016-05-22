@@ -27,14 +27,19 @@ namespace tkEngine{
 		CVector3		velocity;					//!<速度。
 		CVector3		position;					//!<座標。
 		CVector3		gravity;					//!<重力。
+		float			rotateZ;					//!<Z軸周りの回転。
 		CMatrix			mWorld;						//!<ワールド行列。
 		CVector3		addVelocityRandomMargih;	//!<速度の積分のときのランダム幅。
 		bool			isDead;						//!<死亡フラグ。
 		bool			isFade;						//!<死ぬときにフェードアウトする？
+		float			fadeTIme;					//!<フェードの時間。
 		eState			state;						//!<状態。
+		float			initAlpha;					//!<初期アルファ。
 		float			alpha;						//!<アルファ。
 		bool			isBillboard;				//!<ビルボード？
 		CVector3		applyForce;					//!<外部から加わる力。
+		float			brightness;					//!<輝度。ブルームが有効になっているとこれを強くすると光が溢れます。
+		int				alphaBlendMode;				//!<0半透明合成、1加算合成。
 	public:
 		CParticle();
 		~CParticle();
