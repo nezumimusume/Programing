@@ -45,6 +45,12 @@ namespace tkEngine{
 		m_viewProjectionMatrix.Mul(m_viewMatrix, m_projectionMatrix);
 		//ビュー行列の逆行列を計算。
 		m_viewMatrixInv.Inverse( m_viewMatrix );
+		//カメラの回転行列を取得。
+		m_cameraRotation = m_viewMatrixInv;
+		m_cameraRotation.m[3][0] = 0.0f;
+		m_cameraRotation.m[3][1] = 0.0f;
+		m_cameraRotation.m[3][2] = 0.0f;
+		m_cameraRotation.m[3][3] = 1.0f;
 	}
 }
 

@@ -80,6 +80,7 @@ namespace tkEngine{
 		 */
 		void DeleteGameObject( IGameObject* gameObject )
 		{
+			gameObject->SetDeadMark();
 			gameObject->OnDestroy();
 			m_deleteObjectArray.at(gameObject->GetPriority()).push_back(gameObject);
 		}

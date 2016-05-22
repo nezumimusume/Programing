@@ -177,6 +177,8 @@
     <ClCompile Include="math\tkMath.cpp" />
     <ClCompile Include="math\tkMatrix.cpp" />
     <ClCompile Include="math\tkVector.cpp" />
+    <ClCompile Include="particle\tkParticle.cpp" />
+    <ClCompile Include="particle\tkParticleEmitter.cpp" />
     <ClCompile Include="random\tkRandom.cpp" />
     <ClCompile Include="shape\tkBoxShape.cpp" />
     <ClCompile Include="shape\tkShapeBase.cpp" />
@@ -225,6 +227,8 @@
     <ClInclude Include="math\tkMath.h" />
     <ClInclude Include="math\tkMatrix.h" />
     <ClInclude Include="math\tkVector.h" />
+    <ClInclude Include="particle\tkParticle.h" />
+    <ClInclude Include="particle\tkParticleEmitter.h" />
     <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="random\tkRandom.h" />
     <ClInclude Include="random\tkRandomMT.h" />

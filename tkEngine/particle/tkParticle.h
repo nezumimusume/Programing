@@ -1,0 +1,56 @@
+/*!
+ * @brief	パーティクル。
+ */
+#ifndef _TKPARTICLE_H_
+#define _TKPARTICLE_H_
+
+namespace tkEngine{
+	class CRandom;
+	class CCamera;
+	struct SParicleEmitParameter;
+	/*!
+	 * @brief	パーティクル。
+	 */
+	class CParticle : public IGameObject{
+		enum eState {
+			eStateRun,
+			eStateFadeOut,
+			eStateDead,
+		};
+		CPrimitive		primitive;					//!<プリミティブ。
+		CTexture		texture;					//!<テクスチャ。
+		CEffect*		shaderEffect;				//!<シェーダーエフェクト。
+		CCamera*		camera;						//!<カメラ。
+		CRandom*		random;						//!<乱数。
+		float			life;						//!<ライフ。
+		float			timer;						//!<タイマー。
+		CVector3		velocity;					//!<速度。
+		CVector3		position;					//!<座標。
+		CVector3		gravity;					//!<重力。
+		CMatrix			mWorld;						//!<ワールド行列。
+		CVector3		addVelocityRandomMargih;	//!<速度の積分のときのランダム幅。
+		bool			isDead;						//!<死亡フラグ。
+		bool			isFade;						//!<死ぬときにフェードアウトする？
+		eState			state;						//!<状態。
+		float			alpha;						//!<アルファ。
+		bool			isBillboard;				//!<ビルボード？
+		CVector3		applyForce;					//!<外部から加わる力。
+	public:
+		CParticle();
+		~CParticle();
+		void Init(CRandom& random, CCamera& camera, const SParicleEmitParameter& param, const CVector3& emitPosition);
+		void Start() override ;
+		void Update() override;
+		void Render( CRenderContext& renderContext ) override;
+		/*!
+		*@brief	パーティクルに力を加える。
+		*@param[in]	applyForce		乱数生成に使用する乱数生成機。
+		*/
+		void ApplyForce(const CVector3& applyForce)
+		{
+			this->applyForce = applyForce;
+		}
+	};
+}
+
+#endif //_TKPARTICLE_H_

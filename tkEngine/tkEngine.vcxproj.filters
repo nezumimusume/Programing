@@ -42,6 +42,9 @@
     <Filter Include="Source Files\random">
       <UniqueIdentifier>{3bbf7249-b6c7-408b-acc2-31b9e9e12440}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\particle">
+      <UniqueIdentifier>{babaf37e-c88a-4393-a0fc-86bf30d654c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -139,6 +142,12 @@
     </ClCompile>
     <ClCompile Include="random\tkRandom.cpp">
       <Filter>Source Files\random</Filter>
+    </ClCompile>
+    <ClCompile Include="particle\tkParticleEmitter.cpp">
+      <Filter>Source Files\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="particle\tkParticle.cpp">
+      <Filter>Source Files\particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +270,12 @@
     </ClInclude>
     <ClInclude Include="random\tkRandom.h">
       <Filter>Source Files\random</Filter>
+    </ClInclude>
+    <ClInclude Include="particle\tkParticleEmitter.h">
+      <Filter>Source Files\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="particle\tkParticle.h">
+      <Filter>Source Files\particle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

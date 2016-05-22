@@ -11,11 +11,15 @@ namespace tkEngine{
 	 */
 	class CTexture{
 	public:
-		CTexture()
+		CTexture() :
+			m_tex(nullptr)
 		{
 		}
 		~CTexture()
 		{
+			if (m_tex) {
+				m_tex->Release();
+			}
 		}
 		void SetTextureDX( LPDIRECT3DTEXTURE9 tex )
 		{

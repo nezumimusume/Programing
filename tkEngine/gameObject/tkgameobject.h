@@ -18,6 +18,7 @@ namespace tkEngine{
 		IGameObject() :
 			m_priority(0),
 			m_isStart(false),
+			m_isDead(false),
 			m_isNewFromGameObjectManager(false)
 		{
 		}
@@ -72,46 +73,62 @@ namespace tkEngine{
 		 *@brief	Render関数が実行された後で呼ばれる描画処理
 		 */
 		virtual void PostRender(CRenderContext& renderContext ) {}
+		/*!
+		*@brief	死亡フラグを立てる。
+		*@details
+		* この関数はエンジンの外からは実行しないでください。
+		*/
+		void SetDeadMark()
+		{
+			m_isDead = true;
+		}
+		/*!
+		*@brief	死亡判定。
+		*/
+		bool IsDead() const
+		{
+			return m_isDead;
+		}
 	public:
 		void PostRenderWrapper(CRenderContext& renderContext)
 		{
-			if (m_isStart) {
+			if (m_isStart && !m_isDead) {
 				PostRender(renderContext);
 			}
 		}
 		void RenderWrapper(CRenderContext& renderContext) 
 		{
-			if (m_isStart) {
+			if (m_isStart && !m_isDead) {
 				Render(renderContext);
 			}
 		}
 		void PreRenderWrapper(CRenderContext& renderContext)
 		{
-			if (m_isStart) {
+			if (m_isStart && !m_isDead) {
 				PreRender(renderContext);
 			}
 		}
 		void PostUpdateWrapper()
 		{
-			if (m_isStart) {
+			if (m_isStart && !m_isDead) {
 				PostUpdate();
 			}
 		}
 		void PreUpdateWrapper()
 		{
-			if (m_isStart) {
+			if (m_isStart && !m_isDead) {
 				PreUpdate();
 			}
 		}
 		void UpdateWrapper()
 		{
-			if (m_isStart) {
+			if (m_isStart && !m_isDead) {
 				Update();
 			}
 		}
 		void StartWrapper()
 		{
-			if (!m_isStart) {
+			if (!m_isStart && !m_isDead) {
 				Start();
 				m_isStart = true;
 			}
@@ -128,6 +145,7 @@ namespace tkEngine{
 	protected:
 		GameObjectPrio	m_priority;			//!<実行優先度。
 		bool m_isStart;						//!<Startの開始フラグ。
+		bool m_isDead;						//!<死亡フラグ。
 		bool m_isNewFromGameObjectManager;	//!<GameObjectManagerでnewされた。
 		
 	};

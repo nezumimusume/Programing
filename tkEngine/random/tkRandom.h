@@ -31,7 +31,7 @@ namespace tkEngine{
 		 *@brief	符号なし整数型のランダム値を取得。
 		 *@return	0～0xffffffffの擬似乱数を返す。
 		 */
-		unsigned long GetRandInt()
+		__inline unsigned long GetRandInt()
 		{
 			unsigned long y;
 		    static unsigned long mag01[2]={0x0UL, MATRIX_A};
@@ -71,7 +71,7 @@ namespace tkEngine{
 		 *@brief	符号付き整数型のランダム値を取得。
 		 *@return	符号付き整数型のランダム値を返す。
 		 */
-		long GetRandSInt()
+		__inline long GetRandSInt()
 		{
 			(long)(GetRandInt()>>1);
 		}
@@ -79,7 +79,7 @@ namespace tkEngine{
 		 * @brief	倍精度小数点型のランダム値を取得。
 		 *@retrn	0.0～1.0のランダム値を返す。
 		 */
-		double GetRandDouble()
+		__inline double GetRandDouble()
 		{
 			  return GetRandInt()*(1.0/4294967295.0);
 		}
