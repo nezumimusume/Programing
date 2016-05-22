@@ -164,7 +164,7 @@ public:
 			emitter->ApplyForce(CVector3(1.0f, 0.0f, 0.0f));
 		}
 		else if(KeyInput().IsPress(CKeyInput::enKeyB)) {
-			emitter->ApplyForce(CVector3(-1.0f, 0.0f, 1.0f));
+			emitter->ApplyForce(CVector3(-5.0f, 0.0f, 1.0f));
 		}
 		if(KeyInput().IsTrgger(CKeyInput::enKeyA)){
 			GameObjectManager().DeleteGameObject(emitter);
