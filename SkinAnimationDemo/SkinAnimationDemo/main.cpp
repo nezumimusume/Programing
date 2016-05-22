@@ -65,6 +65,9 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.frameBufferHeight = 720;
 	initParam.frameBufferWidth = 1280;
 	initParam.graphicsConfig.bloomConfig.isEnable = false;
+	//initParam.graphicsConfig.edgeRenderConfig.isEnable = true;
+	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
+	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
 	//Shadow
 	initParam.graphicsConfig.shadowRenderConfig.isEnable = true;
 	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 1280;
