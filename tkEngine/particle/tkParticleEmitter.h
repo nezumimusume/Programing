@@ -80,6 +80,7 @@ namespace tkEngine{
 		SParicleEmitParameter	param;			//!<パラメータ。
 		CVector3				emitPosition;	//!<エミッターの座標。
 		std::list<CParticle*>	particleList;	//!<パーティクルのリスト。
+		std::list<CParticle*>	deleteParticleList;	//!<削除されたパーティクルのリスト。
 	};
 }
 

@@ -39,13 +39,13 @@ namespace tkEngine{
 			particleList.push_back(p);
 		}
 		timer += 1.0f / 60.0f;
-		for (
-			list<CParticle*>::iterator p = particleList.begin();
-			p != particleList.end();
-			p++
-		) {
+		list<CParticle*>::iterator p = particleList.begin();
+		while(p != particleList.end()){
 			if ((*p)->IsDead()) {
 				p = particleList.erase(p);
+			}
+			else {
+				p++;
 			}
 		}
 	}

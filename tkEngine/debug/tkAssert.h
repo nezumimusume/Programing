@@ -32,6 +32,6 @@ namespace tkEngine{
 #ifdef _DEBUG
 #define 	TK_ASSERT( flg, format, ... )	tkEngine::Assert( flg, format, __FILE__, __LINE__, __VA_ARGS__)
 #else
-#define 	TK_ASSERT
+#define 	TK_ASSERT( flg, format, ... )
 #endif 
 #endif

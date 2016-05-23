@@ -34,7 +34,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -47,7 +47,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -179,6 +179,7 @@
     <ClCompile Include="math\tkVector.cpp" />
     <ClCompile Include="particle\tkParticle.cpp" />
     <ClCompile Include="particle\tkParticleEmitter.cpp" />
+    <ClCompile Include="particle\tkParticleResources.cpp" />
     <ClCompile Include="random\tkRandom.cpp" />
     <ClCompile Include="shape\tkBoxShape.cpp" />
     <ClCompile Include="shape\tkShapeBase.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="math\tkVector.h" />
     <ClInclude Include="particle\tkParticle.h" />
     <ClInclude Include="particle\tkParticleEmitter.h" />
+    <ClInclude Include="particle\tkParticleResources.h" />
     <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="random\tkRandom.h" />
     <ClInclude Include="random\tkRandomMT.h" />

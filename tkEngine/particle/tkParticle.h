@@ -17,8 +17,9 @@ namespace tkEngine{
 			eStateFadeOut,
 			eStateDead,
 		};
+	private:
 		CPrimitive		primitive;					//!<プリミティブ。
-		CTexture		texture;					//!<テクスチャ。
+		CTexture*		texture;					//!<テクスチャ。
 		CEffect*		shaderEffect;				//!<シェーダーエフェクト。
 		CCamera*		camera;						//!<カメラ。
 		CRandom*		random;						//!<乱数。
@@ -40,6 +41,7 @@ namespace tkEngine{
 		CVector3		applyForce;					//!<外部から加わる力。
 		float			brightness;					//!<輝度。ブルームが有効になっているとこれを強くすると光が溢れます。
 		int				alphaBlendMode;				//!<0半透明合成、1加算合成。
+		
 	public:
 		CParticle();
 		~CParticle();

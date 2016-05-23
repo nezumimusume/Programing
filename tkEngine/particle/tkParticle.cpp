@@ -13,6 +13,7 @@ namespace tkEngine{
 	CParticle::CParticle()
 	{
 		applyForce = CVector3::Zero;
+		texture = nullptr;
 	}
 	CParticle::~CParticle()
 	{
@@ -64,9 +65,8 @@ namespace tkEngine{
 			eIndexFormat16,
 			index
 			);
-		LPDIRECT3DTEXTURE9 texDx = nullptr;
-		HRESULT hr = D3DXCreateTextureFromFileA(Engine().GetD3DDevice(), param.texturePath, &texDx);
-		texture.SetTextureDX(texDx);
+		
+		texture = ParticleResources().LoadTexture(param.texturePath);
 		shaderEffect = EffectManager().LoadEffect("Assets/presetShader/ColorTexPrim.fx");
 		this->camera = &camera;
 		this->random = &random;
@@ -183,7 +183,7 @@ namespace tkEngine{
 		shaderEffect->SetValue(renderContext, "g_mWVP", &m, sizeof(CMatrix));
 		shaderEffect->SetValue(renderContext, "g_alpha", &alpha, sizeof(alpha));
 		shaderEffect->SetValue(renderContext, "g_brightness", &brightness, sizeof(brightness));
-		shaderEffect->SetTexture(renderContext, "g_texture", &texture);
+		shaderEffect->SetTexture(renderContext, "g_texture", texture);
 		shaderEffect->CommitChanges(renderContext);
 		renderContext.SetStreamSource(0, primitive.GetVertexBuffer());
 		renderContext.SetIndices(primitive.GetIndexBuffer());

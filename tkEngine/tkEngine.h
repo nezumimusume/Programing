@@ -13,6 +13,7 @@
 #include "tkEngine/graphics/preRender/tkPreRender.h"
 #include "tkEngine/graphics/postEffect/tkPostEffect.h"
 #include "tkEngine/graphics/tkGraphicsConfig.h"
+#include "tkEngine/particle/tkParticleResources.h"
 
 namespace tkEngine{
 	/*!
@@ -161,6 +162,13 @@ namespace tkEngine{
 		{
 			return m_keyInput;
 		}
+		/*!
+		* @brief	パーティクルリソースの取得。
+		*/
+		CParticleResources& ParticleResource()
+		{
+			return m_particleResource;
+		}
 	private:
 		/*!
 		* @brief	メインレンダリングターゲットの内容をバックバッファにコピー。
@@ -206,6 +214,7 @@ namespace tkEngine{
 		CPreRender								m_preRender;				//!<プリレンダー。
 		CPostEffect								m_postEffect;				//!<ポストエフェクト。
 		CKeyInput								m_keyInput;					//!<キー入力。
+		CParticleResources						m_particleResource;			//!<パーティクルのリソース管理。
 	};
 	static inline CEngine& Engine()
 	{
@@ -226,6 +235,10 @@ namespace tkEngine{
 	static inline CKeyInput& KeyInput()
 	{
 		return CEngine::Instance().KeyInput();
+	}
+	static inline CParticleResources& ParticleResources()
+	{
+		return CEngine::Instance().ParticleResource();
 	}
 }
 
