@@ -171,10 +171,17 @@ namespace tkEngine{
 	void CEngine::CopyMainRenderTargetToBackBuffer(CRenderContext& renderContext)
 	{
 		CRenderTarget& rt = m_mainRenderTarget[m_currentMainRenderTarget];
-		m_pTransformedPrimEffect->SetTechnique(renderContext, "ColorNormalPrim");
+		m_pTransformedPrimEffect->SetTechnique(renderContext, "TransformedPrim");
 		m_pTransformedPrimEffect->Begin(renderContext);
 		m_pTransformedPrimEffect->BeginPass(renderContext, 0);
+		float offset[] = {
+			0.5f / GetFrameBufferWidth() ,
+			0.5f / GetFrameBufferHeight()
+		};
+	
 		m_pTransformedPrimEffect->SetTexture(renderContext, "g_tex", rt.GetTexture());
+		m_pTransformedPrimEffect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
+		m_pTransformedPrimEffect->CommitChanges(renderContext);
 		renderContext.SetVertexDeclaration(m_copyBackBufferPrim.GetVertexDecl());
 		renderContext.SetStreamSource(0, m_copyBackBufferPrim.GetVertexBuffer());
 		renderContext.SetIndices(m_copyBackBufferPrim.GetIndexBuffer());
