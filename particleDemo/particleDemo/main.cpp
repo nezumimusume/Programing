@@ -41,13 +41,13 @@ SParicleEmitParameter particleParameterTbl[] =
 	//マグマの噴出っぽい炎
 	{
 		"Assets/Effect/PRT_Fire.png",	//const char* texturePath;						//!<テクスチャのファイルパス。
-		CVector3(0.f, 7.0f, 0.0f),		//CVector3	initVelocity;						//!<初速度。
+		CVector3(1.5f, 0.0f, 0.0f),		//CVector3	initVelocity;						//!<初速度。
 		2.0f,						//float		life;								//!<寿命。単位は秒。
 		0.01f,							//float		intervalTime;						//!<発生時間。単位は秒。
 		0.5f,							//float		w;									//!<パーティクルの幅。
 		0.5f,							//float		h;									//!<パーティクルの高さ。
-		CVector3(0.2f, 0.0f, 0.2f),		//CVector3	initPositionRandomMargin;			//!<初期位置のランダム幅。
-		CVector3(2.3f, 0.0f, 2.3f),		//CVector3	initVelocityVelocityRandomMargin;	//!<初速度のランダム幅。
+		CVector3(0.0f, 0.1f, 0.0f),		//CVector3	initPositionRandomMargin;			//!<初期位置のランダム幅。
+		CVector3(0.0f, 0.2f, 0.0f),		//CVector3	initVelocityVelocityRandomMargin;	//!<初速度のランダム幅。
 		CVector3(0.0f, 0.0f, 0.0f),		//CVector3	addVelocityRandomMargih;			//!<速度の積分のときのランダム幅。
 		{											//!<CVector4	uvTable[4];			UVテーブル。最大4まで保持できる。xが左上のu、yが左上のv、zが右下のu、wが右下のvになる。
 			CVector4(0.0f,  0.0f, 0.25f, 0.5f),
@@ -56,7 +56,7 @@ SParicleEmitParameter particleParameterTbl[] =
 			CVector4(0.75f, 0.0f, 1.0f,  0.5f),
 		},
 		4,								//int			uvTableSize;						//!<UVテーブルのサイズ。
-		CVector3(0.0f, -9.8f, 0.0f ),	//CVector3	gravity;							//!<重力。
+		CVector3(0.0f, 0.0f, 0.0f ),	//CVector3	gravity;							//!<重力。
 		true,							//bool		isFade;								//!<死ぬときにフェードアウトする？
 		0.5f,							//float		fadeTime;							//!<フェードする時間。
 		1.0f,							//float		initAlpha;							//!<初期アルファ値。
