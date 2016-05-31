@@ -1,9 +1,13 @@
 #include "stdafx.h"
 #include "Camera.h"
 #include "Player.h"
+
+CGameCamera camera;
+
+
 void CGameCamera::Start()
 {
-	m_distToPlayer.Set(0.0f, 3.0f, -0.0f);
+	m_distToPlayer.Set(0.0f, 3.0f, -2.0f);
 }
 void CGameCamera::Update()
 {

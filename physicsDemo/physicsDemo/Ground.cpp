@@ -1,8 +1,19 @@
 #include "stdafx.h"
 #include "Ground.h"
 #include "bulletPhysics.h"
+#include "DebriCreator.h"
+#include "Camera.h"
 
-
+void CGround::OnPlayerOverlapDebriCreator(const btCollisionObject* collisionObject)
+{
+	if (m_debriCreateSwitch == collisionObject)
+	{
+		CDebriCreator* debriCreator = CGameObjectManager::Instance().NewGameObject<CDebriCreator>(0);	//ゴミ生成機を登録。
+		debriCreator->SetCamera(camera.GetCamera());
+		//ワールドから削除
+		g_bulletPhysics.RemoveCollisionObject(m_debriCreateSwitch);
+	}
+}
 void CGround::Start()
 {
 	CVector3 boxSize(1000.0f, 10.0f, 1000.0f);
@@ -20,11 +31,18 @@ void CGround::Start()
 		m_myMotionState = new btDefaultMotionState(groundTransform);
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, m_myMotionState, m_groundShape, btVector3(0, 0, 0));
 		m_rigidBody = new btRigidBody(rbInfo);
-		
+		m_rigidBody->setUserIndex(CollisionType_Ground);
 		//ワールドに追加。
 		g_bulletPhysics.AddRigidBody(m_rigidBody);
-
 	}
+	m_debriCreateSwitch = new btGhostObject();
+	m_debriCreateSwitch->setCollisionShape(new btSphereShape(2.0f));
+	btTransform trans(btQuaternion(0.0f,0.0f,0.0f,1.0f),btVector3(0.0f,0.0f,0.0f) );
+	m_debriCreateSwitch->setWorldTransform(trans);
+	m_debriCreateSwitch->setUserPointer(this);
+
+	g_bulletPhysics.AddCollisionObject(m_debriCreateSwitch);
+	m_debriCreateSwitch->setUserIndex(CollisionType_DebriCreator);
 	//m_rigidBody = new btRigidBody
 	m_box.Create(boxSize, 0x88888888, true);
 	m_box.SetPosition(boxPosition);
@@ -35,9 +53,11 @@ void CGround::Start()
 void CGround::OnDestroy()
 {
 	g_bulletPhysics.RemoveRigidBody(m_rigidBody);
+	g_bulletPhysics.RemoveCollisionObject(m_debriCreateSwitch);
 	delete m_myMotionState;
 	delete m_groundShape;
 	delete m_rigidBody;
+	delete m_debriCreateSwitch;
 }
 void CGround::Update()
 {

@@ -8,7 +8,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Packman", "Packman\Packman.
 		{9E48DCB9-B936-4C81-BB4C-F3EAA794A8E8} = {9E48DCB9-B936-4C81-BB4C-F3EAA794A8E8}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tkEngine", "tkEngine\tkEngine.vcxproj", "{9E48DCB9-B936-4C81-BB4C-F3EAA794A8E8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tkEngine", "..\tkEngine\tkEngine.vcxproj", "{9E48DCB9-B936-4C81-BB4C-F3EAA794A8E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

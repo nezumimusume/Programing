@@ -64,5 +64,6 @@
     <ClInclude Include="DebriCreator.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionType.h" />
   </ItemGroup>
 </Project>

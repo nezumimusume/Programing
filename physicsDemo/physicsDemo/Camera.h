@@ -26,3 +26,5 @@ private:
 	CCamera		m_camera;
 	CVector3	m_distToPlayer;
 };
+
+extern CGameCamera camera;

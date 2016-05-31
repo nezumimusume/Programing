@@ -25,6 +25,24 @@ void CFood::Update()
 	m_wvpMatrix.Mul(m_worldMatrix, mMVP);
 	m_idMapModel.SetWVPMatrix(m_wvpMatrix);
 	IDMap().Entry(&m_idMapModel);
+	//プレイヤーから敵までのベクトルを計算する。
+	CVector3 diff;
+	CVector3 playerPos = Player().GetPosition();
+	diff.x = playerPos.x - m_position.x;
+	diff.y = playerPos.y - m_position.y;
+	diff.z = playerPos.z - m_position.z;
+	//プレイヤーから敵までのベクトルを大きさ１のベクトルに変換する。
+	//このようなベクトルを向きベクトルという。大きさを持たないベクトル。
+	//大きさを持たないベクトルはベクトルの長さで各要素を除算すると求まる。
+	float L = diff.Length();
+	diff.x /= L;
+	diff.y /= L;
+	diff.z /= L;
+	//後は移動速度を設定して、この向きベクトルの方向に敵を動かす。
+	//移動速度は0.05くらいにしてみる。
+	m_position.x += diff.x * 0.05f;
+	m_position.y += diff.y * 0.05f;
+	m_position.z += diff.z * 0.05f;
 }
 void CFood::Render(tkEngine::CRenderContext& renderContext)
 {
@@ -47,7 +65,7 @@ void CFood::CreateShape(float radius)
 {
 	if (m_sphere == nullptr) {
 		m_sphere = new tkEngine::CSphereShape();
-		m_sphere->Create(radius, 10, 0xffffff55, true);
+		m_sphere->Create(radius * 1.5f, 10, 0xffffffff, true);
 	}
 }
 void CFood::ReleaseShape()

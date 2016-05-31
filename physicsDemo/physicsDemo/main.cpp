@@ -82,7 +82,6 @@ void BuildWalls(CCamera* camera)
 		}
 	}
 }
-
 /*!
  * @brief	メイン関数。
  */
@@ -99,7 +98,7 @@ int WINAPI wWinMain(
 	g_bulletPhysics.InitPysics();
 	
 	//ここからゲームのいろいろ。
-	CGameCamera camera;
+	
 	CGameObjectManager::Instance().AddGameObject(0, &camera);
 	CPlayer player;
 	CGameObjectManager::Instance().AddGameObject(0, &player);	//プレイヤを登録。

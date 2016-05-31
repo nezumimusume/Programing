@@ -167,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bulletPhysics.h" />
+    <ClInclude Include="CollisionType.h" />
     <ClInclude Include="DebriCreator.h" />
     <ClInclude Include="Debri.h" />
     <ClInclude Include="Wall.h" />

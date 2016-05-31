@@ -13,6 +13,8 @@ struct VS_OUTPUT{
 	float2		uv		: TEXCOORD0;
 };
 
+float2 g_offset;				//オフセット
+
 texture g_tex;
 sampler TextureSampler = 
 sampler_state
@@ -31,7 +33,7 @@ VS_OUTPUT VSMain( VS_INPUT In )
 }
 float4 PSMain( VS_OUTPUT In ) : COLOR0
 {
-	return tex2D( TextureSampler, In.uv );
+	return tex2D( TextureSampler, In.uv + g_offset );
 }
 
 technique TransformedPrim

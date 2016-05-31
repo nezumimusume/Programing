@@ -17,7 +17,7 @@ class CSkinModelDrawTest : public IGameObject {
 public:
 	void Start() override 
 	{
-		skinModelData.LoadModelData("Assets/modelData/PL_Girl_SSword.x", &animation);
+		skinModelData.LoadModelData("Assets/modelData/Player.x", &animation);
 		skinModel.SetSkinModelData(&skinModelData);
 		camera.SetPosition(CVector3(0.0f, 1.5f, -4.0f));
 		camera.SetTarget(CVector3(0.0f, 1.0f, 0.0f));
@@ -64,7 +64,7 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.screenWidth = 1280;
 	initParam.frameBufferHeight = 720;
 	initParam.frameBufferWidth = 1280;
-	initParam.graphicsConfig.bloomConfig.isEnable = false;
+	initParam.graphicsConfig.bloomConfig.isEnable = true;
 	//initParam.graphicsConfig.edgeRenderConfig.isEnable = true;
 	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;

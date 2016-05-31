@@ -52,7 +52,7 @@ void CWall::Build(const CVector3& size, const CVector3& pos)
 	m_myMotionState = new btDefaultMotionState(groundTransform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, m_myMotionState, m_groundShape, btVector3(0, 0, 0));
 	m_rigidBody = new btRigidBody(rbInfo);
-
+	m_rigidBody->setUserIndex(CollisionType_Ground);
 	//ƒ[ƒ‹ƒh‚É’Ç‰ÁB
 	g_bulletPhysics.AddRigidBody(m_rigidBody);
 

@@ -10,6 +10,7 @@
 #include "tkEngine/GameObject/tkGameObject.h"
 #include "btBulletDynamicsCommon.h"
 #include "BulletCollision\CollisionDispatch\btGhostObject.h"
+#include "CollisionType.h"
 
 using namespace tkEngine;
 

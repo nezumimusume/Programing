@@ -157,8 +157,6 @@ namespace tkEngine{
 	}
 	void CParticle::Render( CRenderContext& renderContext )
 	{
-		
-		
 		CMatrix m;
 		m.Mul(mWorld, camera->GetViewMatrix());
 		m.Mul(m, camera->GetProjectionMatrix());

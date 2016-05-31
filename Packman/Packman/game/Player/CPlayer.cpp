@@ -41,7 +41,7 @@ void CPlayer::Update()
 void CPlayer::Move()
 {
 	float moveSpeed = 0.02f;		//移動速度。
-	if (KeyInput().IsPressA()) {
+	if (KeyInput().IsPress(CKeyInput::enKeyA)) {
 		moveSpeed *= 2.0f;			//キーボードのAが押されていたら速度を倍にする。
 	}
 	if (KeyInput().IsUpPress()) {

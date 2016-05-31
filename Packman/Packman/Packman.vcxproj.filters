@@ -28,6 +28,9 @@
     <Filter Include="Source Files\game\player">
       <UniqueIdentifier>{c22175cc-f3c7-4fe3-9d82-3110e6f2fe0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\game\Enemy">
+      <UniqueIdentifier>{55507993-874a-4c4f-9e89-a2dc2786d84b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

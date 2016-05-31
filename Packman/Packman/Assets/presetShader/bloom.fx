@@ -171,7 +171,7 @@ VS_OUTPUT VSFinal( VS_INPUT In )
 }
 float4 PSFinal( VS_OUTPUT In ) : COLOR
 {
-	float2 uv = In.tex + g_offset;
+	float2 uv = In.tex;
 	return tex2D(g_blurSampler, uv );
 }
 /*!

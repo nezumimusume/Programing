@@ -19,7 +19,7 @@ namespace tkEngine{
 		m_projectionMatrix( CMatrix::Identity ),
 		m_viewProjectionMatrix( CMatrix::Identity ),
 		m_viewMatrixInv( CMatrix::Identity ),
-		m_is2DCamera(true)
+		m_is2DCamera(false)
 	{
 	}
 	CCamera::~CCamera()

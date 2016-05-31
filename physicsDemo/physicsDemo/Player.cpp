@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "tkEngine/graphics/tkCamera.h"
 #include "bulletPhysics.h"
+#include "Ground.h"
 
 struct SweepResultGround : public btCollisionWorld::ConvexResultCallback
 {
@@ -15,7 +16,11 @@ struct SweepResultGround : public btCollisionWorld::ConvexResultCallback
 
 	virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 	{
-		if (convexResult.m_hitCollisionObject->getUserIndex() != -1) {
+		if (convexResult.m_hitCollisionObject->getUserIndex() == CollisionType_DebriCreator) {
+			CGround* ground = (CGround*)convexResult.m_hitCollisionObject->getUserPointer();
+			ground->OnPlayerOverlapDebriCreator(convexResult.m_hitCollisionObject);
+		}
+		if (convexResult.m_hitCollisionObject->getUserIndex() != CollisionType_Ground) {
 			//無視。
 			return 0.0f;
 		}
@@ -54,7 +59,7 @@ struct SweepResultWall : public btCollisionWorld::ConvexResultCallback
 	
 	virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 	{
-		if (convexResult.m_hitCollisionObject->getUserIndex() != -1) {
+		if (convexResult.m_hitCollisionObject->getUserIndex() != CollisionType_Ground) {
 			//無視。
 			return 0.0f;
 		}
@@ -105,7 +110,7 @@ void CPlayer::Start()
 	m_myMotionState = new btDefaultMotionState(rbTransform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, m_myMotionState, m_collisionShape, btVector3(0, 0, 0));
 	m_rigidBody = new btRigidBody(rbInfo);
-	m_rigidBody->setUserIndex(0);
+	m_rigidBody->setUserIndex(CollisionType_Player);
 	//ワールドに追加。
 	g_bulletPhysics.AddRigidBody(m_rigidBody);
 }
