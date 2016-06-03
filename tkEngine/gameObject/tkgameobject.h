@@ -29,7 +29,7 @@ namespace tkEngine{
 		{
 		}
 	public:
-		virtual void Start() = 0;
+		virtual void Start() {}
 		/*!
 		 *@brief	XV
 		 */

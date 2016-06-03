@@ -51,7 +51,7 @@ namespace tkEngine{
 		Release();
 		m_near = 1.0f;
 		m_far = 100.0f;
-		m_shadowMapRT.Create( w, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0 );
+		m_shadowMapRT.Create( w, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONMASKABLE, 0 );
 		m_isEnable = true;
 		m_pShadowMapEffect = CEngine::EffectManager().LoadEffect( "Assets/presetshader/shadowMap.fx" );
 		m_projectionMatrix.MakeProjectionMatrix(

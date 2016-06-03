@@ -271,6 +271,23 @@ namespace tkEngine{
 			y = axis.y * s;
 			z = axis.z * s;
 		}
+		/*!
+		*@brief	クォータニオン同士の積。
+		*/
+		void Multiply(const CQuaternion& rot)
+		{
+			float pw, px, py, pz;
+			float qw, qx, qy, qz;
+
+			pw = w; px = x; py = y; pz = z;
+			qw = rot.w; qx = rot.x; qy = rot.y; qz = rot.z;
+
+			w = pw * qw - px * qx - py * qy - pz * qz;
+			x = pw * qx + px * qw + py * qz - pz * qy;
+			y = pw * qy - px * qz + py * qw + pz * qx;
+			z = pw * qz + px * qy - py * qx + pz * qw;
+
+		}
 	};
 }
 #endif // _TKVECTOR_H_

@@ -101,6 +101,33 @@ namespace tkEngine{
 	{
 		return CGameObjectManager::Instance();
 	}
+	/*!
+	 *@brief	ゲームオブジェクト生成のヘルパー関数。
+	 *@param[in]	priority	プライオリティ
+	 */
+	template<class T>
+	static inline T* NewGO( int priority )
+	{
+		return GameObjectManager().NewGameObject<T>( priority );
+	}
+	/*!
+	 *@brief	ゲームオブジェクト削除のヘルパー関数。
+	 * NewGOを使用して作成したオブジェクトは必ずDeleteGOを実行するように。
+	 *@param[in]	go		削除するゲームオブジェクト。
+	 */
+	static inline void DeleteGO(IGameObject* go )
+	{
+		GameObjectManager().DeleteGameObject(go);
+	}
+	/*!
+	 *@brief	ゲームオブジェクトの追加のヘルパー関数。
+	 *@param[in]	go			追加するゲームオブジェクト。
+	 *@param[in]	priority	プライオリティ。
+	 */
+	static inline void AddGO(int priority, IGameObject* go )
+	{
+		GameObjectManager().AddGameObject(priority, go);
+	}
 }
 #endif // _CGAMEOBJECTMANAGER_H_
  

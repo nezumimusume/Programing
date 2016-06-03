@@ -19,16 +19,13 @@ namespace tkEngine {
 		CSkinModel();
 		~CSkinModel();
 		/*!
+		*@brief	初期化
+		*/
+		void Init(CSkinModelData* modelData);
+		/*!
 		*@brief	描画
 		*/
 		void Draw(CRenderContext& renderContext, const CMatrix& viewMatrix, const CMatrix& projMatrix);
-		/*!
-		*@brief	スキンモデルデータをセット。。
-		*/
-		void SetSkinModelData(CSkinModelData* modelData)
-		{
-			m_skinModelData = modelData;
-		}
 		/*!
 		*@brief	イミディエイト描画。
 		*@details

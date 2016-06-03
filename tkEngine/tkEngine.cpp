@@ -56,6 +56,14 @@ namespace tkEngine{
 			//D3Dオブジェクトを作成できなかった。
 	        return false;
 	    }
+		//使用できるマルチサンプリングの品質を調べる。
+		DWORD quality;
+		HRESULT hr = m_pD3D->CheckDeviceMultiSampleType(
+			D3DADAPTER_DEFAULT,
+			D3DDEVTYPE_HAL, D3DFMT_A8R8G8B8, FALSE,
+			D3DMULTISAMPLE_4_SAMPLES, &quality
+		);
+
 	    D3DPRESENT_PARAMETERS d3dpp;
 	    ZeroMemory( &d3dpp, sizeof( d3dpp ) );
     	d3dpp.Windowed = TRUE;
@@ -65,7 +73,8 @@ namespace tkEngine{
     	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 		d3dpp.BackBufferWidth = initParam.frameBufferWidth;
 		d3dpp.BackBufferHeight = initParam.frameBufferHeight;
-
+		d3dpp.MultiSampleType = D3DMULTISAMPLE_4_SAMPLES;
+		d3dpp.MultiSampleQuality = quality-1;
 		m_frameBufferWidth = initParam.frameBufferWidth;
 		m_frameBufferHeight = initParam.frameBufferHeight;
 
@@ -103,7 +112,7 @@ namespace tkEngine{
 				1,
 				FMT_A8R8G8B8,
 				FMT_D16,
-				MULTISAMPLE_NONE,
+				MULTISAMPLE_NONMASKABLE,
 				0
 			);
 		}

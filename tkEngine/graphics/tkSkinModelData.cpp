@@ -553,7 +553,9 @@ namespace tkEngine{
 		//m_pAnimController->(0);
 		TK_ASSERT(SUCCEEDED(hr), "Failed D3DXLoadMeshHierarchyFromX");
 		SetupBoneMatrixPointers(m_frameRoot, m_frameRoot);
-		anim->Init( m_pAnimController );
+		if (anim) {
+			anim->Init(m_pAnimController);
+		}
 	}
 
 	void CSkinModelData::UpdateBoneMatrix(const CMatrix& matWorld)

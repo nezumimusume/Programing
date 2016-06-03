@@ -19,8 +19,8 @@ public:
 	{
 		skinModelData.LoadModelData("Assets/modelData/Player.x", &animation);
 		skinModel.SetSkinModelData(&skinModelData);
-		camera.SetPosition(CVector3(0.0f, 1.5f, -4.0f));
-		camera.SetTarget(CVector3(0.0f, 1.0f, 0.0f));
+		camera.SetPosition(CVector3(0.0f, -0.0f, -2.0f));
+		camera.SetTarget(CVector3(0.0f, 0.0f, 0.0f));
 		camera.Update();
 		camera.SetFar(1000.0f);
 		currentAnimSetNo = 0;
@@ -42,6 +42,11 @@ public:
 	}
 	void Render( CRenderContext& renderContext ) override
 	{
+		CQuaternion rot, rotY;
+		rotY.SetRotation(CVector3(1.0f, 0.0f, 0.0f), CMath::PI * -0.5f);
+		rot.SetRotation(CVector3(0.0f, 1.0f, 0.0f), CMath::PI);
+		rot.Multiply(rotY);
+		//skinModel.UpdateWorldMatrix(CVector3::Zero, rot, CVector3::One);
 		skinModel.Draw(renderContext, camera.GetViewMatrix(), camera.GetProjectionMatrix());
 	}
 };
@@ -62,9 +67,9 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.commandBufferSizeTbl = commandBufferSizeTbl;
 	initParam.screenHeight = 720;
 	initParam.screenWidth = 1280;
-	initParam.frameBufferHeight = 720;
-	initParam.frameBufferWidth = 1280;
-	initParam.graphicsConfig.bloomConfig.isEnable = true;
+	initParam.frameBufferHeight = 1080;
+	initParam.frameBufferWidth = 1920;
+	initParam.graphicsConfig.bloomConfig.isEnable = false;
 	//initParam.graphicsConfig.edgeRenderConfig.isEnable = true;
 	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;

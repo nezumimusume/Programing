@@ -56,7 +56,14 @@ namespace tkEngine{
 
 					// ƒ{[ƒ“”B
 					pEffect->SetInt("CurNumBones", pMeshContainer->NumInfl - 1);
-
+					D3DXMATRIX viewRotInv;
+					D3DXMatrixInverse(&viewRotInv, NULL, viewMatrix);
+					viewRotInv.m[3][0] = 0.0f;
+					viewRotInv.m[3][1] = 0.0f;
+					viewRotInv.m[3][2] = 0.0f;
+					viewRotInv.m[3][3] = 1.0f;
+					D3DXMatrixTranspose(&viewRotInv, &viewRotInv);
+					pEffect->SetMatrix("g_viewMatrixRotInv", &viewRotInv);
 					pEffect->SetTechnique("SkinModel");
 					pEffect->Begin(0, D3DXFX_DONOTSAVESTATE);
 					pEffect->BeginPass(0);
@@ -144,11 +151,16 @@ namespace tkEngine{
 		m_skinModelData(nullptr),
 		m_worldMatrix(CMatrix::Identity)
 	{
-		m_pEffect = EffectManager().LoadEffect("Assets/presetShader/skinModel.fx");
 	}
 	CSkinModel::~CSkinModel()
 	{
 
+	}
+
+	void CSkinModel::Init(CSkinModelData* modelData)
+	{
+		m_pEffect = EffectManager().LoadEffect("Assets/presetShader/skinModel.fx");
+		m_skinModelData = modelData;
 	}
 	void CSkinModel::UpdateWorldMatrix(const CVector3& trans, const CQuaternion& rot, const CVector3& scale)
 	{
