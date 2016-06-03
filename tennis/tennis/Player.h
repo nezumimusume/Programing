@@ -1,6 +1,8 @@
 #pragma once
 
-class Player {
+#include <iostream>
+
+class Player{
 public:
 	Player();
 	~Player();
@@ -8,6 +10,7 @@ public:
 	void Update();
 	void Render( CRenderContext& renderContext );
 	bool Player::IsHit(CVector3 pos);
+	void Draw() {}
 private:
 	CSkinModelData	modelData;		//モデルデータ。
 	CSkinModel		model;			//モデル。

@@ -5,13 +5,13 @@
 const float PLAYER_HALF_SIZE_X = 0.1f;	//プレイヤーのX方向の半分のサイズ。
 const float PLAYER_HALF_SIZE_Z = 1.0f;	//プレイヤーのZ方向の半分のサイズ。
 
+
 Player::Player()
 {
 	position = CVector3(-4.3f, 0.5f, 0.0f);
 }
 Player::~Player()
 {
-
 }
 void Player::Init()
 {
