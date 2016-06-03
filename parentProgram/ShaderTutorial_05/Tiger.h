@@ -25,8 +25,6 @@ public:
 	);
 	//開放。
 	void Release();
-	//座標を設定。
-	void SetPosition(D3DXVECTOR3 pos);
 	//親を設定。
 	void SetParent(Tiger* parent);
 	
@@ -46,9 +44,14 @@ public:
 	{
 		return rotation;
 	}
-	void SetRotation(D3DXQUATERNION rot )
+
+	D3DXQUATERNION GetLocalRotation()
 	{
-		rotation = rot;
+		return localRotation;
+	}
+	void SetLocalRotation(D3DXQUATERNION rot)
+	{
+		localRotation = rot;
 	}
 	D3DXVECTOR3 GetLocalPosition()
 	{

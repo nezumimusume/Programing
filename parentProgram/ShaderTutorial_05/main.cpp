@@ -53,7 +53,7 @@ void Init()
 		tiger[i].Init(g_pd3dDevice);
 		int y = i / 10;
 		int x = i % 10;
-		tiger[i].SetPosition(D3DXVECTOR3(0.5f * x, 0.5f * y, 0.0f));
+		tiger[i].SetLocalPosition(D3DXVECTOR3(0.5f * x, 0.5f * y, 0.0f));
 	}
 	tiger[1].SetParent(&tiger[0]);
 	//ÉJÉÅÉâÇÃèâä˙âªÅB
@@ -103,22 +103,22 @@ void Update()
 		if (GetAsyncKeyState(VK_LEFT)) {
 			D3DXVECTOR3 pos = tiger[0].GetPosition();
 			pos.x -= 0.02f;
-			tiger[0].SetPosition(pos);
+			tiger[0].SetLocalPosition(pos);
 		}
 		if (GetAsyncKeyState(VK_RIGHT)) {
 			D3DXVECTOR3 pos = tiger[0].GetPosition();
 			pos.x += 0.02f;
-			tiger[0].SetPosition(pos);
+			tiger[0].SetLocalPosition(pos);
 		}
 		if (GetAsyncKeyState(VK_UP)) {
 			D3DXVECTOR3 pos = tiger[0].GetPosition();
 			pos.y += 0.02f;
-			tiger[0].SetPosition(pos);
+			tiger[0].SetLocalPosition(pos);
 		}
 		if (GetAsyncKeyState(VK_DOWN)) {
 			D3DXVECTOR3 pos = tiger[0].GetPosition();
 			pos.y -= 0.02f;
-			tiger[0].SetPosition(pos);
+			tiger[0].SetLocalPosition(pos);
 		}
 		if (GetAsyncKeyState('W')) {
 			D3DXVECTOR3 pos = tiger[1].GetLocalPosition();
@@ -132,7 +132,14 @@ void Update()
 			D3DXQUATERNION addRot;
 			D3DXQuaternionRotationAxis(&addRot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), 0.01f);
 			rot = rot * addRot;
-			tiger[0].SetRotation(rot);
+			tiger[0].SetLocalRotation(rot);
+		}
+		if (GetAsyncKeyState(VK_RIGHT)) {
+			D3DXQUATERNION rot = tiger[1].GetLocalRotation();
+			D3DXQUATERNION addRot;
+			D3DXQuaternionRotationAxis(&addRot, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), 0.01f);
+			rot = rot * addRot;
+			tiger[1].SetLocalRotation(rot);
 		}
 	}
 }

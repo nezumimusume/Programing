@@ -21,11 +21,7 @@ Tiger::~Tiger()
 {
 	Release();
 }
-//座標を設定。
-void Tiger::SetPosition(D3DXVECTOR3 pos)
-{
-	position = pos;
-}
+
 //初期化。
 void Tiger::Init(LPDIRECT3DDEVICE9 pd3dDevice)
 {
@@ -34,6 +30,9 @@ void Tiger::Init(LPDIRECT3DDEVICE9 pd3dDevice)
 //親を設定。
 void Tiger::SetParent(Tiger* parent)
 {
+	//親が設定されたので、ワールド座標を求めるために。一旦Updateを呼び出す。
+	Update();
+
 	this->parent = parent;
 	//親が設定されたので、ローカル座標を親のローカル座標に変換する。
 	D3DXMATRIX mParentWorldInv = parent->GetWorldMatrix();
@@ -45,11 +44,9 @@ void Tiger::SetParent(Tiger* parent)
 	localPosition.z = pos.z;
 
 	//回転クォータニオンをローカル回転クォータニオンに変換する。
-	D3DXMATRIX mParentRotationInv = parent->GetRotationMatrix();
-	D3DXMatrixInverse(&mParentRotationInv, NULL, &mParentRotationInv);
-	D3DXMATRIX mRot = mRotation;
-	mRot = mRotation * mParentRotationInv;
-	D3DXQuaternionRotationMatrix(&localRotation, &mRot);
+	D3DXQUATERNION qParentRotInv = parent->GetRotation();
+	D3DXQuaternionInverse(&qParentRotInv, &qParentRotInv);
+	localRotation = rotation * qParentRotInv;
 }
 //更新。
 void Tiger::Update()
@@ -66,6 +63,10 @@ void Tiger::Update()
 		position.z = pos.z;
 		
 		rotation = localRotation * qParentRot;
+	}
+	else {
+		position = localPosition;
+		rotation = localRotation;
 	}
 
 	//ワールド行列を求める。
