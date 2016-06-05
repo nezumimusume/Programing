@@ -112,7 +112,7 @@ namespace tkEngine{
 				1,
 				FMT_A8R8G8B8,
 				FMT_D16,
-				MULTISAMPLE_NONMASKABLE,
+				MULTISAMPLE_NONE,
 				0
 			);
 		}
