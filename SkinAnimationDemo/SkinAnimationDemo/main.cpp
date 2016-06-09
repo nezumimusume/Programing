@@ -17,10 +17,10 @@ class CSkinModelDrawTest : public IGameObject {
 public:
 	void Start() override 
 	{
-		skinModelData.LoadModelData("Assets/modelData/Player.x", &animation);
-		skinModel.SetSkinModelData(&skinModelData);
-		camera.SetPosition(CVector3(0.0f, -0.0f, -2.0f));
-		camera.SetTarget(CVector3(0.0f, 0.0f, 0.0f));
+		skinModelData.LoadModelData("Assets/modelData/skybox.x", NULL);
+		skinModel.Init(&skinModelData);
+		camera.SetPosition(CVector3(2.0f, 10.0f, -4.0f));
+		camera.SetTarget(CVector3(2.0f, 0.0f, 0.0f));
 		camera.Update();
 		camera.SetFar(1000.0f);
 		currentAnimSetNo = 0;
@@ -28,7 +28,18 @@ public:
 	void Update() override 
 	{
 		animation.Update(1.0f / 60.0f);
-		skinModel.UpdateWorldMatrix(CVector3::Zero, CQuaternion::Identity, CVector3::One);
+		static float angle = 0.0f;
+		if (KeyInput().IsRightPress()) {
+			angle += 0.01f;
+		}
+		else if (KeyInput().IsLeftPress()) {
+			angle -= 0.01;
+		}
+		CQuaternion rot;
+		rot.SetRotation(CVector3::AxisY, angle);
+		camera.SetTarget(CVector3(2.0f, 10.0f, -2.0f));
+		camera.Update();
+		skinModel.UpdateWorldMatrix(CVector3(2.0f, 10.0f, -2.0f), rot, CVector3::One);
 		if (KeyInput().IsTrgger(CKeyInput::enKeyA)) {
 			currentAnimSetNo++;
 			currentAnimSetNo %= animation.GetNumAnimationSet();
@@ -69,7 +80,7 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.screenWidth = 1280;
 	initParam.frameBufferHeight = 1080;
 	initParam.frameBufferWidth = 1920;
-	initParam.graphicsConfig.bloomConfig.isEnable = false;
+	initParam.graphicsConfig.bloomConfig.isEnable = true;
 	//initParam.graphicsConfig.edgeRenderConfig.isEnable = true;
 	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;

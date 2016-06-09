@@ -35,7 +35,7 @@ SParicleEmitParameter particleParameterTbl[] =
 		1.0f,							//float		fadeTime;							//!<フェードする時間。
 		1.0f,							//float		initAlpha;							//!<初期アルファ値。
 		true,							//bool		isBillboard;						//!<ビルボード？
-		2.0f,							//float		brightness;							//!<輝度。ブルームが有効になっているとこれを強くすると光が溢れます。
+		1.5f,							//float		brightness;							//!<輝度。ブルームが有効になっているとこれを強くすると光が溢れます。
 		1,								//int		alphaBlendMode;						//!<0半透明合成、1加算合成。
 	},
 	//マグマの噴出っぽい炎

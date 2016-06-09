@@ -39,7 +39,7 @@ float4 PSSamplingLuminance( VS_OUTPUT In ) : COLOR
 	float4 color = tex2D(g_SceneSampler, In.tex );
 	clip(color.a-0.001f);
 	float t = 1.0f / color.a;
-	color.xyz *= t;
+	color.xyz *= (t - 1.0f);
 	color.a = 1.0f;
 	return color;
 }

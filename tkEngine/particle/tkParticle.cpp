@@ -170,6 +170,9 @@ namespace tkEngine{
 		case 1:
 			renderContext.SetRenderState(RS_SRCBLEND, BLEND_ONE);
 			renderContext.SetRenderState(RS_DESTBLEND, BLEND_ONE);
+			renderContext.SetRenderState(RS_SEPARATEALPHABLENDENABL, TRUE);	//αはソースを書きこむ。
+			renderContext.SetRenderState(RS_SRCBLENDALPHA, BLEND_ONE);
+			renderContext.SetRenderState(RS_DESTBLENDALPHA, BLEND_ZERO);
 			shaderEffect->SetTechnique(renderContext, "ColorTexPrimAdd");
 			break;
 		}
@@ -193,6 +196,7 @@ namespace tkEngine{
 		renderContext.SetRenderState(RS_SRCBLEND, BLEND_ONE);
 		renderContext.SetRenderState(RS_DESTBLEND, BLEND_ZERO);
 		renderContext.SetRenderState(RS_ZENABLE, TRUE);
+		renderContext.SetRenderState(RS_SEPARATEALPHABLENDENABL, FALSE);	//αは乗算
 		
 	}
 }

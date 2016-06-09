@@ -229,7 +229,7 @@ namespace tkEngine{
 				);
 				lastRenderContext.SetRenderTarget(0, &m_backBufferRT);
 				lastRenderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
-					D3DCOLOR_RGBA(0, 0, 128, 0), 1.0f, 0
+					D3DCOLOR_RGBA(0, 0, 0, 0), 1.0f, 0
 				);
 				CopyMainRenderTargetToBackBuffer(lastRenderContext);
 

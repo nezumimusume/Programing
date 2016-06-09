@@ -40,7 +40,7 @@ namespace tkEngine{
 		{
 			//レンダリングステートの初期化。
 			renderContext[0].Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
-				D3DCOLOR_RGBA(0, 0, 255, 0), 1.0f, 0
+				D3DCOLOR_RGBA(0, 0, 0, 0), 1.0f, 0
 				);
 			tkEngine::SViewport vp = {
 				0,

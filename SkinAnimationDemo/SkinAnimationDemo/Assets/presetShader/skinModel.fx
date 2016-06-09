@@ -2,6 +2,8 @@
  * @brief	スキンモデルシェーダー。(4ボーンスキニング)
  */
 
+#include "LightingFunction.h"
+
 //スキン行列。
 #define MAX_MATRICES  26
 float4x3    g_mWorldMatrixArray[MAX_MATRICES] : WORLDMATRIXARRAY;
@@ -117,7 +119,8 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	float t = 1.0f - abs(dot(normalInCamera, float3(0.0f, 0.0f, 1.0f)));
 	t = pow(t, 2.5f);
 	float4 color = tex2D(g_diffuseTextureSampler, In.Tex0);
-	color.xyz += t;
+	color.a = CalcLuminance(color.xyz);
+//	color.xyz += t;
 	return color;
 }
 /*!
