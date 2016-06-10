@@ -17,13 +17,14 @@ class CSkinModelDrawTest : public IGameObject {
 public:
 	void Start() override 
 	{
-		skinModelData.LoadModelData("Assets/modelData/skybox.x", NULL);
+		skinModelData.LoadModelData("Assets/modelData/unitychan.X", &animation);
 		skinModel.Init(&skinModelData);
-		camera.SetPosition(CVector3(2.0f, 10.0f, -4.0f));
-		camera.SetTarget(CVector3(2.0f, 0.0f, 0.0f));
+		camera.SetPosition(CVector3(3.0f, 0.0f, 0.0f));
+		camera.SetTarget(CVector3(0.0f, 0.0f, 0.0f));
 		camera.Update();
 		camera.SetFar(1000.0f);
 		currentAnimSetNo = 0;
+		animation.PlayAnimation(0);
 	}
 	void Update() override 
 	{
@@ -35,11 +36,11 @@ public:
 		else if (KeyInput().IsLeftPress()) {
 			angle -= 0.01;
 		}
-		CQuaternion rot;
-		rot.SetRotation(CVector3::AxisY, angle);
-		camera.SetTarget(CVector3(2.0f, 10.0f, -2.0f));
 		camera.Update();
-		skinModel.UpdateWorldMatrix(CVector3(2.0f, 10.0f, -2.0f), rot, CVector3::One);
+		CQuaternion qRot;
+		qRot.SetRotation(CVector3::AxisY, CMath::DegToRad(-90.0f) * angle);
+		
+		skinModel.UpdateWorldMatrix(CVector3(0.0f, 0.0f, 0.0f), qRot, CVector3::One);
 		if (KeyInput().IsTrgger(CKeyInput::enKeyA)) {
 			currentAnimSetNo++;
 			currentAnimSetNo %= animation.GetNumAnimationSet();

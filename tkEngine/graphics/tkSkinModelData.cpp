@@ -198,7 +198,7 @@ namespace {
 				pMeshContainer->ppBoneMatrixPtrs[iBone] = &pFrame->CombinedTransformationMatrix;
 			}
 		}
-
+		pFrame = (D3DXFRAME_DERIVED*)D3DXFrameFind(rootFrame,"_face");
 		return S_OK;
 	}
 

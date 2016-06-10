@@ -76,9 +76,10 @@ namespace tkEngine{
 			}
 			else {
 				pEffect->SetTechnique("NoSkinModel");
-				
+				D3DXMATRIX mWorld = pFrame->CombinedTransformationMatrix;
+				mWorld = pFrame->CombinedTransformationMatrix;  * (*worldMatrix);
 				pEffect->SetMatrix("g_mViewProj", &viewProj);
-				pEffect->SetMatrix("g_worldMatrix", worldMatrix);
+				pEffect->SetMatrix("g_worldMatrix", &mWorld);
 				pEffect->SetMatrix("g_rotationMatrix", rotationMatrix);
 				pEffect->Begin(0, D3DXFX_DONOTSAVESTATE);
 				pEffect->BeginPass(0);
