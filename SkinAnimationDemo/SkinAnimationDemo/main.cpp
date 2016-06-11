@@ -10,6 +10,12 @@
  * @brief	スキンモデル表示テスト
  */
 class CSkinModelDrawTest : public IGameObject {
+	enum AnimationNo {
+		AnimationStand,		//立ち。
+		AnimationWalk,		//歩き。
+		AnimationRun,		//走り。
+		AnimationJump,		//ジャンプ。
+	};
 	CSkinModelData	skinModelData;		//スキンモデルデータ。
 	CSkinModel		skinModel;			//スキンモデル。
 	CAnimation		animation;			//アニメーション。
@@ -24,10 +30,9 @@ public:
 		skinModel.Init(&skinModelData);
 		skinModel.SetLight(&light);
 		
-		camera.SetPosition(CVector3(200.0f, 100.0f, 0.0f));
-		camera.SetTarget(CVector3(0.0f, 100.0f, 0.0f));
-		
-		camera.SetNear(10.0f);
+		camera.SetPosition(CVector3(2.0f, 1.0f, 0.0f));
+		camera.SetTarget(CVector3(0.0f, 1.0f, 0.0f));
+	
 		camera.SetFar(1000.0f);
 		camera.Update();
 
@@ -41,9 +46,9 @@ public:
 		light.SetDiffuseLightColor(2, CVector4(0.3f, 0.3f, 0.3f, 1.0f));
 		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 		light.SetAmbinetLight(CVector3(0.45f, 0.45f, 0.45f));
-
-		currentAnimSetNo = 0;
-		animation.PlayAnimation(0);
+		animation.SetAnimationEndTime(AnimationRun, 0.8);
+		currentAnimSetNo = AnimationStand;
+		animation.PlayAnimation(AnimationStand);
 	}
 	void Update() override 
 	{
