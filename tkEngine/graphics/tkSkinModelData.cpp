@@ -553,7 +553,7 @@ namespace tkEngine{
 		//m_pAnimController->(0);
 		TK_ASSERT(SUCCEEDED(hr), "Failed D3DXLoadMeshHierarchyFromX");
 		SetupBoneMatrixPointers(m_frameRoot, m_frameRoot);
-		if (anim) {
+		if (anim && m_pAnimController) {
 			anim->Init(m_pAnimController);
 		}
 	}

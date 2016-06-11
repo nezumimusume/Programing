@@ -115,11 +115,13 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 float4 PSMain( VS_OUTPUT In ) : COLOR
 {
 	//ƒtƒŒƒlƒ‹”½ŽË
-	float3 normalInCamera = mul(In.Normal, g_viewMatrixRotInv );
+/*	float3 normalInCamera = mul(In.Normal, g_viewMatrixRotInv );
 	float t = 1.0f - abs(dot(normalInCamera, float3(0.0f, 0.0f, 1.0f)));
-	t = pow(t, 2.5f);
+	t = pow(t, 2.5f);*/
 	float4 color = tex2D(g_diffuseTextureSampler, In.Tex0);
-	color.a = CalcLuminance(color.xyz);
+	float4 lig = DiffuseLight(In.Normal);
+	color *= lig;
+//	color.a = CalcLuminance(color.xyz);
 //	color.xyz += t;
 	return color;
 }

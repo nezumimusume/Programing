@@ -10,7 +10,7 @@ namespace tkEngine {
 	class CEffect;
 	class CSkinModelData;
 	class CRenderContext;
-
+	class CLight;
 	/*!
 	*@brief	スキンモデル
 	*/
@@ -42,12 +42,20 @@ namespace tkEngine {
 		*@param[in]		scale	拡大。
 		*/
 		void UpdateWorldMatrix( const CVector3& trans, const CQuaternion& rot, const CVector3& scale );
+		/*!
+		*@brief	ライトを設定。
+		*/
+		void SetLight(CLight* light)
+		{
+			m_light = light;
+		}
 	private:
 		CMatrix				m_worldMatrix;		//!<ワールド行列。
 		CMatrix				m_rotationMatrix;	//!<回転行列。
 		CSkinModelData*		m_skinModelData;	//!<スキンモデルデータ。
 		CEffect*			m_pEffect;			//!<エフェクト。
 		CAnimation			m_animation;		//!<アニメーション。
+		CLight*				m_light;			//!<ライト。
 	};
 }
 

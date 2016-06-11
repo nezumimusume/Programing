@@ -4,6 +4,7 @@
 #include "tkEngine/graphics/tkAnimation.h"
 #include "tkEngine/graphics/tkEffect.h"
 #include "tkEngine/graphics/tkCamera.h"
+#include "tkEngine/graphics/tkLight.h"
 
 /*!
  * @brief	スキンモデル表示テスト
@@ -12,17 +13,35 @@ class CSkinModelDrawTest : public IGameObject {
 	CSkinModelData	skinModelData;		//スキンモデルデータ。
 	CSkinModel		skinModel;			//スキンモデル。
 	CAnimation		animation;			//アニメーション。
-	CCamera			camera;
+	CCamera			camera;				//カメラ。
+	CLight			light;				//ライト。
 	int				currentAnimSetNo;		
 public:
 	void Start() override 
 	{
-		skinModelData.LoadModelData("Assets/modelData/unitychan.X", &animation);
+		skinModelData.LoadModelData("Assets/modelData/unity.X", &animation);
+		//skinModelData.LoadModelData("Assets/modelData/unity.X", NULL);
 		skinModel.Init(&skinModelData);
-		camera.SetPosition(CVector3(3.0f, 0.0f, 0.0f));
-		camera.SetTarget(CVector3(0.0f, 0.0f, 0.0f));
-		camera.Update();
+		skinModel.SetLight(&light);
+		
+		camera.SetPosition(CVector3(200.0f, 100.0f, 0.0f));
+		camera.SetTarget(CVector3(0.0f, 100.0f, 0.0f));
+		
+		camera.SetNear(10.0f);
 		camera.SetFar(1000.0f);
+		camera.Update();
+
+		light.SetDiffuseLightDirection(0,  CVector3(0.707f, 0.0f, 0.707f));
+		light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, 0.707f));
+		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, 0.707f));
+		light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, 0.707f));
+
+		light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(2, CVector4(0.3f, 0.3f, 0.3f, 1.0f));
+		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetAmbinetLight(CVector3(0.45f, 0.45f, 0.45f));
+
 		currentAnimSetNo = 0;
 		animation.PlayAnimation(0);
 	}
@@ -54,11 +73,6 @@ public:
 	}
 	void Render( CRenderContext& renderContext ) override
 	{
-		CQuaternion rot, rotY;
-		rotY.SetRotation(CVector3(1.0f, 0.0f, 0.0f), CMath::PI * -0.5f);
-		rot.SetRotation(CVector3(0.0f, 1.0f, 0.0f), CMath::PI);
-		rot.Multiply(rotY);
-		//skinModel.UpdateWorldMatrix(CVector3::Zero, rot, CVector3::One);
 		skinModel.Draw(renderContext, camera.GetViewMatrix(), camera.GetProjectionMatrix());
 	}
 };

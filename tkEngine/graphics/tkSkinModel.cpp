@@ -2,6 +2,7 @@
 #include "tkEngine/graphics/tkSkinModel.h"
 #include "tkEngine/graphics/tkSkinModelData.h"
 #include "tkEngine/graphics/tkEffect.h"
+#include "tkEngine/graphics/tkLight.h"
 
 namespace tkEngine{
 	extern UINT                 g_NumBoneMatricesMax;
@@ -15,7 +16,8 @@ namespace tkEngine{
 			D3DXMATRIX* worldMatrix,
 			D3DXMATRIX* rotationMatrix,
 			D3DXMATRIX* viewMatrix,
-			D3DXMATRIX* projMatrix
+			D3DXMATRIX* projMatrix,
+			CLight* light
 		)
 		{
 			D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
@@ -28,6 +30,27 @@ namespace tkEngine{
 			pd3dDevice->GetDeviceCaps(&d3dCaps);
 			D3DXMATRIX viewProj;
 			D3DXMatrixMultiply(&viewProj, viewMatrix, projMatrix);
+			
+			//テクニックを設定。
+			{
+				if (pMeshContainer->pSkinInfo != NULL) {
+					pEffect->SetTechnique("SkinModel");
+				}
+				else {
+					pEffect->SetTechnique("NoSkinModel");
+				}
+			}
+			//共通の定数レジスタを設定
+			{
+				//ビュープロジェクション
+				pEffect->SetMatrix("g_mViewProj", &viewProj);
+				//ライト
+				pEffect->SetValue(
+					"g_light",
+					light,
+					sizeof(CLight)
+				);
+			}
 			if (pMeshContainer->pSkinInfo != NULL)
 			{
 				//スキン情報有り。
@@ -48,7 +71,8 @@ namespace tkEngine{
 							//D3DXMatrixMultiply(&g_pBoneMatrices[iPaletteEntry], &matTemp, &g_matView);
 						}
 					}
-					pEffect->SetMatrix("g_mViewProj", &viewProj);
+				
+					
 					pEffect->SetMatrixArray("g_mWorldMatrixArray", g_pBoneMatrices, pMeshContainer->NumPaletteEntries);
 					pEffect->SetInt("g_numBone", pMeshContainer->NumInfl);
 					// ディフューズテクスチャ。
@@ -64,9 +88,9 @@ namespace tkEngine{
 					viewRotInv.m[3][3] = 1.0f;
 					D3DXMatrixTranspose(&viewRotInv, &viewRotInv);
 					pEffect->SetMatrix("g_viewMatrixRotInv", &viewRotInv);
-					pEffect->SetTechnique("SkinModel");
 					pEffect->Begin(0, D3DXFX_DONOTSAVESTATE);
 					pEffect->BeginPass(0);
+					pEffect->CommitChanges();
 					// draw the subset with the current world matrix palette and material state
 					pMeshContainer->MeshData.pMesh->DrawSubset(iAttrib);
 					pEffect->EndPass();
@@ -75,10 +99,15 @@ namespace tkEngine{
 				}
 			}
 			else {
-				pEffect->SetTechnique("NoSkinModel");
-				D3DXMATRIX mWorld = pFrame->CombinedTransformationMatrix;
-				mWorld = pFrame->CombinedTransformationMatrix;  * (*worldMatrix);
-				pEffect->SetMatrix("g_mViewProj", &viewProj);
+				
+				D3DXMATRIX mWorld;
+				if (pFrame != NULL) {
+					mWorld = pFrame->CombinedTransformationMatrix;
+				}
+				else {
+					mWorld = *worldMatrix;
+				}
+				
 				pEffect->SetMatrix("g_worldMatrix", &mWorld);
 				pEffect->SetMatrix("g_rotationMatrix", rotationMatrix);
 				pEffect->Begin(0, D3DXFX_DONOTSAVESTATE);
@@ -100,7 +129,8 @@ namespace tkEngine{
 			D3DXMATRIX* worldMatrix,
 			D3DXMATRIX* rotationMatrix,
 			D3DXMATRIX* viewMatrix, 
-			D3DXMATRIX* projMatrix)
+			D3DXMATRIX* projMatrix,
+			CLight* light)
 		{
 			LPD3DXMESHCONTAINER pMeshContainer;
 
@@ -115,7 +145,8 @@ namespace tkEngine{
 					worldMatrix,
 					rotationMatrix,
 					viewMatrix,
-					projMatrix
+					projMatrix,
+					light
 					);
 
 				pMeshContainer = pMeshContainer->pNextMeshContainer;
@@ -130,7 +161,8 @@ namespace tkEngine{
 					worldMatrix,
 					rotationMatrix,
 					viewMatrix,
-					projMatrix
+					projMatrix,
+					light
 					);
 			}
 
@@ -143,14 +175,16 @@ namespace tkEngine{
 					worldMatrix,
 					rotationMatrix,
 					viewMatrix,
-					projMatrix
+					projMatrix,
+					light
 					);
 			}
 		}
 	}
 	CSkinModel::CSkinModel() :
 		m_skinModelData(nullptr),
-		m_worldMatrix(CMatrix::Identity)
+		m_worldMatrix(CMatrix::Identity),
+		m_light(nullptr)
 	{
 	}
 	CSkinModel::~CSkinModel()
@@ -191,7 +225,8 @@ namespace tkEngine{
 				r_cast<D3DXMATRIX*>(&m_worldMatrix),
 				r_cast<D3DXMATRIX*>(&m_rotationMatrix),
 				viewMatrix,
-				projMatrix
+				projMatrix,
+				m_light
 				);
 		}
 	}
