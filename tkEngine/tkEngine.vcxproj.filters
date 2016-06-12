@@ -45,6 +45,9 @@
     <Filter Include="Source Files\particle">
       <UniqueIdentifier>{babaf37e-c88a-4393-a0fc-86bf30d654c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\AI">
+      <UniqueIdentifier>{d261529a-8bd2-4093-8d49-d7d654ac798e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -154,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="graphics\tkTexture.cpp">
       <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="AI\tkPathFinding.cpp">
+      <Filter>Source Files\AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +294,9 @@
     </ClInclude>
     <ClInclude Include="graphics\tkTexture.h">
       <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="AI\tkPathFinding.h">
+      <Filter>Source Files\AI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
