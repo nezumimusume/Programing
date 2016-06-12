@@ -10,6 +10,7 @@ namespace tkEngine{
 		numAnimSet = pAnimController->GetMaxNumAnimationSets();
 		numMaxTracks = pAnimController->GetMaxNumTracks();
 		blendRateTable.reset( new float[numMaxTracks] );
+		animationEndTime.reset(new double[numAnimSet]);
 		animationSets.reset(new ID3DXAnimationSet*[numAnimSet]);
 		for( int i = 0; i < numMaxTracks; i++ ){
 			blendRateTable[i] = 1.0f;
@@ -17,24 +18,11 @@ namespace tkEngine{
 		//アニメーションセットを初期化。
 		for (int i = 0; i < numAnimSet; i++) {
 			pAnimController->GetAnimationSet(i, &animationSets[i]);
+			animationEndTime[i] = -1.0;
 		}
+		localAnimationTime = 0.0;
 	}
-#if 0
-	void CAnimation::BlendAnimation(int animationSetIndex)
-	{
-		if (pAnimController){
-			isBlending = true;
-			currentTrackNo++;
-			currentTrackNo %= numAnimSet;
-			pAnimController->SetTrackWeight(0, 0.0f);
-			pAnimController->SetTrackWeight(1, 1.0f);
-			pAnimController->SetTrackSpeed(0, 1.0f);
-			pAnimController->SetTrackSpeed(1, 1.0f);
-			pAnimController->SetTrackEnable(currentTrackNo, TRUE);
-			pAnimController->SetTrackAnimationSet(currentTrackNo, animationSets[animationSetIndex]);
-		}
-	}
-#endif
+
 	void CAnimation::PlayAnimation(int animationSetIndex)
 	{
 		if (animationSetIndex < numAnimSet) {
@@ -49,6 +37,7 @@ namespace tkEngine{
 				pAnimController->SetTrackAnimationSet(currentTrackNo, animationSets[currentAnimationSetNo]);
 				pAnimController->SetTrackEnable(0, TRUE);
 				pAnimController->SetTrackPosition(0, 0.0f);
+				localAnimationTime = 0.0;
 			}
 		}
 		else {
@@ -68,6 +57,8 @@ namespace tkEngine{
 				pAnimController->SetTrackEnable(currentTrackNo, TRUE);
 				pAnimController->SetTrackSpeed(currentTrackNo, 1.0f);
 				pAnimController->SetTrackPosition(currentTrackNo, 0.0f);
+				localAnimationTime = 0.0;
+				currentAnimationSetNo = animationSetIndex;
 			}
 		}
 		else {
@@ -77,8 +68,22 @@ namespace tkEngine{
 	void CAnimation::Update(float deltaTime)
 	{
 		if (pAnimController) {
-			pAnimController->AdvanceTime(deltaTime, NULL);
+			localAnimationTime += deltaTime;
+			
+			if (animationEndTime[currentAnimationSetNo] > 0.0 //アニメーションの終了時間が設定されている。
+				&& localAnimationTime > animationEndTime[currentAnimationSetNo] //アニメーションの終了時間を超えた。
+			) {
+				localAnimationTime -= animationEndTime[currentAnimationSetNo];
+				pAnimController->SetTrackPosition(currentTrackNo, localAnimationTime);
+				pAnimController->AdvanceTime(0, NULL);
+			}
+			else {
+				//普通に再生。
+				pAnimController->AdvanceTime(deltaTime, NULL);
+			}
 			if (isInterpolate) {
+				ID3DXAnimationSet* animSet = animationSets[2];
+				float period = animSet->GetPeriod();
 				//補間中。
 				interpolateTime += deltaTime;
 				float weight = 0.0f;

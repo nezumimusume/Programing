@@ -152,6 +152,9 @@
     <ClCompile Include="particle\tkParticleResources.cpp">
       <Filter>Source Files\particle</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\tkTexture.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -282,6 +285,9 @@
     </ClInclude>
     <ClInclude Include="particle\tkParticleResources.h">
       <Filter>Source Files\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkTexture.h">
+      <Filter>Source Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

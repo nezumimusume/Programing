@@ -29,6 +29,10 @@ namespace tkEngine{
 		{
 			return m_tex;
 		}
+		/*!
+		 * @brief	テクスチャをロード。
+		 */
+		void Load( const char* fileName );
 	private:
 		LPDIRECT3DTEXTURE9	m_tex;		//!<テクスチャ。
 	};

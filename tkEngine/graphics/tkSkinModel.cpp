@@ -17,7 +17,8 @@ namespace tkEngine{
 			D3DXMATRIX* rotationMatrix,
 			D3DXMATRIX* viewMatrix,
 			D3DXMATRIX* projMatrix,
-			CLight* light
+			CLight* light,
+			CTexture* normalMap
 		)
 		{
 			D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
@@ -50,6 +51,13 @@ namespace tkEngine{
 					light,
 					sizeof(CLight)
 				);
+				if (normalMap != nullptr) {
+					pEffect->SetBool("g_isHasNormalMap", true);
+					pEffect->SetTexture("g_normalTexture", normalMap->GetTextureDX());
+				}
+				else {
+					pEffect->SetBool("g_isHasNormalMap", false);
+				}
 			}
 			if (pMeshContainer->pSkinInfo != NULL)
 			{
@@ -99,7 +107,7 @@ namespace tkEngine{
 				}
 			}
 			else {
-				
+							
 				D3DXMATRIX mWorld;
 				if (pFrame != NULL) {
 					mWorld = pFrame->CombinedTransformationMatrix;
@@ -130,7 +138,8 @@ namespace tkEngine{
 			D3DXMATRIX* rotationMatrix,
 			D3DXMATRIX* viewMatrix, 
 			D3DXMATRIX* projMatrix,
-			CLight* light)
+			CLight* light,
+			CTexture* normalMap)
 		{
 			LPD3DXMESHCONTAINER pMeshContainer;
 
@@ -146,7 +155,8 @@ namespace tkEngine{
 					rotationMatrix,
 					viewMatrix,
 					projMatrix,
-					light
+					light,
+					normalMap
 					);
 
 				pMeshContainer = pMeshContainer->pNextMeshContainer;
@@ -162,7 +172,8 @@ namespace tkEngine{
 					rotationMatrix,
 					viewMatrix,
 					projMatrix,
-					light
+					light,
+					normalMap
 					);
 			}
 
@@ -176,7 +187,8 @@ namespace tkEngine{
 					rotationMatrix,
 					viewMatrix,
 					projMatrix,
-					light
+					light,
+					normalMap
 					);
 			}
 		}
@@ -184,7 +196,8 @@ namespace tkEngine{
 	CSkinModel::CSkinModel() :
 		m_skinModelData(nullptr),
 		m_worldMatrix(CMatrix::Identity),
-		m_light(nullptr)
+		m_light(nullptr),
+		m_normalMap(nullptr)
 	{
 	}
 	CSkinModel::~CSkinModel()
@@ -226,7 +239,8 @@ namespace tkEngine{
 				r_cast<D3DXMATRIX*>(&m_rotationMatrix),
 				viewMatrix,
 				projMatrix,
-				m_light
+				m_light,
+				m_normalMap
 				);
 		}
 	}

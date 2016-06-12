@@ -49,6 +49,14 @@ namespace tkEngine {
 		{
 			m_light = light;
 		}
+		/*!
+		*@brief	法線マップを設定。
+		*@param[in] normalMap
+		*/
+		void SetNormalMap(CTexture* normalMap)
+		{
+			m_normalMap = normalMap;
+		}
 	private:
 		CMatrix				m_worldMatrix;		//!<ワールド行列。
 		CMatrix				m_rotationMatrix;	//!<回転行列。
@@ -56,6 +64,7 @@ namespace tkEngine {
 		CEffect*			m_pEffect;			//!<エフェクト。
 		CAnimation			m_animation;		//!<アニメーション。
 		CLight*				m_light;			//!<ライト。
+		CTexture*           m_normalMap;		//!<法線マップ。
 	};
 }
 

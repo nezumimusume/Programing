@@ -14,11 +14,26 @@ float4x4	g_worldMatrix;			//!<ワールド行列。
 float4x4	g_rotationMatrix;		//!<回転行列。
 float4x4	g_viewMatrixRotInv;		//!<カメラの回転行列の逆行列。
 
+bool g_isHasNormalMap;			//法線マップ保持している？
+
 texture g_diffuseTexture;		//ディフューズテクスチャ。
 sampler g_diffuseTextureSampler = 
 sampler_state
 {
 	Texture = <g_diffuseTexture>;
+    MipFilter = NONE;
+    MinFilter = NONE;
+    MagFilter = NONE;
+    AddressU = Wrap;
+	AddressV = Wrap;
+};
+
+//法線マップ
+texture g_normalTexture;		//法線マップ。
+sampler g_normalMapSampler = 
+sampler_state
+{
+	Texture = <g_normalTexture>;
     MipFilter = NONE;
     MinFilter = NONE;
     MagFilter = NONE;
@@ -36,6 +51,7 @@ struct VS_INPUT
     float4  BlendWeights    : BLENDWEIGHT;
     float4  BlendIndices    : BLENDINDICES;
     float3  Normal          : NORMAL;
+    float3	Tangent			: TANGENT;		//接ベクトル
     float3  Tex0            : TEXCOORD0;
 };
 
@@ -44,20 +60,23 @@ struct VS_INPUT
  */
 struct VS_OUTPUT
 {
-	float4  Pos     : POSITION;
-    float3  Normal	: NORMAL;
-    float2  Tex0    : TEXCOORD0;
+	float4  Pos     		: POSITION;
+    float3  Normal			: NORMAL;
+    float2  Tex0   			: TEXCOORD0;
+    float3	Tangent			: TEXCOORD1;	//接ベクトル
 };
 /*!
  *@brief	ワールド座標とワールド法線をスキン行列から計算する。
  *@param[in]	In		入力頂点。
  *@param[out]	Pos		ワールド座標の格納先。
  *@param[out]	Normal	ワールド法線の格納先。
+ *@param[out]	Tangent	ワールド接ベクトルの格納先。
  */
-void CalcWorldPosAndNormalFromSkinMatrix( VS_INPUT In, out float3 Pos, out float3 Normal )
+void CalcWorldPosAndNormalFromSkinMatrix( VS_INPUT In, out float3 Pos, out float3 Normal, out float3 Tangent )
 {
 	Pos = 0.0f;
 	Normal = 0.0f;
+	Tangent = 0.0f;
 	//ブレンドするボーンのインデックス。
 	int4 IndexVector = D3DCOLORtoUBYTE4(In.BlendIndices);
 	
@@ -71,22 +90,26 @@ void CalcWorldPosAndNormalFromSkinMatrix( VS_INPUT In, out float3 Pos, out float
         
         Pos += mul(In.Pos, g_mWorldMatrixArray[IndexArray[iBone]]) * BlendWeightsArray[iBone];
         Normal += mul(In.Normal, g_mWorldMatrixArray[IndexArray[iBone]]) * BlendWeightsArray[iBone];
+        Tangent += mul(In.Tangent, g_mWorldMatrixArray[IndexArray[iBone]]) * BlendWeightsArray[iBone];
     }
     LastWeight = 1.0f - LastWeight; 
     
 	Pos += (mul(In.Pos, g_mWorldMatrixArray[IndexArray[g_numBone-1]]) * LastWeight);
     Normal += (mul(In.Normal, g_mWorldMatrixArray[IndexArray[g_numBone-1]]) * LastWeight);
+    Tangent += (mul(In.Tangent, g_mWorldMatrixArray[IndexArray[g_numBone-1]]) * LastWeight);
 }
 /*!
  *@brief	ワールド座標とワールド法線を計算。
  *@param[in]	In		入力頂点。
  *@param[out]	Pos		ワールド座標の格納先。
  *@param[out]	Normal	ワールド法線の格納先。
+ *@param[out]	Tangent	ワールド接ベクトルの格納先。
  */
-void CalcWorldPosAndNormal( VS_INPUT In, out float3 Pos, out float3 Normal )
+void CalcWorldPosAndNormal( VS_INPUT In, out float3 Pos, out float3 Normal, out float3 Tangent )
 {
 	Pos = mul(In.Pos, g_worldMatrix );
 	Normal = mul(In.Normal, g_rotationMatrix );
+	Tangent = mul(In.Tangent, g_rotationMatrix );
 }
 /*!
  *@brief	頂点シェーダー。
@@ -96,16 +119,17 @@ void CalcWorldPosAndNormal( VS_INPUT In, out float3 Pos, out float3 Normal )
 VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 {
 	VS_OUTPUT o = (VS_OUTPUT)0;
-	float3 Pos, Normal;
+	float3 Pos, Normal, Tangent;
 	if(hasSkin){
 		//スキンあり。
-	    CalcWorldPosAndNormalFromSkinMatrix( In, Pos, Normal );
+	    CalcWorldPosAndNormalFromSkinMatrix( In, Pos, Normal, Tangent );
 	}else{
 		//スキンなし。
-		CalcWorldPosAndNormal( In, Pos, Normal );
+		CalcWorldPosAndNormal( In, Pos, Normal, Tangent );
 	}
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
     o.Normal = normalize(Normal);
+    o.Tangent = normalize(Tangent);
     o.Tex0 = In.Tex0;
 	return o;
 }
@@ -114,15 +138,35 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
  */
 float4 PSMain( VS_OUTPUT In ) : COLOR
 {
-	//フレネル反射
-/*	float3 normalInCamera = mul(In.Normal, g_viewMatrixRotInv );
-	float t = 1.0f - abs(dot(normalInCamera, float3(0.0f, 0.0f, 1.0f)));
-	t = pow(t, 2.5f);*/
 	float4 color = tex2D(g_diffuseTextureSampler, In.Tex0);
-	float4 lig = DiffuseLight(In.Normal);
+	float3 normal = 0.0f;
+	if(g_isHasNormalMap){
+		//法線マップあり。
+		normal = tex2D( g_normalMapSampler, In.Tex0);
+		float4x4 tangentSpaceMatrix;
+		float3 biNormal = normalize( cross( In.Tangent, In.Normal) );
+		tangentSpaceMatrix[0] = float4( In.Tangent, 0.0f);
+		tangentSpaceMatrix[1] = float4( biNormal, 0.0f);
+		tangentSpaceMatrix[2] = float4( In.Normal, 0.0f);
+		tangentSpaceMatrix[3] = float4( 0.0f, 0.0f, 0.0f, 1.0f );
+		//-1.0～1.0の範囲にマッピングする。
+		normal = (normal * 2.0f)- 1.0f;
+		normal = tangentSpaceMatrix[0] * normal.x + tangentSpaceMatrix[1] * normal.y + tangentSpaceMatrix[2] * normal.z; 
+	}else{
+		//法線マップなし。
+		normal = In.Normal;
+	}
+	
+	
+	float4 lig = DiffuseLight(normal);
 	color *= lig;
-//	color.a = CalcLuminance(color.xyz);
-//	color.xyz += t;
+	
+	//フレネル。
+	float3 normalInCamera = mul(normal, g_viewMatrixRotInv );
+	float t = 1.0f - abs(dot(normalInCamera, float3(0.0f, 0.0f, 1.0f)));
+	t = pow(t, 3.0f);
+	
+	color.xyz += t;
 	return color;
 }
 /*!

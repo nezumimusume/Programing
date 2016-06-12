@@ -17,10 +17,10 @@ SLight	g_light;		//ƒ‰ƒCƒg
 float4 DiffuseLight( float3 normal )
 {
 	float4 color = 0.0f;
-	color += max( 0, dot(normal, g_light.diffuseLightDir[0])) * g_light.diffuseLightColor[0];
-	color += max( 0, dot(normal, g_light.diffuseLightDir[1])) * g_light.diffuseLightColor[1];
-	color += max( 0, dot(normal, g_light.diffuseLightDir[2])) * g_light.diffuseLightColor[2];
-	color += max( 0, dot(normal, g_light.diffuseLightDir[3])) * g_light.diffuseLightColor[3];
+	color += max( 0, -dot(normal, g_light.diffuseLightDir[0])) * g_light.diffuseLightColor[0];
+	color += max( 0, -dot(normal, g_light.diffuseLightDir[1])) * g_light.diffuseLightColor[1];
+	color += max( 0, -dot(normal, g_light.diffuseLightDir[2])) * g_light.diffuseLightColor[2];
+	color += max( 0, -dot(normal, g_light.diffuseLightDir[3])) * g_light.diffuseLightColor[3];
 	color.xyz += g_light.ambient.xyz;
 	color.a = 1.0f;
 	return color;

@@ -5,6 +5,7 @@
 #include "tkEngine/graphics/tkEffect.h"
 #include "tkEngine/graphics/tkCamera.h"
 #include "tkEngine/graphics/tkLight.h"
+#include "tkEngine/graphics/tkTexture.h"
 
 /*!
  * @brief	スキンモデル表示テスト
@@ -22,30 +23,34 @@ class CSkinModelDrawTest : public IGameObject {
 	CCamera			camera;				//カメラ。
 	CLight			light;				//ライト。
 	int				currentAnimSetNo;		
+	CTexture		normalMap;			//法線マップ。
 public:
 	void Start() override 
 	{
 		skinModelData.LoadModelData("Assets/modelData/unity.X", &animation);
+		normalMap.Load("Assets/modelData/utc_nomal.tga");
+
 		//skinModelData.LoadModelData("Assets/modelData/unity.X", NULL);
 		skinModel.Init(&skinModelData);
 		skinModel.SetLight(&light);
-		
-		camera.SetPosition(CVector3(2.0f, 1.0f, 0.0f));
-		camera.SetTarget(CVector3(0.0f, 1.0f, 0.0f));
+		skinModel.SetNormalMap(&normalMap);
+
+		camera.SetPosition(CVector3(0.0f, 0.5f, 1.0f));
+		camera.SetTarget(CVector3(0.0f, 0.5f, 0.0f));
 	
 		camera.SetFar(1000.0f);
 		camera.Update();
 
-		light.SetDiffuseLightDirection(0,  CVector3(0.707f, 0.0f, 0.707f));
-		light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, 0.707f));
-		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, 0.707f));
-		light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, 0.707f));
+		light.SetDiffuseLightDirection(0,  CVector3(0.707f, 0.0f, -0.707f));
+		light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
+		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
+		light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
 
 		light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 		light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 		light.SetDiffuseLightColor(2, CVector4(0.3f, 0.3f, 0.3f, 1.0f));
 		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetAmbinetLight(CVector3(0.45f, 0.45f, 0.45f));
+		light.SetAmbinetLight(CVector3(0.3f, 0.3f, 0.3f));
 		animation.SetAnimationEndTime(AnimationRun, 0.8);
 		currentAnimSetNo = AnimationStand;
 		animation.PlayAnimation(AnimationStand);

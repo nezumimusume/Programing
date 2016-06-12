@@ -35,6 +35,15 @@ namespace tkEngine{
 		 */
 		void Init(ID3DXAnimationController* anim);
 		/*!
+		* @brief	アニメーションの終了タイムを設定する。
+		*@param[in]	animationSetIndex		アニメーションインデックス。
+		*@param[in] endTime					アニメーションの終了タイム。-1.0を設定するとアニメーションファイルに設定されている終了タイムになる。
+		*/
+		void SetAnimationEndTime(int animationSetIndex, double endTime)
+		{
+			animationEndTime[animationSetIndex] = endTime;
+		}
+		/*!
 		*@brief	アニメーションの再生。
 		*@param[in]		animationIndex		再生したいアニメーションのインデックス。
 		*/
@@ -69,6 +78,9 @@ namespace tkEngine{
 		int										numAnimSet;				//!<アニメーションセットの数。
 		std::unique_ptr<ID3DXAnimationSet*[]>	animationSets;			//!<アニメーションセットの配列。
 		std::unique_ptr<float[]>				blendRateTable;			//!<ブレンディングレートのテーブル。
+		std::unique_ptr<double[]>				animationEndTime;		//!<アニメーションの終了タイム。デフォルトは-1.0が入っていて、-1.0が入っている場合はID3DXAnimationSetのアニメーション終了タイムが優先される。
+																		//!<DirectX9のアニメーションセットに１秒以下のアニメーションを入れる方法が見つからない。1秒以下のアニメーションはこいつを適時設定。
+		double									localAnimationTime;		//!<ローカルアニメーションタイム。
 		int										currentAnimationSetNo;	//!<現在再生中のアニメーショントラックの番号。
 		int										currentTrackNo;			//!<現在のトラックの番号。
 		int										numMaxTracks;			//!<アニメーショントラックの最大数。

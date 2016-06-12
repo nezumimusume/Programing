@@ -59,6 +59,7 @@ namespace {
 			return hr;
 		SAFE_RELEASE(pMeshContainer->MeshData.pMesh);
 		SAFE_RELEASE(pMeshContainer->pBoneCombinationBuf);
+		
 		{
 			// Get palette size
 			// First 9 constants are used for other data.  Each 4x3 matrix takes up 3 constants.
@@ -77,7 +78,7 @@ namespace {
 				pMeshContainer->UseSoftwareVP = true;
 				Flags |= D3DXMESH_SYSTEMMEM;
 			}
-
+			
 			SAFE_RELEASE(pMeshContainer->MeshData.pMesh);
 			hr = pMeshContainer->pSkinInfo->ConvertToIndexedBlendedMesh
 				(
@@ -92,8 +93,9 @@ namespace {
 					&pMeshContainer->MeshData.pMesh);
 			if (FAILED(hr))
 				goto e_Exit;
-
-
+				
+		
+			
 			// FVF has to match our declarator. Vertex shaders are not as forgiving as FF pipeline
 			DWORD NewFVF = (pMeshContainer->MeshData.pMesh->GetFVF() & D3DFVF_POSITION_MASK) | D3DFVF_NORMAL |
 				D3DFVF_TEX1 | D3DFVF_LASTBETA_UBYTE4;
@@ -350,32 +352,21 @@ namespace {
 		pMesh->GetDevice(&pd3dDevice);
 		NumFaces = pMesh->GetNumFaces();
 
-		// if no normals are in the mesh, add them
-		if (!(pMesh->GetFVF() & D3DFVF_NORMAL))
-		{
-			pMeshContainer->MeshData.Type = D3DXMESHTYPE_MESH;
+		pMeshContainer->MeshData.pMesh = pMesh;
+		pMeshContainer->MeshData.Type = D3DXMESHTYPE_MESH;
 
-			// clone the mesh to make room for the normals
-			hr = pMesh->CloneMeshFVF(pMesh->GetOptions(),
-				pMesh->GetFVF() | D3DFVF_NORMAL,
-				pd3dDevice, &pMeshContainer->MeshData.pMesh);
-			if (FAILED(hr))
-				goto e_Exit;
+		pMesh->AddRef();
 
-			// get the new pMesh pointer back out of the mesh container to use
-			// NOTE: we do not release pMesh because we do not have a reference to it yet
-			pMesh = pMeshContainer->MeshData.pMesh;
-
-			// now generate the normals for the pmesh
-			D3DXComputeNormals(pMesh, NULL);
-		}
-		else  // if no normals, just add a reference to the mesh for the mesh container
-		{
-			pMeshContainer->MeshData.pMesh = pMesh;
-			pMeshContainer->MeshData.Type = D3DXMESHTYPE_MESH;
-
-			pMesh->AddRef();
-		}
+		D3DVERTEXELEMENT9 decl[] = {
+			{ 0, 0 ,	D3DDECLTYPE_FLOAT4		, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION		, 0 },
+			{ 0, 16,    D3DDECLTYPE_FLOAT4		, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_BLENDWEIGHT	, 0 },
+			{ 0, 32,    D3DDECLTYPE_FLOAT4		, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_BLENDINDICES	, 0 },
+			{ 0, 48,	D3DDECLTYPE_FLOAT3		, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL		, 0 },
+			{ 0, 60,	D3DDECLTYPE_FLOAT3		, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TANGENT		, 0 },
+			{ 0, 72,	D3DDECLTYPE_FLOAT2		, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD		, 0 },
+			D3DDECL_END()
+		};
+		
 
 		// allocate memory to contain the material information.  This sample uses
 		//   the D3D9 materials and texture names instead of the EffectInstance style materials
@@ -455,6 +446,66 @@ namespace {
 
 			// GenerateSkinnedMesh will take the general skinning information and transform it to a HW friendly version
 			hr = GenerateSkinnedMesh(pd3dDevice, pMeshContainer);
+			if (FAILED(hr))
+				goto e_Exit;
+
+			LPD3DXMESH pOutMesh;
+			hr = pMeshContainer->MeshData.pMesh->CloneMesh(
+				pMeshContainer->MeshData.pMesh->GetOptions(),
+				decl,
+				pd3dDevice, &pOutMesh);
+			if (FAILED(hr))
+				goto e_Exit;
+			hr = D3DXComputeTangentFrameEx(
+				pOutMesh,
+				D3DDECLUSAGE_TEXCOORD,
+				0,
+				D3DDECLUSAGE_TANGENT,
+				0,
+				D3DX_DEFAULT,
+				0,
+				D3DDECLUSAGE_NORMAL,
+				0,
+				0,
+				NULL,
+				0.01f,    //ボケ具合.値をおおきくするとぼけなくなる
+				0.25f,
+				0.01f,
+				&pOutMesh,
+				NULL
+				);
+			pMeshContainer->MeshData.pMesh->Release();
+			pMeshContainer->MeshData.pMesh = pOutMesh;
+			if (FAILED(hr))
+				goto e_Exit;
+		}
+		else {
+			LPD3DXMESH pOutMesh;
+			hr = pMeshContainer->MeshData.pMesh->CloneMesh(
+				pMeshContainer->MeshData.pMesh->GetOptions(),
+				decl,
+				pd3dDevice, &pOutMesh);
+
+			hr = D3DXComputeTangentFrameEx(
+				pOutMesh,
+				D3DDECLUSAGE_TEXCOORD,
+				0,
+				D3DDECLUSAGE_TANGENT,
+				0,
+				D3DX_DEFAULT,
+				0,
+				D3DDECLUSAGE_NORMAL,
+				0,
+				0,
+				NULL,
+				0.01f,    //ボケ具合.値をおおきくするとぼけなくなる
+				0.25f,
+				0.01f,
+				&pOutMesh,
+				NULL
+				);
+			pMeshContainer->MeshData.pMesh->Release();
+			pMeshContainer->MeshData.pMesh = pOutMesh;
 			if (FAILED(hr))
 				goto e_Exit;
 		}
