@@ -139,34 +139,10 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 float4 PSMain( VS_OUTPUT In ) : COLOR
 {
 	float4 color = tex2D(g_diffuseTextureSampler, In.Tex0);
-	float3 normal = 0.0f;
-	if(g_isHasNormalMap){
-		//法線マップあり。
-		normal = tex2D( g_normalMapSampler, In.Tex0);
-		float4x4 tangentSpaceMatrix;
-		float3 biNormal = normalize( cross( In.Tangent, In.Normal) );
-		tangentSpaceMatrix[0] = float4( In.Tangent, 0.0f);
-		tangentSpaceMatrix[1] = float4( biNormal, 0.0f);
-		tangentSpaceMatrix[2] = float4( In.Normal, 0.0f);
-		tangentSpaceMatrix[3] = float4( 0.0f, 0.0f, 0.0f, 1.0f );
-		//-1.0～1.0の範囲にマッピングする。
-		normal = (normal * 2.0f)- 1.0f;
-		normal = tangentSpaceMatrix[0] * normal.x + tangentSpaceMatrix[1] * normal.y + tangentSpaceMatrix[2] * normal.z; 
-	}else{
-		//法線マップなし。
-		normal = In.Normal;
-	}
 	
-	
-	float4 lig = DiffuseLight(normal);
+	float4 lig = DiffuseLight(In.Normal);
 	color *= lig;
 	
-	//フレネル。
-	float3 normalInCamera = mul(normal, g_viewMatrixRotInv );
-	float t = 1.0f - abs(dot(normalInCamera, float3(0.0f, 0.0f, 1.0f)));
-	t = pow(t, 3.0f);
-	
-	color.xyz += t;
 	return color;
 }
 /*!
