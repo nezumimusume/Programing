@@ -27,7 +27,7 @@ class CSkinModelDrawTest : public IGameObject {
 public:
 	void Start() override 
 	{
-		skinModelData.LoadModelData("Assets/modelData/unity.X", &animation);
+		skinModelData.LoadModelData("Assets/modelData/stage10.x", &animation);
 		normalMap.Load("Assets/modelData/utc_nomal.tga");
 
 		//skinModelData.LoadModelData("Assets/modelData/unity.X", NULL);
@@ -35,7 +35,7 @@ public:
 		skinModel.SetLight(&light);
 		skinModel.SetNormalMap(&normalMap);
 
-		camera.SetPosition(CVector3(0.0f, 0.5f, 1.0f));
+		camera.SetPosition(CVector3(0.0f, 0.5f, -100.0f));
 		camera.SetTarget(CVector3(0.0f, 0.5f, 0.0f));
 	
 		camera.SetFar(1000.0f);
