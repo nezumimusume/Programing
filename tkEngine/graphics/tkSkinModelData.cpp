@@ -327,7 +327,7 @@ namespace {
 
 		// get the pMesh interface pointer out of the mesh data structure
 		pMesh = pMeshData->pMesh;
-
+		DWORD numVert = pMesh->GetNumVertices();
 		// this sample does not FVF compatible meshes, so fail when one is found
 		if (pMesh->GetFVF() == 0)
 		{
@@ -476,16 +476,28 @@ namespace {
 				);
 			pMeshContainer->MeshData.pMesh->Release();
 			pMeshContainer->MeshData.pMesh = pOutMesh;
+
+
+			std::vector<DWORD> adjList;
+			adjList.resize(3 * pOutMesh->GetNumFaces());
+			pOutMesh->GenerateAdjacency(1.0f/512.0f, &adjList[0]); // EPSIONは適当な値(1.0f/512とか)
+
+			DWORD numVert = pOutMesh->GetNumVertices();  // Optimizeの一種
+			pOutMesh->OptimizeInplace(D3DXMESHOPT_COMPACT, &adjList[0], NULL, NULL, NULL);
+			numVert = pOutMesh->GetNumVertices();
+
 			if (FAILED(hr))
 				goto e_Exit;
 		}
 		else {
 			LPD3DXMESH pOutMesh;
+			DWORD numVert = pMeshContainer->MeshData.pMesh->GetNumVertices();
 			hr = pMeshContainer->MeshData.pMesh->CloneMesh(
 				pMeshContainer->MeshData.pMesh->GetOptions(),
 				decl,
 				pd3dDevice, &pOutMesh);
 
+			numVert = pMeshContainer->MeshData.pMesh->GetNumVertices();
 			hr = D3DXComputeTangentFrameEx(
 				pOutMesh,
 				D3DDECLUSAGE_TEXCOORD,
@@ -504,10 +516,19 @@ namespace {
 				&pOutMesh,
 				NULL
 				);
+			numVert = pOutMesh->GetNumVertices();
 			pMeshContainer->MeshData.pMesh->Release();
 			pMeshContainer->MeshData.pMesh = pOutMesh;
 			if (FAILED(hr))
 				goto e_Exit;
+			LPD3DXMESH optMesh;
+			std::vector<DWORD> adjList;
+			adjList.resize(3 * pOutMesh->GetNumFaces());
+			pOutMesh->GenerateAdjacency(1.0f , &adjList[0]); // EPSIONは適当な値(1.0f/512とか)
+			numVert = pOutMesh->GetNumVertices();  // Optimizeの一種
+			pOutMesh->Optimize(D3DXMESHOPT_COMPACT, &adjList[0], NULL, NULL, NULL, &optMesh);
+			numVert = optMesh->GetNumVertices();
+
 		}
 
 		*ppNewMeshContainer = pMeshContainer;
