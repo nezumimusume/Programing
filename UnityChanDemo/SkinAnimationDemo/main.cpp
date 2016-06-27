@@ -30,7 +30,6 @@ public:
 		skinModelData.LoadModelData("Assets/modelData/Unity.X", &animation);
 		normalMap.Load("Assets/modelData/utc_nomal.tga");
 
-		//skinModelData.LoadModelData("Assets/modelData/unity.X", NULL);
 		skinModel.Init(&skinModelData);
 		skinModel.SetLight(&light);
 		skinModel.SetNormalMap(&normalMap);
