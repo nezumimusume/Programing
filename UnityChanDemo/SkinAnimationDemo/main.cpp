@@ -6,42 +6,23 @@
 #include "tkEngine/graphics/tkCamera.h"
 #include "tkEngine/graphics/tkLight.h"
 #include "tkEngine/graphics/tkTexture.h"
+#include "UnityChan.h"
 
-/*!
- * @brief	スキンモデル表示テスト
- */
-class CSkinModelDrawTest : public IGameObject {
-	enum AnimationNo {
-		AnimationStand,		//立ち。
-		AnimationWalk,		//歩き。
-		AnimationRun,		//走り。
-		AnimationJump,		//ジャンプ。
-	};
+CCamera			*g_camera;				//カメラ。
+
+class Map : public IGameObject {
 	CSkinModelData	skinModelData;		//スキンモデルデータ。
 	CSkinModel		skinModel;			//スキンモデル。
 	CAnimation		animation;			//アニメーション。
-	CCamera			camera;				//カメラ。
 	CLight			light;				//ライト。
-	int				currentAnimSetNo;		
-	CTexture		normalMap;			//法線マップ。
 public:
-	void Start() override 
+	Map()
 	{
-		skinModelData.LoadModelData("Assets/modelData/stage10.x", &animation);
-		normalMap.Load("Assets/modelData/utc_nomal.tga");
-
-		//skinModelData.LoadModelData("Assets/modelData/unity.X", NULL);
+		skinModelData.LoadModelData("Assets/modelData/Court.X", NULL);
 		skinModel.Init(&skinModelData);
 		skinModel.SetLight(&light);
-		skinModel.SetNormalMap(&normalMap);
 
-		camera.SetPosition(CVector3(0.0f, 0.5f, -100.0f));
-		camera.SetTarget(CVector3(0.0f, 0.5f, 0.0f));
-	
-		camera.SetFar(1000.0f);
-		camera.Update();
-
-		light.SetDiffuseLightDirection(0,  CVector3(0.707f, 0.0f, -0.707f));
+		light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
 		light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
 		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
 		light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
@@ -51,39 +32,22 @@ public:
 		light.SetDiffuseLightColor(2, CVector4(0.3f, 0.3f, 0.3f, 1.0f));
 		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 		light.SetAmbinetLight(CVector3(0.3f, 0.3f, 0.3f));
-		animation.SetAnimationEndTime(AnimationRun, 0.8);
-		currentAnimSetNo = AnimationStand;
-		animation.PlayAnimation(AnimationStand);
 	}
-	void Update() override 
+	~Map()
 	{
-		animation.Update(1.0f / 60.0f);
-		static float angle = 0.0f;
-		if (KeyInput().IsRightPress()) {
-			angle += 0.01f;
-		}
-		else if (KeyInput().IsLeftPress()) {
-			angle -= 0.01;
-		}
-		camera.Update();
-		CQuaternion qRot;
-		qRot.SetRotation(CVector3::AxisY, CMath::DegToRad(-90.0f) * angle);
-		
-		skinModel.UpdateWorldMatrix(CVector3(0.0f, 0.0f, 0.0f), qRot, CVector3::One);
-		if (KeyInput().IsTrgger(CKeyInput::enKeyA)) {
-			currentAnimSetNo++;
-			currentAnimSetNo %= animation.GetNumAnimationSet();
-			animation.PlayAnimation(currentAnimSetNo);
-		}
-		if (KeyInput().IsTrgger(CKeyInput::enKeyB)) {
-			currentAnimSetNo++;
-			currentAnimSetNo %= animation.GetNumAnimationSet();
-			animation.PlayAnimation(currentAnimSetNo, 0.1f);
-		}
+
 	}
-	void Render( CRenderContext& renderContext ) override
+	void Map::Start() override
 	{
-		skinModel.Draw(renderContext, camera.GetViewMatrix(), camera.GetProjectionMatrix());
+
+	}
+	void Map::Update() override
+	{
+		skinModel.UpdateWorldMatrix(CVector3(0.0f, 0.0f, 0.0f), CQuaternion::Identity, CVector3::One);
+	}
+	void Map::Render(CRenderContext& renderContext) override
+	{
+		skinModel.Draw(renderContext, g_camera->GetViewMatrix(), g_camera->GetProjectionMatrix());
 	}
 };
 /*!
@@ -129,7 +93,8 @@ int WINAPI wWinMain(
 {
 	//tkEngineの初期化。
 	InitTkEngine( hInst );
-	GameObjectManager().NewGameObject<CSkinModelDrawTest>(0);
+	NewGO<Map>(0);
+	NewGO<UnityChan>(0);
 	Engine().RunGameLoop();		//ゲームループを実行。
 	
 	return 0;
