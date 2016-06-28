@@ -54,7 +54,7 @@ namespace tkEngine{
 	 *@param[in]	startPos	開始座標。
 	 *@param[in]	targetPos	目標座標。
 	 */
-	void CPathFinding::FindRoot(std::vector<CPathFinding::CPathFinding::SNode*>* root, const CVector3& startPos, const CVector3& targetPos )
+	void CPathFinding::FindRoot(std::vector<CPathFinding::SNode*>* root, const CVector3& startPos, const CVector3& targetPos )
 	{
 		//ルートをクリア。
 		root->clear();

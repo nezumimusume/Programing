@@ -6,6 +6,7 @@
 #define _CGAMEOBJECTMANAGER_H_
 
 #include "tkEngine/gameObject/tkGameObject.h"
+#include "tkEngine/util/tkUtil.h"
 
 namespace tkEngine{
 	struct SRenderContextMap;
@@ -20,6 +21,21 @@ namespace tkEngine{
 		}
 		~CGameObjectManager()
 		{
+		}
+		/*!
+		*@brief	ゲームオブジェクトの名前キーを作成。
+		*/
+		static unsigned int MakeGameObjectNameKey(const char* objectName)
+		{
+			static const unsigned int defaultNameKey = CUtil::MakeHash("Undefined");	//名前キー。
+			unsigned int hash;
+			if (objectName == nullptr) {
+				hash = defaultNameKey;
+			}
+			else {
+				hash = CUtil::MakeHash(objectName);
+			}
+			return hash;
 		}
 	public:
 		/*!
@@ -52,26 +68,31 @@ namespace tkEngine{
 		void Init( int gameObjectPrioMax );
 		/*!
 		*@brief	ゲームオブジェクトの追加。
-		*@param	prio	実行優先順位。
+		*@param[in]	prio			実行優先順位。
+		*@param[in] go				ゲームオブジェクト
+		*@param[in] objectName		オブジェクト名
 		*/
-		void AddGameObject(GameObjectPrio prio, IGameObject* go)
+		void AddGameObject(GameObjectPrio prio, IGameObject* go, const char* objectName = nullptr)
 		{
 			go->Awake();
+			unsigned int hash = MakeGameObjectNameKey(objectName);
 			m_gameObjectListArray.at(prio).push_back(go);
 		}
 		/*!
 		 *@brief	ゲームオブジェクトのnew
 		 *@details
 		 * この関数を使用してnewしたオブジェクトは必ずDeleteGameObjectを実行することでdeleteされます。
-		 *@param	prio	実行優先順位。
+		 *@param[in]	prio		実行優先順位。
+		 *@param[in]	objectName	オブジェクト名。
 		 */
 		template<class T>
-		T* NewGameObject(GameObjectPrio prio )
+		T* NewGameObject(GameObjectPrio prio, const char* objectName = nullptr)
 		{
 			TK_ASSERT( prio <= m_gameObjectPriorityMax, "ゲームオブジェクトの優先度の最大数が大きすぎます。");
 			T* newObject = new T();
 			newObject->Awake();
 			newObject->SetMarkNewFromGameObjectManager();
+			unsigned int hash = MakeGameObjectNameKey(objectName);
 			m_gameObjectListArray.at(prio).push_back(newObject);
 			return newObject;
 		}
@@ -103,12 +124,13 @@ namespace tkEngine{
 	}
 	/*!
 	 *@brief	ゲームオブジェクト生成のヘルパー関数。
-	 *@param[in]	priority	プライオリティ
+	 *@param[in]	priority	プライオリティ。
+	 *@param[in]	objectName	オブジェクト名。
 	 */
 	template<class T>
-	static inline T* NewGO( int priority )
+	static inline T* NewGO( int priority, const char* objectName = nullptr)
 	{
-		return GameObjectManager().NewGameObject<T>( priority );
+		return GameObjectManager().NewGameObject<T>( priority, objectName );
 	}
 	/*!
 	 *@brief	ゲームオブジェクト削除のヘルパー関数。
@@ -123,10 +145,11 @@ namespace tkEngine{
 	 *@brief	ゲームオブジェクトの追加のヘルパー関数。
 	 *@param[in]	go			追加するゲームオブジェクト。
 	 *@param[in]	priority	プライオリティ。
+	 *@param[in]	objectName	ゲームオブジェクトの名前。
 	 */
-	static inline void AddGO(int priority, IGameObject* go )
+	static inline void AddGO(int priority, IGameObject* go, const char* objectName = nullptr)
 	{
-		GameObjectManager().AddGameObject(priority, go);
+		GameObjectManager().AddGameObject(priority, go, objectName);
 	}
 }
 #endif // _CGAMEOBJECTMANAGER_H_
