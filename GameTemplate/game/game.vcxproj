@@ -157,7 +157,6 @@
     <ClCompile Include="lib\SkinModelData.cpp" />
     <ClCompile Include="lib\System.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Model.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -174,7 +173,6 @@
     <ClInclude Include="lib\SkinModel.h" />
     <ClInclude Include="lib\SkinModelData.h" />
     <ClInclude Include="lib\System.h" />
-    <ClInclude Include="Model.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

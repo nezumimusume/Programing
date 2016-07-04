@@ -27,9 +27,6 @@
     <ClCompile Include="lib\System.cpp">
       <Filter>ソース ファイル\lib</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="lib\Camera.cpp">
       <Filter>ソース ファイル\lib</Filter>
     </ClCompile>
@@ -55,9 +52,6 @@
     </ClInclude>
     <ClInclude Include="lib\System.h">
       <Filter>ソース ファイル\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="lib\Camera.h">
       <Filter>ソース ファイル\lib</Filter>
