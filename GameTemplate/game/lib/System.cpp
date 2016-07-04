@@ -72,7 +72,7 @@ INT WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, INT)
 	// ウィンドウを作成。
 	HWND hWnd = CreateWindow("Shader Tutorial", "Shader Tutorial 00",
 		WS_OVERLAPPEDWINDOW, 100, 100, 900, 900,
-		NULL, NULL, wc.hInstance, NULL);
+		NULL, NULL, wc.hInstance, NULL);%
 	// Direct3Dを初期化。
 	InitD3D(hWnd);
 

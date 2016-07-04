@@ -8,6 +8,10 @@
 #include <memory>
 #include <vector>
 #include <map>
+
+#include "btBulletDynamicsCommon.h"
+#include "BulletCollision\CollisionDispatch\btGhostObject.h"
+
 #include "lib/System.h"
 
 #include "lib/Camera.h"
