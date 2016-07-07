@@ -48,6 +48,9 @@
     <Filter Include="Source Files\AI">
       <UniqueIdentifier>{d261529a-8bd2-4093-8d49-d7d654ac798e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\timer">
+      <UniqueIdentifier>{c6813058-4065-4fa9-b257-2e7c0c4ee19e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -297,6 +300,9 @@
     </ClInclude>
     <ClInclude Include="AI\tkPathFinding.h">
       <Filter>Source Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="timer\tkStopwatch.h">
+      <Filter>Source Files\timer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -76,7 +76,6 @@ INT WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, INT)
 	// Direct3DÇèâä˙âªÅB
 	InitD3D(hWnd);
 
-	
 	// Show the window
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
 	UpdateWindow(hWnd);
