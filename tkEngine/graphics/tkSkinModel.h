@@ -58,6 +58,28 @@ namespace tkEngine {
 			m_normalMap = normalMap;
 		}
 	private:
+		void DrawMeshContainer(
+			IDirect3DDevice9* pd3dDevice,
+			LPD3DXMESHCONTAINER pMeshContainerBase,
+			LPD3DXFRAME pFrameBase,
+			ID3DXEffect* pEffect,
+			D3DXMATRIX* worldMatrix,
+			D3DXMATRIX* rotationMatrix,
+			D3DXMATRIX* viewMatrix,
+			D3DXMATRIX* projMatrix,
+			CLight* light,
+			CTexture* normalMap
+		);
+		void DrawFrame(
+			IDirect3DDevice9* pd3dDevice,
+			LPD3DXFRAME pFrame,
+			ID3DXEffect* pEffect,
+			D3DXMATRIX* worldMatrix,
+			D3DXMATRIX* rotationMatrix,
+			D3DXMATRIX* viewMatrix,
+			D3DXMATRIX* projMatrix
+		);
+	private:
 		CMatrix				m_worldMatrix;		//!<ワールド行列。
 		CMatrix				m_rotationMatrix;	//!<回転行列。
 		CSkinModelData*		m_skinModelData;	//!<スキンモデルデータ。
@@ -65,6 +87,8 @@ namespace tkEngine {
 		CAnimation			m_animation;		//!<アニメーション。
 		CLight*				m_light;			//!<ライト。
 		CTexture*           m_normalMap;		//!<法線マップ。
+		static const int MAX_MATRIX_PALLET = 128;	//!<マトリクスパレットの最大数。
+		D3DXMATRIXA16		m_boneMatrixPallet[MAX_MATRIX_PALLET];	//!<マトリクスパレット。
 	};
 }
 

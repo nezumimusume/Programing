@@ -16,10 +16,7 @@
 #define SAFE_RELEASE(p)      { if (p) { (p)->Release(); (p)=NULL; } }
 
 #endif
-namespace tkEngine {
-	UINT                        g_NumBoneMatricesMax = 0;
-	D3DXMATRIXA16*              g_pBoneMatrices = NULL;
-}
+
 namespace {
 	using namespace tkEngine;
 	//--------------------------------------------------------------------------------------
@@ -133,21 +130,6 @@ namespace {
 			if (FAILED(hr))
 				goto e_Exit;
 
-			// allocate a buffer for bone matrices, but only if another mesh has not allocated one of the same size or larger
-			if (g_NumBoneMatricesMax < pMeshContainer->pSkinInfo->GetNumBones())
-			{
-				g_NumBoneMatricesMax = pMeshContainer->pSkinInfo->GetNumBones();
-
-				// Allocate space for blend matrices
-				delete[] g_pBoneMatrices;
-				g_pBoneMatrices = new D3DXMATRIXA16[g_NumBoneMatricesMax];
-				if (g_pBoneMatrices == NULL)
-				{
-					hr = E_OUTOFMEMORY;
-					goto e_Exit;
-				}
-			}
-
 		}
 	e_Exit:
 		return hr;
@@ -200,7 +182,6 @@ namespace {
 				pMeshContainer->ppBoneMatrixPtrs[iBone] = &pFrame->CombinedTransformationMatrix;
 			}
 		}
-		pFrame = (D3DXFRAME_DERIVED*)D3DXFrameFind(rootFrame,"_face");
 		return S_OK;
 	}
 
