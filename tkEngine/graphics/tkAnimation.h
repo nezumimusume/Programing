@@ -26,9 +26,7 @@ namespace tkEngine{
 		/*!
 		 * @brief	デストラクタ。
 		 */
-		~CAnimation()
-		{
-		}
+		~CAnimation();
 		/*!
 		 * @brief	初期化。
 		 *@param[in]	anim		アニメーションコントローラー。

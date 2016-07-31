@@ -2,6 +2,12 @@
 #include "tkEngine/graphics/tkAnimation.h"
 
 namespace tkEngine{
+	CAnimation::~CAnimation()
+	{
+		if(pAnimController != nullptr){
+			pAnimController->Release();
+		}
+	}
 	void CAnimation::Init(ID3DXAnimationController* anim)
 	{
 		pAnimController = anim;
