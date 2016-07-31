@@ -88,7 +88,7 @@ namespace tkEngine {
 		CLight*				m_light;			//!<ライト。
 		CTexture*           m_normalMap;		//!<法線マップ。
 		static const int MAX_MATRIX_PALLET = 128;	//!<マトリクスパレットの最大数。
-		D3DXMATRIXA16		m_boneMatrixPallet[MAX_MATRIX_PALLET];	//!<マトリクスパレット。
+		D3DXMATRIX			m_boneMatrixPallet[MAX_MATRIX_PALLET];	//!<マトリクスパレット。
 	};
 }
 

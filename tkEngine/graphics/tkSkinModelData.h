@@ -50,17 +50,14 @@ namespace tkEngine{
 		{
 			return m_frameRoot;
 		}
-		ID3DXAnimationController* GetAnimationController()
-		{
-			return m_pAnimController;
-		}
+		//テスト。
+		void SetupOutputAnimationRegist(LPD3DXFRAME frame, ID3DXAnimationController* animCtr);
 		/*!
 		* @brief	ボーン行列を更新。
 		*/
 		void UpdateBoneMatrix( const CMatrix& matWorld );
 	private:
 		LPD3DXFRAME					m_frameRoot;		//フレームルート。
-		ID3DXAnimationController*   m_pAnimController;	//アニメーションコントローラ。
 	};
 }
 

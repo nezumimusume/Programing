@@ -577,8 +577,7 @@ namespace {
 }
 namespace tkEngine{
 	CSkinModelData::CSkinModelData() :
-		m_frameRoot(nullptr),
-		m_pAnimController(nullptr)
+		m_frameRoot(nullptr)
 	{
 	}
 	CSkinModelData::~CSkinModelData()
@@ -586,13 +585,24 @@ namespace tkEngine{
 	}
 	void CSkinModelData::Release()
 	{
-		if (m_pAnimController) {
-			m_pAnimController->Release();
+	}
+	void CSkinModelData::SetupOutputAnimationRegist(LPD3DXFRAME frame, ID3DXAnimationController* animCtr)
+	{
+		if (animCtr == nullptr) {
+			return;
+		}
+		animCtr->RegisterAnimationOutput(frame->Name, &frame->TransformationMatrix, nullptr, nullptr, nullptr);
+		if (frame->pFrameSibling != nullptr) {
+			SetupOutputAnimationRegist(frame->pFrameSibling, animCtr);
+		}
+		if (frame->pFrameFirstChild != nullptr)
+		{
+			SetupOutputAnimationRegist(frame->pFrameFirstChild, animCtr);
 		}
 	}
-	
 	void CSkinModelData::LoadModelData( const char* filePath, CAnimation* anim )
 	{
+		ID3DXAnimationController* animController;
 		CAllocateHierarchy alloc;
 		HRESULT hr = D3DXLoadMeshHierarchyFromX(
 			filePath,
@@ -601,13 +611,18 @@ namespace tkEngine{
 			&alloc,
 			nullptr,
 			&m_frameRoot,
-			&m_pAnimController
+			&animController
 		);
+		//アニメーションレジストのテスト。
+		{
+
+			SetupOutputAnimationRegist(m_frameRoot, animController);
+		}
 		//m_pAnimController->(0);
 		TK_ASSERT(SUCCEEDED(hr), "Failed D3DXLoadMeshHierarchyFromX");
 		SetupBoneMatrixPointers(m_frameRoot, m_frameRoot);
-		if (anim && m_pAnimController) {
-			anim->Init(m_pAnimController);
+		if (anim && animController) {
+			anim->Init(animController);
 		}
 	}
 
