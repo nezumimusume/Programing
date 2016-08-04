@@ -3,12 +3,21 @@
 
 
 extern CCamera*			g_camera;				//カメラ。
+CSkinModelData*	UnityChan::orgSkinModelData = NULL;	//オリジナルスキンモデルデータ。
+CAnimation				*orgAnimation;			//アニメーション。
+
 /*!
  * @brief	開始
  */
 void UnityChan::Start()
 {
-	skinModelData.LoadModelData("Assets/modelData/Unity.X", &animation);
+	if (orgSkinModelData == NULL) {
+		orgSkinModelData = new CSkinModelData;
+		orgAnimation = new CAnimation;
+		orgSkinModelData->LoadModelData("Assets/modelData/Unity.X", orgAnimation);
+	}
+	//オリジナルからクローンを作成。
+	skinModelData.CreateModelData(*orgSkinModelData, &animation);
 	normalMap.Load("Assets/modelData/utc_nomal.tga");
 
 	//skinModelData.LoadModelData("Assets/modelData/unity.X", NULL);
@@ -56,17 +65,20 @@ void UnityChan::Update()
 	CQuaternion qRot;
 	qRot.SetRotation(CVector3::AxisY, CMath::DegToRad(-90.0f) * angle);
 	
-	skinModel.UpdateWorldMatrix(CVector3(0.0f, 0.0f, 0.0f), qRot, CVector3::One);
-	if (KeyInput().IsTrgger(CKeyInput::enKeyA)) {
-		currentAnimSetNo++;
-		currentAnimSetNo %= animation.GetNumAnimationSet();
-		animation.PlayAnimation(currentAnimSetNo);
+	skinModel.UpdateWorldMatrix(position, qRot, CVector3::One);
+	if (this->isUpdateAnim) {
+		if (KeyInput().IsTrgger(CKeyInput::enKeyA)) {
+			currentAnimSetNo++;
+			currentAnimSetNo %= animation.GetNumAnimationSet();
+			animation.PlayAnimation(currentAnimSetNo);
+		}
+		if (KeyInput().IsTrgger(CKeyInput::enKeyB)) {
+			currentAnimSetNo++;
+			currentAnimSetNo %= animation.GetNumAnimationSet();
+			animation.PlayAnimation(currentAnimSetNo, 0.1f);
+		}
 	}
-	if (KeyInput().IsTrgger(CKeyInput::enKeyB)) {
-		currentAnimSetNo++;
-		currentAnimSetNo %= animation.GetNumAnimationSet();
-		animation.PlayAnimation(currentAnimSetNo, 0.1f);
-	}
+	
 }
 /*!
  * @brief	描画。

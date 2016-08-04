@@ -18,15 +18,29 @@ class UnityChan : public IGameObject {
 		AnimationRun,		//走り。
 		AnimationJump,		//ジャンプ。
 	};
-	CSkinModelData	skinModelData;		//スキンモデルデータ。
-	CSkinModel		skinModel;			//スキンモデル。
-	CAnimation		animation;			//アニメーション。
-	CCamera			camera;				//カメラ。
-	CLight			light;				//ライト。
-	int				currentAnimSetNo;		
-	CTexture		normalMap;			//法線マップ。
+	static CSkinModelData*	orgSkinModelData;		//スキンモデルデータ。
+	CSkinModelData			skinModelData;
+	CSkinModel				skinModel;			//スキンモデル。
+	CAnimation				animation;			//アニメーション。
+	CCamera					camera;				//カメラ。
+	CLight					light;				//ライト。
+	int						currentAnimSetNo;		
+	CTexture				normalMap;			//法線マップ。
+	CVector3				position;			//座標。
 public:
+	bool					isUpdateAnim;		//
+
+	UnityChan() :
+		position(CVector3::Zero),
+		isUpdateAnim(false)
+	{
+
+	}
 	void Start() override ;
 	void Update() override ;
 	void Render( CRenderContext& renderContext ) override;
+	void SetPosition(const CVector3& position)
+	{
+		this->position = position;
+	}
 };

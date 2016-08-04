@@ -43,6 +43,12 @@ namespace tkEngine{
 		 */
 		void LoadModelData( const char* filePath, CAnimation* anim );
 		/*!
+		* @brief	引数で渡されたモデルデータを元にモデルを作成。
+		*			メッシュデータだけ使いまわしされます。
+		*@param[in]		modelData		モデルデータ。
+		*/
+		void CreateModelData( const CSkinModelData& modelData, CAnimation* anim);
+		/*!
 		* @brief	リリース。
 		*/
 		void Release();
@@ -57,7 +63,21 @@ namespace tkEngine{
 		*/
 		void UpdateBoneMatrix( const CMatrix& matWorld );
 	private:
+		/*!
+		* @brief	スケルトンのクローンを作成。
+		*@param[out]	dstFrame		クローン先のスケルトンの格納先。
+		*@param[in]		srcFrame		クローン元のスケルトン。
+		*/
+		void CloneSkeleton(LPD3DXFRAME& dstFrame, LPD3DXFRAME srcFrame);
+			/*!
+			* @brief	スケルトンのクローンを削除。
+			*@param[in]	frame		削除するスケルトン。
+			*/
+			void DeleteCloneSkeleton(LPD3DXFRAME frame);
+	private:
 		LPD3DXFRAME					m_frameRoot;		//フレームルート。
+		ID3DXAnimationController*	m_animController;	//アニメーションコントローラ。
+		bool						m_isClone;			//クローン？
 	};
 }
 

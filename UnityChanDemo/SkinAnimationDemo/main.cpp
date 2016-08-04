@@ -94,7 +94,13 @@ int WINAPI wWinMain(
 	//tkEngineの初期化。
 	InitTkEngine( hInst );
 	NewGO<Map>(0);
-	NewGO<UnityChan>(0);
+	for (int i = 0; i < 100; i++) {
+		UnityChan* unityChan = NewGO<UnityChan>(0);
+		if (i == 0) {
+			unityChan->isUpdateAnim = true;
+		}
+		unityChan->SetPosition(CVector3(0.0f + 0.5f * i, 0.0f, 0.0f));
+	}
 	Engine().RunGameLoop();		//ゲームループを実行。
 	
 	return 0;

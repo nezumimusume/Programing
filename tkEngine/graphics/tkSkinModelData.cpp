@@ -168,7 +168,7 @@ namespace {
 		{
 			cBones = pMeshContainer->pSkinInfo->GetNumBones();
 
-			pMeshContainer->ppBoneMatrixPtrs = new D3DXMATRIX*[cBones];
+			pMeshContainer->ppBoneMatrixPtrs = new D3DXMATRIX*[cBones] ;
 			if (pMeshContainer->ppBoneMatrixPtrs == NULL)
 				return E_OUTOFMEMORY;
 
@@ -577,11 +577,17 @@ namespace {
 }
 namespace tkEngine{
 	CSkinModelData::CSkinModelData() :
-		m_frameRoot(nullptr)
+		m_frameRoot(nullptr),
+		m_isClone(false),
+		m_animController(nullptr)
 	{
 	}
 	CSkinModelData::~CSkinModelData()
 	{
+		if (m_isClone) {
+			//クローン
+			DeleteCloneSkeleton(m_frameRoot);
+		}
 	}
 	void CSkinModelData::Release()
 	{
@@ -591,7 +597,7 @@ namespace tkEngine{
 		if (animCtr == nullptr) {
 			return;
 		}
-		animCtr->RegisterAnimationOutput(frame->Name, &frame->TransformationMatrix, nullptr, nullptr, nullptr);
+		HRESULT hr = animCtr->RegisterAnimationOutput(frame->Name, &frame->TransformationMatrix, nullptr, nullptr, nullptr);
 		if (frame->pFrameSibling != nullptr) {
 			SetupOutputAnimationRegist(frame->pFrameSibling, animCtr);
 		}
@@ -602,7 +608,7 @@ namespace tkEngine{
 	}
 	void CSkinModelData::LoadModelData( const char* filePath, CAnimation* anim )
 	{
-		ID3DXAnimationController* animController;
+		
 		CAllocateHierarchy alloc;
 		HRESULT hr = D3DXLoadMeshHierarchyFromX(
 			filePath,
@@ -611,21 +617,106 @@ namespace tkEngine{
 			&alloc,
 			nullptr,
 			&m_frameRoot,
-			&animController
+			&m_animController
 		);
 		//アニメーションレジストのテスト。
 		{
 
-			SetupOutputAnimationRegist(m_frameRoot, animController);
+			SetupOutputAnimationRegist(m_frameRoot, m_animController);
 		}
 		//m_pAnimController->(0);
 		TK_ASSERT(SUCCEEDED(hr), "Failed D3DXLoadMeshHierarchyFromX");
 		SetupBoneMatrixPointers(m_frameRoot, m_frameRoot);
-		if (anim && animController) {
-			anim->Init(animController);
+		if (anim && m_animController) {
+			anim->Init(m_animController);
 		}
 	}
+	
+	void CSkinModelData::CloneSkeleton(LPD3DXFRAME& dstFrame, LPD3DXFRAME srcFrame)
+	{
+		//名前と行列をコピー。
+		dstFrame->TransformationMatrix = srcFrame->TransformationMatrix;
+		//メッシュコンテナをコピー。メッシュは使いまわす。
+		if (srcFrame->pMeshContainer) {
+			dstFrame->pMeshContainer = new D3DXMESHCONTAINER_DERIVED;
+			memcpy(dstFrame->pMeshContainer, srcFrame->pMeshContainer, sizeof(D3DXMESHCONTAINER_DERIVED));
+		}
+		else {
+			dstFrame->pMeshContainer = NULL;
+		}
+		AllocateName(srcFrame->Name, &dstFrame->Name);
+	
 
+		if (srcFrame->pFrameSibling != nullptr) {
+			//兄弟がいるので、兄弟のためのメモリを確保。
+			dstFrame->pFrameSibling = new D3DXFRAME_DERIVED;
+			dstFrame->pFrameSibling->pFrameFirstChild = nullptr;
+			dstFrame->pFrameSibling->pFrameSibling = nullptr;
+			dstFrame->pFrameSibling->pMeshContainer = nullptr;
+			CloneSkeleton(dstFrame->pFrameSibling, srcFrame->pFrameSibling);
+		}
+		if (srcFrame->pFrameFirstChild != nullptr)
+		{
+			//子供がいるので、子供のためのメモリを確保。
+			dstFrame->pFrameFirstChild = new D3DXFRAME_DERIVED;
+			dstFrame->pFrameFirstChild->pFrameFirstChild = nullptr;
+			dstFrame->pFrameFirstChild->pFrameSibling = nullptr;
+			dstFrame->pFrameFirstChild->pMeshContainer = nullptr;
+
+			CloneSkeleton(dstFrame->pFrameFirstChild, srcFrame->pFrameFirstChild);
+		}
+	}
+	/*!
+	* @brief	スケルトンのクローンを削除。
+	*@param[in]	frame		削除するスケルトン。
+	*/
+	void CSkinModelData::DeleteCloneSkeleton(LPD3DXFRAME frame)
+	{
+		
+		if (frame->pFrameSibling != nullptr) {
+			//兄弟
+			DeleteCloneSkeleton(frame->pFrameSibling);
+		}
+		if (frame->pFrameFirstChild != nullptr)
+		{
+			//子供。
+			DeleteCloneSkeleton(frame->pFrameFirstChild);
+		}
+		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)(frame->pMeshContainer);
+		if (pMeshContainer) {
+			delete[] pMeshContainer->ppBoneMatrixPtrs;
+			delete pMeshContainer;
+		}
+		delete[] frame->Name;
+		delete frame;
+	}
+	void CSkinModelData::CreateModelData(const CSkinModelData& modelData, CAnimation* anim)
+	{
+		//スケルトンの複製を作成。。
+		m_isClone = true;
+		m_frameRoot = new D3DXFRAME_DERIVED;
+		m_frameRoot->pFrameFirstChild = nullptr;
+		m_frameRoot->pFrameSibling = nullptr;
+		m_frameRoot->pMeshContainer = nullptr;
+		CloneSkeleton(m_frameRoot, modelData.m_frameRoot);
+		//アニメーションコントローラを作成して、スケルトンと関連付けを行う。
+		if (modelData.m_animController) {
+			modelData.m_animController->CloneAnimationController(
+				modelData.m_animController->GetMaxNumAnimationOutputs(),
+				modelData.m_animController->GetMaxNumAnimationSets(),
+				modelData.m_animController->GetMaxNumTracks(),
+				modelData.m_animController->GetMaxNumEvents(),
+				&m_animController
+				);
+		
+			SetupOutputAnimationRegist(m_frameRoot, m_animController);
+
+			if (anim && m_animController) {
+				anim->Init(m_animController);
+			}
+		}
+		SetupBoneMatrixPointers(m_frameRoot, m_frameRoot);
+	}
 	void CSkinModelData::UpdateBoneMatrix(const CMatrix& matWorld)
 	{
 		UpdateFrameMatrices(m_frameRoot, r_cast<const D3DXMATRIX*>(&matWorld));
