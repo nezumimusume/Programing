@@ -24,12 +24,18 @@
     <ClCompile Include="UnityChan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UnityChanInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="UnityChan.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UnityChanInstance.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

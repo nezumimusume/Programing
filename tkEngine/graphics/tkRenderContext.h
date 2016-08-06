@@ -91,6 +91,11 @@ namespace tkEngine{
 		*/
 		__inline void DrawSkinModel(CSkinModel* skinModel, const CMatrix& viewMatrix, const CMatrix& projMatrix);
 		/*!
+		* @brief	スキンモデルのインスタンシング描画。
+		*@param[in]	skinMode		スキンモデル。
+		*/
+		__inline void InstancingDrawSkinModel(CSkinModel* skinModel, const CMatrix& viewMatrix, const CMatrix& projMatrix);
+		/*!
 		 *@brief	初期化。
 		 *@param[in]	pD3DDevice			Direct3Dデバイス
 		 *@param[in]	commandBufferSize	コマンドバッファのサイズ。
@@ -208,6 +213,14 @@ namespace tkEngine {
 	__inline void CRenderContext::DrawSkinModel(CSkinModel* skinModel, const CMatrix& viewMatrix, const CMatrix& projMatrix)
 	{
 		SetRenderCommand(CRenderCommand_DrawSkinModel(*this, skinModel, viewMatrix, projMatrix));
+	}
+	/*!
+	* @brief	スキンモデルのインスタンシング描画。
+	*@param[in]	skinMode		スキンモデル。
+	*/
+	__inline void CRenderContext::InstancingDrawSkinModel(CSkinModel* skinModel, const CMatrix& viewMatrix, const CMatrix& projMatrix)
+	{
+		SetRenderCommand(CRenderCommand_InstancingDrawSkinModel(*this, skinModel, viewMatrix, projMatrix));
 	}
 }
 

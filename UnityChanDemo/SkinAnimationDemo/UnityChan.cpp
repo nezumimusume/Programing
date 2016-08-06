@@ -57,7 +57,7 @@ void UnityChan::Update()
 		angle += 0.01f;
 	}
 	else if (KeyInput().IsLeftPress()) {
-		angle -= 0.01;
+		angle -= 0.01f;
 	}
 	camera.Update();
 

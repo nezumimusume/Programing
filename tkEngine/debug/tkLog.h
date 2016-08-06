@@ -20,8 +20,8 @@ namespace tkEngine{
 		va_end( va );
 	}
 }
-//#ifdef _DEBUG
-#if 1
+
+#ifdef _DEBUG
 	#define TK_LOG( format, ... )	Log(format, __VA_ARGS__)
 #else // _DEBUG
 	#define TK_LOG( format, ... )

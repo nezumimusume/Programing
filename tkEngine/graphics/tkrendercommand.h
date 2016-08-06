@@ -37,6 +37,7 @@ namespace tkEngine{
 		eRenderCommand_EffectCommitChanges,
 		eRendderCommand_MeshDrawSubset,
 		enRenderCommand_DrawSkinModel,
+		enRenderCommand_InstancingDrawSkinModel,
 		eRenderCommand_Undef
 	};
 	/*!
@@ -477,6 +478,34 @@ namespace tkEngine{
 				r_cast<D3DXMATRIX*>(m_viewMatrix),
 				r_cast<D3DXMATRIX*>(m_projMatrix)
 			);
+		}
+	};
+	/*!
+	* @brief	スキンモデルをインスタンシング描画。
+	*/
+	class CRenderCommand_InstancingDrawSkinModel : public CRenderCommandBase
+	{
+		CSkinModel* m_skinModel;
+		CMatrix* m_viewMatrix;
+		CMatrix* m_projMatrix;
+	public:
+		CRenderCommand_InstancingDrawSkinModel(CRenderContext& renderContext, CSkinModel* skinModel, const CMatrix& viewMatrix, const CMatrix& projMatrix) :
+			CRenderCommandBase(enRenderCommand_InstancingDrawSkinModel),
+			m_skinModel(skinModel)
+		{
+			m_viewMatrix = s_cast<CMatrix*>(renderContext.AllocFromCommandBuffer(sizeof(CMatrix)));
+			m_projMatrix = s_cast<CMatrix*>(renderContext.AllocFromCommandBuffer(sizeof(CMatrix)));
+			*m_viewMatrix = viewMatrix;
+			*m_projMatrix = projMatrix;
+
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			m_skinModel->ImmidiateInstancingDraw(
+				pD3DDevice,
+				r_cast<D3DXMATRIX*>(m_viewMatrix),
+				r_cast<D3DXMATRIX*>(m_projMatrix)
+				);
 		}
 	};
 }

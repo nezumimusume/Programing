@@ -37,6 +37,17 @@ struct VS_INPUT
 };
 
 /*!
+ * @brief	インスタンシング描画用の入力頂点。
+ */
+struct VS_INPUT_INSTANCING
+{
+	VS_INPUT	base;
+	float4 mWorld1	: TEXCOORD1;		//ワールド行列の1行目
+	float4 mWorld2	: TEXCOORD2;		//ワールド行列の2行目
+	float4 mWorld3	: TEXCOORD3;		//ワールド行列の3行目
+	float4 mWorld4	: TEXCOORD4;		//ワールド行列の4行目
+};
+/*!
  * @brief	出力頂点。
  */
 struct VS_OUTPUT
@@ -107,6 +118,33 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 	return o;
 }
 /*!
+ *@brief	頂点シェーダー。
+ *@param[in]	In			入力頂点。
+ *@param[in]	hasSkin		スキンあり？
+ */
+VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
+{
+	VS_OUTPUT o = (VS_OUTPUT)0;
+	float3 Pos, Normal;
+	if(hasSkin){
+		//スキンあり。
+	    CalcWorldPosAndNormalFromSkinMatrix( In.base, Pos, Normal );
+	}else{
+		//スキンなし。
+		CalcWorldPosAndNormal( In.base, Pos, Normal );
+	}
+	float4x4 worldMat;
+	worldMat[0] = In.mWorld1;
+	worldMat[1] = In.mWorld2;
+	worldMat[2] = In.mWorld3;
+	worldMat[3] = In.mWorld4;
+	Pos = mul(float4(Pos.xyz, 1.0f), worldMat );	//ワールド行列をかける。
+    o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
+    o.Normal = normalize(Normal);
+    o.Tex0 = In.Tex0;
+	return o;
+}
+/*!
  * @brief	ピクセルシェーダー。
  */
 float4 PSMain( VS_OUTPUT In ) : COLOR
@@ -132,6 +170,29 @@ technique NoSkinModel
 	pass p0
 	{
 		VertexShader = compile vs_3_0 VSMain(false);
+		PixelShader = compile ps_3_0 PSMain();
+	}
+}
+
+/*!
+ *@brief	スキンありモデルのインスタンシング描画用のテクニック。
+ */
+technique SkinModelInstancing
+{
+    pass p0
+    {
+        VertexShader = compile vs_3_0 VSMainInstancing(true);
+        PixelShader = compile ps_3_0 PSMain();
+    }
+}
+/*!
+ *@brief	スキンなしモデルのインスタンシング描画用のテクニック。
+ */
+technique NoSkinModelInstancing
+{
+	pass p0
+	{
+		VertexShader = compile vs_3_0 VSMainInstancing(false);
 		PixelShader = compile ps_3_0 PSMain();
 	}
 }

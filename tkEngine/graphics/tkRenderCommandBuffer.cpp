@@ -85,6 +85,10 @@ namespace tkEngine{
 			case enRenderCommand_DrawSkinModel:
 				((CRenderCommand_DrawSkinModel*)(cmdBase))->Execute(pD3DDevice);
 				break;
+			case enRenderCommand_InstancingDrawSkinModel:
+				((CRenderCommand_InstancingDrawSkinModel*)(cmdBase))->Execute(pD3DDevice);
+				break;
+				break;
 			default:
 				TK_ASSERT(false, "not implement renderCommand");
 				break;

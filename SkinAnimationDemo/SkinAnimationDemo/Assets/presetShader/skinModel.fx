@@ -2,8 +2,6 @@
  * @brief	スキンモデルシェーダー。(4ボーンスキニング)
  */
 
-#include "LightingFunction.h"
-
 //スキン行列。
 #define MAX_MATRICES  26
 float4x3    g_mWorldMatrixArray[MAX_MATRICES] : WORLDMATRIXARRAY;
@@ -12,28 +10,12 @@ float		g_numBone;			//骨の数。
 
 float4x4	g_worldMatrix;			//!<ワールド行列。
 float4x4	g_rotationMatrix;		//!<回転行列。
-float4x4	g_viewMatrixRotInv;		//!<カメラの回転行列の逆行列。
-
-bool g_isHasNormalMap;			//法線マップ保持している？
 
 texture g_diffuseTexture;		//ディフューズテクスチャ。
 sampler g_diffuseTextureSampler = 
 sampler_state
 {
 	Texture = <g_diffuseTexture>;
-    MipFilter = NONE;
-    MinFilter = NONE;
-    MagFilter = NONE;
-    AddressU = Wrap;
-	AddressV = Wrap;
-};
-
-//法線マップ
-texture g_normalTexture;		//法線マップ。
-sampler g_normalMapSampler = 
-sampler_state
-{
-	Texture = <g_normalTexture>;
     MipFilter = NONE;
     MinFilter = NONE;
     MagFilter = NONE;
@@ -51,32 +33,39 @@ struct VS_INPUT
     float4  BlendWeights    : BLENDWEIGHT;
     float4  BlendIndices    : BLENDINDICES;
     float3  Normal          : NORMAL;
-    float3	Tangent			: TANGENT;		//接ベクトル
     float3  Tex0            : TEXCOORD0;
 };
 
+/*!
+ * @brief	インスタンシング描画用の入力頂点。
+ */
+struct VS_INPUT_INSTANCING
+{
+	VS_INPUT	base;
+	float4 mWorld1	: TEXCOORD1;		//ワールド行列の1行目
+	float4 mWorld2	: TEXCOORD2;		//ワールド行列の2行目
+	float4 mWorld3	: TEXCOORD3;		//ワールド行列の3行目
+	float4 mWorld4	: TEXCOORD4;		//ワールド行列の4行目
+};
 /*!
  * @brief	出力頂点。
  */
 struct VS_OUTPUT
 {
-	float4  Pos     		: POSITION;
-    float3  Normal			: NORMAL;
-    float2  Tex0   			: TEXCOORD0;
-    float3	Tangent			: TEXCOORD1;	//接ベクトル
+	float4  Pos     : POSITION;
+    float3  Normal	: NORMAL;
+    float2  Tex0    : TEXCOORD0;
 };
 /*!
  *@brief	ワールド座標とワールド法線をスキン行列から計算する。
  *@param[in]	In		入力頂点。
  *@param[out]	Pos		ワールド座標の格納先。
  *@param[out]	Normal	ワールド法線の格納先。
- *@param[out]	Tangent	ワールド接ベクトルの格納先。
  */
-void CalcWorldPosAndNormalFromSkinMatrix( VS_INPUT In, out float3 Pos, out float3 Normal, out float3 Tangent )
+void CalcWorldPosAndNormalFromSkinMatrix( VS_INPUT In, out float3 Pos, out float3 Normal )
 {
 	Pos = 0.0f;
 	Normal = 0.0f;
-	Tangent = 0.0f;
 	//ブレンドするボーンのインデックス。
 	int4 IndexVector = D3DCOLORtoUBYTE4(In.BlendIndices);
 	
@@ -90,26 +79,22 @@ void CalcWorldPosAndNormalFromSkinMatrix( VS_INPUT In, out float3 Pos, out float
         
         Pos += mul(In.Pos, g_mWorldMatrixArray[IndexArray[iBone]]) * BlendWeightsArray[iBone];
         Normal += mul(In.Normal, g_mWorldMatrixArray[IndexArray[iBone]]) * BlendWeightsArray[iBone];
-        Tangent += mul(In.Tangent, g_mWorldMatrixArray[IndexArray[iBone]]) * BlendWeightsArray[iBone];
     }
     LastWeight = 1.0f - LastWeight; 
     
 	Pos += (mul(In.Pos, g_mWorldMatrixArray[IndexArray[g_numBone-1]]) * LastWeight);
     Normal += (mul(In.Normal, g_mWorldMatrixArray[IndexArray[g_numBone-1]]) * LastWeight);
-    Tangent += (mul(In.Tangent, g_mWorldMatrixArray[IndexArray[g_numBone-1]]) * LastWeight);
 }
 /*!
  *@brief	ワールド座標とワールド法線を計算。
  *@param[in]	In		入力頂点。
  *@param[out]	Pos		ワールド座標の格納先。
  *@param[out]	Normal	ワールド法線の格納先。
- *@param[out]	Tangent	ワールド接ベクトルの格納先。
  */
-void CalcWorldPosAndNormal( VS_INPUT In, out float3 Pos, out float3 Normal, out float3 Tangent )
+void CalcWorldPosAndNormal( VS_INPUT In, out float3 Pos, out float3 Normal )
 {
 	Pos = mul(In.Pos, g_worldMatrix );
 	Normal = mul(In.Normal, g_rotationMatrix );
-	Tangent = mul(In.Tangent, g_rotationMatrix );
 }
 /*!
  *@brief	頂点シェーダー。
@@ -119,17 +104,43 @@ void CalcWorldPosAndNormal( VS_INPUT In, out float3 Pos, out float3 Normal, out 
 VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 {
 	VS_OUTPUT o = (VS_OUTPUT)0;
-	float3 Pos, Normal, Tangent;
+	float3 Pos, Normal;
 	if(hasSkin){
 		//スキンあり。
-	    CalcWorldPosAndNormalFromSkinMatrix( In, Pos, Normal, Tangent );
+	    CalcWorldPosAndNormalFromSkinMatrix( In, Pos, Normal );
 	}else{
 		//スキンなし。
-		CalcWorldPosAndNormal( In, Pos, Normal, Tangent );
+		CalcWorldPosAndNormal( In, Pos, Normal );
 	}
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
     o.Normal = normalize(Normal);
-    o.Tangent = normalize(Tangent);
+    o.Tex0 = In.Tex0;
+	return o;
+}
+/*!
+ *@brief	頂点シェーダー。
+ *@param[in]	In			入力頂点。
+ *@param[in]	hasSkin		スキンあり？
+ */
+VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
+{
+	VS_OUTPUT o = (VS_OUTPUT)0;
+	float3 Pos, Normal;
+	if(hasSkin){
+		//スキンあり。
+	    CalcWorldPosAndNormalFromSkinMatrix( In.base, Pos, Normal );
+	}else{
+		//スキンなし。
+		CalcWorldPosAndNormal( In.base, Pos, Normal );
+	}
+/*	float4x4 worldMat;
+	worldMat[0] = In.mWorld1;
+	worldMat[1] = In.mWorld2;
+	worldMat[2] = In.mWorld3;
+	worldMat[3] = In.mWorld4;
+	Pos = mul(float4(Pos.xyz, 1.0f), worldMat );	//ワールド行列をかける。*/
+    o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
+    o.Normal = normalize(Normal);
     o.Tex0 = In.Tex0;
 	return o;
 }
@@ -138,12 +149,7 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
  */
 float4 PSMain( VS_OUTPUT In ) : COLOR
 {
-	float4 color = tex2D(g_diffuseTextureSampler, In.Tex0);
-	
-	float4 lig = DiffuseLight(In.Normal);
-	color *= lig;
-	
-	return color;
+	return tex2D(g_diffuseTextureSampler, In.Tex0);
 }
 /*!
  *@brief	スキンありモデル用のテクニック。
@@ -164,6 +170,29 @@ technique NoSkinModel
 	pass p0
 	{
 		VertexShader = compile vs_3_0 VSMain(false);
+		PixelShader = compile ps_3_0 PSMain();
+	}
+}
+
+/*!
+ *@brief	スキンありモデルのインスタンシング描画用のテクニック。
+ */
+technique SkinModelInstancing
+{
+    pass p0
+    {
+        VertexShader = compile vs_3_0 VSMainInstancing(true);
+        PixelShader = compile ps_3_0 PSMain();
+    }
+}
+/*!
+ *@brief	スキンなしモデルのインスタンシング描画用のテクニック。
+ */
+technique NoSkinModelInstancing
+{
+	pass p0
+	{
+		VertexShader = compile vs_3_0 VSMainInstancing(false);
 		PixelShader = compile ps_3_0 PSMain();
 	}
 }

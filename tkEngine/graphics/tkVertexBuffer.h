@@ -69,6 +69,10 @@ namespace tkEngine{
 		{
 			return m_pVertexDecl;
 		}
+		/*!
+		* @brief	頂点バッファを更新。
+		*/
+		void Update(const void* data);
 	private:
 		LPDIRECT3DVERTEXBUFFER9			m_pVB;				//!<頂点バッファ。
 		SVertexDecralation* 			m_pVertexDecl;		//!<頂点定義。

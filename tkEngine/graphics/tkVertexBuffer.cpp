@@ -41,12 +41,7 @@ namespace tkEngine{
 		if(pSrcVertexBuffer != nullptr){
 			//ソースが指定されている。
 			//頂点バッファをロックしてコピー。
-			void* pDstVertexBuffer;
-			hr = m_pVB->Lock( 0, 0, &pDstVertexBuffer, D3DLOCK_DISCARD );
-			TK_ASSERT(SUCCEEDED(hr), "Failed VertexBuffer Lock!!" );
-			//まるっとコピー。
-			memcpy( pDstVertexBuffer, pSrcVertexBuffer, m_size);
-			m_pVB->Unlock();
+			Update(pSrcVertexBuffer);
 		}
 		//頂点定義を作成。
 		d3dDevice->CreateVertexDeclaration(vertexLayout, &m_pVertexDecl);
@@ -57,5 +52,14 @@ namespace tkEngine{
 			m_pVB->Release();
 			m_pVB = nullptr;
 		}
+	}
+	void CVertexBuffer::Update(const void* data)
+	{
+		void* pDstVertexBuffer;
+		HRESULT hr = m_pVB->Lock(0, 0, &pDstVertexBuffer, D3DLOCK_DISCARD);
+		TK_ASSERT(SUCCEEDED(hr), "Failed VertexBuffer Lock!!");
+		//まるっとコピー。
+		memcpy(pDstVertexBuffer, data, m_size);
+		m_pVB->Unlock();
 	}
 }

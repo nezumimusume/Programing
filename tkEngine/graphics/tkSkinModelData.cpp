@@ -51,7 +51,7 @@ namespace {
 		HRESULT hr = S_OK;
 		D3DCAPS9 d3dCaps;
 		pd3dDevice->GetDeviceCaps(&d3dCaps);
-
+		
 		if (pMeshContainer->pSkinInfo == NULL)
 			return hr;
 		SAFE_RELEASE(pMeshContainer->MeshData.pMesh);
@@ -114,7 +114,7 @@ namespace {
 			hr = pMeshContainer->MeshData.pMesh->GetDeclaration(pDecl);
 			if (FAILED(hr))
 				goto e_Exit;
-
+			
 			// the vertex shader is expecting to interpret the UBYTE4 as a D3DCOLOR, so update the type 
 			//   NOTE: this cannot be done with CloneMesh, that would convert the UBYTE4 data to float and then to D3DCOLOR
 			//          this is more of a "cast" operation
@@ -186,36 +186,7 @@ namespace {
 	}
 
 
-	//--------------------------------------------------------------------------------------
-	// Called to setup the pointers for a given bone to its transformation matrix
-	//--------------------------------------------------------------------------------------
-	HRESULT SetupBoneMatrixPointers(LPD3DXFRAME pFrame, LPD3DXFRAME pRootFrame)
-	{
-		HRESULT hr;
-
-		if (pFrame->pMeshContainer != NULL)
-		{
-			hr = SetupBoneMatrixPointersOnMesh(pFrame->pMeshContainer, pRootFrame);
-			if (FAILED(hr))
-				return hr;
-		}
-
-		if (pFrame->pFrameSibling != NULL)
-		{
-			hr = SetupBoneMatrixPointers(pFrame->pFrameSibling, pRootFrame);
-			if (FAILED(hr))
-				return hr;
-		}
-
-		if (pFrame->pFrameFirstChild != NULL)
-		{
-			hr = SetupBoneMatrixPointers(pFrame->pFrameFirstChild, pRootFrame);
-			if (FAILED(hr))
-				return hr;
-		}
-
-		return S_OK;
-	}
+	
 
 	class CAllocateHierarchy : public ID3DXAllocateHierarchy
 	{
@@ -399,7 +370,7 @@ namespace {
 			pMeshContainer->pMaterials[0].MatD3D.Diffuse.b = 0.5f;
 			pMeshContainer->pMaterials[0].MatD3D.Specular = pMeshContainer->pMaterials[0].MatD3D.Diffuse;
 		}
-
+		
 		// if there is skinning information, save off the required data and then setup for HW skinning
 		if (pSkinInfo != NULL)
 		{
@@ -424,9 +395,10 @@ namespace {
 			{
 				pMeshContainer->pBoneOffsetMatrices[iBone] = *(pMeshContainer->pSkinInfo->GetBoneOffsetMatrix(iBone));
 			}
-
+			
 			// GenerateSkinnedMesh will take the general skinning information and transform it to a HW friendly version
 			hr = GenerateSkinnedMesh(pd3dDevice, pMeshContainer);
+			
 			if (FAILED(hr))
 				goto e_Exit;
 
@@ -435,8 +407,15 @@ namespace {
 				pMeshContainer->MeshData.pMesh->GetOptions(),
 				decl,
 				pd3dDevice, &pOutMesh);
+			
 			if (FAILED(hr))
 				goto e_Exit;
+
+			//D3DXComputeTangentFrameExを実行すると属性テーブルの情報が失われる・・・。
+			DWORD numAttributeTable;
+			pMeshContainer->MeshData.pMesh->GetAttributeTable(NULL, &numAttributeTable);
+			pMeshContainer->pAttributeTable = new D3DXATTRIBUTERANGE[numAttributeTable];
+			pMeshContainer->MeshData.pMesh->GetAttributeTable(pMeshContainer->pAttributeTable, NULL);
 			hr = D3DXComputeTangentFrameEx(
 				pOutMesh,
 				D3DDECLUSAGE_TEXCOORD,
@@ -458,7 +437,6 @@ namespace {
 			pMeshContainer->MeshData.pMesh->Release();
 			pMeshContainer->MeshData.pMesh = pOutMesh;
 
-
 			std::vector<DWORD> adjList;
 			adjList.resize(3 * pOutMesh->GetNumFaces());
 			pOutMesh->GenerateAdjacency(1.0f/512.0f, &adjList[0]); // EPSIONは適当な値(1.0f/512とか)
@@ -466,7 +444,7 @@ namespace {
 			DWORD numVert = pOutMesh->GetNumVertices();  // Optimizeの一種
 			pOutMesh->OptimizeInplace(D3DXMESHOPT_COMPACT, &adjList[0], NULL, NULL, NULL);
 			numVert = pOutMesh->GetNumVertices();
-
+			
 			if (FAILED(hr))
 				goto e_Exit;
 		}
@@ -477,7 +455,10 @@ namespace {
 				pMeshContainer->MeshData.pMesh->GetOptions(),
 				decl,
 				pd3dDevice, &pOutMesh);
-
+			DWORD numAttributeTable;
+			pMeshContainer->MeshData.pMesh->GetAttributeTable(NULL, &numAttributeTable);
+			pMeshContainer->pAttributeTable = new D3DXATTRIBUTERANGE[numAttributeTable];
+			pMeshContainer->MeshData.pMesh->GetAttributeTable(pMeshContainer->pAttributeTable, NULL);
 			numVert = pMeshContainer->MeshData.pMesh->GetNumVertices();
 			hr = D3DXComputeTangentFrameEx(
 				pOutMesh,
@@ -513,9 +494,11 @@ namespace {
 		}
 
 		*ppNewMeshContainer = pMeshContainer;
+		
 		pMeshContainer = NULL;
 
 	e_Exit:
+		
 		pd3dDevice->Release();
 
 		// call Destroy function to properly clean up the memory allocated 
@@ -549,6 +532,7 @@ namespace {
 		UINT iMaterial;
 		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
 
+		SAFE_DELETE_ARRAY(pMeshContainer->pAttributeTable);
 		SAFE_DELETE_ARRAY(pMeshContainer->Name);
 		SAFE_DELETE_ARRAY(pMeshContainer->pAdjacency);
 		SAFE_DELETE_ARRAY(pMeshContainer->pMaterials);
@@ -579,18 +563,62 @@ namespace tkEngine{
 	CSkinModelData::CSkinModelData() :
 		m_frameRoot(nullptr),
 		m_isClone(false),
-		m_animController(nullptr)
+		m_animController(nullptr),
+		m_vertexDeclForInstancingDraw(nullptr),
+		m_numInstance(0),
+		m_vertexBufferStride(0)
 	{
 	}
 	CSkinModelData::~CSkinModelData()
 	{
-		if (m_isClone) {
-			//クローン
-			DeleteCloneSkeleton(m_frameRoot);
-		}
+		Release();
 	}
 	void CSkinModelData::Release()
 	{
+		if(m_vertexDeclForInstancingDraw){
+			m_vertexDeclForInstancingDraw->Release();
+		}
+		if (m_isClone && m_frameRoot) {
+			//クローン
+			DeleteCloneSkeleton(m_frameRoot);
+			m_frameRoot = nullptr;
+		}
+		m_instanceVertexBuffer.Release();
+		m_numInstance = 0;
+	}
+	//--------------------------------------------------------------------------------------
+	// Called to setup the pointers for a given bone to its transformation matrix
+	//--------------------------------------------------------------------------------------
+	HRESULT CSkinModelData::SetupBoneMatrixPointers(LPD3DXFRAME pFrame, LPD3DXFRAME pRootFrame)
+	{
+		HRESULT hr;
+
+		if (pFrame->pMeshContainer != NULL)
+		{
+			//頂点ストライドもここで調べる。
+			D3DVERTEXELEMENT9 Declaration[MAX_FVF_DECL_SIZE];
+			pFrame->pMeshContainer->MeshData.pMesh->GetDeclaration(Declaration);
+			m_vertexBufferStride = D3DXGetDeclVertexSize(Declaration, 0);
+			hr = SetupBoneMatrixPointersOnMesh(pFrame->pMeshContainer, pRootFrame);
+			if (FAILED(hr))
+				return hr;
+		}
+
+		if (pFrame->pFrameSibling != NULL)
+		{
+			hr = SetupBoneMatrixPointers(pFrame->pFrameSibling, pRootFrame);
+			if (FAILED(hr))
+				return hr;
+		}
+
+		if (pFrame->pFrameFirstChild != NULL)
+		{
+			hr = SetupBoneMatrixPointers(pFrame->pFrameFirstChild, pRootFrame);
+			if (FAILED(hr))
+				return hr;
+		}
+
+		return S_OK;
 	}
 	void CSkinModelData::SetupOutputAnimationRegist(LPD3DXFRAME frame, ID3DXAnimationController* animCtr)
 	{
@@ -619,11 +647,6 @@ namespace tkEngine{
 			&m_frameRoot,
 			&m_animController
 		);
-		//アニメーションレジストのテスト。
-		{
-
-			SetupOutputAnimationRegist(m_frameRoot, m_animController);
-		}
 		//m_pAnimController->(0);
 		TK_ASSERT(SUCCEEDED(hr), "Failed D3DXLoadMeshHierarchyFromX");
 		SetupBoneMatrixPointers(m_frameRoot, m_frameRoot);
@@ -717,8 +740,57 @@ namespace tkEngine{
 	{
 		UpdateFrameMatrices(m_frameRoot, r_cast<const D3DXMATRIX*>(&matWorld));
 	}
-	void CSkinModelData::SetupInstancingDraw( int numInstance )
+	void CSkinModelData::CreateInstancingDrawData( int numInstance, SVertexElement* vertexElement )
 	{
-		
+		m_numInstance = numInstance;
+		CreateInstancingDrawData(m_frameRoot, numInstance, vertexElement);
+	}
+	bool CSkinModelData::CreateInstancingDrawData( LPD3DXFRAME frame, int numInstance, SVertexElement* vertexElement )
+	{
+		if(frame->pMeshContainer){
+			
+			//メッシュを発見。
+			//まずはストリーム１の頂点バッファを追加した頂点定義を作成する。
+			//頂点定義は全てのメッシュで同じ。
+			D3DVERTEXELEMENT9 declElement[MAX_FVF_DECL_SIZE];
+			frame->pMeshContainer->MeshData.pMesh->GetDeclaration(declElement);
+			int elementIndex = 0;
+			while(true){
+				if(declElement[elementIndex].Type == D3DDECLTYPE_UNUSED){
+					//もともとの頂点定義の終端を発見。
+					//ここからインスタンシング用の頂点レイアウトを埋め込む。
+					for(int i = 0; vertexElement[i].Type != D3DDECLTYPE_UNUSED; i++){
+						declElement[elementIndex] = vertexElement[i];
+						elementIndex++;
+					}
+					//終端を埋め込んで終わり。
+					declElement[elementIndex] = D3DDECL_END();
+					break;
+				}
+				elementIndex++;
+			}
+			//頂点定義の作成。
+			LPDIRECT3DDEVICE9 pd3dDevice;
+			frame->pMeshContainer->MeshData.pMesh->GetDevice(&pd3dDevice);
+			pd3dDevice->CreateVertexDeclaration(declElement, &m_vertexDeclForInstancingDraw);
+			//頂点バッファの作成。
+			
+			DWORD vertexBufferStride = D3DXGetDeclVertexSize(vertexElement, 1);
+			m_instanceVertexBuffer.Create(numInstance, vertexBufferStride, vertexElement, nullptr);
+			return true;
+		}
+		if(frame->pFrameSibling != nullptr){
+			//兄弟がいる
+			if( CreateInstancingDrawData(frame->pFrameSibling, numInstance, vertexElement) ){
+				return true;
+			}
+		}
+		if(frame->pFrameFirstChild != nullptr){
+			//子供がいる。
+			if( CreateInstancingDrawData(frame->pFrameFirstChild, numInstance, vertexElement) ){
+				return true;
+			}
+		}
+		return false;
 	}
 }

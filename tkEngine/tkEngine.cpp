@@ -7,6 +7,15 @@
 #include "tkEngine/shape/tkShapeVertex.h"
 #include "tkEngine/graphics/tkEffect.h"
 #include "tkEngine/Input/tkKeyInput.h"
+#include "tkEngine/timer/tkStopwatch.h"
+
+//#ifdef _DEBUG
+#define USE_DISP_FPS	//定義でFPS表示。
+//#endif
+
+#ifdef USE_DISP_FPS
+LPD3DXFONT	pFont;	// フォントオブジェクト
+#endif
 
 namespace tkEngine{
 	LRESULT CALLBACK CEngine::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -91,6 +100,21 @@ namespace tkEngine{
 		m_pD3DDevice->GetDepthStencilSurface(&depth);
 		m_backBufferRT.SetSurfaceDX(rt);
 		m_backBufferRT.SetDepthSurfaceDX(depth);
+#ifdef USE_DISP_FPS
+		D3DXCreateFont(
+			m_pD3DDevice,				// Direct3Dデバイス
+			24,						// 高さ
+			10,						// 幅
+			FW_REGULAR,				// フォントの太さ 普通
+			NULL,					// 下線
+			FALSE,					// 斜体
+			SHIFTJIS_CHARSET,		// 文字セット
+			OUT_DEFAULT_PRECIS,		// 出力制度は普通
+			PROOF_QUALITY,			// 文字品質を重視
+			FIXED_PITCH | FF_SCRIPT,	// ピッチとファミリ
+			TEXT("ＭＳ　Ｐゴシック"),	// フォント名
+			&pFont);
+#endif
 	    return true;
 	    
 	}
@@ -199,6 +223,7 @@ namespace tkEngine{
 		m_pTransformedPrimEffect->EndPass(renderContext);
 		m_pTransformedPrimEffect->End(renderContext);
 	}
+
 	void CEngine::RunGameLoop()
 	{
 		// Enter the message loop
@@ -212,6 +237,10 @@ namespace tkEngine{
 				DispatchMessage(&msg);
 			}
 			else {
+#ifdef USE_DISP_FPS
+				CStopwatch sw;
+				sw.Start();
+#endif
 				//キー入力を更新。
 				m_keyInput.Update();
 
@@ -238,7 +267,28 @@ namespace tkEngine{
 				for( int i = 0; i < m_numRenderContext; i++ ){
 					m_renderContextArray[i].SubmitCommandBuffer();
 				}
+#ifdef USE_DISP_FPS
+				sw.Stop();
+				char text[256];
+				sprintf(text, "fps = %lf\n", 1.0f / sw.GetElapsed());
+
+				RECT rc = {
+					0,		// 左上のx座標
+					0,		// 左上のy座標
+					640,		// 右下のx座標
+					24		// 右下のy座標
+				};
+				// 描画
+				pFont->DrawText(
+					NULL,					// NULL
+					text,		// 描画テキスト
+					-1,						// 全て表示
+					&rc,						// 表示範囲
+					DT_LEFT,					// 左寄せ
+					D3DCOLOR_XRGB(255, 255, 255)	// 白色
+					);
 				//
+#endif
 				m_pD3DDevice->EndScene();
 				m_pD3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
 			}

@@ -5,6 +5,46 @@
 #include "tkEngine/graphics/tkLight.h"
 
 namespace tkEngine{
+	
+	void CSkinModel::DrawMeshContainer_InstancingDrawCommon(IDirect3DDevice9* pd3dDevice, D3DXMESHCONTAINER_DERIVED* meshContainer, int materialID)
+	{
+		LPDIRECT3DVERTEXBUFFER9 vb;
+		LPDIRECT3DINDEXBUFFER9 ib;
+		LPD3DXMESH mesh = meshContainer->MeshData.pMesh;
+		mesh->GetVertexBuffer(&vb);
+		mesh->GetIndexBuffer(&ib);
+		DWORD attributeTableSize = 256;
+		
+		DWORD stride = m_skinModelData->GetVertexBufferStride();
+
+		pd3dDevice->SetStreamSourceFreq(0, D3DSTREAMSOURCE_INDEXEDDATA | m_skinModelData->GetNumInstance());
+		pd3dDevice->SetStreamSourceFreq(1, D3DSTREAMSOURCE_INSTANCEDATA | 1);
+		
+		pd3dDevice->SetVertexDeclaration(m_skinModelData->GetVertexDeclForInstancingDraw());
+
+		pd3dDevice->SetStreamSource(0, vb, 0, stride);							//頂点バッファをストリーム0番目に設定
+																					//ワールド行列を頂点バッファにコピー。
+		
+		pd3dDevice->SetStreamSource(
+			1, 
+			m_skinModelData->GetInstancingVertexBuffer().GetBody(), 
+			0, 
+			m_skinModelData->GetInstancingVertexBuffer().GetStride()
+		);	
+		pd3dDevice->SetIndices(ib);
+		pd3dDevice->DrawIndexedPrimitive(
+			D3DPT_TRIANGLELIST, 
+			0, 
+			0, 
+			mesh->GetNumVertices(), 
+			meshContainer->pAttributeTable[materialID].FaceStart * 3, 
+			meshContainer->pAttributeTable[materialID].FaceCount);
+
+		//後始末
+		pd3dDevice->SetStreamSourceFreq(0, 1);
+		pd3dDevice->SetStreamSourceFreq(1, 1);
+
+	}
 	void CSkinModel::DrawMeshContainer(
 		IDirect3DDevice9* pd3dDevice, 
 		LPD3DXMESHCONTAINER pMeshContainerBase, 
@@ -15,7 +55,8 @@ namespace tkEngine{
 		D3DXMATRIX* viewMatrix,
 		D3DXMATRIX* projMatrix,
 		CLight* light,
-		CTexture* normalMap
+		CTexture* normalMap,
+		bool isInstancingDraw
 	)
 	{
 		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
@@ -31,11 +72,21 @@ namespace tkEngine{
 			
 		//テクニックを設定。
 		{
-			if (pMeshContainer->pSkinInfo != NULL) {
-				pEffect->SetTechnique("SkinModel");
+			if (isInstancingDraw) {
+				if (pMeshContainer->pSkinInfo != NULL) {
+					pEffect->SetTechnique("SkinModelInstancing");
+				}
+				else {
+					pEffect->SetTechnique("NoSkinModelInstancing");
+				}
 			}
 			else {
-				pEffect->SetTechnique("NoSkinModel");
+				if (pMeshContainer->pSkinInfo != NULL) {
+					pEffect->SetTechnique("SkinModel");
+				}
+				else {
+					pEffect->SetTechnique("NoSkinModel");
+				}
 			}
 		}
 		//共通の定数レジスタを設定
@@ -97,7 +148,17 @@ namespace tkEngine{
 				pEffect->BeginPass(0);
 				pEffect->CommitChanges();
 				// draw the subset with the current world matrix palette and material state
-				pMeshContainer->MeshData.pMesh->DrawSubset(iAttrib);
+				if (isInstancingDraw) {
+					//インスタンシング描画。
+					//マルチマテリアルはNG
+					//TK_ASSERT(pMeshContainer->NumAttributeGroups == 1, "not support multi material");
+					
+					DrawMeshContainer_InstancingDrawCommon(pd3dDevice, pMeshContainer, iAttrib);
+					
+				}
+				else {
+					pMeshContainer->MeshData.pMesh->DrawSubset(iAttrib);
+				}
 				pEffect->EndPass();
 				pEffect->End();
 
@@ -121,7 +182,13 @@ namespace tkEngine{
 			for (DWORD i = 0; i < pMeshContainer->NumMaterials; i++) {
 				pEffect->SetTexture("g_diffuseTexture", pMeshContainer->ppTextures[i]);
 				pEffect->CommitChanges();
-				pMeshContainer->MeshData.pMesh->DrawSubset(i);
+				if (isInstancingDraw) {
+					//インスタンシング描画。
+					DrawMeshContainer_InstancingDrawCommon(pd3dDevice, pMeshContainer, 0);
+				}
+				else {
+					pMeshContainer->MeshData.pMesh->DrawSubset(i);
+				}
 			}
 			pEffect->EndPass();
 			pEffect->End();
@@ -134,7 +201,8 @@ namespace tkEngine{
 		D3DXMATRIX* worldMatrix,
 		D3DXMATRIX* rotationMatrix,
 		D3DXMATRIX* viewMatrix,
-		D3DXMATRIX* projMatrix
+		D3DXMATRIX* projMatrix,
+		bool isInstancingDraw
 	)
 	{
 		LPD3DXMESHCONTAINER pMeshContainer;
@@ -152,7 +220,8 @@ namespace tkEngine{
 				viewMatrix,
 				projMatrix,
 				m_light,
-				m_normalMap
+				m_normalMap,
+				isInstancingDraw
 				);
 
 			pMeshContainer = pMeshContainer->pNextMeshContainer;
@@ -167,7 +236,8 @@ namespace tkEngine{
 				worldMatrix,
 				rotationMatrix,
 				viewMatrix,
-				projMatrix
+				projMatrix,
+				isInstancingDraw
 				);
 		}
 
@@ -180,7 +250,8 @@ namespace tkEngine{
 				worldMatrix,
 				rotationMatrix,
 				viewMatrix,
-				projMatrix
+				projMatrix,
+				isInstancingDraw
 				);
 		}
 	}
@@ -230,8 +301,30 @@ namespace tkEngine{
 				r_cast<D3DXMATRIX*>(&m_worldMatrix),
 				r_cast<D3DXMATRIX*>(&m_rotationMatrix),
 				viewMatrix,
-				projMatrix
-				);
+				projMatrix,
+				false
+			);
+		}
+	}
+	void CSkinModel::InstancingDraw(CRenderContext& renderContext, const CMatrix& viewMatrix, const CMatrix& projMatrix)
+	{
+		if (m_skinModelData) {
+			renderContext.InstancingDrawSkinModel(this, viewMatrix, projMatrix);
+		}
+	}
+	void CSkinModel::ImmidiateInstancingDraw(LPDIRECT3DDEVICE9 pd3ddevice, D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix)
+	{
+		if (m_skinModelData) {
+			DrawFrame(
+				pd3ddevice,
+				m_skinModelData->GetFrameRoot(),
+				m_pEffect->GetD3DXEffect(),
+				r_cast<D3DXMATRIX*>(&m_worldMatrix),
+				r_cast<D3DXMATRIX*>(&m_rotationMatrix),
+				viewMatrix,
+				projMatrix,
+				true
+			);
 		}
 	}
 }
