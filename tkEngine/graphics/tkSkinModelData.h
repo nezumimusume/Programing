@@ -7,7 +7,7 @@
 
 namespace tkEngine{
 	struct D3DXFRAME_DERIVED : public D3DXFRAME {
-		D3DXMATRIXA16	CombinedTransformationMatrix;	//合成済み行列。
+		D3DXMATRIX	CombinedTransformationMatrix;	//合成済み行列。
 	};
 	struct D3DXMESHCONTAINER_DERIVED : public D3DXMESHCONTAINER {
 		LPDIRECT3DTEXTURE9* ppTextures;
@@ -43,11 +43,18 @@ namespace tkEngine{
 		 */
 		void LoadModelData( const char* filePath, CAnimation* anim );
 		/*!
-		* @brief	引数で渡されたモデルデータを元にモデルを作成。
-		*			メッシュデータだけ使いまわしされます。
+		 * @brief	インスタンシング描画が行えるように設定。
+		 *@param[in]	numInstance			インスタンスの数。
+		 *@param[in]	vertexBufferStride	頂点バッファのストライド。インスタンス描画で使用されるストリーム１の頂点バッファのストライドです。
+		 */
+		void SetupInstancingDraw( int numInstance, int vertexBufferStride );
+		/*!
+		* @brief	モデルデータのクローンを作成。
+		* @details
+		*	スケルトンは新しく作成され、メッシュデータは共通のものが使用されます。
 		*@param[in]		modelData		モデルデータ。
 		*/
-		void CreateModelData( const CSkinModelData& modelData, CAnimation* anim);
+		void CloneModelData( const CSkinModelData& modelData, CAnimation* anim);
 		/*!
 		* @brief	リリース。
 		*/

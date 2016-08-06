@@ -666,10 +666,6 @@ namespace tkEngine{
 			CloneSkeleton(dstFrame->pFrameFirstChild, srcFrame->pFrameFirstChild);
 		}
 	}
-	/*!
-	* @brief	スケルトンのクローンを削除。
-	*@param[in]	frame		削除するスケルトン。
-	*/
 	void CSkinModelData::DeleteCloneSkeleton(LPD3DXFRAME frame)
 	{
 		
@@ -690,7 +686,7 @@ namespace tkEngine{
 		delete[] frame->Name;
 		delete frame;
 	}
-	void CSkinModelData::CreateModelData(const CSkinModelData& modelData, CAnimation* anim)
+	void CSkinModelData::CloneModelData(const CSkinModelData& modelData, CAnimation* anim)
 	{
 		//スケルトンの複製を作成。。
 		m_isClone = true;
@@ -720,5 +716,9 @@ namespace tkEngine{
 	void CSkinModelData::UpdateBoneMatrix(const CMatrix& matWorld)
 	{
 		UpdateFrameMatrices(m_frameRoot, r_cast<const D3DXMATRIX*>(&matWorld));
+	}
+	void CSkinModelData::SetupInstancingDraw( int numInstance )
+	{
+		
 	}
 }

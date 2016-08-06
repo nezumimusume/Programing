@@ -16,8 +16,8 @@ void UnityChan::Start()
 		orgAnimation = new CAnimation;
 		orgSkinModelData->LoadModelData("Assets/modelData/Unity.X", orgAnimation);
 	}
-	//オリジナルからクローンを作成。
-	skinModelData.CreateModelData(*orgSkinModelData, &animation);
+	//オリジナルのモデルデータからクローンモデルを作成。
+	skinModelData.CloneModelData(*orgSkinModelData, &animation);
 	normalMap.Load("Assets/modelData/utc_nomal.tga");
 
 	//skinModelData.LoadModelData("Assets/modelData/unity.X", NULL);
