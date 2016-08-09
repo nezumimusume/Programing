@@ -150,11 +150,7 @@ namespace tkEngine{
 				// draw the subset with the current world matrix palette and material state
 				if (isInstancingDraw) {
 					//インスタンシング描画。
-					//マルチマテリアルはNG
-					//TK_ASSERT(pMeshContainer->NumAttributeGroups == 1, "not support multi material");
-					
 					DrawMeshContainer_InstancingDrawCommon(pd3dDevice, pMeshContainer, iAttrib);
-					
 				}
 				else {
 					pMeshContainer->MeshData.pMesh->DrawSubset(iAttrib);
