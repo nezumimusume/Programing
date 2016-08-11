@@ -39,7 +39,7 @@ namespace tkEngine{
 			mesh->GetNumVertices(), 
 			meshContainer->pAttributeTable[materialID].FaceStart * 3, 
 			meshContainer->pAttributeTable[materialID].FaceCount);
-
+			
 		//ŒãŽn––
 		pd3dDevice->SetStreamSourceFreq(0, 1);
 		pd3dDevice->SetStreamSourceFreq(1, 1);
