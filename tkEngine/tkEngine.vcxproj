@@ -161,6 +161,7 @@
     <ClCompile Include="graphics\postEffect\tkPostEffect.cpp" />
     <ClCompile Include="graphics\preRender\tkIDMap.cpp" />
     <ClCompile Include="graphics\preRender\tkPreRender.cpp" />
+    <ClCompile Include="graphics\preRender\tkShadowCaster.cpp" />
     <ClCompile Include="graphics\preRender\tkShadowMap.cpp" />
     <ClCompile Include="graphics\tkAnimation.cpp" />
     <ClCompile Include="graphics\tkCamera.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="graphics\postEffect\tkPostEffect.h" />
     <ClInclude Include="graphics\preRender\tkIDMap.h" />
     <ClInclude Include="graphics\preRender\tkPreRender.h" />
+    <ClInclude Include="graphics\preRender\tkShadowCaster.h" />
     <ClInclude Include="graphics\preRender\tkShadowMap.h" />
     <ClInclude Include="graphics\tkCamera.h" />
     <ClInclude Include="graphics\tkEffect.h" />

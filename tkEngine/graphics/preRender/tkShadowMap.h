@@ -6,32 +6,8 @@
 #define _TKSHADOWMAP_H_
 
 namespace tkEngine{
-	/*!
-	 * @brief	影モデル。
-	 */
-	class CShadowModel{
-	public:
-		CShadowModel();
-		~CShadowModel();
-		/*!
-		 * @brief	プリミティブから作成。
-		 */
-		void Create( CPrimitive* prmi );
-		/*!
-		 * @brief	ワールド行列を設定。
-		 */
-		void SetWorldMatrix( const CMatrix& mWorld )
-		{
-			m_mWorld = mWorld;
-		}
-		/*!
-		 * @brief	描画。
-		 */
-		void Render( CRenderContext& renderContext, CEffect* pEffect, const CMatrix& mLVP );
-	private:
-		CPrimitive*		m_prim;		//!<プリミティブ。
-		CMatrix			m_mWorld;	//!<ワールド行列を設定。
-	};
+	class IShadowCaster;
+	
 	class CShadowMap : Noncopyable{
 	public:
 		/*!
@@ -51,9 +27,9 @@ namespace tkEngine{
 		 */
 		void Release();
 		/*!
-		 * @brief	影モデルをエントリー。
+		 * @brief	シャドウキャスターをエントリー。
 		 */
-		void Entry( CShadowModel* model );
+		void Entry( IShadowCaster* caster );
 		/*!
 		 * @brief	シャドウマップに書き込み。
 		 *@param[in]	renderContext		レンダリングコンテキスト。
@@ -119,10 +95,17 @@ namespace tkEngine{
 		{
 			return m_far;
 		}
+		/*!
+		* @brief	シャドウマップが有効か判定。
+		*/
+		bool IsEnable() const
+		{
+			return m_isEnable;
+		}
 	private:
 		bool						m_isEnable;			//!<有効？
 		CRenderTarget				m_shadowMapRT;		//!<シャドウマップを書き込むレンダリングターゲット。
-		std::vector<CShadowModel*>	m_shadowModels;		//!<シャドウマップに書き込みを行う影モデル。
+		std::vector<IShadowCaster*>	m_shadowCaster;		//!<シャドウキャスター。
 		CEffect*					m_pShadowMapEffect;	//!<シャドウマップのエフェクト。
 		CVector3					m_lightPosition;	//!<ライトの位置。
 		CVector3					m_lightDirection;	//!<ライトの向き。

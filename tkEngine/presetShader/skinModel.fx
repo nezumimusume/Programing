@@ -2,6 +2,8 @@
  * @brief	スキンモデルシェーダー。(4ボーンスキニング)
  */
 
+#include "LightingFunction.h"
+
 //スキン行列。
 #define MAX_MATRICES  26
 float4x3    g_mWorldMatrixArray[MAX_MATRICES] : WORLDMATRIXARRAY;
@@ -10,6 +12,11 @@ float		g_numBone;			//骨の数。
 
 float4x4	g_worldMatrix;			//!<ワールド行列。
 float4x4	g_rotationMatrix;		//!<回転行列。
+float4x4	g_viewMatrixRotInv;		//!<カメラの回転行列の逆行列。
+float4x4	g_mLVP;					//ライトビュープロジェクション行列。
+float2		g_farNear;	//遠平面と近平面。xに遠平面、yに近平面。
+
+int4 g_flags;				//xに法線マップの保持フラグ、yはシャドウレシーバー
 
 texture g_diffuseTexture;		//ディフューズテクスチャ。
 sampler g_diffuseTextureSampler = 
@@ -23,7 +30,31 @@ sampler_state
 	AddressV = Wrap;
 };
 
+//法線マップ
+texture g_normalTexture;		//法線マップ。
+sampler g_normalMapSampler = 
+sampler_state
+{
+	Texture = <g_normalTexture>;
+    MipFilter = NONE;
+    MinFilter = NONE;
+    MagFilter = NONE;
+    AddressU = Wrap;
+	AddressV = Wrap;
+};
 
+//シャドウマップ
+texture g_shadowMap;
+sampler g_shadowMapSampler = 
+sampler_state
+{
+	Texture = <g_shadowMap>;
+    MipFilter = NONE;
+    MinFilter = NONE;
+    MagFilter = NONE;
+    AddressU = Wrap;
+	AddressV = Wrap;
+};
 /*!
  * @brief	入力頂点
  */
@@ -33,6 +64,7 @@ struct VS_INPUT
     float4  BlendWeights    : BLENDWEIGHT;
     float4  BlendIndices    : BLENDINDICES;
     float3  Normal          : NORMAL;
+    float3	Tangent			: TANGENT;		//接ベクトル
     float3  Tex0            : TEXCOORD0;
 };
 
@@ -47,25 +79,41 @@ struct VS_INPUT_INSTANCING
 	float4 mWorld3	: TEXCOORD3;		//ワールド行列の3行目
 	float4 mWorld4	: TEXCOORD4;		//ワールド行列の4行目
 };
+
 /*!
  * @brief	出力頂点。
  */
 struct VS_OUTPUT
 {
-	float4  Pos     : POSITION;
-    float3  Normal	: NORMAL;
-    float2  Tex0    : TEXCOORD0;
+	float4  Pos     		: POSITION;
+    float3  Normal			: NORMAL;
+    float2  Tex0   			: TEXCOORD0;
+    float3	Tangent			: TEXCOORD1;	//接ベクトル
+    float4  worldPos		: TEXCOORD2;
 };
+
+/*!
+ * @brief	シャドウマップ描き込み時の出力頂点。
+ */
+struct VS_OUTPUT_RENDER_SHADOW_MAP
+{
+	float4  Pos     : POSITION;
+	float4	depth	: TEXCOORD;
+};
+
+
 /*!
  *@brief	ワールド座標とワールド法線をスキン行列から計算する。
  *@param[in]	In		入力頂点。
  *@param[out]	Pos		ワールド座標の格納先。
  *@param[out]	Normal	ワールド法線の格納先。
+ *@param[out]	Tangent	ワールド接ベクトルの格納先。
  */
-void CalcWorldPosAndNormalFromSkinMatrix( VS_INPUT In, out float3 Pos, out float3 Normal )
+void CalcWorldPosAndNormalFromSkinMatrix( VS_INPUT In, out float3 Pos, out float3 Normal, out float3 Tangent, uniform bool calcNormal )
 {
 	Pos = 0.0f;
 	Normal = 0.0f;
+	Tangent = 0.0f;
 	//ブレンドするボーンのインデックス。
 	int4 IndexVector = D3DCOLORtoUBYTE4(In.BlendIndices);
 	
@@ -78,23 +126,35 @@ void CalcWorldPosAndNormalFromSkinMatrix( VS_INPUT In, out float3 Pos, out float
         LastWeight = LastWeight + BlendWeightsArray[iBone];
         
         Pos += mul(In.Pos, g_mWorldMatrixArray[IndexArray[iBone]]) * BlendWeightsArray[iBone];
-        Normal += mul(In.Normal, g_mWorldMatrixArray[IndexArray[iBone]]) * BlendWeightsArray[iBone];
+        if(calcNormal){
+	        Normal += mul(In.Normal, g_mWorldMatrixArray[IndexArray[iBone]]) * BlendWeightsArray[iBone];
+    	    Tangent += mul(In.Tangent, g_mWorldMatrixArray[IndexArray[iBone]]) * BlendWeightsArray[iBone];
+    	}
     }
     LastWeight = 1.0f - LastWeight; 
     
 	Pos += (mul(In.Pos, g_mWorldMatrixArray[IndexArray[g_numBone-1]]) * LastWeight);
-    Normal += (mul(In.Normal, g_mWorldMatrixArray[IndexArray[g_numBone-1]]) * LastWeight);
+	if(calcNormal){
+	    Normal += (mul(In.Normal, g_mWorldMatrixArray[IndexArray[g_numBone-1]]) * LastWeight);
+    	Tangent += (mul(In.Tangent, g_mWorldMatrixArray[IndexArray[g_numBone-1]]) * LastWeight);
+    }
 }
 /*!
  *@brief	ワールド座標とワールド法線を計算。
  *@param[in]	In		入力頂点。
  *@param[out]	Pos		ワールド座標の格納先。
  *@param[out]	Normal	ワールド法線の格納先。
+ *@param[out]	Tangent	ワールド接ベクトルの格納先。
  */
-void CalcWorldPosAndNormal( VS_INPUT In, out float3 Pos, out float3 Normal )
+void CalcWorldPosAndNormal( VS_INPUT In, out float3 Pos, out float3 Normal, out float3 Tangent, uniform bool calcNormal )
 {
+	Normal = 0.0f;
+	Tangent = 0.0f;
 	Pos = mul(In.Pos, g_worldMatrix );
-	Normal = mul(In.Normal, g_rotationMatrix );
+	if(calcNormal){
+		Normal = mul(In.Normal, g_rotationMatrix );
+		Tangent = mul(In.Tangent, g_rotationMatrix );
+	}
 }
 /*!
  *@brief	頂点シェーダー。
@@ -104,17 +164,22 @@ void CalcWorldPosAndNormal( VS_INPUT In, out float3 Pos, out float3 Normal )
 VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 {
 	VS_OUTPUT o = (VS_OUTPUT)0;
-	float3 Pos, Normal;
+	float3 Pos, Normal, Tangent;
 	if(hasSkin){
 		//スキンあり。
-	    CalcWorldPosAndNormalFromSkinMatrix( In, Pos, Normal );
+	    CalcWorldPosAndNormalFromSkinMatrix( In, Pos, Normal, Tangent, true );
 	}else{
 		//スキンなし。
-		CalcWorldPosAndNormal( In, Pos, Normal );
+		CalcWorldPosAndNormal( In, Pos, Normal, Tangent, true );
 	}
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
     o.Normal = normalize(Normal);
+    o.Tangent = normalize(Tangent);
     o.Tex0 = In.Tex0;
+    if(g_flags.y){
+		//シャドウレシーバー。
+		o.worldPos = mul(float4(Pos.xyz, 1.0f), g_mLVP );
+	}
 	return o;
 }
 /*!
@@ -125,13 +190,13 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
 {
 	VS_OUTPUT o = (VS_OUTPUT)0;
-	float3 Pos, Normal;
+	float3 Pos, Normal, Tangent;
 	if(hasSkin){
 		//スキンあり。
-	    CalcWorldPosAndNormalFromSkinMatrix( In.base, Pos, Normal );
+	    CalcWorldPosAndNormalFromSkinMatrix( In.base, Pos, Normal, Tangent, true );
 	}else{
 		//スキンなし。
-		CalcWorldPosAndNormal( In.base, Pos, Normal );
+		CalcWorldPosAndNormal( In.base, Pos, Normal, Tangent, true );
 	}
 	float4x4 worldMat;
 	worldMat[0] = In.mWorld1;
@@ -140,17 +205,119 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
 	worldMat[3] = In.mWorld4;
 	Pos = mul(float4(Pos.xyz, 1.0f), worldMat );	//ワールド行列をかける。
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
-    o.Normal = normalize(Normal);
-    o.Tex0 = In.Tex0;
+    o.Normal = mul(normalize(Normal), worldMat);
+    o.Tex0 = In.base.Tex0;
 	return o;
 }
+
 /*!
  * @brief	ピクセルシェーダー。
  */
 float4 PSMain( VS_OUTPUT In ) : COLOR
 {
-	return tex2D(g_diffuseTextureSampler, In.Tex0);
+	float4 color = tex2D(g_diffuseTextureSampler, In.Tex0);
+	float3 normal = 0.0f;
+	if(g_flags.x){	//@todo for debug
+		//法線マップあり。
+		normal = tex2D( g_normalMapSampler, In.Tex0);
+		float4x4 tangentSpaceMatrix;
+		float3 biNormal = normalize( cross( In.Tangent, In.Normal) );
+		tangentSpaceMatrix[0] = float4( In.Tangent, 0.0f);
+		tangentSpaceMatrix[1] = float4( biNormal, 0.0f);
+		tangentSpaceMatrix[2] = float4( In.Normal, 0.0f);
+		tangentSpaceMatrix[3] = float4( 0.0f, 0.0f, 0.0f, 1.0f );
+		//-1.0～1.0の範囲にマッピングする。
+		normal = (normal * 2.0f)- 1.0f;
+		normal = tangentSpaceMatrix[0] * normal.x + tangentSpaceMatrix[1] * normal.y + tangentSpaceMatrix[2] * normal.z; 
+	}else{
+		//法線マップなし。
+		normal = In.Normal;
+	}
+	
+	
+	float4 lig = DiffuseLight(normal);
+	if(g_flags.y){
+		float4 posInLVP = In.worldPos;
+		//uv座標に変換。
+		float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy/posInLVP.w   + float2(0.5f, 0.5f);
+		float shadow_val = 1.0f;
+		if(shadowMapUV.x <= 1.0f && shadowMapUV.y <= 1.0f && shadowMapUV.x >= 0.0f && shadowMapUV.y >= 0.0f){
+			shadow_val = tex2D( g_shadowMapSampler, shadowMapUV ).r;
+		}
+//		float depth = ( posInLVP.z - g_farNear.y ) / (g_farNear.x - g_farNear.y);	
+		float depth = posInLVP.z / posInLVP.w;
+		if( depth > shadow_val ){
+			//影になっている。ディフューズライトをオフに。
+			lig = 0.0f;
+		}
+	}
+	//アンビエントライトを加算。
+	lig.xyz += g_light.ambient.xyz;
+	color.xyz *= lig;
+	
+#if 0
+	//フレネル。
+	float3 normalInCamera = mul(normal, g_viewMatrixRotInv );
+	float t = 1.0f - abs(dot(normalInCamera, float3(0.0f, 0.0f, 1.0f)));
+	t = pow(t, 3.0f);
+	color.xyz += t;
+#endif
+	return color;
 }
+
+
+/*!
+ * @brief	シャドウマップ描き込み時の頂点シェーダー。
+ */
+VS_OUTPUT_RENDER_SHADOW_MAP VSMainRenderShadowMap( VS_INPUT In, uniform bool hasSkin )
+{
+	VS_OUTPUT_RENDER_SHADOW_MAP o = (VS_OUTPUT_RENDER_SHADOW_MAP)0;
+	float3 Pos, Normal, Tangent;
+	if(hasSkin){
+		//スキンあり。
+	    CalcWorldPosAndNormalFromSkinMatrix( In, Pos, Normal, Tangent, false );
+	}else{
+		//スキンなし。
+		CalcWorldPosAndNormal( In, Pos, Normal, Tangent, false );
+	}
+	o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
+	o.depth = o.Pos;
+	return o;
+}
+/*!
+ * @brief	シャドウマップ書き込み時の頂点シェーダー(インスタンシング版)
+ */
+VS_OUTPUT_RENDER_SHADOW_MAP VSMainInstancingRenderShadowMap(VS_INPUT_INSTANCING In, uniform bool hasSkin)
+{
+	VS_OUTPUT_RENDER_SHADOW_MAP o = (VS_OUTPUT_RENDER_SHADOW_MAP)0;
+	float3 Pos, Normal, Tangent;
+	if(hasSkin){
+		//スキンあり。
+	    CalcWorldPosAndNormalFromSkinMatrix( In.base, Pos, Normal, Tangent, false );
+	}else{
+		//スキンなし。
+		CalcWorldPosAndNormal( In.base, Pos, Normal, Tangent, false );
+	}
+	float4x4 worldMat;
+	worldMat[0] = In.mWorld1;
+	worldMat[1] = In.mWorld2;
+	worldMat[2] = In.mWorld3;
+	worldMat[3] = In.mWorld4;
+	Pos = mul(float4(Pos.xyz, 1.0f), worldMat );	//ワールド行列をかける。
+	o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
+	o.depth = o.Pos;
+	return o;
+}
+/*!
+ * @brief	シャドウマップ描き込み時のピクセルシェーダー。
+ */
+float4 PSMainRenderShadowMap( VS_OUTPUT_RENDER_SHADOW_MAP In ) : COLOR
+{
+//	float z = ( In.depth.z - g_farNear.y ) / (g_farNear.x - g_farNear.y);
+	float z = In.depth.z / In.depth.w;
+	return z;
+}
+
 /*!
  *@brief	スキンありモデル用のテクニック。
  */
@@ -173,7 +340,6 @@ technique NoSkinModel
 		PixelShader = compile ps_3_0 PSMain();
 	}
 }
-
 /*!
  *@brief	スキンありモデルのインスタンシング描画用のテクニック。
  */
@@ -194,5 +360,45 @@ technique NoSkinModelInstancing
 	{
 		VertexShader = compile vs_3_0 VSMainInstancing(false);
 		PixelShader = compile ps_3_0 PSMain();
+	}
+}
+
+/*!
+ * @brief	スキンありモデル用のシャドウマップ描き込みテクニック。
+ */
+technique SkinModelRenderShadowMap
+{
+	pass p0
+	{
+		VertexShader = compile vs_3_0 VSMainRenderShadowMap(true);
+		PixelShader = compile ps_3_0 PSMainRenderShadowMap();
+	}
+}
+
+/*!
+ * @brief	スキンなしモデル用のシャドウマップ描き込みテクニック。
+ */
+technique NoSkinModelRenderShadowMap
+{
+	pass p0
+	{
+		VertexShader = compile vs_3_0 VSMainRenderShadowMap(false);
+		PixelShader = compile ps_3_0 PSMainRenderShadowMap();
+	}
+}
+technique SkinModelInstancingRenderToShadowMap
+{
+	pass p0
+	{
+		VertexShader = compile vs_3_0 VSMainInstancingRenderShadowMap(true);
+        PixelShader = compile ps_3_0 PSMainRenderShadowMap();
+	}
+}
+technique NoSkinModelInstancingRenderToShadowMap
+{
+	pass p0
+	{
+		VertexShader = compile vs_3_0 VSMainInstancingRenderShadowMap(false);
+        PixelShader = compile ps_3_0 PSMainRenderShadowMap();
 	}
 }

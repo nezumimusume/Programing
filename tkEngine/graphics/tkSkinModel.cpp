@@ -3,6 +3,7 @@
 #include "tkEngine/graphics/tkSkinModelData.h"
 #include "tkEngine/graphics/tkEffect.h"
 #include "tkEngine/graphics/tkLight.h"
+#include "tkEngine/graphics/prerender/tkShadowMap.h"
 
 namespace tkEngine{
 	
@@ -56,7 +57,8 @@ namespace tkEngine{
 		D3DXMATRIX* projMatrix,
 		CLight* light,
 		CTexture* normalMap,
-		bool isInstancingDraw
+		bool isInstancingDraw,
+		bool isDrawToShadowMap
 	)
 	{
 		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
@@ -74,22 +76,42 @@ namespace tkEngine{
 		{
 			if (isInstancingDraw) {
 				if (pMeshContainer->pSkinInfo != NULL) {
-					pEffect->SetTechnique("SkinModelInstancing");
+					if (isDrawToShadowMap) {
+						pEffect->SetTechnique("SkinModelInstancingRenderToShadowMap");
+					}
+					else {
+						pEffect->SetTechnique("SkinModelInstancing");
+					}
 				}
 				else {
-					pEffect->SetTechnique("NoSkinModelInstancing");
+					if (isDrawToShadowMap) {
+						pEffect->SetTechnique("NoSkinModelInstancingRenderToShadowMap");
+					}
+					else {
+						pEffect->SetTechnique("NoSkinModelInstancing");
+					}
 				}
 			}
 			else {
 				if (pMeshContainer->pSkinInfo != NULL) {
-					pEffect->SetTechnique("SkinModel");
+					if (isDrawToShadowMap) {
+						//シャドウマップに描画。
+						pEffect->SetTechnique("SkinModelRenderShadowMap");
+					}else{
+						pEffect->SetTechnique("SkinModel");
+					}
 				}
 				else {
-					pEffect->SetTechnique("NoSkinModel");
+					if (isDrawToShadowMap) {
+						pEffect->SetTechnique("NoSkinModelRenderShadowMap");
+					}else{
+						pEffect->SetTechnique("NoSkinModel");
+					}
 				}
 			}
 		}
 		//共通の定数レジスタを設定
+		
 		{
 			//ビュープロジェクション
 			pEffect->SetMatrix("g_mViewProj", &viewProj);
@@ -99,14 +121,29 @@ namespace tkEngine{
 				light,
 				sizeof(CLight)
 			);
+			int flag[4] = { 0 };
 			if (normalMap != nullptr) {
-				pEffect->SetBool("g_isHasNormalMap", true);
+				flag[0] = true;
+				
 				pEffect->SetTexture("g_normalTexture", normalMap->GetTextureDX());
 			}
-			else {
-				pEffect->SetBool("g_isHasNormalMap", false);
+			if (!isDrawToShadowMap && m_isShadowReceiver) {
+				//シャドウレシーバー。
+				flag[1] = true;
+				pEffect->SetTexture("g_shadowMap", ShadowMap().GetTexture()->GetTextureDX());
+				const CMatrix& mLVP = ShadowMap().GetLVPMatrix();
+				pEffect->SetValue("g_mLVP", &mLVP, sizeof(mLVP));
+			}
+			pEffect->SetValue("g_flags", flag, sizeof(flag));
+			if (isDrawToShadowMap || m_isShadowReceiver) {
+				float farNear[] = {
+					ShadowMap().GetFar(),
+					ShadowMap().GetNear()
+				};
+				pEffect->SetValue("g_farNear", farNear, sizeof(farNear));
 			}
 		}
+		
 		if (pMeshContainer->pSkinInfo != NULL)
 		{
 			//スキン情報有り。
@@ -150,9 +187,6 @@ namespace tkEngine{
 				// draw the subset with the current world matrix palette and material state
 				if (isInstancingDraw) {
 					//インスタンシング描画。
-					//マルチマテリアルはNG
-					//TK_ASSERT(pMeshContainer->NumAttributeGroups == 1, "not support multi material");
-					
 					DrawMeshContainer_InstancingDrawCommon(pd3dDevice, pMeshContainer, iAttrib);
 					
 				}
@@ -202,7 +236,8 @@ namespace tkEngine{
 		D3DXMATRIX* rotationMatrix,
 		D3DXMATRIX* viewMatrix,
 		D3DXMATRIX* projMatrix,
-		bool isInstancingDraw
+		bool isInstancingDraw,
+		bool isDrawToShadowMap
 	)
 	{
 		LPD3DXMESHCONTAINER pMeshContainer;
@@ -221,7 +256,8 @@ namespace tkEngine{
 				projMatrix,
 				m_light,
 				m_normalMap,
-				isInstancingDraw
+				isInstancingDraw,
+				isDrawToShadowMap
 				);
 
 			pMeshContainer = pMeshContainer->pNextMeshContainer;
@@ -237,7 +273,8 @@ namespace tkEngine{
 				rotationMatrix,
 				viewMatrix,
 				projMatrix,
-				isInstancingDraw
+				isInstancingDraw,
+				isDrawToShadowMap
 				);
 		}
 
@@ -251,7 +288,8 @@ namespace tkEngine{
 				rotationMatrix,
 				viewMatrix,
 				projMatrix,
-				isInstancingDraw
+				isInstancingDraw,
+				isDrawToShadowMap
 				);
 		}
 	}
@@ -260,7 +298,9 @@ namespace tkEngine{
 		m_skinModelData(nullptr),
 		m_worldMatrix(CMatrix::Identity),
 		m_light(nullptr),
-		m_normalMap(nullptr)
+		m_normalMap(nullptr),
+		m_isShadowCaster(false),
+		m_isShadowReceiver(false)
 	{
 	}
 	CSkinModel::~CSkinModel()
@@ -272,9 +312,14 @@ namespace tkEngine{
 	{
 		m_pEffect = EffectManager().LoadEffect("Assets/presetShader/skinModel.fx");
 		m_skinModelData = modelData;
+		m_shadowCaster.Create(this);
 	}
-	void CSkinModel::UpdateWorldMatrix(const CVector3& trans, const CQuaternion& rot, const CVector3& scale)
+	void CSkinModel::Update(const CVector3& trans, const CQuaternion& rot, const CVector3& scale)
 	{
+		if (m_isShadowCaster && ShadowMap().IsEnable()) {
+			//シャドウキャスター。
+			ShadowMap().Entry(&m_shadowCaster);
+		}
 		CMatrix mTrans, mScale;
 		mTrans.MakeTranslation(trans);
 		m_rotationMatrix.MakeRotationFromQuaternion(rot);
@@ -285,13 +330,24 @@ namespace tkEngine{
 			m_skinModelData->UpdateBoneMatrix(m_worldMatrix);	//ボーン行列を更新。
 		}
 	}
+	/*!
+	*@brief	シャドウマップに描画
+	*@details
+	* CShadowMapから呼び出されます。ユーザーは使用しないように。
+	*/
+	void CSkinModel::DrawToShadowMap(CRenderContext& renderContext, const CMatrix& viewMatrix, const CMatrix& projMatrix)
+	{
+		if (m_skinModelData) {
+			renderContext.DrawSkinModelToShadowMap(this, viewMatrix, projMatrix);
+		}
+	}
 	void CSkinModel::Draw(CRenderContext& renderContext, const CMatrix& viewMatrix, const CMatrix& projMatrix)
 	{
 		if (m_skinModelData) {
 			renderContext.DrawSkinModel(this, viewMatrix, projMatrix);
 		}
 	}
-	void CSkinModel::ImmidiateDraw(LPDIRECT3DDEVICE9 pd3ddevice, D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix)
+	void CSkinModel::ImmidiateDraw(LPDIRECT3DDEVICE9 pd3ddevice, D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawToShadowMap)
 	{
 		if (m_skinModelData) {
 			DrawFrame(
@@ -302,28 +358,8 @@ namespace tkEngine{
 				r_cast<D3DXMATRIX*>(&m_rotationMatrix),
 				viewMatrix,
 				projMatrix,
-				false
-			);
-		}
-	}
-	void CSkinModel::InstancingDraw(CRenderContext& renderContext, const CMatrix& viewMatrix, const CMatrix& projMatrix)
-	{
-		if (m_skinModelData) {
-			renderContext.InstancingDrawSkinModel(this, viewMatrix, projMatrix);
-		}
-	}
-	void CSkinModel::ImmidiateInstancingDraw(LPDIRECT3DDEVICE9 pd3ddevice, D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix)
-	{
-		if (m_skinModelData) {
-			DrawFrame(
-				pd3ddevice,
-				m_skinModelData->GetFrameRoot(),
-				m_pEffect->GetD3DXEffect(),
-				r_cast<D3DXMATRIX*>(&m_worldMatrix),
-				r_cast<D3DXMATRIX*>(&m_rotationMatrix),
-				viewMatrix,
-				projMatrix,
-				true
+				m_skinModelData->GetNumInstance() != 0,
+				isDrawToShadowMap
 			);
 		}
 	}

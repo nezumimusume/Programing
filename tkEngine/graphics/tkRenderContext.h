@@ -91,6 +91,11 @@ namespace tkEngine{
 		*/
 		__inline void DrawSkinModel(CSkinModel* skinModel, const CMatrix& viewMatrix, const CMatrix& projMatrix);
 		/*!
+		* @brief	スキンモデルをシャドウマップに描画。
+		*@param[in]	skinMode		スキンモデル。
+		*/
+		__inline void DrawSkinModelToShadowMap(CSkinModel* skinModel, const CMatrix& viewMatrix, const CMatrix& projMatrix);
+		/*!
 		* @brief	スキンモデルのインスタンシング描画。
 		*@param[in]	skinMode		スキンモデル。
 		*/
@@ -215,12 +220,12 @@ namespace tkEngine {
 		SetRenderCommand(CRenderCommand_DrawSkinModel(*this, skinModel, viewMatrix, projMatrix));
 	}
 	/*!
-	* @brief	スキンモデルのインスタンシング描画。
+	* @brief	スキンモデルをシャドウマップに描画。
 	*@param[in]	skinMode		スキンモデル。
 	*/
-	__inline void CRenderContext::InstancingDrawSkinModel(CSkinModel* skinModel, const CMatrix& viewMatrix, const CMatrix& projMatrix)
+	__inline void CRenderContext::DrawSkinModelToShadowMap(CSkinModel* skinModel, const CMatrix& viewMatrix, const CMatrix& projMatrix)
 	{
-		SetRenderCommand(CRenderCommand_InstancingDrawSkinModel(*this, skinModel, viewMatrix, projMatrix));
+		SetRenderCommand(CRenderCommand_DrawSkinModelToShadowMap(*this, skinModel, viewMatrix, projMatrix));
 	}
 }
 

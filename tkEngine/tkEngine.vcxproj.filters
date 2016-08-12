@@ -164,6 +164,9 @@
     <ClCompile Include="AI\tkPathFinding.cpp">
       <Filter>Source Files\AI</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\preRender\tkShadowCaster.cpp">
+      <Filter>Source Files\graphics\prerender</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -303,6 +306,9 @@
     </ClInclude>
     <ClInclude Include="timer\tkStopwatch.h">
       <Filter>Source Files\timer</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\preRender\tkShadowCaster.h">
+      <Filter>Source Files\graphics\prerender</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

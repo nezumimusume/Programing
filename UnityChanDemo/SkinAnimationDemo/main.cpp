@@ -28,11 +28,12 @@ public:
 		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
 		light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
 
-		light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(2, CVector4(0.3f, 0.3f, 0.3f, 1.0f));
-		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(0, CVector4(0.5f, 0.5f, 0.5f, 1.0f));
+		light.SetDiffuseLightColor(1, CVector4(0.5f, 0.5f, 0.5f, 1.0f));
+		light.SetDiffuseLightColor(2, CVector4(0.5f, 0.5f, 0.5f, 1.0f));
+		light.SetDiffuseLightColor(3, CVector4(0.5f, 0.5f, 0.5f, 1.0f));
 		light.SetAmbinetLight(CVector3(0.3f, 0.3f, 0.3f));
+		skinModel.SetShadowReceiverFlag(true);
 	}
 	~Map()
 	{
@@ -44,7 +45,7 @@ public:
 	}
 	void Map::Update() override
 	{
-		skinModel.UpdateWorldMatrix(CVector3(0.0f, 0.0f, 0.0f), CQuaternion::Identity, CVector3::One);
+		skinModel.Update(CVector3(0.0f, 0.0f, 0.0f), CQuaternion::Identity, CVector3::One);
 	}
 	void Map::Render(CRenderContext& renderContext) override
 	{
@@ -96,7 +97,7 @@ int WINAPI wWinMain(
 	InitTkEngine( hInst );
 	NewGO<Map>(0);
 	NewGO<UnityChanInstance>(0);
-	/*for (int i = 0; i < 100; i++) {
+	/*for (int i = 0; i < 1; i++) {
 		UnityChan* unityChan = NewGO<UnityChan>(0);
 		if (i == 0) {
 			unityChan->isUpdateAnim = true;

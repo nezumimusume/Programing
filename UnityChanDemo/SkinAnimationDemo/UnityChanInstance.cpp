@@ -37,8 +37,9 @@ void UnityChanInstance::Start()
 	skinModel.Init(&skinModelData);
 	skinModel.SetLight(&light);
 	skinModel.SetNormalMap(&normalMap);
+	skinModel.SetShadowCasterFlag(true);
 
-	camera.SetPosition(CVector3(0.0f, 1.5f, 20.0f));
+	camera.SetPosition(CVector3(0.0f, 1.5f, 5.0f));
 	camera.SetTarget(CVector3(0.0f, 0.5f, 0.0f));
 
 	camera.SetFar(10000.0f);
@@ -60,7 +61,7 @@ void UnityChanInstance::Update()
 {
 	animation.Update(1.0f / 60.0f);
 	skinModel.UpdateInstancingDrawData(worldMatrixBuffer);
-	skinModel.UpdateWorldMatrix(CVector3::Zero, CQuaternion::Identity, CVector3::One);
+	skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
 	if (KeyInput().IsTrgger(CKeyInput::enKeyA)) {
 		currentAnimSetNo++;
 		currentAnimSetNo %= animation.GetNumAnimationSet();
@@ -74,5 +75,5 @@ void UnityChanInstance::Update()
 }
 void UnityChanInstance::Render(CRenderContext& renderContext)
 {
-	skinModel.InstancingDraw(renderContext, camera.GetViewMatrix(), camera.GetProjectionMatrix());
+	skinModel.Draw(renderContext, camera.GetViewMatrix(), camera.GetProjectionMatrix());
 }

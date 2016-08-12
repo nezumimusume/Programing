@@ -6,12 +6,14 @@
 
 #include "tkEngine/graphics/tkAnimation.h"
 #include "tkEngine/graphics/tkSkinModelData.h"
+#include "tkEngine/graphics/prerender/tkShadowCaster.h"
 
 namespace tkEngine {
 	class CEffect;
 	class CSkinModelData;
 	class CRenderContext;
 	class CLight;
+	class CShadowMap;
 	/*!
 	*@brief	スキンモデル
 	*/
@@ -32,28 +34,15 @@ namespace tkEngine {
 		*@details
 		* この関数を実行すると即描画コマンドがGPUに送られます。
 		*/
-		void ImmidiateDraw(LPDIRECT3DDEVICE9 pd3ddevice, D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix);
+		void ImmidiateDraw(LPDIRECT3DDEVICE9 pd3ddevice, D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix, bool isDrawToShadowMap);
 		/*!
-		*@brief	インスタンシング描画。
+		*@brief	更新。
 		*@details
-		* CSkinModelData::CreateInstancingDrawDataを実行して、インスタンシング描画の準備を完了させている必要があります。
-		*/
-		void InstancingDraw(CRenderContext& renderContext, const CMatrix& viewMatrix, const CMatrix& projMatrix);
-		/*!
-		*@brief	イミディエイトインスタンシング描画。
-		*@details
-		* この関数を実行すると即描画コマンドがGPUに送られます。
-		*/
-		void ImmidiateInstancingDraw(LPDIRECT3DDEVICE9 pd3ddevice, D3DXMATRIX* viewMatrix, D3DXMATRIX* projMatrix);
-		/*!
-		*@brief	ワールド行列を更新。
-		*@details
-		* 後でCMotionクラスに移動させます。
 		*@param[in]		trans	平行移動。
 		*@param[in]		rot		回転。
 		*@param[in]		scale	拡大。
 		*/
-		void UpdateWorldMatrix( const CVector3& trans, const CQuaternion& rot, const CVector3& scale );
+		void Update( const CVector3& trans, const CQuaternion& rot, const CVector3& scale );
 		/*!
 		* @brief	インスタンシング描画用のデータを更新。
 		*@details
@@ -79,6 +68,22 @@ namespace tkEngine {
 		{
 			m_normalMap = normalMap;
 		}
+		/*!
+		 * @brief	シャドウキャスターのフラグを設定。
+		 *@param[in]	flag	シャドウキャスターのフラグ。
+		 */
+		void SetShadowCasterFlag( bool flag )
+		{
+			m_isShadowCaster = flag;
+		}
+		/*!
+		* @brief	シャドウレシーバーのフラグを設定。
+		*@param[in]	flag	シャドウレシーバーのフラグ。
+		*/
+		void SetShadowReceiverFlag(bool flag)
+		{
+			m_isShadowReceiver = flag;
+		}
 	private:
 		void DrawMeshContainer(
 			IDirect3DDevice9* pd3dDevice,
@@ -91,7 +96,8 @@ namespace tkEngine {
 			D3DXMATRIX* projMatrix,
 			CLight* light,
 			CTexture* normalMap,
-			bool isInstancingDraw
+			bool isInstancingDraw,
+			bool isDrawToShadowMap
 		);
 		void DrawFrame(
 			IDirect3DDevice9* pd3dDevice,
@@ -101,10 +107,18 @@ namespace tkEngine {
 			D3DXMATRIX* rotationMatrix,
 			D3DXMATRIX* viewMatrix,
 			D3DXMATRIX* projMatrix,
-			bool isInstancingDraw
+			bool isInstancingDraw,
+			bool isDrawToShadowMap
 		);
 		//DrawMeshContainerから呼ばれるインスタンシング描画の共通処理。
 		void DrawMeshContainer_InstancingDrawCommon(IDirect3DDevice9* pd3dDevice, D3DXMESHCONTAINER_DERIVED* meshContainer, int materialID);		
+	public:
+		/*!
+		*@brief	シャドウマップに描画
+		*@details
+		* CShadowMapから呼び出されます。ユーザーは使用しないように。
+		*/
+		void DrawToShadowMap(CRenderContext& renderContext, const CMatrix& viewMatrix, const CMatrix& projMatrix);
 	private:
 		CMatrix				m_worldMatrix;		//!<ワールド行列。
 		CMatrix				m_rotationMatrix;	//!<回転行列。
@@ -114,7 +128,10 @@ namespace tkEngine {
 		CLight*				m_light;			//!<ライト。
 		CTexture*           m_normalMap;		//!<法線マップ。
 		static const int MAX_MATRIX_PALLET = 128;	//!<マトリクスパレットの最大数。
-		D3DXMATRIX			m_boneMatrixPallet[MAX_MATRIX_PALLET];	//!<マトリクスパレット。
+		D3DXMATRIX					m_boneMatrixPallet[MAX_MATRIX_PALLET];	//!<マトリクスパレット。
+		bool						m_isShadowReceiver;	//!<シャドウレシーバー。
+		bool						m_isShadowCaster;	//!<シャドウキャスターフラグ。
+		CShadowCaster_SkinModel		m_shadowCaster;		//!<シャドウキャスター。
 	};
 }
 
