@@ -134,6 +134,9 @@ namespace tkEngine{
 				const CMatrix& mLVP = ShadowMap().GetLVPMatrix();
 				pEffect->SetValue("g_mLVP", &mLVP, sizeof(mLVP));
 			}
+			if (m_isFresnel) {
+				flag[2] = true;
+			}
 			pEffect->SetValue("g_flags", flag, sizeof(flag));
 			if (isDrawToShadowMap || m_isShadowReceiver) {
 				float farNear[] = {
@@ -299,7 +302,8 @@ namespace tkEngine{
 		m_light(nullptr),
 		m_normalMap(nullptr),
 		m_isShadowCaster(false),
-		m_isShadowReceiver(false)
+		m_isShadowReceiver(false),
+		m_isFresnel(false)
 	{
 	}
 	CSkinModel::~CSkinModel()

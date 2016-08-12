@@ -77,13 +77,15 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
 	//Shadow
 	initParam.graphicsConfig.shadowRenderConfig.isEnable = true;
-	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 1280;
-	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 720;
+	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 2048;
+	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 2048;
 	Engine().Init(initParam);	//初期化。
-	ShadowMap().SetNear(2.0f);
+	ShadowMap().SetNear(1.0f);
 	ShadowMap().SetFar(10.0f);
-	ShadowMap().SetLightPosition(CVector3(0.0f, 3.5f, 0.0f));
-	ShadowMap().SetLightDirection(CVector3(0.0f, -1.0f, -0.0f));
+	ShadowMap().SetLightPosition(CVector3(0.0f, 3.5f, 3.5f));
+	CVector3 lightDir = CVector3(0.0f, -1.0f, -1.0f);
+	lightDir.Normalize();
+	ShadowMap().SetLightDirection(lightDir);
 }
 
 int WINAPI wWinMain(
@@ -96,14 +98,14 @@ int WINAPI wWinMain(
 	//tkEngineの初期化。
 	InitTkEngine( hInst );
 	NewGO<Map>(0);
-	NewGO<UnityChanInstance>(0);
-	/*for (int i = 0; i < 1; i++) {
+	//NewGO<UnityChanInstance>(0);
+	for (int i = 0; i < 1; i++) {
 		UnityChan* unityChan = NewGO<UnityChan>(0);
 		if (i == 0) {
 			unityChan->isUpdateAnim = true;
 		}
 		unityChan->SetPosition(CVector3(0.0f + 0.5f * i, 0.0f, 0.0f));
-	}*/
+	}
 	Engine().RunGameLoop();		//ゲームループを実行。
 	
 	return 0;

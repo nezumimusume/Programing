@@ -25,8 +25,9 @@ void UnityChan::Start()
 	skinModel.SetLight(&light);
 	skinModel.SetNormalMap(&normalMap);
 	skinModel.SetShadowCasterFlag(true);
-	skinModel.SetShadowReceiverFlag(false);
-	camera.SetPosition(CVector3(0.0f, 1.0f, 3.0f));
+	skinModel.SetShadowReceiverFlag(true);
+	skinModel.SetFresnelFlag(true);
+	camera.SetPosition(CVector3(0.0f, 1.0f, 1.5f));
 	camera.SetTarget(CVector3(0.0f, 0.5f, 0.0f));
 
 	camera.SetFar(1000.0f);
@@ -39,9 +40,9 @@ void UnityChan::Start()
 
 	light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(2, CVector4(0.3f, 0.3f, 0.3f, 1.0f));
+	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbinetLight(CVector3(0.3f, 0.3f, 0.3f));
+	light.SetAmbinetLight(CVector3(0.2f, 0.2f, 0.2f));
 	animation.SetAnimationEndTime(AnimationRun, 0.8);
 	currentAnimSetNo = AnimationStand;
 	animation.PlayAnimation(AnimationStand);

@@ -16,7 +16,7 @@ float4x4	g_viewMatrixRotInv;		//!<カメラの回転行列の逆行列。
 float4x4	g_mLVP;					//ライトビュープロジェクション行列。
 float2		g_farNear;	//遠平面と近平面。xに遠平面、yに近平面。
 
-int4 g_flags;				//xに法線マップの保持フラグ、yはシャドウレシーバー
+int4 g_flags;				//xに法線マップの保持フラグ、yはシャドウレシーバー、zはフレネル。
 
 texture g_diffuseTexture;		//ディフューズテクスチャ。
 sampler g_diffuseTextureSampler = 
@@ -239,14 +239,13 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	if(g_flags.y){
 		float4 posInLVP = In.worldPos;
 		//uv座標に変換。
-		float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy/posInLVP.w   + float2(0.5f, 0.5f);
+		float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
 		float shadow_val = 1.0f;
 		if(shadowMapUV.x <= 1.0f && shadowMapUV.y <= 1.0f && shadowMapUV.x >= 0.0f && shadowMapUV.y >= 0.0f){
 			shadow_val = tex2D( g_shadowMapSampler, shadowMapUV ).r;
 		}
-//		float depth = ( posInLVP.z - g_farNear.y ) / (g_farNear.x - g_farNear.y);	
-		float depth = posInLVP.z / posInLVP.w;
-		if( depth > shadow_val ){
+		float depth = posInLVP.z;
+		if( depth > shadow_val + 0.006f ){
 			//影になっている。ディフューズライトをオフに。
 			lig = 0.0f;
 		}
@@ -255,13 +254,13 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	lig.xyz += g_light.ambient.xyz;
 	color.xyz *= lig;
 	
-#if 0
-	//フレネル。
-	float3 normalInCamera = mul(normal, g_viewMatrixRotInv );
-	float t = 1.0f - abs(dot(normalInCamera, float3(0.0f, 0.0f, 1.0f)));
-	t = pow(t, 3.0f);
-	color.xyz += t;
-#endif
+	if(g_flags.z){
+		//フレネル。
+		float3 normalInCamera = mul(normal, g_viewMatrixRotInv );
+		float t = 1.0f - abs(dot(normalInCamera, float3(0.0f, 0.0f, 1.0f)));
+		t = pow(t, 1.5f);
+		color.xyz += t * 0.7f;
+	}
 	return color;
 }
 
@@ -313,8 +312,7 @@ VS_OUTPUT_RENDER_SHADOW_MAP VSMainInstancingRenderShadowMap(VS_INPUT_INSTANCING 
  */
 float4 PSMainRenderShadowMap( VS_OUTPUT_RENDER_SHADOW_MAP In ) : COLOR
 {
-//	float z = ( In.depth.z - g_farNear.y ) / (g_farNear.x - g_farNear.y);
-	float z = In.depth.z / In.depth.w;
+	float z = In.depth.z;
 	return z;
 }
 

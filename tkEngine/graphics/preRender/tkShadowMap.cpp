@@ -14,7 +14,8 @@ namespace tkEngine{
 		m_pShadowMapEffect(nullptr),
 		m_near(1.0f),
 		m_far(100.0f),
-		m_lvMatrix(CMatrix::Identity)
+		m_lvMatrix(CMatrix::Identity),
+		m_accpect(1.0f)
 	{
 		m_lightPosition.Set(0.0f, 3.0f, 0.0f);
 		m_lightDirection.Set(0.0f, -1.0f, 0.0f);
@@ -28,16 +29,18 @@ namespace tkEngine{
 		Release();
 		m_near = 1.0f;
 		m_far = 100.0f;
-		m_shadowMapRT.Create( w, h, 1, FMT_R32F, FMT_D16, MULTISAMPLE_NONMASKABLE, 0 );
+		m_shadowMapRT.Create( w, h, 1, FMT_R32F, FMT_D16, MULTISAMPLE_NONE, 0 );
 		m_isEnable = true;
 		m_pShadowMapEffect = CEngine::EffectManager().LoadEffect( "Assets/presetshader/shadowMap.fx" );
-		m_projectionMatrix.MakeProjectionMatrix(
+		m_accpect = s_cast<float>(w) / s_cast<float>(h);
+		/*m_projectionMatrix.MakeProjectionMatrix(
 			CMath::DegToRad(60.0f),
 			s_cast<float>(w) / s_cast<float>(h),
 			m_near,
 			m_far
-		);
-		//m_projectionMatrix.MakeOrthoProjectionMatrix(w, h, m_near, m_far);
+		);*/
+		
+		m_projectionMatrix.MakeOrthoProjectionMatrix(2.0f * m_accpect, 2.0f, m_near, m_far);
 	}
 	void CShadowMap::Release()
 	{
@@ -63,6 +66,14 @@ namespace tkEngine{
 			else {
 				lightUp = CVector3::AxisY;
 			}
+		/*	m_projectionMatrix.MakeProjectionMatrix(
+				CMath::DegToRad(60.0f),
+				m_accpect,
+				m_near,
+				m_far
+			);*/
+			m_projectionMatrix.MakeOrthoProjectionMatrix(2.0f * m_accpect, 2.0f, m_near, m_far);
+			
 			//ライトからみたビュー行列を作成。
 			CVector3 target;
 			target.Add(m_lightPosition, m_lightDirection);
@@ -74,6 +85,7 @@ namespace tkEngine{
 	void CShadowMap::RenderToShadowMap( CRenderContext& renderContext )
 	{
 		if(m_isEnable){
+			
 			CRenderTarget* pRTBackup = renderContext.GetRenderTarget(0);
 			renderContext.SetRenderTarget( 0, &m_shadowMapRT );
 			renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,0xffffffff, 1.0f, 0);

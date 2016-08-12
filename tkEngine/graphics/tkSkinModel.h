@@ -84,6 +84,14 @@ namespace tkEngine {
 		{
 			m_isShadowReceiver = flag;
 		}
+		/*!
+		* @brief	フレネルフラグを設定。
+		*@param[in]	flag	フレネルのフラグ。
+		*/
+		void SetFresnelFlag(bool flag)
+		{
+			m_isFresnel = flag;
+		}
 	private:
 		void DrawMeshContainer(
 			IDirect3DDevice9* pd3dDevice,
@@ -131,6 +139,7 @@ namespace tkEngine {
 		D3DXMATRIX					m_boneMatrixPallet[MAX_MATRIX_PALLET];	//!<マトリクスパレット。
 		bool						m_isShadowReceiver;	//!<シャドウレシーバー。
 		bool						m_isShadowCaster;	//!<シャドウキャスターフラグ。
+		bool						m_isFresnel;		//!<フレネル
 		CShadowCaster_SkinModel		m_shadowCaster;		//!<シャドウキャスター。
 	};
 }

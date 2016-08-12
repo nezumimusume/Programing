@@ -114,6 +114,7 @@ namespace tkEngine{
 		CMatrix						m_projectionMatrix;
 		float						m_near;				//!<‹ß•½–ÊB
 		float						m_far;				//!<‰“•½–ÊB
+		float						m_accpect;
 	};
 }
 
