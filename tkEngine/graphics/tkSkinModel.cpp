@@ -188,7 +188,6 @@ namespace tkEngine{
 				if (isInstancingDraw) {
 					//インスタンシング描画。
 					DrawMeshContainer_InstancingDrawCommon(pd3dDevice, pMeshContainer, iAttrib);
-					
 				}
 				else {
 					pMeshContainer->MeshData.pMesh->DrawSubset(iAttrib);
