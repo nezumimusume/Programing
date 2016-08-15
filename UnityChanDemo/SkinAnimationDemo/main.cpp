@@ -71,14 +71,14 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.screenWidth = 1280;
 	initParam.frameBufferHeight = 1080;
 	initParam.frameBufferWidth = 1920;
-	initParam.graphicsConfig.bloomConfig.isEnable = true;
+	initParam.graphicsConfig.bloomConfig.isEnable = false;
 	//initParam.graphicsConfig.edgeRenderConfig.isEnable = true;
 	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
 	//Shadow
 	initParam.graphicsConfig.shadowRenderConfig.isEnable = true;
-	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 1024;
-	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 1024;
+	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 2048;
+	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 2048;
 	Engine().Init(initParam);	//èâä˙âªÅB
 	ShadowMap().SetNear(1.0f);
 	ShadowMap().SetFar(10.0f);

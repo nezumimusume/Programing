@@ -18,9 +18,9 @@ sampler TextureSampler =
 sampler_state
 {
     Texture = <g_tex>;
-    MipFilter = POINT;
-    MinFilter = POINT;
-    MagFilter = POINT;
+    MipFilter = NONE;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
 };
 VS_OUTPUT VSMain( VS_INPUT In )
 {

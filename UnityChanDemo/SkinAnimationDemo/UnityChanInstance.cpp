@@ -40,7 +40,7 @@ void UnityChanInstance::Start()
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
 
-	camera.SetPosition(CVector3(0.0f, 1.0f, 1.5f));
+	camera.SetPosition(CVector3(0.0f, 1.0f, 2.5f));
 	camera.SetTarget(CVector3(0.0f, 0.5f, 0.0f));
 
 	camera.SetFar(10000.0f);
@@ -63,6 +63,16 @@ void UnityChanInstance::Update()
 	animation.Update(1.0f / 60.0f);
 	skinModel.UpdateInstancingDrawData(worldMatrixBuffer);
 	skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
+	static float angle = 0.0f;
+	if (KeyInput().IsRightPress()) {
+		angle += 0.01f;
+	}
+	else if (KeyInput().IsLeftPress()) {
+		angle -= 0.01f;
+	}
+	CQuaternion qRot;
+	qRot.SetRotation(CVector3::AxisY, CMath::DegToRad(-90.0f) * angle);
+	worldMatrixBuffer[0].MakeRotationFromQuaternion(qRot);
 	if (KeyInput().IsTrgger(CKeyInput::enKeyA)) {
 		currentAnimSetNo++;
 		currentAnimSetNo %= animation.GetNumAnimationSet();

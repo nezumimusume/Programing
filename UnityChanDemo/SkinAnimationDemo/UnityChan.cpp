@@ -32,6 +32,7 @@ void UnityChan::Start()
 
 	camera.SetFar(1000.0f);
 	camera.Update();
+	ShadowMap().SetCamera(&camera);
 	g_camera = &camera;
 	light.SetDiffuseLightDirection(0,  CVector3(0.707f, 0.0f, -0.707f));
 	light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
