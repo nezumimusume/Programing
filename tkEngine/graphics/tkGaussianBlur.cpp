@@ -81,7 +81,7 @@ namespace tkEngine {
 			index
 			);
 		m_effect = EffectManager().LoadEffect("Assets/presetShader/TransformedPrim.fx");
-		UpdateWeight(0.05f);
+		UpdateWeight(0.01f);
 	}
 	void CGaussianBlur::Draw(CRenderContext& renderContext)
 	{

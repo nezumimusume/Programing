@@ -6,6 +6,10 @@
 #include "tkEngine/graphics/preRender/tkShadowMap.h"
 #include "tkEngine/graphics/tkEffect.h"
 #include "tkEngine/graphics/preRender/tkShadowCaster.h"
+#include "tkEngine/graphics/tkCamera.h"
+
+
+//#define USE_PSM		//定義でPSMが有効。
 
 namespace tkEngine{
 	
@@ -16,8 +20,9 @@ namespace tkEngine{
 		m_far(100.0f),
 		m_lvMatrix(CMatrix::Identity),
 		m_accpect(1.0f),
-		m_shadowAreaW(2.0f),
-		m_shadowAreaH(2.0f)
+		m_shadowAreaW(10.0f),
+		m_shadowAreaH(10.0f),
+		m_camera(nullptr)
 	{
 		m_lightPosition.Set(0.0f, 3.0f, 0.0f);
 		m_lightDirection.Set(0.0f, -1.0f, 0.0f);
@@ -31,18 +36,20 @@ namespace tkEngine{
 		Release();
 		m_near = 1.0f;
 		m_far = 100.0f;
-		m_shadowMapRT.Create( w, h, 1, FMT_G32R32F, FMT_D16, MULTISAMPLE_NONE, 0 );
+		m_shadowMapRT.Create( w, h, 1, FMT_G16R16F, FMT_D16, MULTISAMPLE_NONE, 0 );
 		m_isEnable = true;
 		m_pShadowMapEffect = CEngine::EffectManager().LoadEffect( "Assets/presetshader/shadowMap.fx" );
 		m_accpect = s_cast<float>(w) / s_cast<float>(h);
-		/*m_projectionMatrix.MakeProjectionMatrix(
+#ifdef USE_ORTHO_PROJECTION
+		m_projectionMatrix.MakeOrthoProjectionMatrix(m_shadowAreaW * m_accpect, m_shadowAreaH, m_near, m_far);
+#else
+		m_projectionMatrix.MakeProjectionMatrix(
 			CMath::DegToRad(60.0f),
-			s_cast<float>(w) / s_cast<float>(h),
+			m_accpect,
 			m_near,
 			m_far
-		);*/
-		
-		m_projectionMatrix.MakeOrthoProjectionMatrix(m_shadowAreaW * m_accpect, m_shadowAreaH, m_near, m_far);
+			);
+#endif
 #ifdef USE_VSM
 		m_gaussianBlur.Init(w, h, *m_shadowMapRT.GetTexture());
 #endif
@@ -71,14 +78,33 @@ namespace tkEngine{
 			else {
 				lightUp = CVector3::AxisY;
 			}
-		
+#ifdef USE_ORTHO_PROJECTION
 			m_projectionMatrix.MakeOrthoProjectionMatrix(m_shadowAreaW * m_accpect, m_shadowAreaH, m_near, m_far);
+#else
+			m_projectionMatrix.MakeProjectionMatrix(
+				CMath::DegToRad(60.0f),
+				m_accpect,
+				m_near,
+				m_far
+				);
+#endif
+			
 			
 			//ライトからみたビュー行列を作成。
 			CVector3 target;
 			target.Add(m_lightPosition, m_lightDirection);
 			m_lvMatrix.MakeLookAt(m_lightPosition, target, lightUp);
 			m_LVPMatrix.Mul(m_lvMatrix, m_projectionMatrix);
+#ifdef USE_PSM
+			if (m_camera) {
+				const CMatrix& mVP = m_camera->GetViewProjectionMatrix();
+				//CMatrix mCameraInv;
+				//mCameraInv.Inverse(m_camera->GetViewMatrix());
+				//CMatrix mWork;
+				//mWork.Mul(mVP, mCameraInv);
+				m_LVPMatrix.Mul(mVP, m_LVPMatrix);
+			}
+#endif
 		}
 
 	}
@@ -89,7 +115,6 @@ namespace tkEngine{
 			CRenderTarget* pRTBackup = renderContext.GetRenderTarget(0);
 			renderContext.SetRenderTarget(0, &m_shadowMapRT);
 			renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xffffffff, 1.0f, 0);
-			//renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0, 1.0f, 0);
 			for (auto caster : m_shadowCaster) {
 				caster->Render(renderContext, m_pShadowMapEffect, m_LVPMatrix);
 			}

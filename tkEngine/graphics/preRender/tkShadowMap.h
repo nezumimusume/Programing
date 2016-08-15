@@ -10,7 +10,7 @@
 
 namespace tkEngine{
 	class IShadowCaster;
-	
+	class CCamera;
 	class CShadowMap : Noncopyable{
 	public:
 		/*!
@@ -44,7 +44,8 @@ namespace tkEngine{
 		const CTexture* GetTexture() const
 		{
 #ifdef USE_VSM
-			return m_gaussianBlur.GetTexture();
+			//return m_gaussianBlur.GetTexture();
+			return m_shadowMapRT.GetTexture();
 #else
 			return m_shadowMapRT.GetTexture();
 #endif
@@ -109,6 +110,13 @@ namespace tkEngine{
 		{
 			return m_isEnable;
 		}
+		/*!
+		* @brief	カメラを設定。PSMを行うときに使用される。
+		*/
+		void SetCamera(CCamera* camera)
+		{
+			m_camera = camera;
+		}
 	private:
 		bool						m_isEnable;			//!<有効？
 		CRenderTarget				m_shadowMapRT;		//!<シャドウマップを書き込むレンダリングターゲット。
@@ -124,6 +132,7 @@ namespace tkEngine{
 		float						m_accpect;
 		float						m_shadowAreaW;		//!<影を落とす範囲の幅。
 		float						m_shadowAreaH;		//!<影を落とす範囲の高さ。
+		CCamera*					m_camera;			//!<PSMを計算するときに使用するカメラ。
 #ifdef USE_VSM
 		CGaussianBlur				m_gaussianBlur;		//!<深度マップの平均値を求めるためのガウシアンブラー処理。
 #endif 
