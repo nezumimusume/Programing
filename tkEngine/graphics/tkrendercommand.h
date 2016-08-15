@@ -415,11 +415,11 @@ namespace tkEngine{
 	*/
 	class CRenderCommand_EffectSetTexture : public CRenderCommandBase
 	{
-		CTexture*	m_pTex;
+		const CTexture*	m_pTex;
 		char* m_textureName;
 		ID3DXEffect*	m_pEffect;		//!<D3Dエフェクト
 	public:
-		CRenderCommand_EffectSetTexture(CRenderContext& renderContext, ID3DXEffect* pEffect, const char* parameterName, CTexture* tex) :
+		CRenderCommand_EffectSetTexture(CRenderContext& renderContext, ID3DXEffect* pEffect, const char* parameterName, const CTexture* tex) :
 			CRenderCommandBase(eRenderCommand_EffectSetTexture),
 			m_pTex(tex),
 			m_pEffect(pEffect)

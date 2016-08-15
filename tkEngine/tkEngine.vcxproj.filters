@@ -167,6 +167,12 @@
     <ClCompile Include="graphics\preRender\tkShadowCaster.cpp">
       <Filter>Source Files\graphics\prerender</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\tkFont.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkGaussianBlur.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -309,6 +315,12 @@
     </ClInclude>
     <ClInclude Include="graphics\preRender\tkShadowCaster.h">
       <Filter>Source Files\graphics\prerender</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkFont.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkGaussianBlur.h">
+      <Filter>Source Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -5,6 +5,9 @@
 #ifndef _TKSHADOWMAP_H_
 #define _TKSHADOWMAP_H_
 
+#include "tkEngine/graphics/tkGaussianBlur.h"
+
+
 namespace tkEngine{
 	class IShadowCaster;
 	
@@ -38,9 +41,13 @@ namespace tkEngine{
 		/*!
 		 * @brief	シャドウマップのテクスチャを取得。
 		 */
-		CTexture* GetTexture()
+		const CTexture* GetTexture() const
 		{
+#ifdef USE_VSM
+			return m_gaussianBlur.GetTexture();
+#else
 			return m_shadowMapRT.GetTexture();
+#endif
 		}
 		/*!
 		 * @brief	ライトの方向を設定。
@@ -115,6 +122,11 @@ namespace tkEngine{
 		float						m_near;				//!<近平面。
 		float						m_far;				//!<遠平面。
 		float						m_accpect;
+		float						m_shadowAreaW;		//!<影を落とす範囲の幅。
+		float						m_shadowAreaH;		//!<影を落とす範囲の高さ。
+#ifdef USE_VSM
+		CGaussianBlur				m_gaussianBlur;		//!<深度マップの平均値を求めるためのガウシアンブラー処理。
+#endif 
 	};
 }
 

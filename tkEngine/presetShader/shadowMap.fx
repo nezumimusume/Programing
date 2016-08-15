@@ -30,7 +30,7 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	//[“x‚ğ‘‚«‚ŞB
 //	float z = In.depth.z / In.depth.w;
 	float z = ( In.depth.z - g_farNear.y ) / (g_farNear.x - g_farNear.y);
-	return float4(z,z,z,z);
+	return float4(z,z*z,0.0f,1.0f);
 }
 
 technique RenderShadowMap

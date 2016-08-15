@@ -8,7 +8,7 @@
 #include "targetver.h"
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
-
+#define USE_VSM		//定義でVSMが有効。
 /*!
  * @brief	定義でDirectX9で動作
  */
@@ -29,6 +29,7 @@
 #include <map>
 #include <algorithm>
 #include "tkEngine/typedef.h"
+#include "tkEngine/graphics/tkFont.h"
 #include "tkEngine/math/tkMath.h"
 #include "tkEngine/debug/tkAssert.h"
 #include "tkEngine/debug/tkLog.h"
@@ -42,5 +43,6 @@
 #include "tkEngine/gameObject/tkGameObject.h"
 #include "tkEngine/graphics/tkRenderCommand.h"
 #include "tkEngine/graphics/tkRenderContext.h"
+
 
 // TODO: reference additional headers your program requires here

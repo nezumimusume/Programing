@@ -66,7 +66,7 @@ namespace tkEngine{
 		/*!
 		* @brief	IDマップのテクスチャを取得。
 		*/
-		CTexture* GetTexture()
+		const CTexture* GetTexture() const
 		{
 			return m_idMapRT.GetTexture();
 		}

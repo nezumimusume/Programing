@@ -38,8 +38,9 @@ void UnityChanInstance::Start()
 	skinModel.SetLight(&light);
 	skinModel.SetNormalMap(&normalMap);
 	skinModel.SetShadowCasterFlag(true);
+	skinModel.SetShadowReceiverFlag(true);
 
-	camera.SetPosition(CVector3(0.0f, 1.5f, 5.0f));
+	camera.SetPosition(CVector3(0.0f, 1.0f, 1.5f));
 	camera.SetTarget(CVector3(0.0f, 0.5f, 0.0f));
 
 	camera.SetFar(10000.0f);

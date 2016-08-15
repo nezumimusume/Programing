@@ -206,7 +206,7 @@ namespace tkEngine{
 		int										m_screenHeight;				//!<スクリーンの高さ。
 		int										m_frameBufferWidth;			//!<フレームバッファの幅。これが内部解像度。
 		int										m_frameBufferHeight;		//!<フレームバッファの高さ。これが内部解像度。
-		unsigned char										m_currentMainRenderTarget;	//!<現在使用されているメインレンダーターゲット。
+		unsigned char							m_currentMainRenderTarget;	//!<現在使用されているメインレンダーターゲット。
 		CRenderTarget							m_mainRenderTarget[2];		//!<メインレンダリングターゲット
 		CEffect*								m_pTransformedPrimEffect;	//!<トランスフォーム済みプリミティブを描画するためのエフェクト。
 		CPrimitive								m_copyBackBufferPrim;		//!<メインレンダーターゲットをバックバッファにコピーするときに使うプリミティブ。
@@ -215,6 +215,7 @@ namespace tkEngine{
 		CPostEffect								m_postEffect;				//!<ポストエフェクト。
 		CKeyInput								m_keyInput;					//!<キー入力。
 		CParticleResources						m_particleResource;			//!<パーティクルのリソース管理。
+		CFont									m_fpsFont;					//!<FPSを表示するデバッグフォント。
 	};
 	static inline CEngine& Engine()
 	{

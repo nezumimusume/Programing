@@ -43,7 +43,7 @@ namespace tkEngine{
 			TK_ASSERT( m_pEffect != nullptr, "effect is null" );
 			renderContext.SetRenderCommand( CRenderCommand_EffectSetValue(renderContext, m_pEffect, parameterName, pData, sizeInByte ) );
 		}
-		void SetTexture(tkEngine::CRenderContext& renderContext, const char* parameterName, CTexture* tex)
+		void SetTexture(tkEngine::CRenderContext& renderContext, const char* parameterName, const CTexture* tex)
 		{
 			renderContext.SetRenderCommand(CRenderCommand_EffectSetTexture(renderContext, m_pEffect, parameterName, tex ));
 		}

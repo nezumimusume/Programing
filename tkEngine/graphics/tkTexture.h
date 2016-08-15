@@ -9,7 +9,7 @@ namespace tkEngine{
 	/*!
 	 * @brief	テクスチャ。
 	 */
-	class CTexture{
+	class CTexture : Noncopyable{
 	public:
 		CTexture() :
 			m_tex(nullptr)
@@ -25,7 +25,7 @@ namespace tkEngine{
 		{
 			m_tex = tex;
 		}
-		LPDIRECT3DTEXTURE9 GetTextureDX() 
+		LPDIRECT3DTEXTURE9 GetTextureDX() const
 		{
 			return m_tex;
 		}

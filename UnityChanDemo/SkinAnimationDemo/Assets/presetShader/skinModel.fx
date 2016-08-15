@@ -4,6 +4,7 @@
 
 #include "LightingFunction.h"
 
+#define USE_VSM
 //スキン行列。
 #define MAX_MATRICES  26
 float4x3    g_mWorldMatrixArray[MAX_MATRICES] : WORLDMATRIXARRAY;
@@ -207,6 +208,10 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
     o.Normal = mul(normalize(Normal), worldMat);
     o.Tex0 = In.base.Tex0;
+    if(g_flags.y){
+		//シャドウレシーバー。
+		o.worldPos = mul(float4(Pos.xyz, 1.0f), g_mLVP );
+	}
 	return o;
 }
 
@@ -240,14 +245,24 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 		float4 posInLVP = In.worldPos;
 		//uv座標に変換。
 		float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
-		float shadow_val = 1.0f;
+		float2 shadow_val = 1.0f;
 		if(shadowMapUV.x <= 1.0f && shadowMapUV.y <= 1.0f && shadowMapUV.x >= 0.0f && shadowMapUV.y >= 0.0f){
-			shadow_val = tex2D( g_shadowMapSampler, shadowMapUV ).r;
+			shadow_val = tex2D( g_shadowMapSampler, shadowMapUV ).rg;
 		}
 		float depth = posInLVP.z;
-		if( depth > shadow_val + 0.006f ){
+		
+		if( depth > shadow_val.r + 0.006f ){
+		#ifdef USE_VSM
 			//影になっている。ディフューズライトをオフに。
+			 // σ^2
+	         float variance = shadow_val.g - shadow_val.r * shadow_val.r;
+
+	         // σ^2 / ( σ^2 + ( t- E(x) )^2 )
+	        float P = variance / ( variance + ( depth - shadow_val.r ) * ( depth - shadow_val.r ) );
+			lig *= max(P, 0.3f);
+		#else
 			lig = 0.0f;
+		#endif
 		}
 	}
 	//アンビエントライトを加算。
@@ -313,7 +328,7 @@ VS_OUTPUT_RENDER_SHADOW_MAP VSMainInstancingRenderShadowMap(VS_INPUT_INSTANCING 
 float4 PSMainRenderShadowMap( VS_OUTPUT_RENDER_SHADOW_MAP In ) : COLOR
 {
 	float z = In.depth.z;
-	return z;
+	return float4(z, z*z, 0.0f, 1.0f);
 }
 
 /*!

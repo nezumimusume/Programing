@@ -28,7 +28,7 @@ namespace tkEngine{
 		if (m_isEnable) {
 			renderContext.SetRenderState(RS_ZENABLE, D3DZB_FALSE);
 			//IDMapのテクスチャを取得。
-			CTexture* pIdMap = CEngine::Instance().IDMap().GetTexture();
+			const CTexture* pIdMap = CEngine::Instance().IDMap().GetTexture();
 			//ポストエフェクト用のテクニックを設定。
 			float idMapSize[] = {
 				s_cast<float>(CEngine::Instance().IDMap().GetWitdh()),

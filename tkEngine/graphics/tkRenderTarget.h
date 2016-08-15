@@ -46,7 +46,7 @@ namespace tkEngine{
 		/*!
 		*@brief	テクスチャを取得。
 		*/
-		CTexture* GetTexture()
+		const CTexture* GetTexture() const
 		{
 			return &m_texture;
 		}
