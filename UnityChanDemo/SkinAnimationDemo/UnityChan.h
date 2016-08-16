@@ -12,22 +12,19 @@
  * @brief	ユニティちゃん
  */
 class UnityChan : public IGameObject {
+private:
 	enum AnimationNo {
+		AnimationInvalid = -1,
 		AnimationStand,		//立ち。
 		AnimationWalk,		//歩き。
 		AnimationRun,		//走り。
 		AnimationJump,		//ジャンプ。
 	};
-	static CSkinModelData*	orgSkinModelData;		//スキンモデルデータ。
-	CSkinModelData			skinModelData;
-	CSkinModel				skinModel;			//スキンモデル。
-	CAnimation				animation;			//アニメーション。
-	CCamera					camera;				//カメラ。
-	CLight					light;				//ライト。
-	int						currentAnimSetNo;		
-	CTexture				normalMap;			//法線マップ。
-	CVector3				position;			//座標。
 public:
+	enum EnState {
+		enStateRun,		//走っている。
+		enStateStand,	//立ち止まっている。
+	};
 	bool					isUpdateAnim;		//
 
 	UnityChan() :
@@ -43,4 +40,39 @@ public:
 	{
 		this->position = position;
 	}
+	const CVector3& GetPosition() const
+	{
+		return position;
+	}
+	/*!
+	* @brief	状態を取得。
+	*/
+	EnState GetState() const
+	{
+		return state;
+	}
+private:
+	/*!
+	* @brief	アニメーションコントロール。
+	*/
+	void AnimationControl();
+	/*!
+	* @brief	アニメーション再生。
+	*/
+	void PlayAnimation(AnimationNo animNo);
+private:
+	
+	static CSkinModelData*	orgSkinModelData;		//スキンモデルデータ。
+	CSkinModelData			skinModelData;
+	CSkinModel				skinModel;			//スキンモデル。
+	CAnimation				animation;			//アニメーション。
+	CLight					light;				//ライト。
+	AnimationNo				currentAnimSetNo;
+	CTexture				normalMap;			//法線マップ。
+	CVector3				position;			//座標。
+	CQuaternion				rotation;			//回転
+	CVector3				toLightPos;			//
+	CVector3				moveSpeed;			//移動速度。
+	EnState					state;				//状態。
+	EnState					lastFrameState;		//前のフレームの状態。
 };

@@ -50,7 +50,7 @@ namespace tkEngine{
 			//輝度抽出
 			{
 				renderContext.SetRenderTarget(0, &m_luminanceRenderTarget);
-				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0, 1.0f, 0);
+				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET , 0, 1.0f, 0);
 				m_pEffect->SetTechnique(renderContext, "SamplingLuminance");
 				m_pEffect->Begin(renderContext);
 				m_pEffect->BeginPass(renderContext, 0);
@@ -65,7 +65,7 @@ namespace tkEngine{
 			//XBlur
 			{
 				renderContext.SetRenderTarget(0, &m_downSamplingRenderTarget[0]);
-				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0, 1.0f, 0);
+				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET , 0, 1.0f, 0);
 				m_pEffect->SetTechnique(renderContext, "XBlur");
 				m_pEffect->Begin(renderContext);
 				m_pEffect->BeginPass(renderContext, 0);
@@ -92,7 +92,7 @@ namespace tkEngine{
 			//YBlur
 			{
 				renderContext.SetRenderTarget(0, &m_downSamplingRenderTarget[1]);
-				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0, 1.0f, 0);
+				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET, 0, 1.0f, 0);
 				m_pEffect->SetTechnique(renderContext, "YBlur");
 				m_pEffect->Begin(renderContext);
 				m_pEffect->BeginPass(renderContext, 0);
@@ -119,7 +119,7 @@ namespace tkEngine{
 			//XBlur2
 			{
 				renderContext.SetRenderTarget(0, &m_downSamplingRenderTarget[2]);
-				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0, 1.0f, 0);
+				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET, 0, 1.0f, 0);
 				m_pEffect->SetTechnique(renderContext, "XBlur");
 				m_pEffect->Begin(renderContext);
 				m_pEffect->BeginPass(renderContext, 0);
@@ -146,7 +146,7 @@ namespace tkEngine{
 			//YBlur2
 			{
 				renderContext.SetRenderTarget(0, &m_downSamplingRenderTarget[3]);
-				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0, 1.0f, 0);
+				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET, 0, 1.0f, 0);
 				m_pEffect->SetTechnique(renderContext, "YBlur");
 				m_pEffect->Begin(renderContext);
 				m_pEffect->BeginPass(renderContext, 0);
@@ -208,12 +208,12 @@ namespace tkEngine{
 			int w = CEngine::Instance().GetFrameBufferWidth();
 			int h = CEngine::Instance().GetFrameBufferHeight();
 			//輝度抽出用のレンダリングターゲットを作成。
-			m_luminanceRenderTarget.Create(w, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);
+			m_luminanceRenderTarget.Create(w, h, 1, FMT_A8R8G8B8, FMT_INVALID, MULTISAMPLE_NONE, 0);
 			//ダウンサンプリング用のレンダリングターゲットを作成。
-			m_downSamplingRenderTarget[0].Create(w >> 1, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);			//横ブラー用。
-			m_downSamplingRenderTarget[1].Create(w >> 1, h >> 1, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);	//縦ブラー用。
-			m_downSamplingRenderTarget[2].Create(w >> 2, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);			//横ブラー用。
-			m_downSamplingRenderTarget[3].Create(w >> 2, h >> 2, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);	//縦ブラー用。
+			m_downSamplingRenderTarget[0].Create(w >> 1, h, 1, FMT_A8R8G8B8, FMT_INVALID, MULTISAMPLE_NONE, 0);			//横ブラー用。
+			m_downSamplingRenderTarget[1].Create(w >> 1, h >> 1, 1, FMT_A8R8G8B8, FMT_INVALID, MULTISAMPLE_NONE, 0);	//縦ブラー用。
+			m_downSamplingRenderTarget[2].Create(w >> 2, h, 1, FMT_A8R8G8B8, FMT_INVALID, MULTISAMPLE_NONE, 0);			//横ブラー用。
+			m_downSamplingRenderTarget[3].Create(w >> 2, h >> 2, 1, FMT_A8R8G8B8, FMT_INVALID, MULTISAMPLE_NONE, 0);	//縦ブラー用。
 			m_pEffect = CEngine::Instance().EffectManager().LoadEffect("Assets/presetShader/bloom.fx");
 			m_isEnable = true;
 		}

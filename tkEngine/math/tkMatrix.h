@@ -98,6 +98,18 @@ namespace tkEngine{
 			);
 		}
 		/*!
+		*@brief	”CˆÓ‚Ì²ü‚è‚Ì‰ñ“]s—ñ‚ğì¬B
+		*@param[in]	axis	‰ñ“]²B
+		*@param[in]	angle	‰ñ“]Šp“x
+		*/
+		void MakeRotationAxis(const CVector3& axis, float angle )
+		{
+			D3DXMatrixRotationAxis(
+				r_cast<D3DXMATRIX*>(this),
+				r_cast<const D3DXVECTOR3*>(&axis),
+				angle);
+		}
+		/*!
 		*@brief	Šg‘ås—ñ‚ğì¬B
 		*@param[in] scale		Šg‘å—¦B
 		*/

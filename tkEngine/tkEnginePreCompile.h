@@ -23,6 +23,7 @@
 #include <memory>
 #include <d3dx9.h>
 #include <d3d9.h>
+#include <XInput.h> // XInput API
 #ifdef _DEBUG
 #include <DxErr.h>
 #pragma comment(lib, "dxerr.lib")

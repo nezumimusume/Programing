@@ -13,6 +13,11 @@ namespace tkEngine{
 	class CCamera;
 	class CShadowMap : Noncopyable{
 	public:
+		//!<ライトビューの計算の仕方。
+		enum EnCalcLightViewFunc {
+			enCalcLightViewFunc_PositionDirection,	//ライトの位置と方向で計算する。
+			enCalcLightViewFunc_PositionTarget,		//ライトの位置と注視点で計算する。
+		};
 		/*!
 		 * @brief	コンストラクタ。
 		 */
@@ -51,10 +56,21 @@ namespace tkEngine{
 		}
 		/*!
 		 * @brief	ライトの方向を設定。
+		 *@details
+		 * ライトビューの計算方法がenCalcLightViewFunc_PositionDirectionの時に有効になる。
 		 */
 		void SetLightDirection( const CVector3& lightDir )
 		{
 			m_lightDirection = lightDir;
+		}
+		/*!
+		* @brief	ライトビューの注視点を設定。
+		*@details
+		*  ライトビューの計算方法がenCalcLightViewFunc_PositionTargetの時に有効になる。
+		*/
+		void SetLightTarget(const CVector3& lightTarget)
+		{
+			m_lightTarget = lightTarget;
 		}
 		/*!
 		 * @brief	ライトの位置を設定。
@@ -124,24 +140,33 @@ namespace tkEngine{
 		{
 			m_gaussianBlur.SetDispersion(intensity);
 		}
+		/*!
+		* @brief	ライトビューの計算の仕方を設定。
+		*/
+		void SetCalcLightViewFunc(EnCalcLightViewFunc func)
+		{
+			m_calcLightViewFunc = func;
+		}
 	private:
-		bool						m_isEnable;			//!<有効？
-		CRenderTarget				m_shadowMapRT;		//!<シャドウマップを書き込むレンダリングターゲット。
-		std::vector<IShadowCaster*>	m_shadowCaster;		//!<シャドウキャスター。
-		CEffect*					m_pShadowMapEffect;	//!<シャドウマップのエフェクト。
-		CVector3					m_lightPosition;	//!<ライトの位置。
-		CVector3					m_lightDirection;	//!<ライトの向き。
+		bool						m_isEnable;				//!<有効？
+		CRenderTarget				m_shadowMapRT;			//!<シャドウマップを書き込むレンダリングターゲット。
+		std::vector<IShadowCaster*>	m_shadowCaster;			//!<シャドウキャスター。
+		CEffect*					m_pShadowMapEffect;		//!<シャドウマップのエフェクト。
+		CVector3					m_lightPosition;		//!<ライトの位置。
+		CVector3					m_lightDirection;		//!<ライトの向き。
+		CVector3					m_lightTarget;			//!<注視点
 		CMatrix						m_lvMatrix;
-		CMatrix						m_LVPMatrix;		//!<ライトビュープロジェクション行列。
+		CMatrix						m_LVPMatrix;			//!<ライトビュープロジェクション行列。
 		CMatrix						m_projectionMatrix;
-		float						m_near;				//!<近平面。
-		float						m_far;				//!<遠平面。
+		float						m_near;					//!<近平面。
+		float						m_far;					//!<遠平面。
 		float						m_accpect;
-		float						m_shadowAreaW;		//!<影を落とす範囲の幅。
-		float						m_shadowAreaH;		//!<影を落とす範囲の高さ。
-		CCamera*					m_camera;			//!<PSMを計算するときに使用するカメラ。
+		float						m_shadowAreaW;			//!<影を落とす範囲の幅。
+		float						m_shadowAreaH;			//!<影を落とす範囲の高さ。
+		CCamera*					m_camera;				//!<PSMを計算するときに使用するカメラ。
+		EnCalcLightViewFunc			m_calcLightViewFunc;	//!<ライトビューの計算方法。
 #ifdef USE_VSM
-		CGaussianBlur				m_gaussianBlur;		//!<深度マップの平均値を求めるためのガウシアンブラー処理。
+		CGaussianBlur				m_gaussianBlur;			//!<深度マップの平均値を求めるためのガウシアンブラー処理。
 #endif 
 	};
 }

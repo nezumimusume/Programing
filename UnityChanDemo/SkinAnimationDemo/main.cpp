@@ -1,15 +1,9 @@
 #include "stdafx.h"
-#include "tkEngine/graphics/tkSkinModelData.h"
-#include "tkEngine/graphics/tkSkinModel.h"
-#include "tkEngine/graphics/tkAnimation.h"
-#include "tkEngine/graphics/tkEffect.h"
-#include "tkEngine/graphics/tkCamera.h"
-#include "tkEngine/graphics/tkLight.h"
-#include "tkEngine/graphics/tkTexture.h"
+
 #include "UnityChan.h"
 #include "UnityChanInstance.h"
 
-CCamera			*g_camera;				//カメラ。
+
 
 class Map : public IGameObject {
 	CSkinModelData	skinModelData;		//スキンモデルデータ。
@@ -45,11 +39,11 @@ public:
 	}
 	void Map::Update() override
 	{
-		skinModel.Update(CVector3(0.0f, 0.0f, 0.0f), CQuaternion::Identity, CVector3(10.0f, 1.0f, 10.0f));
+		skinModel.Update(CVector3(0.0f, -0.05f, 0.0f), CQuaternion::Identity, CVector3(10.0f, 1.0f, 10.0f));
 	}
 	void Map::Render(CRenderContext& renderContext) override
 	{
-		skinModel.Draw(renderContext, g_camera->GetViewMatrix(), g_camera->GetProjectionMatrix());
+		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 	}
 };
 /*!
@@ -69,24 +63,18 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.commandBufferSizeTbl = commandBufferSizeTbl;
 	initParam.screenHeight = 720;
 	initParam.screenWidth = 1280;
-	initParam.frameBufferHeight = 1080;
-	initParam.frameBufferWidth = 1920;
+	initParam.frameBufferHeight = 720;
+	initParam.frameBufferWidth = 1280;
 	initParam.graphicsConfig.bloomConfig.isEnable = true;
-	//initParam.graphicsConfig.edgeRenderConfig.isEnable = true;
+	initParam.graphicsConfig.edgeRenderConfig.isEnable = false;
 	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
 	//Shadow
 	initParam.graphicsConfig.shadowRenderConfig.isEnable = true;
-	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 2048;
-	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 2048;
+	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 1024;
+	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 1024;
 	Engine().Init(initParam);	//初期化。
-	ShadowMap().SetNear(1.0f);
-	ShadowMap().SetFar(10.0f);
-	ShadowMap().SetLightPosition(CVector3(0.0f, 3.5f, 3.5f));
-	ShadowMap().SetSoftShadowIntensity(1.0f);
-	CVector3 lightDir = CVector3(0.0f, -1.0f, -1.0f);
-	lightDir.Normalize();
-	ShadowMap().SetLightDirection(lightDir);
+	
 }
 
 int WINAPI wWinMain(
@@ -98,15 +86,14 @@ int WINAPI wWinMain(
 {
 	//tkEngineの初期化。
 	InitTkEngine( hInst );
+	
 	NewGO<Map>(0);
 	NewGO<UnityChanInstance>(0);
-	/*for (int i = 0; i < 1; i++) {
-		UnityChan* unityChan = NewGO<UnityChan>(0);
-		if (i == 0) {
-			unityChan->isUpdateAnim = true;
-		}
-		unityChan->SetPosition(CVector3(0.0f + 0.5f * i, 0.0f, 0.0f));
-	}*/
+	UnityChan* unityChan = NewGO<UnityChan>(0);
+	g_camera = NewGO<GameCamera>(0);
+	unityChan->SetPosition(CVector3(0.0f, 0.0f, 0.0f));
+	g_camera->SetUnityChan(unityChan);
+
 	Engine().RunGameLoop();		//ゲームループを実行。
 	
 	return 0;

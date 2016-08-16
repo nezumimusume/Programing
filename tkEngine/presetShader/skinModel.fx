@@ -4,7 +4,8 @@
 
 #include "LightingFunction.h"
 
-#define USE_VSM
+#define USE_VSM	//定義するとVSMが有効になる。
+
 //スキン行列。
 #define MAX_MATRICES  26
 float4x3    g_mWorldMatrixArray[MAX_MATRICES] : WORLDMATRIXARRAY;
@@ -51,10 +52,10 @@ sampler_state
 {
 	Texture = <g_shadowMap>;
     MipFilter = NONE;
-    MinFilter = NONE;
-    MagFilter = NONE;
-    AddressU = Wrap;
-	AddressV = Wrap;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    AddressU = CLAMP;
+	AddressV = CLAMP;
 };
 /*!
  * @brief	入力頂点
@@ -222,7 +223,7 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 {
 	float4 color = tex2D(g_diffuseTextureSampler, In.Tex0);
 	float3 normal = 0.0f;
-	if(g_flags.x){	//@todo for debug
+	if(g_flags.x){
 		//法線マップあり。
 		normal = tex2D( g_normalMapSampler, In.Tex0);
 		float4x4 tangentSpaceMatrix;
@@ -243,27 +244,31 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	float4 lig = DiffuseLight(normal);
 	if(g_flags.y){
 		float4 posInLVP = In.worldPos;
+		posInLVP.xyz /= posInLVP.w;
 		//uv座標に変換。
 		float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
 		float2 shadow_val = 1.0f;
+		
 		if(shadowMapUV.x <= 1.0f && shadowMapUV.y <= 1.0f && shadowMapUV.x >= 0.0f && shadowMapUV.y >= 0.0f){
 			shadow_val = tex2D( g_shadowMapSampler, shadowMapUV ).rg;
-		}
-		float depth = posInLVP.z;
-		
-		if( depth > shadow_val.r + 0.006f ){
+			float depth = posInLVP.z;
 		#ifdef USE_VSM
-			//影になっている。ディフューズライトをオフに。
-			 // σ^2
-	         float variance = shadow_val.g - shadow_val.r * shadow_val.r;
-
-	         // σ^2 / ( σ^2 + ( t- E(x) )^2 )
-	        float P = variance / ( variance + ( depth - shadow_val.r ) * ( depth - shadow_val.r ) );
-			lig *= max(P, 0.3f);
+			if( depth >= shadow_val.r ){
+				 // σ^2
+				float depth_sq = shadow_val.r * shadow_val.r;
+		        float variance = max(shadow_val.g - depth_sq, 0.0006f);
+				float md = depth - shadow_val.r;
+		        float P = variance / ( variance + md * md );
+				lig *= pow( P, 5.0f );
+			}
 		#else
-			lig = 0.0f;
+			if( depth > shadow_val.r + 0.006f ){
+				lig = 0.0f;
+		
+			}
 		#endif
 		}
+	
 	}
 	//アンビエントライトを加算。
 	lig.xyz += g_light.ambient.xyz;
@@ -327,8 +332,11 @@ VS_OUTPUT_RENDER_SHADOW_MAP VSMainInstancingRenderShadowMap(VS_INPUT_INSTANCING 
  */
 float4 PSMainRenderShadowMap( VS_OUTPUT_RENDER_SHADOW_MAP In ) : COLOR
 {
-	float z = In.depth.z;
-	return float4(z, z*z, 0.0f, 1.0f);
+
+	float z = In.depth.z/In.depth.w;
+	float dx = ddx(z);
+	float dy = ddy(z);
+	return float4(z, z*z+0.25f*(dx*dx+dy*dy), 0.0f, 1.0f);
 }
 
 /*!

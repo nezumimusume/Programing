@@ -21,7 +21,9 @@ namespace tkEngine{
 		m_accpect(1.0f),
 		m_shadowAreaW(10.0f),
 		m_shadowAreaH(10.0f),
-		m_camera(nullptr)
+		m_camera(nullptr),
+		m_calcLightViewFunc(enCalcLightViewFunc_PositionTarget),
+		m_lightTarget(CVector3::Zero)
 	{
 		m_lightPosition.Set(0.0f, 3.0f, 0.0f);
 		m_lightDirection.Set(0.0f, -1.0f, 0.0f);
@@ -67,6 +69,12 @@ namespace tkEngine{
 	void CShadowMap::Update()
 	{
 		if (m_isEnable) {
+			if (m_calcLightViewFunc == enCalcLightViewFunc_PositionTarget) {
+				//ライトの位置と注視点で計算。
+				m_lightDirection.Subtract(m_lightTarget, m_lightPosition);
+				m_lightDirection.Normalize();
+
+			}
 			//ライトビュープロジェクション行列を作成。
 			CVector3 lightUp;
 			float t = fabsf(m_lightDirection.Dot(CVector3::AxisY));
@@ -77,6 +85,10 @@ namespace tkEngine{
 			else {
 				lightUp = CVector3::AxisY;
 			}
+			//ライトからみたビュー行列を作成。
+			CVector3 target;
+			target.Add(m_lightPosition, m_lightDirection);
+			m_lvMatrix.MakeLookAt(m_lightPosition, target, lightUp); 
 #ifdef USE_ORTHO_PROJECTION
 			m_projectionMatrix.MakeOrthoProjectionMatrix(m_shadowAreaW * m_accpect, m_shadowAreaH, m_near, m_far);
 #else
@@ -89,10 +101,7 @@ namespace tkEngine{
 #endif
 			
 			
-			//ライトからみたビュー行列を作成。
-			CVector3 target;
-			target.Add(m_lightPosition, m_lightDirection);
-			m_lvMatrix.MakeLookAt(m_lightPosition, target, lightUp);
+			
 			m_LVPMatrix.Mul(m_lvMatrix, m_projectionMatrix);
 		}
 

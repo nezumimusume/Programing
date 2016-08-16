@@ -17,6 +17,11 @@ namespace tkEngine{
 		m_mousePositionY = 0;
 		m_isMouseUp[0] = false;
 		m_isMouseUp[1] = false;
+		int padNo = 0;
+		for (CPad& pad : m_pad) {
+			pad.Init( padNo );
+			padNo++;
+		}
 	}
 	/*!
 	 * @brief	デストラクタ。
@@ -75,5 +80,9 @@ namespace tkEngine{
 		//バックバッファの内容をフロントバッファにコピー。
 		m_isMouseUp[0] = m_isMouseUp[1];
 		m_isMouseUp[1] = false;
+
+		for (CPad& pad : m_pad) {
+			pad.Update();
+		}
 	}
 }

@@ -10,9 +10,9 @@
 #include "tkEngine/timer/tkStopwatch.h"
 
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 #define USE_DISP_FPS
-#endif
+//#endif
 namespace tkEngine{
 	LRESULT CALLBACK CEngine::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{

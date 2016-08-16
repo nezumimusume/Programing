@@ -33,6 +33,8 @@ namespace tkEngine{
 	{
 		if (animationSetIndex < numAnimSet) {
 			if (pAnimController) {
+				isInterpolate = false;
+				playAnimationRequest.clear();
 				currentAnimationSetNo = animationSetIndex;
 				currentTrackNo = 0;
 				//0番目以外のトラックは無効にする。
@@ -54,17 +56,26 @@ namespace tkEngine{
 	{
 		if (animationSetIndex < numAnimSet) {
 			if (pAnimController) {
-				//補間開始の印。
-				isInterpolate = true;
-				this->interpolateTime = 0.0f;
-				interpolateEndTime = interpolateTime;
-				currentTrackNo = (currentTrackNo+1) % numMaxTracks;
-				pAnimController->SetTrackAnimationSet( currentTrackNo, animationSets[animationSetIndex]);
-				pAnimController->SetTrackEnable(currentTrackNo, TRUE);
-				pAnimController->SetTrackSpeed(currentTrackNo, 1.0f);
-				pAnimController->SetTrackPosition(currentTrackNo, 0.0f);
-				localAnimationTime = 0.0;
-				currentAnimationSetNo = animationSetIndex;
+				if (isInterpolate) {
+					//補間中にアニメーションを終わらせるときれいにつながらないので、リクエストキューに積む。
+					RequestPlayAnimation req;
+					req.animationSetIndex = animationSetIndex;
+					req.interpolateTime = interpolateTime;
+					playAnimationRequest.push_back(req);
+				}
+				else {
+					//補間開始の印。
+					isInterpolate = true;
+					this->interpolateTime = 0.0f;
+					interpolateEndTime = interpolateTime;
+					currentTrackNo = (currentTrackNo + 1) % numMaxTracks;
+					pAnimController->SetTrackAnimationSet(currentTrackNo, animationSets[animationSetIndex]);
+					pAnimController->SetTrackEnable(currentTrackNo, TRUE);
+					pAnimController->SetTrackSpeed(currentTrackNo, 1.0f);
+					pAnimController->SetTrackPosition(currentTrackNo, 0.0f);
+					localAnimationTime = 0.0;
+					currentAnimationSetNo = animationSetIndex;
+				}
 			}
 		}
 		else {
@@ -102,6 +113,12 @@ namespace tkEngine{
 						if (i != currentTrackNo) {
 							pAnimController->SetTrackEnable(i, FALSE);
 						}
+					}
+					if (!playAnimationRequest.empty()) {
+						//アニメーション補間中に別のアニメーションの補間のリクエストが来てるので連続再生。
+						RequestPlayAnimation& req = playAnimationRequest.front();
+						PlayAnimation(req.animationSetIndex, req.interpolateTime);
+						playAnimationRequest.pop_front();
 					}
 				}
 				else {

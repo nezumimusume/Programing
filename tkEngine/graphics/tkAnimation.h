@@ -4,6 +4,8 @@
 #ifndef _TKANIMATION_H_
 #define _TKANIMATION_H_
 
+#include <deque>
+
 namespace tkEngine{
 	/*!
 	 * @brief	アニメーションクラス。
@@ -72,6 +74,11 @@ namespace tkEngine{
 		*/
 		void Update( float deltaTime );
 	private:
+		//アニメーション再生リクエスト。
+		struct RequestPlayAnimation {
+			int animationSetIndex;
+			float interpolateTime;
+		};
 		ID3DXAnimationController*				pAnimController;		//!<アニメーションコントローラ。
 		int										numAnimSet;				//!<アニメーションセットの数。
 		std::unique_ptr<ID3DXAnimationSet*[]>	animationSets;			//!<アニメーションセットの配列。
@@ -86,6 +93,7 @@ namespace tkEngine{
 		bool									isInterpolate;			//!<補間中？
 		float									interpolateEndTime;		//!<補間終了時間。
 		float									interpolateTime;		//!<補間時間。
+		std::deque<RequestPlayAnimation>		playAnimationRequest;	//!<アニメーション再生のリクエスト。
 	};
 }
 

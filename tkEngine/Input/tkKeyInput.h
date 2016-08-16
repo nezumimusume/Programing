@@ -5,10 +5,12 @@
 #ifndef _TKKEYINPUT_H_ 
 #define _TKKEYINPUT_H_ 
 
+#include "tkEngine/Input/tkPad.h"
 namespace tkEngine{
 	class CKeyInput{
 		
 	public:
+		static const int NUM_PAD = 4;	//パッドの数。
 		enum EnKey {
 			enKeyUp,
 			enKeyDown,
@@ -102,12 +104,21 @@ namespace tkEngine{
 		{
 			return m_mousePositionY;
 		}
+		/*!
+		* @brief	ゲームパッドを取得。
+		*/
+		const CPad& GetPad(int padNo) const
+		{
+			TK_ASSERT(padNo < NUM_PAD, "padNo is invalid");
+			return m_pad[padNo];
+		}
 	private:
 		bool	m_keyPressFlag[enKeyNum];
 		bool	m_keyTrigerFlag[enKeyNum];
 		bool	m_isMouseUp[2];
 		int		m_mousePositionX;
 		int		m_mousePositionY;
+		CPad	m_pad[NUM_PAD];		//!<パッド。
 	};
 }
 #endif //_TKKEYINPUT_H_ 

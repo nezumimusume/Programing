@@ -21,7 +21,6 @@ private:
 	CSkinModelData			skinModelData;
 	CSkinModel				skinModel;			//スキンモデル。
 	CAnimation				animation;			//アニメーション。
-	CCamera					camera;				//カメラ。
 	CLight					light;				//ライト。
 	int						currentAnimSetNo;
 	CTexture				normalMap;			//法線マップ。

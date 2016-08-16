@@ -258,6 +258,7 @@ namespace tkEngine{
 			CVector4(x, y, z, w)
 		{
 		}
+		
 		/*!
 		 *@brief	任意の軸周りの回転クォータニオンを作成。
 		 */

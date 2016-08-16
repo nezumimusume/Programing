@@ -61,6 +61,13 @@ namespace tkEngine{
 			return m_up;
 		}
 		/*!
+		* @brief	ビュー行列の逆行列を取得。
+		*/
+		const CMatrix& GetViewMatrixInv() const
+		{
+			return m_viewMatrixInv;
+		}
+		/*!
 		 * @brief	ビュー行列を取得。
 		 */
 		const CMatrix& GetViewMatrix() const

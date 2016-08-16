@@ -237,6 +237,10 @@ namespace tkEngine{
 	{
 		return CEngine::Instance().KeyInput();
 	}
+	static inline const CPad& Pad(int padNo)
+	{
+		return KeyInput().GetPad(padNo);
+	}
 	static inline CParticleResources& ParticleResources()
 	{
 		return CEngine::Instance().ParticleResource();
