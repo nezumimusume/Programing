@@ -45,7 +45,7 @@ public:
 	}
 	void Map::Update() override
 	{
-		skinModel.Update(CVector3(0.0f, 0.0f, 0.0f), CQuaternion::Identity, CVector3::One);
+		skinModel.Update(CVector3(0.0f, 0.0f, 0.0f), CQuaternion::Identity, CVector3(10.0f, 1.0f, 10.0f));
 	}
 	void Map::Render(CRenderContext& renderContext) override
 	{
@@ -71,7 +71,7 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.screenWidth = 1280;
 	initParam.frameBufferHeight = 1080;
 	initParam.frameBufferWidth = 1920;
-	initParam.graphicsConfig.bloomConfig.isEnable = false;
+	initParam.graphicsConfig.bloomConfig.isEnable = true;
 	//initParam.graphicsConfig.edgeRenderConfig.isEnable = true;
 	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
@@ -83,6 +83,7 @@ void InitTkEngine( HINSTANCE hInst )
 	ShadowMap().SetNear(1.0f);
 	ShadowMap().SetFar(10.0f);
 	ShadowMap().SetLightPosition(CVector3(0.0f, 3.5f, 3.5f));
+	ShadowMap().SetSoftShadowIntensity(1.0f);
 	CVector3 lightDir = CVector3(0.0f, -1.0f, -1.0f);
 	lightDir.Normalize();
 	ShadowMap().SetLightDirection(lightDir);
@@ -98,14 +99,14 @@ int WINAPI wWinMain(
 	//tkEngineの初期化。
 	InitTkEngine( hInst );
 	NewGO<Map>(0);
-	//NewGO<UnityChanInstance>(0);
-	for (int i = 0; i < 1; i++) {
+	NewGO<UnityChanInstance>(0);
+	/*for (int i = 0; i < 1; i++) {
 		UnityChan* unityChan = NewGO<UnityChan>(0);
 		if (i == 0) {
 			unityChan->isUpdateAnim = true;
 		}
 		unityChan->SetPosition(CVector3(0.0f + 0.5f * i, 0.0f, 0.0f));
-	}
+	}*/
 	Engine().RunGameLoop();		//ゲームループを実行。
 	
 	return 0;

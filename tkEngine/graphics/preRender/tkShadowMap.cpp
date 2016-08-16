@@ -9,7 +9,6 @@
 #include "tkEngine/graphics/tkCamera.h"
 
 
-//#define USE_PSM		//’è‹`‚ÅPSM‚ª—LŒøB
 
 namespace tkEngine{
 	
@@ -95,16 +94,6 @@ namespace tkEngine{
 			target.Add(m_lightPosition, m_lightDirection);
 			m_lvMatrix.MakeLookAt(m_lightPosition, target, lightUp);
 			m_LVPMatrix.Mul(m_lvMatrix, m_projectionMatrix);
-#ifdef USE_PSM
-			if (m_camera) {
-				const CMatrix& mVP = m_camera->GetViewProjectionMatrix();
-				//CMatrix mCameraInv;
-				//mCameraInv.Inverse(m_camera->GetViewMatrix());
-				//CMatrix mWork;
-				//mWork.Mul(mVP, mCameraInv);
-				m_LVPMatrix.Mul(mVP, m_LVPMatrix);
-			}
-#endif
 		}
 
 	}

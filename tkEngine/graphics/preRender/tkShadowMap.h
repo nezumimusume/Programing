@@ -44,8 +44,7 @@ namespace tkEngine{
 		const CTexture* GetTexture() const
 		{
 #ifdef USE_VSM
-			//return m_gaussianBlur.GetTexture();
-			return m_shadowMapRT.GetTexture();
+			return m_gaussianBlur.GetTexture();
 #else
 			return m_shadowMapRT.GetTexture();
 #endif
@@ -116,6 +115,14 @@ namespace tkEngine{
 		void SetCamera(CCamera* camera)
 		{
 			m_camera = camera;
+		}
+		/*!
+		* @brief	ソフトシャドウの強度を設定。
+		*@param[in]	intensity	ソフトシャドウの強度。値が小さいほどボケる。
+		*/
+		void SetSoftShadowIntensity(float intensity)
+		{
+			m_gaussianBlur.SetDispersion(intensity);
 		}
 	private:
 		bool						m_isEnable;			//!<有効？

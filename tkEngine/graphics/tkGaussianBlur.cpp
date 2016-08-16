@@ -9,7 +9,8 @@
 
 namespace tkEngine {
 	CGaussianBlur::CGaussianBlur() :
-		m_srcTexture(nullptr)
+		m_srcTexture(nullptr),
+		m_dispersion(0.5f)
 	{
 
 	}
@@ -17,20 +18,21 @@ namespace tkEngine {
 	{
 
 	}
-	void CGaussianBlur::UpdateWeight(float dispersion)
+	void CGaussianBlur::UpdateWeight()
 	{
 		float total = 0;
 		// ガウス関数による重みの計算
 		for (int i = 0; i<NUM_WEIGHTS; i++)
 		{
 			float pos = (float)i * 2.0f;
-			m_weights[i] = expf(-pos * pos * dispersion);
+			m_weights[i] = expf(-pos * pos * m_dispersion);
 			total += m_weights[i];
 		}
 
 		// 重みの規格化
-		for (int i = 0; i<NUM_WEIGHTS; i++)
+		for (int i = 0; i < NUM_WEIGHTS; i++) {
 			m_weights[i] = m_weights[i] / total * 0.5f;
+		}
 
 	}
 	void CGaussianBlur::Init(int w, int h, const CTexture& srcTexture)
@@ -46,7 +48,7 @@ namespace tkEngine {
 			{ w >> 1, h >> 1},
 		};
 		for (int i = 0; i < 2; i++) {
-			m_rt[i].Create(size[i][0], size[i][1], 1, (EFormat)desc.Format, FMT_D16, MULTISAMPLE_NONE, 0);
+			m_rt[i].Create(size[i][0], size[i][1], 1, (EFormat)desc.Format, FMT_INVALID, MULTISAMPLE_NONE, 0);
 		}
 		
 		static SShapeVertex_PT vertex[]{
@@ -81,7 +83,7 @@ namespace tkEngine {
 			index
 			);
 		m_effect = EffectManager().LoadEffect("Assets/presetShader/TransformedPrim.fx");
-		UpdateWeight(0.01f);
+		UpdateWeight();
 	}
 	void CGaussianBlur::Draw(CRenderContext& renderContext)
 	{
@@ -90,7 +92,6 @@ namespace tkEngine {
 		//Xブラー。
 		{
 			renderContext.SetRenderTarget(0, &m_rt[0]);
-			renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xffffffff, 1.0f, 0);
 			float offset[] = {
 				16.0f / m_srcTexWH[0],
 				0.0f
@@ -118,7 +119,6 @@ namespace tkEngine {
 		//Yブラー。
 		{
 			renderContext.SetRenderTarget(0, &m_rt[1]);
-			renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xffffffff, 1.0f, 0);
 			float offset[] = {
 				0.0f,
 				16.0f / s_cast<float>(m_rt[0].GetHeight())

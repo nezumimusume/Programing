@@ -4,7 +4,7 @@
 extern CCamera*			g_camera;				//カメラ。
 
 namespace {
-	const int NUM_INSTANCE = 10;
+	const int NUM_INSTANCE = 100;
 }
 UnityChanInstance::UnityChanInstance() :
 	worldMatrixBuffer(nullptr),
@@ -30,18 +30,44 @@ void UnityChanInstance::Start()
 	};
 	skinModelData.CreateInstancingDrawData(NUM_INSTANCE, vertexElement);
 	worldMatrixBuffer = new CMatrix[NUM_INSTANCE];
-	for (int i = 0; i < NUM_INSTANCE; i++) {
-		worldMatrixBuffer[i].MakeTranslation(CVector3(0.0f + 0.5f * i, 0.0f, 0.0f));
+	worldMatrixBuffer[0].MakeTranslation(CVector3(0.0f, 0.0f, 0.0f));	//一匹目。
+	int gyou = 1;		//行。
+	int retu = 0;		//列。
+	int numRetu = 3;	//列数。
+	int execRetu = 0;	//配置した列の数。
+	for (int i = 1; i < NUM_INSTANCE; i++) {
+		if (retu == 0) {
+			worldMatrixBuffer[i].MakeTranslation(CVector3(0.0f, 0.0f, -0.5f * gyou));
+			retu = 1;
+		}
+		else {
+			
+			worldMatrixBuffer[i].MakeTranslation(CVector3(0.5f * retu, 0.0f, -0.5f * gyou));
+			retu *= -1.0f;
+			if (retu > 0) {
+				//正
+				retu++;
+			}
+		}
+		execRetu++;
+		if (execRetu == numRetu) {
+			//この行に配置できる列は全て配置した。
+			execRetu = 0;
+			retu = 0;
+			gyou++;
+			numRetu += 2;
+		}
 	}
 	normalMap.Load("Assets/modelData/utc_nomal.tga");
 	skinModel.Init(&skinModelData);
 	skinModel.SetLight(&light);
 	skinModel.SetNormalMap(&normalMap);
+	skinModel.SetFresnelFlag(true);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
 
-	camera.SetPosition(CVector3(0.0f, 1.0f, 2.5f));
-	camera.SetTarget(CVector3(0.0f, 0.5f, 0.0f));
+	camera.SetPosition(CVector3(0.0f, 2.5f, 3.5f));
+	camera.SetTarget(CVector3(0.0f, 1.0f, 0.0f));
 
 	camera.SetFar(10000.0f);
 	camera.Update();

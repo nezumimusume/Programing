@@ -130,6 +130,7 @@ namespace tkEngine{
 	 *@brief	D3DFORMAT‚Éˆê‘Îˆê‚Å‘Î‰‚·‚é—ñ‹“B
 	 */
 	enum EFormat{
+		FMT_INVALID				= -1,
 		FMT_UNKNOWN             = D3DFMT_UNKNOWN              ,
 	    FMT_R8G8B8              = D3DFMT_R8G8B8               ,
 	    FMT_A8R8G8B8            = D3DFMT_A8R8G8B8             ,

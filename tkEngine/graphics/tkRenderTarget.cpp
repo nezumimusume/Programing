@@ -32,36 +32,40 @@ namespace tkEngine{
 		m_width = w;
 		m_height = h;
 		LPDIRECT3DDEVICE9 d3dDevice = CEngine::Instance().GetD3DDevice();
-		//深度バッファの作成。
-		HRESULT hr = d3dDevice->CreateDepthStencilSurface(
-			w,
-			h,
-			s_cast<D3DFORMAT>(depthStencilFormat),
-			s_cast<D3DMULTISAMPLE_TYPE>(multiSampleType),
-			multiSampleQuality,
-			TRUE,
-			&m_depthSurface,
-			NULL
-		);
-		D3DCAPS9 caps;
-		d3dDevice->GetDeviceCaps(&caps);
-		TK_ASSERT( SUCCEEDED(hr), "failed CreateDepthStencilSurface");
-		//カラーバッファを作成。
-		hr = d3dDevice->CreateTexture(
-			w, 
-			h,
-			mipLevel,
-			D3DUSAGE_RENDERTARGET,
-			s_cast<D3DFORMAT>(colorFormat),
-			D3DPOOL_DEFAULT,
-			&m_textureDX,
-			NULL
-		);
-		TK_ASSERT(SUCCEEDED(hr), "Failed CreateTexture");
+		HRESULT hr;
+		if(depthStencilFormat != FMT_INVALID){
+			//深度バッファの作成。
+			hr = d3dDevice->CreateDepthStencilSurface(
+				w,
+				h,
+				s_cast<D3DFORMAT>(depthStencilFormat),
+				s_cast<D3DMULTISAMPLE_TYPE>(multiSampleType),
+				multiSampleQuality,
+				TRUE,
+				&m_depthSurface,
+				NULL
+			);
+			TK_ASSERT(SUCCEEDED(hr), "failed CreateDepthStencilSurface");
+		}
+		if (colorFormat != FMT_INVALID) {
+			//カラーバッファを作成。
+			hr = d3dDevice->CreateTexture(
+				w,
+				h,
+				mipLevel,
+				D3DUSAGE_RENDERTARGET,
+				s_cast<D3DFORMAT>(colorFormat),
+				D3DPOOL_DEFAULT,
+				&m_textureDX,
+				NULL
+				);
+			TK_ASSERT(SUCCEEDED(hr), "Failed CreateTexture");
 
-		hr = m_textureDX->GetSurfaceLevel(0, &m_surface);
-		TK_ASSERT(SUCCEEDED(hr), "Failed GetSurfaceLevel" );
-		m_texture.SetTextureDX(m_textureDX);
+
+			hr = m_textureDX->GetSurfaceLevel(0, &m_surface);
+			TK_ASSERT(SUCCEEDED(hr), "Failed GetSurfaceLevel");
+			m_texture.SetTextureDX(m_textureDX);
+		}
 	}
 	void CRenderTarget::Release()
 	{

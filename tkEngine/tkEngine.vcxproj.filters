@@ -167,10 +167,10 @@
     <ClCompile Include="graphics\preRender\tkShadowCaster.cpp">
       <Filter>Source Files\graphics\prerender</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\tkFont.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="graphics\tkGaussianBlur.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkFont.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>

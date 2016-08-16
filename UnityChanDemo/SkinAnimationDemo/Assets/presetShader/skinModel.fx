@@ -54,8 +54,8 @@ sampler_state
     MipFilter = NONE;
     MinFilter = LINEAR;
     MagFilter = LINEAR;
-    AddressU = Wrap;
-	AddressV = Wrap;
+    AddressU = CLAMP;
+	AddressV = CLAMP;
 };
 /*!
  * @brief	入力頂点
@@ -251,23 +251,24 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 		
 		if(shadowMapUV.x <= 1.0f && shadowMapUV.y <= 1.0f && shadowMapUV.x >= 0.0f && shadowMapUV.y >= 0.0f){
 			shadow_val = tex2D( g_shadowMapSampler, shadowMapUV ).rg;
+			float depth = posInLVP.z;
+		#ifdef USE_VSM
+			if( depth >= shadow_val.r ){
+				 // σ^2
+				float depth_sq = shadow_val.r * shadow_val.r;
+		        float variance = max(shadow_val.g - depth_sq, 0.0006f);
+				float md = depth - shadow_val.r;
+		        float P = variance / ( variance + md * md );
+				lig *= pow( P, 5.0f );
+			}
+		#else
+			if( depth > shadow_val.r + 0.006f ){
+				lig = 0.0f;
+		
+			}
+		#endif
 		}
-		float depth = posInLVP.z;
-	#ifdef USE_VSM
-		if( depth >= shadow_val.r ){
-			 // σ^2
-			float depth_sq = shadow_val.r * shadow_val.r;
-	        float variance = max(shadow_val.g - depth_sq, 0.0006f);
-			float md = depth - shadow_val.r;
-	        float P = variance / ( variance + md * md );
-			lig *= pow( P, 5.0f );
-		}
-	#else
-		if( depth > shadow_val.r + 0.006f ){
-			lig = 0.0f;
 	
-		}
-	#endif
 	}
 	//アンビエントライトを加算。
 	lig.xyz += g_light.ambient.xyz;

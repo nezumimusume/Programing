@@ -18,11 +18,17 @@ namespace tkEngine{
 		{
 			return m_rt[1].GetTexture();
 		}
+
+		void SetDispersion(float dispersion)
+		{
+			m_dispersion = dispersion;
+			UpdateWeight();
+		}
 	private:
 		/*!
 		* @brief	ガウスフィルタの重みを更新。
 		*/
-		void UpdateWeight(float dispersion);
+		void UpdateWeight();
 	private:
 		static const int NUM_WEIGHTS = 8;
 		float				m_weights[NUM_WEIGHTS];
@@ -31,5 +37,6 @@ namespace tkEngine{
 		CPrimitive			m_prim;				//!<プリミティブ。
 		CEffect*			m_effect;			//!<エフェクト。
 		int					m_srcTexWH[2];
+		float				m_dispersion;		//!<
 	};
 }
