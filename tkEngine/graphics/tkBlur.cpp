@@ -3,39 +3,22 @@
  */
 
 #include "tkEngine/tkEnginePreCompile.h"
-#include "tkEngine/graphics/tkGaussianBlur.h"
+#include "tkEngine/graphics/tkBlur.h"
 #include "tkEngine/shape/tkShapeVertex.h"
 #include "tkEngine/graphics/tkEffect.h"
 
 namespace tkEngine {
-	CGaussianBlur::CGaussianBlur() :
-		m_srcTexture(nullptr),
-		m_dispersion(0.5f)
+	CBlur::CBlur() :
+		m_srcTexture(nullptr)
 	{
 
 	}
-	CGaussianBlur::~CGaussianBlur()
+	CBlur::~CBlur()
 	{
 
 	}
-	void CGaussianBlur::UpdateWeight()
-	{
-		float total = 0;
-		// ガウス関数による重みの計算
-		for (int i = 0; i<NUM_WEIGHTS; i++)
-		{
-			float pos = (float)i * 2.0f;
-			m_weights[i] = expf(-pos * pos * m_dispersion);
-			total += m_weights[i];
-		}
 
-		// 重みの規格化
-		for (int i = 0; i < NUM_WEIGHTS; i++) {
-			m_weights[i] = m_weights[i] / total * 0.5f;
-		}
-
-	}
-	void CGaussianBlur::Init(int w, int h, const CTexture& srcTexture)
+	void CBlur::Init(int w, int h, const CTexture& srcTexture)
 	{
 		m_srcTexture = &srcTexture;
 		LPDIRECT3DTEXTURE9 tex = m_srcTexture->GetTextureDX();
@@ -83,30 +66,24 @@ namespace tkEngine {
 			index
 			);
 		m_effect = EffectManager().LoadEffect("Assets/presetShader/TransformedPrim.fx");
-		UpdateWeight();
+
 	}
-	void CGaussianBlur::Draw(CRenderContext& renderContext)
+	void CBlur::Draw(CRenderContext& renderContext)
 	{
 		CRenderTarget* rtBackup = renderContext.GetRenderTarget(0);
 
 		//Xブラー。
 		{
 			renderContext.SetRenderTarget(0, &m_rt[0]);
-			float offset[] = {
-				16.0f / m_srcTexWH[0],
-				0.0f
-			};
 			float size[2] = {
 				s_cast<float>(m_srcTexWH[0]),
 				s_cast<float>(m_srcTexWH[1])
 			};
-			m_effect->SetTechnique(renderContext, "TransformedPrimGaussianBlurX");
+			m_effect->SetTechnique(renderContext, "TransformedPrimBlurX");
 			m_effect->Begin(renderContext);
 			m_effect->BeginPass(renderContext, 0);
 			m_effect->SetTexture(renderContext, "g_tex", m_srcTexture);
 			m_effect->SetValue(renderContext, "g_texSize", size, sizeof(size));
-			m_effect->SetValue(renderContext, "g_weight", m_weights, sizeof(m_weights));
-			m_effect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
 			m_effect->CommitChanges(renderContext);
 			renderContext.SetVertexDeclaration(m_prim.GetVertexDecl());
 			renderContext.SetStreamSource(0, m_prim.GetVertexBuffer());
@@ -119,21 +96,16 @@ namespace tkEngine {
 		//Yブラー。
 		{
 			renderContext.SetRenderTarget(0, &m_rt[1]);
-			float offset[] = {
-				0.0f,
-				16.0f / s_cast<float>(m_rt[0].GetHeight())
-			};
+
 			float size[2] = {
 				s_cast<float>(m_rt[0].GetWidth()),
 				s_cast<float>(m_rt[0].GetHeight())
 			};
-			m_effect->SetTechnique(renderContext, "TransformedPrimGaussianBlurY");
+			m_effect->SetTechnique(renderContext, "TransformedPrimBlurY");
 			m_effect->Begin(renderContext);
 			m_effect->BeginPass(renderContext, 0);
 			m_effect->SetTexture(renderContext, "g_tex", m_rt[0].GetTexture());
 			m_effect->SetValue(renderContext, "g_texSize", size, sizeof(size));
-			m_effect->SetValue(renderContext, "g_weight", m_weights, sizeof(m_weights));
-			m_effect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
 			m_effect->CommitChanges(renderContext);
 			renderContext.SetVertexDeclaration(m_prim.GetVertexDecl());
 			renderContext.SetStreamSource(0, m_prim.GetVertexBuffer());
@@ -145,6 +117,5 @@ namespace tkEngine {
 		}
 		renderContext.SetRenderTarget(0, rtBackup);
 
-		//Yブラー。
 	}
 }

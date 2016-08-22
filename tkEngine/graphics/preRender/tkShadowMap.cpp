@@ -19,8 +19,8 @@ namespace tkEngine{
 		m_far(100.0f),
 		m_lvMatrix(CMatrix::Identity),
 		m_accpect(1.0f),
-		m_shadowAreaW(8.0f),
-		m_shadowAreaH(8.0f),
+		m_shadowAreaW(10.0f),
+		m_shadowAreaH(10.0f),
 		m_camera(nullptr),
 		m_calcLightViewFunc(enCalcLightViewFunc_PositionTarget),
 		m_lightTarget(CVector3::Zero)
@@ -52,7 +52,7 @@ namespace tkEngine{
 			);
 #endif
 #ifdef USE_VSM
-		m_gaussianBlur.Init(w, h, *m_shadowMapRT.GetTexture());
+		m_blur.Init(w, h, *m_shadowMapRT.GetTexture());
 #endif
 	}
 	void CShadowMap::Release()
@@ -119,8 +119,8 @@ namespace tkEngine{
 			renderContext.SetRenderTarget(0, pRTBackup);
 			m_shadowCaster.clear();
 #ifdef USE_VSM
-			//ガウシアンブラーをかけて深度マップの平均値を求める。
-			m_gaussianBlur.Draw(renderContext);
+			//ブラーをかけて深度マップの平均値を求める。
+			m_blur.Draw(renderContext);
 #endif
 		}
 	}

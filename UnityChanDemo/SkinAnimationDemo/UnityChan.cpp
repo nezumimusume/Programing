@@ -47,9 +47,7 @@ void UnityChan::Start()
 	PlayAnimation(currentAnimSetNo);
 	rotation = CQuaternion::Identity;
 
-	ShadowMap().SetNear(1.0f);
-	ShadowMap().SetFar(10.0f);
-	ShadowMap().SetSoftShadowIntensity(1.0f);
+	
 	CVector3 lightPos = CVector3(0.0f, 3.5f, 3.5f);
 	ShadowMap().SetLightPosition(lightPos);
 	ShadowMap().SetLightTarget(position);

@@ -165,11 +165,11 @@
     <ClCompile Include="graphics\preRender\tkShadowCaster.cpp" />
     <ClCompile Include="graphics\preRender\tkShadowMap.cpp" />
     <ClCompile Include="graphics\tkAnimation.cpp" />
+    <ClCompile Include="graphics\tkBlur.cpp" />
     <ClCompile Include="graphics\tkCamera.cpp" />
     <ClCompile Include="graphics\tkEffect.cpp" />
     <ClCompile Include="graphics\tkEffectManager.cpp" />
     <ClCompile Include="graphics\tkFont.cpp" />
-    <ClCompile Include="graphics\tkGaussianBlur.cpp" />
     <ClCompile Include="graphics\tkIndexBuffer.cpp" />
     <ClCompile Include="graphics\tkMaterial.cpp" />
     <ClCompile Include="graphics\tkPrimitive.cpp" />
@@ -220,11 +220,11 @@
     <ClInclude Include="graphics\preRender\tkReflectionMap.h" />
     <ClInclude Include="graphics\preRender\tkShadowCaster.h" />
     <ClInclude Include="graphics\preRender\tkShadowMap.h" />
+    <ClInclude Include="graphics\tkBlur.h" />
     <ClInclude Include="graphics\tkCamera.h" />
     <ClInclude Include="graphics\tkEffect.h" />
     <ClInclude Include="graphics\tkEffectManager.h" />
     <ClInclude Include="graphics\tkFont.h" />
-    <ClInclude Include="graphics\tkGaussianBlur.h" />
     <ClInclude Include="graphics\tkGraphicsType.h" />
     <ClInclude Include="graphics\tkIndexBuffer.h" />
     <ClInclude Include="graphics\tkLight.h" />

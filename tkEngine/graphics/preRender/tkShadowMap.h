@@ -5,7 +5,7 @@
 #ifndef _TKSHADOWMAP_H_
 #define _TKSHADOWMAP_H_
 
-#include "tkEngine/graphics/tkGaussianBlur.h"
+#include "tkEngine/graphics/tkBlur.h"
 
 
 namespace tkEngine{
@@ -49,7 +49,7 @@ namespace tkEngine{
 		const CTexture* GetTexture() const
 		{
 #ifdef USE_VSM
-			return m_gaussianBlur.GetTexture();
+			return m_blur.GetTexture();
 #else
 			return m_shadowMapRT.GetTexture();
 #endif
@@ -133,14 +133,6 @@ namespace tkEngine{
 			m_camera = camera;
 		}
 		/*!
-		* @brief	ソフトシャドウの強度を設定。
-		*@param[in]	intensity	ソフトシャドウの強度。値が小さいほどボケる。
-		*/
-		void SetSoftShadowIntensity(float intensity)
-		{
-			m_gaussianBlur.SetDispersion(intensity);
-		}
-		/*!
 		* @brief	ライトビューの計算の仕方を設定。
 		*/
 		void SetCalcLightViewFunc(EnCalcLightViewFunc func)
@@ -166,7 +158,7 @@ namespace tkEngine{
 		CCamera*					m_camera;				//!<PSMを計算するときに使用するカメラ。
 		EnCalcLightViewFunc			m_calcLightViewFunc;	//!<ライトビューの計算方法。
 #ifdef USE_VSM
-		CGaussianBlur				m_gaussianBlur;			//!<深度マップの平均値を求めるためのガウシアンブラー処理。
+		CBlur						m_blur;			//!<深度マップの平均値を求めるためのブラー処理。
 #endif 
 	};
 }

@@ -251,9 +251,9 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 		
 		if(shadowMapUV.x <= 1.0f && shadowMapUV.y <= 1.0f && shadowMapUV.x >= 0.0f && shadowMapUV.y >= 0.0f){
 			shadow_val = tex2D( g_shadowMapSampler, shadowMapUV ).rg;
-			float depth = posInLVP.z;
+			float depth = min(posInLVP.z, 1.0f);
 		#ifdef USE_VSM
-			if( depth >= shadow_val.r ){
+			if( depth > shadow_val.r ){
 				 // É–^2
 				float depth_sq = shadow_val.r * shadow_val.r;
 		        float variance = max(shadow_val.g - depth_sq, 0.0006f);

@@ -78,6 +78,9 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.graphicsConfig.reflectionMapConfig.reflectionMapWidth = 512;
 	initParam.graphicsConfig.reflectionMapConfig.reflectionMapHeight = 512;
 	Engine().Init(initParam);	//èâä˙âªÅB
+
+	ShadowMap().SetNear(2.0f);
+	ShadowMap().SetFar(20.0f);
 	
 }
 
