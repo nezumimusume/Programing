@@ -85,6 +85,13 @@ namespace tkEngine {
 			m_isShadowReceiver = flag;
 		}
 		/*!
+		 *@brief	リフレクションマップへの描きこみフラグを設定。
+		 */
+		void SetReflectionCasterFlag( bool flag )
+		{
+			m_isReflectionCaster = flag;
+		}
+		/*!
 		* @brief	フレネルフラグを設定。
 		*@param[in]	flag	フレネルのフラグ。
 		*/
@@ -137,8 +144,9 @@ namespace tkEngine {
 		CTexture*           m_normalMap;		//!<法線マップ。
 		static const int MAX_MATRIX_PALLET = 128;	//!<マトリクスパレットの最大数。
 		D3DXMATRIX					m_boneMatrixPallet[MAX_MATRIX_PALLET];	//!<マトリクスパレット。
-		bool						m_isShadowReceiver;	//!<シャドウレシーバー。
-		bool						m_isShadowCaster;	//!<シャドウキャスターフラグ。
+		bool						m_isShadowReceiver;		//!<シャドウレシーバー。
+		bool						m_isShadowCaster;		//!<シャドウキャスターフラグ。
+		bool						m_isReflectionCaster;	//!<リフレクションマップに描きこむフラグ。
 		bool						m_isFresnel;		//!<フレネル
 		CShadowCaster_SkinModel		m_shadowCaster;		//!<シャドウキャスター。
 	};

@@ -30,6 +30,7 @@ void UnityChan::Start()
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
 	skinModel.SetFresnelFlag(true);
+	skinModel.SetReflectionCasterFlag(true);
 
 	light.SetDiffuseLightDirection(0,  CVector3(0.707f, 0.0f, -0.707f));
 	light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
@@ -61,8 +62,7 @@ void UnityChan::Start()
  */
 void UnityChan::Update()  
 {
-	//アニメーション再生のサンプルコード。
-	animation.Update(1.0f / 60.0f);
+	
 	CVector3 moveDirLocal;
 	moveDirLocal.y = 0.0f;
 	moveDirLocal.x = Pad(0).GetLStickXF();
@@ -96,7 +96,7 @@ void UnityChan::Update()
 		state = enStateRun;
 	}
 	else {
-		//立ち状態。
+		//立ち状態。%
 		state = enStateStand;
 	}
 	skinModel.Update(position, rotation, CVector3::One);
@@ -116,7 +116,7 @@ void UnityChan::PlayAnimation(AnimationNo animNo)
 {
 	if (currentAnimSetNo != animNo) {
 		//別のアニメーション
-		animation.PlayAnimation(animNo, 0.2f);
+		animation.PlayAnimation(animNo, 0.1f);
 		currentAnimSetNo = animNo;
 	}
 }
@@ -125,7 +125,7 @@ void UnityChan::PlayAnimation(AnimationNo animNo)
 */
 void UnityChan::AnimationControl()
 {
-
+	animation.Update(1.0f / 60.0f);
 	if (state == enStateRun) {
 		if (moveSpeed.LengthSq() > RUN_THREADHOLD_SQ) {
 			//走りアニメーションを流す。

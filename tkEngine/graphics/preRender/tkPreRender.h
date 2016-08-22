@@ -8,6 +8,7 @@
 #include "tkEngine/graphics/tkGraphicsConfig.h"
 #include "tkEngine/graphics/preRender/tkIDMap.h"
 #include "tkEngine/graphics/preRender/tkShadowMap.h"
+#include "tkEngine/graphics/preRender/tkReflectionMap.h"
 
 namespace tkEngine{
 	/*!
@@ -35,6 +36,7 @@ namespace tkEngine{
 		{
 			m_idMap.RenderToIDMap(context);
 			m_shadowMap.RenderToShadowMap(context);
+			m_reflectionMap.Render(context);
 		}
 		/*!
 		* @brief	更新。
@@ -57,10 +59,18 @@ namespace tkEngine{
 		{
 			return m_shadowMap;
 		}
+		/*!
+		* @brief	リフレクションマップの取得。
+		*/
+		CReflectionMap& GetReflectionMap()
+		{
+			return m_reflectionMap;
+		}
 	private:
-		SGraphicsConfig	m_config;		//!<コンフィグ。
-		CIDMap			m_idMap;		//!<IDマップ
-		CShadowMap		m_shadowMap;	//!<シャドウマップ。
+		SGraphicsConfig	m_config;			//!<コンフィグ。
+		CIDMap			m_idMap;			//!<IDマップ
+		CShadowMap		m_shadowMap;		//!<シャドウマップ。
+		CReflectionMap	m_reflectionMap;	//!<リフレクションマップ。
 	};
 }
 #endif //_TKPRERENDER_H_

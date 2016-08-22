@@ -16,6 +16,7 @@
 #include "tkEngine/particle/tkParticleResources.h"
 
 namespace tkEngine{
+	class CReflectionMap;
 	/*!
 	* @brief	描画優先ごとに対応するレンダリングコンテキストの番号のマップを定義するための構造体。
 	*/
@@ -142,6 +143,13 @@ namespace tkEngine{
 			return m_preRender.GetShadowMap();
 		}
 		/*!
+		*@brief		リフレクションマップの取得。
+		*/
+		CReflectionMap& ReflectionMap()
+		{
+			return m_preRender.GetReflectionMap();
+		}
+		/*!
 		* @brief	メインレンダリングターゲットを切り替え。
 		*/
 		void ToggleMainRenderTarget()
@@ -228,6 +236,10 @@ namespace tkEngine{
 	static inline CShadowMap& ShadowMap()
 	{
 		return CEngine::Instance().ShadowMap();
+	}
+	static inline CReflectionMap& ReflectionMap()
+	{
+		return CEngine::Instance().ReflectionMap();
 	}
 	static inline CEffectManager& EffectManager()
 	{

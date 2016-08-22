@@ -20,6 +20,9 @@ namespace tkEngine{
 		if (config.shadowRenderConfig.isEnable) {
 			m_shadowMap.Create(config.shadowRenderConfig.shadowMapWidth, config.shadowRenderConfig.shadowMapHeight);
 		}
+		if (config.reflectionMapConfig.isEnable) {
+			m_reflectionMap.Init(config.reflectionMapConfig.reflectionMapWidth, config.reflectionMapConfig.reflectionMapHeight);
+		}
 	}
 }
 

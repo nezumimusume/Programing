@@ -30,12 +30,21 @@ namespace tkEngine{
 		bool	isEnable;		//!<ブルームが有効かどうかのフラグ。
 	};
 	/*!
+	* @brief	リフレクションマップのコンフィグ
+	*/
+	struct SReflectionMapConfig {
+		bool	isEnable;				//!<リフレクションマップが有効かどうかのフラグ。
+		int		reflectionMapWidth;		//!<リフレクションマップの幅。
+		int		reflectionMapHeight;	//!<リフレクションマップの高さ。
+	};
+	/*!
 	 * @brief	グラフィックスコンフィグ。
 	 */
 	struct SGraphicsConfig{
 		SEdgeRenderConfig		edgeRenderConfig;		//!<エッジ抽出処理のコンフィグ。
 		SShadowRenderConfig		shadowRenderConfig;		//!<影の処理のコンフィグ。
 		SBloomConfig			bloomConfig;			//!<Bloomのコンフィグ。
+		SReflectionMapConfig	reflectionMapConfig;	//!<リフレクションマップのコンフィグ。
 	};
 }
 

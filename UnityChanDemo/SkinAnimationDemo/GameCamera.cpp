@@ -18,6 +18,8 @@ void GameCamera::Start()
 	toPosition.Subtract(camera.GetPosition(), camera.GetTarget());
 	camera.SetFar(1000.0f);
 	camera.Update();
+	//リフレクションマップにカメラを設定する。
+	ReflectionMap().SetCamera(camera);
 }
 void GameCamera::Update()
 {

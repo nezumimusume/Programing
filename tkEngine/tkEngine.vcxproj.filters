@@ -176,6 +176,9 @@
     <ClCompile Include="Input\tkPad.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\preRender\tkReflectionMap.cpp">
+      <Filter>Source Files\graphics\prerender</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -327,6 +330,9 @@
     </ClInclude>
     <ClInclude Include="Input\tkPad.h">
       <Filter>Source Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\preRender\tkReflectionMap.h">
+      <Filter>Source Files\graphics\prerender</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

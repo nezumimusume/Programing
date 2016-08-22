@@ -303,7 +303,8 @@ namespace tkEngine{
 		m_normalMap(nullptr),
 		m_isShadowCaster(false),
 		m_isShadowReceiver(false),
-		m_isFresnel(false)
+		m_isFresnel(false),
+		m_isReflectionCaster(false)
 	{
 	}
 	CSkinModel::~CSkinModel()
@@ -322,6 +323,10 @@ namespace tkEngine{
 		if (m_isShadowCaster && ShadowMap().IsEnable()) {
 			//シャドウキャスター。
 			ShadowMap().Entry(&m_shadowCaster);
+		}
+		if (m_isReflectionCaster && ReflectionMap().IsEnable()) {
+			//リフレクションキャスター。
+			ReflectionMap().Entry(this);
 		}
 		CMatrix mTrans, mScale;
 		mTrans.MakeTranslation(trans);
