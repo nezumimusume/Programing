@@ -10,13 +10,15 @@ class Map : public IGameObject {
 	CSkinModel		skinModel;			//スキンモデル。
 	CAnimation		animation;			//アニメーション。
 	CLight			light;				//ライト。
+	CTexture		normalMap;
 public:
 	Map()
 	{
 		skinModelData.LoadModelData("Assets/modelData/Court.X", NULL);
 		skinModel.Init(&skinModelData);
 		skinModel.SetLight(&light);
-
+		normalMap.Load("Assets/modelData/Grass_Normals.tga");
+		skinModel.SetNormalMap(&normalMap);
 		light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
 		light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
 		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
@@ -26,7 +28,7 @@ public:
 		light.SetDiffuseLightColor(1, CVector4(0.5f, 0.5f, 0.5f, 1.0f));
 		light.SetDiffuseLightColor(2, CVector4(0.5f, 0.5f, 0.5f, 1.0f));
 		light.SetDiffuseLightColor(3, CVector4(0.5f, 0.5f, 0.5f, 1.0f));
-		light.SetAmbinetLight(CVector3(0.3f, 0.3f, 0.3f));
+		light.SetAmbinetLight(CVector3(0.1f, 0.1f, 0.1f));
 		skinModel.SetShadowReceiverFlag(true);
 	}
 	~Map()
