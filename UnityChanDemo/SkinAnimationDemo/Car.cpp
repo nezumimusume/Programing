@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "Car.h"
 
+Car* g_car;
 
 Car::Car()
 {
@@ -15,7 +16,6 @@ Car::Car()
 	skinModel.SetNormalMap(&normalMap);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
-	skinModel.SetFresnelFlag(true);
 	skinModel.SetReflectionCasterFlag(true);
 
 	light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
@@ -27,8 +27,13 @@ Car::Car()
 	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbinetLight(CVector3(0.2f, 0.2f, 0.2f));
+	light.SetAmbinetLight(CVector3(0.5f, 0.5f, 0.5f));
 	position.Set(2.0f, 0.0f, 0.0f);
+	moveSpeed = CVector3::Zero;
+	accele = CVector3::Zero;
+	rotation = CQuaternion::Identity;
+	moveDirection = CVector3::AxisZ;
+	rideOnFlag = false;
 }
 Car::~Car()
 {
@@ -40,6 +45,41 @@ void Car::Start()
 }
 void Car::Update()
 {
+	if (rideOnFlag) {
+		const CMatrix& mWorld = skinModel.GetWorldMatrix();
+		moveDirection = CVector3(mWorld.m[2][0], mWorld.m[2][1], mWorld.m[2][2]);
+		//乗車中。
+		if (Pad(0).IsPress(enButtonA)) {
+			//車の進行方法に対して加速度をかける。
+			accele = moveDirection;
+			accele.Scale(2.0f);
+		}
+		else if (Pad(0).IsPress(enButtonB)) {
+			//フットブレーキ(仮)
+			accele = CVector3::Zero;
+			moveSpeed.Scale(0.9f);
+		}
+		else {
+			//エンジンブレーキ(仮)
+			accele = CVector3::Zero;
+			moveSpeed.Scale(0.95f);
+		}
+		if (moveSpeed.Length() > 0.1f) {
+			float lstickX = Pad(0).GetLStickXF();
+			CQuaternion addRot;
+			addRot.SetRotation(CVector3::AxisY, 0.01f * lstickX);
+			rotation.Multiply(addRot);
+			CMatrix mRot;
+			mRot.MakeRotationFromQuaternion(addRot);
+			mRot.Mul(moveSpeed);
+		}
+	}
+	CVector3 addSpeed = accele;
+	addSpeed.Scale(1.0f / 60.0f);
+	moveSpeed.Add(addSpeed);
+	CVector3 addPos = moveSpeed;
+	addPos.Scale(1.0f / 60.0f);
+	position.Add(addPos);
 	skinModel.Update(position, rotation, CVector3::One);
 }
 void Car::Render(CRenderContext& renderContext)

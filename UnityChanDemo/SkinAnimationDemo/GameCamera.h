@@ -5,6 +5,7 @@
 #pragma once
 
 class UnityChan;
+class Car;
 /*!
  *@brief	ゲームカメラ。
  */
@@ -19,14 +20,19 @@ public:
 	{
 		this->unityChan = unityChan;
 	}
+	void SetCar(Car* car)
+	{
+		this->car = car;
+	}
 	const CCamera& GetCamera() const
 	{
 		return camera;
 	}
 private:
 	CCamera camera;
-	UnityChan* unityChan;
-	CVector3 toPosition;		//注視点から視点へのベクトル。
+	Car* car;
+	UnityChan*	unityChan;
+	CVector3	toPosition;		//注視点から視点へのベクトル。
 };
 
 

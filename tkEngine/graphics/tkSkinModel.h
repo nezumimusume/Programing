@@ -99,6 +99,13 @@ namespace tkEngine {
 		{
 			m_isFresnel = flag;
 		}
+		/*!
+		* @brief	ワールド行列を取得。
+		*/
+		const CMatrix& GetWorldMatrix() const
+		{
+			return m_worldMatrix;
+		}
 	private:
 		void DrawMeshContainer(
 			IDirect3DDevice9* pd3dDevice,

@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "GameCamera.h"
 #include "UnityChan.h"
+#include "Car.h"
 
 GameCamera			*g_camera;				//ƒJƒƒ‰B
 
 GameCamera::GameCamera() :
-	unityChan(nullptr)
+	unityChan(nullptr),
+	car(nullptr)
 {
 }
 GameCamera::~GameCamera()
@@ -53,11 +55,26 @@ void GameCamera::Update()
 			toPosition = toPositionOld;
 		}
 	}
-	CVector3 v = unityChan->GetPosition();
-	v.y += 1.0f;
-	camera.SetTarget(v);
-	v.Add(toPosition);
-	camera.SetPosition(v);
+	CVector3 v;
+	if (car) {
+		//ŽÔ‚ÌŒã‚ë‚É’Ç]B
+		v = car->GetPosition();
+		v.y += 1.0f;
+		camera.SetTarget(v);
+		CVector3 toPosOnCar = car->GetMoveDirection();
+		toPosOnCar.Scale(-3.0f);
+		toPosOnCar.y += 1.0f;
+		v.Add(toPosOnCar);
+		camera.SetPosition(v);
+	}
+	else {
+		v = unityChan->GetPosition();
+		v.y += 1.0f;
+		camera.SetTarget(v);
+		v.Add(toPosition);
+		camera.SetPosition(v);
+		
+	}
 	camera.Update();
 }
 void GameCamera::Render( CRenderContext& renderContext )

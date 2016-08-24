@@ -22,8 +22,9 @@ private:
 	};
 public:
 	enum EnState {
-		enStateRun,		//走っている。
-		enStateStand,	//立ち止まっている。
+		enStateRun,			//走っている。
+		enStateStand,		//立ち止まっている。
+		enState_RideOnCar,	//車に乗っている
 	};
 	bool					isUpdateAnim;		//
 
@@ -52,6 +53,7 @@ public:
 		return state;
 	}
 private:
+
 	/*!
 	* @brief	アニメーションコントロール。
 	*/
