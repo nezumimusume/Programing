@@ -2,7 +2,7 @@
 
 #include "UnityChan.h"
 #include "UnityChanInstance.h"
-
+#include "Car.h"
 
 
 class Map : public IGameObject {
@@ -24,11 +24,11 @@ public:
 		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
 		light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
 
-		light.SetDiffuseLightColor(0, CVector4(0.5f, 0.5f, 0.5f, 1.0f));
-		light.SetDiffuseLightColor(1, CVector4(0.5f, 0.5f, 0.5f, 1.0f));
-		light.SetDiffuseLightColor(2, CVector4(0.5f, 0.5f, 0.5f, 1.0f));
-		light.SetDiffuseLightColor(3, CVector4(0.5f, 0.5f, 0.5f, 1.0f));
-		light.SetAmbinetLight(CVector3(0.1f, 0.1f, 0.1f));
+		light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetAmbinetLight(CVector3(0.2f, 0.2f, 0.2f));
 		skinModel.SetShadowReceiverFlag(true);
 	}
 	~Map()
@@ -73,8 +73,8 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
 	//Shadow
 	initParam.graphicsConfig.shadowRenderConfig.isEnable = true;
-	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 1024;
-	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 1024;
+	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 2048;
+	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 2048;
 	//reflection
 	initParam.graphicsConfig.reflectionMapConfig.isEnable = true;
 	initParam.graphicsConfig.reflectionMapConfig.reflectionMapWidth = 512;
@@ -98,6 +98,7 @@ int WINAPI wWinMain(
 	
 	NewGO<Map>(0);
 	NewGO<UnityChanInstance>(0);
+	NewGO<Car>(0);
 	UnityChan* unityChan = NewGO<UnityChan>(0);
 	g_camera = NewGO<GameCamera>(0);
 	unityChan->SetPosition(CVector3(0.0f, 0.0f, 0.0f));

@@ -17,11 +17,11 @@ void UnityChan::Start()
 	if (orgSkinModelData == NULL) {
 		orgSkinModelData = new CSkinModelData;
 		orgAnimation = new CAnimation;
-		orgSkinModelData->LoadModelData("Assets/modelData/Unity.X", orgAnimation);
+		orgSkinModelData->LoadModelData("Assets/modelData/car.X", orgAnimation);
 	}
 	//オリジナルのモデルデータからクローンモデルを作成。
 	skinModelData.CloneModelData(*orgSkinModelData, &animation);
-	normalMap.Load("Assets/modelData/utc_nomal.tga");
+	normalMap.Load("Assets/modelData/Scout_Normal.png");
 
 	//skinModelData.LoadModelData("Assets/modelData/unity.X", NULL);
 	skinModel.Init(&skinModelData);
@@ -32,7 +32,7 @@ void UnityChan::Start()
 	skinModel.SetFresnelFlag(true);
 	skinModel.SetReflectionCasterFlag(true);
 
-	light.SetDiffuseLightDirection(0,  CVector3(0.707f, 0.0f, -0.707f));
+	light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
 	light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
 	light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
 	light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
@@ -41,8 +41,8 @@ void UnityChan::Start()
 	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbinetLight(CVector3(0.5f, 0.5f, 0.5f));
-	animation.SetAnimationEndTime(AnimationRun, 0.8);
+	light.SetAmbinetLight(CVector3(0.2f, 0.2f, 0.2f));
+	//animation.SetAnimationEndTime(AnimationRun, 0.8);
 	currentAnimSetNo = AnimationInvalid;
 	PlayAnimation(currentAnimSetNo);
 	rotation = CQuaternion::Identity;
@@ -104,7 +104,7 @@ void UnityChan::Update()
 	ShadowMap().SetLightPosition(lightPos);
 
 	//アニメーションコントロール。
-	AnimationControl();
+	//AnimationControl();
 	lastFrameState = state;
 }
 /*!
@@ -114,7 +114,7 @@ void UnityChan::PlayAnimation(AnimationNo animNo)
 {
 	if (currentAnimSetNo != animNo) {
 		//別のアニメーション
-		animation.PlayAnimation(animNo, 0.1f);
+		//animation.PlayAnimation(animNo, 0.1f);
 		currentAnimSetNo = animNo;
 	}
 }

@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Car.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="UnityChanInstance.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Car.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="UnityChan.h" />

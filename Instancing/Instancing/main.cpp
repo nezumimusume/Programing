@@ -192,8 +192,8 @@ void InitProjectionMatrix()
 
 	D3DXMatrixIdentity( &g_rotationMatrix );
 	
-	D3DXVECTOR3 vEyePt( 0.0f, 3.0f,-20.0f );
-    D3DXVECTOR3 vLookatPt( 0.0f, 0.0f, 0.0f );
+	D3DXVECTOR3 vEyePt( 0.0f, 0.0f,-10.0f );
+    D3DXVECTOR3 vLookatPt( 0.0f,0.0f, 0.0f );
     D3DXVECTOR3 vUpVec( 0.0f, 1.0f, 0.0f );
     D3DXMATRIXA16 matView;
     D3DXMatrixLookAtLH( &g_viewMatrix, &vEyePt, &vLookatPt, &vUpVec );
@@ -341,9 +341,9 @@ VOID Render()
 			g_pd3dDevice->SetVertexDeclaration(vertexDecl);
 			
 			g_pd3dDevice->SetStreamSource(0, vb, 0, stride);							//頂点バッファをストリーム0番目に設定
+			g_pd3dDevice->SetStreamSource(1, worldMatrixBuffer, 0, sizeof(D3DXMATRIX));	//ワールド行列用のバッファをストリーム1番目に設定。
 			//ワールド行列を頂点バッファにコピー。
 			CopyWorldMatrixToVertexBuffer();
-			g_pd3dDevice->SetStreamSource(1, worldMatrixBuffer, 0, sizeof(D3DXMATRIX));	//ワールド行列用のバッファをストリーム1番目に設定。
 			g_pd3dDevice->SetIndices(ib);
 			g_pEffect->CommitChanges();						//この関数を呼び出すことで、データの転送が確定する。描画を行う前に一回だけ呼び出す。
 			g_pd3dDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, g_pMesh->GetNumVertices(), 0, g_pMesh->GetNumFaces());
@@ -380,16 +380,16 @@ VOID Render()
 	RECT rc = {
 		0,		// 左上のx座標
 		0,		// 左上のy座標
-		640,		// 右下のx座標
+		640,	// 右下のx座標
 		24		// 右下のy座標
 	};
 	// 描画
 	pFont->DrawText(
-		NULL,					// NULL
-		text,		// 描画テキスト
-		-1,						// 全て表示
-		&rc,						// 表示範囲
-		DT_LEFT,					// 左寄せ
+		NULL,							// NULL
+		text,							// 描画テキスト
+		-1,								// 全て表示
+		&rc,							// 表示範囲
+		DT_LEFT,						// 左寄せ
 		D3DCOLOR_XRGB(255, 255, 255)	// 白色
 		);
 
@@ -466,7 +466,7 @@ HRESULT InitGeometry()
 				declElement[elementIndex+1] = { 1, 16, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 2 };  // WORLD 2行目
 				declElement[elementIndex+2] = { 1, 32, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 3 };  // WORLD 3行目
 				declElement[elementIndex+3] = { 1, 48, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 4 };  // WORLD 4行目
-				declElement[elementIndex + 4] = D3DDECL_END();
+				declElement[elementIndex+4] = D3DDECL_END();
 				break;
 			}
 			elementIndex++;
