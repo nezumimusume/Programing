@@ -22,11 +22,12 @@ void UnityChan::Start()
 	//オリジナルのモデルデータからクローンモデルを作成。
 	skinModelData.CloneModelData(*orgSkinModelData, &animation);
 	normalMap.Load("Assets/modelData/utc_nomal.tga");
-
+	specMap.Load("Assets/modelData/utc_spec.tga");
 	//skinModelData.LoadModelData("Assets/modelData/unity.X", NULL);
 	skinModel.Init(&skinModelData);
 	skinModel.SetLight(&light);
 	skinModel.SetNormalMap(&normalMap);
+	skinModel.SetSpeculerMap(&specMap);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
 	skinModel.SetFresnelFlag(true);
@@ -41,7 +42,7 @@ void UnityChan::Start()
 	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbinetLight(CVector3(0.5f, 0.5f, 0.5f));
+	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
 	animation.SetAnimationEndTime(AnimationRun, 0.8);
 	currentAnimSetNo = AnimationInvalid;
 	PlayAnimation(currentAnimSetNo);
