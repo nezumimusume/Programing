@@ -24,6 +24,7 @@ private:
 	CLight					light;				//ライト。
 	int						currentAnimSetNo;
 	CTexture				normalMap;			//法線マップ。
+	CTexture				specMap;			//スペキュラマップ。
 	CMatrix*				worldMatrixBuffer;
 
 };

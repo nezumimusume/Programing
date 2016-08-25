@@ -114,14 +114,14 @@ namespace tkEngine{
 		/*!
 		 * @brief	’·‚³‚ğæ“¾
 		 */
-		float Length()
+		float Length() const
 		{
 			return sqrt(LengthSq());
 		}
 		/*!
 		 * @brief	’·‚³‚Ì“ñæ‚ğæ“¾
 		 */
-		float LengthSq()
+		float LengthSq() const
 		{
 			return x * x + y * y + z * z;
 		}

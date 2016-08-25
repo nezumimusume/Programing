@@ -48,7 +48,6 @@ void UnityChan::Start()
 	PlayAnimation(currentAnimSetNo);
 	rotation = CQuaternion::Identity;
 
-
 	CVector3 lightPos = CVector3(0.0f, 3.5f, 3.5f);
 	ShadowMap().SetLightPosition(lightPos);
 	ShadowMap().SetLightTarget(position);
@@ -120,6 +119,18 @@ void UnityChan::Update()
 		CVector3 lightPos;
 		lightPos.Add(g_car->GetPosition(), toLightPos);
 		ShadowMap().SetLightPosition(lightPos);
+		if (g_car->GetMoveSpeed().Length() < 0.1f) {
+			//ŽÔ‚ª’âŽ~ó‘ÔB
+			if (Pad(0).IsPress(enButtonB)) {
+				//~ŽÔB
+				g_camera->SetCar(NULL);
+				g_car->SetRideOnFlag(false);
+				skinModel.SetShadowReceiverFlag(true);
+				skinModel.SetShadowCasterFlag(true);
+				position = g_car->GetPosition();
+				state = enStateStand;
+			}
+		}
 	}
 	skinModel.Update(position, rotation, CVector3::One);
 	

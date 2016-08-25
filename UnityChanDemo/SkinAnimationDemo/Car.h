@@ -24,6 +24,11 @@ public:
 	{
 		return moveDirection;
 	}
+	//移動速度を取得。
+	const CVector3& GetMoveSpeed() const
+	{
+		return moveSpeed;
+	}
 private:
 	CSkinModelData			skinModelData;
 	CSkinModel				skinModel;			//スキンモデル。

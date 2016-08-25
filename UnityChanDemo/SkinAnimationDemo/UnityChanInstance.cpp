@@ -56,9 +56,11 @@ void UnityChanInstance::Start()
 		}
 	}
 	normalMap.Load("Assets/modelData/utc_nomal.tga");
+	specMap.Load("Assets/modelData/utc_spec.tga");
 	skinModel.Init(&skinModelData);
 	skinModel.SetLight(&light);
 	skinModel.SetNormalMap(&normalMap);
+	skinModel.SetSpeculerMap(&specMap);
 	skinModel.SetFresnelFlag(true);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);

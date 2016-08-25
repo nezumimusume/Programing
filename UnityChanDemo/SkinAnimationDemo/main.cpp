@@ -28,7 +28,7 @@ public:
 		light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 		light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetAmbinetLight(CVector3(0.2f, 0.2f, 0.2f));
+		light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
 		skinModel.SetShadowReceiverFlag(true);
 	}
 	~Map()

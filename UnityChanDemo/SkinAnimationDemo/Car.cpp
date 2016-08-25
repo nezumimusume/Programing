@@ -75,6 +75,10 @@ void Car::Update()
 		mRot.Mul(moveDirection);
 		moveDirection.Normalize();
 	}
+	else {
+		moveSpeed = CVector3::Zero;
+		accele = CVector3::Zero;
+	}
 	CVector3 addSpeed = accele;
 	addSpeed.Scale(1.0f / 60.0f);
 	moveSpeed.Add(addSpeed);
