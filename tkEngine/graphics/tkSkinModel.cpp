@@ -123,8 +123,8 @@ namespace tkEngine{
 			);
 			int flag[4] = { 0 };
 			if (normalMap != nullptr) {
+				//法線マップ。
 				flag[0] = true;
-				
 				pEffect->SetTexture("g_normalTexture", normalMap->GetTextureDX());
 			}
 			if (!isDrawToShadowMap && m_isShadowReceiver) {
@@ -136,6 +136,16 @@ namespace tkEngine{
 			}
 			if (m_isFresnel) {
 				flag[2] = true;
+			}
+			if (m_speculerMap != nullptr) {
+				//スペキュラマップ。
+				flag[3] = true;
+				pEffect->SetTexture("g_speculerMap", m_speculerMap->GetTextureDX());
+				CVector3 cameraPos;
+				cameraPos.x = viewMatrix->m[3][0];
+				cameraPos.y = viewMatrix->m[3][1];
+				cameraPos.z = viewMatrix->m[3][2];
+				pEffect->SetVector("g_cameraPos", (D3DXVECTOR4*)&cameraPos);
 			}
 			pEffect->SetValue("g_flags", flag, sizeof(flag));
 			if (isDrawToShadowMap || m_isShadowReceiver) {
@@ -304,7 +314,8 @@ namespace tkEngine{
 		m_isShadowCaster(false),
 		m_isShadowReceiver(false),
 		m_isFresnel(false),
-		m_isReflectionCaster(false)
+		m_isReflectionCaster(false),
+		m_speculerMap(nullptr)
 	{
 	}
 	CSkinModel::~CSkinModel()

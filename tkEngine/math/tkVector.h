@@ -154,6 +154,24 @@ namespace tkEngine{
 			y /= d;
 			z /= d;
 		}
+		/*!
+		* @brief	最大値を設定。
+		*/
+		void Max(const CVector3& vMax)
+		{
+			x = max(x, vMax.x);
+			y = max(y, vMax.y);
+			z = max(z, vMax.z);
+		}
+		/*!
+		* @brief	最小値を設定。
+		*/
+		void Min(const CVector3& vMin)
+		{
+			x = min(x, vMin.x);
+			y = min(y, vMin.y);
+			z = min(z, vMin.z);
+		}
 	};
 	/*!
 	 *@brief	4要素のベクトルクラス。

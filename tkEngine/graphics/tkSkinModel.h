@@ -62,11 +62,19 @@ namespace tkEngine {
 		}
 		/*!
 		*@brief	法線マップを設定。
-		*@param[in] normalMap
+		*@param[in] normalMap	法線マップ。
 		*/
 		void SetNormalMap(CTexture* normalMap)
 		{
 			m_normalMap = normalMap;
+		}
+		/*!
+		*@brief	スペキュラマップを設定。
+		*@param[in] specMap		スペキュラマップ。
+		*/
+		void SetSpeculerMap(CTexture* specMap)
+		{
+			m_speculerMap = specMap;
 		}
 		/*!
 		 * @brief	シャドウキャスターのフラグを設定。
@@ -149,6 +157,7 @@ namespace tkEngine {
 		CAnimation			m_animation;		//!<アニメーション。
 		CLight*				m_light;			//!<ライト。
 		CTexture*           m_normalMap;		//!<法線マップ。
+		CTexture*			m_speculerMap;		//!<スペキュラマップ。
 		static const int MAX_MATRIX_PALLET = 128;	//!<マトリクスパレットの最大数。
 		D3DXMATRIX					m_boneMatrixPallet[MAX_MATRIX_PALLET];	//!<マトリクスパレット。
 		bool						m_isShadowReceiver;		//!<シャドウレシーバー。

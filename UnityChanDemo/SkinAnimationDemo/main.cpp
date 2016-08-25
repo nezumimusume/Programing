@@ -98,8 +98,9 @@ int WINAPI wWinMain(
 	
 	NewGO<Map>(0);
 	NewGO<UnityChanInstance>(0);
-	g_car = NewGO<Car>(0);
+	
 	UnityChan* unityChan = NewGO<UnityChan>(0);
+	g_car = NewGO<Car>(0);
 	g_camera = NewGO<GameCamera>(0);
 	unityChan->SetPosition(CVector3(0.0f, 0.0f, 0.0f));
 	g_camera->SetUnityChan(unityChan);

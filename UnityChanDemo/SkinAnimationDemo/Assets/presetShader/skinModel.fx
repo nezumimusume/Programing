@@ -11,14 +11,13 @@
 float4x3    g_mWorldMatrixArray[MAX_MATRICES] : WORLDMATRIXARRAY;
 float4x4    g_mViewProj : VIEWPROJECTION;
 float		g_numBone;			//骨の数。
-
 float4x4	g_worldMatrix;			//!<ワールド行列。
 float4x4	g_rotationMatrix;		//!<回転行列。
 float4x4	g_viewMatrixRotInv;		//!<カメラの回転行列の逆行列。
 float4x4	g_mLVP;					//ライトビュープロジェクション行列。
 float2		g_farNear;	//遠平面と近平面。xに遠平面、yに近平面。
 
-int4 g_flags;				//xに法線マップの保持フラグ、yはシャドウレシーバー、zはフレネル。
+int4 g_flags;				//xに法線マップ、yはシャドウレシーバー、zはフレネル、wはスペキュラマップ。
 
 texture g_diffuseTexture;		//ディフューズテクスチャ。
 sampler g_diffuseTextureSampler = 
@@ -44,6 +43,8 @@ sampler_state
     AddressU = Wrap;
 	AddressV = Wrap;
 };
+
+
 
 //シャドウマップ
 texture g_shadowMap;
@@ -269,6 +270,10 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 		#endif
 		}
 	
+	}
+	if(g_flags.w){
+		//スペキュラライト。
+		lig.xyz += SpecLight(normal, In.worldPos, In.Tex0);
 	}
 	//アンビエントライトを加算。
 	lig.xyz += g_light.ambient.xyz;
