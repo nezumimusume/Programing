@@ -42,7 +42,34 @@ namespace {
 		}
 	}
 
-	
+	void InnerDestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerBase)
+	{
+		UINT iMaterial;
+		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
+
+		SAFE_DELETE_ARRAY(pMeshContainer->pAttributeTable);
+		SAFE_DELETE_ARRAY(pMeshContainer->Name);
+		SAFE_DELETE_ARRAY(pMeshContainer->pAdjacency);
+		SAFE_DELETE_ARRAY(pMeshContainer->pMaterials);
+		SAFE_DELETE_ARRAY(pMeshContainer->pBoneOffsetMatrices);
+
+		// release all the allocated textures
+		if (pMeshContainer->ppTextures != NULL)
+		{
+			for (iMaterial = 0; iMaterial < pMeshContainer->NumMaterials; iMaterial++)
+			{
+				SAFE_RELEASE(pMeshContainer->ppTextures[iMaterial]);
+			}
+		}
+
+		SAFE_DELETE_ARRAY(pMeshContainer->ppTextures);
+		SAFE_DELETE_ARRAY(pMeshContainer->ppBoneMatrixPtrs);
+		SAFE_RELEASE(pMeshContainer->pBoneCombinationBuf);
+		SAFE_RELEASE(pMeshContainer->MeshData.pMesh);
+		SAFE_RELEASE(pMeshContainer->pSkinInfo);
+		SAFE_RELEASE(pMeshContainer->pOrigMesh);
+		SAFE_DELETE(pMeshContainer);
+	}
 	HRESULT GenerateSkinnedMesh(
 		IDirect3DDevice9* pd3dDevice, 
 		D3DXMESHCONTAINER_DERIVED* pMeshContainer
@@ -529,31 +556,7 @@ namespace {
 	//--------------------------------------------------------------------------------------
 	HRESULT CAllocateHierarchy::DestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerBase)
 	{
-		UINT iMaterial;
-		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
-
-		SAFE_DELETE_ARRAY(pMeshContainer->pAttributeTable);
-		SAFE_DELETE_ARRAY(pMeshContainer->Name);
-		SAFE_DELETE_ARRAY(pMeshContainer->pAdjacency);
-		SAFE_DELETE_ARRAY(pMeshContainer->pMaterials);
-		SAFE_DELETE_ARRAY(pMeshContainer->pBoneOffsetMatrices);
-
-		// release all the allocated textures
-		if (pMeshContainer->ppTextures != NULL)
-		{
-			for (iMaterial = 0; iMaterial < pMeshContainer->NumMaterials; iMaterial++)
-			{
-				SAFE_RELEASE(pMeshContainer->ppTextures[iMaterial]);
-			}
-		}
-
-		SAFE_DELETE_ARRAY(pMeshContainer->ppTextures);
-		SAFE_DELETE_ARRAY(pMeshContainer->ppBoneMatrixPtrs);
-		SAFE_RELEASE(pMeshContainer->pBoneCombinationBuf);
-		SAFE_RELEASE(pMeshContainer->MeshData.pMesh);
-		SAFE_RELEASE(pMeshContainer->pSkinInfo);
-		SAFE_RELEASE(pMeshContainer->pOrigMesh);
-		SAFE_DELETE(pMeshContainer);
+		InnerDestroyMeshContainer(pMeshContainerBase);
 		return S_OK;
 	}
 
@@ -583,8 +586,33 @@ namespace tkEngine{
 			DeleteCloneSkeleton(m_frameRoot);
 			m_frameRoot = nullptr;
 		}
+		else {
+			//オリジナル。
+			DeleteSkeleton(m_frameRoot);
+		}
 		m_instanceVertexBuffer.Release();
 		m_numInstance = 0;
+	}
+	
+	void CSkinModelData::DeleteSkeleton(LPD3DXFRAME frame)
+	{
+		if (frame->pMeshContainer != NULL)
+		{
+			//メッシュコンテナがある。
+			InnerDestroyMeshContainer(frame->pMeshContainer);
+		}
+
+		if (frame->pFrameSibling != NULL)
+		{
+			//兄弟がいる。
+			DeleteSkeleton(frame->pFrameSibling);
+		}
+
+		if (frame->pFrameFirstChild != NULL)
+		{
+			//子供がいる。
+			DeleteSkeleton(frame->pFrameFirstChild);
+		}
 	}
 	//--------------------------------------------------------------------------------------
 	// Called to setup the pointers for a given bone to its transformation matrix

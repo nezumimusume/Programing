@@ -115,6 +115,11 @@ namespace tkEngine{
 		}
 	private:
 		/*!
+		* @brief	オリジナルのスケルトンを削除。
+		*@param[in]	frame	スケルトン。
+		*/
+		void DeleteSkeleton(LPD3DXFRAME frame);
+		/*!
 		* @brief	スケルトンのクローンを作成。
 		*@param[out]	dstFrame		クローン先のスケルトンの格納先。
 		*@param[in]		srcFrame		クローン元のスケルトン。
