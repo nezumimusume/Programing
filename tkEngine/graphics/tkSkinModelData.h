@@ -19,7 +19,6 @@ namespace tkEngine{
 		D3DXMATRIX** ppBoneMatrixPtrs;
 		D3DXMATRIX* pBoneOffsetMatrices;
 		DWORD NumPaletteEntries;
-		bool UseSoftwareVP;
 		DWORD iAttributeSW;
 	};
 	class CAnimation;

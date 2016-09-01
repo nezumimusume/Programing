@@ -6,6 +6,7 @@
 #include "tkEngine/graphics/tkSkinModelData.h"
 #include "tkEngine/graphics/tkAnimation.h"
 
+int refCount = 0;
 #ifndef SAFE_DELETE
 #define SAFE_DELETE(p)       { if (p) { delete (p);     (p)=NULL; } }
 #endif    
@@ -13,7 +14,7 @@
 #define SAFE_DELETE_ARRAY(p) { if (p) { delete[] (p);   (p)=NULL; } }
 #endif    
 #ifndef SAFE_RELEASE
-#define SAFE_RELEASE(p)      { if (p) { (p)->Release(); (p)=NULL; } }
+#define SAFE_RELEASE(p)      { if (p) { refCount = (p)->Release(); (p)=NULL; } }
 
 #endif
 
@@ -91,17 +92,7 @@ namespace {
 			UINT MaxMatrices = 26;
 			pMeshContainer->NumPaletteEntries = min(MaxMatrices, pMeshContainer->pSkinInfo->GetNumBones());
 
-			DWORD Flags = D3DXMESHOPT_VERTEXCACHE;
-			if (d3dCaps.VertexShaderVersion >= D3DVS_VERSION(1, 1))
-			{
-				pMeshContainer->UseSoftwareVP = false;
-				Flags |= D3DXMESH_MANAGED;
-			}
-			else
-			{
-				pMeshContainer->UseSoftwareVP = true;
-				Flags |= D3DXMESH_SYSTEMMEM;
-			}
+			DWORD Flags = D3DXMESHOPT_VERTEXCACHE | D3DXMESH_MANAGED;
 			
 			SAFE_RELEASE(pMeshContainer->MeshData.pMesh);
 			hr = pMeshContainer->pSkinInfo->ConvertToIndexedBlendedMesh
@@ -130,7 +121,7 @@ namespace {
 					pd3dDevice, &pMesh);
 				if (!FAILED(hr))
 				{
-					pMeshContainer->MeshData.pMesh->Release();
+					SAFE_RELEASE(pMeshContainer->MeshData.pMesh);
 					pMeshContainer->MeshData.pMesh = pMesh;
 					pMesh = NULL;
 				}
@@ -286,7 +277,8 @@ namespace {
 		LPD3DXSKININFO pSkinInfo,
 		LPD3DXMESHCONTAINER *ppNewMeshContainer)
 	{
-		HRESULT hr;
+		
+		HRESULT hr = S_OK;
 		D3DXMESHCONTAINER_DERIVED *pMeshContainer = NULL;
 		UINT NumFaces;
 		UINT iMaterial;
@@ -306,6 +298,7 @@ namespace {
 
 		// get the pMesh interface pointer out of the mesh data structure
 		pMesh = pMeshData->pMesh;
+		
 		DWORD numVert = pMesh->GetNumVertices();
 		// this sample does not FVF compatible meshes, so fail when one is found
 		if (pMesh->GetFVF() == 0)
@@ -425,10 +418,10 @@ namespace {
 			
 			// GenerateSkinnedMesh will take the general skinning information and transform it to a HW friendly version
 			hr = GenerateSkinnedMesh(pd3dDevice, pMeshContainer);
-			
+	
 			if (FAILED(hr))
 				goto e_Exit;
-
+			
 			LPD3DXMESH pOutMesh, pTmpMesh;
 			hr = pMeshContainer->MeshData.pMesh->CloneMesh(
 				pMeshContainer->MeshData.pMesh->GetOptions(),
@@ -437,6 +430,7 @@ namespace {
 			
 			if (FAILED(hr))
 				goto e_Exit;
+			
 			//一時メッシュに退避。
 			pTmpMesh = pOutMesh;
 			//D3DXComputeTangentFrameExを実行すると属性テーブルの情報が失われる・・・。
@@ -445,7 +439,7 @@ namespace {
 			pMeshContainer->pAttributeTable = new D3DXATTRIBUTERANGE[numAttributeTable];
 			pMeshContainer->MeshData.pMesh->GetAttributeTable(pMeshContainer->pAttributeTable, NULL);
 			hr = D3DXComputeTangentFrameEx(
-				pOutMesh,
+				pTmpMesh,
 				D3DDECLUSAGE_TEXCOORD,
 				0,
 				D3DDECLUSAGE_TANGENT,
@@ -459,13 +453,14 @@ namespace {
 				0.01f,    //ボケ具合.値をおおきくするとぼけなくなる
 				0.25f,
 				0.01f,
-				&pTmpMesh,
+				&pOutMesh,
 				NULL
 				);
 			//一時メッシュを破棄。
-			pTmpMesh->Release();
-			pMeshContainer->MeshData.pMesh->Release();
-			pMeshContainer->MeshData.pMesh = pOutMesh;			
+			SAFE_RELEASE(pTmpMesh);
+			SAFE_RELEASE(pMeshContainer->MeshData.pMesh);
+			pMeshContainer->MeshData.pMesh = pOutMesh;
+			
 			if (FAILED(hr))
 				goto e_Exit;
 		}
@@ -486,7 +481,7 @@ namespace {
 			pTmpMesh = pOutMesh;
 
 			hr = D3DXComputeTangentFrameEx(
-				pOutMesh,
+				pTmpMesh,
 				D3DDECLUSAGE_TEXCOORD,
 				0,
 				D3DDECLUSAGE_TANGENT,
@@ -500,13 +495,13 @@ namespace {
 				0.01f,    //ボケ具合.値をおおきくするとぼけなくなる
 				0.25f,
 				0.01f,
-				&pTmpMesh,
+				&pOutMesh,
 				NULL
 				);
 			//一時メッシュを破棄。
-			pTmpMesh->Release();
+			SAFE_RELEASE(pTmpMesh);
 			numVert = pOutMesh->GetNumVertices();
-			pMeshContainer->MeshData.pMesh->Release();
+			SAFE_RELEASE(pMesh);
 			pMeshContainer->MeshData.pMesh = pOutMesh;
 			if (FAILED(hr))
 				goto e_Exit;
@@ -519,7 +514,7 @@ namespace {
 
 	e_Exit:
 		
-		pd3dDevice->Release();
+		SAFE_RELEASE(pd3dDevice);
 
 		// call Destroy function to properly clean up the memory allocated 
 		if (pMeshContainer != NULL)
@@ -572,7 +567,7 @@ namespace tkEngine{
 	void CSkinModelData::Release()
 	{
 		if(m_vertexDeclForInstancingDraw){
-			m_vertexDeclForInstancingDraw->Release();
+			SAFE_RELEASE(m_vertexDeclForInstancingDraw);
 		}
 		if (m_isClone && m_frameRoot) {
 			//クローン
@@ -609,6 +604,8 @@ namespace tkEngine{
 			//子供がいる。
 			DeleteSkeleton(frame->pFrameFirstChild);
 		}
+		SAFE_DELETE_ARRAY(frame->Name);
+		SAFE_DELETE(frame);
 	}
 	//--------------------------------------------------------------------------------------
 	// Called to setup the pointers for a given bone to its transformation matrix
@@ -659,8 +656,7 @@ namespace tkEngine{
 		}
 	}
 	void CSkinModelData::LoadModelData( const char* filePath, CAnimation* anim )
-	{
-		
+	{	
 		CAllocateHierarchy alloc;
 		HRESULT hr = D3DXLoadMeshHierarchyFromX(
 			filePath,
@@ -671,11 +667,16 @@ namespace tkEngine{
 			&m_frameRoot,
 			&m_animController
 		);
-		//m_pAnimController->(0);
+		if (FAILED(hr)) {
+			return;
+		}
 		TK_ASSERT(SUCCEEDED(hr), "Failed D3DXLoadMeshHierarchyFromX");
 		SetupBoneMatrixPointers(m_frameRoot, m_frameRoot);
 		if (anim && m_animController) {
 			anim->Init(m_animController);
+		}
+		else {
+			SAFE_RELEASE(m_animController);
 		}
 	}
 	
@@ -797,6 +798,7 @@ namespace tkEngine{
 			LPDIRECT3DDEVICE9 pd3dDevice;
 			frame->pMeshContainer->MeshData.pMesh->GetDevice(&pd3dDevice);
 			pd3dDevice->CreateVertexDeclaration(declElement, &m_vertexDeclForInstancingDraw);
+			SAFE_RELEASE(pd3dDevice);
 			//頂点バッファの作成。
 			
 			DWORD vertexBufferStride = D3DXGetDeclVertexSize(vertexElement, 1);

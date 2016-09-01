@@ -4,7 +4,7 @@
 #include "UnityChanInstance.h"
 #include "Car.h"
 
-//#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
+#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 
 //メモリリークテスト。
 class MemoryLeakTest : public IGameObject {
