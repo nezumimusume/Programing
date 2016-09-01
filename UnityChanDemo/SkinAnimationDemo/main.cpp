@@ -4,8 +4,9 @@
 #include "UnityChanInstance.h"
 #include "Car.h"
 
-#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
+//#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 
+#ifdef MEMORY_LEAK_TEST
 //メモリリークテスト。
 class MemoryLeakTest : public IGameObject {
 public:
@@ -19,20 +20,36 @@ public:
 	}
 	void Update() override
 	{
-	//	CSkinModelData	nonSkinModelData;		//スキンモデルデータ。
-	//	nonSkinModelData.LoadModelData("Assets/modelData/Court.X", NULL);
+		//スキンなしモデル。
+		CSkinModelData	nonSkinModelData;		//スキンモデルデータ。
+		nonSkinModelData.LoadModelData("Assets/modelData/Court.X", NULL);
+		//スキンなしインスタンシングモデル。
+		CSkinModelData nonSkinModelInstancing;
+		nonSkinModelInstancing.LoadModelData("Assets/modelData/Court.X", NULL);
+		//インスタンス描画用のデータを作成。
+		tkEngine::SVertexElement vertexElement[] = {
+			{ 1,  0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 1 },  // WORLD 1行目
+			{ 1, 16, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 2 },  // WORLD 2行目
+			{ 1, 32, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 3 },  // WORLD 3行目
+			{ 1, 48, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 4 },  // WORLD 4行目
+			D3DDECL_END()
+		};
+		nonSkinModelInstancing.CreateInstancingDrawData(10, vertexElement);
+		//スキンありモデル。
 		CSkinModelData skinModelData;
 		skinModelData.LoadModelData("Assets/modelData/Unity.X", NULL);
-		/*CSkinModel		skinModel;			//スキンモデル。
-		skinModelData.LoadModelData("Assets/modelData/Court.X", NULL);
-		skinModel.Init(&skinModelData);*/
+		//スキンありインスタンシングモデル。
+		CSkinModelData skinModelInstancing;
+		skinModelInstancing.LoadModelData("Assets/modelData/Unity.X", NULL);
+		skinModelInstancing.CreateInstancingDrawData(10, vertexElement);
+
 	}
 	void Render(CRenderContext& renderContext) override
 	{
 
 	}
 };
-
+#endif
 class Map : public IGameObject {
 	CSkinModelData	skinModelData;		//スキンモデルデータ。
 	CSkinModel		skinModel;			//スキンモデル。
