@@ -4,6 +4,34 @@
 #include "UnityChanInstance.h"
 #include "Car.h"
 
+//#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
+
+//メモリリークテスト。
+class MemoryLeakTest : public IGameObject {
+public:
+	MemoryLeakTest()
+	{
+
+	}
+	void Start() override
+	{
+
+	}
+	void Update() override
+	{
+	//	CSkinModelData	nonSkinModelData;		//スキンモデルデータ。
+	//	nonSkinModelData.LoadModelData("Assets/modelData/Court.X", NULL);
+		CSkinModelData skinModelData;
+		skinModelData.LoadModelData("Assets/modelData/Unity.X", NULL);
+		/*CSkinModel		skinModel;			//スキンモデル。
+		skinModelData.LoadModelData("Assets/modelData/Court.X", NULL);
+		skinModel.Init(&skinModelData);*/
+	}
+	void Render(CRenderContext& renderContext) override
+	{
+
+	}
+};
 
 class Map : public IGameObject {
 	CSkinModelData	skinModelData;		//スキンモデルデータ。
@@ -96,6 +124,9 @@ int WINAPI wWinMain(
 	//tkEngineの初期化。
 	InitTkEngine( hInst );
 	
+#ifdef MEMORY_LEAK_TEST
+	NewGO<MemoryLeakTest>(0);
+#else
 	NewGO<Map>(0);
 	NewGO<UnityChanInstance>(0);
 	
@@ -104,7 +135,7 @@ int WINAPI wWinMain(
 	g_camera = NewGO<GameCamera>(0);
 	unityChan->SetPosition(CVector3(0.0f, 0.0f, 0.0f));
 	g_camera->SetUnityChan(unityChan);
-
+#endif
 	Engine().RunGameLoop();		//ゲームループを実行。
 	
 	return 0;

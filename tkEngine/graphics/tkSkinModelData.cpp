@@ -429,7 +429,7 @@ namespace {
 			if (FAILED(hr))
 				goto e_Exit;
 
-			LPD3DXMESH pOutMesh;
+			LPD3DXMESH pOutMesh, pTmpMesh;
 			hr = pMeshContainer->MeshData.pMesh->CloneMesh(
 				pMeshContainer->MeshData.pMesh->GetOptions(),
 				decl,
@@ -437,7 +437,8 @@ namespace {
 			
 			if (FAILED(hr))
 				goto e_Exit;
-
+			//一時メッシュに退避。
+			pTmpMesh = pOutMesh;
 			//D3DXComputeTangentFrameExを実行すると属性テーブルの情報が失われる・・・。
 			DWORD numAttributeTable;
 			pMeshContainer->MeshData.pMesh->GetAttributeTable(NULL, &numAttributeTable);
@@ -458,25 +459,18 @@ namespace {
 				0.01f,    //ボケ具合.値をおおきくするとぼけなくなる
 				0.25f,
 				0.01f,
-				&pOutMesh,
+				&pTmpMesh,
 				NULL
 				);
+			//一時メッシュを破棄。
+			pTmpMesh->Release();
 			pMeshContainer->MeshData.pMesh->Release();
-			pMeshContainer->MeshData.pMesh = pOutMesh;
-
-			std::vector<DWORD> adjList;
-			adjList.resize(3 * pOutMesh->GetNumFaces());
-			pOutMesh->GenerateAdjacency(1.0f/512.0f, &adjList[0]); // EPSIONは適当な値(1.0f/512とか)
-
-			DWORD numVert = pOutMesh->GetNumVertices();  // Optimizeの一種
-			pOutMesh->OptimizeInplace(D3DXMESHOPT_COMPACT, &adjList[0], NULL, NULL, NULL);
-			numVert = pOutMesh->GetNumVertices();
-			
+			pMeshContainer->MeshData.pMesh = pOutMesh;			
 			if (FAILED(hr))
 				goto e_Exit;
 		}
 		else {
-			LPD3DXMESH pOutMesh;
+			LPD3DXMESH pOutMesh, pTmpMesh;
 			DWORD numVert = pMeshContainer->MeshData.pMesh->GetNumVertices();
 			hr = pMeshContainer->MeshData.pMesh->CloneMesh(
 				pMeshContainer->MeshData.pMesh->GetOptions(),
@@ -487,6 +481,10 @@ namespace {
 			pMeshContainer->pAttributeTable = new D3DXATTRIBUTERANGE[numAttributeTable];
 			pMeshContainer->MeshData.pMesh->GetAttributeTable(pMeshContainer->pAttributeTable, NULL);
 			numVert = pMeshContainer->MeshData.pMesh->GetNumVertices();
+			
+			//一時メッシュに退避。
+			pTmpMesh = pOutMesh;
+
 			hr = D3DXComputeTangentFrameEx(
 				pOutMesh,
 				D3DDECLUSAGE_TEXCOORD,
@@ -502,21 +500,16 @@ namespace {
 				0.01f,    //ボケ具合.値をおおきくするとぼけなくなる
 				0.25f,
 				0.01f,
-				&pOutMesh,
+				&pTmpMesh,
 				NULL
 				);
+			//一時メッシュを破棄。
+			pTmpMesh->Release();
 			numVert = pOutMesh->GetNumVertices();
 			pMeshContainer->MeshData.pMesh->Release();
 			pMeshContainer->MeshData.pMesh = pOutMesh;
 			if (FAILED(hr))
 				goto e_Exit;
-			LPD3DXMESH optMesh;
-			std::vector<DWORD> adjList;
-			adjList.resize(3 * pOutMesh->GetNumFaces());
-			pOutMesh->GenerateAdjacency(1.0f , &adjList[0]); // EPSIONは適当な値(1.0f/512とか)
-			numVert = pOutMesh->GetNumVertices();  // Optimizeの一種
-			pOutMesh->Optimize(D3DXMESHOPT_COMPACT, &adjList[0], NULL, NULL, NULL, &optMesh);
-			numVert = optMesh->GetNumVertices();
 
 		}
 
@@ -596,6 +589,9 @@ namespace tkEngine{
 	
 	void CSkinModelData::DeleteSkeleton(LPD3DXFRAME frame)
 	{
+		if (!frame) {
+			return;
+		}
 		if (frame->pMeshContainer != NULL)
 		{
 			//メッシュコンテナがある。
@@ -731,11 +727,11 @@ namespace tkEngine{
 		}
 		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)(frame->pMeshContainer);
 		if (pMeshContainer) {
-			delete[] pMeshContainer->ppBoneMatrixPtrs;
-			delete pMeshContainer;
+			SAFE_DELETE_ARRAY(pMeshContainer->ppBoneMatrixPtrs);
+			SAFE_DELETE(pMeshContainer);
 		}
-		delete[] frame->Name;
-		delete frame;
+		SAFE_DELETE_ARRAY(frame->Name);
+		SAFE_DELETE(frame);
 	}
 	void CSkinModelData::CloneModelData(const CSkinModelData& modelData, CAnimation* anim)
 	{
