@@ -48,23 +48,30 @@ void Car::Update()
 	if (rideOnFlag) {
 		const CMatrix& mWorld = skinModel.GetWorldMatrix();
 		moveDirection = CVector3(mWorld.m[2][0], mWorld.m[2][1], mWorld.m[2][2]);
+		float moveSpeedScalar = moveSpeed.Length();
 		//乗車中。
 		if (Pad(0).IsPress(enButtonA)) {
 			//車の進行方法に対して加速度をかける。
 			accele = moveDirection;
 			accele.Scale(2.0f);
-		}
-		else if (Pad(0).IsPress(enButtonB)) {
-			//フットブレーキ(仮)
-			accele = CVector3::Zero;
-			moveSpeed.Scale(0.9f);
+		}else if(moveSpeedScalar > 0.5f){
+			if (Pad(0).IsPress(enButtonB)) {
+				//フットブレーキ
+				accele = moveDirection;
+				accele.Scale(-10.0f);
+			}
+			else {
+				//エンジンブレーキ
+				accele = moveDirection;
+				accele.Scale(-3.0f);
+			}
 		}
 		else {
-			//エンジンブレーキ(仮)
+			//完全停止。
 			accele = CVector3::Zero;
-			moveSpeed.Scale(0.95f);
+			moveSpeed = CVector3::Zero;
 		}
-		if (moveSpeed.Length() > 0.1f) {
+		if (moveSpeedScalar > 0.1f) {
 			float lstickX = Pad(0).GetLStickXF();
 			CQuaternion addRot;
 			addRot.SetRotation(CVector3::AxisY, 0.01f * lstickX);

@@ -3,51 +3,9 @@
 #include "UnityChan.h"
 #include "UnityChanInstance.h"
 #include "Car.h"
+#include "Map.h"
 
 
-class Map : public IGameObject {
-	CSkinModelData	skinModelData;		//スキンモデルデータ。
-	CSkinModel		skinModel;			//スキンモデル。
-	CAnimation		animation;			//アニメーション。
-	CLight			light;				//ライト。
-	CTexture		normalMap;
-public:
-	Map()
-	{
-		skinModelData.LoadModelData("Assets/modelData/Court.X", NULL);
-		skinModel.Init(&skinModelData);
-		skinModel.SetLight(&light);
-		normalMap.Load("Assets/modelData/Grass_Normals.tga");
-		skinModel.SetNormalMap(&normalMap);
-		light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
-		light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
-		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
-		light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
-
-		light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetAmbinetLight(CVector3(0.2f, 0.2f, 0.2f));
-		skinModel.SetShadowReceiverFlag(true);
-	}
-	~Map()
-	{
-
-	}
-	void Map::Start() override
-	{
-
-	}
-	void Map::Update() override
-	{
-		skinModel.Update(CVector3(0.0f, -0.05f, 0.0f), CQuaternion::Identity, CVector3(10.0f, 1.0f, 10.0f));
-	}
-	void Map::Render(CRenderContext& renderContext) override
-	{
-		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
-	}
-};
 /*!
  * @brief	tkEngineの初期化。
  */

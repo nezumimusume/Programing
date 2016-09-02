@@ -158,6 +158,8 @@
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MapChip.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="UnityChan.cpp" />
     <ClCompile Include="UnityChanInstance.cpp" />
@@ -165,6 +167,8 @@
   <ItemGroup>
     <ClInclude Include="Car.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="MapChip.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="UnityChan.h" />
     <ClInclude Include="UnityChanInstance.h" />
