@@ -3,9 +3,96 @@
 #include "UnityChan.h"
 #include "UnityChanInstance.h"
 #include "Car.h"
-#include "Map.h"
 
+//#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 
+#ifdef MEMORY_LEAK_TEST
+//メモリリークテスト。
+class MemoryLeakTest : public IGameObject {
+public:
+	MemoryLeakTest()
+	{
+
+	}
+	void Start() override
+	{
+
+	}
+	void Update() override
+	{
+		//スキンなしモデル。
+		CSkinModelData	nonSkinModelData;		//スキンモデルデータ。
+		nonSkinModelData.LoadModelData("Assets/modelData/Court.X", NULL);
+		//スキンなしインスタンシングモデル。
+		CSkinModelData nonSkinModelInstancing;
+		nonSkinModelInstancing.LoadModelData("Assets/modelData/Court.X", NULL);
+		//インスタンス描画用のデータを作成。
+		tkEngine::SVertexElement vertexElement[] = {
+			{ 1,  0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 1 },  // WORLD 1行目
+			{ 1, 16, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 2 },  // WORLD 2行目
+			{ 1, 32, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 3 },  // WORLD 3行目
+			{ 1, 48, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 4 },  // WORLD 4行目
+			D3DDECL_END()
+		};
+		nonSkinModelInstancing.CreateInstancingDrawData(10, vertexElement);
+		//スキンありモデル。
+		CSkinModelData skinModelData;
+		skinModelData.LoadModelData("Assets/modelData/Unity.X", NULL);
+		//スキンありインスタンシングモデル。
+		CSkinModelData skinModelInstancing;
+		skinModelInstancing.LoadModelData("Assets/modelData/Unity.X", NULL);
+		skinModelInstancing.CreateInstancingDrawData(10, vertexElement);
+
+	}
+	void Render(CRenderContext& renderContext) override
+	{
+
+	}
+};
+#endif
+class Map : public IGameObject {
+	CSkinModelData	skinModelData;		//スキンモデルデータ。
+	CSkinModel		skinModel;			//スキンモデル。
+	CAnimation		animation;			//アニメーション。
+	CLight			light;				//ライト。
+	CTexture		normalMap;
+public:
+	Map()
+	{
+		skinModelData.LoadModelData("Assets/modelData/Court.X", NULL);
+		skinModel.Init(&skinModelData);
+		skinModel.SetLight(&light);
+		normalMap.Load("Assets/modelData/Grass_Normals.tga");
+		skinModel.SetNormalMap(&normalMap);
+		light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
+		light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
+		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
+		light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
+
+		light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
+		skinModel.SetShadowReceiverFlag(true);
+	}
+	~Map()
+	{
+
+	}
+	void Map::Start() override
+	{
+
+	}
+	void Map::Update() override
+	{
+		skinModel.Update(CVector3(0.0f, -0.05f, 0.0f), CQuaternion::Identity, CVector3(10.0f, 1.0f, 10.0f));
+	}
+	void Map::Render(CRenderContext& renderContext) override
+	{
+		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
+	}
+};
 /*!
  * @brief	tkEngineの初期化。
  */
@@ -54,14 +141,18 @@ int WINAPI wWinMain(
 	//tkEngineの初期化。
 	InitTkEngine( hInst );
 	
+#ifdef MEMORY_LEAK_TEST
+	NewGO<MemoryLeakTest>(0);
+#else
 	NewGO<Map>(0);
 	NewGO<UnityChanInstance>(0);
-	g_car = NewGO<Car>(0);
+	
 	UnityChan* unityChan = NewGO<UnityChan>(0);
+	g_car = NewGO<Car>(0);
 	g_camera = NewGO<GameCamera>(0);
 	unityChan->SetPosition(CVector3(0.0f, 0.0f, 0.0f));
 	g_camera->SetUnityChan(unityChan);
-
+#endif
 	Engine().RunGameLoop();		//ゲームループを実行。
 	
 	return 0;

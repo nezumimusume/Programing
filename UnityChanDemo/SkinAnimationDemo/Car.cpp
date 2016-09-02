@@ -11,9 +11,11 @@ Car::Car()
 {
 	skinModelData.LoadModelData("Assets/modelData/car.X", NULL);
 	normalMap.Load("Assets/modelData/Scout_Normal.png");
+	speculerMap.Load("Assets/modelData/Scout_MetallicSmoothness.png");
 	skinModel.Init(&skinModelData);
 	skinModel.SetLight(&light);
 	skinModel.SetNormalMap(&normalMap);
+	skinModel.SetSpeculerMap(&speculerMap);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
 	skinModel.SetReflectionCasterFlag(true);
@@ -23,11 +25,11 @@ Car::Car()
 	light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
 	light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
 
-	light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbinetLight(CVector3(0.5f, 0.5f, 0.5f));
+	light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 50.0f));
+	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 50.0f));
+	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 50.0f));
+	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 50.0f));
+	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
 	position.Set(2.0f, 0.0f, 0.0f);
 	moveSpeed = CVector3::Zero;
 	accele = CVector3::Zero;
@@ -49,6 +51,7 @@ void Car::Update()
 		const CMatrix& mWorld = skinModel.GetWorldMatrix();
 		moveDirection = CVector3(mWorld.m[2][0], mWorld.m[2][1], mWorld.m[2][2]);
 		float moveSpeedScalar = moveSpeed.Length();
+
 		//乗車中。
 		if (Pad(0).IsPress(enButtonA)) {
 			//車の進行方法に対して加速度をかける。
@@ -71,15 +74,20 @@ void Car::Update()
 			accele = CVector3::Zero;
 			moveSpeed = CVector3::Zero;
 		}
-		if (moveSpeedScalar > 0.1f) {
-			float lstickX = Pad(0).GetLStickXF();
-			CQuaternion addRot;
-			addRot.SetRotation(CVector3::AxisY, 0.01f * lstickX);
-			rotation.Multiply(addRot);
-			CMatrix mRot;
-			mRot.MakeRotationFromQuaternion(addRot);
-			mRot.Mul(moveSpeed);
-		}
+
+		float lstickX = Pad(0).GetLStickXF() * moveSpeed.Length();
+		CQuaternion addRot;
+		addRot.SetRotation(CVector3::AxisY, 0.01f * lstickX);
+		rotation.Multiply(addRot);
+		CMatrix mRot;
+		mRot.MakeRotationFromQuaternion(addRot);
+		mRot.Mul(moveSpeed);
+		mRot.Mul(moveDirection);
+		moveDirection.Normalize();
+	}
+	else {
+		moveSpeed = CVector3::Zero;
+		accele = CVector3::Zero;
 	}
 	CVector3 addSpeed = accele;
 	addSpeed.Scale(1.0f / 60.0f);

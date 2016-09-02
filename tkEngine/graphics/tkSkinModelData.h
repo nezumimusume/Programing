@@ -19,7 +19,6 @@ namespace tkEngine{
 		D3DXMATRIX** ppBoneMatrixPtrs;
 		D3DXMATRIX* pBoneOffsetMatrices;
 		DWORD NumPaletteEntries;
-		bool UseSoftwareVP;
 		DWORD iAttributeSW;
 	};
 	class CAnimation;
@@ -114,6 +113,11 @@ namespace tkEngine{
 			return m_vertexBufferStride;
 		}
 	private:
+		/*!
+		* @brief	オリジナルのスケルトンを削除。
+		*@param[in]	frame	スケルトン。
+		*/
+		void DeleteSkeleton(LPD3DXFRAME frame);
 		/*!
 		* @brief	スケルトンのクローンを作成。
 		*@param[out]	dstFrame		クローン先のスケルトンの格納先。

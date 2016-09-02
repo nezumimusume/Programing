@@ -71,6 +71,7 @@ private:
 	CLight					light;				//ライト。
 	AnimationNo				currentAnimSetNo;
 	CTexture				normalMap;			//法線マップ。
+	CTexture				specMap;			//スペキュラマップ。
 	CVector3				position;			//座標。
 	CQuaternion				rotation;			//回転
 	CVector3				toLightPos;			//

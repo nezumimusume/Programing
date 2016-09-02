@@ -24,11 +24,17 @@ public:
 	{
 		return moveDirection;
 	}
+	//移動速度を取得。
+	const CVector3& GetMoveSpeed() const
+	{
+		return moveSpeed;
+	}
 private:
 	CSkinModelData			skinModelData;
 	CSkinModel				skinModel;			//スキンモデル。
 	CLight					light;				//ライト。
 	CTexture				normalMap;			//法線マップ。
+	CTexture				speculerMap;		//スペキュラマップ。
 	CVector3				position;			//座標。
 	CQuaternion				rotation;			//回転。
 	bool					rideOnFlag;			//乗車フラグ。

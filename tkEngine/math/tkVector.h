@@ -114,14 +114,14 @@ namespace tkEngine{
 		/*!
 		 * @brief	長さを取得
 		 */
-		float Length()
+		float Length() const
 		{
 			return sqrt(LengthSq());
 		}
 		/*!
 		 * @brief	長さの二乗を取得
 		 */
-		float LengthSq()
+		float LengthSq() const
 		{
 			return x * x + y * y + z * z;
 		}
@@ -153,6 +153,24 @@ namespace tkEngine{
 			x /= d;
 			y /= d;
 			z /= d;
+		}
+		/*!
+		* @brief	最大値を設定。
+		*/
+		void Max(const CVector3& vMax)
+		{
+			x = max(x, vMax.x);
+			y = max(y, vMax.y);
+			z = max(z, vMax.z);
+		}
+		/*!
+		* @brief	最小値を設定。
+		*/
+		void Min(const CVector3& vMin)
+		{
+			x = min(x, vMin.x);
+			y = min(y, vMin.y);
+			z = min(z, vMin.z);
 		}
 	};
 	/*!

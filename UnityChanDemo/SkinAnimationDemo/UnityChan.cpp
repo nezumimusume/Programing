@@ -22,11 +22,12 @@ void UnityChan::Start()
 	//オリジナルのモデルデータからクローンモデルを作成。
 	skinModelData.CloneModelData(*orgSkinModelData, &animation);
 	normalMap.Load("Assets/modelData/utc_nomal.tga");
-
+	specMap.Load("Assets/modelData/utc_spec.tga");
 	//skinModelData.LoadModelData("Assets/modelData/unity.X", NULL);
 	skinModel.Init(&skinModelData);
 	skinModel.SetLight(&light);
 	skinModel.SetNormalMap(&normalMap);
+	skinModel.SetSpeculerMap(&specMap);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
 	skinModel.SetFresnelFlag(true);
@@ -41,12 +42,11 @@ void UnityChan::Start()
 	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbinetLight(CVector3(0.5f, 0.5f, 0.5f));
+	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
 	animation.SetAnimationEndTime(AnimationRun, 0.8);
 	currentAnimSetNo = AnimationInvalid;
 	PlayAnimation(currentAnimSetNo);
 	rotation = CQuaternion::Identity;
-
 
 	CVector3 lightPos = CVector3(0.0f, 3.5f, 3.5f);
 	ShadowMap().SetLightPosition(lightPos);
@@ -119,6 +119,18 @@ void UnityChan::Update()
 		CVector3 lightPos;
 		lightPos.Add(g_car->GetPosition(), toLightPos);
 		ShadowMap().SetLightPosition(lightPos);
+		if (g_car->GetMoveSpeed().Length() < 0.1f) {
+			//車が停止状態。
+			if (Pad(0).IsPress(enButtonB)) {
+				//降車。
+				g_camera->SetCar(NULL);
+				g_car->SetRideOnFlag(false);
+				skinModel.SetShadowReceiverFlag(true);
+				skinModel.SetShadowCasterFlag(true);
+				position = g_car->GetPosition();
+				state = enStateStand;
+			}
+		}
 	}
 	skinModel.Update(position, rotation, CVector3::One);
 	

@@ -7,6 +7,7 @@
 #include "tkEngine/graphics/tkAnimation.h"
 #include "tkEngine/graphics/tkSkinModelData.h"
 #include "tkEngine/graphics/prerender/tkShadowCaster.h"
+#include "tkEngine/graphics/tkMaterial.h"
 
 namespace tkEngine {
 	class CEffect;
@@ -62,11 +63,19 @@ namespace tkEngine {
 		}
 		/*!
 		*@brief	法線マップを設定。
-		*@param[in] normalMap
+		*@param[in] normalMap	法線マップ。
 		*/
 		void SetNormalMap(CTexture* normalMap)
 		{
 			m_normalMap = normalMap;
+		}
+		/*!
+		*@brief	スペキュラマップを設定。
+		*@param[in] specMap		スペキュラマップ。
+		*/
+		void SetSpeculerMap(CTexture* specMap)
+		{
+			m_speculerMap = specMap;
 		}
 		/*!
 		 * @brief	シャドウキャスターのフラグを設定。
@@ -142,20 +151,22 @@ namespace tkEngine {
 		*/
 		void DrawToShadowMap(CRenderContext& renderContext, const CMatrix& viewMatrix, const CMatrix& projMatrix);
 	private:
-		CMatrix				m_worldMatrix;		//!<ワールド行列。
-		CMatrix				m_rotationMatrix;	//!<回転行列。
-		CSkinModelData*		m_skinModelData;	//!<スキンモデルデータ。
-		CEffect*			m_pEffect;			//!<エフェクト。
-		CAnimation			m_animation;		//!<アニメーション。
-		CLight*				m_light;			//!<ライト。
-		CTexture*           m_normalMap;		//!<法線マップ。
+		CMatrix							m_worldMatrix;		//!<ワールド行列。
+		CMatrix							m_rotationMatrix;	//!<回転行列。
+		CSkinModelData*					m_skinModelData;	//!<スキンモデルデータ。
+		CEffect*						m_pEffect;			//!<エフェクト。
+		CAnimation						m_animation;		//!<アニメーション。
+		CLight*							m_light;			//!<ライト。
+		CTexture*					    m_normalMap;		//!<法線マップ。
+		CTexture*						m_speculerMap;		//!<スペキュラマップ。
+		std::unique_ptr<CMaterial[]>	m_materials;	//!<マテリアルの配列。
 		static const int MAX_MATRIX_PALLET = 128;	//!<マトリクスパレットの最大数。
-		D3DXMATRIX					m_boneMatrixPallet[MAX_MATRIX_PALLET];	//!<マトリクスパレット。
-		bool						m_isShadowReceiver;		//!<シャドウレシーバー。
-		bool						m_isShadowCaster;		//!<シャドウキャスターフラグ。
-		bool						m_isReflectionCaster;	//!<リフレクションマップに描きこむフラグ。
-		bool						m_isFresnel;		//!<フレネル
-		CShadowCaster_SkinModel		m_shadowCaster;		//!<シャドウキャスター。
+		D3DXMATRIX						m_boneMatrixPallet[MAX_MATRIX_PALLET];	//!<マトリクスパレット。
+		bool							m_isShadowReceiver;		//!<シャドウレシーバー。
+		bool							m_isShadowCaster;		//!<シャドウキャスターフラグ。
+		bool							m_isReflectionCaster;	//!<リフレクションマップに描きこむフラグ。
+		bool							m_isFresnel;		//!<フレネル
+		CShadowCaster_SkinModel			m_shadowCaster;		//!<シャドウキャスター。
 	};
 }
 

@@ -56,9 +56,11 @@ void UnityChanInstance::Start()
 		}
 	}
 	normalMap.Load("Assets/modelData/utc_nomal.tga");
+	specMap.Load("Assets/modelData/utc_spec.tga");
 	skinModel.Init(&skinModelData);
 	skinModel.SetLight(&light);
 	skinModel.SetNormalMap(&normalMap);
+	skinModel.SetSpeculerMap(&specMap);
 	skinModel.SetFresnelFlag(true);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
@@ -72,7 +74,7 @@ void UnityChanInstance::Start()
 	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbinetLight(CVector3(0.5f, 0.5f, 0.5f));
+	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
 	animation.SetAnimationEndTime(2, 0.8);
 	animation.PlayAnimation(0);
 }
