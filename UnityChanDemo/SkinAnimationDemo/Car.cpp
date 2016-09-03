@@ -57,7 +57,7 @@ void Car::Update()
 			//車の進行方法に対して加速度をかける。
 			accele = moveDirection;
 			accele.Scale(2.0f);
-		}else if(moveSpeedScalar > 0.5f){
+		}else if(moveSpeedScalar > 0.1f && moveDirection.Dot(moveSpeed) > 0.0f){
 			if (Pad(0).IsPress(enButtonB)) {
 				//フットブレーキ
 				accele = moveDirection;

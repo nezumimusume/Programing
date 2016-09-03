@@ -223,6 +223,7 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
 float4 PSMain( VS_OUTPUT In ) : COLOR
 {
 	float4 color = tex2D(g_diffuseTextureSampler, In.Tex0);
+	
 	float3 normal = 0.0f;
 	if(g_flags.x){
 		//法線マップあり。

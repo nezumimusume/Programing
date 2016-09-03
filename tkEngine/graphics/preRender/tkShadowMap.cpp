@@ -19,8 +19,8 @@ namespace tkEngine{
 		m_far(100.0f),
 		m_lvMatrix(CMatrix::Identity),
 		m_accpect(1.0f),
-		m_shadowAreaW(10.0f),
-		m_shadowAreaH(10.0f),
+		m_shadowAreaW(20.0f),
+		m_shadowAreaH(20.0f),
 		m_camera(nullptr),
 		m_calcLightViewFunc(enCalcLightViewFunc_PositionTarget),
 		m_lightTarget(CVector3::Zero)

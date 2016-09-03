@@ -3,6 +3,7 @@
 #include "UnityChan.h"
 #include "UnityChanInstance.h"
 #include "Car.h"
+#include "Map.h"
 
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 
@@ -50,14 +51,14 @@ public:
 	}
 };
 #endif
-class Map : public IGameObject {
+class MapTest : public IGameObject {
 	CSkinModelData	skinModelData;		//スキンモデルデータ。
 	CSkinModel		skinModel;			//スキンモデル。
 	CAnimation		animation;			//アニメーション。
 	CLight			light;				//ライト。
 	CTexture		normalMap;
 public:
-	Map()
+	MapTest()
 	{
 		skinModelData.LoadModelData("Assets/modelData/Court.X", NULL);
 		skinModel.Init(&skinModelData);
@@ -76,19 +77,19 @@ public:
 		light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
 		skinModel.SetShadowReceiverFlag(true);
 	}
-	~Map()
+	~MapTest()
 	{
 
 	}
-	void Map::Start() override
+	void Start() override
 	{
 
 	}
-	void Map::Update() override
+	void Update() override
 	{
 		skinModel.Update(CVector3(0.0f, -0.05f, 0.0f), CQuaternion::Identity, CVector3(10.0f, 1.0f, 10.0f));
 	}
-	void Map::Render(CRenderContext& renderContext) override
+	void Render(CRenderContext& renderContext) override
 	{
 		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 	}
@@ -112,7 +113,7 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.screenWidth = 1280;
 	initParam.frameBufferHeight = 720;
 	initParam.frameBufferWidth = 1280;
-	initParam.graphicsConfig.bloomConfig.isEnable = true;
+	initParam.graphicsConfig.bloomConfig.isEnable = false;
 	initParam.graphicsConfig.edgeRenderConfig.isEnable = false;
 	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
@@ -144,6 +145,7 @@ int WINAPI wWinMain(
 #ifdef MEMORY_LEAK_TEST
 	NewGO<MemoryLeakTest>(0);
 #else
+	NewGO<MapTest>(0);
 	NewGO<Map>(0);
 	NewGO<UnityChanInstance>(0);
 	
