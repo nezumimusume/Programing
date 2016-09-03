@@ -15,6 +15,8 @@ float4x4	g_worldMatrix;			//!<ワールド行列。
 float4x4	g_rotationMatrix;		//!<回転行列。
 float4x4	g_viewMatrixRotInv;		//!<カメラの回転行列の逆行列。
 float4x4	g_mLVP;					//ライトビュープロジェクション行列。
+float4		g_fogParam;				//フォグのパラメータ。xにフォグが掛かり始める深度。yにフォグが完全にかかる深度。zはフォグを計算するかどうかのフラグ。
+
 float2		g_farNear;	//遠平面と近平面。xに遠平面、yに近平面。
 
 int4 g_flags;				//xに法線マップ、yはシャドウレシーバー、zはフレネル、wはスペキュラマップ。
@@ -92,7 +94,8 @@ struct VS_OUTPUT
     float3  Normal			: NORMAL;
     float2  Tex0   			: TEXCOORD0;
     float3	Tangent			: TEXCOORD1;	//接ベクトル
-    float4  worldPos		: TEXCOORD2;
+    float4  lightViewPos	: TEXCOORD2;
+    float3  worldPos		: TEXCOORD3;
 };
 
 /*!
@@ -175,13 +178,14 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 		//スキンなし。
 		CalcWorldPosAndNormal( In, Pos, Normal, Tangent, true );
 	}
+	o.worldPos = Pos.xyz;
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
     o.Normal = normalize(Normal);
     o.Tangent = normalize(Tangent);
     o.Tex0 = In.Tex0;
     if(g_flags.y){
 		//シャドウレシーバー。
-		o.worldPos = mul(float4(Pos.xyz, 1.0f), g_mLVP );
+		o.lightViewPos = mul(float4(Pos.xyz, 1.0f), g_mLVP );
 	}
 	return o;
 }
@@ -207,12 +211,12 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
 	worldMat[2] = In.mWorld3;
 	worldMat[3] = In.mWorld4;
 	Pos = mul(float4(Pos.xyz, 1.0f), worldMat );	//ワールド行列をかける。
+	o.worldPos = Pos.xyz;
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
     o.Normal = mul(normalize(Normal), worldMat);
     o.Tex0 = In.base.Tex0;
     if(g_flags.y){
-		//シャドウレシーバー。
-		o.worldPos = mul(float4(Pos.xyz, 1.0f), g_mLVP );
+		o.lightViewPos = mul(float4(Pos.xyz, 1.0f), g_mLVP );
 	}
 	return o;
 }
@@ -243,8 +247,9 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	
 	
 	float4 lig = DiffuseLight(normal);
+	
 	if(g_flags.y){
-		float4 posInLVP = In.worldPos;
+		float4 posInLVP = In.lightViewPos;
 		posInLVP.xyz /= posInLVP.w;
 		//uv座標に変換。
 		float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
@@ -285,6 +290,18 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 		float t = 1.0f - abs(dot(normalInCamera, float3(0.0f, 0.0f, 1.0f)));
 		t = pow(t, 1.5f);
 		color.xyz += t * 0.7f;
+	}
+	if(g_fogParam.z > 1.9f){
+		//高さフォグ
+		float h = max(In.worldPos.y - g_fogParam.y, 0.0f);
+		float t = min(h / g_fogParam.x, 1.0f);
+		color.xyz = lerp(float3(1.0f, 1.0f, 1.0f), color.xyz, t);
+	}else if(g_fogParam.z > 0.0f){
+		//距離フォグ
+		float z = length(In.worldPos - g_cameraPos);
+		z = max(z - g_fogParam.x, 0.0f);
+		float t = z / g_fogParam.y;
+		color.xyz = lerp(color.xyz, float3(1.0f, 1.0f, 1.0f), t);
 	}
 	return color;
 }

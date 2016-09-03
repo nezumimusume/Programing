@@ -77,6 +77,7 @@ void UnityChanInstance::Start()
 	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
 	animation.SetAnimationEndTime(2, 0.8);
 	animation.PlayAnimation(0);
+	skinModel.SetFogParam(enFogFuncDist, 40.0f, 80.0f);
 }
 void UnityChanInstance::Update()
 {

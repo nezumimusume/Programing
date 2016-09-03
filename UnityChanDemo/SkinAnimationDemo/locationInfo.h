@@ -343,30 +343,204 @@
 //Palmtree
 {
 	"Palmtree",
-	CVector3(60.00f, 0.00f, 49.70f),             //平行移動
-	CQuaternion(0.69f, 0.16f, 0.16f, -0.69f ),  //回転
+	CVector3(77.90f, 0.00f, 32.60f),             //平行移動
+	CQuaternion(0.37f, 0.61f, 0.61f, -0.37f ),  //回転
 },
 //Palmtree
 {
 	"Palmtree",
-	CVector3(65.50f, 0.00f, 49.70f),             //平行移動
+	CVector3(82.30f, 0.00f, 14.20f),             //平行移動
+	CQuaternion(0.48f, 0.52f, 0.52f, -0.48f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(79.20f, 0.00f, 14.20f),             //平行移動
+	CQuaternion(0.48f, 0.52f, 0.52f, -0.48f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(79.20f, 0.00f, 7.90f),             //平行移動
+	CQuaternion(0.48f, 0.52f, 0.52f, -0.48f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(79.20f, 0.00f, 42.50f),             //平行移動
+	CQuaternion(0.04f, 0.71f, 0.71f, -0.04f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(88.10f, 0.00f, 0.40f),             //平行移動
 	CQuaternion(0.30f, 0.64f, 0.64f, -0.30f ),  //回転
 },
 //Palmtree
 {
 	"Palmtree",
-	CVector3(65.50f, 0.00f, 53.50f),             //平行移動
-	CQuaternion(0.30f, 0.64f, 0.64f, -0.30f ),  //回転
+	CVector3(76.00f, 0.00f, -11.90f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
 },
 //Palmtree
 {
 	"Palmtree",
-	CVector3(56.40f, 0.00f, 53.50f),             //平行移動
-	CQuaternion(-0.17f, 0.69f, 0.69f, 0.17f ),  //回転
+	CVector3(76.00f, 0.00f, -5.60f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
 },
 //Palmtree
 {
 	"Palmtree",
-	CVector3(51.40f, 0.00f, 62.80f),             //平行移動
-	CQuaternion(0.45f, -0.54f, -0.54f, -0.45f ),  //回転
+	CVector3(79.10f, 0.00f, -5.60f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(79.10f, 0.00f, -0.20f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(79.10f, 0.00f, 3.30f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(74.70f, 0.00f, 3.30f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(74.70f, 0.00f, -6.20f),             //平行移動
+	CQuaternion(-0.13f, 0.70f, 0.70f, 0.13f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(79.10f, 0.00f, -6.20f),             //平行移動
+	CQuaternion(-0.13f, 0.70f, 0.70f, 0.13f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(79.10f, 0.00f, -9.70f),             //平行移動
+	CQuaternion(-0.13f, 0.70f, 0.70f, 0.13f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(73.10f, 0.00f, -15.00f),             //平行移動
+	CQuaternion(-0.01f, 0.71f, 0.71f, 0.01f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(64.00f, 0.00f, -12.90f),             //平行移動
+	CQuaternion(0.07f, 0.70f, 0.70f, -0.07f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(60.90f, 0.00f, -3.00f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(50.80f, 0.00f, 0.10f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(53.90f, 0.00f, -9.80f),             //平行移動
+	CQuaternion(0.07f, 0.70f, 0.70f, -0.07f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(53.90f, 0.00f, -23.80f),             //平行移動
+	CQuaternion(0.07f, 0.70f, 0.70f, -0.07f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(50.80f, 0.00f, -13.90f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(60.50f, 0.00f, -13.90f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(63.60f, 0.00f, -23.80f),             //平行移動
+	CQuaternion(0.07f, 0.70f, 0.70f, -0.07f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(40.50f, 0.00f, -13.90f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(40.50f, 0.00f, 2.00f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(43.60f, 0.00f, -7.90f),             //平行移動
+	CQuaternion(0.07f, 0.70f, 0.70f, -0.07f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(30.60f, 0.00f, -12.00f),             //平行移動
+	CQuaternion(0.07f, 0.70f, 0.70f, -0.07f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(27.50f, 0.00f, -2.10f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(36.40f, 0.00f, -2.10f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(39.50f, 0.00f, -12.00f),             //平行移動
+	CQuaternion(0.07f, 0.70f, 0.70f, -0.07f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(39.50f, 0.00f, -26.50f),             //平行移動
+	CQuaternion(0.07f, 0.70f, 0.70f, -0.07f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(36.40f, 0.00f, -16.60f),             //平行移動
+	CQuaternion(-0.27f, 0.66f, 0.66f, 0.27f ),  //回転
+},
+//Palmtree
+{
+	"Palmtree",
+	CVector3(64.50f, 0.00f, 3.30f),             //平行移動
+	CQuaternion(-0.04f, 0.71f, 0.71f, 0.04f ),  //回転
 },

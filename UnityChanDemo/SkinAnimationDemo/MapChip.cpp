@@ -54,6 +54,7 @@ void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetAmbinetLight(CVector3(0.7f, 0.7f, 0.7f));
+	skinModel.SetFogParam(enFogFuncDist, 40.0f, 80.0f);
 
 }
 void MapChip::Start()

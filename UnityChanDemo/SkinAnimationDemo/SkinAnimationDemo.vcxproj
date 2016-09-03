@@ -160,6 +160,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapChip.cpp" />
+    <ClCompile Include="Sky.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="UnityChan.cpp" />
     <ClCompile Include="UnityChanInstance.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapChip.h" />
+    <ClInclude Include="Sky.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="UnityChan.h" />
     <ClInclude Include="UnityChanInstance.h" />

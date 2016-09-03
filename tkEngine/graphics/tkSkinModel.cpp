@@ -114,10 +114,10 @@ namespace tkEngine{
 		
 		{
 			//ビュープロジェクション
-			pEffect->SetMatrix("g_mViewProj", &viewProj);
+			pEffect->SetMatrix(m_hShaderHandle[enShaderHandleViewProj], &viewProj);
 			//ライト
 			pEffect->SetValue(
-				"g_light",
+				m_hShaderHandle[enShaderHandleLight],
 				light,
 				sizeof(CLight)
 			);
@@ -125,36 +125,56 @@ namespace tkEngine{
 			if (normalMap != nullptr) {
 				//法線マップ。
 				flag[0] = true;
-				pEffect->SetTexture("g_normalTexture", normalMap->GetTextureDX());
+				pEffect->SetTexture(m_hShaderHandle[enShaderHandleNormalTexture], normalMap->GetTextureDX());
 			}
 			if (!isDrawToShadowMap && m_isShadowReceiver) {
 				//シャドウレシーバー。
 				flag[1] = true;
-				pEffect->SetTexture("g_shadowMap", ShadowMap().GetTexture()->GetTextureDX());
+				pEffect->SetTexture(m_hShaderHandle[enShaderHandleShadowMap] , ShadowMap().GetTexture()->GetTextureDX());
 				const CMatrix& mLVP = ShadowMap().GetLVPMatrix();
-				pEffect->SetValue("g_mLVP", &mLVP, sizeof(mLVP));
+				pEffect->SetValue(m_hShaderHandle[enShaderHandleLVP], &mLVP, sizeof(mLVP));
 			}
 			if (m_isFresnel) {
 				flag[2] = true;
 			}
+			CVector3 cameraPos;
+			D3DXMATRIX viewMatInv;
+			D3DXMatrixInverse(&viewMatInv, NULL, viewMatrix);
+			
+			cameraPos.x = viewMatInv.m[3][0];
+			cameraPos.y = viewMatInv.m[3][1];
+			cameraPos.z = viewMatInv.m[3][2];
+			pEffect->SetVector(m_hShaderHandle[enShaderHandleCameraPos], (D3DXVECTOR4*)&cameraPos);
 			if (m_speculerMap != nullptr) {
 				//スペキュラマップ。
 				flag[3] = true;
-				pEffect->SetTexture("g_speculerMap", m_speculerMap->GetTextureDX());
-				CVector3 cameraPos;
-				cameraPos.x = viewMatrix->m[3][0];
-				cameraPos.y = viewMatrix->m[3][1];
-				cameraPos.z = viewMatrix->m[3][2];
-				pEffect->SetVector("g_cameraPos", (D3DXVECTOR4*)&cameraPos);
+				pEffect->SetTexture(m_hShaderHandle[enShaderHandleSpeculerMap], m_speculerMap->GetTextureDX());
 			}
-			pEffect->SetValue("g_flags", flag, sizeof(flag));
+			pEffect->SetValue(m_hShaderHandle[enShaderHandleFlags], flag, sizeof(flag));
 			if (isDrawToShadowMap || m_isShadowReceiver) {
 				float farNear[] = {
 					ShadowMap().GetFar(),
 					ShadowMap().GetNear()
 				};
-				pEffect->SetValue("g_farNear", farNear, sizeof(farNear));
+				pEffect->SetValue(m_hShaderHandle[enShaderHandleFarNear], farNear, sizeof(farNear));
 			}
+			CVector4 fogParam;
+			if (m_fogFunc == enFogFuncDist) {
+				//距離フォグ
+				fogParam.x = m_fogParam[0];
+				fogParam.y = m_fogParam[1];
+				fogParam.z = 1.0f;
+			}
+			else if (m_fogFunc == enFogFuncHeight) {
+				//高さフォグ
+				fogParam.x = m_fogParam[0];
+				fogParam.y = m_fogParam[1];
+				fogParam.z = 2.0f;
+			}
+			else {
+				fogParam.z = 0.0f;
+			}
+			pEffect->SetVector(m_hShaderHandle[enShaderHandleFogParam], (D3DXVECTOR4*)&fogParam);
 		}
 		
 		if (pMeshContainer->pSkinInfo != NULL)
@@ -179,13 +199,13 @@ namespace tkEngine{
 				}
 				
 					
-				pEffect->SetMatrixArray("g_mWorldMatrixArray", m_boneMatrixPallet, pMeshContainer->NumPaletteEntries);
-				pEffect->SetInt("g_numBone", pMeshContainer->NumInfl);
+				pEffect->SetMatrixArray(m_hShaderHandle[enShaderHandleWorldMatrixArray], m_boneMatrixPallet, pMeshContainer->NumPaletteEntries);
+				pEffect->SetInt(m_hShaderHandle[enShaderHandleNumBone], pMeshContainer->NumInfl);
 				// ディフューズテクスチャ。
-				pEffect->SetTexture("g_diffuseTexture", pMeshContainer->ppTextures[pBoneComb[iAttrib].AttribId]);
-
+				pEffect->SetTexture(m_hShaderHandle[enShaderHandleDiffuseTexture], pMeshContainer->ppTextures[pBoneComb[iAttrib].AttribId]);
+				
 				// ボーン数。
-				pEffect->SetInt("CurNumBones", pMeshContainer->NumInfl - 1);
+				pEffect->SetInt(m_hShaderHandle[enShaderHandleCurNumBones], pMeshContainer->NumInfl - 1);
 				D3DXMATRIX viewRotInv;
 				D3DXMatrixInverse(&viewRotInv, NULL, viewMatrix);
 				viewRotInv.m[3][0] = 0.0f;
@@ -193,7 +213,7 @@ namespace tkEngine{
 				viewRotInv.m[3][2] = 0.0f;
 				viewRotInv.m[3][3] = 1.0f;
 				D3DXMatrixTranspose(&viewRotInv, &viewRotInv);
-				pEffect->SetMatrix("g_viewMatrixRotInv", &viewRotInv);
+				pEffect->SetMatrix(m_hShaderHandle[enShaderHandleViewMatrixRotInv], &viewRotInv);
 				pEffect->Begin(0, D3DXFX_DONOTSAVESTATE);
 				pEffect->BeginPass(0);
 				pEffect->CommitChanges();
@@ -220,13 +240,13 @@ namespace tkEngine{
 				mWorld = *worldMatrix;
 			}
 				
-			pEffect->SetMatrix("g_worldMatrix", &mWorld);
-			pEffect->SetMatrix("g_rotationMatrix", rotationMatrix);
+			pEffect->SetMatrix(m_hShaderHandle[enShaderHandleWorldMatrix], &mWorld);
+			pEffect->SetMatrix(m_hShaderHandle[enShaderHandleRotationMatrix], rotationMatrix);
 			pEffect->Begin(0, D3DXFX_DONOTSAVESTATE);
 			pEffect->BeginPass(0);
 
 			for (DWORD i = 0; i < pMeshContainer->NumMaterials; i++) {
-				pEffect->SetTexture("g_diffuseTexture", pMeshContainer->ppTextures[i]);
+				pEffect->SetTexture(m_hShaderHandle[enShaderHandleDiffuseTexture], pMeshContainer->ppTextures[i]);
 				pEffect->CommitChanges();
 				if (isInstancingDraw) {
 					//インスタンシング描画。
@@ -315,8 +335,11 @@ namespace tkEngine{
 		m_isShadowReceiver(false),
 		m_isFresnel(false),
 		m_isReflectionCaster(false),
-		m_speculerMap(nullptr)
+		m_speculerMap(nullptr),
+		m_fogFunc(enFogFuncNone)
 	{
+		m_fogParam[0] = 0.0f;
+		m_fogParam[1] = 0.0f;
 	}
 	CSkinModel::~CSkinModel()
 	{
@@ -326,6 +349,7 @@ namespace tkEngine{
 	void CSkinModel::Init(CSkinModelData* modelData)
 	{
 		m_pEffect = EffectManager().LoadEffect("Assets/presetShader/skinModel.fx");
+		InitShaderConstHandle();
 		m_skinModelData = modelData;
 		m_shadowCaster.Create(this);
 	}
@@ -348,6 +372,27 @@ namespace tkEngine{
 		if (m_skinModelData) {
 			m_skinModelData->UpdateBoneMatrix(m_worldMatrix);	//ボーン行列を更新。
 		}
+	}
+	void CSkinModel::InitShaderConstHandle()
+	{
+		ID3DXEffect* effectDx = m_pEffect->GetD3DXEffect();
+		m_hShaderHandle[enShaderHandleViewProj] 	= effectDx->GetParameterByName(NULL, "g_mViewProj");
+		m_hShaderHandle[enShaderHandleLight] 		= effectDx->GetParameterByName(NULL, "g_light");
+		m_hShaderHandle[enShaderHandleLVP] 			= effectDx->GetParameterByName(NULL, "g_mLVP");
+		m_hShaderHandle[enShaderHandleCameraPos] 	= effectDx->GetParameterByName(NULL, "g_cameraPos");
+		m_hShaderHandle[enShaderHandleFlags] 		= effectDx->GetParameterByName(NULL, "g_flags");
+		m_hShaderHandle[enShaderHandleFarNear] 		= effectDx->GetParameterByName(NULL, "g_farNear");
+		m_hShaderHandle[enShaderHandleFogParam] 	= effectDx->GetParameterByName(NULL, "g_fogParam");
+		m_hShaderHandle[enShaderHandleWorldMatrixArray] 	= effectDx->GetParameterByName(NULL, "g_mWorldMatrixArray");
+		m_hShaderHandle[enShaderHandleNumBone] 		= effectDx->GetParameterByName(NULL, "g_numBone");
+		m_hShaderHandle[enShaderHandleCurNumBones] 	= effectDx->GetParameterByName(NULL, "CurNumBones");
+		m_hShaderHandle[enShaderHandleViewMatrixRotInv] = effectDx->GetParameterByName(NULL, "g_viewMatrixRotInv");
+		m_hShaderHandle[enShaderHandleWorldMatrix] = effectDx->GetParameterByName(NULL, "g_worldMatrix");
+		m_hShaderHandle[enShaderHandleRotationMatrix] = effectDx->GetParameterByName(NULL, "g_rotationMatrix");
+		m_hShaderHandle[enShaderHandleShadowMap] = effectDx->GetParameterByName(NULL, "g_shadowMap");
+		m_hShaderHandle[enShaderHandleNormalTexture] = effectDx->GetParameterByName(NULL, "g_normalTexture");
+		m_hShaderHandle[enShaderHandleSpeculerMap] = effectDx->GetParameterByName(NULL, "g_speculerMap");
+		m_hShaderHandle[enShaderHandleDiffuseTexture] = effectDx->GetParameterByName(NULL, "g_diffuseTexture");
 	}
 	/*!
 	*@brief	シャドウマップに描画

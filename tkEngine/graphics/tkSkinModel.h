@@ -15,11 +15,18 @@ namespace tkEngine {
 	class CRenderContext;
 	class CLight;
 	class CShadowMap;
+	enum EFogFunc {
+		enFogFuncNone,		//フォグなし。
+		enFogFuncDist,		//距離フォグ。
+		enFogFuncHeight,	//高さフォグ。
+		enFogFuncNum,
+	};
 	/*!
 	*@brief	スキンモデル
 	*/
 	class CSkinModel {
 	public:
+		
 		CSkinModel();
 		~CSkinModel();
 		/*!
@@ -109,6 +116,21 @@ namespace tkEngine {
 			m_isFresnel = flag;
 		}
 		/*!
+		* @brief	フォグパラメータを設定。
+		*@param[in]	fogFunc		フォグの種類。EFogFuncを参照。
+		*@param[in]	param0		フォグパラメータ0
+		* fogFuncがenFogFuncDistの場合はフォグが掛かり始める距離、fogFuncがenFogFuncHeightの場合はフォグが掛かり始める高さ。
+		*@param[in]	param1		フォグパラメータ１
+		* fogFuncがenFogFuncDistの場合はフォグが掛かり切る距離、fogFuncがenFogFuncHeightの場合はフォグが掛かり切る高さ。
+		*/
+		void SetFogParam(EFogFunc fogFunc, float param0, float param1)
+		{
+			TK_ASSERT(fogFunc < enFogFuncNum, "fogFunc is invalid");
+			m_fogFunc = fogFunc;
+			m_fogParam[0] = param0;
+			m_fogParam[1] = param1;
+		}
+		/*!
 		* @brief	ワールド行列を取得。
 		*/
 		const CMatrix& GetWorldMatrix() const
@@ -116,6 +138,10 @@ namespace tkEngine {
 			return m_worldMatrix;
 		}
 	private:
+		/*!
+		* @brief	シェーダ定の数ハンドルを初期化。
+		*/
+		void InitShaderConstHandle();
 		void DrawMeshContainer(
 			IDirect3DDevice9* pd3dDevice,
 			LPD3DXMESHCONTAINER pMeshContainerBase,
@@ -151,6 +177,26 @@ namespace tkEngine {
 		*/
 		void DrawToShadowMap(CRenderContext& renderContext, const CMatrix& viewMatrix, const CMatrix& projMatrix);
 	private:
+		enum EnShaderHandle {
+			enShaderHandleViewProj,			//ビュープロジェクション。
+			enShaderHandleLight,			//ライト。
+			enShaderHandleLVP,				//ライトビュープロジェクション行列。
+			enShaderHandleCameraPos,		//カメラの位置。
+			enShaderHandleFlags,			//g_flags
+			enShaderHandleFarNear,			//FarNear
+			enShaderHandleFogParam,			//Fogパラメータ。
+			enShaderHandleWorldMatrixArray,	//ボーン行列
+			enShaderHandleNumBone,			//ボーンの数。
+			enShaderHandleCurNumBones,		//スキングを行なうボーンの数。
+			enShaderHandleViewMatrixRotInv,	//ビュー行列の回転成分の逆行列。
+			enShaderHandleWorldMatrix,		//ワールド行列
+			enShaderHandleRotationMatrix,	//回転行列。
+			enShaderHandleShadowMap,		//シャドウマップ
+			enShaderHandleNormalTexture,	//法線マップ。
+			enShaderHandleSpeculerMap,		//スペキュラマップ。
+			enShaderHandleDiffuseTexture,	//ディフューズテクスチャ。
+			enShaderHandleNum,				//シェーダーハンドルの数。
+		};
 		CMatrix							m_worldMatrix;		//!<ワールド行列。
 		CMatrix							m_rotationMatrix;	//!<回転行列。
 		CSkinModelData*					m_skinModelData;	//!<スキンモデルデータ。
@@ -162,11 +208,14 @@ namespace tkEngine {
 		std::unique_ptr<CMaterial[]>	m_materials;	//!<マテリアルの配列。
 		static const int MAX_MATRIX_PALLET = 128;	//!<マトリクスパレットの最大数。
 		D3DXMATRIX						m_boneMatrixPallet[MAX_MATRIX_PALLET];	//!<マトリクスパレット。
-		bool							m_isShadowReceiver;		//!<シャドウレシーバー。
-		bool							m_isShadowCaster;		//!<シャドウキャスターフラグ。
-		bool							m_isReflectionCaster;	//!<リフレクションマップに描きこむフラグ。
-		bool							m_isFresnel;		//!<フレネル
-		CShadowCaster_SkinModel			m_shadowCaster;		//!<シャドウキャスター。
+		bool							m_isShadowReceiver;					//!<シャドウレシーバー。
+		bool							m_isShadowCaster;					//!<シャドウキャスターフラグ。
+		bool							m_isReflectionCaster;				//!<リフレクションマップに描きこむフラグ。
+		bool							m_isFresnel;						//!<フレネル
+		EFogFunc						m_fogFunc;							//!<フォグの種類。0ならフォグなし、1なら距離フォグ、2なら高さフォグ。
+		float							m_fogParam[2];						//!<フォグのパラメータ
+		CShadowCaster_SkinModel			m_shadowCaster;						//!<シャドウキャスター。
+		D3DXHANDLE						m_hShaderHandle[enShaderHandleNum];	//!<シェーダーハンドル。
 	};
 }
 

@@ -36,6 +36,7 @@ Car::Car()
 	rotation = CQuaternion::Identity;
 	moveDirection = CVector3::AxisZ;
 	rideOnFlag = false;
+	skinModel.SetFogParam(enFogFuncDist, 40.0f, 80.0f);
 }
 Car::~Car()
 {

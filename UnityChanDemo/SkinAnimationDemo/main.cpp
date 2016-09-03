@@ -4,6 +4,7 @@
 #include "UnityChanInstance.h"
 #include "Car.h"
 #include "Map.h"
+#include "Sky.h"
 
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 
@@ -76,6 +77,8 @@ public:
 		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 		light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
 		skinModel.SetShadowReceiverFlag(true);
+		//距離フォグをかける。
+		skinModel.SetFogParam(enFogFuncDist, 40.0f, 70.0f);
 	}
 	~MapTest()
 	{
@@ -94,46 +97,7 @@ public:
 		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 	}
 };
-class Sky : public IGameObject {
-	CSkinModelData	skinModelData;		//スキンモデルデータ。
-	CSkinModel		skinModel;			//スキンモデル。
-	CAnimation		animation;			//アニメーション。
-	CLight			light;				//ライト。
-	CTexture		normalMap;
-public:
-	Sky()
-	{
-		skinModelData.LoadModelData("Assets/modelData/Sky.X", NULL);
-		skinModel.Init(&skinModelData);
-		skinModel.SetLight(&light);
-		/*light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
-		light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
-		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
-		light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
 
-		light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));*/
-		light.SetAmbinetLight(CVector3(1.0f, 1.0f, 1.0f));
-	}
-	~Sky()
-	{
-
-	}
-	void Start() override
-	{
-
-	}
-	void Update() override
-	{
-		skinModel.Update(CVector3(0.0f, -0.05f, 0.0f), CQuaternion::Identity, CVector3(1.0f, 1.0f, 1.0f));
-	}
-	void Render(CRenderContext& renderContext) override
-	{
-		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
-	}
-};
 /*!
  * @brief	tkEngineの初期化。
  */
