@@ -267,6 +267,7 @@ namespace tkEngine{
 	}
 	void CEngine::Final()
 	{
+		m_backBufferRT.Release();
 		for (int i = 0; i < 2; i++) {
 			m_mainRenderTarget[i].Release();
 		}

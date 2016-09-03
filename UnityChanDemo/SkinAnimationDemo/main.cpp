@@ -94,6 +94,46 @@ public:
 		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 	}
 };
+class Sky : public IGameObject {
+	CSkinModelData	skinModelData;		//スキンモデルデータ。
+	CSkinModel		skinModel;			//スキンモデル。
+	CAnimation		animation;			//アニメーション。
+	CLight			light;				//ライト。
+	CTexture		normalMap;
+public:
+	Sky()
+	{
+		skinModelData.LoadModelData("Assets/modelData/Sky.X", NULL);
+		skinModel.Init(&skinModelData);
+		skinModel.SetLight(&light);
+		/*light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
+		light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
+		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
+		light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
+
+		light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));*/
+		light.SetAmbinetLight(CVector3(1.0f, 1.0f, 1.0f));
+	}
+	~Sky()
+	{
+
+	}
+	void Start() override
+	{
+
+	}
+	void Update() override
+	{
+		skinModel.Update(CVector3(0.0f, -0.05f, 0.0f), CQuaternion::Identity, CVector3(1.0f, 1.0f, 1.0f));
+	}
+	void Render(CRenderContext& renderContext) override
+	{
+		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
+	}
+};
 /*!
  * @brief	tkEngineの初期化。
  */
@@ -113,7 +153,7 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.screenWidth = 1280;
 	initParam.frameBufferHeight = 720;
 	initParam.frameBufferWidth = 1280;
-	initParam.graphicsConfig.bloomConfig.isEnable = false;
+	initParam.graphicsConfig.bloomConfig.isEnable = true;
 	initParam.graphicsConfig.edgeRenderConfig.isEnable = false;
 	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
@@ -145,10 +185,11 @@ int WINAPI wWinMain(
 #ifdef MEMORY_LEAK_TEST
 	NewGO<MemoryLeakTest>(0);
 #else
-	NewGO<MapTest>(0);
-	NewGO<Map>(0);
-	NewGO<UnityChanInstance>(0);
 	
+	NewGO<UnityChanInstance>(0);
+	NewGO<Map>(0);
+	NewGO<MapTest>(0);
+	NewGO<Sky>(0);
 	UnityChan* unityChan = NewGO<UnityChan>(0);
 	g_car = NewGO<Car>(0);
 	g_camera = NewGO<GameCamera>(0);
