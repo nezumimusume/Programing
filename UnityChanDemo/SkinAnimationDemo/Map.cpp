@@ -15,7 +15,9 @@ Map::Map()
 }
 Map::~Map()
 {
-
+	for(auto& mapchip : mapChipList){
+		delete mapchip;
+	}
 }
 void Map::Start()
 {
@@ -40,8 +42,8 @@ void Map::Start()
 		}
 	}
 	for (auto& mapchipList : m) {
-		//マップチップを登録
-		MapChip* mapChip = NewGO<MapChip>(0);
+		//マップチップを生成
+		MapChip* mapChip = new MapChip;
 		mapChip->Init(*mapchipList.second);
 		mapChipList.push_back(mapChip);
 		delete mapchipList.second;
@@ -49,9 +51,13 @@ void Map::Start()
 }
 void Map::Update()
 {
-
+	for(auto& mapChip : mapChipList){
+		mapChip->Update();
+	}
 }
 void Map::Render(CRenderContext& renderContext)
 {
-
+	for(auto& mapChip : mapChipList){
+		mapChip->Render(renderContext);
+	}
 }
