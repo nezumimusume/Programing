@@ -295,9 +295,6 @@
     <ClInclude Include="graphics\tkAnimation.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="random\tkRandomMT.h">
-      <Filter>Source Files\random</Filter>
-    </ClInclude>
     <ClInclude Include="random\tkRandom.h">
       <Filter>Source Files\random</Filter>
     </ClInclude>

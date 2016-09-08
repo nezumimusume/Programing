@@ -248,7 +248,6 @@
     <ClInclude Include="particle\tkParticleResources.h" />
     <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="random\tkRandom.h" />
-    <ClInclude Include="random\tkRandomMT.h" />
     <ClInclude Include="shape\tkBoxShape.h" />
     <ClInclude Include="shape\tkShapeBase.h" />
     <ClInclude Include="shape\tkShapeVertex.h" />

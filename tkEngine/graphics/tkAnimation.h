@@ -41,7 +41,12 @@ namespace tkEngine{
 		*/
 		void SetAnimationEndTime(int animationSetIndex, double endTime)
 		{
-			animationEndTime[animationSetIndex] = endTime;
+			if (animationSetIndex < numAnimSet) {
+				animationEndTime[animationSetIndex] = endTime;
+			}
+			else {
+				TK_LOG("warning animationSetIndex is invalid!!");
+			}
 		}
 		/*!
 		*@brief	アニメーションの再生。
