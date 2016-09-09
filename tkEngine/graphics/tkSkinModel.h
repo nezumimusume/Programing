@@ -195,6 +195,7 @@ namespace tkEngine {
 			enShaderHandleNormalTexture,	//法線マップ。
 			enShaderHandleSpeculerMap,		//スペキュラマップ。
 			enShaderHandleDiffuseTexture,	//ディフューズテクスチャ。
+			enShaderHandleCameraDir,		//カメラの方向。
 			enShaderHandleNum,				//シェーダーハンドルの数。
 		};
 		CMatrix							m_worldMatrix;		//!<ワールド行列。

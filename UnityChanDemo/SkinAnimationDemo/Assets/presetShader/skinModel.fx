@@ -286,10 +286,11 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	
 	if(g_flags.z){
 		//フレネル。
-		float3 normalInCamera = mul(normal, g_viewMatrixRotInv );
+		/*float3 normalInCamera = mul(normal, g_viewMatrixRotInv );
 		float t = 1.0f - abs(dot(normalInCamera, float3(0.0f, 0.0f, 1.0f)));
 		t = pow(t, 1.5f);
-		color.xyz += t * 0.7f;
+		color.xyz += t * 0.7f;*/
+		color.xyz += CalcLimLight(normal);
 	}
 	if(g_fogParam.z > 1.9f){
 		//高さフォグ

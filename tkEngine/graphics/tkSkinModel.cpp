@@ -138,13 +138,18 @@ namespace tkEngine{
 				flag[2] = true;
 			}
 			CVector3 cameraPos;
+			CVector3 cameraDir;
 			D3DXMATRIX viewMatInv;
 			D3DXMatrixInverse(&viewMatInv, NULL, viewMatrix);
 			
 			cameraPos.x = viewMatInv.m[3][0];
 			cameraPos.y = viewMatInv.m[3][1];
 			cameraPos.z = viewMatInv.m[3][2];
+			cameraDir.x = viewMatInv.m[2][0];
+			cameraDir.y = viewMatInv.m[2][1];
+			cameraDir.z = viewMatInv.m[2][2];
 			pEffect->SetVector(m_hShaderHandle[enShaderHandleCameraPos], (D3DXVECTOR4*)&cameraPos);
+			pEffect->SetVector(m_hShaderHandle[enShaderHandleCameraDir], (D3DXVECTOR4*)&cameraDir);
 			if (m_speculerMap != nullptr) {
 				//スペキュラマップ。
 				flag[3] = true;
@@ -393,6 +398,7 @@ namespace tkEngine{
 		m_hShaderHandle[enShaderHandleNormalTexture] = effectDx->GetParameterByName(NULL, "g_normalTexture");
 		m_hShaderHandle[enShaderHandleSpeculerMap] = effectDx->GetParameterByName(NULL, "g_speculerMap");
 		m_hShaderHandle[enShaderHandleDiffuseTexture] = effectDx->GetParameterByName(NULL, "g_diffuseTexture");
+		m_hShaderHandle[enShaderHandleCameraDir] = effectDx->GetParameterByName(NULL, "g_cameraDir");
 	}
 	/*!
 	*@brief	シャドウマップに描画

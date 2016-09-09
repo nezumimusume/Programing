@@ -20,6 +20,8 @@ namespace tkEngine {
 				m_diffuseLightColor[i].Set( 0.0f, 0.0f, 0.0f, 0.0f );
 			}
 			m_ambientLight.Set( 0.1f, 0.1f, 0.1f );
+			m_limLightDir.Set(0.0f, 0.0f, 0.0f);
+			m_limLightColor.Set(0.0f, 0.0f, 0.0f, 0.0f);
 		}
 		/*!
 		 *@brief	ディフューズライトの向きを設定。
@@ -72,9 +74,39 @@ namespace tkEngine {
 		{
 			m_ambientLight = ambient;
 		}
+		/*!
+		*@brief	リムライトの方向を設定。
+		*/
+		void SetLimLightDirection(const CVector3& dir)
+		{
+			m_limLightDir = dir;
+		}
+		/*!
+		*@brief	リムライトの方向を取得。
+		*/
+		const CVector3& GetLimLightDirection() const
+		{
+			return m_limLightDir;
+		}
+		/*!
+		*@brief	リムライトの色を設定。
+		*/
+		void SetLimLightColor(const CVector4& color)
+		{
+			m_limLightColor = color;
+		}
+		/*!
+		*@brief	リムライトの色を取得。
+		*/
+		const CVector4& GetLimLightColor() const
+		{
+			return m_limLightColor;
+		}
 	private:
 		CVector3		m_diffuseLightDirection[NUM_DIFFUSE_LIGHT];		//!<ディフューズライトの向き。
 		CVector4		m_diffuseLightColor[NUM_DIFFUSE_LIGHT];			//!<ディフューズライトのカラー(x:R成分、y:G成分、z:B成分、w:スペキュラの強さ)。
+		CVector3		m_limLightDir;									//!<リムライトの方向。
+		CVector4		m_limLightColor;								//!<リムライトの色。
 		CVector3		m_ambientLight;									//!<アンビエントライト。
 	};
 }

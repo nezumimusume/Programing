@@ -20,11 +20,13 @@ sampler_state
 struct SLight{
 	float3	diffuseLightDir[NUM_DIFFUSE_LIGHT];		//ディフューズライトの向き。
 	float4  diffuseLightColor[NUM_DIFFUSE_LIGHT];	//ディフューズライトのカラー。
+	float3	limLightDir;							//リムライトの方向。
+	float4	limLightColor;							//リムライトの色。
 	float3  ambient;								//アンビエントライト。
 };
-SLight	g_light;		//ライト
-float4	g_cameraPos;			//!<カメラの座標。
-
+SLight	g_light;		//!<ライト
+float4	g_cameraPos;	//!<カメラの座標。
+float3	g_cameraDir;	//!<カメラ方向。
 /*!
  *@brief	ディフューズライトを計算。
  */	
@@ -38,6 +40,17 @@ float4 DiffuseLight( float3 normal )
 	
 	color.a = 1.0f;
 	return color;
+}
+/*!
+ *@brief	リムライトを計算。
+ */
+float3 CalcLimLight( float3 normal)
+{
+	float lim = 0.0f;
+	float baselim = 1.0f - abs( dot(normal, g_cameraDir ) );
+	lim += baselim * max( 0.0f, -dot(g_cameraDir, g_light.limLightDir));
+	lim = pow(lim, 3.5f);
+	return g_light.limLightColor.xyz * lim;
 }
 /*!
  *@brief	スペキュラライトを計算。
