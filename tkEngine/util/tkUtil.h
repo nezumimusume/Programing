@@ -13,7 +13,7 @@ namespace tkEngine{
 		static int MakeHash( const char* string )
 		{
 			int hash = 0;
-			int l = strlen(string);
+			int l = (int)strlen(string);
 			for( int i = 0; i < l; i++ ){
 				hash = hash * 37 + string[i];
 			}

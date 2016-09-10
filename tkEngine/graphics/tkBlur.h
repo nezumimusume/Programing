@@ -16,7 +16,7 @@ namespace tkEngine{
 		void Draw(CRenderContext& renderContext);
 		const CTexture* GetTexture() const
 		{
-			return m_rt[1].GetTexture();
+			return m_rt[0].GetTexture();
 		}
 
 	private:

@@ -296,13 +296,13 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 		//高さフォグ
 		float h = max(In.worldPos.y - g_fogParam.y, 0.0f);
 		float t = min(h / g_fogParam.x, 1.0f);
-		color.xyz = lerp(float3(1.0f, 1.0f, 1.0f), color.xyz, t);
+		color.xyz = lerp(float3(0.9f, 0.9f, 0.95f), color.xyz, t);
 	}else if(g_fogParam.z > 0.0f){
 		//距離フォグ
 		float z = length(In.worldPos - g_cameraPos);
 		z = max(z - g_fogParam.x, 0.0f);
-		float t = z / g_fogParam.y;
-		color.xyz = lerp(color.xyz, float3(1.0f, 1.0f, 1.0f), t);
+		float t = min( z / g_fogParam.y, 1.0f);
+		color.xyz = lerp(color.xyz, float3(0.9f, 0.9f, 0.95f), t);
 	}
 	return color;
 }

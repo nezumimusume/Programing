@@ -9,7 +9,8 @@
 
 namespace tkEngine {
 	CBlur::CBlur() :
-		m_srcTexture(nullptr)
+		m_srcTexture(nullptr),
+		m_effect(nullptr)
 	{
 
 	}

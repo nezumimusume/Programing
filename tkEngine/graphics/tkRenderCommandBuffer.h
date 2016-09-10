@@ -25,23 +25,23 @@ namespace tkEngine{
 		 */
 		void Init(int size);
 		/*!
-		 *@brief	32バイトのコマンドを書き込み。
-		 *@details	コマンドは必ず32byte
+		 *@brief	64バイトのコマンドを書き込み。
+		 *@details	コマンドは必ず64byte
 		 *@param[in]	command		コマンド。
 		 */
 		template<class T>
-		void WriteCommand32(T& command)
+		void WriteCommand64(T& command)
 		{
-			static_assert( sizeof(T) <= 32, "command size error\n");
-			TK_ASSERT( m_writePos + 32 <= m_size, "command buffer size over!!!");
-			struct Write32Byte{
-				int data[8];
+			static_assert( sizeof(T) <= 64, "command size error\n");
+			TK_ASSERT( m_writePos + 64 <= m_size, "command buffer size over!!!");
+			struct Write64Byte{
+				int data[16];
 			};
-			Write32Byte* dst = reinterpret_cast<Write32Byte*>(&m_buffer[m_writePos]);
-			Write32Byte* src = reinterpret_cast<Write32Byte*>(&command);
+			Write64Byte* dst = reinterpret_cast<Write64Byte*>(&m_buffer[m_writePos]);
+			Write64Byte* src = reinterpret_cast<Write64Byte*>(&command);
 			*dst = *src;
 			m_command.push_back(dst);
-			m_writePos += 32;
+			m_writePos += 64;
 		}
 		/*!
 		*@brief	コマンドバッファからアロケート

@@ -43,7 +43,6 @@ struct VS_OUTPUT_BLUR{
 };
 
 
-float2 g_offset;			//オフセット
 float2 g_texSize;			//テクスチャサイズ。
 
 /*!
