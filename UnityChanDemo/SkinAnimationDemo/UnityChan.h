@@ -53,7 +53,11 @@ public:
 		return state;
 	}
 private:
-
+	/*!
+	* @brief	衝突検出と解決。
+	*@param[in]	nextPosition		次の座標。
+	*/
+	void CollisionDetectAndResolve( const CVector3& nextPosition );
 	/*!
 	* @brief	アニメーションコントロール。
 	*/
@@ -78,4 +82,5 @@ private:
 	CVector3				moveSpeed;			//移動速度。
 	EnState					state;				//状態。
 	EnState					lastFrameState;		//前のフレームの状態。
+	bool					isJump;				//ジャンプ中フラグ。
 };

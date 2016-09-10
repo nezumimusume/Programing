@@ -25,15 +25,26 @@ namespace tkEngine{
 		static const CMatrix Identity;	//!<単位行列。
 	public:
 		/*!
+		*@brief	ベクトルと3x3行列の乗算
+		*@param[in,out]		v	乗算されるベクトル。
+		*/
+		void Mul3x3(CVector3& vOut)
+		{
+			CVector3 vTmp = vOut;
+			vOut.x = vTmp.x * m[0][0] + vTmp.y * m[1][0] + vTmp.z * m[2][0];
+			vOut.y = vTmp.x * m[0][1] + vTmp.y * m[1][1] + vTmp.z * m[2][1];
+			vOut.z = vTmp.x * m[0][2] + vTmp.y * m[1][2] + vTmp.z * m[2][2];
+		}
+		/*!
 		*@brief	ベクトルと行列の乗算
 		*@param[in,out]		v	乗算されるベクトル。
 		*/
 		void Mul(CVector3& vOut)
 		{
 			CVector3 vTmp = vOut;
-			vOut.x = vTmp.x * m[0][0] + vTmp.y * m[1][0] + vTmp.z * m[2][0];
-			vOut.y = vTmp.x * m[0][1] + vTmp.y * m[1][1] + vTmp.z * m[2][1];
-			vOut.z = vTmp.x * m[0][2] + vTmp.y * m[1][2] + vTmp.z * m[2][2];
+			vOut.x = vTmp.x * m[0][0] + vTmp.y * m[1][0] + vTmp.z * m[2][0] + m[3][0];
+			vOut.y = vTmp.x * m[0][1] + vTmp.y * m[1][1] + vTmp.z * m[2][1] + m[3][1];
+			vOut.z = vTmp.x * m[0][2] + vTmp.y * m[1][2] + vTmp.z * m[2][2] + m[3][2];
 		}
 		void Mul(CVector4& vOut)
 		{

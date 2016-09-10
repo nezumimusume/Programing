@@ -5,6 +5,7 @@
 #include "Car.h"
 #include "Map.h"
 #include "Sky.h"
+#include "Ground.h"
 
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 
@@ -52,51 +53,7 @@ public:
 	}
 };
 #endif
-class MapTest : public IGameObject {
-	CSkinModelData	skinModelData;		//スキンモデルデータ。
-	CSkinModel		skinModel;			//スキンモデル。
-	CAnimation		animation;			//アニメーション。
-	CLight			light;				//ライト。
-	CTexture		normalMap;
-public:
-	MapTest()
-	{
-		skinModelData.LoadModelData("Assets/modelData/Court.X", NULL);
-		skinModel.Init(&skinModelData);
-		skinModel.SetLight(&light);
-		normalMap.Load("Assets/modelData/Grass_Normals.tga");
-		skinModel.SetNormalMap(&normalMap);
-		light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
-		light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
-		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
-		light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
 
-		light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
-		skinModel.SetShadowReceiverFlag(true);
-		//距離フォグをかける。
-		skinModel.SetFogParam(enFogFuncDist, 40.0f, 70.0f);
-	}
-	~MapTest()
-	{
-
-	}
-	void Start() override
-	{
-
-	}
-	void Update() override
-	{
-		skinModel.Update(CVector3(0.0f, -0.05f, 0.0f), CQuaternion::Identity, CVector3(10.0f, 1.0f, 10.0f));
-	}
-	void Render(CRenderContext& renderContext) override
-	{
-		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
-	}
-};
 
 /*!
  * @brief	tkEngineの初期化。
@@ -152,7 +109,7 @@ int WINAPI wWinMain(
 	
 	NewGO<UnityChanInstance>(0);
 	NewGO<Map>(0);
-	NewGO<MapTest>(0);
+	NewGO<Ground>(0);
 	NewGO<Sky>(0);
 	UnityChan* unityChan = NewGO<UnityChan>(0);
 	g_car = NewGO<Car>(0);
@@ -161,6 +118,7 @@ int WINAPI wWinMain(
 	g_camera->SetUnityChan(unityChan);
 #endif
 	Engine().RunGameLoop();		//ゲームループを実行。
-	
+	//地面との当たり判定のテスト。
+
 	return 0;
 }

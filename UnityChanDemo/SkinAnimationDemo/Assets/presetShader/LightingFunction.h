@@ -49,7 +49,7 @@ float3 CalcLimLight( float3 normal)
 	float lim = 0.0f;
 	float baselim = 1.0f - abs( dot(normal, g_cameraDir ) );
 	lim += baselim * max( 0.0f, -dot(g_cameraDir, g_light.limLightDir));
-	lim = pow(lim, 3.5f);
+	lim = pow(lim, 1.5f);
 	return g_light.limLightColor.xyz * lim;
 }
 /*!

@@ -247,7 +247,6 @@ namespace {
 		hr = AllocateName(Name, &pFrame->Name);
 		if (FAILED(hr))
 			goto e_Exit;
-
 		// initialize other data members of the frame
 		D3DXMatrixIdentity(&pFrame->TransformationMatrix);
 		D3DXMatrixIdentity(&pFrame->CombinedTransformationMatrix);
@@ -390,16 +389,14 @@ namespace {
 			pMeshContainer->pMaterials[0].MatD3D.Diffuse.b = 0.5f;
 			pMeshContainer->pMaterials[0].MatD3D.Specular = pMeshContainer->pMaterials[0].MatD3D.Diffuse;
 		}
-		
+		pMeshContainer->pOrigMesh = pMesh;
+		pMesh->AddRef();
 		// if there is skinning information, save off the required data and then setup for HW skinning
 		if (pSkinInfo != NULL)
 		{
 			// first save off the SkinInfo and original mesh data
 			pMeshContainer->pSkinInfo = pSkinInfo;
 			pSkinInfo->AddRef();
-
-			pMeshContainer->pOrigMesh = pMesh;
-			pMesh->AddRef();
 
 			// Will need an array of offset matrices to move the vertices from the figure space to the bone's space
 			cBones = pSkinInfo->GetNumBones();
@@ -818,5 +815,62 @@ namespace tkEngine{
 			}
 		}
 		return false;
+	}
+	LPD3DXMESH CSkinModelData::GetOrgMeshFirst(LPD3DXFRAME frame) const
+	{
+		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)(frame->pMeshContainer);
+		if (pMeshContainer != nullptr) {
+			return pMeshContainer->pOrigMesh;
+		}
+		if (frame->pFrameSibling != nullptr) {
+			//兄弟
+			LPD3DXMESH mesh = GetOrgMeshFirst(frame->pFrameSibling);
+			if (mesh) {
+				return mesh;
+			}
+		}
+		if (frame->pFrameFirstChild != nullptr)
+		{
+			//子供。
+			LPD3DXMESH mesh = GetOrgMeshFirst(frame->pFrameSibling);
+			if (mesh) {
+				return mesh;
+			}
+		}
+		
+		return nullptr;
+	}
+	LPD3DXMESH CSkinModelData::GetOrgMeshFirst() const
+	{
+		return GetOrgMeshFirst(m_frameRoot);
+	}
+	CMatrix* CSkinModelData::FindBoneWorldMatrix(const char* boneName) 
+	{
+		return FindBoneWorldMatrix(boneName, m_frameRoot);
+	}
+	
+	CMatrix* CSkinModelData::FindBoneWorldMatrix(const char* boneName, LPD3DXFRAME frame) 
+	{
+		if (strcmp(frame->Name, boneName) == 0) {
+			//見つかった。
+			D3DXFRAME_DERIVED* frameDer = (D3DXFRAME_DERIVED*)frame;
+			return (CMatrix*)&frameDer->CombinedTransformationMatrix;
+		}
+		if (frame->pFrameSibling != nullptr) {
+			//兄弟
+			CMatrix* result = FindBoneWorldMatrix(boneName, frame->pFrameSibling);
+			if (result != nullptr) {
+				return result;
+			}
+		}
+		if (frame->pFrameFirstChild != nullptr)
+		{
+			//子供。
+			CMatrix* result = FindBoneWorldMatrix(boneName, frame->pFrameFirstChild);
+			if (result != nullptr) {
+				return result;
+			}
+		}
+		return nullptr;
 	}
 }

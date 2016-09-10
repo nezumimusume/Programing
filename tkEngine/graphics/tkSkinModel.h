@@ -137,6 +137,24 @@ namespace tkEngine {
 		{
 			return m_worldMatrix;
 		}
+		/*!
+		* @brief	先頭のメッシュを取得。
+		*/
+		LPD3DXMESH GetOrgMeshFirst() const
+		{
+			return m_skinModelData->GetOrgMeshFirst();
+		}
+		/*!
+		* @brief	骨のワールド行列を検索
+		*@details
+		* 名前で検索を行っているため、遅いです。頻繁に呼ばないように。
+		*@param[in]	boneName	骨の名前。
+		*@return 見つかったら骨のワールド行列のアドレスを返す。見つからなかった場合はNULLを返す。
+		*/
+		CMatrix* FindBoneWorldMatrix(const char* boneName) 
+		{
+			return m_skinModelData->FindBoneWorldMatrix(boneName);
+		}
 	private:
 		/*!
 		* @brief	シェーダ定の数ハンドルを初期化。
