@@ -67,8 +67,6 @@ namespace tkEngine{
 		LPD3DXBONECOMBINATION pBoneComb;
 
 		D3DXMATRIXA16 matTemp;
-		D3DCAPS9 d3dCaps;
-		pd3dDevice->GetDeviceCaps(&d3dCaps);
 		D3DXMATRIX viewProj;
 		D3DXMatrixMultiply(&viewProj, viewMatrix, projMatrix);
 			
@@ -77,18 +75,20 @@ namespace tkEngine{
 			if (isInstancingDraw) {
 				if (pMeshContainer->pSkinInfo != NULL) {
 					if (isDrawToShadowMap) {
-						pEffect->SetTechnique("SkinModelInstancingRenderToShadowMap");
+						pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_SkinModelInstancingRenderToShadowMap]);
 					}
 					else {
-						pEffect->SetTechnique("SkinModelInstancing");
+						pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_SkinModelInstancing]);
 					}
 				}
 				else {
 					if (isDrawToShadowMap) {
-						pEffect->SetTechnique("NoSkinModelInstancingRenderToShadowMap");
+						pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_NoSkinModelInstancingRenderToShadowMap]);
+	
 					}
 					else {
-						pEffect->SetTechnique("NoSkinModelInstancing");
+						pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_NoSkinModelInstancing]);
+
 					}
 				}
 			}
@@ -96,16 +96,16 @@ namespace tkEngine{
 				if (pMeshContainer->pSkinInfo != NULL) {
 					if (isDrawToShadowMap) {
 						//シャドウマップに描画。
-						pEffect->SetTechnique("SkinModelRenderShadowMap");
+						pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_SkinModelRenderShadowMap]);
 					}else{
-						pEffect->SetTechnique("SkinModel");
+						pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_SkinModel]);
 					}
 				}
 				else {
 					if (isDrawToShadowMap) {
-						pEffect->SetTechnique("NoSkinModelRenderShadowMap");
+						pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_NoSkinModelRenderShadowMap]);
 					}else{
-						pEffect->SetTechnique("NoSkinModel");
+						pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_NoSkinModel]);
 					}
 				}
 			}
@@ -399,6 +399,14 @@ namespace tkEngine{
 		m_hShaderHandle[enShaderHandleSpeculerMap] = effectDx->GetParameterByName(NULL, "g_speculerMap");
 		m_hShaderHandle[enShaderHandleDiffuseTexture] = effectDx->GetParameterByName(NULL, "g_diffuseTexture");
 		m_hShaderHandle[enShaderHandleCameraDir] = effectDx->GetParameterByName(NULL, "g_cameraDir");
+		m_hShaderHandle[enShaderHandleTec_SkinModelInstancingRenderToShadowMap] = effectDx->GetTechniqueByName("SkinModelInstancingRenderToShadowMap");
+		m_hShaderHandle[enShaderHandleTec_SkinModelInstancing] = effectDx->GetTechniqueByName("SkinModelInstancing");
+		m_hShaderHandle[enShaderHandleTec_NoSkinModelInstancingRenderToShadowMap] = effectDx->GetTechniqueByName("NoSkinModelInstancingRenderToShadowMap");
+		m_hShaderHandle[enShaderHandleTec_NoSkinModelInstancing] = effectDx->GetTechniqueByName("NoSkinModelInstancing");
+		m_hShaderHandle[enShaderHandleTec_SkinModelRenderShadowMap] = effectDx->GetTechniqueByName("SkinModelRenderShadowMap");
+		m_hShaderHandle[enShaderHandleTec_SkinModel] = effectDx->GetTechniqueByName("SkinModel");
+		m_hShaderHandle[enShaderHandleTec_NoSkinModelRenderShadowMap] = effectDx->GetTechniqueByName("NoSkinModelRenderShadowMap");
+		m_hShaderHandle[enShaderHandleTec_NoSkinModel] = effectDx->GetTechniqueByName("NoSkinModel");
 	}
 	/*!
 	*@brief	シャドウマップに描画

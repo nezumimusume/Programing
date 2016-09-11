@@ -214,6 +214,14 @@ namespace tkEngine {
 			enShaderHandleSpeculerMap,		//スペキュラマップ。
 			enShaderHandleDiffuseTexture,	//ディフューズテクスチャ。
 			enShaderHandleCameraDir,		//カメラの方向。
+			enShaderHandleTec_SkinModelInstancingRenderToShadowMap,		//SkinModelInstancingRenderToShadowMapテクニック
+			enShaderHandleTec_SkinModelInstancing,						//SkinModelInstancingテクニック。
+			enShaderHandleTec_NoSkinModelInstancingRenderToShadowMap,	//NoSkinModelInstancingRenderToShadowMapテクニック。
+			enShaderHandleTec_NoSkinModelInstancing,					//NoSkinModelInstancingテクニック。
+			enShaderHandleTec_SkinModelRenderShadowMap,					//SkinModelRenderShadowMapテクニック。
+			enShaderHandleTec_SkinModel,								//SkinModelテクニック。
+			enShaderHandleTec_NoSkinModelRenderShadowMap,				//NoSkinModelRenderShadowMapテクニック。
+			enShaderHandleTec_NoSkinModel,								//NoSkinModelテクニック。
 			enShaderHandleNum,				//シェーダーハンドルの数。
 		};
 		CMatrix							m_worldMatrix;		//!<ワールド行列。

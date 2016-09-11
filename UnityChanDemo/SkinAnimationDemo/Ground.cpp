@@ -23,7 +23,7 @@ void Ground::Start()
 	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
 	skinModel.SetShadowReceiverFlag(true);
-
+	skinModel.SetShadowCasterFlag(true);
 	//距離フォグをかける。
 	skinModel.SetFogParam(enFogFuncDist, 40.0f, 70.0f);
 

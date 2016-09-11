@@ -89,7 +89,7 @@ void InitTkEngine( HINSTANCE hInst )
 	Engine().Init(initParam);	//èâä˙âªÅB
 
 	ShadowMap().SetNear(2.0f);
-	ShadowMap().SetFar(20.0f);
+	ShadowMap().SetFar(40.0f);
 	
 }
 
@@ -110,8 +110,9 @@ int WINAPI wWinMain(
 	NewGO<UnityChanInstance>(0);
 	NewGO<Map>(0);
 	NewGO<Ground>(0);
-	NewGO<Sky>(0);
+	Sky* sky = NewGO<Sky>(0);
 	UnityChan* unityChan = NewGO<UnityChan>(0);
+	sky->SetUnityChan(unityChan);
 	g_car = NewGO<Car>(0);
 	g_camera = NewGO<GameCamera>(0);
 	unityChan->SetPosition(CVector3(0.0f, 1.5f, 0.0f));

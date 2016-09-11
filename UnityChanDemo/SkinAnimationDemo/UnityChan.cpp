@@ -44,7 +44,7 @@ void UnityChan::Start()
 	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
-	light.SetLimLightColor(CVector4(0.4f, 0.4f, 0.4f, 1.0f));
+	light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
 	light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
 
 	animation.SetAnimationEndTime(AnimationRun, 0.8);
@@ -52,7 +52,7 @@ void UnityChan::Start()
 	PlayAnimation(currentAnimSetNo);
 	rotation = CQuaternion::Identity;
 
-	CVector3 lightPos = CVector3(0.0f, 7.5f, 6.5f);
+	CVector3 lightPos = CVector3(0.0f, 9.5f, 8.5f);
 	ShadowMap().SetLightPosition(lightPos);
 	ShadowMap().SetLightTarget(position);
 	toLightPos.Subtract(lightPos, position);

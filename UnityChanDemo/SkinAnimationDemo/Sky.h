@@ -6,6 +6,7 @@ class Sky : public IGameObject {
 	CAnimation		animation;			//アニメーション。
 	CLight			light;				//ライト。
 	CTexture		normalMap;
+	UnityChan*		unity;				//ユニティちゃん
 public:
 	Sky();
 	
@@ -16,6 +17,10 @@ public:
 	void Start() override
 	{
 
+	}
+	void SetUnityChan(UnityChan* unity)
+	{
+		this->unity = unity;
 	}
 	void Update() override;
 	

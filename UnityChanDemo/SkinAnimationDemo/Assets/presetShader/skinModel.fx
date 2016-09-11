@@ -247,7 +247,14 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	
 	
 	float4 lig = DiffuseLight(normal);
-	
+	if(g_flags.z){
+		//フレネル。
+		/*float3 normalInCamera = mul(normal, g_viewMatrixRotInv );
+		float t = 1.0f - abs(dot(normalInCamera, float3(0.0f, 0.0f, 1.0f)));
+		t = pow(t, 1.5f);
+		color.xyz += t * 0.7f;*/
+		lig.xyz += CalcLimLight(normal);
+	}
 	if(g_flags.y){
 		float4 posInLVP = In.lightViewPos;
 		posInLVP.xyz /= posInLVP.w;
@@ -284,14 +291,7 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	lig.xyz += g_light.ambient.xyz;
 	color.xyz *= lig;
 	
-	if(g_flags.z){
-		//フレネル。
-		/*float3 normalInCamera = mul(normal, g_viewMatrixRotInv );
-		float t = 1.0f - abs(dot(normalInCamera, float3(0.0f, 0.0f, 1.0f)));
-		t = pow(t, 1.5f);
-		color.xyz += t * 0.7f;*/
-		color.xyz += CalcLimLight(normal);
-	}
+	
 	if(g_fogParam.z > 1.9f){
 		//高さフォグ
 		float h = max(In.worldPos.y - g_fogParam.y, 0.0f);
@@ -304,6 +304,8 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 		float t = min( z / g_fogParam.y, 1.0f);
 		color.xyz = lerp(color.xyz, float3(0.9f, 0.9f, 0.95f), t);
 	}
+	//αに輝度を埋め込む。
+	color.a = CalcLuminance(color.xyz) ;
 	return color;
 }
 
