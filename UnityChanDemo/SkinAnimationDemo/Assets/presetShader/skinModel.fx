@@ -1,7 +1,7 @@
 /*!
  * @brief	ƒXƒLƒ“ƒ‚ƒfƒ‹ƒVƒF[ƒ_[B(4ƒ{[ƒ“ƒXƒLƒjƒ“ƒO)
  */
-
+#include "Common.h" 
 #include "LightingFunction.h"
 
 #define USE_VSM	//’è‹`‚·‚é‚ÆVSM‚ª—LŒø‚É‚È‚éB
@@ -19,7 +19,7 @@ float4		g_fogParam;				//ƒtƒHƒO‚Ìƒpƒ‰ƒ[ƒ^Bx‚ÉƒtƒHƒO‚ªŠ|‚©‚èn‚ß‚é[“xBy‚Éƒtƒ
 
 float2		g_farNear;	//‰“•½–Ê‚Æ‹ß•½–ÊBx‚É‰“•½–ÊAy‚É‹ß•½–ÊB
 
-int4 g_flags;				//x‚É–@üƒ}ƒbƒvAy‚ÍƒVƒƒƒhƒEƒŒƒV[ƒo[Az‚ÍƒtƒŒƒlƒ‹Aw‚ÍƒXƒyƒLƒ…ƒ‰ƒ}ƒbƒvB
+int4 g_flags;				//x‚É–@üƒ}ƒbƒvAy‚ÍƒVƒƒƒhƒEƒŒƒV[ƒo[Az‚ÍƒŠƒ€ƒ‰ƒCƒgAw‚ÍƒXƒyƒLƒ…ƒ‰ƒ}ƒbƒvB
 
 texture g_diffuseTexture;		//ƒfƒBƒtƒ…[ƒYƒeƒNƒXƒ`ƒƒB
 sampler g_diffuseTextureSampler = 
@@ -248,11 +248,7 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	
 	float4 lig = DiffuseLight(normal);
 	if(g_flags.z){
-		//ƒtƒŒƒlƒ‹B
-		/*float3 normalInCamera = mul(normal, g_viewMatrixRotInv );
-		float t = 1.0f - abs(dot(normalInCamera, float3(0.0f, 0.0f, 1.0f)));
-		t = pow(t, 1.5f);
-		color.xyz += t * 0.7f;*/
+		//ƒŠƒ€ƒ‰ƒCƒgB
 		lig.xyz += CalcLimLight(normal);
 	}
 	if(g_flags.y){
@@ -304,8 +300,10 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 		float t = min( z / g_fogParam.y, 1.0f);
 		color.xyz = lerp(color.xyz, float3(0.9f, 0.9f, 0.95f), t);
 	}
+#ifndef USE_BLOOM_FLOATING_BUFFER
 	//ƒ¿‚É‹P“x‚ğ–„‚ß‚ŞB
 	color.a = CalcLuminance(color.xyz) ;
+#endif
 	return color;
 }
 

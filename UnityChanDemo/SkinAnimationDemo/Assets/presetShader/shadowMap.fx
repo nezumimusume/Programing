@@ -2,7 +2,7 @@
  * @brief	シャドウマップ。
  */
 
-
+#include "Common.h" 
 
 
 struct VS_INPUT

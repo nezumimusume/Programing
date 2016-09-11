@@ -1,7 +1,8 @@
 /*!
  * @brief	IDMap
  */
- 
+
+#include "Common.h" 
 
 struct VS_INPUT
 {

@@ -83,7 +83,7 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 2048;
 	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 2048;
 	//reflection
-	initParam.graphicsConfig.reflectionMapConfig.isEnable = true;
+	initParam.graphicsConfig.reflectionMapConfig.isEnable = false;
 	initParam.graphicsConfig.reflectionMapConfig.reflectionMapWidth = 512;
 	initParam.graphicsConfig.reflectionMapConfig.reflectionMapHeight = 512;
 	Engine().Init(initParam);	//èâä˙âªÅB

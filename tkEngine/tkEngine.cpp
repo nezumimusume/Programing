@@ -113,6 +113,17 @@ namespace tkEngine{
 		}
 		//メインレンダリングターゲットを作成。
 		for (int i = 0; i < 2; i++) {
+#ifdef USE_BLOOM_FLOATING_BUFFER
+			m_mainRenderTarget[0].Create(
+				m_frameBufferWidth,
+				m_frameBufferHeight,
+				1,
+				FMT_A16B16G16R16F,
+				FMT_D16,
+				MULTISAMPLE_NONE,
+				0
+			);
+#else
 			m_mainRenderTarget[0].Create(
 				m_frameBufferWidth,
 				m_frameBufferHeight,
@@ -122,6 +133,7 @@ namespace tkEngine{
 				MULTISAMPLE_NONE,
 				0
 			);
+#endif
 		}
 
 		CGameObjectManager::Instance().Init( initParam.gameObjectPrioMax );

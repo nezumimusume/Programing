@@ -4,6 +4,7 @@
 #ifndef _TKBLOOM_H_
 #define _TKBLOOM_H_
 
+
 namespace tkEngine{
 	/*!
 	 * @brief	Bloom

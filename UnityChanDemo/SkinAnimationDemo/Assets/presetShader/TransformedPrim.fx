@@ -2,6 +2,7 @@
  * @brief	トランスフォーム済みプリミティブを描画。
  */
  
+#include "Common.h" 
 
 struct VS_INPUT{
 	float4		pos		: POSITION;
