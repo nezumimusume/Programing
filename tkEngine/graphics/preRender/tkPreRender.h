@@ -25,6 +25,10 @@ namespace tkEngine{
 		 */
 		~CPreRender();
 		/*!
+		* @brief	開放
+		*/
+		void Release();
+		/*!
 		 * @brief	作成。
 		 *@param[in]	config	コンフィグ。
 		 */

@@ -22,6 +22,13 @@ namespace tkEngine{
 	{
 	}
 	/*!
+	*@brief	ŠJ•úB
+	*/
+	void CReflectionMap::Release()
+	{
+		m_renderTarget.Release();
+	}
+	/*!
 	 *@brief	‰Šú‰»B
 	 */
 	void CReflectionMap::Init(int w, int h)

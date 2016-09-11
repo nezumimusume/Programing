@@ -12,6 +12,12 @@ namespace tkEngine{
 	CPreRender::~CPreRender()
 	{
 	}
+	void CPreRender::Release()
+	{
+		m_idMap.Release();
+		m_shadowMap.Release();
+		m_reflectionMap.Release();
+	}
 	void CPreRender::Create( const SGraphicsConfig& config )
 	{
 		if (config.edgeRenderConfig.isEnable) {

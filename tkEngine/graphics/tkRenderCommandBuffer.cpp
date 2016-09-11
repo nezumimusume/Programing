@@ -88,6 +88,12 @@ namespace tkEngine{
 			case enRenderCommand_DrawSkinModelToShadowMap:
 				((CRenderCommand_DrawSkinModelToShadowMap*)(cmdBase))->Execute(pD3DDevice);
 				break;
+			case enRenderCommand_PerfBeginEvent:
+				((CRenderCommand_PerfBeginEvent*)(cmdBase))->Execute(pD3DDevice);
+				break;
+			case enRenderCommand_PerfEndEvent:
+				((CRenderCommand_PerfEndEvent*)(cmdBase))->Execute(pD3DDevice);
+				break;
 			default:
 				TK_ASSERT(false, "not implement renderCommand");
 				break;

@@ -17,9 +17,7 @@ namespace tkEngine{
 		}
 		~CTexture()
 		{
-			if (m_tex) {
-				m_tex->Release();
-			}
+			Release();
 		}
 		void SetTextureDX( LPDIRECT3DTEXTURE9 tex )
 		{
@@ -28,6 +26,13 @@ namespace tkEngine{
 		LPDIRECT3DTEXTURE9 GetTextureDX() const
 		{
 			return m_tex;
+		}
+		void Release()
+		{
+			if (m_tex) {
+				m_tex->Release();
+				m_tex = nullptr;
+			}
 		}
 		/*!
 		 * @brief	テクスチャをロード。

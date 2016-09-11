@@ -54,6 +54,7 @@ namespace tkEngine{
 	}
 	void CIDMap::RenderToIDMap( CRenderContext& renderContext )
 	{
+		CPIXPerfTag tag(renderContext, L"CIDMap::RenderToIDMap");
 		if(m_isEnable){
 			CRenderTarget* pRTBackup = renderContext.GetRenderTarget(0);
 			renderContext.SetRenderTarget(0, &m_idMapRT);

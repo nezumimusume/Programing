@@ -38,6 +38,12 @@ namespace tkEngine{
 		int		reflectionMapHeight;	//!<リフレクションマップの高さ。
 	};
 	/*!
+	* @brief	被写界深度のコンフィグ。
+	*/
+	struct SDofConfig {
+		bool isEnable;					//被写界深度が有効かどうかのフラグ。
+	};
+	/*!
 	 * @brief	グラフィックスコンフィグ。
 	 */
 	struct SGraphicsConfig{
@@ -45,6 +51,7 @@ namespace tkEngine{
 		SShadowRenderConfig		shadowRenderConfig;		//!<影の処理のコンフィグ。
 		SBloomConfig			bloomConfig;			//!<Bloomのコンフィグ。
 		SReflectionMapConfig	reflectionMapConfig;	//!<リフレクションマップのコンフィグ。
+		SDofConfig				dofConfig;				//!<被写界深度のコンフィグ。
 	};
 }
 

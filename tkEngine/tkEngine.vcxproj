@@ -175,6 +175,7 @@
     <ClCompile Include="graphics\postEffect\tkBloomRender.cpp" />
     <ClCompile Include="graphics\postEffect\tkEdgeRender.cpp" />
     <ClCompile Include="graphics\postEffect\tkPostEffect.cpp" />
+    <ClCompile Include="graphics\postEffect\tkPostEffectDOF.cpp" />
     <ClCompile Include="graphics\preRender\tkIDMap.cpp" />
     <ClCompile Include="graphics\preRender\tkPreRender.cpp" />
     <ClCompile Include="graphics\preRender\tkReflectionMap.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="graphics\tkEffect.cpp" />
     <ClCompile Include="graphics\tkEffectManager.cpp" />
     <ClCompile Include="graphics\tkFont.cpp" />
+    <ClCompile Include="graphics\tkGaussianBlur.cpp" />
     <ClCompile Include="graphics\tkIndexBuffer.cpp" />
     <ClCompile Include="graphics\tkMaterial.cpp" />
     <ClCompile Include="graphics\tkPrimitive.cpp" />
@@ -233,6 +235,7 @@
     <ClInclude Include="graphics\postEffect\tkBloomRender.h" />
     <ClInclude Include="graphics\postEffect\tkEdgeRender.h" />
     <ClInclude Include="graphics\postEffect\tkPostEffect.h" />
+    <ClInclude Include="graphics\postEffect\tkPostEffectDOF.h" />
     <ClInclude Include="graphics\preRender\tkIDMap.h" />
     <ClInclude Include="graphics\preRender\tkPreRender.h" />
     <ClInclude Include="graphics\preRender\tkReflectionMap.h" />
@@ -243,10 +246,12 @@
     <ClInclude Include="graphics\tkEffect.h" />
     <ClInclude Include="graphics\tkEffectManager.h" />
     <ClInclude Include="graphics\tkFont.h" />
+    <ClInclude Include="graphics\tkGaussianBlur.h" />
     <ClInclude Include="graphics\tkGraphicsType.h" />
     <ClInclude Include="graphics\tkIndexBuffer.h" />
     <ClInclude Include="graphics\tkLight.h" />
     <ClInclude Include="graphics\tkAnimation.h" />
+    <ClInclude Include="graphics\tkPIXPerfTag.h" />
     <ClInclude Include="graphics\tkPrimitive.h" />
     <ClInclude Include="graphics\tkRenderCommand.h" />
     <ClInclude Include="graphics\tkRenderCommandBuffer.h" />

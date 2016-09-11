@@ -25,6 +25,7 @@ namespace tkEngine{
 	}
 	void CEdgeRender::Render( CRenderContext& renderContext, CPostEffect* postEffect)
 	{
+		CPIXPerfTag tag(renderContext, L"CEdgeRender::Render");
 		if (m_isEnable) {
 			renderContext.SetRenderState(RS_ZENABLE, D3DZB_FALSE);
 			//IDMapのテクスチャを取得。

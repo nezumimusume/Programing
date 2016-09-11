@@ -241,7 +241,9 @@ namespace tkEngine{
 
 				CRenderContext& topRenderContext = m_renderContextArray[0];
 				CRenderContext& lastRenderContext = m_renderContextArray[m_numRenderContext - 1];
+
 				topRenderContext.SetRenderTarget(0, &m_mainRenderTarget[m_currentMainRenderTarget]);
+				topRenderContext.SetRenderTarget(1, NULL);
 				
 				CGameObjectManager& goMgr = CGameObjectManager::Instance();
 				goMgr.Execute(
@@ -279,6 +281,8 @@ namespace tkEngine{
 	}
 	void CEngine::Final()
 	{
+		m_preRender.Release();
+		m_postEffect.Release();
 		m_backBufferRT.Release();
 		for (int i = 0; i < 2; i++) {
 			m_mainRenderTarget[i].Release();

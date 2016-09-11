@@ -108,6 +108,7 @@ namespace tkEngine{
 	}
 	void CShadowMap::RenderToShadowMap( CRenderContext& renderContext )
 	{
+		CPIXPerfTag tag(renderContext, L"CShadowMap::RenderToShadowMap");
 		if (m_isEnable) {
 
 			CRenderTarget* pRTBackup = renderContext.GetRenderTarget(0);

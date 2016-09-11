@@ -177,6 +177,13 @@ namespace tkEngine{
 		{
 			return m_particleResource;
 		}
+		/*!
+		* @brief	DOFを取得。
+		*/
+		CDof& GetDof()
+		{
+			return m_postEffect.GetDof();
+		}
 	private:
 		/*!
 		* @brief	メインレンダリングターゲットの内容をバックバッファにコピー。
@@ -256,6 +263,10 @@ namespace tkEngine{
 	static inline CParticleResources& ParticleResources()
 	{
 		return CEngine::Instance().ParticleResource();
+	}
+	static inline CDof& Dof()
+	{
+		return CEngine::Instance().GetDof();
 	}
 }
 

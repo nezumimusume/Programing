@@ -179,6 +179,12 @@
     <ClCompile Include="graphics\tkMaterial.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\postEffect\tkPostEffectDOF.cpp">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkGaussianBlur.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -329,6 +335,15 @@
       <Filter>Source Files\graphics\prerender</Filter>
     </ClInclude>
     <ClInclude Include="graphics\tkBlur.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\postEffect\tkPostEffectDOF.h">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkPIXPerfTag.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkGaussianBlur.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>

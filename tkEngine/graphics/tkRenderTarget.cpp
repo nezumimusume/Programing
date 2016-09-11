@@ -81,5 +81,6 @@ namespace tkEngine{
 			m_surface->Release();
 			m_surface = nullptr;
 		}
+		m_texture.Release();
 	}
 }

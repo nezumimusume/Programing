@@ -25,6 +25,10 @@ namespace tkEngine{
 		 */
 		void Init(int w, int h);
 		/*!
+		*@brief	ŠJ•úB
+		*/
+		void Release();
+		/*!
 		 *@brief	•`‰æB
 		 */
 		void Render(CRenderContext& renderContext);

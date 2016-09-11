@@ -67,8 +67,12 @@ namespace tkEngine{
 				obj->PreRenderWrapper(renderContext[0]);
 			}
 		}
+		
 		if (numRenderContext == 1) {
+			CPIXPerfTag tag(renderContext[0], L"Render MainRenderTarget");
 			//シングルスレッド描画。
+			//深度書き込み用のレンダリングターゲットを設定。
+			renderContext[0].SetRenderTarget(1, Dof().GetDepthRenderTarget());
 			for (GameObjectList objList : m_gameObjectListArray) {
 				for (IGameObject* obj : objList) {
 					obj->RenderWrapper(renderContext[0]);
@@ -80,7 +84,8 @@ namespace tkEngine{
 			TK_ASSERT(0, "not implement!!");
 			
 		}
-		
+		//深度書き込み用のレンダリングターゲットを外す。
+		renderContext[numRenderContext - 1].SetRenderTarget(1, NULL);
 		postEffect.Render(renderContext[numRenderContext-1]);
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {

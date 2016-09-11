@@ -199,9 +199,10 @@ namespace tkEngine {
 	}
 	__inline void CRenderContext::SetRenderTarget(int renderTargetIndex, CRenderTarget* pRT)
 	{
+		TK_ASSERT(renderTargetIndex < NUM_MRT, "renderTargetIndex is invalid");
 		m_pCurrentRT[renderTargetIndex] = pRT;
 		SetRenderCommand(CRenderCommand_SetRenderTarget(renderTargetIndex, pRT));
-		SetRenderCommand(CRenderCommand_SetDepthStencilSurface(pRT));
+		SetRenderCommand(CRenderCommand_SetDepthStencilSurface(renderTargetIndex, pRT));
 	}
 	/*!
 	* @brief	ƒƒbƒVƒ…‚ð•`‰æB

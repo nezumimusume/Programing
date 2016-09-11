@@ -12,6 +12,14 @@ namespace tkEngine{
 	CPostEffect::~CPostEffect()
 	{
 	}
+	/*!
+	* @brief	äJï˙ÅB
+	*/
+	void CPostEffect::Release()
+	{
+		m_bloomRender.Release();
+		m_dof.Release();
+	}
 	void CPostEffect::Create( const SGraphicsConfig& config )
 	{
 		if(config.edgeRenderConfig.isEnable){
@@ -20,6 +28,7 @@ namespace tkEngine{
 		if (config.bloomConfig.isEnable) {
 			m_bloomRender.Create(config);
 		}
+		m_dof.Create(config);
 		static SShapeVertex_PT vertex[]{
 			{
 				-1.0f, 1.0f, 0.0f, 1.0f,
@@ -55,6 +64,7 @@ namespace tkEngine{
 	void CPostEffect::Render(CRenderContext& renderContext)
 	{
 		m_edgeRender.Render(renderContext, this);
+		m_dof.Render(renderContext, this);
 		m_bloomRender.Render(renderContext, this);
 	}
 	/*!

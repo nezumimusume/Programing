@@ -24,13 +24,8 @@ namespace tkEngine{
 		float total = 0;
 		for (int i = 0; i<NUM_WEIGHTS; i++) {
 			m_weights[i] = expf(-0.5f*(float)(i*i) / dispersion);
-			if (0 == i) {
-				total += m_weights[i];
-			}
-			else {
-				// ’†SˆÈŠO‚ÍA‚Q‰ñ“¯‚¶ŒW”‚ðŽg‚¤‚Ì‚Å‚Q”{
-				total += 2.0f*m_weights[i];
-			}
+			total += 2.0f*m_weights[i];
+			
 		}
 		// ‹KŠi‰»
 		for (int i = 0; i < NUM_WEIGHTS; i++) {
@@ -42,7 +37,7 @@ namespace tkEngine{
 	 */
 	void CBloomRender::Render( CRenderContext& renderContext, CPostEffect* postEffect )
 	{
-
+		CPIXPerfTag tag(renderContext, L"CBloomRender::Render");
 		if (m_isEnable) {
 			UpdateWeight(25.0f);
 			CRenderTarget* rt = renderContext.GetRenderTarget(0);
@@ -198,6 +193,16 @@ namespace tkEngine{
 			}
 		}
 
+	}
+	/*!
+	* @brief	ŠJ•úB
+	*/
+	void CBloomRender::Release()
+	{
+		m_luminanceRenderTarget.Release();
+		for (int i = 0; i < NUM_DOWN_SAMPLING_RT; i++) {
+			m_downSamplingRenderTarget[i].Release();
+		}
 	}
 	/*!
 	 * @brief	ì¬B

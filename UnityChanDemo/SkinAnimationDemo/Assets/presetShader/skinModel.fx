@@ -95,7 +95,7 @@ struct VS_OUTPUT
     float2  Tex0   			: TEXCOORD0;
     float3	Tangent			: TEXCOORD1;	//接ベクトル
     float4  lightViewPos	: TEXCOORD2;
-    float3  worldPos		: TEXCOORD3;
+    float4  worldPos_depth	: TEXCOORD3;	//xyzにワールド座標。wには射影空間でのdepthが格納される。
 };
 
 /*!
@@ -107,6 +107,13 @@ struct VS_OUTPUT_RENDER_SHADOW_MAP
 	float4	depth	: TEXCOORD;
 };
 
+/*!
+ * @brief	ピクセルシェーダーからの出力。
+ */
+struct PSOutput{
+	float4	color	: COLOR0;		//レンダリングターゲット0に書き込み。
+	float4	depth	: CoLOR1;		//レンダリングターゲット1に書き込み。
+};
 
 /*!
  *@brief	ワールド座標とワールド法線をスキン行列から計算する。
@@ -178,8 +185,10 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 		//スキンなし。
 		CalcWorldPosAndNormal( In, Pos, Normal, Tangent, true );
 	}
-	o.worldPos = Pos.xyz;
+	o.worldPos_depth.xyz = Pos.xyz;
+	
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
+    o.worldPos_depth.w = o.Pos.z;
     o.Normal = normalize(Normal);
     o.Tangent = normalize(Tangent);
     o.Tex0 = In.Tex0;
@@ -211,8 +220,9 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
 	worldMat[2] = In.mWorld3;
 	worldMat[3] = In.mWorld4;
 	Pos = mul(float4(Pos.xyz, 1.0f), worldMat );	//ワールド行列をかける。
-	o.worldPos = Pos.xyz;
+	o.worldPos_depth.xyz = Pos.xyz;
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
+    o.worldPos_depth.w = o.Pos.z;
     o.Normal = mul(normalize(Normal), worldMat);
     o.Tex0 = In.base.Tex0;
     if(g_flags.y){
@@ -224,7 +234,7 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
 /*!
  * @brief	ピクセルシェーダー。
  */
-float4 PSMain( VS_OUTPUT In ) : COLOR
+PSOutput PSMain( VS_OUTPUT In )
 {
 	float4 color = tex2D(g_diffuseTextureSampler, In.Tex0);
 	float3 normal = 0.0f;
@@ -258,7 +268,7 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 		float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
 		float2 shadow_val = 1.0f;
 		
-		if(shadowMapUV.x <= 1.0f && shadowMapUV.y <= 1.0f && shadowMapUV.x >= 0.0f && shadowMapUV.y >= 0.0f){
+		if(shadowMapUV.x < 0.99f && shadowMapUV.y < 0.99f && shadowMapUV.x > 0.01f && shadowMapUV.y > 0.01f){
 			shadow_val = tex2D( g_shadowMapSampler, shadowMapUV ).rg;
 			float depth = min(posInLVP.z, 1.0f);
 		#ifdef USE_VSM
@@ -281,7 +291,7 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	}
 	if(g_flags.w){
 		//スペキュラライト。
-		lig.xyz += SpecLight(normal, In.worldPos, In.Tex0);
+		lig.xyz += SpecLight(normal, In.worldPos_depth.xyz, In.Tex0);
 	}
 	//アンビエントライトを加算。
 	lig.xyz += g_light.ambient.xyz;
@@ -290,12 +300,12 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	
 	if(g_fogParam.z > 1.9f){
 		//高さフォグ
-		float h = max(In.worldPos.y - g_fogParam.y, 0.0f);
+		float h = max(In.worldPos_depth.y - g_fogParam.y, 0.0f);
 		float t = min(h / g_fogParam.x, 1.0f);
 		color.xyz = lerp(float3(0.9f, 0.9f, 0.95f), color.xyz, t);
 	}else if(g_fogParam.z > 0.0f){
 		//距離フォグ
-		float z = length(In.worldPos - g_cameraPos);
+		float z = length(In.worldPos_depth.xyz - g_cameraPos);
 		z = max(z - g_fogParam.x, 0.0f);
 		float t = min( z / g_fogParam.y, 1.0f);
 		color.xyz = lerp(color.xyz, float3(0.9f, 0.9f, 0.95f), t);
@@ -304,7 +314,10 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	//αに輝度を埋め込む。
 	color.a = CalcLuminance(color.xyz) ;
 #endif
-	return color;
+	PSOutput psOut = (PSOutput)0;
+	psOut.color = color;
+	psOut.depth = In.worldPos_depth.w;
+	return psOut;
 }
 
 

@@ -38,6 +38,8 @@ namespace tkEngine{
 		eRendderCommand_MeshDrawSubset,
 		enRenderCommand_DrawSkinModel,
 		enRenderCommand_DrawSkinModelToShadowMap,
+		enRenderCommand_PerfBeginEvent,
+		enRenderCommand_PerfEndEvent,
 		eRenderCommand_Undef
 	};
 	/*!
@@ -390,7 +392,12 @@ namespace tkEngine{
 		}
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice )
 		{
-			pD3DDevice->SetRenderTarget(0, m_pRT->GetSurfaceDx());
+			if (m_pRT) {
+				pD3DDevice->SetRenderTarget(m_renderTargetIndex, m_pRT->GetSurfaceDx());
+			}
+			else {
+				pD3DDevice->SetRenderTarget(m_renderTargetIndex, nullptr);
+			}
 		}
 	};
 	/*!
@@ -399,15 +406,19 @@ namespace tkEngine{
 	class CRenderCommand_SetDepthStencilSurface : public CRenderCommandBase
 	{
 		CRenderTarget*	m_pRT;
+		int	m_renderTargetIndex;
 	public:
-		CRenderCommand_SetDepthStencilSurface(CRenderTarget* pRT) :
+		CRenderCommand_SetDepthStencilSurface(int renderTargetIndex, CRenderTarget* pRT) :
 			CRenderCommandBase(eRenderCommand_SetDepthStencilSurface),
-			m_pRT(pRT)
+			m_pRT(pRT),
+			m_renderTargetIndex(renderTargetIndex)
 		{
 		}
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
 		{
-			pD3DDevice->SetDepthStencilSurface(m_pRT->GetDepthSurfaceDx());
+			if (m_renderTargetIndex == 0) {
+				pD3DDevice->SetDepthStencilSurface(m_pRT->GetDepthSurfaceDx());
+			}
 		}
 	};
 	/*!
@@ -508,6 +519,39 @@ namespace tkEngine{
 				r_cast<D3DXMATRIX*>(m_projMatrix),
 				true
 				);
+		}
+	};
+	/*!
+	* @brief	PIXにパフォーマンス計測用のタグを打ち込む。
+	*/
+	class CRenderCommand_PerfBeginEvent : public CRenderCommandBase{
+		LPCWSTR name;
+	public:
+		CRenderCommand_PerfBeginEvent(LPCWSTR name) :
+			CRenderCommandBase(enRenderCommand_PerfBeginEvent)
+		{
+			this->name = name;
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			D3DPERF_BeginEvent(D3DCOLOR_RGBA(0, 0, 0, 0), name);
+		}
+	};
+	/*!
+	* @brief	パフォーマンス計測終了
+	*@details
+	* 必ずCRenderCommand_PerfBeginEventと対になるようにすること。
+	*/
+	class CRenderCommand_PerfEndEvent : public CRenderCommandBase {
+	public:
+		CRenderCommand_PerfEndEvent() :
+			CRenderCommandBase(enRenderCommand_PerfEndEvent)
+		{
+
+		}
+		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
+		{
+			D3DPERF_EndEvent();
 		}
 	};
 }

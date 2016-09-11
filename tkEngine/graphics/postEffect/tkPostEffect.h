@@ -7,6 +7,7 @@
 
 #include "tkEngine/graphics/postEffect/tkEdgeRender.h"
 #include "tkEngine/graphics/postEffect/tkBloomRender.h"
+#include "tkEngine/graphics/postEffect/tkPostEffectDOF.h"
 
 namespace tkEngine{
 	/*!
@@ -23,6 +24,10 @@ namespace tkEngine{
 		 */
 		~CPostEffect();
 		/*!
+		* @brief	開放。
+		*/
+		void Release();
+		/*!
 		 * @brief
 		 */
 		void Create( const SGraphicsConfig& config );
@@ -34,9 +39,17 @@ namespace tkEngine{
 		* @brief	フルスクリーン描画。
 		*/
 		void RenderFullScreen(CRenderContext& renderContext);
+		/*!
+		* @brief	DOFを取得。
+		*/
+		CDof& GetDof()
+		{
+			return m_dof;
+		}
 	private:
 		CEdgeRender		m_edgeRender;		//!<エッジ描画。
 		CBloomRender	m_bloomRender;		//!<Bloom。
+		CDof			m_dof;				//!<被写界深度
 		CPrimitive		m_fullscreenRenderPrim;	//!<フルスクリーンをレンダリングするためのプリミティブ。
 	};
 }
