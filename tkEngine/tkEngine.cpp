@@ -243,6 +243,7 @@ namespace tkEngine{
 				CRenderContext& lastRenderContext = m_renderContextArray[m_numRenderContext - 1];
 
 				topRenderContext.SetRenderTarget(0, &m_mainRenderTarget[m_currentMainRenderTarget]);
+				//topRenderContext.SetRenderTarget(0, &m_backBufferRT);
 				topRenderContext.SetRenderTarget(1, NULL);
 				
 				CGameObjectManager& goMgr = CGameObjectManager::Instance();

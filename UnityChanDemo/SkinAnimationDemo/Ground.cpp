@@ -46,7 +46,18 @@ void Ground::IsIntersect(const CVector3& pos, const CVector3& ray, int& bHit, fl
 	CVector3 rayInGround = ray;
 	mWorldInv.Mul3x3(rayInGround);	//レイは回すだけなので3x3行列を乗算する。
 	//レイは回すだけ
-	HRESULT hr = D3DXIntersect(skinModel.GetOrgMeshFirst(), (const D3DXVECTOR3*)&posInGround, (const D3DXVECTOR3*)&rayInGround, &bHit, NULL, NULL, NULL, &len, NULL, NULL);
+	HRESULT hr = D3DXIntersect(
+		skinModel.GetOrgMeshFirst(),		//コースからメッシュを引っ張ってくる。 
+		(const D3DXVECTOR3*)&posInGround,	//車の座標・・・ただし、コース座標系。
+		(const D3DXVECTOR3*)&rayInGround,	//レイ・・・ただし、コース座標系。 
+		&bHit,								//衝突していたら1、衝突してなかったら0 
+		NULL, 
+		NULL, 
+		NULL, 
+		&len,								//始点から交点までの距離。
+		NULL, 
+		NULL
+	);
 	if (FAILED(hr)) {
 		TK_LOG("IsInterSect Error");
 	}

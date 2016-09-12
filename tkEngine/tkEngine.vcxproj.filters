@@ -286,9 +286,6 @@
     <ClInclude Include="graphics\postEffect\tkBloomRender.h">
       <Filter>Source Files\graphics\postEffect</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\preRender\tkShadowMap.h">
-      <Filter>Source Files\graphics\prerender</Filter>
-    </ClInclude>
     <ClInclude Include="Input\tkKeyInput.h">
       <Filter>Source Files\Input</Filter>
     </ClInclude>
@@ -344,6 +341,9 @@
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
     <ClInclude Include="graphics\tkGaussianBlur.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\preRender\tkShadowMap.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>

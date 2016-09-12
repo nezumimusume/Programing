@@ -413,6 +413,9 @@ namespace tkEngine{
 			m_pRT(pRT),
 			m_renderTargetIndex(renderTargetIndex)
 		{
+			if (pRT == NULL) {
+				int hoge = 0;
+			}
 		}
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
 		{

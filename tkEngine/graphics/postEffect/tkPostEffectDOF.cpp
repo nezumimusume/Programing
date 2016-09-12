@@ -11,7 +11,10 @@ namespace tkEngine{
 	 * @brief	コンストラクタ。
 	 */
 	CDof::CDof() :
-		m_isEnable(false)
+		m_isEnable(false),
+		m_pint(3000.0f),
+		m_focalLength(24.0f),
+		m_F(5.6f)
 	{
 	}
 	/*!
@@ -49,30 +52,16 @@ namespace tkEngine{
 	{
 		CPIXPerfTag tag(renderContext, L"CDof::Render");
 		if (m_isEnable) {
-			//ボケ用のパラメータをこちらで計算する。
 			//被写体との距離から、こちらで計算する。
-			//とりあえず適当。
-			static float pint = 3000.0f;		//被写体までの距離(単位はmm)
-			static float focalLength = 28.0f;	//焦点距離(単位はmm)
-			static float f = 5.6f;				//絞り値
 			static float CoC = 0.033f;			//許容錯乱円(単位はmm)
-			float forwardDof = (CoC * f * pint * pint) / (focalLength * focalLength + CoC * f * pint);
-			float backDof = (CoC * f * pint * pint) / (focalLength * focalLength - CoC * f * pint);
+			float forwardDof = (CoC * m_F * m_pint * m_pint) / (m_focalLength * m_focalLength + CoC * m_F * m_pint);
+			float backDof = (CoC * m_F * m_pint * m_pint) / (m_focalLength * m_focalLength - CoC * m_F * m_pint);
 			//手前ボケ、奥ボケ、ピントをm単位に変更してGPUに送る
-			
-			
 			float dofParam[] = {
 				forwardDof / 1000.0f,
 				backDof / 1000.0f,
-				pint / 1000.0f
+				m_pint / 1000.0f
 			};
-
-			static float depth = 5.0f;
-			float t = depth - dofParam[2];
-			float forwardRate = max(0.0f, -dofParam[0] - t);
-			float backRate = max(0.0f, t - dofParam[1]);
-			t = max(forwardRate, backRate);
-			t = min(t / (dofParam[2] - dofParam[0]), 1.0f);
 
 			//ボケ画像を作成する。
 			//奥ボケ

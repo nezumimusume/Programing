@@ -76,6 +76,10 @@ void GameCamera::Update()
 		
 	}
 	camera.Update();
+	//被写界深度のパラメータを更新
+	Dof().SetFocalLength(28.0f);
+	Dof().SetFParam(5.6f);
+	Dof().SetPint(toPosition.Length() * 1000.0f);
 }
 void GameCamera::Render( CRenderContext& renderContext )
 {
