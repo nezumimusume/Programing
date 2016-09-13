@@ -188,7 +188,7 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 	o.worldPos_depth.xyz = Pos.xyz;
 	
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
-    o.worldPos_depth.w = o.Pos.z;
+    o.worldPos_depth.w = o.Pos.w;
     o.Normal = normalize(Normal);
     o.Tangent = normalize(Tangent);
     o.Tex0 = In.Tex0;
@@ -222,7 +222,7 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
 	Pos = mul(float4(Pos.xyz, 1.0f), worldMat );	//ワールド行列をかける。
 	o.worldPos_depth.xyz = Pos.xyz;
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
-    o.worldPos_depth.w = o.Pos.z;
+    o.worldPos_depth.w = o.Pos.w;
     o.Normal = mul(normalize(Normal), worldMat);
     o.Tex0 = In.base.Tex0;
     if(g_flags.y){

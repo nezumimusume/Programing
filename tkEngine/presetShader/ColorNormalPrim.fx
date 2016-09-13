@@ -1,7 +1,7 @@
 /*!
  *@brief	頂点カラー、法線ありのプリミティブ。
  */
-
+#include "Common.h" 
 #include "LightingFunction.h"
 
 float4x4	g_mWVP;					//ワールドビュープロジェクション行列。

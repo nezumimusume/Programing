@@ -344,7 +344,7 @@
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
     <ClInclude Include="graphics\preRender\tkShadowMap.h">
-      <Filter>Source Files\graphics</Filter>
+      <Filter>Source Files\graphics\prerender</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

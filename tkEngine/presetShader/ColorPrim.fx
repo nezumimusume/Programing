@@ -1,7 +1,7 @@
 /*!
  *@brief	カラープリミティブ。
  */
-
+#include "Common.h" 
 float4x4	g_mWVP;		//ワールドビュープロジェクション行列。
 
 struct VS_INPUT{
