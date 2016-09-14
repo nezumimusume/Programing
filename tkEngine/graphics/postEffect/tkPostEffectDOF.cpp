@@ -86,6 +86,8 @@ namespace tkEngine{
 				s_cast<float>(m_depthRT.GetHeight()),
 			};
 			m_effect->SetValue(renderContext, "g_sceneTexSize", texSize, sizeof(texSize));
+			Engine().ToggleMainRenderTarget();
+			renderContext.SetRenderTarget(0, &Engine().GetMainRenderTarget());
 			m_effect->CommitChanges(renderContext);
 			postEffect->RenderFullScreen(renderContext);
 			m_effect->EndPass(renderContext);

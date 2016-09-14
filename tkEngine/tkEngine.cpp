@@ -114,7 +114,7 @@ namespace tkEngine{
 		//メインレンダリングターゲットを作成。
 		for (int i = 0; i < 2; i++) {
 #ifdef USE_BLOOM_FLOATING_BUFFER
-			m_mainRenderTarget[0].Create(
+			m_mainRenderTarget[i].Create(
 				m_frameBufferWidth,
 				m_frameBufferHeight,
 				1,
