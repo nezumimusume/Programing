@@ -1,7 +1,7 @@
 /*!
  * @brief	ƒXƒLƒ“ƒ‚ƒfƒ‹ƒVƒF[ƒ_[B(4ƒ{[ƒ“ƒXƒLƒjƒ“ƒO)
  */
-
+#include "Common.h" 
 #include "LightingFunction.h"
 
 #define USE_VSM	//’è‹`‚·‚é‚ÆVSM‚ª—LŒø‚É‚È‚éB
@@ -19,7 +19,7 @@ float4		g_fogParam;				//ƒtƒHƒO‚Ìƒpƒ‰ƒ[ƒ^Bx‚ÉƒtƒHƒO‚ªŠ|‚©‚èn‚ß‚é[“xBy‚Éƒtƒ
 
 float2		g_farNear;	//‰“•½–Ê‚Æ‹ß•½–ÊBx‚É‰“•½–ÊAy‚É‹ß•½–ÊB
 
-int4 g_flags;				//x‚É–@üƒ}ƒbƒvAy‚ÍƒVƒƒƒhƒEƒŒƒV[ƒo[Az‚ÍƒtƒŒƒlƒ‹Aw‚ÍƒXƒyƒLƒ…ƒ‰ƒ}ƒbƒvB
+int4 g_flags;				//x‚É–@üƒ}ƒbƒvAy‚ÍƒVƒƒƒhƒEƒŒƒV[ƒo[Az‚ÍƒŠƒ€ƒ‰ƒCƒgAw‚ÍƒXƒyƒLƒ…ƒ‰ƒ}ƒbƒvB
 
 texture g_diffuseTexture;		//ƒfƒBƒtƒ…[ƒYƒeƒNƒXƒ`ƒƒB
 sampler g_diffuseTextureSampler = 
@@ -95,7 +95,7 @@ struct VS_OUTPUT
     float2  Tex0   			: TEXCOORD0;
     float3	Tangent			: TEXCOORD1;	//ÚƒxƒNƒgƒ‹
     float4  lightViewPos	: TEXCOORD2;
-    float3  worldPos		: TEXCOORD3;
+    float4  worldPos_depth	: TEXCOORD3;	//xyz‚Éƒ[ƒ‹ƒhÀ•WBw‚É‚ÍË‰e‹óŠÔ‚Å‚Ìdepth‚ªŠi”[‚³‚ê‚éB
 };
 
 /*!
@@ -107,6 +107,13 @@ struct VS_OUTPUT_RENDER_SHADOW_MAP
 	float4	depth	: TEXCOORD;
 };
 
+/*!
+ * @brief	ƒsƒNƒZƒ‹ƒVƒF[ƒ_[‚©‚ç‚Ìo—ÍB
+ */
+struct PSOutput{
+	float4	color	: COLOR0;		//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg0‚É‘‚«‚İB
+	float4	depth	: CoLOR1;		//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg1‚É‘‚«‚İB
+};
 
 /*!
  *@brief	ƒ[ƒ‹ƒhÀ•W‚Æƒ[ƒ‹ƒh–@ü‚ğƒXƒLƒ“s—ñ‚©‚çŒvZ‚·‚éB
@@ -178,8 +185,10 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 		//ƒXƒLƒ“‚È‚µB
 		CalcWorldPosAndNormal( In, Pos, Normal, Tangent, true );
 	}
-	o.worldPos = Pos.xyz;
+	o.worldPos_depth.xyz = Pos.xyz;
+	
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
+    o.worldPos_depth.w = o.Pos.w;
     o.Normal = normalize(Normal);
     o.Tangent = normalize(Tangent);
     o.Tex0 = In.Tex0;
@@ -211,8 +220,9 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
 	worldMat[2] = In.mWorld3;
 	worldMat[3] = In.mWorld4;
 	Pos = mul(float4(Pos.xyz, 1.0f), worldMat );	//ƒ[ƒ‹ƒhs—ñ‚ğ‚©‚¯‚éB
-	o.worldPos = Pos.xyz;
+	o.worldPos_depth.xyz = Pos.xyz;
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
+    o.worldPos_depth.w = o.Pos.w;
     o.Normal = mul(normalize(Normal), worldMat);
     o.Tex0 = In.base.Tex0;
     if(g_flags.y){
@@ -224,7 +234,7 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
 /*!
  * @brief	ƒsƒNƒZƒ‹ƒVƒF[ƒ_[B
  */
-float4 PSMain( VS_OUTPUT In ) : COLOR
+PSOutput PSMain( VS_OUTPUT In )
 {
 	float4 color = tex2D(g_diffuseTextureSampler, In.Tex0);
 	float3 normal = 0.0f;
@@ -247,7 +257,10 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	
 	
 	float4 lig = DiffuseLight(normal);
-	
+	if(g_flags.z){
+		//ƒŠƒ€ƒ‰ƒCƒgB
+		lig.xyz += CalcLimLight(normal);
+	}
 	if(g_flags.y){
 		float4 posInLVP = In.lightViewPos;
 		posInLVP.xyz /= posInLVP.w;
@@ -255,7 +268,7 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 		float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
 		float2 shadow_val = 1.0f;
 		
-		if(shadowMapUV.x <= 1.0f && shadowMapUV.y <= 1.0f && shadowMapUV.x >= 0.0f && shadowMapUV.y >= 0.0f){
+		if(shadowMapUV.x < 0.99f && shadowMapUV.y < 0.99f && shadowMapUV.x > 0.01f && shadowMapUV.y > 0.01f){
 			shadow_val = tex2D( g_shadowMapSampler, shadowMapUV ).rg;
 			float depth = min(posInLVP.z, 1.0f);
 		#ifdef USE_VSM
@@ -278,33 +291,33 @@ float4 PSMain( VS_OUTPUT In ) : COLOR
 	}
 	if(g_flags.w){
 		//ƒXƒyƒLƒ…ƒ‰ƒ‰ƒCƒgB
-		lig.xyz += SpecLight(normal, In.worldPos, In.Tex0);
+		lig.xyz += SpecLight(normal, In.worldPos_depth.xyz, In.Tex0);
 	}
 	//ƒAƒ“ƒrƒGƒ“ƒgƒ‰ƒCƒg‚ğ‰ÁZB
 	lig.xyz += g_light.ambient.xyz;
 	color.xyz *= lig;
 	
-	if(g_flags.z){
-		//ƒtƒŒƒlƒ‹B
-		/*float3 normalInCamera = mul(normal, g_viewMatrixRotInv );
-		float t = 1.0f - abs(dot(normalInCamera, float3(0.0f, 0.0f, 1.0f)));
-		t = pow(t, 1.5f);
-		color.xyz += t * 0.7f;*/
-		color.xyz += CalcLimLight(normal);
-	}
+	
 	if(g_fogParam.z > 1.9f){
 		//‚‚³ƒtƒHƒO
-		float h = max(In.worldPos.y - g_fogParam.y, 0.0f);
+		float h = max(In.worldPos_depth.y - g_fogParam.y, 0.0f);
 		float t = min(h / g_fogParam.x, 1.0f);
-		color.xyz = lerp(float3(1.0f, 1.0f, 1.0f), color.xyz, t);
+		color.xyz = lerp(float3(0.9f, 0.9f, 0.95f), color.xyz, t);
 	}else if(g_fogParam.z > 0.0f){
 		//‹——£ƒtƒHƒO
-		float z = length(In.worldPos - g_cameraPos);
+		float z = length(In.worldPos_depth.xyz - g_cameraPos);
 		z = max(z - g_fogParam.x, 0.0f);
-		float t = z / g_fogParam.y;
-		color.xyz = lerp(color.xyz, float3(1.0f, 1.0f, 1.0f), t);
+		float t = min( z / g_fogParam.y, 1.0f);
+		color.xyz = lerp(color.xyz, float3(0.9f, 0.9f, 0.95f), t);
 	}
-	return color;
+#ifndef USE_BLOOM_FLOATING_BUFFER
+	//ƒ¿‚É‹P“x‚ğ–„‚ß‚ŞB
+	color.a = CalcLuminance(color.xyz) ;
+#endif
+	PSOutput psOut = (PSOutput)0;
+	psOut.color = color;
+	psOut.depth = In.worldPos_depth.w;
+	return psOut;
 }
 
 
