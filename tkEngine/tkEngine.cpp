@@ -85,7 +85,7 @@ namespace tkEngine{
 
     	// Create the D3DDevice
 	    if( FAILED( m_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hWnd,
-	                                      D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+	                                      D3DCREATE_HARDWARE_VERTEXPROCESSING,
 	                                      &d3dpp, &m_pD3DDevice ) ) )
 	    {
 	        return false;
@@ -114,7 +114,7 @@ namespace tkEngine{
 		//メインレンダリングターゲットを作成。
 		for (int i = 0; i < 2; i++) {
 #ifdef USE_BLOOM_FLOATING_BUFFER
-			m_mainRenderTarget[0].Create(
+			m_mainRenderTarget[i].Create(
 				m_frameBufferWidth,
 				m_frameBufferHeight,
 				1,

@@ -7,7 +7,7 @@
 
 #include "tkEngine/graphics/postEffect/tkEdgeRender.h"
 #include "tkEngine/graphics/postEffect/tkBloomRender.h"
-#include "tkEngine/graphics/postEffect/tkPostEffectDOF.h"
+#include "tkEngine/graphics/postEffect/tkDOF.h"
 
 namespace tkEngine{
 	/*!

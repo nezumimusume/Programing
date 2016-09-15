@@ -44,6 +44,12 @@ namespace tkEngine{
 		bool isEnable;					//被写界深度が有効かどうかのフラグ。
 	};
 	/*!
+	* @brief	アンチエイリアスのコンフィグ。
+	*/
+	struct SAAConfig {
+		bool isEnable;					//アンチエイリアスが有効かどうかのフラグ。
+	};
+	/*!
 	 * @brief	グラフィックスコンフィグ。
 	 */
 	struct SGraphicsConfig{
@@ -52,6 +58,7 @@ namespace tkEngine{
 		SBloomConfig			bloomConfig;			//!<Bloomのコンフィグ。
 		SReflectionMapConfig	reflectionMapConfig;	//!<リフレクションマップのコンフィグ。
 		SDofConfig				dofConfig;				//!<被写界深度のコンフィグ。
+		SAAConfig				aaConfig;				//!<アンチエイリアスのコンフィグ。
 	};
 }
 

@@ -3,7 +3,7 @@
  */
 
 #include "tkEngine/tkEnginePreCompile.h"
-#include "tkEngine/graphics/postEffect/tkPostEffectDOF.h"
+#include "tkEngine/graphics/postEffect/tkDOF.h"
 #include "tkEngine/graphics/tkEffect.h"
 
 namespace tkEngine{
@@ -87,6 +87,10 @@ namespace tkEngine{
 			};
 			m_effect->SetValue(renderContext, "g_sceneTexSize", texSize, sizeof(texSize));
 			m_effect->CommitChanges(renderContext);
+			
+			Engine().ToggleMainRenderTarget();
+			renderContext.SetRenderTarget(0, &Engine().GetMainRenderTarget());
+			
 			postEffect->RenderFullScreen(renderContext);
 			m_effect->EndPass(renderContext);
 			m_effect->End(renderContext);

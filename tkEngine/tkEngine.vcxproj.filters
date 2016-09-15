@@ -179,11 +179,14 @@
     <ClCompile Include="graphics\tkMaterial.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\postEffect\tkPostEffectDOF.cpp">
-      <Filter>Source Files\graphics\postEffect</Filter>
-    </ClCompile>
     <ClCompile Include="graphics\tkGaussianBlur.cpp">
       <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\postEffect\tkDOF.cpp">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\postEffect\tkFxaa.cpp">
+      <Filter>Source Files\graphics\postEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -334,9 +337,6 @@
     <ClInclude Include="graphics\tkBlur.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\postEffect\tkPostEffectDOF.h">
-      <Filter>Source Files\graphics\postEffect</Filter>
-    </ClInclude>
     <ClInclude Include="graphics\tkPIXPerfTag.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
@@ -345,6 +345,12 @@
     </ClInclude>
     <ClInclude Include="graphics\preRender\tkShadowMap.h">
       <Filter>Source Files\graphics\prerender</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\postEffect\tkDOF.h">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\postEffect\tkFxaa.h">
+      <Filter>Source Files\graphics\postEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
