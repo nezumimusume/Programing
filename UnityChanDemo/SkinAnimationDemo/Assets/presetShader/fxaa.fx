@@ -35,6 +35,23 @@ VS_OUTPUT VSMain( VS_INPUT In )
 	Out.uv = In.uv + float2( 0.5/g_sceneTexSize.x, 0.5/g_sceneTexSize.y);
 	return Out;
 }
+float4 FxaaPixelShader( 
+	float2 pos, 
+	float4 fxaaConsolePosPos,
+	float2 fxaaQualityRcpFrame,
+    float4 fxaaConsoleRcpFrameOpt,
+    float4 fxaaConsoleRcpFrameOpt2,
+    float4 fxaaConsole360RcpFrameOpt2,
+    float fxaaQualitySubpix,
+    float fxaaQualityEdgeThreshold,
+    float fxaaQualityEdgeThresholdMin,
+    float fxaaConsoleEdgeSharpness,
+    float fxaaConsoleEdgeThreshold,
+    float fxaaConsoleEdgeThresholdMin,
+    float4 fxaaConsole360ConstDir
+)
+{
+}
 /*!
  *@brief	ピクセルシェーダー。
  */
