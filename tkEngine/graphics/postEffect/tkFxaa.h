@@ -22,6 +22,10 @@ namespace tkEngine{
 		 */
 		~CFxaa();
 		/*!
+		* @brief	開放。
+		*/
+		void Release();
+		/*!
 		 *@brief	初期化。
 		 *@param[in]	config		グラフィックコンフィグ
 		 */

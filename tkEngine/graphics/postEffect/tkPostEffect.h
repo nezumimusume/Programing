@@ -8,6 +8,7 @@
 #include "tkEngine/graphics/postEffect/tkEdgeRender.h"
 #include "tkEngine/graphics/postEffect/tkBloomRender.h"
 #include "tkEngine/graphics/postEffect/tkDOF.h"
+#include "tkEngine/graphics/postEffect/tkFxaa.h"
 
 namespace tkEngine{
 	/*!
@@ -50,6 +51,7 @@ namespace tkEngine{
 		CEdgeRender		m_edgeRender;		//!<エッジ描画。
 		CBloomRender	m_bloomRender;		//!<Bloom。
 		CDof			m_dof;				//!<被写界深度
+		CFxaa			m_fxaa;
 		CPrimitive		m_fullscreenRenderPrim;	//!<フルスクリーンをレンダリングするためのプリミティブ。
 	};
 }

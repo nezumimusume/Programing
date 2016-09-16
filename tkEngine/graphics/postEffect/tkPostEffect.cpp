@@ -19,6 +19,7 @@ namespace tkEngine{
 	{
 		m_bloomRender.Release();
 		m_dof.Release();
+		m_fxaa.Release();
 	}
 	void CPostEffect::Create( const SGraphicsConfig& config )
 	{
@@ -29,6 +30,7 @@ namespace tkEngine{
 			m_bloomRender.Create(config);
 		}
 		m_dof.Create(config);
+		m_fxaa.Init(config);
 		static SShapeVertex_PT vertex[]{
 			{
 				-1.0f, 1.0f, 0.0f, 1.0f,
@@ -66,6 +68,7 @@ namespace tkEngine{
 		m_edgeRender.Render(renderContext, this);
 		m_dof.Render(renderContext, this);
 		m_bloomRender.Render(renderContext, this);
+		m_fxaa.Render(renderContext, this);
 	}
 	/*!
 	* @brief	フルスクリーン描画。

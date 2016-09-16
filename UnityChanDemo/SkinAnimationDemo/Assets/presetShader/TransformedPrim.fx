@@ -13,6 +13,7 @@ struct VS_OUTPUT{
 	float4		pos		: POSITION;
 	float2		uv		: TEXCOORD0;
 };
+float2 g_offset;				//オフセット
 
 texture g_tex;
 sampler TextureSampler = 
@@ -27,7 +28,7 @@ VS_OUTPUT VSMain( VS_INPUT In )
 {
 	VS_OUTPUT Out;
 	Out.pos = In.pos;
-	Out.uv 	= In.uv;
+	Out.uv 	= In.uv + g_offset;
 	return Out;
 }
 float4 PSMain( VS_OUTPUT In ) : COLOR0
@@ -45,7 +46,6 @@ struct VS_OUTPUT_BLUR{
 
 
 float2 g_texSize;			//テクスチャサイズ。
-float2 g_offset;				//オフセット
 float  g_weight[8];				//ガウスフィルタの重み。
 
 /*!
@@ -72,7 +72,7 @@ VS_OUTPUT_BLUR VSMainBlurY( VS_INPUT In )
 	Out.pos = In.pos;
 	float2 tex = In.uv ;
 
-	Out.tex0 = tex;
+	Out.tex0 = tex + float2( 0.5/g_texSize.x, 0.5/g_texSize.y);;
 	Out.tex1 = float2( 0.0f, 0.5f/g_texSize.y  );
     Out.tex2 = float2( 0.0f, 1.0f/g_texSize.y  );
 
@@ -118,7 +118,7 @@ VS_OUTPUT_GBLUR VSMainGBlurX( VS_INPUT In )
 {
 	VS_OUTPUT_GBLUR Out;
 	Out.pos = In.pos;
-	float2 tex = (In.pos * 0.5f) + 0.5f;;
+	float2 tex = (In.pos * 0.5f) + 0.5f;
 	tex.y = 1.0f - tex.y;
 	tex += float2( 0.5/g_texSize.x, 0.5/g_texSize.y);
 	Out.tex0 = tex + float2( - 1.0f/g_texSize.x, 0.0f );

@@ -10,13 +10,16 @@ struct VS_INPUT{
 };
 
 struct VS_OUTPUT{
+	float4		pos		: POSITION;
+	float2		uv		: TEXCOORD0;
 };
 
 texture g_scene;
+float2 g_sceneTexSize;	//シーンテクスチャのサイズ。
 sampler SceneSampler = sampler_state
 {
 	Texture = <g_scene>;
-	MipFilter = NONE;
+	MipFilter = LINEAR;
 	MinFilter = LINEAR;
 	MagFilter = LINEAR;
 };
@@ -29,8 +32,25 @@ VS_OUTPUT VSMain( VS_INPUT In )
 {
 	VS_OUTPUT Out;
 	Out.pos = In.pos;
-	Out.uv = In.uv;
+	Out.uv = In.uv + float2( 0.5/g_sceneTexSize.x, 0.5/g_sceneTexSize.y);
 	return Out;
+}
+float4 FxaaPixelShader( 
+	float2 pos, 
+	float4 fxaaConsolePosPos,
+	float2 fxaaQualityRcpFrame,
+    float4 fxaaConsoleRcpFrameOpt,
+    float4 fxaaConsoleRcpFrameOpt2,
+    float4 fxaaConsole360RcpFrameOpt2,
+    float fxaaQualitySubpix,
+    float fxaaQualityEdgeThreshold,
+    float fxaaQualityEdgeThresholdMin,
+    float fxaaConsoleEdgeSharpness,
+    float fxaaConsoleEdgeThreshold,
+    float fxaaConsoleEdgeThresholdMin,
+    float4 fxaaConsole360ConstDir
+)
+{
 }
 /*!
  *@brief	ピクセルシェーダー。
