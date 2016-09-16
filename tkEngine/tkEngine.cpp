@@ -119,7 +119,7 @@ namespace tkEngine{
 				m_frameBufferHeight,
 				1,
 				FMT_A16B16G16R16F,
-				FMT_D16,
+				FMT_D24S8,
 				MULTISAMPLE_NONE,
 				0
 			);
@@ -129,7 +129,7 @@ namespace tkEngine{
 				m_frameBufferHeight,
 				1,
 				FMT_A8R8G8B8,
-				FMT_D16,
+				FMT_D24S8,
 				MULTISAMPLE_NONE,
 				0
 			);

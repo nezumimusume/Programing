@@ -62,6 +62,7 @@ float4 FxaaPixelShader(
 	float lumaM = rgbyM.y;
 	
 	
+	//近傍テクセルの輝度の差を調べる。
 	float lumaMaxNwSw = max(lumaNw, lumaSw);
     lumaNe += 1.0/384.0;
     float lumaMinNwSw = min(lumaNw, lumaSw);
@@ -80,9 +81,13 @@ float4 FxaaPixelShader(
     float dirSwMinusNe = lumaSw - lumaNe;
     float lumaMaxSubMinM = lumaMaxM - lumaMinM;
     float dirSeMinusNw = lumaSe - lumaNw;
-    if(lumaMaxSubMinM < lumaMaxScaledClamped) return rgbyM;
+    if(lumaMaxSubMinM < lumaMaxScaledClamped){
+		//輝度の差がしきい値以下だったので、このピクセルはアンチをかけない。
+		 return rgbyM;
+	}
     
 /*--------------------------------------------------------------------------*/
+	//輝度の差を利用して、ギザギザが発生している可能性の高いテクセルをフェッチする。
     float2 dir;
     dir.x = dirSwMinusNe + dirSeMinusNw;
     dir.y = dirSwMinusNe - dirSeMinusNw;
@@ -100,13 +105,15 @@ float4 FxaaPixelShader(
     float4 rgbyP2 = tex2D(SceneSampler, pos.xy + dir2 * fxaaConsoleRcpFrameOpt2.zw);
     
 /*--------------------------------------------------------------------------*/
+	//ブレンドブレンド。
     float4 rgbyA = rgbyN1 + rgbyP1;
     float4 rgbyB = ((rgbyN2 + rgbyP2) * 0.25) + (rgbyA * 0.25);
 /*--------------------------------------------------------------------------*/
     int twoTap = (rgbyB.y < lumaMin) || (rgbyB.y > lumaMax);
     
     if(twoTap){
-		 rgbyB.xyz = rgbyA.xyz * 0.5;
+		//まだ輝度の差が大きいので、再度ブレンド。
+		rgbyB.xyz = rgbyA.xyz * 0.5;
 	}
     return rgbyB;
     
