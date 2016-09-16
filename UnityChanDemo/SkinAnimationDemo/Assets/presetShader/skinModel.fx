@@ -26,9 +26,9 @@ sampler g_diffuseTextureSampler =
 sampler_state
 {
 	Texture = <g_diffuseTexture>;
-    MipFilter = NONE;
-    MinFilter = NONE;
-    MagFilter = NONE;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
     AddressU = Wrap;
 	AddressV = Wrap;
 };
@@ -39,9 +39,9 @@ sampler g_normalMapSampler =
 sampler_state
 {
 	Texture = <g_normalTexture>;
-    MipFilter = NONE;
-    MinFilter = NONE;
-    MagFilter = NONE;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
     AddressU = Wrap;
 	AddressV = Wrap;
 };

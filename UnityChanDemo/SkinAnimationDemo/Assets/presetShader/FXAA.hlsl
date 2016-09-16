@@ -1348,7 +1348,8 @@ FxaaFloat4 FxaaPixelShader(
         FxaaBool twoTap = (rgbyB.y < lumaMin) || (rgbyB.y > lumaMax);
     #endif
     if(twoTap) rgbyB.xyz = rgbyA.xyz * 0.5;
-    return rgbyB; }
+    return rgbyB; 
+   }
 /*==========================================================================*/
 #endif
 

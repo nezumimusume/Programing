@@ -15,7 +15,7 @@ GameCamera::~GameCamera()
 }
 void GameCamera::Start()
 {
-	camera.SetPosition(CVector3(0.0f, 0.8f, 3.0f));
+	camera.SetPosition(CVector3(0.0f, 0.8f, 2.0f));
 	camera.SetTarget(CVector3(0.0f, 0.2f, 0.0f));
 	toPosition.Subtract(camera.GetPosition(), camera.GetTarget());
 	camera.SetFar(10000.0f);
