@@ -69,7 +69,7 @@ VS_OUTPUT VSMain( VS_INPUT In )
 	float2 tex = (In.pos * 0.5f) + 0.5f;
 	
 	tex.y = 1.0f - tex.y;
-	Out.tex0 = tex;
+	Out.tex0 = tex + float2( 0.5/g_sceneTexSize.x, 0.5/g_sceneTexSize.y);
 	Out.tex1 = Out.tex0 + float2( 0.5/g_sceneTexSize.x, 0.5/g_sceneTexSize.y);
 	Out.tex2 = Out.tex0 + float2( -0.5/g_sceneTexSize.x, 0.5/g_sceneTexSize.y);
 	Out.tex3 = Out.tex0 + float2( 0.0f, -0.5/g_sceneTexSize.y);

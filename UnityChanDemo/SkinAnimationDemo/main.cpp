@@ -88,8 +88,11 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.graphicsConfig.reflectionMapConfig.reflectionMapHeight = 512;
 	//DOF
 	initParam.graphicsConfig.dofConfig.isEnable = true;
-	Engine().Init(initParam);	//‰Šú‰»B
+	//AA
+	initParam.graphicsConfig.aaConfig.isEnable = true;
 
+	Engine().Init(initParam);	//‰Šú‰»B
+	
 	ShadowMap().SetNear(2.0f);
 	ShadowMap().SetFar(40.0f);
 	
