@@ -19,9 +19,19 @@ namespace tkEngine{
 	 * @brief	影処理のコンフィグ。
 	 */
 	struct SShadowRenderConfig{
-		bool 	isEnable;			//!<影を落とす処理が有効かどうかのフラグ。
-		int		shadowMapWidth;		//!<シャドウマップの幅。
-		int		shadowMapHeight;	//!<シャドウマップの高さ。
+		void Init()
+		{
+			isEnable = false;
+			shadowMapWidth = 512;
+			shadowMapHeight = 512;
+			isDisableSoftShadow = false;
+			numShadowMap = 1;
+		}
+		bool 	isEnable;				//!<影を落とす処理が有効かどうかのフラグ。
+		int		shadowMapWidth;			//!<シャドウマップの幅。
+		int		shadowMapHeight;		//!<シャドウマップの高さ。
+		bool	isDisableSoftShadow;	//!<ソフトシャドウが無効かどうかのフラグ。
+		int		numShadowMap;			//!<シャドウマップの枚数。(最大4枚)
 	};
 	/*!
 	* @brief	Bloomのコンフィグ

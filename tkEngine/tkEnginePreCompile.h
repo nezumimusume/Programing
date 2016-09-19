@@ -8,7 +8,6 @@
 #include "targetver.h"
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
-#define USE_VSM							//定義でVSMが有効。
 
 #define USE_ORTHO_PROJECTION
 #define USE_BLOOM_FLOATING_BUFFER		//定義でブルームで浮動小数点バッファを使用する。

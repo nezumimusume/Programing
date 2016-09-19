@@ -104,7 +104,7 @@ namespace tkEngine{
 			};
 			m_pEffect->SetValue(renderContext, "g_mLVP", &mLVP, sizeof(mLVP));
 			m_pEffect->SetValue(renderContext, "g_farNear", farNear, sizeof(farNear));
-			m_pEffect->SetTexture(renderContext, "g_shadowMap", shadowMap.GetTexture());
+			m_pEffect->SetTexture(renderContext, "g_shadowMap_0", shadowMap.GetTexture(0));
 			if (pmWorldMatrix) {
 				m_pEffect->SetValue(renderContext, "g_mWorld", pmWorldMatrix, sizeof(*pmWorldMatrix));
 			}

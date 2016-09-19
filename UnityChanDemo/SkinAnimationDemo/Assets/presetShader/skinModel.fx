@@ -3,8 +3,8 @@
  */
 #include "Common.h" 
 #include "LightingFunction.h"
+#include "ShadowFunction.h"
 
-#define USE_VSM	//定義するとVSMが有効になる。
 
 //スキン行列。
 #define MAX_MATRICES  26
@@ -14,7 +14,6 @@ float		g_numBone;			//骨の数。
 float4x4	g_worldMatrix;			//!<ワールド行列。
 float4x4	g_rotationMatrix;		//!<回転行列。
 float4x4	g_viewMatrixRotInv;		//!<カメラの回転行列の逆行列。
-float4x4	g_mLVP;					//ライトビュープロジェクション行列。
 float4		g_fogParam;				//フォグのパラメータ。xにフォグが掛かり始める深度。yにフォグが完全にかかる深度。zはフォグを計算するかどうかのフラグ。
 
 float2		g_farNear;	//遠平面と近平面。xに遠平面、yに近平面。
@@ -48,18 +47,7 @@ sampler_state
 
 
 
-//シャドウマップ
-texture g_shadowMap;
-sampler g_shadowMapSampler = 
-sampler_state
-{
-	Texture = <g_shadowMap>;
-    MipFilter = NONE;
-    MinFilter = LINEAR;
-    MagFilter = LINEAR;
-    AddressU = CLAMP;
-	AddressV = CLAMP;
-};
+
 /*!
  * @brief	入力頂点
  */
@@ -94,8 +82,10 @@ struct VS_OUTPUT
     float3  Normal			: NORMAL;
     float2  Tex0   			: TEXCOORD0;
     float3	Tangent			: TEXCOORD1;	//接ベクトル
-    float4  lightViewPos	: TEXCOORD2;
-    float4  worldPos_depth	: TEXCOORD3;	//xyzにワールド座標。wには射影空間でのdepthが格納される。
+    float4  worldPos_depth	: TEXCOORD2;	//xyzにワールド座標。wには射影空間でのdepthが格納される。
+    float4  lightViewPos_0	: TEXCOORD3;
+    float4  lightViewPos_1	: TEXCOORD4;
+    float4  lightViewPos_2	: TEXCOORD5;
 };
 
 /*!
@@ -194,7 +184,9 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
     o.Tex0 = In.Tex0;
     if(g_flags.y){
 		//シャドウレシーバー。
-		o.lightViewPos = mul(float4(Pos.xyz, 1.0f), g_mLVP );
+		o.lightViewPos_0 = mul(float4(Pos.xyz, 1.0f), gShadowReceiverParam.mLVP[0] );
+		o.lightViewPos_1 = mul(float4(Pos.xyz, 1.0f), gShadowReceiverParam.mLVP[1] );
+		o.lightViewPos_2 = mul(float4(Pos.xyz, 1.0f), gShadowReceiverParam.mLVP[2] );
 	}
 	return o;
 }
@@ -226,7 +218,10 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
     o.Normal = mul(normalize(Normal), worldMat);
     o.Tex0 = In.base.Tex0;
     if(g_flags.y){
-		o.lightViewPos = mul(float4(Pos.xyz, 1.0f), g_mLVP );
+		//シャドウレシーバー。
+		o.lightViewPos_0 = mul(float4(Pos.xyz, 1.0f), gShadowReceiverParam.mLVP[0] );
+		o.lightViewPos_1 = mul(float4(Pos.xyz, 1.0f), gShadowReceiverParam.mLVP[1] );
+		o.lightViewPos_2 = mul(float4(Pos.xyz, 1.0f), gShadowReceiverParam.mLVP[2] );
 	}
 	return o;
 }
@@ -262,31 +257,8 @@ PSOutput PSMain( VS_OUTPUT In )
 		lig.xyz += CalcLimLight(normal);
 	}
 	if(g_flags.y){
-		float4 posInLVP = In.lightViewPos;
-		posInLVP.xyz /= posInLVP.w;
-		//uv座標に変換。
-		float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
-		float2 shadow_val = 1.0f;
-		
-		if(shadowMapUV.x < 0.99f && shadowMapUV.y < 0.99f && shadowMapUV.x > 0.01f && shadowMapUV.y > 0.01f){
-			shadow_val = tex2D( g_shadowMapSampler, shadowMapUV ).rg;
-			float depth = min(posInLVP.z, 1.0f);
-		#ifdef USE_VSM
-			if( depth > shadow_val.r ){
-				 // σ^2
-				float depth_sq = shadow_val.r * shadow_val.r;
-		        float variance = max(shadow_val.g - depth_sq, 0.0006f);
-				float md = depth - shadow_val.r;
-		        float P = variance / ( variance + md * md );
-				lig *= pow( P, 5.0f );
-			}
-		#else
-			if( depth > shadow_val.r + 0.006f ){
-				lig = 0.0f;
-		
-			}
-		#endif
-		}
+		//影
+		lig *= CalcShadow(In.lightViewPos_0, In.lightViewPos_1, In.lightViewPos_2);
 	
 	}
 	if(g_flags.w){

@@ -79,9 +79,11 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
 	//Shadow
+	initParam.graphicsConfig.shadowRenderConfig.Init();
 	initParam.graphicsConfig.shadowRenderConfig.isEnable = true;
-	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 2048;
-	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 2048;
+	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 1024;
+	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 1024;
+	initParam.graphicsConfig.shadowRenderConfig.numShadowMap = 3;
 	//reflection
 	initParam.graphicsConfig.reflectionMapConfig.isEnable = false;
 	initParam.graphicsConfig.reflectionMapConfig.reflectionMapWidth = 512;

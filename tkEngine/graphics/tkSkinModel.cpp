@@ -130,9 +130,13 @@ namespace tkEngine{
 			if (!isDrawToShadowMap && m_isShadowReceiver) {
 				//シャドウレシーバー。
 				flag[1] = true;
-				pEffect->SetTexture(m_hShaderHandle[enShaderHandleShadowMap] , ShadowMap().GetTexture()->GetTextureDX());
+				pEffect->SetTexture(m_hShaderHandle[enShaderHandleShadowMap_0], ShadowMap().GetTexture(0)->GetTextureDX());
+				pEffect->SetTexture(m_hShaderHandle[enShaderHandleShadowMap_1], ShadowMap().GetTexture(1)->GetTextureDX());
+				pEffect->SetTexture(m_hShaderHandle[enShaderHandleShadowMap_2], ShadowMap().GetTexture(2)->GetTextureDX());
 				const CMatrix& mLVP = ShadowMap().GetLVPMatrix();
 				pEffect->SetValue(m_hShaderHandle[enShaderHandleLVP], &mLVP, sizeof(mLVP));
+				const CShadowMap::ShadowRecieverParam& srp = ShadowMap().GetShadowRecieverParam();
+				pEffect->SetValue(m_hShaderHandle[enShaderHandleShadowRecieverParam], &srp, sizeof(srp));
 			}
 			if (m_isFresnel) {
 				flag[2] = true;
@@ -394,7 +398,9 @@ namespace tkEngine{
 		m_hShaderHandle[enShaderHandleViewMatrixRotInv] = effectDx->GetParameterByName(NULL, "g_viewMatrixRotInv");
 		m_hShaderHandle[enShaderHandleWorldMatrix] = effectDx->GetParameterByName(NULL, "g_worldMatrix");
 		m_hShaderHandle[enShaderHandleRotationMatrix] = effectDx->GetParameterByName(NULL, "g_rotationMatrix");
-		m_hShaderHandle[enShaderHandleShadowMap] = effectDx->GetParameterByName(NULL, "g_shadowMap");
+		m_hShaderHandle[enShaderHandleShadowMap_0] = effectDx->GetParameterByName(NULL, "g_shadowMap_0");
+		m_hShaderHandle[enShaderHandleShadowMap_1] = effectDx->GetParameterByName(NULL, "g_shadowMap_1");
+		m_hShaderHandle[enShaderHandleShadowMap_2] = effectDx->GetParameterByName(NULL, "g_shadowMap_2");
 		m_hShaderHandle[enShaderHandleNormalTexture] = effectDx->GetParameterByName(NULL, "g_normalTexture");
 		m_hShaderHandle[enShaderHandleSpeculerMap] = effectDx->GetParameterByName(NULL, "g_speculerMap");
 		m_hShaderHandle[enShaderHandleDiffuseTexture] = effectDx->GetParameterByName(NULL, "g_diffuseTexture");
@@ -407,6 +413,7 @@ namespace tkEngine{
 		m_hShaderHandle[enShaderHandleTec_SkinModel] = effectDx->GetTechniqueByName("SkinModel");
 		m_hShaderHandle[enShaderHandleTec_NoSkinModelRenderShadowMap] = effectDx->GetTechniqueByName("NoSkinModelRenderShadowMap");
 		m_hShaderHandle[enShaderHandleTec_NoSkinModel] = effectDx->GetTechniqueByName("NoSkinModel");
+		m_hShaderHandle[enShaderHandleShadowRecieverParam] = effectDx->GetParameterByName(NULL, "gShadowReceiverParam");
 	}
 	/*!
 	*@brief	シャドウマップに描画

@@ -209,11 +209,14 @@ namespace tkEngine {
 			enShaderHandleViewMatrixRotInv,	//ビュー行列の回転成分の逆行列。
 			enShaderHandleWorldMatrix,		//ワールド行列
 			enShaderHandleRotationMatrix,	//回転行列。
-			enShaderHandleShadowMap,		//シャドウマップ
+			enShaderHandleShadowMap_0,		//シャドウマップ
+			enShaderHandleShadowMap_1,		//シャドウマップ
+			enShaderHandleShadowMap_2,		//シャドウマップ
 			enShaderHandleNormalTexture,	//法線マップ。
 			enShaderHandleSpeculerMap,		//スペキュラマップ。
 			enShaderHandleDiffuseTexture,	//ディフューズテクスチャ。
 			enShaderHandleCameraDir,		//カメラの方向。
+			enShaderHandleShadowRecieverParam,	//シャドウレシーバー用のパラメータ。
 			enShaderHandleTec_SkinModelInstancingRenderToShadowMap,		//SkinModelInstancingRenderToShadowMapテクニック
 			enShaderHandleTec_SkinModelInstancing,						//SkinModelInstancingテクニック。
 			enShaderHandleTec_NoSkinModelInstancingRenderToShadowMap,	//NoSkinModelInstancingRenderToShadowMapテクニック。
