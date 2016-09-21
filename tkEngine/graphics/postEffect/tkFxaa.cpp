@@ -27,6 +27,7 @@ namespace tkEngine{
 	}
 	void CFxaa::Render(CRenderContext& renderContext, CPostEffect* postEffect)
 	{
+		CPIXPerfTag tag(renderContext, L"CFxaa::Render");
 		if(m_isEnable){
 			//アンチ有効。
 			float texSize[] = {

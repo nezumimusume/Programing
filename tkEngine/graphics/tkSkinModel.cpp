@@ -423,12 +423,14 @@ namespace tkEngine{
 	void CSkinModel::DrawToShadowMap(CRenderContext& renderContext, const CMatrix& viewMatrix, const CMatrix& projMatrix)
 	{
 		if (m_skinModelData) {
+			CPIXPerfTag tag(renderContext, L"CSkinModel::DrawToShadowMap");
 			renderContext.DrawSkinModelToShadowMap(this, viewMatrix, projMatrix);
 		}
 	}
 	void CSkinModel::Draw(CRenderContext& renderContext, const CMatrix& viewMatrix, const CMatrix& projMatrix)
 	{
 		if (m_skinModelData) {
+			CPIXPerfTag tag(renderContext, L"CSkinModel::Draw");
 			renderContext.DrawSkinModel(this, viewMatrix, projMatrix);
 		}
 	}
