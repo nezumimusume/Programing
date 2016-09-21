@@ -84,6 +84,7 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 1024;
 	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 1024;
 	initParam.graphicsConfig.shadowRenderConfig.numShadowMap = 3;
+	
 	//reflection
 	initParam.graphicsConfig.reflectionMapConfig.isEnable = false;
 	initParam.graphicsConfig.reflectionMapConfig.reflectionMapWidth = 512;
@@ -126,7 +127,6 @@ int WINAPI wWinMain(
 	g_camera->SetUnityChan(unityChan);
 #endif
 	Engine().RunGameLoop();		//ゲームループを実行。
-	//地面との当たり判定のテスト。
 
 	return 0;
 }

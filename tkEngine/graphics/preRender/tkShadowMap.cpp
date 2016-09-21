@@ -11,7 +11,14 @@
 
 
 namespace tkEngine{
-	
+	namespace {
+		const float shadowAreaTable[CShadowMap::MAX_SHADOW_MAP][2] =
+		{
+			{ 20.0f, 20.0f },
+			{ 45.0f, 45.0f },
+			{ 120.0f, 120.0f },
+		};
+	}
 	CShadowMap::CShadowMap() :
 		m_isEnable(false),
 		m_pShadowMapEffect(nullptr),
@@ -27,12 +34,7 @@ namespace tkEngine{
 	{
 		m_lightPosition.Set(0.0f, 3.0f, 0.0f);
 		m_lightDirection.Set(0.0f, -1.0f, 0.0f);
-		static const float shadowAreaTable[MAX_SHADOW_MAP][2]=
-		{
-			{ 20.0f, 20.0f},
-			{ 45.0f, 45.0f },
-			{ 120.0f, 120.0f },
-		};
+		
 		for (int i = 0; i < MAX_SHADOW_MAP; i++) {
 			m_shadowAreaW[i] = shadowAreaTable[i][0];
 			m_shadowAreaH[i] = shadowAreaTable[i][1];
@@ -46,10 +48,17 @@ namespace tkEngine{
 	{
 		TK_ASSERT( numShadowMap <= MAX_SHADOW_MAP, "numShadowMap is invalid");
 		Release();
+		
+		
 		m_near = 1.0f;
 		m_far = 100.0f;
 		m_numShadowMap = numShadowMap;
 		m_isEnable = true;
+		int j = 0;
+		for (int i = MAX_SHADOW_MAP - m_numShadowMap; i < MAX_SHADOW_MAP; i++, j++) {
+			m_shadowAreaW[j] = shadowAreaTable[i][0];
+			m_shadowAreaH[j] = shadowAreaTable[i][1];
+		}
 		m_pShadowMapEffect = CEngine::EffectManager().LoadEffect("Assets/presetshader/shadowMap.fx");
 		int wh[MAX_SHADOW_MAP][2] = {
 			{w, h},
