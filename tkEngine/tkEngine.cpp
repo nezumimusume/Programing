@@ -78,8 +78,8 @@ namespace tkEngine{
     	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 		d3dpp.BackBufferWidth = initParam.frameBufferWidth;
 		d3dpp.BackBufferHeight = initParam.frameBufferHeight;
-		d3dpp.MultiSampleType = D3DMULTISAMPLE_4_SAMPLES;
-		d3dpp.MultiSampleQuality = quality-1;
+		d3dpp.MultiSampleType = D3DMULTISAMPLE_NONE;
+		d3dpp.MultiSampleQuality = 0;
 		m_frameBufferWidth = initParam.frameBufferWidth;
 		m_frameBufferHeight = initParam.frameBufferHeight;
 
@@ -224,6 +224,9 @@ namespace tkEngine{
 		// Enter the message loop
 		MSG msg;
 		ZeroMemory(&msg, sizeof(msg));
+#ifdef USE_DISP_FPS
+		char text[256] = {"\0"};
+#endif
 		while (msg.message != WM_QUIT)
 		{
 			if (PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE))
@@ -265,18 +268,19 @@ namespace tkEngine{
 				for( int i = 0; i < m_numRenderContext; i++ ){
 					m_renderContextArray[i].SubmitCommandBuffer();
 				}
-#ifdef USE_DISP_FPS
-				sw.Stop();
-				char text[256];
-				sprintf(text, "fps = %lf\n", 1.0f / sw.GetElapsed());
-
-				
 				// •`‰æ
+#ifdef USE_DISP_FPS
 				m_fpsFont.Draw(text, 0, 0);
-				//
 #endif
 				m_pD3DDevice->EndScene();
 				m_pD3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
+				
+				//
+#ifdef USE_DISP_FPS
+				sw.Stop();
+				sprintf(text, "fps = %lf\n", 1.0f / sw.GetElapsed());
+#endif
+
 			}
 		}
 	}

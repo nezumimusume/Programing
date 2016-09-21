@@ -168,17 +168,37 @@ void UnityChan::Update()
 void UnityChan::CollisionDetectAndResolve(const CVector3& nextPosition)
 {
 	//XY平面との衝突。
-	position.x = nextPosition.x;
-	position.z = nextPosition.z;
+	CVector3 ray;
+	ray.Subtract(nextPosition, position);
+	ray.y = 0.0f;
+	float rayLen = ray.Length();
+	if (rayLen > 0.01f) {
+		//正規化
+		ray.Div(rayLen);
+		CVector3 start = position;
+		start.y += 0.5f;
+		int isHit = false;
+		float len = 0.0f;
+		g_ground->IsIntersect(start, ray, isHit, len);
+		if (isHit && len < rayLen) {
+			//進行方向で衝突した。
+		}
+		else {
+			position.x = nextPosition.x;
+			position.z = nextPosition.z;
+		}
+	}
+	
 
 	//地面との当たり判定。上は見ないよ。
-	int isHit = false;
-	float len = 0.0f;
-	CVector3 ray;
+	
+	
 	ray.Subtract(nextPosition, position);
 	float fallSpeed = ray.Length();
 	if (fallSpeed > 0.0f) {
 		ray.Normalize();
+		int isHit = false;
+		float len = 0.0f;
 		if (ray.y < 0.0f) {
 			//落下中なら
 			CVector3 start = position;
