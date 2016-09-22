@@ -51,6 +51,9 @@
     <Filter Include="Source Files\timer">
       <UniqueIdentifier>{c6813058-4065-4fa9-b257-2e7c0c4ee19e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\physics">
+      <UniqueIdentifier>{aa9a2833-dc9d-44dc-a3a0-0a227b1c19d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

@@ -7,6 +7,7 @@
 
 
 namespace tkEngine{
+	class CMatrix;
 	class CVector2 {
 	public:
 		union {
@@ -291,6 +292,11 @@ namespace tkEngine{
 			z = axis.z * s;
 		}
 		/*!
+		*@brief	行列からクォータニオンを作成。
+		*/
+		void SetRotation(const CMatrix& m);
+		
+		/*!
 		*@brief	クォータニオン同士の積。
 		*/
 		void Multiply(const CQuaternion& rot)
@@ -327,4 +333,6 @@ namespace tkEngine{
 		}
 	};
 }
+
+
 #endif // _TKVECTOR_H_

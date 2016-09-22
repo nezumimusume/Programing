@@ -39,9 +39,10 @@ namespace tkEngine{
 		m_srcTexWH[0] = w;
 		m_srcTexWH[1] = h;
 		int size[2][2]{
-			{w >> 1, h},
-			{ w >> 1, h >> 1},
+			{ w >> 1, h },
+			{ w >> 1, h >> 1 },
 		};
+		
 		for (int i = 0; i < 2; i++) {
 			m_rt[i].Create(size[i][0], size[i][1], 1, (EFormat)desc.Format, FMT_INVALID, MULTISAMPLE_NONE, 0);
 		}

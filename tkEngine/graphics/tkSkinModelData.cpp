@@ -816,7 +816,7 @@ namespace tkEngine{
 		}
 		return false;
 	}
-	LPD3DXMESH CSkinModelData::GetOrgMeshFirst(LPD3DXFRAME frame) const
+	LPD3DXMESH CSkinModelData::GetOrgMesh(LPD3DXFRAME frame) const
 	{
 		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)(frame->pMeshContainer);
 		if (pMeshContainer != nullptr) {
@@ -824,7 +824,8 @@ namespace tkEngine{
 		}
 		if (frame->pFrameSibling != nullptr) {
 			//ŒZ’í
-			LPD3DXMESH mesh = GetOrgMeshFirst(frame->pFrameSibling);
+			LPD3DXMESH mesh = GetOrgMesh(frame->pFrameSibling);
+			
 			if (mesh) {
 				return mesh;
 			}
@@ -832,7 +833,7 @@ namespace tkEngine{
 		if (frame->pFrameFirstChild != nullptr)
 		{
 			//Žq‹ŸB
-			LPD3DXMESH mesh = GetOrgMeshFirst(frame->pFrameSibling);
+			LPD3DXMESH mesh = GetOrgMesh(frame->pFrameFirstChild);
 			if (mesh) {
 				return mesh;
 			}
@@ -842,8 +843,9 @@ namespace tkEngine{
 	}
 	LPD3DXMESH CSkinModelData::GetOrgMeshFirst() const
 	{
-		return GetOrgMeshFirst(m_frameRoot);
+		return GetOrgMesh(m_frameRoot);
 	}
+	
 	CMatrix* CSkinModelData::FindBoneWorldMatrix(const char* boneName) 
 	{
 		return FindBoneWorldMatrix(boneName, m_frameRoot);

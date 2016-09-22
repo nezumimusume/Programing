@@ -14,8 +14,13 @@
 #include "tkEngine/graphics/tkCamera.h"
 #include "tkEngine/graphics/tkLight.h"
 #include "tkEngine/graphics/tkTexture.h"
-
-
+#include "btBulletDynamicsCommon.h"
+#include "BulletCollision\CollisionDispatch\btGhostObject.h"
+#include "Physics\Physics.h"
 using namespace tkEngine;
 #include "GameCamera.h"
+
+
+static const float GAME_DELTA_TIME = 1.0f / 60.0f;	//1フレームの経過時間(単位:秒)。固定FPS。
+extern PhysicsWorld* g_physicsWorld ;
 #endif // _STDAFX_H_

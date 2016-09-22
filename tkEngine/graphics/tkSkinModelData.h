@@ -116,6 +116,7 @@ namespace tkEngine{
 		* @brief	先頭のメッシュを取得。
 		*/
 		LPD3DXMESH GetOrgMeshFirst() const;
+		
 		/*!
 		* @brief	骨のワールド行列を検索
 		*@details
@@ -124,6 +125,15 @@ namespace tkEngine{
 		*@return 見つかったら骨のワールド行列のアドレスを返す。見つからなかった場合はNULLを返す。
 		*/
 		CMatrix* FindBoneWorldMatrix(const char* boneName);
+		/*!
+		* @brief	ルートのボーンを取得。
+		*/
+		CMatrix* GetRootBoneWorldMatrix()
+		{
+			TK_ASSERT(m_frameRoot != nullptr, "m_frameRoot is null");
+			D3DXFRAME_DERIVED* frameDer = (D3DXFRAME_DERIVED*)m_frameRoot;
+			return (CMatrix*)&frameDer->CombinedTransformationMatrix;
+		}
 	private:
 		/*!
 		* @brief	骨のワールド行列を検索。
@@ -132,9 +142,10 @@ namespace tkEngine{
 		*/
 		CMatrix* FindBoneWorldMatrix(const char* boneName, LPD3DXFRAME frame);
 		/*!
-		* @brief	先頭のメッシュを取得。
+		* @brief	オリジナルメッシュを取得。
 		*/
-		LPD3DXMESH GetOrgMeshFirst(LPD3DXFRAME frame) const;
+		LPD3DXMESH GetOrgMesh(LPD3DXFRAME frame) const;
+		
 		/*!
 		* @brief	オリジナルのスケルトンを削除。
 		*@param[in]	frame	スケルトン。

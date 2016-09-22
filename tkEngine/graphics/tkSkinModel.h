@@ -144,6 +144,7 @@ namespace tkEngine {
 		{
 			return m_skinModelData->GetOrgMeshFirst();
 		}
+		
 		/*!
 		* @brief	œ‚Ìƒ[ƒ‹ƒhs—ñ‚ğŒŸõ
 		*@details

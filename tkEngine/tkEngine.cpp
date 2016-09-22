@@ -270,16 +270,17 @@ namespace tkEngine{
 				}
 				// •`‰æ
 #ifdef USE_DISP_FPS
+				sw.Stop();
+				sprintf(text, "fps = %lf\n", 1.0f / sw.GetElapsed());
+#endif
+#ifdef USE_DISP_FPS
 				m_fpsFont.Draw(text, 0, 0);
 #endif
 				m_pD3DDevice->EndScene();
 				m_pD3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
 				
 				//
-#ifdef USE_DISP_FPS
-				sw.Stop();
-				sprintf(text, "fps = %lf\n", 1.0f / sw.GetElapsed());
-#endif
+
 
 			}
 		}

@@ -2,7 +2,8 @@
 #include "MapChip.h"
 
 
-MapChip::MapChip()
+MapChip::MapChip() :
+	rootBoneMatrix(NULL)
 {
 }
 
@@ -25,8 +26,15 @@ void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 		D3DDECL_END()
 	};
 	skinModelData.CreateInstancingDrawData(mapChipLocInfoList.size(), vertexElement);
+	skinModel.Init(&skinModelData);
+	skinModel.SetLight(&light);
+	skinModel.SetShadowCasterFlag(true);
+	skinModel.SetShadowReceiverFlag(true);
+
 	//ワールド行列のバッファを作成。
 	worldMatrixBuffer.reset(new CMatrix[mapChipLocInfoList.size()]);
+	meshCollider.reset(new MeshCollider[mapChipLocInfoList.size()]);
+	rigidBody.reset(new RigidBody[mapChipLocInfoList.size()]);
 	int i = 0;
 	for (auto& mapChiplLocInfo : mapChipLocInfoList) {
 		CMatrix mTrans;
@@ -36,13 +44,25 @@ void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 		CMatrix mRot;
 		mRot.MakeRotationFromQuaternion(mapChiplLocInfo->rotation);
 		worldMatrixBuffer[i].Mul(mRot, mTrans);
+		
+		i++;
+	}
+	//行列を更新。
+	Update();
+	rootBoneMatrix = skinModelData.GetRootBoneWorldMatrix();
+	i = 0;
+	for (auto& mapChiplLocInfo : mapChipLocInfoList) {
+		CMatrix mWorld;
+		mWorld.Mul(*rootBoneMatrix, worldMatrixBuffer[i]);
+		meshCollider[i].CreateFromSkinModel(&skinModel, &mWorld);
+		RigidBodyInfo rbInfo;
+		rbInfo.collider = &meshCollider[i];
+		rbInfo.mass = 0.0f;
+		rigidBody[i].Create(rbInfo);
+		g_physicsWorld->AddRigidBody(&rigidBody[i]);
 		i++;
 	}
 	
-	skinModel.Init(&skinModelData);
-	skinModel.SetLight(&light);
-	skinModel.SetShadowCasterFlag(true);
-	skinModel.SetShadowReceiverFlag(true);
 
 	light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
 	light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));

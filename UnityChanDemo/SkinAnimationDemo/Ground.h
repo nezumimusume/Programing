@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Physics/MeshCollider.h"
+#include "Physics/RigidBody.h"
+
 class Ground : public IGameObject {
 	CSkinModelData	skinModelData;		//スキンモデルデータ。
 	CSkinModel		skinModel;			//スキンモデル。
@@ -7,6 +10,8 @@ class Ground : public IGameObject {
 	CLight			light;				//ライト。
 	CTexture		normalMap;
 	CMatrix*		m_worldMatrix;		//ワールド行列
+	MeshCollider	meshCollider;		//メッシュコライダー。
+	RigidBody		rigidBody;			//剛体。
 public:
 	Ground()
 	{
@@ -25,5 +30,6 @@ public:
 	//bHit	レイと地面が衝突したら1が設定される。
 	//len	レイの始点から交点までの距離。
 	void IsIntersect(const CVector3& pos, const CVector3& ray, int& bHit, float& len);
+private:
 };
 extern Ground* g_ground;

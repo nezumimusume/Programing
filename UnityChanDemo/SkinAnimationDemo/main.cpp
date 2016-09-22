@@ -6,6 +6,9 @@
 #include "Map.h"
 #include "Sky.h"
 #include "Ground.h"
+#include "Physics/Physics.h"
+
+PhysicsWorld* g_physicsWorld = NULL;
 
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 
@@ -115,7 +118,8 @@ int WINAPI wWinMain(
 #ifdef MEMORY_LEAK_TEST
 	NewGO<MemoryLeakTest>(0);
 #else
-	
+
+	g_physicsWorld = NewGO<PhysicsWorld>(0);
 	NewGO<UnityChanInstance>(0);
 	NewGO<Map>(0);
 	NewGO<Ground>(0);

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Physics\Physics.h"
 #include "Ground.h"
 
 Ground* g_ground = NULL;
@@ -27,8 +28,19 @@ void Ground::Start()
 	//距離フォグをかける。
 	skinModel.SetFogParam(enFogFuncDist, 40.0f, 70.0f);
 
+	Update();
 	m_worldMatrix = skinModel.FindBoneWorldMatrix("Plane001");
+	//メッシュコライダーを作成。
+	meshCollider.CreateFromSkinModel(&skinModel, m_worldMatrix);
+	//剛体を作成。
+	RigidBodyInfo rbInfo;
+	rbInfo.collider = &meshCollider;
+	rbInfo.mass = 0.0f;
+	rigidBody.Create(rbInfo);
+	//剛体をワールドに追加。
+	g_physicsWorld->AddRigidBody(&rigidBody);
 }
+
 void Ground::Update() 
 {
 	skinModel.Update(CVector3(0.0f, 0.0f, 0.0f), CQuaternion::Identity, CVector3(1.0f, 1.0f, 1.0f));

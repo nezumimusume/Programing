@@ -40,6 +40,7 @@ namespace tkEngine{
 			int h = Engine().GetFrameBufferHeight();
 			//16bitÅB
 			m_depthRT.Create(w, h, 1, FMT_R16F, FMT_INVALID, MULTISAMPLE_NONE, 0);
+			
 			m_blurForward.Init(w, h, *Engine().GetMainRenderTarget().GetTexture());
 			m_blurBack.Init(w, h, *Engine().GetMainRenderTarget().GetTexture());
 			m_blurBack.SetBlurPower(1.0f);

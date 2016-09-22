@@ -1,4 +1,7 @@
 #pragma once
+#include "Physics/MeshCollider.h"
+#include "Physics/RigidBody.h"
+
 //マップチップの配置情報。
 struct SMapChipLocInfo {
 	const char* modelName;		//モデル。
@@ -21,5 +24,8 @@ private:
 	CLight							light;				//ライト。
 	CTexture						specMap;			//スペキュラマップ。
 	std::unique_ptr<CMatrix[]>		worldMatrixBuffer;	//ワールド行列のバッファ
+	std::unique_ptr<MeshCollider[]>	meshCollider;		//メッシュコライダー。
+	std::unique_ptr<RigidBody[]>	rigidBody;			//剛体。
+	CMatrix*						rootBoneMatrix;		
 };
 

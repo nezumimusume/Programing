@@ -7,6 +7,8 @@
 #include "tkEngine/graphics/tkCamera.h"
 #include "tkEngine/graphics/tkLight.h"
 #include "tkEngine/graphics/tkTexture.h"
+#include "Physics/SphereCollider.h"
+#include "Physics/RigidBody.h"
 
 /*!
  * @brief	ユニティちゃん
@@ -57,7 +59,7 @@ private:
 	* @brief	衝突検出と解決。
 	*@param[in]	nextPosition		次の座標。
 	*/
-	void CollisionDetectAndResolve( const CVector3& nextPosition );
+	void CollisionDetectAndResolve( CVector3 nextPosition );
 	/*!
 	* @brief	アニメーションコントロール。
 	*/
@@ -83,4 +85,7 @@ private:
 	EnState					state;				//状態。
 	EnState					lastFrameState;		//前のフレームの状態。
 	bool					isJump;				//ジャンプ中フラグ。
+	SphereCollider			collider;			//ボックスコライダー。
+	float					radius;				//半径。
+	RigidBody				rigidBody;			//剛体。
 };
