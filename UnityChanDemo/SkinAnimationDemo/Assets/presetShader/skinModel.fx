@@ -274,13 +274,13 @@ PSOutput PSMain( VS_OUTPUT In )
 		//高さフォグ
 		float h = max(In.worldPos_depth.y - g_fogParam.y, 0.0f);
 		float t = min(h / g_fogParam.x, 1.0f);
-		color.xyz = lerp(float3(0.9f, 0.9f, 0.95f), color.xyz, t);
+		color.xyz = lerp(float3(0.75f, 0.75f, 0.95f), color.xyz, t);
 	}else if(g_fogParam.z > 0.0f){
 		//距離フォグ
 		float z = length(In.worldPos_depth.xyz - g_cameraPos);
 		z = max(z - g_fogParam.x, 0.0f);
 		float t = min( z / g_fogParam.y, 1.0f);
-		color.xyz = lerp(color.xyz, float3(0.9f, 0.9f, 0.95f), t);
+		color.xyz = lerp(color.xyz, float3(0.75f, 0.75f, 0.95f), t);
 	}
 #ifndef USE_BLOOM_FLOATING_BUFFER
 	//αに輝度を埋め込む。
