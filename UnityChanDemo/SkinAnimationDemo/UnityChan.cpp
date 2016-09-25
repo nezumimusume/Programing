@@ -113,13 +113,18 @@ void UnityChan::Start()
 	light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
 	light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
 
+
 	light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
+
 	light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
 	light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
+
+	isPointLightOn = false;
+	UpdatePointLightPosition();
 
 	animation.SetAnimationEndTime(AnimationRun, 0.8);
 	currentAnimSetNo = AnimationInvalid;
@@ -148,6 +153,9 @@ void UnityChan::Update()
 	CVector3 nextPosition = position;
 	const float MOVE_SPEED = 5.0f;
 	if (state == enStateRun || state == enStateStand) {
+		if (Pad(0).IsTrigger(enButtonRB3)) {
+			isPointLightOn = !isPointLightOn;
+		}
 		if (Pad(0).IsPress(enButtonA)) {
 			//Aボタンが押された。
 			//車との距離を調べる。
@@ -239,10 +247,27 @@ void UnityChan::Update()
 	
 	skinModel.Update(position, rotation, CVector3::One);
 	
-	
+	//ポイントライトの位置を更新。
+	UpdatePointLightPosition();
 	//アニメーションコントロール。
 	AnimationControl();
 	lastFrameState = state;
+}
+/*!
+* @brief	ポイントライトの位置を更新。
+*/
+void UnityChan::UpdatePointLightPosition()
+{
+	if (isPointLightOn) {
+		pointLightColor.Set(0.9f, 0.8f, 0.8f, 1.0f);
+	}
+	else {
+		pointLightColor = CVector4(0.0f, 0.0f, 0.0f, 0.0f);
+	}
+	light.SetPointLightColor(pointLightColor);
+	pointLightPosition = position;
+	pointLightPosition.y += 0.5f;
+	light.SetPointLightPosition(pointLightPosition);
 }
 /*!
 * @brief	衝突検出と解決。

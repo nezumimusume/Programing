@@ -9,6 +9,7 @@
 #include "Physics/Physics.h"
 
 PhysicsWorld* g_physicsWorld = NULL;
+UnityChan* g_unityChan = NULL;
 
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 
@@ -120,16 +121,16 @@ int WINAPI wWinMain(
 #else
 
 	g_physicsWorld = NewGO<PhysicsWorld>(0);
+	g_unityChan = NewGO<UnityChan>(0);
 	NewGO<UnityChanInstance>(0);
 	NewGO<Map>(0);
 	NewGO<Ground>(0);
 	Sky* sky = NewGO<Sky>(0);
-	UnityChan* unityChan = NewGO<UnityChan>(0);
-	sky->SetUnityChan(unityChan);
+	sky->SetUnityChan(g_unityChan);
 	g_car = NewGO<Car>(0);
 	g_camera = NewGO<GameCamera>(0);
-	unityChan->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
-	g_camera->SetUnityChan(unityChan);
+	g_unityChan->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
+	g_camera->SetUnityChan(g_unityChan);
 #endif
 	Engine().RunGameLoop();		//ゲームループを実行。
 

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Physics\Physics.h"
 #include "Ground.h"
+#include "UnityChan.h"
 
 Ground* g_ground = NULL;
 LPD3DXMESH testMesh;
@@ -43,6 +44,8 @@ void Ground::Start()
 
 void Ground::Update() 
 {
+	light.SetPointLightPosition(g_unityChan->GetPointLightPosition());
+	light.SetPointLightColor(g_unityChan->GetPointLightColor());
 	skinModel.Update(CVector3(0.0f, 0.0f, 0.0f), CQuaternion::Identity, CVector3(1.0f, 1.0f, 1.0f));
 }
 void Ground::Render(CRenderContext& renderContext) 

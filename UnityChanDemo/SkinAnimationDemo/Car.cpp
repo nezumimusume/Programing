@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "Car.h"
+#include "UnityChan.h"
 
 Car* g_car;
 
@@ -25,11 +26,11 @@ Car::Car()
 	light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
 	light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
 
-	light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 50.0f));
-	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 50.0f));
-	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 50.0f));
-	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 50.0f));
-	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
+	light.SetDiffuseLightColor(0, CVector4(0.3f, 0.3f, 0.3f, 50.0f));
+	light.SetDiffuseLightColor(1, CVector4(0.3f, 0.3f, 0.3f, 50.0f));
+	light.SetDiffuseLightColor(2, CVector4(0.3f, 0.3f, 0.3f, 50.0f));
+	light.SetDiffuseLightColor(3, CVector4(0.3f, 0.3f, 0.3f, 50.0f));
+	light.SetAmbinetLight(CVector3(0.1f, 0.1f, 0.1f));
 	position.Set(-12.0f, 3.5f, 0.0f);
 	moveSpeed = CVector3::Zero;
 	accele = CVector3::Zero;
@@ -97,6 +98,8 @@ void Car::Update()
 	addPos.Scale(1.0f / 60.0f);
 	position.Add(addPos);
 	skinModel.Update(position, rotation, CVector3::One);
+	light.SetPointLightPosition(g_unityChan->GetPointLightPosition());
+	light.SetPointLightColor(g_unityChan->GetPointLightColor());
 }
 void Car::Render(CRenderContext& renderContext)
 {

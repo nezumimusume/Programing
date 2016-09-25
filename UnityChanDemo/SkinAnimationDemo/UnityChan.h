@@ -54,7 +54,25 @@ public:
 	{
 		return state;
 	}
+	/*!
+	* @brief	ポイントライトの位置を取得。
+	*/
+	const CVector3& GetPointLightPosition() const
+	{
+		return pointLightPosition;
+	}
+	/*!
+	* @brief	ポイントライトの色を取得。
+	*/
+	const CVector4& GetPointLightColor() const
+	{
+		return pointLightColor;
+	}
 private:
+	/*!
+	* @brief	ポイントライトの位置を更新。
+	*/
+	void UpdatePointLightPosition();
 	/*!
 	* @brief	衝突検出と解決。
 	*@param[in]	nextPosition		次の座標。
@@ -82,9 +100,12 @@ private:
 	CQuaternion				rotation;			//回転
 	CVector3				toLightPos;			//
 	CVector3				moveSpeed;			//移動速度。
+	CVector3				pointLightPosition;	//ポイントライトの位置。
+	CVector4				pointLightColor;	//ポイントライトのカラー。
 	EnState					state;				//状態。
 	EnState					lastFrameState;		//前のフレームの状態。
 	bool					isJump;				//ジャンプ中フラグ。
+	bool					isPointLightOn;		//ポイントライトのスイッチ。
 	SphereCollider			collider;			//ボックスコライダー。
 	float					radius;				//半径。
 	RigidBody				rigidBody;			//剛体。

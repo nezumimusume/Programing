@@ -155,8 +155,8 @@ void CalcWorldPosAndNormal( VS_INPUT In, out float3 Pos, out float3 Normal, out 
 	Tangent = 0.0f;
 	Pos = mul(In.Pos, g_worldMatrix );
 	if(calcNormal){
-		Normal = mul(In.Normal, g_rotationMatrix );
-		Tangent = mul(In.Tangent, g_rotationMatrix );
+		Normal = mul(In.Normal, g_worldMatrix );
+		Tangent = mul(In.Tangent, g_worldMatrix );
 	}
 }
 /*!
@@ -232,39 +232,42 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
 PSOutput PSMain( VS_OUTPUT In )
 {
 	float4 color = tex2D(g_diffuseTextureSampler, In.Tex0);
-	float3 normal = 0.0f;
+	float3 normal = normalize(In.Normal);
 	if(g_flags.x){
 		//法線マップあり。
-		normal = tex2D( g_normalMapSampler, In.Tex0);
+		float3 tangent = normalize(In.Tangent);
+		float3 binSpaceNormal = tex2D( g_normalMapSampler, In.Tex0);
 		float4x4 tangentSpaceMatrix;
-		float3 biNormal = normalize( cross( In.Tangent, In.Normal) );
-		tangentSpaceMatrix[0] = float4( In.Tangent, 0.0f);
+		float3 biNormal = normalize( cross( tangent, normal) );
+		tangentSpaceMatrix[0] = float4( tangent, 0.0f);
 		tangentSpaceMatrix[1] = float4( biNormal, 0.0f);
-		tangentSpaceMatrix[2] = float4( In.Normal, 0.0f);
+		tangentSpaceMatrix[2] = float4( normal, 0.0f);
 		tangentSpaceMatrix[3] = float4( 0.0f, 0.0f, 0.0f, 1.0f );
 		//-1.0～1.0の範囲にマッピングする。
-		normal = (normal * 2.0f)- 1.0f;
-		normal = tangentSpaceMatrix[0] * normal.x + tangentSpaceMatrix[1] * normal.y + tangentSpaceMatrix[2] * normal.z; 
-	}else{
-		//法線マップなし。
-		normal = In.Normal;
+		binSpaceNormal = (binSpaceNormal * 2.0f)- 1.0f;
+		normal = tangentSpaceMatrix[0] * binSpaceNormal.x + tangentSpaceMatrix[1] * binSpaceNormal.y + tangentSpaceMatrix[2] * binSpaceNormal.z; 
+		
 	}
 	
 	
 	float4 lig = DiffuseLight(normal);
 	if(g_flags.z){
 		//リムライト。
-		lig.xyz += CalcLimLight(normal);
-	}
-	if(g_flags.y){
-		//影
-		lig *= CalcShadow(In.lightViewPos_0, In.lightViewPos_1, In.lightViewPos_2);
-	
+		lig.xyz += CalcLimLight(normal, g_light.limLightDir, g_light.limLightColor.xyz);
 	}
 	if(g_flags.w){
 		//スペキュラライト。
 		lig.xyz += SpecLight(normal, In.worldPos_depth.xyz, In.Tex0);
 	}
+	
+	if(g_flags.y){
+		//影
+		lig *= CalcShadow(In.lightViewPos_0, In.lightViewPos_1, In.lightViewPos_2);
+	
+	}
+	//ポイントライト。
+	lig.xyz += PointLight(normal, In.worldPos_depth.xyz, g_flags.z);
+	
 	//アンビエントライトを加算。
 	lig.xyz += g_light.ambient.xyz;
 	color.xyz *= lig;

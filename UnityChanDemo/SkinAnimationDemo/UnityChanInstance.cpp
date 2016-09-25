@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "UnityChanInstance.h"
+#include "UnityChan.h"
 
 namespace {
 	const int NUM_INSTANCE = 10;
@@ -84,6 +85,8 @@ void UnityChanInstance::Start()
 }
 void UnityChanInstance::Update()
 {
+	light.SetPointLightPosition(g_unityChan->GetPointLightPosition());
+	light.SetPointLightColor(g_unityChan->GetPointLightColor());
 	animation.Update(1.0f / 60.0f);
 	skinModel.UpdateInstancingDrawData(worldMatrixBuffer);
 	skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
