@@ -9,6 +9,7 @@ CAnimation				*orgAnimation;			//アニメーション。
 namespace {
 	const float MAX_RUN_SPEED = 0.1f;					//ユニティちゃんの走りの最高速度。
 	const float RUN_THREADHOLD_SQ = 0.07f * 0.07f;		//走りアニメーションを再生する速度の閾値。
+	//地面との当たり判定。
 	struct SweepResultGround : public btCollisionWorld::ConvexResultCallback
 	{
 		bool isHit;
@@ -27,16 +28,57 @@ namespace {
 
 		virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 		{
-			isHit = true;
-			CVector3 hitPosTmp = *(CVector3*)&convexResult.m_hitPointLocal;
-			//交点との距離を調べる。
-			CVector3 vDist;
-			vDist.Subtract(hitPosTmp, startPos);
-			float distTmp = vDist.Length();
-			if (distTmp < dist) {
-				hitPos = hitPosTmp;
-				dist = distTmp;
-				hitNormal = *(CVector3*)&convexResult.m_hitNormalLocal;
+			CVector3 hitNormalTmp = *(CVector3*)&convexResult.m_hitNormalLocal;
+			float t = fabsf(acosf(hitNormalTmp.Dot(CVector3::Up)));
+			if (t < CMath::PI * 0.3f) {
+				isHit = true;
+				CVector3 hitPosTmp = *(CVector3*)&convexResult.m_hitPointLocal;
+				//交点との距離を調べる。
+				CVector3 vDist;
+				vDist.Subtract(hitPosTmp, startPos);
+				float distTmp = vDist.Length();
+				if (distTmp < dist) {
+					hitPos = hitPosTmp;
+					dist = distTmp;
+					hitNormal = *(CVector3*)&convexResult.m_hitNormalLocal;
+				}
+			}
+			return 0.0f;
+		}
+	};
+	//壁
+	struct SweepResultWall : public btCollisionWorld::ConvexResultCallback
+	{
+		bool isHit;
+		CVector3 hitPos;
+		CVector3 startPos;
+		float dist;
+		CVector3 hitNormal;
+		SweepResultWall()
+		{
+			isHit = false;
+			dist = FLT_MAX;
+			hitPos = CVector3::Zero;
+			startPos = CVector3::Zero;
+			hitNormal = CVector3::Zero;
+		}
+
+		virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
+		{
+			CVector3 hitNormalTmp = *(CVector3*)&convexResult.m_hitNormalLocal;
+			float t = fabsf(acosf(hitNormalTmp.Dot(CVector3::Up)));
+			if (t >= CMath::PI * 0.3f) {
+				isHit = true;
+				CVector3 hitPosTmp = *(CVector3*)&convexResult.m_hitPointLocal;
+				//交点との距離を調べる。
+				CVector3 vDist;
+				vDist.Subtract(hitPosTmp, startPos);
+				float distTmp = vDist.Length();
+				if (distTmp < dist) {
+					hitPos = hitPosTmp;
+					dist = distTmp;
+					hitNormal = *(CVector3*)&convexResult.m_hitNormalLocal;
+				}
 			}
 			return 0.0f;
 		}
@@ -215,13 +257,13 @@ void UnityChan::CollisionDetectAndResolve(CVector3 nextPosition)
 			CVector3 addPos;
 			addPos.Subtract(nextPosition, position);
 			CVector3 posTmp = position;
-			posTmp.y += radius + 0.5f;
+			posTmp.y += radius + 0.2f;
 			btTransform start, end;
 			start.setIdentity();
 			end.setIdentity();
 			start.setOrigin(*(btVector3*)(&posTmp));
 			CVector3 newPos;
-			SweepResultGround callback;
+			SweepResultWall callback;
 			callback.startPos = position;
 			CVector3 addPosXZ = addPos;
 			addPosXZ.y = 0.0f;
@@ -233,26 +275,29 @@ void UnityChan::CollisionDetectAndResolve(CVector3 nextPosition)
 			}
 			if (callback.isHit) {
 				//当たった。
-				//壁。
-				nextPosition.x = callback.hitPos.x;
-				nextPosition.z = callback.hitPos.z;
-				//半径分押し戻す。
-				CVector3 hitNormalXZ = callback.hitNormal;
-				hitNormalXZ.y = 0.0f;
-				hitNormalXZ.Normalize();
-				CVector3 t = hitNormalXZ;
-				t.Scale(radius);
-				nextPosition.Add(t);
-				//続いて壁に沿って滑らせる。
-				t.Cross(hitNormalXZ, CVector3::Up);
-				t.Normalize();
-				//押し戻しで動いた分は減算する。
-				CVector3 t2;
-				t2.Subtract(nextPosition, position);
-				t2.y = 0.0f;
-				addPosXZ.Subtract(t2);
-				t.Scale(t.Dot(addPosXZ));
-				nextPosition.Add(t);
+				float t = fabsf(acosf(callback.hitNormal.Dot(CVector3::Up)));
+				if (t >= CMath::PI * 0.3f) {
+					//壁。
+					nextPosition.x = callback.hitPos.x;
+					nextPosition.z = callback.hitPos.z;
+					//半径分押し戻す。
+					CVector3 hitNormalXZ = callback.hitNormal;
+					hitNormalXZ.y = 0.0f;
+					hitNormalXZ.Normalize();
+					CVector3 t = hitNormalXZ;
+					t.Scale(radius);
+					nextPosition.Add(t);
+					//続いて壁に沿って滑らせる。
+					t.Cross(hitNormalXZ, CVector3::Up);
+					t.Normalize();
+					//押し戻しで動いた分は減算する。
+					CVector3 t2;
+					t2.Subtract(nextPosition, position);
+					t2.y = 0.0f;
+					addPosXZ.Subtract(t2);
+					t.Scale(t.Dot(addPosXZ));
+					nextPosition.Add(t);
+				}
 			}
 			else {
 				//どことも当たらないので終わり。
@@ -285,24 +330,26 @@ void UnityChan::CollisionDetectAndResolve(CVector3 nextPosition)
 		}
 		if (callback.isHit) {
 			//当たった。
-			//地面。
+			float t = fabsf(acosf(callback.hitNormal.Dot(CVector3::Up)));
+			if (t < CMath::PI * 0.3f) {
+				//地面。
+				CVector3 Circle;
+				float x = 0.0f;
+				float offset = 0.0f;	//押し戻す量。
+				Circle = CVector3::Zero;
 
-			CVector3 Circle;
-			float x = 0.0f;
-			float offset = 0.0f;	//押し戻す量。
-			Circle = CVector3::Zero;
+				Circle = position;
+				Circle.y = callback.hitPos.y;//円の中心
+				CVector3 v;
+				v.Subtract(Circle, callback.hitPos);
+				x = v.Length();//物体の角とプレイヤーの間の横幅の距離が求まる。
 
-			Circle = position;
-			Circle.y = callback.hitPos.y;//円の中心
-			CVector3 v;
-			v.Subtract(Circle, callback.hitPos);
-			x = v.Length();//物体の角とプレイヤーの間の横幅の距離が求まる。
+				offset = sqrt(max(0.0f, radius*radius - x*x));//yの平方根を求める。
 
-			offset = sqrt(max(0.0f, radius*radius - x*x));//yの平方根を求める。
-
-			moveSpeed.y = 0.0f;
-			isJump = false;
-			nextPosition.y = callback.hitPos.y + offset - radius;
+				moveSpeed.y = 0.0f;
+				isJump = false;
+				nextPosition.y = callback.hitPos.y + offset - radius;
+			}
 		}
 	}
 	position = nextPosition;
