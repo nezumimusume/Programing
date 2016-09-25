@@ -26,7 +26,7 @@ void Ground::Start()
 	skinModel.SetShadowReceiverFlag(true);
 	skinModel.SetShadowCasterFlag(true);
 	//距離フォグをかける。
-	skinModel.SetFogParam(enFogFuncDist, 40.0f, 70.0f);
+	skinModel.SetFogParam(enFogFuncDist, 70.0f, 100.0f);
 
 	Update();
 	m_worldMatrix = skinModel.FindBoneWorldMatrix("Plane001");

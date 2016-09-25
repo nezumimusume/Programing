@@ -14,7 +14,7 @@ public class OutputLocationInfo : MonoBehaviour {
         string headerTxt = "";
         foreach (Transform tr in collisions)
         {
-            if (tr.gameObject == collision)
+            if (tr.gameObject == collision || tr.parent != collision.transform)
             {
                 continue;
             }

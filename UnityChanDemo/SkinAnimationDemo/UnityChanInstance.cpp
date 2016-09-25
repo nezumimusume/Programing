@@ -34,12 +34,12 @@ void UnityChanInstance::Start()
 	int execRetu = 0;	//”z’u‚µ‚½—ñ‚Ì”B
 	for (int i = 0; i < NUM_INSTANCE; i++) {
 		if (retu == 0) {
-			worldMatrixBuffer[i].MakeTranslation(CVector3(0.0f, 1.5f, -0.5f * gyou));
+			worldMatrixBuffer[i].MakeTranslation(CVector3(-10.0f, 4.5f, -0.5f * gyou));
 			retu = 1;
 		}
 		else {
 			
-			worldMatrixBuffer[i].MakeTranslation(CVector3(0.5f * retu, 1.5f, -0.5f * gyou));
+			worldMatrixBuffer[i].MakeTranslation(CVector3(-10.0 + 0.5f * retu, 4.5f, -0.5f * gyou));
 			retu *= -1.0f;
 			if (retu > 0) {
 				//³

@@ -37,7 +37,7 @@ namespace tkEngine{
 		/*!
 		 * @brief	テクスチャをロード。
 		 */
-		void Load( const char* fileName );
+		bool Load( const char* fileName );
 	private:
 		LPDIRECT3DTEXTURE9	m_tex;		//!<テクスチャ。
 	};

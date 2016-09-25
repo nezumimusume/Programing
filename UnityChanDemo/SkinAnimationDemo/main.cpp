@@ -128,7 +128,7 @@ int WINAPI wWinMain(
 	sky->SetUnityChan(unityChan);
 	g_car = NewGO<Car>(0);
 	g_camera = NewGO<GameCamera>(0);
-	unityChan->SetPosition(CVector3(0.0f, 1.5f, 0.0f));
+	unityChan->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
 	g_camera->SetUnityChan(unityChan);
 #endif
 	Engine().RunGameLoop();		//ゲームループを実行。

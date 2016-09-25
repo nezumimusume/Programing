@@ -39,7 +39,7 @@ void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 	for (auto& mapChiplLocInfo : mapChipLocInfoList) {
 		CMatrix mTrans;
 		CVector3 pos = mapChiplLocInfo->pos;
-		pos.Scale(0.38f);
+
 		mTrans.MakeTranslation(pos);
 		CMatrix mRot;
 		mRot.MakeRotationFromQuaternion(mapChiplLocInfo->rotation);
@@ -73,8 +73,8 @@ void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbinetLight(CVector3(0.7f, 0.7f, 0.7f));
-	skinModel.SetFogParam(enFogFuncDist, 40.0f, 80.0f);
+	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
+	skinModel.SetFogParam(enFogFuncDist, 70.0f, 100.0f);
 
 }
 void MapChip::Start()

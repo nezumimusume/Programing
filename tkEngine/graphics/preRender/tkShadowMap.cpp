@@ -163,9 +163,11 @@ namespace tkEngine{
 			for (int i = 0; i < m_numShadowMap; i++) {
 				renderContext.SetRenderTarget(0, &m_shadowMapRT[i]);
 				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xffffffff, 1.0f, 0);
+				renderContext.SetRenderState(RS_CULLMODE, CULL_NONE);
 				for (auto caster : m_shadowCaster) {
 					caster->Render(renderContext, m_pShadowMapEffect, m_LVPMatrix[i]);
 				}
+				renderContext.SetRenderState(RS_CULLMODE, CULL_CCW);
 				//ブラーをかけて深度マップの平均値を求める。
 				if (!m_isDisableVSM) {
 					m_blur[i].Draw(renderContext);

@@ -30,7 +30,7 @@ Car::Car()
 	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 50.0f));
 	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 50.0f));
 	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
-	position.Set(2.0f, 1.5f, 0.0f);
+	position.Set(-12.0f, 4.5f, 0.0f);
 	moveSpeed = CVector3::Zero;
 	accele = CVector3::Zero;
 	rotation = CQuaternion::Identity;
