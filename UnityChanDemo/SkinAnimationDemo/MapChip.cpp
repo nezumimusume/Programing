@@ -30,7 +30,11 @@ void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 	skinModel.SetLight(&light);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
-
+	char normalMapPath[256];
+	sprintf(normalMapPath, "Assets/modelData/%s_n.png", mapChipLocInfoList[0]->modelName);
+	if (normalMap.Load(normalMapPath)) {
+		skinModel.SetNormalMap(&normalMap);
+	}
 	//ワールド行列のバッファを作成。
 	worldMatrixBuffer.reset(new CMatrix[mapChipLocInfoList.size()]);
 	meshCollider.reset(new MeshCollider[mapChipLocInfoList.size()]);
