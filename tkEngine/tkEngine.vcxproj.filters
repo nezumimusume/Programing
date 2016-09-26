@@ -355,5 +355,8 @@
     <ClInclude Include="graphics\postEffect\tkFxaa.h">
       <Filter>Source Files\graphics\postEffect</Filter>
     </ClInclude>
+    <ClInclude Include="timer\tkGameTime.h">
+      <Filter>Source Files\timer</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

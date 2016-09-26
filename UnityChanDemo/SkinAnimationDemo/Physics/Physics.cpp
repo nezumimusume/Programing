@@ -47,7 +47,7 @@ void PhysicsWorld::Start()
 }
 void PhysicsWorld::Update()
 {
-	dynamicWorld->stepSimulation(GAME_DELTA_TIME);
+	dynamicWorld->stepSimulation(GameTime().GetFrameDeltaTime());
 }
 void PhysicsWorld::Render(CRenderContext& renderContext)
 {

@@ -239,6 +239,7 @@ namespace tkEngine{
 				CStopwatch sw;
 				sw.Start();
 #endif
+				GameTime().Update();
 				//キー入力を更新。
 				m_keyInput.Update();
 

@@ -48,6 +48,7 @@
 #include "tkEngine/graphics/tkRenderCommand.h"
 #include "tkEngine/graphics/tkRenderContext.h"
 #include "tkEngine/graphics/tkPIXPerfTag.h"
+#include "tkEngine/timer/tkGameTime.h"
 
 
 // TODO: reference additional headers your program requires here
