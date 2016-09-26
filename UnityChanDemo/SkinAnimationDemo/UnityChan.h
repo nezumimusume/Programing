@@ -102,6 +102,7 @@ private:
 	CVector3				moveSpeed;			//移動速度。
 	CVector3				pointLightPosition;	//ポイントライトの位置。
 	CVector4				pointLightColor;	//ポイントライトのカラー。
+	CVector3				toLampLocalPos;		//ランプのローカル座標。
 	EnState					state;				//状態。
 	EnState					lastFrameState;		//前のフレームの状態。
 	bool					isJump;				//ジャンプ中フラグ。
