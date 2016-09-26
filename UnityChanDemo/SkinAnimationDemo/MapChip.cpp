@@ -90,5 +90,7 @@ void MapChip::Update()
 }
 void MapChip::Render(CRenderContext& renderContext)
 {
+	renderContext.SetRenderState(RS_CULLMODE, CULL_NONE);
 	skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
+	renderContext.SetRenderState(RS_CULLMODE, CULL_CCW);
 }
