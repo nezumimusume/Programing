@@ -206,9 +206,9 @@ void UnityChan::Update()
 		
 		//Y•ûŒü‚É‚Íd—Í—Ž‰º‚ð‰Á‚¦‚éB
 		const float GRAVITY = -18.8f;
-		moveSpeed.y += GRAVITY * GAME_DELTA_TIME;
+		moveSpeed.y += GRAVITY * GameTime().GetFrameDeltaTime();
 		CVector3 addPos = moveSpeed;
-		addPos.Scale(GAME_DELTA_TIME);
+		addPos.Scale(GameTime().GetFrameDeltaTime());
 		nextPosition.Add(addPos);
 		if (moveDir.LengthSq() > 0.0001f) {
 			rotation.SetRotation(CVector3::Up, atan2f(moveDir.x, moveDir.z));
@@ -397,7 +397,7 @@ void UnityChan::PlayAnimation(AnimationNo animNo)
 */
 void UnityChan::AnimationControl()
 {
-	animation.Update(GAME_DELTA_TIME);
+	animation.Update(GameTime().GetFrameDeltaTime());
 	if (isJump) {
 		PlayAnimation(AnimationJump);
 	}else{
