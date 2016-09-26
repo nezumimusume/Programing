@@ -146,6 +146,7 @@ void UnityChan::Start()
 	rbInfo.rot = rotation;
 	rbInfo.collider = &collider;
 	rigidBody.Create(rbInfo);
+	toLampLocalPos.Set( 0.0f, 0.5f, 0.2f);
 	//g_physicsWorld->AddRigidBody(&rigidBody);
 }
 void UnityChan::Update()
@@ -259,14 +260,15 @@ void UnityChan::Update()
 void UnityChan::UpdatePointLightPosition()
 {
 	if (isPointLightOn) {
-		pointLightColor.Set(0.9f, 0.8f, 0.8f, 1.0f);
+		pointLightColor.Set(0.9f, 0.75f, 0.6f, 1.0f);
 	}
 	else {
 		pointLightColor = CVector4(0.0f, 0.0f, 0.0f, 0.0f);
 	}
 	light.SetPointLightColor(pointLightColor);
-	pointLightPosition = position;
-	pointLightPosition.y += 0.5f;
+	pointLightPosition = toLampLocalPos;
+	CMatrix mWorld = skinModel.GetWorldMatrix();
+	mWorld.Mul(pointLightPosition);
 	light.SetPointLightPosition(pointLightPosition);
 }
 /*!

@@ -26,10 +26,10 @@ Car::Car()
 	light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
 	light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
 
-	light.SetDiffuseLightColor(0, CVector4(0.3f, 0.3f, 0.3f, 50.0f));
-	light.SetDiffuseLightColor(1, CVector4(0.3f, 0.3f, 0.3f, 50.0f));
-	light.SetDiffuseLightColor(2, CVector4(0.3f, 0.3f, 0.3f, 50.0f));
-	light.SetDiffuseLightColor(3, CVector4(0.3f, 0.3f, 0.3f, 50.0f));
+	light.SetDiffuseLightColor(0, CVector4(0.3f, 0.3f, 0.3f, 10.0f));
+	light.SetDiffuseLightColor(1, CVector4(0.3f, 0.3f, 0.3f, 10.0f));
+	light.SetDiffuseLightColor(2, CVector4(0.3f, 0.3f, 0.3f, 10.0f));
+	light.SetDiffuseLightColor(3, CVector4(0.3f, 0.3f, 0.3f, 10.0f));
 	light.SetAmbinetLight(CVector3(0.1f, 0.1f, 0.1f));
 	position.Set(-12.0f, 3.5f, 0.0f);
 	moveSpeed = CVector3::Zero;
