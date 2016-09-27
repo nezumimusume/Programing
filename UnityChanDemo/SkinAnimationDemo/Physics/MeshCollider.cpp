@@ -93,7 +93,7 @@ void MeshCollider::CreateFromSkinModel( CSkinModel* model, const CMatrix* offset
 				p += stride;
 			}
 			ib->Unlock();
-			//ib->Release();
+			ib->Release();
 			indexBufferArray.push_back(indexBuffer);
 		}
 		//インデックスメッシュを作成。
