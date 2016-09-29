@@ -44,7 +44,9 @@ namespace tkEngine{
 			m_blurForward.Init(w, h, *Engine().GetMainRenderTarget().GetTexture());
 			m_blurBack.Init(w, h, *Engine().GetMainRenderTarget().GetTexture());
 			m_blurBack.SetBlurPower(1.0f);
+			m_blurBack.SetUseWeights(CGaussianBlur::enUseWeight_4);
 			m_blurForward.SetBlurPower(10.0f);
+			m_blurForward.SetUseWeights(CGaussianBlur::enUseWeight_4);
 			m_effect = EffectManager().LoadEffect("Assets/presetShader/dof.fx");
 		}
 	}

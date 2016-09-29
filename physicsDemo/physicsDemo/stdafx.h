@@ -10,8 +10,12 @@
 #include "tkEngine/GameObject/tkGameObject.h"
 #include "btBulletDynamicsCommon.h"
 #include "BulletCollision\CollisionDispatch\btGhostObject.h"
-#include "CollisionType.h"
 
+enum {
+	CollisionType_DebriCreator,
+	CollisionType_Player,
+	CollisionType_Ground
+};
 using namespace tkEngine;
 
 
