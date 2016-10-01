@@ -77,7 +77,6 @@ float4 PSMain(VS_OUTPUT In ) : COLOR
 {
 	float4 sceneColor = tex2D(g_SceneSampler, In.tex0);
 	float4 depth = tex2D(g_depthSampler, In.tex0);
-	
 	//Žè‘Oƒ{ƒP
 	float t = depth - g_dofParam.z;
 	float forwardRate = max( 0.0f, -g_dofParam.x - t );

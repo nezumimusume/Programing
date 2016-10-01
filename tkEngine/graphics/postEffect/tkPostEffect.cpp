@@ -69,6 +69,7 @@ namespace tkEngine{
 		m_dof.Render(renderContext, this);
 		m_bloomRender.Render(renderContext, this);
 		m_fxaa.Render(renderContext, this);
+		
 	}
 	/*!
 	* @brief	フルスクリーン描画。

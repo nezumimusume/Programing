@@ -29,7 +29,12 @@ namespace tkEngine{
 		float total = 0;
 		for (int i = 0; i<weights_tbl[m_useWeights]; i++) {
 			m_weights[i] = expf(-0.5f*(float)(i*i) / dispersion);
-			total += 2.0f*m_weights[i];
+			if (i == 0) {
+				total += m_weights[i];
+			}
+			else {
+				total += 2.0f*m_weights[i];
+			}
 		}
 		// ‹KŠi‰»
 		for (int i = 0; i < weights_tbl[m_useWeights]; i++) {
@@ -114,7 +119,7 @@ namespace tkEngine{
 			m_effect->BeginPass(renderContext, 0);
 			m_effect->SetTexture(renderContext, "g_tex", m_srcTexture);
 			m_effect->SetValue(renderContext, "g_texSize", size, sizeof(size));
-			m_effect->SetValue(renderContext, "g_offset", offset, sizeof(size));
+			m_effect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
 			m_effect->SetValue(renderContext, "g_weight", m_weights, sizeof(m_weights));
 			m_effect->CommitChanges(renderContext);
 			renderContext.SetVertexDeclaration(m_prim.GetVertexDecl());
@@ -150,7 +155,7 @@ namespace tkEngine{
 			m_effect->BeginPass(renderContext, 0);
 			m_effect->SetTexture(renderContext, "g_tex", m_rt[0].GetTexture());
 			m_effect->SetValue(renderContext, "g_texSize", size, sizeof(size));
-			m_effect->SetValue(renderContext, "g_offset", offset, sizeof(size));
+			m_effect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
 			m_effect->SetValue(renderContext, "g_weight", m_weights, sizeof(m_weights));
 			
 			m_effect->CommitChanges(renderContext);
