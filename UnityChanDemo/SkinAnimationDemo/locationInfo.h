@@ -1,4 +1,46 @@
-﻿//Building_b
+﻿//Medium Room 2
+{
+	"Medium Room 2",
+	CVector3(-30.20f, 1.61f, 114.60f),             //平行移動
+	CQuaternion(-0.71f, 0.00f, 0.00f, 0.71f ),  //回転
+},
+//Dungeon 4-way_00
+{
+	"Dungeon 4-way_00",
+	CVector3(-30.30f, 14.23f, 144.09f),             //平行移動
+	CQuaternion(-0.71f, 0.00f, 0.00f, 0.71f ),  //回転
+},
+//Dungeon Walls Set_IN
+{
+	"Dungeon Walls Set_IN",
+	CVector3(-30.25f, 6.53f, 122.04f),             //平行移動
+	CQuaternion(0.00f, 0.71f, 0.71f, 0.00f ),  //回転
+},
+//Medium Room 2
+{
+	"Medium Room 2",
+	CVector3(-5.19f, 13.16f, 144.21f),             //平行移動
+	CQuaternion(-0.50f, 0.50f, 0.50f, 0.50f ),  //回転
+},
+//Medium Room 2
+{
+	"Medium Room 2",
+	CVector3(-55.15f, 13.16f, 144.21f),             //平行移動
+	CQuaternion(0.50f, 0.50f, 0.50f, -0.50f ),  //回転
+},
+//Dungeon Walls Set_IN
+{
+	"Dungeon Walls Set_IN",
+	CVector3(-30.25f, 12.72f, 165.40f),             //平行移動
+	CQuaternion(0.00f, 0.71f, 0.71f, 0.00f ),  //回転
+},
+//Medium Room 2
+{
+	"Medium Room 2",
+	CVector3(-30.29f, 19.22f, 191.85f),             //平行移動
+	CQuaternion(-0.71f, 0.00f, 0.00f, 0.71f ),  //回転
+},
+//Building_b
 {
 	"Building_b",
 	CVector3(3.70f, 2.73f, 9.56f),             //平行移動
@@ -260,47 +302,5 @@
 {
 	"Palmtree",
 	CVector3(-3.73f, 2.38f, 11.53f),             //平行移動
-	CQuaternion(-0.71f, 0.00f, 0.00f, 0.71f ),  //回転
-},
-//Medium Room 2
-{
-	"Medium Room 2",
-	CVector3(-30.20f, 1.61f, 114.60f),             //平行移動
-	CQuaternion(-0.71f, 0.00f, 0.00f, 0.71f ),  //回転
-},
-//Dungeon Walls Set_IN
-{
-	"Dungeon Walls Set_IN",
-	CVector3(-30.25f, 6.53f, 122.04f),             //平行移動
-	CQuaternion(0.00f, 0.71f, 0.71f, 0.00f ),  //回転
-},
-//Dungeon 4-way_00
-{
-	"Dungeon 4-way_00",
-	CVector3(-30.30f, 14.23f, 144.09f),             //平行移動
-	CQuaternion(-0.71f, 0.00f, 0.00f, 0.71f ),  //回転
-},
-//Medium Room 2
-{
-	"Medium Room 2",
-	CVector3(-5.19f, 13.16f, 144.21f),             //平行移動
-	CQuaternion(-0.50f, 0.50f, 0.50f, 0.50f ),  //回転
-},
-//Medium Room 2
-{
-	"Medium Room 2",
-	CVector3(-55.15f, 13.16f, 144.21f),             //平行移動
-	CQuaternion(0.50f, 0.50f, 0.50f, -0.50f ),  //回転
-},
-//Dungeon Walls Set_IN
-{
-	"Dungeon Walls Set_IN",
-	CVector3(-30.25f, 12.72f, 165.40f),             //平行移動
-	CQuaternion(0.00f, 0.71f, 0.71f, 0.00f ),  //回転
-},
-//Medium Room 2
-{
-	"Medium Room 2",
-	CVector3(-30.29f, 19.22f, 191.85f),             //平行移動
 	CQuaternion(-0.71f, 0.00f, 0.00f, 0.71f ),  //回転
 },

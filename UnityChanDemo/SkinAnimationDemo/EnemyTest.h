@@ -11,16 +11,15 @@
 #include "Physics/RigidBody.h"
 
 /*!
- * @brief	ユニティちゃん
+ * @brief	敵のテストプログラム。
  */
-class UnityChan : public IGameObject {
+class EnemyTest : public IGameObject {
 private:
 	enum AnimationNo {
 		AnimationInvalid = -1,
 		AnimationStand,		//立ち。
 		AnimationWalk,		//歩き。
-		AnimationRun,		//走り。
-		AnimationJump,		//ジャンプ。
+		AnimationAttack,	//攻撃
 	};
 public:
 	enum EnState {
@@ -30,7 +29,7 @@ public:
 	};
 	bool					isUpdateAnim;		//
 
-	UnityChan() :
+	EnemyTest() :
 		position(CVector3::Zero),
 		isUpdateAnim(false)
 	{
@@ -87,7 +86,8 @@ private:
 	*/
 	void PlayAnimation(AnimationNo animNo);
 private:
-	CSkinModelDataHandle	skinModelData;
+	static CSkinModelData*	orgSkinModelData;		//スキンモデルデータ。
+	CSkinModelData			skinModelData;
 	CSkinModel				skinModel;			//スキンモデル。
 	CAnimation				animation;			//アニメーション。
 	CLight					light;				//ライト。

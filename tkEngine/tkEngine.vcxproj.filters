@@ -54,6 +54,9 @@
     <Filter Include="Source Files\physics">
       <UniqueIdentifier>{aa9a2833-dc9d-44dc-a3a0-0a227b1c19d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\resource">
+      <UniqueIdentifier>{4f243545-da73-4b30-9eed-387319db8256}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -190,6 +193,12 @@
     </ClCompile>
     <ClCompile Include="graphics\postEffect\tkFxaa.cpp">
       <Filter>Source Files\graphics\postEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="resource\CSkinModelDataResources.cpp">
+      <Filter>Source Files\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="resource\CSkinModelDataHandle.cpp">
+      <Filter>Source Files\resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -357,6 +366,12 @@
     </ClInclude>
     <ClInclude Include="timer\tkGameTime.h">
       <Filter>Source Files\timer</Filter>
+    </ClInclude>
+    <ClInclude Include="resource\CSkinModelDataResources.h">
+      <Filter>Source Files\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="resource\CSkinModelDataHandle.h">
+      <Filter>Source Files\resource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

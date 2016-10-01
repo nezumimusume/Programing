@@ -7,6 +7,8 @@
 #include "Sky.h"
 #include "Ground.h"
 #include "Physics/Physics.h"
+#include "EnemyTest.h"
+#include "EnemyManager.h"
 
 PhysicsWorld* g_physicsWorld = NULL;
 UnityChan* g_unityChan = NULL;
@@ -16,6 +18,7 @@ UnityChan* g_unityChan = NULL;
 #ifdef MEMORY_LEAK_TEST
 //メモリリークテスト。
 class MemoryLeakTest : public IGameObject {
+	
 public:
 	MemoryLeakTest()
 	{
@@ -28,28 +31,19 @@ public:
 	void Update() override
 	{
 		//スキンなしモデル。
-		CSkinModelData	nonSkinModelData;		//スキンモデルデータ。
-		nonSkinModelData.LoadModelData("Assets/modelData/Court.X", NULL);
+		CSkinModelDataHandle nonSkinModelData;		//スキンモデルデータ。
+		SkinModelDataResources().Load(nonSkinModelData, "Assets/modelData/Court.X", NULL);
+		
 		//スキンなしインスタンシングモデル。
-		CSkinModelData nonSkinModelInstancing;
-		nonSkinModelInstancing.LoadModelData("Assets/modelData/Court.X", NULL);
-		//インスタンス描画用のデータを作成。
-		tkEngine::SVertexElement vertexElement[] = {
-			{ 1,  0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 1 },  // WORLD 1行目
-			{ 1, 16, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 2 },  // WORLD 2行目
-			{ 1, 32, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 3 },  // WORLD 3行目
-			{ 1, 48, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 4 },  // WORLD 4行目
-			D3DDECL_END()
-		};
-		nonSkinModelInstancing.CreateInstancingDrawData(10, vertexElement);
+		CSkinModelDataHandle nonSkinModelInstancing;
+		SkinModelDataResources().Load(nonSkinModelInstancing, "Assets/modelData/Court.X", NULL, true, 10);
+		
 		//スキンありモデル。
-		CSkinModelData skinModelData;
-		skinModelData.LoadModelData("Assets/modelData/Unity.X", NULL);
+		CSkinModelDataHandle skinModelData;
+		SkinModelDataResources().Load(skinModelData, "Assets/modelData/Unity.X", NULL);
 		//スキンありインスタンシングモデル。
-		CSkinModelData skinModelInstancing;
-		skinModelInstancing.LoadModelData("Assets/modelData/Unity.X", NULL);
-		skinModelInstancing.CreateInstancingDrawData(10, vertexElement);
-
+		CSkinModelDataHandle skinModelInstancing;
+		SkinModelDataResources().Load(skinModelInstancing, "Assets/modelData/Unity.X", NULL, true, 10);
 	}
 	void Render(CRenderContext& renderContext) override
 	{
@@ -123,8 +117,13 @@ int WINAPI wWinMain(
 	g_physicsWorld = NewGO<PhysicsWorld>(0);
 	g_unityChan = NewGO<UnityChan>(0);
 	NewGO<UnityChanInstance>(0);
+	NewGO<EnemyManager>(0);
 	NewGO<Map>(0);
 	NewGO<Ground>(0);
+#ifdef ENEMY_TEST
+	EnemyTest* enemyTest = NewGO<EnemyTest>(0);
+	enemyTest->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
+#endif
 	Sky* sky = NewGO<Sky>(0);
 	sky->SetUnityChan(g_unityChan);
 	g_car = NewGO<Car>(0);

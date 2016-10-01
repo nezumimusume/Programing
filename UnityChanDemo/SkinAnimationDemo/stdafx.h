@@ -5,6 +5,8 @@
 #ifndef _STDAFX_H_
 #define _STDAFX_H_
 
+//#define ENEMY_TEST
+
 #include <windows.h>
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/graphics/tkSkinModelData.h"
@@ -14,11 +16,13 @@
 #include "tkEngine/graphics/tkCamera.h"
 #include "tkEngine/graphics/tkLight.h"
 #include "tkEngine/graphics/tkTexture.h"
+#include "tkEngine/resource/CSkinModelDataHandle.h"
 #include "btBulletDynamicsCommon.h"
 #include "BulletCollision\CollisionDispatch\btGhostObject.h"
 #include "Physics\Physics.h"
 using namespace tkEngine;
 #include "GameCamera.h"
+
 
 extern PhysicsWorld* g_physicsWorld ;
 extern UnityChan* g_unityChan;

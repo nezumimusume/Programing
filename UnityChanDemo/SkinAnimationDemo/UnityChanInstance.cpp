@@ -18,16 +18,14 @@ UnityChanInstance::~UnityChanInstance()
 }
 void UnityChanInstance::Start()
 {
-	skinModelData.LoadModelData("Assets/modelData/Unity.X", &animation);
-	//インスタンス描画用のデータを作成。
-	tkEngine::SVertexElement vertexElement[] = {
-		{ 1,  0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 1 },  // WORLD 1行目
-		{ 1, 16, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 2 },  // WORLD 2行目
-		{ 1, 32, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 3 },  // WORLD 3行目
-		{ 1, 48, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 4 },  // WORLD 4行目
-		D3DDECL_END()
-	};
-	skinModelData.CreateInstancingDrawData(NUM_INSTANCE, vertexElement);
+	SkinModelDataResources().Load(
+		skinModelData, 
+		"Assets/modelData/Unity.X", 
+		&animation, 
+		true, 
+		NUM_INSTANCE
+	);
+	
 	worldMatrixBuffer = new CMatrix[NUM_INSTANCE];
 	int gyou = 1;		//行。
 	int retu = 0;		//列。
@@ -58,7 +56,7 @@ void UnityChanInstance::Start()
 	}
 	normalMap.Load("Assets/modelData/utc_nomal.tga");
 	specMap.Load("Assets/modelData/utc_spec.tga");
-	skinModel.Init(&skinModelData);
+	skinModel.Init(skinModelData.GetBody());
 	skinModel.SetLight(&light);
 	skinModel.SetNormalMap(&normalMap);
 	skinModel.SetSpeculerMap(&specMap);

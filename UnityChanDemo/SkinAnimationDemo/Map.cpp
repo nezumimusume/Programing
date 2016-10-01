@@ -2,7 +2,6 @@
 #include "Map.h"
 #include "MapChip.h"
 
-
 using namespace std;
 namespace {
 	//マップチップの配置情報のテーブル。

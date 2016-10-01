@@ -14,5 +14,7 @@ public:
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;
 private:
+
+private:
 	std::vector<MapChip*> mapChipList;	//マップチップのリスト。
 };

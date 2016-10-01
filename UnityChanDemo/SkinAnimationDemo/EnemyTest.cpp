@@ -1,9 +1,13 @@
 #include "stdafx.h"
-#include "UnityChan.h"
+#include "EnemyTest.h"
 #include "Car.h"
 #include "Ground.h"
 
+CSkinModelData*	EnemyTest::orgSkinModelData = NULL;	//オリジナルスキンモデルデータ。
+
+
 namespace {
+	CAnimation				*orgAnimation;			//アニメーション。
 	const float MAX_RUN_SPEED = 0.1f;					//ユニティちゃんの走りの最高速度。
 	const float RUN_THREADHOLD_SQ = 0.07f * 0.07f;		//走りアニメーションを再生する速度の閾値。
 	//地面との当たり判定。
@@ -84,16 +88,19 @@ namespace {
 /*!
 * @brief	開始
 */
-void UnityChan::Start()
+void EnemyTest::Start()
 {
-	SkinModelDataResources().Load(skinModelData, "Assets/modelData/Unity.X", &animation);
-	normalMap.Load("Assets/modelData/utc_nomal.tga");
-	specMap.Load("Assets/modelData/utc_spec.tga");
-	//skinModelData.LoadModelData("Assets/modelData/unity.X", NULL);
-	skinModel.Init(skinModelData.GetBody());
+	if (orgSkinModelData == NULL) {
+		orgSkinModelData = new CSkinModelData;
+		orgAnimation = new CAnimation;
+		//orgSkinModelData->LoadModelData("Assets/modelData/Unity.X", orgAnimation);
+		orgSkinModelData->LoadModelData("Assets/modelData/enemy00.X", orgAnimation);
+	}
+	//オリジナルのモデルデータからクローンモデルを作成。
+	skinModelData.CloneModelData(*orgSkinModelData, &animation);
+	
+	skinModel.Init(&skinModelData);
 	skinModel.SetLight(&light);
-	skinModel.SetNormalMap(&normalMap);
-	skinModel.SetSpeculerMap(&specMap);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
 	skinModel.SetFresnelFlag(true);
@@ -117,7 +124,6 @@ void UnityChan::Start()
 	isPointLightOn = false;
 	UpdatePointLightPosition();
 
-	animation.SetAnimationEndTime(AnimationRun, 0.8);
 	currentAnimSetNo = AnimationInvalid;
 	PlayAnimation(currentAnimSetNo);
 	rotation = CQuaternion::Identity;
@@ -140,7 +146,7 @@ void UnityChan::Start()
 	toLampLocalPos.Set( 0.0f, 0.5f, 0.2f);
 	//g_physicsWorld->AddRigidBody(&rigidBody);
 }
-void UnityChan::Update()
+void EnemyTest::Update()
 {
 	CVector3 nextPosition = position;
 	const float MOVE_SPEED = 5.0f;
@@ -248,7 +254,7 @@ void UnityChan::Update()
 /*!
 * @brief	ポイントライトの位置を更新。
 */
-void UnityChan::UpdatePointLightPosition()
+void EnemyTest::UpdatePointLightPosition()
 {
 	if (isPointLightOn) {
 		pointLightColor.Set(0.9f, 0.75f, 0.6f, 1.0f);
@@ -266,7 +272,7 @@ void UnityChan::UpdatePointLightPosition()
 * @brief	衝突検出と解決。
 *@param[in]	nextPosition		次の座標。
 */
-void UnityChan::CollisionDetectAndResolve(CVector3 nextPosition)
+void EnemyTest::CollisionDetectAndResolve(CVector3 nextPosition)
 {
 	//XZ平面を調べる。
 	{
@@ -375,32 +381,26 @@ void UnityChan::CollisionDetectAndResolve(CVector3 nextPosition)
 /*!
 * @brief	アニメーション再生。
 */
-void UnityChan::PlayAnimation(AnimationNo animNo)
+void EnemyTest::PlayAnimation(AnimationNo animNo)
 {
 	if (currentAnimSetNo != animNo) {
 		//別のアニメーション
-		animation.PlayAnimation(animNo, 0.1f);
+		animation.PlayAnimation(animNo, 0.3f);
 		currentAnimSetNo = animNo;
 	}
 }
 /*!
 * @brief	アニメーションコントロール。
 */
-void UnityChan::AnimationControl()
+void EnemyTest::AnimationControl()
 {
 	animation.Update(GameTime().GetFrameDeltaTime());
-	if (isJump) {
-		PlayAnimation(AnimationJump);
+	if (Pad(0).IsPress(enButtonB)) {
+		PlayAnimation(AnimationAttack);
 	}else{
 		if (state == enStateRun) {
-			if (moveSpeed.LengthSq() > RUN_THREADHOLD_SQ) {
-				//走りアニメーションを流す。
-				PlayAnimation(AnimationRun);
-			}
-			else {
-				//歩きアニメーション。
-				PlayAnimation(AnimationWalk);
-			}
+			//歩きアニメーション。
+			PlayAnimation(AnimationWalk);
 		}
 		else if (state == enStateStand) {
 			//立ちアニメーションを流す。
@@ -411,11 +411,8 @@ void UnityChan::AnimationControl()
 /*!
 * @brief	描画。
 */
-void UnityChan::Render(CRenderContext& renderContext)
+void EnemyTest::Render(CRenderContext& renderContext)
 {
-#ifdef ENEMY_TEST
-	return;
-#endif
 	if (state != enState_RideOnCar) {
 		//車に乗っているときは非表示にする。
 		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());

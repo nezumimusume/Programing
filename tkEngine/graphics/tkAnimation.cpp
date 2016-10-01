@@ -98,9 +98,7 @@ namespace tkEngine{
 				//•’Ê‚ÉÄ¶B
 				pAnimController->AdvanceTime(deltaTime, NULL);
 			}
-			if (isInterpolate) {
-				ID3DXAnimationSet* animSet = animationSets[2];
-				float period = animSet->GetPeriod();
+			if (isInterpolate ) {
 				//•âŠÔ’†B
 				interpolateTime += deltaTime;
 				float weight = 0.0f;

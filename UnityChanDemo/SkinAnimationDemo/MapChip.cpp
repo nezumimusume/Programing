@@ -14,19 +14,10 @@ MapChip::~MapChip()
 void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 {
 	//まずはスキンモデルをロード。
-	char modelPath[256];
+	char modelPath[1024];
 	sprintf(modelPath, "Assets/modelData/%s.X", mapChipLocInfoList[0]->modelName);
-	skinModelData.LoadModelData(modelPath, NULL);
-	//インスタンス描画用のデータを作成。
-	tkEngine::SVertexElement vertexElement[] = {
-		{ 1,  0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 1 },  // WORLD 1行目
-		{ 1, 16, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 2 },  // WORLD 2行目
-		{ 1, 32, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 3 },  // WORLD 3行目
-		{ 1, 48, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 4 },  // WORLD 4行目
-		D3DDECL_END()
-	};
-	skinModelData.CreateInstancingDrawData(mapChipLocInfoList.size(), vertexElement);
-	skinModel.Init(&skinModelData);
+	SkinModelDataResources().Load(skinModelData, modelPath, NULL, true, mapChipLocInfoList.size());
+	skinModel.Init(skinModelData.GetBody());
 	skinModel.SetLight(&light);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
@@ -53,7 +44,7 @@ void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 	}
 	//行列を更新。
 	Update();
-	rootBoneMatrix = skinModelData.GetRootBoneWorldMatrix();
+	rootBoneMatrix = skinModelData.GetBody()->GetRootBoneWorldMatrix();
 	i = 0;
 	for (auto& mapChiplLocInfo : mapChipLocInfoList) {
 		CMatrix mWorld;

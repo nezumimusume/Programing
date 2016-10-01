@@ -192,8 +192,10 @@ namespace {
 
 			for (iBone = 0; iBone < cBones; iBone++)
 			{
+				pMeshContainer->ppBoneMatrixPtrs[iBone] = NULL;
+				LPCSTR boneName = pMeshContainer->pSkinInfo->GetBoneName(iBone);
 				pFrame = (D3DXFRAME_DERIVED*)D3DXFrameFind(rootFrame,
-					pMeshContainer->pSkinInfo->GetBoneName(iBone));
+					boneName);
 				if (pFrame == NULL)
 					return E_FAIL;
 

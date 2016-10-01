@@ -199,6 +199,7 @@ namespace tkEngine{
 					if (iMatrixIndex != UINT_MAX)
 					{
 						TK_ASSERT(iPaletteEntry < MAX_MATRIX_PALLET, "ボーン行列パレットの最大数を超えた");
+						TK_ASSERT(pMeshContainer->ppBoneMatrixPtrs[iMatrixIndex], "NULL");
 						D3DXMatrixMultiply(
 							&m_boneMatrixPallet[iPaletteEntry],
 							&pMeshContainer->pBoneOffsetMatrices[iMatrixIndex],
