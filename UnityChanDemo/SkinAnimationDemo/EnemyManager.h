@@ -18,5 +18,5 @@ public:
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;
 private:
-	std::vector<CSkinModelData*>	skinModelDataList;
+	
 };

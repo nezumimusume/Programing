@@ -166,8 +166,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="CharacterCollisionController.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="EnemyTest.cpp" />
+    <ClCompile Include="Enemy_00.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="main.cpp" />
@@ -185,8 +187,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Car.h" />
+    <ClInclude Include="CharacterCollisionController.h" />
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="EnemyTest.h" />
+    <ClInclude Include="Enemy_00.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Map.h" />

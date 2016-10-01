@@ -9,10 +9,11 @@
 #include "Physics/Physics.h"
 #include "EnemyTest.h"
 #include "EnemyManager.h"
+#include <time.h>
 
 PhysicsWorld* g_physicsWorld = NULL;
 UnityChan* g_unityChan = NULL;
-
+CRandom g_random;
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 
 #ifdef MEMORY_LEAK_TEST
@@ -109,7 +110,7 @@ int WINAPI wWinMain(
 {
 	//tkEngineの初期化。
 	InitTkEngine( hInst );
-	
+	g_random.Init((unsigned long)time(NULL));
 #ifdef MEMORY_LEAK_TEST
 	NewGO<MemoryLeakTest>(0);
 #else

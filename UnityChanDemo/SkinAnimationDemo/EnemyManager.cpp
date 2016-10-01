@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "EnemyManager.h"
+#include "Enemy_00.h"
 
 using namespace std;
 namespace {
@@ -24,26 +25,11 @@ void EnemyManager::Start()
 	map<const char*, vector<SEnemyLocInfo*>*> m;
 	//同じ名前のモデルを集める。
 	for (SEnemyLocInfo& info : enemyLocInfoTable) {
-		auto& it = m.find(info.modelName);
-		if (it != m.end()) {
-			//この名前のモデルは登録済み。
-			it->second->push_back(&info);
-		}
-		else {
-			//新規モデル。
-			vector<SEnemyLocInfo*>* newList = new vector<SEnemyLocInfo*>();
-			newList->push_back(&info);
-			m.insert(std::pair< const char*, vector<SEnemyLocInfo*>*>(
-				info.modelName,
-				newList
-				));
-		}
+		Enemy_00* enemy = NewGO<Enemy_00>(0);
+		enemy->Init(info.modelName, info.pos, info.rotation);
 	}
 	
-	for (auto& enemyList : m) {
-		//まずモデルをロードする。
-		
-	}
+	
 
 }
 void EnemyManager::Update()

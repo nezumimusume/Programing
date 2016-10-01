@@ -22,8 +22,9 @@
 #include "Physics\Physics.h"
 using namespace tkEngine;
 #include "GameCamera.h"
-
+#include "tkEngine/random/tkRandom.h"
 
 extern PhysicsWorld* g_physicsWorld ;
 extern UnityChan* g_unityChan;
+extern CRandom g_random;
 #endif // _STDAFX_H_

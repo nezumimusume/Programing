@@ -1,0 +1,38 @@
+/*!
+ * @brief	タイプ0の敵。
+ */
+
+#pragma once
+
+/*!
+ * @brief	タイプ0の敵。
+ */
+class Enemy_00 : public IGameObject{
+	enum EnAnimation {
+		enAnimStand,
+		enAnimWalk,
+		enAnimAttack,
+	};
+	//状態
+	enum EnState {
+		enState_Search,	//徘徊中。
+	};
+public:
+	Enemy_00();
+	~Enemy_00();
+	void Init( const char* modelPath, CVector3 pos, CQuaternion	rotation);
+	void Start() override;
+	void Update() override;
+	void Render(CRenderContext& renderContext) override;
+private:
+	CSkinModelDataHandle			skinModelData;
+	CSkinModel						skinModel;			//スキンモデル。
+	CAnimation						animation;			//アニメーション。
+	CLight							light;				//ライト。
+	CVector3						position;			//位置
+	CQuaternion						rotation;			//回転。
+	CVector3						initPosition;		//初期位置。
+	EnState							state;				//ステート。
+	CVector3						moveDirection;		//進行方向。
+	float							timer;				//タイマ
+};
