@@ -34,11 +34,13 @@ EnemyStateFind::~EnemyStateFind()
 void EnemyStateFind::Update()
 {
 	m_localStates[m_localState]->Update();
+	CVector3 toPlayer;
+	toPlayer.Subtract(g_unityChan->GetPosition(), enemy->GetPosition());
+	toPlayer.y = 0.0f;
 	if (m_localState == enLocalState_Run) {
 		CVector3 moveDirTmp;
 		if (battleSeat == nullptr) {
-			moveDirTmp.Subtract(g_unityChan->GetPosition(), enemy->GetPosition());
-			moveDirTmp.y = 0.0f;
+			moveDirTmp = toPlayer;
 			if (moveDirTmp.LengthSq() < ENEMY_ATTACK_READY_RANGE_SQ) {
 				//アタックReady
 				//シートを探す。
@@ -63,7 +65,7 @@ void EnemyStateFind::Update()
 			}
 			else {
 				CVector3 dist;
-				dist.Subtract(g_unityChan->GetPosition(), enemy->GetPosition());
+				dist = toPlayer;
 				if (dist.LengthSq() > ENEMY_ATTACK_READY_RANGE_SQ) {
 					//攻撃レンジから出た。
 					battleSeat->isUse = false;
@@ -112,6 +114,10 @@ void EnemyStateFind::Update()
 			}
 			timer = 0.0f;
 		}
+	}
+	if (toPlayer.LengthSq() > 0.01f) {
+		toPlayer.Normalize();
+		enemy->SetDirection(toPlayer);
 	}
 }
 void EnemyStateFind::Enter() 

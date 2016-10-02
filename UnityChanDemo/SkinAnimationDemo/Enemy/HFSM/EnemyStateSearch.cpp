@@ -48,6 +48,7 @@ void EnemyStateSearch::Update()
 				CVector3 dir = enemy->GetMoveDirection();
 				mRot.Mul(dir);
 				enemy->SetMoveDirection(dir);
+				enemy->SetDirection(dir);
 				ChangeLocalState(enLocalState_Walk);
 			}
 			timer = 0.0f;

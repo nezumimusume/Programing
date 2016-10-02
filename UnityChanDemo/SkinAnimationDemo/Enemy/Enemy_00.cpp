@@ -13,6 +13,8 @@ Enemy_00::Enemy_00()
 	state = enLocalState_Search;
 	initPosition = CVector3::Zero;
 	moveSpeed = 0.0f;
+	direction = CVector3::AxisZ;
+	moveDirection = CVector3::AxisZ;
 }
 Enemy_00::~Enemy_00()
 {
@@ -115,7 +117,7 @@ void Enemy_00::Update()
 	light.SetPointLightPosition(g_unityChan->GetPointLightPosition());
 	light.SetPointLightColor(g_unityChan->GetPointLightColor());
 	//‰ñ“]‚Í“K“–‚ÉB
-	float angle = atan2f(moveDirection.x, moveDirection.z);
+	float angle = atan2f(direction.x, direction.z);
 	rotation.SetRotation(CVector3::AxisY, angle);
 	skinModel.Update(position, rotation, CVector3::One);
 }

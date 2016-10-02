@@ -42,6 +42,10 @@ public:
 	{
 		moveDirection = dir;
 	}
+	void SetDirection(const CVector3& dir)
+	{
+		direction = dir;
+	}
 	const CVector3& GetPosition() const
 	{
 		return position;
@@ -60,4 +64,5 @@ protected:
 	EnAnimation						currentAnimNo;		//現在のアニメーション番号。
 	float							moveSpeed;			//移動速度。
 	CVector3						moveDirection;		//進行方向。
+	CVector3						direction;			//向き。
 };
