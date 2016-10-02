@@ -92,19 +92,7 @@ void Enemy_00::Update()
 	}break;
 	case enLocalState_Find:
 	{
-	/*	CVector3 moveDirTmp;
-		moveDirTmp.Subtract(g_unityChan->GetPosition(), position);
-		if (moveDirTmp.LengthSq() > 1.0f * 1.0f) {
-			moveSpeed = 4.0f;
-			PlayAnimation(enAnimWalk);
-			moveDirTmp.Normalize();
-			moveDirection = moveDirTmp;
-		}
-		else {
-			//çUåÇÅB
-			moveSpeed = 0.0f;
-			PlayAnimation(enAnimAttack);
-		}*/
+	
 	}break;
 	}
 	CVector3 speed = characterController.GetMoveSpeed();

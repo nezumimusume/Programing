@@ -195,7 +195,6 @@
     <ClInclude Include="Car.h" />
     <ClInclude Include="CharacterController.h" />
     <ClInclude Include="EnemyTest.h" />
-    <ClInclude Include="Enemy\EnemyInfo.h" />
     <ClInclude Include="Enemy\EnemyManager.h" />
     <ClInclude Include="Enemy\Enemy_00.h" />
     <ClInclude Include="Enemy\HFSM\EnemyStateAttack.h" />

@@ -70,7 +70,7 @@ public class OutputLocationInfo : MonoBehaviour {
             outputTxt += string.Format("\tCQuaternion({0:f}f, {1:f}f, {2:f}f, {3:f}f ),  //回転\n", tr.localRotation.x, tr.localRotation.y, tr.localRotation.z, tr.localRotation.w);
             outputTxt += "},\n";
         }
-        sw = new StreamWriter(@"C:\GitHub\Programing\UnityChanDemo\SkinAnimationDemo\EnemyInfo.h", false, Encoding.UTF8);
+        sw = new StreamWriter(@"C:\GitHub\Programing\UnityChanDemo\SkinAnimationDemo\Enemy\EnemyInfo.h", false, Encoding.UTF8);
         sw.Write(outputTxt);
         sw.Close();
 

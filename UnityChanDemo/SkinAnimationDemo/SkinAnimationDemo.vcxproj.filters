@@ -160,9 +160,6 @@
     <ClInclude Include="Enemy\EnemyManager.h">
       <Filter>Source Files\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy\EnemyInfo.h">
-      <Filter>Source Files\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy\HFSM\EnemyStateAttack.h">
       <Filter>Source Files\Enemy\HFSM</Filter>
     </ClInclude>
