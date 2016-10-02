@@ -46,6 +46,10 @@ public:
 	{
 		return position;
 	}
+	bool IsPlayAnimation() const
+	{
+		return animation.IsPlay();
+	}
 protected:
 	CSkinModelDataHandle			skinModelData;
 	CSkinModel						skinModel;			//スキンモデル。

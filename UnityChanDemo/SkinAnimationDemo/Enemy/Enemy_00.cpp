@@ -30,6 +30,14 @@ void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 		filePath,
 		&animation
 	);
+	sprintf(filePath, "Assets/modelData/%s_n.png", modelPath);
+	if (normalMap.Load(filePath)) {
+		skinModel.SetNormalMap(&normalMap);
+	}
+	sprintf(filePath, "Assets/modelData/%s_spec.png", modelPath);
+	if (specMap.Load(filePath)) {
+		skinModel.SetSpeculerMap(&specMap);
+	}
 	skinModel.Init(skinModelData.GetBody());
 	position = pos;
 	this->rotation = rotation;
@@ -37,7 +45,7 @@ void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 	skinModel.SetLight(&light);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
-	skinModel.SetReflectionCasterFlag(true);
+	skinModel.SetFresnelFlag(true);
 
 	light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
 	light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
@@ -54,6 +62,7 @@ void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 	light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
 	light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
 	PlayAnimation(enAnimWalk);
+	animation.SetAnimationLoopFlag(enAnimAttack, false);
 	initPosition = position;
 
 	characterController.Init(0.4f, position);

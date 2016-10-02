@@ -16,6 +16,8 @@
  */
 class UnityChan : public IGameObject {
 private:
+	
+	static const int NUM_BATTLE_SEAT = 8;		//シートの数。
 	enum AnimationNo {
 		AnimationInvalid = -1,
 		AnimationStand,		//立ち。
@@ -24,6 +26,13 @@ private:
 		AnimationJump,		//ジャンプ。
 	};
 public:
+	//戦闘で使用するシート
+	struct SBattleSeat {
+		bool		isUse;			//使用中フラグ。
+		int			seatNo;			//シート番号。
+		CVector3	localPosition;	//ローカル座標。
+		CVector3	position;		//ワールド座標。
+	};
 	enum EnState {
 		enStateRun,			//走っている。
 		enStateStand,		//立ち止まっている。
@@ -35,7 +44,7 @@ public:
 		position(CVector3::Zero),
 		isUpdateAnim(false)
 	{
-
+		memset(battleSeats, 0, sizeof(battleSeats));
 	}
 	void Start() override ;
 	void Update() override ;
@@ -69,6 +78,12 @@ public:
 	{
 		return pointLightColor;
 	}
+	/*!
+	* @brief	未使用のシートを検索。
+	*@param[in]	pos		未使用のシートの中からこの座標に一番近いシートを返します。
+	*@return		未使用のシートがない場合はNULLが返ってくる。
+	*/
+	SBattleSeat* FindUnuseSeat(const CVector3& pos) ;
 private:
 	/*!
 	* @brief	ポイントライトの位置を更新。
@@ -82,6 +97,14 @@ private:
 	* @brief	アニメーション再生。
 	*/
 	void PlayAnimation(AnimationNo animNo);
+	/*!
+	* @brief	バトルで使用するシートを初期化。
+	*/
+	void InitBattleSeats();
+	/*!
+	* @brief	バトルで使用するシートを更新。
+	*/
+	void UpdateBattleSeats();
 private:
 	CSkinModelDataHandle	skinModelData;
 	CSkinModel				skinModel;			//スキンモデル。
@@ -101,4 +124,6 @@ private:
 	bool					isPointLightOn;		//ポイントライトのスイッチ。
 	RigidBody				rigidBody;			//剛体。
 	CharacterController		characterController;	//キャラクタコントローラ。
+	SBattleSeat				battleSeats[NUM_BATTLE_SEAT];	//シート。
+
 };

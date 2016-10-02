@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "UnityChan.h"
 #include "IEnemyState.h"
 
 /*!
@@ -15,6 +16,7 @@ private:
 	enum EnLocalState{
 		enLocalState_Run,
 		enLocalState_Attack,
+		enLocalState_Idle,
 	};
 public:
 	/*!
@@ -28,4 +30,7 @@ public:
 	void Update() override;
 	void Enter() override;
 	void Leave() override;
+private:
+	float timer;
+	UnityChan::SBattleSeat*		battleSeat;
 };

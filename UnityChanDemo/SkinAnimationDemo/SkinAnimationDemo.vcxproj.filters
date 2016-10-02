@@ -175,5 +175,8 @@
     <ClInclude Include="Enemy\HFSM\EnemyStateRun.h">
       <Filter>Source Files\Enemy\HFSM</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy\Enemy.h">
+      <Filter>Source Files\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

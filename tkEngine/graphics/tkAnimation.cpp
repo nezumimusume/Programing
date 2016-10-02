@@ -18,6 +18,7 @@ namespace tkEngine{
 		blendRateTable.reset( new float[numMaxTracks] );
 		animationEndTime.reset(new double[numAnimSet]);
 		animationSets.reset(new ID3DXAnimationSet*[numAnimSet]);
+		animationLoopFlags.reset(new bool[numAnimSet]);
 		for( int i = 0; i < numMaxTracks; i++ ){
 			blendRateTable[i] = 1.0f;
 		}
@@ -25,6 +26,7 @@ namespace tkEngine{
 		for (int i = 0; i < numAnimSet; i++) {
 			pAnimController->GetAnimationSet(i, &animationSets[i]);
 			animationEndTime[i] = -1.0;
+			animationLoopFlags[i] = true;
 		}
 		localAnimationTime = 0.0;
 	}
@@ -33,6 +35,7 @@ namespace tkEngine{
 	{
 		if (animationSetIndex < numAnimSet) {
 			if (pAnimController) {
+				isAnimEnd = false;
 				isInterpolate = false;
 				playAnimationRequest.clear();
 				currentAnimationSetNo = animationSetIndex;
@@ -56,6 +59,7 @@ namespace tkEngine{
 	{
 		if (animationSetIndex < numAnimSet) {
 			if (pAnimController) {
+				isAnimEnd = false;
 				if (isInterpolate) {
 					//補間中にアニメーションを終わらせるときれいにつながらないので、リクエストキューに積む。
 					RequestPlayAnimation req;
@@ -68,11 +72,14 @@ namespace tkEngine{
 					isInterpolate = true;
 					this->interpolateTime = 0.0f;
 					interpolateEndTime = interpolateTime;
+					int prevTrackNo = currentTrackNo;
 					currentTrackNo = (currentTrackNo + 1) % numMaxTracks;
 					pAnimController->SetTrackAnimationSet(currentTrackNo, animationSets[animationSetIndex]);
+					pAnimController->SetTrackSpeed(prevTrackNo, 0.0f);
 					pAnimController->SetTrackEnable(currentTrackNo, TRUE);
 					pAnimController->SetTrackSpeed(currentTrackNo, 1.0f);
 					pAnimController->SetTrackPosition(currentTrackNo, 0.0f);
+					
 					localAnimationTime = 0.0;
 					currentAnimationSetNo = animationSetIndex;
 				}
@@ -84,19 +91,31 @@ namespace tkEngine{
 	}
 	void CAnimation::Update(float deltaTime)
 	{
-		if (pAnimController) {
+		if (pAnimController && !isAnimEnd) {
 			localAnimationTime += deltaTime;
 			
 			if (animationEndTime[currentAnimationSetNo] > 0.0 //アニメーションの終了時間が設定されている。
 				&& localAnimationTime > animationEndTime[currentAnimationSetNo] //アニメーションの終了時間を超えた。
 			) {
-				localAnimationTime -= animationEndTime[currentAnimationSetNo];
-				pAnimController->SetTrackPosition(currentTrackNo, localAnimationTime);
-				pAnimController->AdvanceTime(0, NULL);
+				if (animationLoopFlags[currentAnimationSetNo]) {
+					localAnimationTime -= animationEndTime[currentAnimationSetNo];
+					pAnimController->SetTrackPosition(currentTrackNo, localAnimationTime);
+					pAnimController->AdvanceTime(0, NULL);
+				}
+				else {
+					isAnimEnd = true;
+				}
 			}
 			else {
 				//普通に再生。
-				pAnimController->AdvanceTime(deltaTime, NULL);
+				if (animationSets[currentAnimationSetNo]->GetPeriod() < localAnimationTime
+					&& !animationLoopFlags[currentAnimationSetNo]) {
+					localAnimationTime = animationSets[currentAnimationSetNo]->GetPeriod();
+					isAnimEnd = true;
+				}
+				else {
+					pAnimController->AdvanceTime(deltaTime, NULL);
+				}
 			}
 			if (isInterpolate ) {
 				//補間中。

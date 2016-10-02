@@ -131,6 +131,7 @@ void UnityChan::Start()
 
 	characterController.Init(0.4f, position);
 	toLampLocalPos.Set( 0.0f, 0.5f, 0.2f);
+	InitBattleSeats();
 	//g_physicsWorld->AddRigidBody(&rigidBody);
 }
 void UnityChan::Update()
@@ -231,6 +232,8 @@ void UnityChan::Update()
 	UpdatePointLightPosition();
 	//アニメーションコントロール。
 	AnimationControl();
+	//バトル用のシートの更新。
+	UpdateBattleSeats();
 	lastFrameState = state;
 }
 /*!
@@ -285,6 +288,54 @@ void UnityChan::AnimationControl()
 			PlayAnimation(AnimationStand);
 		}
 	}
+}
+/*!
+* @brief	バトルで使用するシートを初期化。
+*/
+void UnityChan::InitBattleSeats()
+{
+	float angleBase = 2.0f * CMath::PI / NUM_BATTLE_SEAT;
+	for (int i = 0; i < NUM_BATTLE_SEAT; i++) {
+		battleSeats[i].seatNo = i;
+		battleSeats[i].isUse = false;
+		battleSeats[i].localPosition.x = sinf(angleBase * i) * 1.5f;
+		battleSeats[i].localPosition.y = 0.0f;
+		battleSeats[i].localPosition.z = cosf(angleBase * i) * 1.5f;
+		battleSeats[i].position.Add(battleSeats[i].localPosition, position);
+	}
+}
+/*!
+* @brief	バトルで使用するシートを更新。
+*/
+void UnityChan::UpdateBattleSeats()
+{
+	for (auto& seat : battleSeats) {
+		seat.position.Add(seat.localPosition, position);
+	}
+}
+/*!
+* @brief	未使用のシートを検索。
+*@param[in]	pos		未使用のシートの中からこの座標に一番近いシートを返します。
+*@return		未使用のシートがない場合はNULLが返ってくる。
+*/
+UnityChan::SBattleSeat* UnityChan::FindUnuseSeat(const CVector3& pos)
+{
+	float dist = FLT_MAX;
+	float distTmp;
+	SBattleSeat* result = NULL;
+	for (auto& seat : battleSeats) {
+		if (!seat.isUse) {
+			//未使用。
+			CVector3 diff;
+			diff.Subtract(seat.position, pos);
+			distTmp = diff.LengthSq();
+			if (distTmp < dist) {
+				dist = distTmp;
+				result = &seat;
+			}
+		}
+	}
+	return result;
 }
 /*!
 * @brief	描画。

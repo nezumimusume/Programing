@@ -48,6 +48,15 @@ namespace tkEngine{
 				TK_LOG("warning animationSetIndex is invalid!!");
 			}
 		}
+		void SetAnimationLoopFlag(int animationSetIndex, bool loopFlag)
+		{
+			if (animationSetIndex < numAnimSet) {
+				animationLoopFlags[animationSetIndex] = loopFlag;
+			}
+			else {
+				TK_LOG("warning animationSetIndex is invalid!!");
+			}
+		}
 		/*!
 		*@brief	アニメーションの再生。
 		*@param[in]		animationIndex		再生したいアニメーションのインデックス。
@@ -59,6 +68,13 @@ namespace tkEngine{
 		*@param[in]		interpolateTime		補間時間。
 		*/
 		void PlayAnimation(int animationSetIndex, float interpolateTime);
+		/*!
+		*@brief	アニメーションの再生中判定。
+		*/
+		bool IsPlay() const
+		{
+			return !isAnimEnd;
+		}
 #if 0
 		/*!
 		*@brief	アニメーションのブレンディング再生。
@@ -89,13 +105,14 @@ namespace tkEngine{
 		std::unique_ptr<ID3DXAnimationSet*[]>	animationSets;			//!<アニメーションセットの配列。
 		std::unique_ptr<float[]>				blendRateTable;			//!<ブレンディングレートのテーブル。
 		std::unique_ptr<double[]>				animationEndTime;		//!<アニメーションの終了タイム。デフォルトは-1.0が入っていて、-1.0が入っている場合はID3DXAnimationSetのアニメーション終了タイムが優先される。
-																		//!<DirectX9のアニメーションセットに１秒以下のアニメーションを入れる方法が見つからない。1秒以下のアニメーションはこいつを適時設定。
+		std::unique_ptr<bool[]>					animationLoopFlags;		//!<アニメーションのループフラグ。																//!<DirectX9のアニメーションセットに１秒以下のアニメーションを入れる方法が見つからない。1秒以下のアニメーションはこいつを適時設定。
 		double									localAnimationTime;		//!<ローカルアニメーションタイム。
 		int										currentAnimationSetNo;	//!<現在再生中のアニメーショントラックの番号。
 		int										currentTrackNo;			//!<現在のトラックの番号。
 		int										numMaxTracks;			//!<アニメーショントラックの最大数。
 		bool									isBlending;				//!<アニメーションブレンディング中？
 		bool									isInterpolate;			//!<補間中？
+		bool									isAnimEnd;				//!<アニメーションの終了フラグ。
 		float									interpolateEndTime;		//!<補間終了時間。
 		float									interpolateTime;		//!<補間時間。
 		std::deque<RequestPlayAnimation>		playAnimationRequest;	//!<アニメーション再生のリクエスト。

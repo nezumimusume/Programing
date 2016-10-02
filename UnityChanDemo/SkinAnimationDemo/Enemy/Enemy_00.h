@@ -31,6 +31,7 @@ private:
 	std::vector<IEnemyState*>		states;				//ステートのリスト。
 	CVector3						initPosition;		//初期位置。
 	EnLocalState					state;				//ステート。
-	
+	CTexture						specMap;			//スペキュラマップ。
+	CTexture						normalMap;			//法線マップ。
 	CharacterController				characterController;	//キャラクタコントローラ。
 };
