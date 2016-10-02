@@ -68,7 +68,7 @@
     <ClCompile Include="Enemy_00.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterCollisionController.cpp">
+    <ClCompile Include="CharacterController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -127,7 +127,7 @@
     <ClInclude Include="Enemy_00.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="CharacterCollisionController.h">
+    <ClInclude Include="CharacterController.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

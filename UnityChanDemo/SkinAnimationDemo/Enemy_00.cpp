@@ -50,6 +50,8 @@ void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 	animation.PlayAnimation(enAnimWalk);
 	initPosition = position;
 	moveDirection = CVector3::AxisX;
+
+	characterController.Init(0.4f, position);
 }
 void Enemy_00::Start()
 {
@@ -72,17 +74,38 @@ void Enemy_00::Update()
 			}
 			timer = 0.0f;
 		}
+		CVector3 unityPos = g_unityChan->GetPosition();
+		CVector3 diff;
+		diff.Subtract(unityPos, position);
+		if (diff.LengthSq() < 5.0f * 5.0f) {
+			//å©Ç¬ÇØÇΩÅB
+			state = enState_Find;
+		}
 	}break;
-		
+	case enState_Find:
+	{
+		moveDirection.Subtract(g_unityChan->GetPosition(), position);
+		if (moveDirection.LengthSq() > 0.01f) {
+			moveDirection.Normalize();
+		}
+		else {
+			moveDirection = CVector3::AxisZ;
+		}
+	}break;
 	}
-	CVector3 addPos;
-	addPos = moveDirection;
-	addPos.Scale(1.0f * GameTime().GetFrameDeltaTime());
-	position.Add(addPos);
+	CVector3 speed = characterController.GetMoveSpeed();
+	speed.x = moveDirection.x * 3.0f;
+	speed.z = moveDirection.z * 3.0f;
+	characterController.SetMoveSpeed(speed);
+	characterController.Execute();
+	position = characterController.GetPosition();
 	
 	animation.Update(GameTime().GetFrameDeltaTime());
 	light.SetPointLightPosition(g_unityChan->GetPointLightPosition());
 	light.SetPointLightColor(g_unityChan->GetPointLightColor());
+	//âÒì]ÇÕìKìñÇ…ÅB
+	float angle = atan2f(moveDirection.x, moveDirection.z);
+	rotation.SetRotation(CVector3::AxisY, angle);
 	skinModel.Update(position, rotation, CVector3::One);
 }
 void Enemy_00::Render(CRenderContext& renderContext)

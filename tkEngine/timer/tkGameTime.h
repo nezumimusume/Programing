@@ -30,7 +30,7 @@ namespace tkEngine{
 		 */
 		float GetFrameDeltaTime() const
 		{
-			return m_frameDeltaTime;
+			return min(1.0f/10.0f, m_frameDeltaTime);
 		}
 		void Update()
 		{

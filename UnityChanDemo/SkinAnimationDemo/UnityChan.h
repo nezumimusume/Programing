@@ -9,6 +9,7 @@
 #include "tkEngine/graphics/tkTexture.h"
 #include "Physics/SphereCollider.h"
 #include "Physics/RigidBody.h"
+#include "CharacterController.h"
 
 /*!
  * @brief	ユニティちゃん
@@ -74,11 +75,6 @@ private:
 	*/
 	void UpdatePointLightPosition();
 	/*!
-	* @brief	衝突検出と解決。
-	*@param[in]	nextPosition		次の座標。
-	*/
-	void CollisionDetectAndResolve( CVector3 nextPosition );
-	/*!
 	* @brief	アニメーションコントロール。
 	*/
 	void AnimationControl();
@@ -97,15 +93,12 @@ private:
 	CVector3				position;			//座標。
 	CQuaternion				rotation;			//回転
 	CVector3				toLightPos;			//
-	CVector3				moveSpeed;			//移動速度。
 	CVector3				pointLightPosition;	//ポイントライトの位置。
 	CVector4				pointLightColor;	//ポイントライトのカラー。
 	CVector3				toLampLocalPos;		//ランプのローカル座標。
 	EnState					state;				//状態。
 	EnState					lastFrameState;		//前のフレームの状態。
-	bool					isJump;				//ジャンプ中フラグ。
 	bool					isPointLightOn;		//ポイントライトのスイッチ。
-	SphereCollider			collider;			//ボックスコライダー。
-	float					radius;				//半径。
 	RigidBody				rigidBody;			//剛体。
+	CharacterController		characterController;	//キャラクタコントローラ。
 };

@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "CharacterController.h"
+
 /*!
  * @brief	タイプ0の敵。
  */
@@ -16,6 +18,7 @@ class Enemy_00 : public IGameObject{
 	//状態
 	enum EnState {
 		enState_Search,	//徘徊中。
+		enState_Find,	//発見状態。
 	};
 public:
 	Enemy_00();
@@ -35,4 +38,5 @@ private:
 	EnState							state;				//ステート。
 	CVector3						moveDirection;		//進行方向。
 	float							timer;				//タイマ
+	CharacterController				characterController;	//キャラクタコントローラ。
 };

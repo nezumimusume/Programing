@@ -3,7 +3,7 @@
  */
 
 #include "stdafx.h"
-#include "CharacterCollisionController.h"
+#include "CharacterController.h"
 
 namespace{
 	//地面との当たり判定。
@@ -82,18 +82,33 @@ namespace{
 	};
 }
 
-CharacterCollisionController::CharacterCollisionController()
+CharacterController::CharacterController() :
+	moveSpeed(CVector3::Zero),
+	position(CVector3::Zero),
+	isJump(false),
+	radius(0.0f)
 {
 }
-CharacterCollisionController::~CharacterCollisionController()
+CharacterController::~CharacterController()
 {
 }
-
-/*!
- * @brief	実行。
- */
-void CharacterCollisionController::Execute( CVector3& position, const CVector3& nextPosition )
+void CharacterController::Init(float radius, const CVector3& position)
 {
+	this->position = position;
+	//コリジョン作成。
+	this->radius = radius;
+	collider.Create(radius);
+}
+void CharacterController::Execute()
+{
+	//Y方向には重力落下を加える。
+	const float GRAVITY = -18.8f;
+	moveSpeed.y += GRAVITY * GameTime().GetFrameDeltaTime();
+	CVector3 nextPosition = position;
+	CVector3 addPos = moveSpeed;
+	addPos.Scale(GameTime().GetFrameDeltaTime());
+	nextPosition.Add(addPos);
+		
 	//XZ平面を調べる。
 	{
 		int loopCount = 0;

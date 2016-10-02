@@ -62,6 +62,7 @@ namespace tkEngine{
 				skinModelDataHandle.Init(newSkinModelData, anim, false);
 			}
 			else {
+				//Šù‘¶‚Ìƒ‚ƒfƒ‹‚È‚Ì‚ÅŽg‚¢‰ñ‚·B
 				skinModelDataHandle.Init(it->second, anim, true);
 			}
 		}
