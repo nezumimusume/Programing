@@ -1,24 +1,21 @@
 /*!
- * @brief	歩き状態。
+ * @brief	攻撃状態。
  */
 
 #pragma once
 
 #include "IEnemyState.h"
 
-/*!
- * @brief	歩き状態。
- */
-class EnemyStateWalk : public IEnemyState{
+class EnemyStateAttack : public IEnemyState{
 public:
 	/*!
 	 * @brief	コンストラクタ。
 	 */
-	EnemyStateWalk(Enemy* enemy);
+	EnemyStateAttack( Enemy* enemy );
 	/*!
 	 * @brief	デストラクタ。
 	 */
-	~EnemyStateWalk();
+	~EnemyStateAttack();
 	void Update() override;
 	void Enter() override;
 	void Leave() override;

@@ -77,6 +77,24 @@
     <ClCompile Include="Enemy\EnemyManager.cpp">
       <Filter>Source Files\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy\HFSM\EnemyStateSearch.cpp">
+      <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\HFSM\EnemyStateWalk.cpp">
+      <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\HFSM\EnemyStateAttack.cpp">
+      <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\HFSM\EnemyStateFind.cpp">
+      <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\HFSM\EnemyStateIdle.cpp">
+      <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\HFSM\EnemyStateRun.cpp">
+      <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -144,6 +162,21 @@
     </ClInclude>
     <ClInclude Include="Enemy\EnemyInfo.h">
       <Filter>Source Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\HFSM\EnemyStateAttack.h">
+      <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\HFSM\EnemyStateFind.h">
+      <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\HFSM\EnemyStateIdle.h">
+      <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\HFSM\EnemyStateSearch.h">
+      <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\HFSM\EnemyStateRun.h">
+      <Filter>Source Files\Enemy\HFSM</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

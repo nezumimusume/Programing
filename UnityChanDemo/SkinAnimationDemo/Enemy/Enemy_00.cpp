@@ -5,26 +5,22 @@
 #include "stdafx.h"
 #include "Enemy/Enemy_00.h"
 #include "UnityChan.h"
+#include "Enemy/HFSM/EnemyStateSearch.h"
+#include "Enemy/HFSM/EnemyStateFind.h"
 
 Enemy_00::Enemy_00()
 {
-	state = enState_Search;
+	state = enLocalState_Search;
 	initPosition = CVector3::Zero;
-	timer = 0.0f;
-	currentAnimNo = -1;
 	moveSpeed = 0.0f;
 }
 Enemy_00::~Enemy_00()
 {
-}
-void Enemy_00::PlayAnimation(EnAnimation animNo)
-{
-	if(currentAnimNo != animNo)
-	{
-		animation.PlayAnimation(animNo, 0.3f);
-		currentAnimNo = animNo;
+	for (auto& state : states) {
+		delete state;
 	}
 }
+
 void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 {
 	char filePath[1024];
@@ -59,43 +55,44 @@ void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 	light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
 	PlayAnimation(enAnimWalk);
 	initPosition = position;
-	moveDirection = CVector3::AxisX;
 
 	characterController.Init(0.4f, position);
+	InitHFSM();
+}
+/*!
+ * @brief	HFSMを初期化。
+ */
+void Enemy_00::InitHFSM()
+{
+	//探索状態を追加。
+	states.push_back( new EnemyStateSearch(this) );
+	//発見状態を追加。
+	states.push_back( new EnemyStateFind(this) );
+	state = enLocalState_Search;
+	states[state]->Enter();
 }
 void Enemy_00::Start()
 {
 }
 void Enemy_00::Update()
 {
+	states[state]->Update();
 	switch (state) {
-	case enState_Search:
+	case enLocalState_Search:
 	{
-		timer += GameTime().GetFrameDeltaTime();
-		if (timer > 1.0f) {
-			//1秒間に50%の確率で方向転換。
-			if (g_random.GetRandDouble() < 0.5f) {
-				float t = (float)g_random.GetRandDouble();
-				//最大180度回転
-				float turnAngle = t * CMath::PI;
-				CMatrix mRot;
-				mRot.MakeRotationY(turnAngle);
-				mRot.Mul(moveDirection);
-			}
-			timer = 0.0f;
-		}
 		CVector3 unityPos = g_unityChan->GetPosition();
 		CVector3 diff;
 		diff.Subtract(unityPos, position);
 		if (diff.LengthSq() < 5.0f * 5.0f) {
 			//見つけた。
-			state = enState_Find;
+			states[state]->Leave();
+			state = enLocalState_Find;
+			states[state]->Enter();
 		}
-		moveSpeed = 1.0f;
 	}break;
-	case enState_Find:
+	case enLocalState_Find:
 	{
-		CVector3 moveDirTmp;
+	/*	CVector3 moveDirTmp;
 		moveDirTmp.Subtract(g_unityChan->GetPosition(), position);
 		if (moveDirTmp.LengthSq() > 1.0f * 1.0f) {
 			moveSpeed = 4.0f;
@@ -107,7 +104,7 @@ void Enemy_00::Update()
 			//攻撃。
 			moveSpeed = 0.0f;
 			PlayAnimation(enAnimAttack);
-		}
+		}*/
 	}break;
 	}
 	CVector3 speed = characterController.GetMoveSpeed();

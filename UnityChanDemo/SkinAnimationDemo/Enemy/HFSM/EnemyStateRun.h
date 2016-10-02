@@ -1,5 +1,5 @@
 /*!
- * @brief	歩き状態。
+ * @brief	走り状態。
  */
 
 #pragma once
@@ -7,18 +7,18 @@
 #include "IEnemyState.h"
 
 /*!
- * @brief	歩き状態。
+ * @brief	走り状態。
  */
-class EnemyStateWalk : public IEnemyState{
+class EnemyStateRun : public IEnemyState{
 public:
 	/*!
 	 * @brief	コンストラクタ。
 	 */
-	EnemyStateWalk(Enemy* enemy);
+	EnemyStateRun(Enemy* enemy);
 	/*!
 	 * @brief	デストラクタ。
 	 */
-	~EnemyStateWalk();
+	~EnemyStateRun();
 	void Update() override;
 	void Enter() override;
 	void Leave() override;

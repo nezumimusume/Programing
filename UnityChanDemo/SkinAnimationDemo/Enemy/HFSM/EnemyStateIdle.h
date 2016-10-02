@@ -1,5 +1,5 @@
 /*!
- * @brief	歩き状態。
+ * @brief	待機状態。
  */
 
 #pragma once
@@ -9,16 +9,16 @@
 /*!
  * @brief	歩き状態。
  */
-class EnemyStateWalk : public IEnemyState{
+class EnemyStateIdle : public IEnemyState{
 public:
 	/*!
 	 * @brief	コンストラクタ。
 	 */
-	EnemyStateWalk(Enemy* enemy);
+	EnemyStateIdle(Enemy* enemy);
 	/*!
 	 * @brief	デストラクタ。
 	 */
-	~EnemyStateWalk();
+	~EnemyStateIdle();
 	void Update() override;
 	void Enter() override;
 	void Leave() override;

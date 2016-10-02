@@ -5,20 +5,17 @@
 #pragma once
 
 #include "CharacterController.h"
+#include "Enemy/Enemy.h"
 
+class IEnemyState;
 /*!
  * @brief	タイプ0の敵。
  */
-class Enemy_00 : public IGameObject{
-	enum EnAnimation {
-		enAnimStand,
-		enAnimWalk,
-		enAnimAttack,
-	};
+class Enemy_00 : public Enemy{
 	//状態
-	enum EnState {
-		enState_Search,	//徘徊中。
-		enState_Find,	//発見状態。
+	enum EnLocalState {
+		enLocalState_Search,	//徘徊中。
+		enLocalState_Find,	//発見状態。
 	};
 public:
 	Enemy_00();
@@ -28,19 +25,12 @@ public:
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;
 private:
-	void PlayAnimation(EnAnimation animNo);
+	
+	void InitHFSM();
 private:
-	CSkinModelDataHandle			skinModelData;
-	CSkinModel						skinModel;			//スキンモデル。
-	CAnimation						animation;			//アニメーション。
-	CLight							light;				//ライト。
-	CVector3						position;			//位置
-	CQuaternion						rotation;			//回転。
+	std::vector<IEnemyState*>		states;				//ステートのリスト。
 	CVector3						initPosition;		//初期位置。
-	EnState							state;				//ステート。
-	CVector3						moveDirection;		//進行方向。
-	float							timer;				//タイマ
+	EnLocalState					state;				//ステート。
+	
 	CharacterController				characterController;	//キャラクタコントローラ。
-	int								currentAnimNo;			//現在のアニメーション番号。
-	float							moveSpeed;
 };
