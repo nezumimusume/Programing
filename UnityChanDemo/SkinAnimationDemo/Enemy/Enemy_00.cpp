@@ -3,7 +3,7 @@
  */
 
 #include "stdafx.h"
-#include "Enemy_00.h"
+#include "Enemy/Enemy_00.h"
 #include "UnityChan.h"
 
 Enemy_00::Enemy_00()
@@ -11,9 +11,19 @@ Enemy_00::Enemy_00()
 	state = enState_Search;
 	initPosition = CVector3::Zero;
 	timer = 0.0f;
+	currentAnimNo = -1;
+	moveSpeed = 0.0f;
 }
 Enemy_00::~Enemy_00()
 {
+}
+void Enemy_00::PlayAnimation(EnAnimation animNo)
+{
+	if(currentAnimNo != animNo)
+	{
+		animation.PlayAnimation(animNo, 0.3f);
+		currentAnimNo = animNo;
+	}
 }
 void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 {
@@ -47,7 +57,7 @@ void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 
 	light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
 	light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
-	animation.PlayAnimation(enAnimWalk);
+	PlayAnimation(enAnimWalk);
 	initPosition = position;
 	moveDirection = CVector3::AxisX;
 
@@ -81,21 +91,28 @@ void Enemy_00::Update()
 			//å©Ç¬ÇØÇΩÅB
 			state = enState_Find;
 		}
+		moveSpeed = 1.0f;
 	}break;
 	case enState_Find:
 	{
-		moveDirection.Subtract(g_unityChan->GetPosition(), position);
-		if (moveDirection.LengthSq() > 0.01f) {
-			moveDirection.Normalize();
+		CVector3 moveDirTmp;
+		moveDirTmp.Subtract(g_unityChan->GetPosition(), position);
+		if (moveDirTmp.LengthSq() > 1.0f * 1.0f) {
+			moveSpeed = 4.0f;
+			PlayAnimation(enAnimWalk);
+			moveDirTmp.Normalize();
+			moveDirection = moveDirTmp;
 		}
 		else {
-			moveDirection = CVector3::AxisZ;
+			//çUåÇÅB
+			moveSpeed = 0.0f;
+			PlayAnimation(enAnimAttack);
 		}
 	}break;
 	}
 	CVector3 speed = characterController.GetMoveSpeed();
-	speed.x = moveDirection.x * 3.0f;
-	speed.z = moveDirection.z * 3.0f;
+	speed.x = moveDirection.x * moveSpeed;
+	speed.z = moveDirection.z * moveSpeed;
 	characterController.SetMoveSpeed(speed);
 	characterController.Execute();
 	position = characterController.GetPosition();

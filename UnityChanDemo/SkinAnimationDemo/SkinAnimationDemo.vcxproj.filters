@@ -12,6 +12,12 @@
     <Filter Include="Source Files\Physics">
       <UniqueIdentifier>{ff81f6b4-2c42-42cf-b407-2ebed75664db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Enemy">
+      <UniqueIdentifier>{1e3b9589-09f0-4826-9979-f4562d2ea7ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Enemy\HFSM">
+      <UniqueIdentifier>{3ab7919d-4886-4d5d-9841-557313d3c192}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -62,14 +68,14 @@
     <ClCompile Include="EnemyTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy_00.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CharacterController.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\Enemy_00.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\EnemyManager.cpp">
+      <Filter>Source Files\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,14 +127,23 @@
     <ClInclude Include="EnemyTest.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyManager.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy_00.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="CharacterController.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\Enemy_00.h">
+      <Filter>Source Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\HFSM\IEnemyState.h">
+      <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\HFSM\EnemyStateWalk.h">
+      <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\EnemyManager.h">
+      <Filter>Source Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\EnemyInfo.h">
+      <Filter>Source Files\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

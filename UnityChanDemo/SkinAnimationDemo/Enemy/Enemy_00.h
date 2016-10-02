@@ -28,6 +28,8 @@ public:
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;
 private:
+	void PlayAnimation(EnAnimation animNo);
+private:
 	CSkinModelDataHandle			skinModelData;
 	CSkinModel						skinModel;			//スキンモデル。
 	CAnimation						animation;			//アニメーション。
@@ -39,4 +41,6 @@ private:
 	CVector3						moveDirection;		//進行方向。
 	float							timer;				//タイマ
 	CharacterController				characterController;	//キャラクタコントローラ。
+	int								currentAnimNo;			//現在のアニメーション番号。
+	float							moveSpeed;
 };

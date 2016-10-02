@@ -8,7 +8,7 @@
 #include "Ground.h"
 #include "Physics/Physics.h"
 #include "EnemyTest.h"
-#include "EnemyManager.h"
+#include "Enemy/EnemyManager.h"
 #include <time.h>
 
 PhysicsWorld* g_physicsWorld = NULL;

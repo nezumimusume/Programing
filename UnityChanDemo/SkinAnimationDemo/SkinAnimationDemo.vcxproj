@@ -167,9 +167,9 @@
   <ItemGroup>
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="CharacterController.cpp" />
-    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="EnemyTest.cpp" />
-    <ClCompile Include="Enemy_00.cpp" />
+    <ClCompile Include="Enemy\EnemyManager.cpp" />
+    <ClCompile Include="Enemy\Enemy_00.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="main.cpp" />
@@ -188,9 +188,12 @@
   <ItemGroup>
     <ClInclude Include="Car.h" />
     <ClInclude Include="CharacterController.h" />
-    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="EnemyTest.h" />
-    <ClInclude Include="Enemy_00.h" />
+    <ClInclude Include="Enemy\EnemyInfo.h" />
+    <ClInclude Include="Enemy\EnemyManager.h" />
+    <ClInclude Include="Enemy\Enemy_00.h" />
+    <ClInclude Include="Enemy\HFSM\EnemyStateWalk.h" />
+    <ClInclude Include="Enemy\HFSM\IEnemyState.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Map.h" />

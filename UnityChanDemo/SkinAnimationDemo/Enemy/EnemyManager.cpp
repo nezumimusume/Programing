@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "EnemyManager.h"
-#include "Enemy_00.h"
+#include "Enemy/EnemyManager.h"
+#include "Enemy/Enemy_00.h"
 
 using namespace std;
 namespace {
