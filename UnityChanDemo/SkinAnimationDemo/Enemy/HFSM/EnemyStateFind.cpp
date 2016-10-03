@@ -10,7 +10,7 @@
 #include "UnityChan.h"
 
 namespace {
-	const float ENEMY_ATTACK_READY_RANGE_SQ = 5.0f * 5.0f;
+	const float ENEMY_ATTACK_READY_RANGE_SQ = 1.5f * 1.5f;
 	const float ENEMY_ATTACK_RANGE_SQ = 0.3f * 0.3f;
 }
 /*!
@@ -39,22 +39,18 @@ void EnemyStateFind::Update()
 	toPlayer.y = 0.0f;
 	if (m_localState == enLocalState_Run) {
 		CVector3 moveDirTmp;
-		if (battleSeat == nullptr) {
-			moveDirTmp = toPlayer;
-			if (moveDirTmp.LengthSq() < ENEMY_ATTACK_READY_RANGE_SQ) {
-				//アタックReady
-				//シートを探す。
-				battleSeat = g_unityChan->FindUnuseSeat(enemy->GetPosition());
-				if (battleSeat != nullptr) {
-					//シートが見つかった。
-					battleSeat->isUse = true;
-				}
-				if (battleSeat == nullptr) {
-					//待機状態に。
-					ChangeLocalState(enLocalState_Idle);
-				}
-			}
+		//アタックReady
+		//シートを探す。
+		battleSeat = g_unityChan->FindUnuseSeat(enemy->GetPosition());
+		if (battleSeat != nullptr) {
+			//シートが見つかった。
+			battleSeat->isUse = true;
 		}
+		if (battleSeat == nullptr) {
+			//待機状態に。
+			ChangeLocalState(enLocalState_Idle);
+		}
+		
 		if (battleSeat != nullptr) {
 			//バトルシートが見つかった。攻撃準備おｋ。
 			moveDirTmp.Subtract(battleSeat->position, enemy->GetPosition());
@@ -64,13 +60,8 @@ void EnemyStateFind::Update()
 				ChangeLocalState(enLocalState_Attack);
 			}
 			else {
-				CVector3 dist;
-				dist = toPlayer;
-				if (dist.LengthSq() > ENEMY_ATTACK_READY_RANGE_SQ) {
-					//攻撃レンジから出た。
-					battleSeat->isUse = false;
-					battleSeat = nullptr;
-				}
+				battleSeat->isUse = false;
+				battleSeat = nullptr;
 			}
 		}
 		if (moveDirTmp.LengthSq() > 0.01f) {
