@@ -75,7 +75,7 @@ void EnemyStateFind::Update()
 		if (!enemy->IsPlayAnimation()) {
 			ChangeLocalState(enLocalState_Idle);
 		}
-		if (dist.LengthSq() > ENEMY_ATTACK_RANGE_SQ) {
+		if (dist.LengthSq() > ENEMY_ATTACK_RANGE_SQ && !enemy->IsPlayAnimation()) {
 			ChangeLocalState(enLocalState_Run);
 			battleSeat->isUse = false;
 			battleSeat = nullptr;
