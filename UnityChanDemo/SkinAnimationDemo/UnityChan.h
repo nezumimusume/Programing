@@ -24,6 +24,13 @@ private:
 		AnimationWalk,		//歩き。
 		AnimationRun,		//走り。
 		AnimationJump,		//ジャンプ。
+		AnimationAttack_Start,
+		AnimationAttack_00 = AnimationAttack_Start,	//攻撃00。
+		AnimationAttack_01,	//攻撃01。
+		AnimationAttack_02,	//攻撃02。
+		AnimationAttack_End = AnimationAttack_02,
+		AnimationDamage,	//ダメージ。
+		AnimationDeath,		//死亡。
 	};
 public:
 	//戦闘で使用するシート
@@ -36,7 +43,8 @@ public:
 	enum EnState {
 		enStateRun,			//走っている。
 		enStateStand,		//立ち止まっている。
-		enState_RideOnCar,	//車に乗っている
+		enState_RideOnCar,	//車に乗っている。
+		enState_Attack,		//攻撃。
 	};
 	bool					isUpdateAnim;		//
 
@@ -96,7 +104,7 @@ private:
 	/*!
 	* @brief	アニメーション再生。
 	*/
-	void PlayAnimation(AnimationNo animNo);
+	void PlayAnimation(AnimationNo animNo, float interpolateTime);
 	/*!
 	* @brief	バトルで使用するシートを初期化。
 	*/
@@ -125,5 +133,6 @@ private:
 	RigidBody				rigidBody;			//剛体。
 	CharacterController		characterController;	//キャラクタコントローラ。
 	SBattleSeat				battleSeats[NUM_BATTLE_SEAT];	//シート。
+	AnimationNo				nextAttackAnimNo;		//次の攻撃モーション番号。
 
 };

@@ -5,7 +5,7 @@
 
 namespace {
 	const float MAX_RUN_SPEED = 0.1f;					//ユニティちゃんの走りの最高速度。
-	const float RUN_THREADHOLD_SQ = 0.07f * 0.07f;		//走りアニメーションを再生する速度の閾値。
+	const float RUN_THREADHOLD_SQ = 4.0f * 4.0f;		//走りアニメーションを再生する速度の閾値。
 	//地面との当たり判定。
 	struct SweepResultGround : public btCollisionWorld::ConvexResultCallback
 	{
@@ -86,9 +86,9 @@ namespace {
 */
 void UnityChan::Start()
 {
-	SkinModelDataResources().Load(skinModelData, "Assets/modelData/Unity.X", &animation);
-	normalMap.Load("Assets/modelData/utc_nomal.tga");
-	specMap.Load("Assets/modelData/utc_spec.tga");
+	SkinModelDataResources().Load(skinModelData, "Assets/modelData/Player.X", &animation);
+	normalMap.Load("Assets/modelData/Thethief_N.tga");
+	specMap.Load("Assets/modelData/Thethief_S.tga");
 	//skinModelData.LoadModelData("Assets/modelData/unity.X", NULL);
 	skinModel.Init(skinModelData.GetBody());
 	skinModel.SetLight(&light);
@@ -105,10 +105,10 @@ void UnityChan::Start()
 	light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
 
 
-	light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+	light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 10.0f));
+	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 10.0f));
+	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 10.0f));
+	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 10.0f));
 	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
 
 	light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
@@ -117,11 +117,10 @@ void UnityChan::Start()
 	isPointLightOn = false;
 	UpdatePointLightPosition();
 
-	animation.SetAnimationEndTime(AnimationRun, 0.8);
 	currentAnimSetNo = AnimationInvalid;
-	PlayAnimation(currentAnimSetNo);
+	PlayAnimation(currentAnimSetNo, 0.0f);
 	rotation = CQuaternion::Identity;
-
+	
 	CVector3 lightPos = CVector3(0.0f, 25.5f, 24.5f);
 	ShadowMap().SetLightPosition(lightPos);
 	ShadowMap().SetLightTarget(position);
@@ -133,13 +132,20 @@ void UnityChan::Start()
 	toLampLocalPos.Set( 0.0f, 0.5f, 0.2f);
 	InitBattleSeats();
 	//g_physicsWorld->AddRigidBody(&rigidBody);
+	animation.SetAnimationLoopFlag(AnimationJump, false);
+	animation.SetAnimationLoopFlag(AnimationAttack_00, false);
+	animation.SetAnimationLoopFlag(AnimationAttack_01, false);
+	animation.SetAnimationLoopFlag(AnimationAttack_02, false);
+	animation.SetAnimationLoopFlag(AnimationDamage, false);
+	nextAttackAnimNo = AnimationInvalid;
 }
 void UnityChan::Update()
 {
 	CVector3 nextPosition = position;
-	CVector3 moveSpeed = characterController.GetMoveSpeed();
-	const float MOVE_SPEED = 5.0f;
+	
+	const float MOVE_SPEED = 7.0f;
 	if (state == enStateRun || state == enStateStand) {
+		CVector3 moveSpeed = characterController.GetMoveSpeed();
 		if (Pad(0).IsTrigger(enButtonRB3)) {
 			isPointLightOn = !isPointLightOn;
 		}
@@ -201,11 +207,11 @@ void UnityChan::Update()
 		}
 		characterController.SetMoveSpeed(moveSpeed);
 		characterController.Execute();
-		position = characterController.GetPosition();
-		ShadowMap().SetLightTarget(position);
-		CVector3 lightPos;
-		lightPos.Add(position, toLightPos);
-		ShadowMap().SetLightPosition(lightPos);
+		
+		if (Pad(0).IsTrigger(enButtonRB1)) {
+			nextAttackAnimNo = AnimationAttack_00;
+			state = enState_Attack;
+		}
 	}
 	else if (state == enState_RideOnCar) {
 		ShadowMap().SetLightTarget(g_car->GetPosition());
@@ -225,7 +231,29 @@ void UnityChan::Update()
 			}
 		}
 	}
-	
+	else if (state == enState_Attack) {
+		//移動がピタって止まると気持ちわるいので
+		CVector3 moveSpeed = characterController.GetMoveSpeed();
+		moveSpeed.Scale(0.8f);
+		characterController.SetMoveSpeed(moveSpeed);
+		characterController.Execute();
+		if (!animation.IsPlay() && nextAttackAnimNo == AnimationInvalid) {
+			state = enStateStand;
+		}
+		else if (
+				Pad(0).IsTrigger(enButtonRB1) 
+				&& currentAnimSetNo >= AnimationAttack_Start
+				&& currentAnimSetNo < AnimationAttack_End
+			) {
+			//コンボ発生。
+			nextAttackAnimNo = (AnimationNo)(currentAnimSetNo + 1);
+		}
+	}
+	position = characterController.GetPosition();
+	ShadowMap().SetLightTarget(position);
+	CVector3 lightPos;
+	lightPos.Add(position, toLightPos);
+	ShadowMap().SetLightPosition(lightPos);
 	skinModel.Update(position, rotation, CVector3::One);
 	
 	//ポイントライトの位置を更新。
@@ -256,11 +284,11 @@ void UnityChan::UpdatePointLightPosition()
 /*!
 * @brief	アニメーション再生。
 */
-void UnityChan::PlayAnimation(AnimationNo animNo)
+void UnityChan::PlayAnimation(AnimationNo animNo, float interpolateTime)
 {
 	if (currentAnimSetNo != animNo) {
 		//別のアニメーション
-		animation.PlayAnimation(animNo, 0.1f);
+		animation.PlayAnimation(animNo, interpolateTime);
 		currentAnimSetNo = animNo;
 	}
 }
@@ -271,21 +299,31 @@ void UnityChan::AnimationControl()
 {
 	animation.Update(GameTime().GetFrameDeltaTime());
 	if (characterController.IsJump()) {
-		PlayAnimation(AnimationJump);
+		PlayAnimation(AnimationJump, 0.05f);
 	}else{
 		if (state == enStateRun) {
 			if (characterController.GetMoveSpeed().LengthSq() > RUN_THREADHOLD_SQ) {
 				//走りアニメーションを流す。
-				PlayAnimation(AnimationRun);
+				PlayAnimation(AnimationRun, 0.1f);
 			}
 			else {
 				//歩きアニメーション。
-				PlayAnimation(AnimationWalk);
+				PlayAnimation(AnimationWalk, 0.1f);
 			}
 		}
 		else if (state == enStateStand) {
 			//立ちアニメーションを流す。
-			PlayAnimation(AnimationStand);
+			PlayAnimation(AnimationStand, 0.1f);
+		}
+		else if (state == enState_Attack) {
+			if ( (!animation.IsPlay() || currentAnimSetNo < AnimationAttack_Start || currentAnimSetNo > AnimationAttack_End)
+				&& nextAttackAnimNo != AnimationInvalid
+			) {
+				//攻撃アニメーションの連撃
+				PlayAnimation(nextAttackAnimNo, 0.05f);
+				nextAttackAnimNo = AnimationInvalid;
+
+			}
 		}
 	}
 }
