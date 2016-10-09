@@ -171,6 +171,7 @@
     <ClCompile Include="Enemy\EnemyManager.cpp" />
     <ClCompile Include="Enemy\Enemy_00.cpp" />
     <ClCompile Include="Enemy\HFSM\EnemyStateAttack.cpp" />
+    <ClCompile Include="Enemy\HFSM\EnemyStateDamage.cpp" />
     <ClCompile Include="Enemy\HFSM\EnemyStateFind.cpp" />
     <ClCompile Include="Enemy\HFSM\EnemyStateIdle.cpp" />
     <ClCompile Include="Enemy\HFSM\EnemyStateRun.cpp" />
@@ -182,6 +183,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapChip.cpp" />
     <ClCompile Include="Physics\BoxCollider.cpp" />
+    <ClCompile Include="Physics\CapsuleCollider.cpp" />
     <ClCompile Include="Physics\MeshCollider.cpp" />
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="Physics\RigidBody.cpp" />
@@ -199,6 +201,7 @@
     <ClInclude Include="Enemy\EnemyManager.h" />
     <ClInclude Include="Enemy\Enemy_00.h" />
     <ClInclude Include="Enemy\HFSM\EnemyStateAttack.h" />
+    <ClInclude Include="Enemy\HFSM\EnemyStateDamage.h" />
     <ClInclude Include="Enemy\HFSM\EnemyStateFind.h" />
     <ClInclude Include="Enemy\HFSM\EnemyStateIdle.h" />
     <ClInclude Include="Enemy\HFSM\EnemyStateRun.h" />
@@ -210,6 +213,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapChip.h" />
     <ClInclude Include="Physics\BoxCollider.h" />
+    <ClInclude Include="Physics\CapsuleCollider.h" />
     <ClInclude Include="Physics\ICollider.h" />
     <ClInclude Include="Physics\MeshCollider.h" />
     <ClInclude Include="Physics\Physics.h" />

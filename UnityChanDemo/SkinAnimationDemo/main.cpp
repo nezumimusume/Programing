@@ -118,7 +118,7 @@ int WINAPI wWinMain(
 	g_physicsWorld = NewGO<PhysicsWorld>(0);
 	g_unityChan = NewGO<UnityChan>(0);
 	NewGO<UnityChanInstance>(0);
-	NewGO<EnemyManager>(0);
+	//NewGO<EnemyManager>(0);
 	NewGO<Map>(0);
 	NewGO<Ground>(0);
 #ifdef ENEMY_TEST

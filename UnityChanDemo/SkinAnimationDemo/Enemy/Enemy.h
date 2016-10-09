@@ -11,6 +11,7 @@ public:
 		enAnimStand,
 		enAnimWalk,
 		enAnimAttack,
+		enAnimDamage,
 		enAnimInvalid = 0xffffffff
 	};
 	Enemy() :

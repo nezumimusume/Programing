@@ -15,7 +15,8 @@ class Enemy_00 : public Enemy{
 	//状態
 	enum EnLocalState {
 		enLocalState_Search,	//徘徊中。
-		enLocalState_Find,	//発見状態。
+		enLocalState_Find,		//発見状態。
+		enLocalState_Damage,	//ダメージ処理。
 	};
 public:
 	Enemy_00();

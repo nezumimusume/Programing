@@ -82,7 +82,7 @@ void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 	animation.SetAnimationLoopFlag(enAnimAttack, false);
 	initPosition = position;
 
-	characterController.Init(0.4f, position);
+	characterController.Init(0.4f, 0.3f, position);
 	InitHFSM();
 }
 /*!

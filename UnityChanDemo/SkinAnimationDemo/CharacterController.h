@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Physics/SphereCollider.h"
+#include "Physics/CapsuleCollider.h"
 
 /*!
  * @brief
@@ -16,7 +17,7 @@ public:
 	/*!
 	 * @brief	初期化。
 	 */
-	void Init(float radius, const CVector3& position);
+	void Init(float radius, float height, const CVector3& position);
 	/*!
 	 * @brief	実行。
 	 */
@@ -67,6 +68,8 @@ private:
 	CVector3 			position;		//座標。
 	CVector3 			moveSpeed;		//移動速度。 
 	bool 				isJump;			//ジャンプ中？
-	SphereCollider		collider;		//コライダ。
+	//SphereCollider		collider;		//コライダ。
+	CapsuleCollider		collider;		//コライダー。
 	float				radius;
+	float				height;		
 };

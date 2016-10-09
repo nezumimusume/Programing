@@ -139,7 +139,7 @@ void UnityChan::Start()
 	ShadowMap().SetCalcLightViewFunc(CShadowMap::enCalcLightViewFunc_PositionTarget);
 	state = enStateStand;
 
-	characterController.Init(0.4f, position);
+	characterController.Init(0.4f, 0.3f, position);
 	toLampLocalPos.Set( 0.0f, 0.5f, 0.2f);
 	InitBattleSeats();
 	//g_physicsWorld->AddRigidBody(&rigidBody);
