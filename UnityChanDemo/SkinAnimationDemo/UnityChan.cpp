@@ -266,18 +266,22 @@ void UnityChan::Update()
 		}
 	}
 	position = characterController.GetPosition();
-	ShadowMap().SetLightTarget(position);
-	CVector3 lightPos;
-	lightPos.Add(position, toLightPos);
-	ShadowMap().SetLightPosition(lightPos);
-	skinModel.Update(position, rotation, CVector3::One);
-	
+
 	//ポイントライトの位置を更新。
 	UpdatePointLightPosition();
 	//アニメーションコントロール。
 	AnimationControl();
 	//バトル用のシートの更新。
 	UpdateBattleSeats();
+
+	ShadowMap().SetLightTarget(position);
+	CVector3 lightPos;
+	lightPos.Add(position, toLightPos);
+	ShadowMap().SetLightPosition(lightPos);
+
+	skinModel.Update(position, rotation, CVector3::One);
+	
+	
 	lastFrameState = state;
 }
 /*!
@@ -312,7 +316,6 @@ void UnityChan::PlayAnimation(AnimationNo animNo, float interpolateTime)
 */
 void UnityChan::AnimationControl()
 {
-	animation.Update(GameTime().GetFrameDeltaTime());
 	if (characterController.IsJump()) {
 		PlayAnimation(AnimationJump, 0.05f);
 	}else{
@@ -344,6 +347,7 @@ void UnityChan::AnimationControl()
 			}
 		}
 	}
+	animation.Update(GameTime().GetFrameDeltaTime());
 }
 /*!
 * @brief	バトルで使用するシートを初期化。
