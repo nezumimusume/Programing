@@ -212,8 +212,8 @@
     <ClCompile Include="particle\tkParticleEmitter.cpp" />
     <ClCompile Include="particle\tkParticleResources.cpp" />
     <ClCompile Include="random\tkRandom.cpp" />
-    <ClCompile Include="resource\CSkinModelDataHandle.cpp" />
-    <ClCompile Include="resource\CSkinModelDataResources.cpp" />
+    <ClCompile Include="resource\tkSkinModelDataHandle.cpp" />
+    <ClCompile Include="resource\tkSkinModelDataResources.cpp" />
     <ClCompile Include="shape\tkBoxShape.cpp" />
     <ClCompile Include="shape\tkShapeBase.cpp" />
     <ClCompile Include="shape\tkSphereShape.cpp" />
@@ -279,8 +279,8 @@
     <ClInclude Include="particle\tkParticleResources.h" />
     <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="random\tkRandom.h" />
-    <ClInclude Include="resource\CSkinModelDataHandle.h" />
-    <ClInclude Include="resource\CSkinModelDataResources.h" />
+    <ClInclude Include="resource\tkSkinModelDataHandle.h" />
+    <ClInclude Include="resource\tkSkinModelDataResources.h" />
     <ClInclude Include="shape\tkBoxShape.h" />
     <ClInclude Include="shape\tkShapeBase.h" />
     <ClInclude Include="shape\tkShapeVertex.h" />

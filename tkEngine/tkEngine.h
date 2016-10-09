@@ -14,7 +14,7 @@
 #include "tkEngine/graphics/postEffect/tkPostEffect.h"
 #include "tkEngine/graphics/tkGraphicsConfig.h"
 #include "tkEngine/particle/tkParticleResources.h"
-#include "tkEngine/resource/CSkinModelDataResources.h"
+#include "tkEngine/resource/tkSkinModelDataResources.h"
 
 namespace tkEngine{
 	class CReflectionMap;

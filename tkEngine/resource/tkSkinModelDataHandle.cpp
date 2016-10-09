@@ -3,7 +3,7 @@
  */
 
 #include "tkEngine/tkEnginePreCompile.h"
-#include "tkEngine/resource/CSkinModelDataHandle.h"
+#include "tkEngine/resource/tkSkinModelDataHandle.h"
 
 namespace tkEngine{
 	void CSkinModelDataHandle::Init(const std::shared_ptr<CSkinModelData>& skinModelData, CAnimation* anim, bool isClone)

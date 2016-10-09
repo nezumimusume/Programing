@@ -3,8 +3,8 @@
  */
 
 #include "tkEngine/tkEnginePreCompile.h"
-#include "tkEngine/resource/CSkinModelDataResources.h"
-#include "tkEngine/resource/CSkinModelDataHandle.h"
+#include "tkEngine/resource/tkSkinModelDataResources.h"
+#include "tkEngine/resource/tkSkinModelDataHandle.h"
 
 namespace tkEngine{
 	/*!

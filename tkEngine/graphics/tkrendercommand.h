@@ -318,7 +318,7 @@ namespace tkEngine{
 			m_pEffect(pEffect)
 		{
 			size_t nameLen = strlen(tecName);
-			m_tecName = s_cast<char*>(renderContext.AllocFromCommandBuffer(nameLen + 1));
+			m_tecName = s_cast<char*>(renderContext.AllocFromCommandBuffer((int)nameLen + 1));
 			memcpy(m_tecName, tecName, nameLen + 1);
 		}
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)
@@ -441,7 +441,7 @@ namespace tkEngine{
 			m_pEffect(pEffect)
 		{
 			size_t nameLen = strlen(parameterName);
-			m_textureName = s_cast<char*>(renderContext.AllocFromCommandBuffer(nameLen + 1));
+			m_textureName = s_cast<char*>(renderContext.AllocFromCommandBuffer((int)nameLen + 1));
 			memcpy(m_textureName, parameterName, nameLen + 1);
 		}
 		void Execute(LPDIRECT3DDEVICE9 pD3DDevice)

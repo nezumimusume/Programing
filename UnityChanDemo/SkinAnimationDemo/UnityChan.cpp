@@ -210,7 +210,7 @@ void UnityChan::Update()
 		characterController.SetMoveSpeed(moveSpeed);
 		characterController.Execute();
 		
-		if (Pad(0).IsTrigger(enButtonX)) {
+		if (Pad(0).IsTrigger(enButtonX) && !characterController.IsJump()) {
 			nextAttackAnimNo = AnimationAttack_00;
 			state = enState_Attack;
 		}
