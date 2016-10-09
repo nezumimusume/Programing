@@ -69,6 +69,25 @@ namespace tkEngine{
 		*/
 		void PlayAnimation(int animationSetIndex, float interpolateTime);
 		/*!
+		*@brief	アニメーションの再生リクエストをキューに積む。
+		*@param[in]		animationSetIndex	再生したいアニメーションのインデックス。
+		*@param[in]		interpolateTime		補間時間。
+		*/
+		void PlayAnimationQueue(int animationSetIndex, float interpolateTime)
+		{
+			RequestPlayAnimation req;
+			req.animationSetIndex = animationSetIndex;
+			req.interpolateTime = interpolateTime;
+			playAnimationRequest.push_back(req);
+		}
+		/*!
+		*@brief	再生中のアニメーションの番号を取得。
+		*/
+		int GetPlayAnimNo() const
+		{
+			return currentAnimationSetNo;
+		}
+		/*!
 		*@brief	アニメーションの再生中判定。
 		*/
 		bool IsPlay() const
@@ -94,6 +113,15 @@ namespace tkEngine{
 		*@param[in]		deltaTime	更新時間。単位は秒。
 		*/
 		void Update( float deltaTime );
+	private:
+		/*!
+		*@brief	補間時間を元にトラックの重みを更新。
+		*/
+		void UpdateTrackWeights();
+		/*!
+		*@brief	アニメーションの再生リクエストをポップ。
+		*/
+		void PopRequestPlayAnimation();
 	private:
 		//アニメーション再生リクエスト。
 		struct RequestPlayAnimation {

@@ -60,33 +60,66 @@ namespace tkEngine{
 		if (animationSetIndex < numAnimSet) {
 			if (pAnimController) {
 				isAnimEnd = false;
-				if (isInterpolate) {
-					//補間中にアニメーションを終わらせるときれいにつながらないので、リクエストキューに積む。
-					RequestPlayAnimation req;
-					req.animationSetIndex = animationSetIndex;
-					req.interpolateTime = interpolateTime;
-					playAnimationRequest.push_back(req);
-				}
-				else {
-					//補間開始の印。
-					isInterpolate = true;
-					this->interpolateTime = 0.0f;
-					interpolateEndTime = interpolateTime;
-					int prevTrackNo = currentTrackNo;
-					currentTrackNo = (currentTrackNo + 1) % numMaxTracks;
-					pAnimController->SetTrackAnimationSet(currentTrackNo, animationSets[animationSetIndex]);
-					pAnimController->SetTrackSpeed(prevTrackNo, 0.0f);
-					pAnimController->SetTrackEnable(currentTrackNo, TRUE);
-					pAnimController->SetTrackSpeed(currentTrackNo, 1.0f);
-					pAnimController->SetTrackPosition(currentTrackNo, 0.0f);
+				//補間開始の印。
+				isInterpolate = true;
+				this->interpolateTime = 0.0f;
+				interpolateEndTime = interpolateTime;
+				int prevTrackNo = currentTrackNo;
+				currentTrackNo = (currentTrackNo + 1) % numMaxTracks;
+				pAnimController->SetTrackAnimationSet(currentTrackNo, animationSets[animationSetIndex]);
+				pAnimController->SetTrackSpeed(prevTrackNo, 0.0f);
+				pAnimController->SetTrackEnable(currentTrackNo, TRUE);
+				pAnimController->SetTrackSpeed(currentTrackNo, 1.0f);
+				pAnimController->SetTrackPosition(currentTrackNo, 0.0f);
 					
-					localAnimationTime = 0.0;
-					currentAnimationSetNo = animationSetIndex;
-				}
+				localAnimationTime = 0.0;
+				currentAnimationSetNo = animationSetIndex;
+				UpdateTrackWeights();
 			}
 		}
 		else {
 			TK_LOG("warning!!! animationSetIndex is over range!!!!!");
+		}
+	}
+	/*!
+	*@brief	補間時間を元にトラックの重みを更新。
+	*/
+	void CAnimation::UpdateTrackWeights()
+	{
+		float weight = 0.0f;
+		if (interpolateTime < interpolateEndTime) {
+			weight = interpolateTime / interpolateEndTime;
+			float invWeight = 1.0f - weight;
+			//ウェイトを設定していく。
+			for (int i = 0; i < numMaxTracks; i++) {
+				if (i != currentTrackNo) {
+					pAnimController->SetTrackWeight(i, blendRateTable[i] * invWeight);
+				}
+				else {
+					pAnimController->SetTrackWeight(i, weight);
+				}
+			}
+		}
+		else {
+			for (int i = 0; i < numMaxTracks; i++) {
+				if (i != currentTrackNo) {
+					pAnimController->SetTrackWeight(i, 0.0f);
+				}
+				else {
+					pAnimController->SetTrackWeight(i, 1.0f);
+				}
+			}
+		}
+	}
+	/*!
+	*@brief	アニメーションの再生リクエストをポップ。
+	*/
+	void CAnimation::PopRequestPlayAnimation()
+	{
+		if (!playAnimationRequest.empty()) {
+			RequestPlayAnimation& req = playAnimationRequest.front();
+			PlayAnimation(req.animationSetIndex, req.interpolateTime);
+			playAnimationRequest.pop_front();
 		}
 	}
 	void CAnimation::Update(float deltaTime)
@@ -131,27 +164,18 @@ namespace tkEngine{
 							pAnimController->SetTrackEnable(i, FALSE);
 						}
 					}
-					if (!playAnimationRequest.empty()) {
-						//アニメーション補間中に別のアニメーションの補間のリクエストが来てるので連続再生。
-						RequestPlayAnimation& req = playAnimationRequest.front();
-						PlayAnimation(req.animationSetIndex, req.interpolateTime);
-						playAnimationRequest.pop_front();
-					}
 				}
 				else {
-					weight = interpolateTime / interpolateEndTime;
-					float invWeight = 1.0f - weight;
-					//ウェイトを設定していく。
-					for (int i = 0; i < numMaxTracks; i++) {
-						if (i != currentTrackNo) {
-							pAnimController->SetTrackWeight(i, blendRateTable[i] * invWeight);
-						}
-						else {
-							pAnimController->SetTrackWeight(i, weight);
-						}
-					}
+					//各トラックの重みを更新。
+					UpdateTrackWeights();
 				}
 			}
+		}
+
+		if (isAnimEnd) {
+			//アニメーション終わった。
+			//アニメーションの連続再生のリクエストをポップする。
+			PopRequestPlayAnimation();
 		}
 	}
 }

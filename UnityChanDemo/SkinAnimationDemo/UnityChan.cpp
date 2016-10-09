@@ -117,8 +117,7 @@ void UnityChan::Start()
 	isPointLightOn = false;
 	UpdatePointLightPosition();
 
-	currentAnimSetNo = AnimationInvalid;
-	PlayAnimation(currentAnimSetNo, 0.0f);
+	PlayAnimation(AnimationInvalid, 0.0f);
 	rotation = CQuaternion::Identity;
 	
 	CVector3 lightPos = CVector3(0.0f, 25.5f, 24.5f);
@@ -132,12 +131,15 @@ void UnityChan::Start()
 	toLampLocalPos.Set( 0.0f, 0.5f, 0.2f);
 	InitBattleSeats();
 	//g_physicsWorld->AddRigidBody(&rigidBody);
+	animation.SetAnimationEndTime(AnimationAttack_00, 0.63333f);
+	animation.SetAnimationEndTime(AnimationAttack_01, 0.76666f);
 	animation.SetAnimationLoopFlag(AnimationJump, false);
 	animation.SetAnimationLoopFlag(AnimationAttack_00, false);
 	animation.SetAnimationLoopFlag(AnimationAttack_01, false);
 	animation.SetAnimationLoopFlag(AnimationAttack_02, false);
 	animation.SetAnimationLoopFlag(AnimationDamage, false);
 	nextAttackAnimNo = AnimationInvalid;
+	reqAttackAnimNo = AnimationInvalid;
 }
 void UnityChan::Update()
 {
@@ -208,7 +210,7 @@ void UnityChan::Update()
 		characterController.SetMoveSpeed(moveSpeed);
 		characterController.Execute();
 		
-		if (Pad(0).IsTrigger(enButtonRB1)) {
+		if (Pad(0).IsTrigger(enButtonX)) {
 			nextAttackAnimNo = AnimationAttack_00;
 			state = enState_Attack;
 		}
@@ -237,16 +239,18 @@ void UnityChan::Update()
 		moveSpeed.Scale(0.8f);
 		characterController.SetMoveSpeed(moveSpeed);
 		characterController.Execute();
+		int currentAnimNo = animation.GetPlayAnimNo();
 		if (!animation.IsPlay() && nextAttackAnimNo == AnimationInvalid) {
 			state = enStateStand;
 		}
 		else if (
-				Pad(0).IsTrigger(enButtonRB1) 
-				&& currentAnimSetNo >= AnimationAttack_Start
-				&& currentAnimSetNo < AnimationAttack_End
+				Pad(0).IsTrigger(enButtonX) 
+				&& currentAnimNo >= AnimationAttack_Start
+				&& currentAnimNo < AnimationAttack_End
+				&& currentAnimNo == reqAttackAnimNo
 			) {
 			//コンボ発生。
-			nextAttackAnimNo = (AnimationNo)(currentAnimSetNo + 1);
+			nextAttackAnimNo = (AnimationNo)(animation.GetPlayAnimNo() + 1);
 		}
 	}
 	position = characterController.GetPosition();
@@ -286,10 +290,9 @@ void UnityChan::UpdatePointLightPosition()
 */
 void UnityChan::PlayAnimation(AnimationNo animNo, float interpolateTime)
 {
-	if (currentAnimSetNo != animNo) {
+	if (animation.GetPlayAnimNo() != animNo && animNo != AnimationInvalid) {
 		//別のアニメーション
 		animation.PlayAnimation(animNo, interpolateTime);
-		currentAnimSetNo = animNo;
 	}
 }
 /*!
@@ -313,16 +316,19 @@ void UnityChan::AnimationControl()
 		}
 		else if (state == enStateStand) {
 			//立ちアニメーションを流す。
-			PlayAnimation(AnimationStand, 0.1f);
+			PlayAnimation(AnimationStand, 0.3f);
 		}
 		else if (state == enState_Attack) {
-			if ( (!animation.IsPlay() || currentAnimSetNo < AnimationAttack_Start || currentAnimSetNo > AnimationAttack_End)
-				&& nextAttackAnimNo != AnimationInvalid
-			) {
-				//攻撃アニメーションの連撃
-				PlayAnimation(nextAttackAnimNo, 0.05f);
+			if (nextAttackAnimNo == AnimationAttack_Start) {
+				//攻撃開始。
+				PlayAnimation(nextAttackAnimNo, 0.1f);
+				reqAttackAnimNo = nextAttackAnimNo;
 				nextAttackAnimNo = AnimationInvalid;
-
+			}else if( nextAttackAnimNo != AnimationInvalid ){
+				//連撃のアニメーションをリクエストキューに積む。
+				animation.PlayAnimationQueue(nextAttackAnimNo, 0.05f);
+				reqAttackAnimNo = nextAttackAnimNo;
+				nextAttackAnimNo = AnimationInvalid;
 			}
 		}
 	}

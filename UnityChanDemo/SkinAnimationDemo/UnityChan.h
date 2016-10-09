@@ -118,7 +118,6 @@ private:
 	CSkinModel				skinModel;			//スキンモデル。
 	CAnimation				animation;			//アニメーション。
 	CLight					light;				//ライト。
-	AnimationNo				currentAnimSetNo;
 	CTexture				normalMap;			//法線マップ。
 	CTexture				specMap;			//スペキュラマップ。
 	CVector3				position;			//座標。
@@ -133,6 +132,7 @@ private:
 	RigidBody				rigidBody;			//剛体。
 	CharacterController		characterController;	//キャラクタコントローラ。
 	SBattleSeat				battleSeats[NUM_BATTLE_SEAT];	//シート。
+	AnimationNo				reqAttackAnimNo;		//再生のリクエストを出している攻撃モーション番号。
 	AnimationNo				nextAttackAnimNo;		//次の攻撃モーション番号。
 
 };
