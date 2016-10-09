@@ -22,8 +22,8 @@ private:
 	CSkinModel						skinModel;			//スキンモデル。
 	CAnimation						animation;			//アニメーション。
 	CLight							light;				//ライト。
-	CTexture						specMap;			//スペキュラマップ。
-	CTexture						normalMap;			//法線マップ。
+	std::vector<CTexture>			specMapList;			//スペキュラマップ。
+	std::vector<CTexture>			normalMapList;			//法線マップ。
 	std::unique_ptr<CMatrix[]>		worldMatrixBuffer;	//ワールド行列のバッファ
 	std::unique_ptr<MeshCollider[]>	meshCollider;		//メッシュコライダー。
 	std::unique_ptr<RigidBody[]>	rigidBody;			//剛体。

@@ -120,6 +120,8 @@ private:
 	CLight					light;				//ライト。
 	CTexture				normalMap;			//法線マップ。
 	CTexture				specMap;			//スペキュラマップ。
+	CTexture				weaponNormalMap;	//武器の法線マップ。
+	CTexture				weaponSpecMap;		//武器のスペキュラマップ。
 	CVector3				position;			//座標。
 	CQuaternion				rotation;			//回転
 	CVector3				toLightPos;			//

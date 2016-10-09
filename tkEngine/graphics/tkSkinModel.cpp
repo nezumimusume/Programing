@@ -4,6 +4,7 @@
 #include "tkEngine/graphics/tkEffect.h"
 #include "tkEngine/graphics/tkLight.h"
 #include "tkEngine/graphics/prerender/tkShadowMap.h"
+#include "tkEngine/graphics/tkSkinModelMaterial.h"
 
 namespace tkEngine{
 	
@@ -56,7 +57,6 @@ namespace tkEngine{
 		D3DXMATRIX* viewMatrix,
 		D3DXMATRIX* projMatrix,
 		CLight* light,
-		CTexture* normalMap,
 		bool isInstancingDraw,
 		bool isDrawToShadowMap
 	)
@@ -122,10 +122,9 @@ namespace tkEngine{
 				sizeof(CLight)
 			);
 			int flag[4] = { 0 };
-			if (normalMap != nullptr) {
+			if (m_hasNormalMap) {
 				//法線マップ。
 				flag[0] = true;
-				pEffect->SetTexture(m_hShaderHandle[enShaderHandleNormalTexture], normalMap->GetTextureDX());
 			}
 			if (!isDrawToShadowMap && m_isShadowReceiver) {
 				//シャドウレシーバー。
@@ -154,10 +153,9 @@ namespace tkEngine{
 			cameraDir.z = viewMatInv.m[2][2];
 			pEffect->SetVector(m_hShaderHandle[enShaderHandleCameraPos], (D3DXVECTOR4*)&cameraPos);
 			pEffect->SetVector(m_hShaderHandle[enShaderHandleCameraDir], (D3DXVECTOR4*)&cameraDir);
-			if (m_speculerMap != nullptr) {
+			if (m_hasSpecMap) {
 				//スペキュラマップ。
 				flag[3] = true;
-				pEffect->SetTexture(m_hShaderHandle[enShaderHandleSpeculerMap], m_speculerMap->GetTextureDX());
 			}
 			pEffect->SetValue(m_hShaderHandle[enShaderHandleFlags], flag, sizeof(flag));
 			if (isDrawToShadowMap || m_isShadowReceiver) {
@@ -199,7 +197,7 @@ namespace tkEngine{
 					if (iMatrixIndex != UINT_MAX)
 					{
 						TK_ASSERT(iPaletteEntry < MAX_MATRIX_PALLET, "ボーン行列パレットの最大数を超えた");
-						TK_ASSERT(pMeshContainer->ppBoneMatrixPtrs[iMatrixIndex], "NULL");
+						TK_ASSERT(pMeshContainer->ppBoneMatrixPtrs[iMatrixIndex] != NULL, "NULL");
 						D3DXMatrixMultiply(
 							&m_boneMatrixPallet[iPaletteEntry],
 							&pMeshContainer->pBoneOffsetMatrices[iMatrixIndex],
@@ -211,8 +209,8 @@ namespace tkEngine{
 					
 				pEffect->SetMatrixArray(m_hShaderHandle[enShaderHandleWorldMatrixArray], m_boneMatrixPallet, pMeshContainer->NumPaletteEntries);
 				pEffect->SetInt(m_hShaderHandle[enShaderHandleNumBone], pMeshContainer->NumInfl);
-				// ディフューズテクスチャ。
-				pEffect->SetTexture(m_hShaderHandle[enShaderHandleDiffuseTexture], pMeshContainer->ppTextures[pBoneComb[iAttrib].AttribId]);
+				// マテリアルパラメータを転送。
+				pMeshContainer->materials[pBoneComb[iAttrib].AttribId].SendMaterialParamToGPUImmidiate(pEffect);
 				
 				// ボーン数。
 				pEffect->SetInt(m_hShaderHandle[enShaderHandleCurNumBones], pMeshContainer->NumInfl - 1);
@@ -256,7 +254,7 @@ namespace tkEngine{
 			pEffect->BeginPass(0);
 
 			for (DWORD i = 0; i < pMeshContainer->NumMaterials; i++) {
-				pEffect->SetTexture(m_hShaderHandle[enShaderHandleDiffuseTexture], pMeshContainer->ppTextures[i]);
+				pMeshContainer->materials[i].SendMaterialParamToGPUImmidiate(pEffect);
 				pEffect->CommitChanges();
 				if (isInstancingDraw) {
 					//インスタンシング描画。
@@ -297,7 +295,6 @@ namespace tkEngine{
 				viewMatrix,
 				projMatrix,
 				m_light,
-				m_normalMap,
 				isInstancingDraw,
 				isDrawToShadowMap
 				);
@@ -340,13 +337,13 @@ namespace tkEngine{
 		m_skinModelData(nullptr),
 		m_worldMatrix(CMatrix::Identity),
 		m_light(nullptr),
-		m_normalMap(nullptr),
 		m_isShadowCaster(false),
 		m_isShadowReceiver(false),
 		m_isFresnel(false),
 		m_isReflectionCaster(false),
-		m_speculerMap(nullptr),
-		m_fogFunc(enFogFuncNone)
+		m_fogFunc(enFogFuncNone),
+		m_hasNormalMap(false),
+		m_hasSpecMap(false)
 	{
 		m_fogParam[0] = 0.0f;
 		m_fogParam[1] = 0.0f;

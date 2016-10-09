@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "UnityChanInstance.h"
 #include "UnityChan.h"
+#include "tkEngine/graphics/tkSkinModelMaterial.h"
 
 namespace {
 	const int NUM_INSTANCE = 10;
@@ -38,8 +39,8 @@ void UnityChanInstance::Start()
 		}
 		else {
 			
-			worldMatrixBuffer[i].MakeTranslation(CVector3(-10.0 + 0.5f * retu, 3.5f, -0.5f * gyou));
-			retu *= -1.0f;
+			worldMatrixBuffer[i].MakeTranslation(CVector3(-10.0f + 0.5f * retu, 3.5f, -0.5f * gyou));
+			retu *= -1;
 			if (retu > 0) {
 				//³
 				retu++;
@@ -56,10 +57,13 @@ void UnityChanInstance::Start()
 	}
 	normalMap.Load("Assets/modelData/utc_nomal.tga");
 	specMap.Load("Assets/modelData/utc_spec.tga");
+	CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("utc_all2.tga");
+	mat->SetTexture("g_normalTexture", &normalMap);
+	mat->SetTexture("utc_spec.tga", &specMap);
 	skinModel.Init(skinModelData.GetBody());
 	skinModel.SetLight(&light);
-	skinModel.SetNormalMap(&normalMap);
-	skinModel.SetSpeculerMap(&specMap);
+	skinModel.SetHasNormalMap(true);
+	skinModel.SetHasSpeculerMap(true);
 	skinModel.SetFresnelFlag(true);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);

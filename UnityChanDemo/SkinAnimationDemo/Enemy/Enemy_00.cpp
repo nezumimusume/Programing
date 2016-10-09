@@ -32,14 +32,29 @@ void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 		filePath,
 		&animation
 	);
-	sprintf(filePath, "Assets/modelData/%s_n.png", modelPath);
-	if (normalMap.Load(filePath)) {
-		skinModel.SetNormalMap(&normalMap);
+	//マテリアルを取得。
+	const std::vector<CSkinModelMaterial*> materials = skinModelData.GetBody()->GetSkinModelMaterials();
+	specMapList.resize(materials.size());
+	normalMapList.resize(materials.size());
+	int i = 0;
+	for (CSkinModelMaterial* mat : materials) {
+		char work[256];
+		strcpy(work, mat->GetMaterialName());
+		strtok(work, ".");
+		sprintf(filePath, "Assets/modelData/%s_n.png", work);
+		if (normalMapList[i].Load(filePath)) {
+			mat->SetTexture("g_normalTexture", &normalMapList[i]);
+			skinModel.SetHasNormalMap(true);
+		}
+		sprintf(filePath, "Assets/modelData/%s_s.png", work);
+		if (specMapList[i].Load(filePath)) {
+			mat->SetTexture("g_speculerMap", &specMapList[i]);
+			skinModel.SetHasSpeculerMap(true);
+		}
+
+		i++;
 	}
-	sprintf(filePath, "Assets/modelData/%s_spec.png", modelPath);
-	if (specMap.Load(filePath)) {
-		skinModel.SetSpeculerMap(&specMap);
-	}
+
 	skinModel.Init(skinModelData.GetBody());
 	position = pos;
 	this->rotation = rotation;

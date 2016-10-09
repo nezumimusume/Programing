@@ -9,7 +9,7 @@ namespace tkEngine{
 	/*!
 	 * @brief	テクスチャ。
 	 */
-	class CTexture : Noncopyable{
+	class CTexture{
 	public:
 		CTexture() :
 			m_tex(nullptr)

@@ -21,16 +21,34 @@ void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 	skinModel.SetLight(&light);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
-	char normalMapPath[256];
-	sprintf(normalMapPath, "Assets/modelData/%s_n.png", mapChipLocInfoList[0]->modelName);
-	if (normalMap.Load(normalMapPath)) {
-		skinModel.SetNormalMap(&normalMap);
+	char filePath[256];
+	const std::vector<CSkinModelMaterial*> materials = skinModelData.GetBody()->GetSkinModelMaterials();
+	specMapList.resize(materials.size());
+	normalMapList.resize(materials.size());
+	int i = 0;
+	for (CSkinModelMaterial* mat : materials) {
+		char work[256];
+		strcpy(work, mat->GetMaterialName());
+		strtok(work, ".");
+		sprintf(filePath, "Assets/modelData/%s_n.png", work);
+		if (normalMapList[i].Load(filePath)) {
+			mat->SetTexture("g_normalTexture", &normalMapList[i]);
+			skinModel.SetHasNormalMap(true);
+		}
+		sprintf(filePath, "Assets/modelData/%s_s.png", work);
+		if (specMapList[i].Load(filePath)) {
+			mat->SetTexture("g_speculerMap", &specMapList[i]);
+			skinModel.SetHasSpeculerMap(true);
+		}
+
+		i++;
 	}
+
 	//ワールド行列のバッファを作成。
 	worldMatrixBuffer.reset(new CMatrix[mapChipLocInfoList.size()]);
 	meshCollider.reset(new MeshCollider[mapChipLocInfoList.size()]);
 	rigidBody.reset(new RigidBody[mapChipLocInfoList.size()]);
-	int i = 0;
+	i = 0;
 	for (auto& mapChiplLocInfo : mapChipLocInfoList) {
 		CMatrix mTrans;
 		CVector3 pos = mapChiplLocInfo->pos;

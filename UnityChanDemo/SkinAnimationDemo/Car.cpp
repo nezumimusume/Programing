@@ -5,18 +5,22 @@
 #include "stdafx.h"
 #include "Car.h"
 #include "UnityChan.h"
+#include "tkEngine/graphics/tkSkinModelMaterial.h"
 
 Car* g_car;
 
 Car::Car()
 {
 	skinModelData.LoadModelData("Assets/modelData/car.X", NULL);
+	CSkinModelMaterial* mat = skinModelData.FindMaterial("Scout_Diffuse.png");
 	normalMap.Load("Assets/modelData/Scout_Normal.png");
 	speculerMap.Load("Assets/modelData/Scout_MetallicSmoothness.png");
+	mat->SetTexture("g_normalTexture", &normalMap);
+	mat->SetTexture("g_speculerMap", &speculerMap);
 	skinModel.Init(&skinModelData);
 	skinModel.SetLight(&light);
-	skinModel.SetNormalMap(&normalMap);
-	skinModel.SetSpeculerMap(&speculerMap);
+	skinModel.SetHasNormalMap(true);
+	skinModel.SetHasSpeculerMap(true);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
 	skinModel.SetReflectionCasterFlag(true);

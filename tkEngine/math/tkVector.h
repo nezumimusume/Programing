@@ -8,6 +8,7 @@
 
 namespace tkEngine{
 	class CMatrix;
+	
 	class CVector2 {
 	public:
 		union {
@@ -331,6 +332,14 @@ namespace tkEngine{
 			y = pw * qy - px * qz + py * qw + pz * qx;
 			z = pw * qz + px * qy - py * qx + pz * qw;
 		}
+	};
+	//整数型のベクトルクラス。
+	class CVector4i {
+	public:
+		union {
+			struct { int x, y, z, w; };
+			int v[4];
+		};
 	};
 }
 

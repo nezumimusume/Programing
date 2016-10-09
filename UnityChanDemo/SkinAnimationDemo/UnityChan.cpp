@@ -2,6 +2,7 @@
 #include "UnityChan.h"
 #include "Car.h"
 #include "Ground.h"
+#include "tkEngine/graphics/tkSkinModelMaterial.h"
 
 namespace {
 	const float MAX_RUN_SPEED = 0.1f;					//ユニティちゃんの走りの最高速度。
@@ -89,11 +90,22 @@ void UnityChan::Start()
 	SkinModelDataResources().Load(skinModelData, "Assets/modelData/Player.X", &animation);
 	normalMap.Load("Assets/modelData/Thethief_N.tga");
 	specMap.Load("Assets/modelData/Thethief_S.tga");
-	//skinModelData.LoadModelData("Assets/modelData/unity.X", NULL);
+	weaponNormalMap.Load("Assets/modelData/Thethief_wuqi_N.tga");
+	weaponSpecMap.Load("Assets/modelData/Thethief_wuqi_S.tga");
+	//skinModelData.LoadModelData("Assets/modelData/unm_speculerMapity.X", NULL);
+	//体のマテリアルを取得。
+	CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("Thethief_D.tga");
+	mat->SetTexture("g_normalTexture", &normalMap );
+	mat->SetTexture("g_speculerMap", &specMap);
+	//武器のマテリアルを取得。
+	mat = skinModelData.GetBody()->FindMaterial("Thethief_wuqi_D.tga");
+	mat->SetTexture("g_normalTexture", &weaponNormalMap);
+	mat->SetTexture("g_speculerMap", &weaponSpecMap);
+
 	skinModel.Init(skinModelData.GetBody());
 	skinModel.SetLight(&light);
-	skinModel.SetNormalMap(&normalMap);
-	skinModel.SetSpeculerMap(&specMap);
+	skinModel.SetHasNormalMap(true);
+	skinModel.SetHasSpeculerMap(true);
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
 	skinModel.SetFresnelFlag(true);

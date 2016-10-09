@@ -5,6 +5,7 @@
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/graphics/tkSkinModelData.h"
 #include "tkEngine/graphics/tkAnimation.h"
+#include "tkEngine/graphics/tkSkinModelMaterial.h"
 
 int refCount = 0;
 #ifndef SAFE_DELETE
@@ -64,6 +65,7 @@ namespace {
 		}
 
 		SAFE_DELETE_ARRAY(pMeshContainer->ppTextures);
+		SAFE_DELETE_ARRAY(pMeshContainer->materials);
 		SAFE_DELETE_ARRAY(pMeshContainer->ppBoneMatrixPtrs);
 		SAFE_RELEASE(pMeshContainer->pBoneCombinationBuf);
 		SAFE_RELEASE(pMeshContainer->MeshData.pMesh);
@@ -224,9 +226,12 @@ namespace {
 		STDMETHOD(DestroyFrame)(THIS_ LPD3DXFRAME pFrameToFree);
 		STDMETHOD(DestroyMeshContainer)(THIS_ LPD3DXMESHCONTAINER pMeshContainerBase);
 
-		CAllocateHierarchy()
+		CAllocateHierarchy(CSkinModelData* data) :
+			m_skinModelData(data)
 		{
 		}
+	private:
+		CSkinModelData* m_skinModelData;
 	};
 	//--------------------------------------------------------------------------------------
 	// Name: CAllocateHierarchy::CreateFrame()
@@ -346,6 +351,8 @@ namespace {
 		pMeshContainer->NumMaterials = max(1, NumMaterials);
 		pMeshContainer->pMaterials = new D3DXMATERIAL[pMeshContainer->NumMaterials];
 		pMeshContainer->ppTextures = new LPDIRECT3DTEXTURE9[pMeshContainer->NumMaterials];
+		pMeshContainer->materials = new CSkinModelMaterial[pMeshContainer->NumMaterials];
+		pMeshContainer->textures = new CTexture[pMeshContainer->NumMaterials];
 		pMeshContainer->pAdjacency = new DWORD[NumFaces * 3];
 		if ((pMeshContainer->pAdjacency == NULL) || (pMeshContainer->pMaterials == NULL))
 		{
@@ -377,8 +384,14 @@ namespace {
 						pMeshContainer->ppTextures[iMaterial] = NULL;
 					}
 
+					//マテリアルを生成。
+					//マテリアル名はディフューズテクスチャの名前。
+					pMeshContainer->materials[iMaterial].SetMaterialName(pMeshContainer->pMaterials[iMaterial].pTextureFilename);
+					pMeshContainer->textures[iMaterial].SetTextureDX(pMeshContainer->ppTextures[iMaterial]);
+					pMeshContainer->materials[iMaterial].SetTexture("g_diffuseTexture", &pMeshContainer->textures[iMaterial]);
 					// don't remember a pointer into the dynamic memory, just forget the name after loading
 					pMeshContainer->pMaterials[iMaterial].pTextureFilename = NULL;
+					m_skinModelData->AddSkinModelMaterial(&pMeshContainer->materials[iMaterial]);
 				}
 			}
 		}
@@ -656,7 +669,7 @@ namespace tkEngine{
 	}
 	void CSkinModelData::LoadModelData( const char* filePath, CAnimation* anim )
 	{	
-		CAllocateHierarchy alloc;
+		CAllocateHierarchy alloc(this);
 		HRESULT hr = D3DXLoadMeshHierarchyFromX(
 			filePath,
 			D3DXMESH_VB_MANAGED,
@@ -871,6 +884,15 @@ namespace tkEngine{
 			CMatrix* result = FindBoneWorldMatrix(boneName, frame->pFrameFirstChild);
 			if (result != nullptr) {
 				return result;
+			}
+		}
+		return nullptr;
+	}
+	CSkinModelMaterial* CSkinModelData::FindMaterial(const char* matName)
+	{
+		for (CSkinModelMaterial* mat : m_materials) {
+			if (strcmp(mat->GetMaterialName(), matName) == 0) {
+				return mat;
 			}
 		}
 		return nullptr;

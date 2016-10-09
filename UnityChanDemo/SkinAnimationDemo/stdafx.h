@@ -17,6 +17,7 @@
 #include "tkEngine/graphics/tkLight.h"
 #include "tkEngine/graphics/tkTexture.h"
 #include "tkEngine/resource/tkSkinModelDataHandle.h"
+#include "tkEngine/graphics/tkSkinModelMaterial.h"
 #include "btBulletDynamicsCommon.h"
 #include "BulletCollision\CollisionDispatch\btGhostObject.h"
 #include "Physics\Physics.h"

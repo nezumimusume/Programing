@@ -2,6 +2,7 @@
 #include "Physics\Physics.h"
 #include "Ground.h"
 #include "UnityChan.h"
+#include "tkEngine/graphics/tkSkinModelMaterial.h"
 
 Ground* g_ground = NULL;
 LPD3DXMESH testMesh;
@@ -9,11 +10,13 @@ LPD3DXMESH testMesh;
 void Ground::Start()
 {
 	g_ground = this;
-	skinModelData.LoadModelData("Assets/modelData/Court.X", NULL);
+	skinModelData.LoadModelData("Assets/modelData/ground.X", NULL);
 	skinModel.Init(&skinModelData);
 	skinModel.SetLight(&light);
+	CSkinModelMaterial* mat = skinModelData.FindMaterial("Grass.tga");
 	normalMap.Load("Assets/modelData/Grass_Normals.tga");
-	skinModel.SetNormalMap(&normalMap);
+	mat->SetTexture("g_normalTexture", &normalMap);
+	skinModel.SetHasNormalMap(true);
 	light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
 	light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
 	light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));

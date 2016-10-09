@@ -28,10 +28,10 @@ private:
 	
 	void InitHFSM();
 private:
-	std::vector<IEnemyState*>		states;				//ステートのリスト。
-	CVector3						initPosition;		//初期位置。
-	EnLocalState					state;				//ステート。
-	CTexture						specMap;			//スペキュラマップ。
-	CTexture						normalMap;			//法線マップ。
+	std::vector<IEnemyState*>		states;					//ステートのリスト。
+	CVector3						initPosition;			//初期位置。
+	EnLocalState					state;					//ステート。
+	std::vector<CTexture>			specMapList;			//スペキュラマップ。
+	std::vector<CTexture>			normalMapList;			//法線マップ。
 	CharacterController				characterController;	//キャラクタコントローラ。
 };

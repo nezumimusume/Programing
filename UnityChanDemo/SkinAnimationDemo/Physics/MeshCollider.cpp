@@ -78,7 +78,7 @@ void MeshCollider::CreateFromSkinModel( CSkinModel* model, const CMatrix* offset
 			char* p;
 			HRESULT hr = ib->Lock(0, 0, (void**)&p, D3DLOCK_READONLY);
 			IndexBuffer* indexBuffer = new IndexBuffer;
-			for (int i = 0; i < desc.Size / stride; i++) {
+			for (int i = 0; i < (int)desc.Size / stride; i++) {
 				unsigned int index;
 				if (desc.Format == D3DFMT_INDEX16) {
 					unsigned short* pIndex = (unsigned short*)p;
@@ -100,10 +100,10 @@ void MeshCollider::CreateFromSkinModel( CSkinModel* model, const CMatrix* offset
 		btIndexedMesh indexedMesh;
 		IndexBuffer* ib = indexBufferArray.back();
 		VertexBuffer* vb = vertexBufferArray.back();
-		indexedMesh.m_numTriangles = ib->size() / 3;
+		indexedMesh.m_numTriangles = (int)ib->size() / 3;
 		indexedMesh.m_triangleIndexBase = (unsigned char*)(&ib->front());
 		indexedMesh.m_triangleIndexStride = 12;
-		indexedMesh.m_numVertices = vb->size();
+		indexedMesh.m_numVertices = (int)vb->size();
 		indexedMesh.m_vertexBase = (unsigned char*)(&vb->front());
 		indexedMesh.m_vertexStride = sizeof(CVector3);
 		stridingMeshInterface->addIndexedMesh(indexedMesh);

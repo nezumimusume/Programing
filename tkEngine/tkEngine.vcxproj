@@ -194,13 +194,13 @@
     <ClCompile Include="graphics\tkFont.cpp" />
     <ClCompile Include="graphics\tkGaussianBlur.cpp" />
     <ClCompile Include="graphics\tkIndexBuffer.cpp" />
-    <ClCompile Include="graphics\tkMaterial.cpp" />
     <ClCompile Include="graphics\tkPrimitive.cpp" />
     <ClCompile Include="graphics\tkRenderCommandBuffer.cpp" />
     <ClCompile Include="graphics\tkRenderContext.cpp" />
     <ClCompile Include="graphics\tkRenderTarget.cpp" />
     <ClCompile Include="graphics\tkSkinModel.cpp" />
     <ClCompile Include="graphics\tkSkinModelData.cpp" />
+    <ClCompile Include="graphics\tkSkinModelMaterial.cpp" />
     <ClCompile Include="graphics\tkTexture.cpp" />
     <ClCompile Include="graphics\tkVertexBuffer.cpp" />
     <ClCompile Include="Input\tkKeyInput.cpp" />
@@ -267,6 +267,7 @@
     <ClInclude Include="graphics\tkRenderTarget.h" />
     <ClInclude Include="graphics\tkSkinModel.h" />
     <ClInclude Include="graphics\tkSkinModelData.h" />
+    <ClInclude Include="graphics\tkSKinModelMaterial.h" />
     <ClInclude Include="graphics\tkTexture.h" />
     <ClInclude Include="graphics\tkVertexBuffer.h" />
     <ClInclude Include="Input\tkKeyInput.h" />
