@@ -7,80 +7,6 @@
 namespace {
 	const float MAX_RUN_SPEED = 0.1f;					//ユニティちゃんの走りの最高速度。
 	const float RUN_THREADHOLD_SQ = 4.0f * 4.0f;		//走りアニメーションを再生する速度の閾値。
-	//地面との当たり判定。
-	struct SweepResultGround : public btCollisionWorld::ConvexResultCallback
-	{
-		bool isHit;
-		CVector3 hitPos;
-		CVector3 startPos;
-		float dist;
-		CVector3 hitNormal;
-		SweepResultGround()
-		{
-			isHit = false;
-			dist = FLT_MAX;
-			hitPos = CVector3::Zero;
-			startPos = CVector3::Zero;
-			hitNormal = CVector3::Zero;
-		}
-
-		virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
-		{
-			CVector3 hitNormalTmp = *(CVector3*)&convexResult.m_hitNormalLocal;
-			float t = fabsf(acosf(hitNormalTmp.Dot(CVector3::Up)));
-			if (t < CMath::PI * 0.3f) {
-				isHit = true;
-				CVector3 hitPosTmp = *(CVector3*)&convexResult.m_hitPointLocal;
-				//交点との距離を調べる。
-				CVector3 vDist;
-				vDist.Subtract(hitPosTmp, startPos);
-				float distTmp = vDist.Length();
-				if (distTmp < dist) {
-					hitPos = hitPosTmp;
-					dist = distTmp;
-					hitNormal = *(CVector3*)&convexResult.m_hitNormalLocal;
-				}
-			}
-			return 0.0f;
-		}
-	};
-	//壁
-	struct SweepResultWall : public btCollisionWorld::ConvexResultCallback
-	{
-		bool isHit;
-		CVector3 hitPos;
-		CVector3 startPos;
-		float dist;
-		CVector3 hitNormal;
-		SweepResultWall()
-		{
-			isHit = false;
-			dist = FLT_MAX;
-			hitPos = CVector3::Zero;
-			startPos = CVector3::Zero;
-			hitNormal = CVector3::Zero;
-		}
-
-		virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
-		{
-			CVector3 hitNormalTmp = *(CVector3*)&convexResult.m_hitNormalLocal;
-			float t = fabsf(acosf(hitNormalTmp.Dot(CVector3::Up)));
-			if (t >= CMath::PI * 0.3f) {
-				isHit = true;
-				CVector3 hitPosTmp = *(CVector3*)&convexResult.m_hitPointLocal;
-				//交点との距離を調べる。
-				CVector3 vDist;
-				vDist.Subtract(hitPosTmp, startPos);
-				float distTmp = vDist.Length();
-				if (distTmp < dist) {
-					hitPos = hitPosTmp;
-					dist = distTmp;
-					hitNormal = *(CVector3*)&convexResult.m_hitNormalLocal;
-				}
-			}
-			return 0.0f;
-		}
-	};
 }
 /*!
 * @brief	開始
@@ -92,7 +18,6 @@ void UnityChan::Start()
 	specMap.Load("Assets/modelData/Thethief_S.tga");
 	weaponNormalMap.Load("Assets/modelData/Thethief_wuqi_N.tga");
 	weaponSpecMap.Load("Assets/modelData/Thethief_wuqi_S.tga");
-	//skinModelData.LoadModelData("Assets/modelData/unm_speculerMapity.X", NULL);
 	//体のマテリアルを取得。
 	CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("Thethief_D.tga");
 	mat->SetTexture("g_normalTexture", &normalMap );

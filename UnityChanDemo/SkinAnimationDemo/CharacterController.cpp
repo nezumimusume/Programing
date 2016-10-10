@@ -187,8 +187,6 @@ void CharacterController::Execute()
 		if (callback.isHit) {
 			//ìñÇΩÇ¡ÇΩÅB
 			float t = fabsf(acosf(callback.hitNormal.Dot(CVector3::Up)));
-			
-#if 1
 			//ínñ ÅB
 			CVector3 Circle;
 			float x = 0.0f;
@@ -206,11 +204,6 @@ void CharacterController::Execute()
 			moveSpeed.y = 0.0f;
 			isJump = false;
 			nextPosition.y = callback.hitPos.y + offset - radius;
-#else
-			nextPosition.y = callback.hitPos.y;
-			moveSpeed.y = 0.0f;
-			isJump = false;
-#endif
 		}
 	}
 	position = nextPosition;

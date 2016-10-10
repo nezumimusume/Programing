@@ -10,10 +10,12 @@
 #include "EnemyTest.h"
 #include "Enemy/EnemyManager.h"
 #include <time.h>
+#include "DamageCollisionWorld.h"
 
 PhysicsWorld* g_physicsWorld = NULL;
 UnityChan* g_unityChan = NULL;
 CRandom g_random;
+DamageCollisionWorld* g_damageCollisionWorld = NULL;
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 
 #ifdef MEMORY_LEAK_TEST
@@ -121,6 +123,7 @@ int WINAPI wWinMain(
 	NewGO<EnemyManager>(0);
 	NewGO<Map>(0);
 	NewGO<Ground>(0);
+	g_damageCollisionWorld = NewGO<DamageCollisionWorld>(0);
 #ifdef ENEMY_TEST
 	EnemyTest* enemyTest = NewGO<EnemyTest>(0);
 	enemyTest->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
