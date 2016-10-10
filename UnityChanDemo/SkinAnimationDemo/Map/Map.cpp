@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "Map.h"
-#include "MapChip.h"
+#include "Map/Map.h"
+#include "Map/MapChip.h"
 
 using namespace std;
 namespace {

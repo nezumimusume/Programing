@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "Physics\Physics.h"
-#include "Ground.h"
+#include "Map/Ground.h"
 #include "UnityChan.h"
-#include "tkEngine/graphics/tkSkinModelMaterial.h"
 
 Ground* g_ground = NULL;
 LPD3DXMESH testMesh;
