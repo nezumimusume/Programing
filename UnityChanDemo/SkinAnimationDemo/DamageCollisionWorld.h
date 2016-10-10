@@ -7,12 +7,21 @@
 class DamageCollisionWorld : public IGameObject{
 public:
 	/*!
-	 * @brief	属性。
-	 */
-	enum EnAttr{
+	* @brief	属性。
+	*/
+	enum EnAttr {
 		enDamageToEnemy,		//敵にダメージを与えるコリジョン。
 		enDamageToPlayer,		//プレイヤーにダメージを与えるコリジョン。
 	};
+	struct Collision {
+		float radius;			//半径。
+		CVector3 position;		//中心。
+		float life;				//寿命。
+		float damage;			//ダメージ量。
+		EnAttr attr;			//属性。
+		float time;
+	};
+	
 	/*!
 	 * @brief	コンストラクタ。
 	 */
@@ -38,6 +47,7 @@ public:
 		colli.life = life;
 		colli.attr = attr;
 		colli.time = 0.0f;
+		colli.damage = damage;
 		collisions.push_back(colli);
 	}
 	void Start() override
@@ -55,14 +65,13 @@ public:
 	{
 
 	}
+	/*!
+	*@brief	重なっているダメージコリジョンを取得する。
+	*/
+	const Collision* FindOverlappedDamageCollision(EnAttr attr, const CVector3& pos, float radius) const;
 private:
-	struct Collision{
-		float radius;			//半径。
-		CVector3 position;		//中心。
-		float life;				//寿命。
-		float damage;			//ダメージ量。
-		EnAttr attr;			//属性。
-		float time;
-	};
+	
 	std::list<Collision>		collisions;
 };
+
+extern DamageCollisionWorld* g_damageCollisionWorld;

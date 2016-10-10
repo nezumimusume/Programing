@@ -7,7 +7,53 @@
 namespace {
 	const float MAX_RUN_SPEED = 0.1f;					//ユニティちゃんの走りの最高速度。
 	const float RUN_THREADHOLD_SQ = 4.0f * 4.0f;		//走りアニメーションを再生する速度の閾値。
+	//アニメーションのイベントテーブル。
+	AnimationEventGroup animationEventGroupTbl[Player::NumAnimation] = {
+		//AnimationStand
+		{
+			END_ANIMATION_EVENT(),
+		},
+		//AnimationWalk
+		{
+			END_ANIMATION_EVENT(),
+		},
+		//AnimationRun
+		{
+			END_ANIMATION_EVENT(),
+		},
+		//AnimationJump
+		{
+			END_ANIMATION_EVENT(),
+		},
+		//AnimationAttack_00
+		{
+			EMIT_DAMAGE_TO_ENEMY_COLLISION_EVENT(0.0f, 0.2f, 1.4f, 10, "thief_Bip01", CVector3(1.0f, 0.0f, 0.0f)),
+			END_ANIMATION_EVENT(),
+		},
+		//AnimationAttack_01
+		{
+			EMIT_DAMAGE_TO_ENEMY_COLLISION_EVENT(0.0f, 0.2f, 1.4f, 10, "thief_Bip01", CVector3(1.0f, 0.0f, 0.0f)),
+			END_ANIMATION_EVENT(),
+		},
+		//AnimationAttack_02
+		{
+			EMIT_DAMAGE_TO_ENEMY_COLLISION_EVENT(0.0f, 0.2f, 1.4f, 10, "thief_Bip01", CVector3(1.0f, 0.0f, 0.0f)),
+			END_ANIMATION_EVENT(),
+		},
+		//AnimationDamage
+		{
+			END_ANIMATION_EVENT(),
+		},
+		//AnimationDeath
+		{
+			END_ANIMATION_EVENT(),
+		},
+	};
 }
+AnimationEvent hoge[] = {
+	END_ANIMATION_EVENT(),
+	END_ANIMATION_EVENT(),
+};
 /*!
 * @brief	開始
 */
@@ -77,6 +123,14 @@ void Player::Start()
 	animation.SetAnimationLoopFlag(AnimationDamage, false);
 	nextAttackAnimNo = AnimationInvalid;
 	reqAttackAnimNo = AnimationInvalid;
+
+	//アニメーションイベントコントローラの初期化。
+	animationEventController.Init(
+		&skinModel, 
+		&animation, 
+		animationEventGroupTbl, 
+		sizeof(animationEventGroupTbl)/sizeof(animationEventGroupTbl[0])
+	);
 }
 void Player::Update()
 {
@@ -198,6 +252,8 @@ void Player::Update()
 	AnimationControl();
 	//バトル用のシートの更新。
 	UpdateBattleSeats();
+	//アニメーションイベントコントローラの実行。
+	animationEventController.Update();
 
 	ShadowMap().SetLightTarget(position);
 	CVector3 lightPos;

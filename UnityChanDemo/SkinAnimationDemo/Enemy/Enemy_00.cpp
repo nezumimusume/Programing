@@ -7,6 +7,9 @@
 #include "Player/Player.h"
 #include "Enemy/HFSM/EnemyStateSearch.h"
 #include "Enemy/HFSM/EnemyStateFind.h"
+#include "Enemy/HFSM/EnemyStateDamage.h"
+#include "Enemy/HFSM/EnemyStateDeath.h"
+#include "DamageCollisionWorld.h"
 
 Enemy_00::Enemy_00()
 {
@@ -15,6 +18,9 @@ Enemy_00::Enemy_00()
 	moveSpeed = 0.0f;
 	direction = CVector3::AxisZ;
 	moveDirection = CVector3::AxisZ;
+	radius = 0.0f;
+	height = 0.0f;
+	hp = 40;
 }
 Enemy_00::~Enemy_00()
 {
@@ -80,9 +86,12 @@ void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 	light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
 	PlayAnimation(enAnimWalk);
 	animation.SetAnimationLoopFlag(enAnimAttack, false);
+	animation.SetAnimationLoopFlag(enAnimDamage, false);
+	animation.SetAnimationLoopFlag(enAnimDeath, false);
 	initPosition = position;
-
-	characterController.Init(0.4f, 0.3f, position);
+	radius = 0.4f;
+	height = 0.3f;
+	characterController.Init(radius, height, position);
 	InitHFSM();
 }
 /*!
@@ -94,6 +103,10 @@ void Enemy_00::InitHFSM()
 	states.push_back( new EnemyStateSearch(this) );
 	//発見状態を追加。
 	states.push_back( new EnemyStateFind(this) );
+	//ダメージ状態を追加。
+	states.push_back( new EnemyStateDamage(this));
+	//死亡状態を追加。
+	states.push_back( new EnemyStateDeath(this));
 	state = enLocalState_Search;
 	states[state]->Enter();
 }
@@ -120,21 +133,66 @@ void Enemy_00::Update()
 	{
 	
 	}break;
+	case enLocalState_Damage:
+		if (!animation.IsPlay()) {
+			states[state]->Leave();
+			state = enLocalState_Find;
+			states[state]->Enter();
+		}
+		break;
 	}
-	CVector3 speed = characterController.GetMoveSpeed();
-	speed.x = moveDirection.x * moveSpeed;
-	speed.z = moveDirection.z * moveSpeed;
-	characterController.SetMoveSpeed(speed);
-	characterController.Execute();
-	position = characterController.GetPosition();
+	//ダメージ処理
+	Damage();
 	
+	if (state != enLocalState_Death) {
+		CVector3 speed = characterController.GetMoveSpeed();
+		speed.x = moveDirection.x * moveSpeed;
+		speed.z = moveDirection.z * moveSpeed;
+		characterController.SetMoveSpeed(speed);
+		characterController.Execute();
+		position = characterController.GetPosition();
+
+		//回転は適当に。
+		float angle = atan2f(direction.x, direction.z);
+		rotation.SetRotation(CVector3::AxisY, angle);
+	}
 	animation.Update(GameTime().GetFrameDeltaTime());
 	light.SetPointLightPosition(g_player->GetPointLightPosition());
 	light.SetPointLightColor(g_player->GetPointLightColor());
-	//回転は適当に。
-	float angle = atan2f(direction.x, direction.z);
-	rotation.SetRotation(CVector3::AxisY, angle);
+	
 	skinModel.Update(position, rotation, CVector3::One);
+}
+void Enemy_00::Damage()
+{
+	if (state == enLocalState_Death) {
+		//死んでる。
+		return;
+	}
+	CVector3 centerPos;
+	centerPos = position;
+	centerPos.y += radius + height * 0.5f;
+	const DamageCollisionWorld::Collision* dmgColli = g_damageCollisionWorld->FindOverlappedDamageCollision(
+		DamageCollisionWorld::enDamageToEnemy,
+		centerPos,
+		radius
+	);
+	if (state != enLocalState_Damage 
+		&& state != enLocalState_Death
+		&& dmgColli != NULL) {
+		//ダメージを食らっている。
+		hp -= dmgColli->damage;
+		if (hp < 0) {
+			//死亡。
+			states[state]->Leave();
+			state = enLocalState_Death;
+			states[state]->Enter();
+		}
+		else {
+			states[state]->Leave();
+			state = enLocalState_Damage;
+			states[state]->Enter();
+		}
+	}
 }
 void Enemy_00::Render(CRenderContext& renderContext)
 {

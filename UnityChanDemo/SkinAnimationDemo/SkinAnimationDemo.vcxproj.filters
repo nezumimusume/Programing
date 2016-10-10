@@ -110,6 +110,12 @@
     <ClCompile Include="Player\Player.cpp">
       <Filter>Source Files\Player</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationEventController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\HFSM\EnemyStateDeath.cpp">
+      <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -201,6 +207,15 @@
     </ClInclude>
     <ClInclude Include="Player\Player.h">
       <Filter>Source Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationEventController.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationEventMacro.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\HFSM\EnemyStateDeath.h">
+      <Filter>Source Files\Enemy\HFSM</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

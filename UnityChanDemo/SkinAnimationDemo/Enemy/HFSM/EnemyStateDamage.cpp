@@ -20,6 +20,8 @@ EnemyStateDamage::~EnemyStateDamage()
 }
 void EnemyStateDamage::Update() 
 {
+	enemy->PlayAnimation(Enemy::enAnimDamage);
+	enemy->SetMoveSpeed(0.0f);
 }
 void EnemyStateDamage::Enter() 
 {

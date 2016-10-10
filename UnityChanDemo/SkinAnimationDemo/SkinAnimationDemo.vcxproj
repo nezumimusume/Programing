@@ -165,6 +165,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationEventController.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="CharacterController.cpp" />
     <ClCompile Include="DamageCollisionWorld.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="Enemy\Enemy_00.cpp" />
     <ClCompile Include="Enemy\HFSM\EnemyStateAttack.cpp" />
     <ClCompile Include="Enemy\HFSM\EnemyStateDamage.cpp" />
+    <ClCompile Include="Enemy\HFSM\EnemyStateDeath.cpp" />
     <ClCompile Include="Enemy\HFSM\EnemyStateFind.cpp" />
     <ClCompile Include="Enemy\HFSM\EnemyStateIdle.cpp" />
     <ClCompile Include="Enemy\HFSM\EnemyStateRun.cpp" />
@@ -195,6 +197,8 @@
     <ClCompile Include="UnityChanInstance.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationEventController.h" />
+    <ClInclude Include="AnimationEventMacro.h" />
     <ClInclude Include="Car.h" />
     <ClInclude Include="CharacterController.h" />
     <ClInclude Include="DamageCollisionWorld.h" />
@@ -204,6 +208,7 @@
     <ClInclude Include="Enemy\Enemy_00.h" />
     <ClInclude Include="Enemy\HFSM\EnemyStateAttack.h" />
     <ClInclude Include="Enemy\HFSM\EnemyStateDamage.h" />
+    <ClInclude Include="Enemy\HFSM\EnemyStateDeath.h" />
     <ClInclude Include="Enemy\HFSM\EnemyStateFind.h" />
     <ClInclude Include="Enemy\HFSM\EnemyStateIdle.h" />
     <ClInclude Include="Enemy\HFSM\EnemyStateRun.h" />

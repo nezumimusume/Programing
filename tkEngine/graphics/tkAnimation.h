@@ -113,6 +113,14 @@ namespace tkEngine{
 		*@param[in]		deltaTime	更新時間。単位は秒。
 		*/
 		void Update( float deltaTime );
+		/*!
+		*@brief	ローカルアニメーションタイムの取得。
+		*@param[in]		ローカルアニメーションタイム。単位は秒。
+		*/
+		float GetLocalAnimationTime() const
+		{
+			return (float)localAnimationTime;
+		}
 	private:
 		/*!
 		*@brief	補間時間を元にトラックの重みを更新。

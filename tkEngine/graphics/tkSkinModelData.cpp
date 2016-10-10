@@ -866,7 +866,7 @@ namespace tkEngine{
 	
 	CMatrix* CSkinModelData::FindBoneWorldMatrix(const char* boneName, LPD3DXFRAME frame) 
 	{
-		if (strcmp(frame->Name, boneName) == 0) {
+		if (frame->Name != NULL && strcmp(frame->Name, boneName) == 0) {
 			//Œ©‚Â‚©‚Á‚½B
 			D3DXFRAME_DERIVED* frameDer = (D3DXFRAME_DERIVED*)frame;
 			return (CMatrix*)&frameDer->CombinedTransformationMatrix;

@@ -10,14 +10,15 @@
 #include "Physics/SphereCollider.h"
 #include "Physics/RigidBody.h"
 #include "CharacterController.h"
+#include "AnimationEventController.h"
 
 /*!
  * @brief	プレイヤー。
  */
 class Player : public IGameObject {
 private:
-	
 	static const int NUM_BATTLE_SEAT = 8;		//シートの数。
+public:
 	enum AnimationNo {
 		AnimationInvalid = -1,
 		AnimationStand,		//立ち。
@@ -31,8 +32,8 @@ private:
 		AnimationAttack_End = AnimationAttack_02,
 		AnimationDamage,	//ダメージ。
 		AnimationDeath,		//死亡。
+		NumAnimation,		//アニメーションの数。
 	};
-public:
 	//戦闘で使用するシート
 	struct SBattleSeat {
 		bool		isUse;			//使用中フラグ。
@@ -136,5 +137,6 @@ private:
 	SBattleSeat				battleSeats[NUM_BATTLE_SEAT];	//シート。
 	AnimationNo				reqAttackAnimNo;		//再生のリクエストを出している攻撃モーション番号。
 	AnimationNo				nextAttackAnimNo;		//次の攻撃モーション番号。
+	AnimationEventController	animationEventController;	//アニメーションイベントコントローラ。
 
 };

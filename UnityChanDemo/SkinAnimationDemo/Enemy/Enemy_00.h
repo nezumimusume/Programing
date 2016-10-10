@@ -17,6 +17,7 @@ class Enemy_00 : public Enemy{
 		enLocalState_Search,	//徘徊中。
 		enLocalState_Find,		//発見状態。
 		enLocalState_Damage,	//ダメージ処理。
+		enLocalState_Death,		//死亡。
 	};
 public:
 	Enemy_00();
@@ -26,7 +27,7 @@ public:
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;
 private:
-	
+	void Damage();
 	void InitHFSM();
 private:
 	std::vector<IEnemyState*>		states;					//ステートのリスト。
@@ -35,4 +36,6 @@ private:
 	std::vector<CTexture>			specMapList;			//スペキュラマップ。
 	std::vector<CTexture>			normalMapList;			//法線マップ。
 	CharacterController				characterController;	//キャラクタコントローラ。
+	float							height;
+	float							radius;
 };

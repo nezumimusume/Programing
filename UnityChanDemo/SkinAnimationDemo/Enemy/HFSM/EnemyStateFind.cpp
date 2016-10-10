@@ -121,4 +121,7 @@ void EnemyStateFind::Enter()
 void EnemyStateFind::Leave() 
 {
 	IEnemyState::Leave();
+	if (battleSeat) {
+		battleSeat->isUse = false;
+	}
 }
