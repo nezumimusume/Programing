@@ -6,7 +6,7 @@ class Sky : public IGameObject {
 	CAnimation		animation;			//アニメーション。
 	CLight			light;				//ライト。
 	CTexture		normalMap;
-	UnityChan*		unity;				//ユニティちゃん
+	Player*			player;				//プレイヤ。
 public:
 	Sky();
 	
@@ -18,9 +18,9 @@ public:
 	{
 
 	}
-	void SetUnityChan(UnityChan* unity)
+	void SetPlayer(Player* player)
 	{
-		this->unity = unity;
+		this->player = player;
 	}
 	void Update() override;
 	

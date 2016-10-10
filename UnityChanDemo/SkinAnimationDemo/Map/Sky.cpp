@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "Sky.h"
-#include "UnityChan.h"
+#include "Player/Player.h"
 Sky::Sky() :
-	unity(nullptr)
+	player(nullptr)
 {
 	skinModelData.LoadModelData("Assets/modelData/Sky.X", NULL);
 	skinModel.Init(&skinModelData);
@@ -16,9 +16,9 @@ Sky::Sky() :
 void Sky::Update()
 {
 	CVector3 pos;
-	pos.x = unity->GetPosition().x;
+	pos.x = player->GetPosition().x;
 	pos.y = 0.0f;
-	pos.z = unity->GetPosition().z;
+	pos.z = player->GetPosition().z;
 	skinModel.Update(pos, CQuaternion::Identity, CVector3(1.0f, 1.0f, 1.0f));
 }
 void Sky::Render(CRenderContext& renderContext) 

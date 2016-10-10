@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "Enemy/Enemy_00.h"
-#include "UnityChan.h"
+#include "Player/Player.h"
 #include "Enemy/HFSM/EnemyStateSearch.h"
 #include "Enemy/HFSM/EnemyStateFind.h"
 
@@ -106,7 +106,7 @@ void Enemy_00::Update()
 	switch (state) {
 	case enLocalState_Search:
 	{
-		CVector3 unityPos = g_unityChan->GetPosition();
+		CVector3 unityPos = g_player->GetPosition();
 		CVector3 diff;
 		diff.Subtract(unityPos, position);
 		if (diff.LengthSq() < 5.0f * 5.0f) {
@@ -129,8 +129,8 @@ void Enemy_00::Update()
 	position = characterController.GetPosition();
 	
 	animation.Update(GameTime().GetFrameDeltaTime());
-	light.SetPointLightPosition(g_unityChan->GetPointLightPosition());
-	light.SetPointLightColor(g_unityChan->GetPointLightColor());
+	light.SetPointLightPosition(g_player->GetPointLightPosition());
+	light.SetPointLightColor(g_player->GetPointLightColor());
 	//‰ñ“]‚Í“K“–‚ÉB
 	float angle = atan2f(direction.x, direction.z);
 	rotation.SetRotation(CVector3::AxisY, angle);

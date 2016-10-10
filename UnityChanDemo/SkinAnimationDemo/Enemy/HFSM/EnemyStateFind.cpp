@@ -7,7 +7,7 @@
 #include "Enemy/HFSM/EnemyStateRun.h"
 #include "Enemy/HFSM/EnemyStateAttack.h"
 #include "Enemy/HFSM/EnemyStateIdle.h"
-#include "UnityChan.h"
+#include "Player/Player.h"
 
 namespace {
 	const float ENEMY_ATTACK_READY_RANGE_SQ = 1.5f * 1.5f;
@@ -35,13 +35,13 @@ void EnemyStateFind::Update()
 {
 	m_localStates[m_localState]->Update();
 	CVector3 toPlayer;
-	toPlayer.Subtract(g_unityChan->GetPosition(), enemy->GetPosition());
+	toPlayer.Subtract(g_player->GetPosition(), enemy->GetPosition());
 	toPlayer.y = 0.0f;
 	if (m_localState == enLocalState_Run) {
 		CVector3 moveDirTmp;
 		//アタックReady
 		//シートを探す。
-		battleSeat = g_unityChan->FindUnuseSeat(enemy->GetPosition());
+		battleSeat = g_player->FindUnuseSeat(enemy->GetPosition());
 		if (battleSeat != nullptr) {
 			//シートが見つかった。
 			battleSeat->isUse = true;

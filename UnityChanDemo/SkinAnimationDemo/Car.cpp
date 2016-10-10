@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "Car.h"
-#include "UnityChan.h"
+#include "Player/Player.h"
 #include "tkEngine/graphics/tkSkinModelMaterial.h"
 
 Car* g_car;
@@ -102,8 +102,8 @@ void Car::Update()
 	addPos.Scale(1.0f / 60.0f);
 	position.Add(addPos);
 	skinModel.Update(position, rotation, CVector3::One);
-	light.SetPointLightPosition(g_unityChan->GetPointLightPosition());
-	light.SetPointLightColor(g_unityChan->GetPointLightColor());
+	light.SetPointLightPosition(g_player->GetPointLightPosition());
+	light.SetPointLightColor(g_player->GetPointLightColor());
 }
 void Car::Render(CRenderContext& renderContext)
 {

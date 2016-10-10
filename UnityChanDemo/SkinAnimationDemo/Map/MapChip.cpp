@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Map/MapChip.h"
-#include "UnityChan.h"
+#include "Player/Player.h"
 
 MapChip::MapChip() :
 	rootBoneMatrix(NULL)
@@ -96,8 +96,8 @@ void MapChip::Start()
 }
 void MapChip::Update()
 {
-	light.SetPointLightPosition(g_unityChan->GetPointLightPosition());
-	light.SetPointLightColor(g_unityChan->GetPointLightColor());
+	light.SetPointLightPosition(g_player->GetPointLightPosition());
+	light.SetPointLightColor(g_player->GetPointLightColor());
 	skinModel.UpdateInstancingDrawData(worldMatrixBuffer.get());
 	skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
 }

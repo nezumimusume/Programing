@@ -21,15 +21,15 @@
     <Filter Include="Source Files\Map">
       <UniqueIdentifier>{a8720f2c-e606-441c-b284-80db204b8bfa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Player">
+      <UniqueIdentifier>{21f05900-a4dc-4bec-abbc-a6640d4a9a78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UnityChan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UnityChanInstance.cpp">
@@ -107,12 +107,12 @@
     <ClCompile Include="Map\Sky.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
+    <ClCompile Include="Player\Player.cpp">
+      <Filter>Source Files\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UnityChan.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="UnityChanInstance.h">
@@ -198,6 +198,9 @@
     </ClInclude>
     <ClInclude Include="Map\Sky.h">
       <Filter>Source Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Player.h">
+      <Filter>Source Files\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

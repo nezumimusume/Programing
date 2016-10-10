@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Physics\Physics.h"
 #include "Map/Ground.h"
-#include "UnityChan.h"
+#include "Player/Player.h"
 
 Ground* g_ground = NULL;
 LPD3DXMESH testMesh;
@@ -46,8 +46,8 @@ void Ground::Start()
 
 void Ground::Update() 
 {
-	light.SetPointLightPosition(g_unityChan->GetPointLightPosition());
-	light.SetPointLightColor(g_unityChan->GetPointLightColor());
+	light.SetPointLightPosition(g_player->GetPointLightPosition());
+	light.SetPointLightColor(g_player->GetPointLightColor());
 	skinModel.Update(CVector3(0.0f, 0.0f, 0.0f), CQuaternion::Identity, CVector3(1.0f, 1.0f, 1.0f));
 }
 void Ground::Render(CRenderContext& renderContext) 

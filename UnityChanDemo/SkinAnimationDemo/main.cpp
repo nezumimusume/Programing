@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "UnityChan.h"
+#include "Player/Player.h"
 #include "UnityChanInstance.h"
 #include "Car.h"
 #include "Map/Map.h"
@@ -13,7 +13,7 @@
 #include "DamageCollisionWorld.h"
 
 PhysicsWorld* g_physicsWorld = NULL;
-UnityChan* g_unityChan = NULL;
+Player* g_player = NULL;
 CRandom g_random;
 DamageCollisionWorld* g_damageCollisionWorld = NULL;
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
@@ -118,7 +118,7 @@ int WINAPI wWinMain(
 #else
 
 	g_physicsWorld = NewGO<PhysicsWorld>(0);
-	g_unityChan = NewGO<UnityChan>(0);
+	g_player = NewGO<Player>(0);
 	NewGO<UnityChanInstance>(0);
 	NewGO<EnemyManager>(0);
 	NewGO<Map>(0);
@@ -129,11 +129,11 @@ int WINAPI wWinMain(
 	enemyTest->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
 #endif
 	Sky* sky = NewGO<Sky>(0);
-	sky->SetUnityChan(g_unityChan);
+	sky->SetPlayer(g_player);
 	g_car = NewGO<Car>(0);
 	g_camera = NewGO<GameCamera>(0);
-	g_unityChan->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
-	g_camera->SetUnityChan(g_unityChan);
+	g_player->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
+	g_camera->SetPlayer(g_player);
 #endif
 	Engine().RunGameLoop();		//ゲームループを実行。
 

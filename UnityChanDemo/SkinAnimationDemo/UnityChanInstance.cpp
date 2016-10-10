@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "UnityChanInstance.h"
-#include "UnityChan.h"
+#include "Player/Player.h"
 #include "tkEngine/graphics/tkSkinModelMaterial.h"
 
 namespace {
@@ -87,8 +87,8 @@ void UnityChanInstance::Start()
 }
 void UnityChanInstance::Update()
 {
-	light.SetPointLightPosition(g_unityChan->GetPointLightPosition());
-	light.SetPointLightColor(g_unityChan->GetPointLightColor());
+	light.SetPointLightPosition(g_player->GetPointLightPosition());
+	light.SetPointLightColor(g_player->GetPointLightColor());
 	animation.Update(1.0f / 60.0f);
 	skinModel.UpdateInstancingDrawData(worldMatrixBuffer);
 	skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);

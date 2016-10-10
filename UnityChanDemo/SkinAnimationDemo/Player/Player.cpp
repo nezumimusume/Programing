@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "UnityChan.h"
+#include "Player.h"
 #include "Car.h"
 #include "Map/Ground.h"
 #include "tkEngine/graphics/tkSkinModelMaterial.h"
@@ -11,7 +11,7 @@ namespace {
 /*!
 * @brief	開始
 */
-void UnityChan::Start()
+void Player::Start()
 {
 	SkinModelDataResources().Load(skinModelData, "Assets/modelData/Player.X", &animation);
 	normalMap.Load("Assets/modelData/Thethief_N.tga");
@@ -78,7 +78,7 @@ void UnityChan::Start()
 	nextAttackAnimNo = AnimationInvalid;
 	reqAttackAnimNo = AnimationInvalid;
 }
-void UnityChan::Update()
+void Player::Update()
 {
 	CVector3 nextPosition = position;
 	
@@ -212,7 +212,7 @@ void UnityChan::Update()
 /*!
 * @brief	ポイントライトの位置を更新。
 */
-void UnityChan::UpdatePointLightPosition()
+void Player::UpdatePointLightPosition()
 {
 	if (isPointLightOn) {
 		pointLightColor.Set(0.9f, 0.75f, 0.6f, 1.0f);
@@ -229,7 +229,7 @@ void UnityChan::UpdatePointLightPosition()
 /*!
 * @brief	アニメーション再生。
 */
-void UnityChan::PlayAnimation(AnimationNo animNo, float interpolateTime)
+void Player::PlayAnimation(AnimationNo animNo, float interpolateTime)
 {
 	if (animation.GetPlayAnimNo() != animNo && animNo != AnimationInvalid) {
 		//別のアニメーション
@@ -239,7 +239,7 @@ void UnityChan::PlayAnimation(AnimationNo animNo, float interpolateTime)
 /*!
 * @brief	アニメーションコントロール。
 */
-void UnityChan::AnimationControl()
+void Player::AnimationControl()
 {
 	if (characterController.IsJump()) {
 		PlayAnimation(AnimationJump, 0.05f);
@@ -277,7 +277,7 @@ void UnityChan::AnimationControl()
 /*!
 * @brief	バトルで使用するシートを初期化。
 */
-void UnityChan::InitBattleSeats()
+void Player::InitBattleSeats()
 {
 	float angleBase = 2.0f * CMath::PI / NUM_BATTLE_SEAT;
 	for (int i = 0; i < NUM_BATTLE_SEAT; i++) {
@@ -292,7 +292,7 @@ void UnityChan::InitBattleSeats()
 /*!
 * @brief	バトルで使用するシートを更新。
 */
-void UnityChan::UpdateBattleSeats()
+void Player::UpdateBattleSeats()
 {
 	for (auto& seat : battleSeats) {
 		seat.position.Add(seat.localPosition, position);
@@ -303,7 +303,7 @@ void UnityChan::UpdateBattleSeats()
 *@param[in]	pos		未使用のシートの中からこの座標に一番近いシートを返します。
 *@return		未使用のシートがない場合はNULLが返ってくる。
 */
-UnityChan::SBattleSeat* UnityChan::FindUnuseSeat(const CVector3& pos)
+Player::SBattleSeat* Player::FindUnuseSeat(const CVector3& pos)
 {
 	float dist = FLT_MAX;
 	float distTmp;
@@ -325,7 +325,7 @@ UnityChan::SBattleSeat* UnityChan::FindUnuseSeat(const CVector3& pos)
 /*!
 * @brief	描画。
 */
-void UnityChan::Render(CRenderContext& renderContext)
+void Player::Render(CRenderContext& renderContext)
 {
 #ifdef ENEMY_TEST
 	return;

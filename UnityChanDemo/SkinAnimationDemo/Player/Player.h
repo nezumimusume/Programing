@@ -12,9 +12,9 @@
 #include "CharacterController.h"
 
 /*!
- * @brief	ユニティちゃん
+ * @brief	プレイヤー。
  */
-class UnityChan : public IGameObject {
+class Player : public IGameObject {
 private:
 	
 	static const int NUM_BATTLE_SEAT = 8;		//シートの数。
@@ -48,7 +48,7 @@ public:
 	};
 	bool					isUpdateAnim;		//
 
-	UnityChan() :
+	Player() :
 		position(CVector3::Zero),
 		isUpdateAnim(false)
 	{
