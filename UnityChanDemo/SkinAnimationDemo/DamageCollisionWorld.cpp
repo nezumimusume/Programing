@@ -7,6 +7,9 @@
 
 DamageCollisionWorld::DamageCollisionWorld()
 {
+#ifdef DEBUG_DMG_COLLISION_DRAW
+	light.SetAmbinetLight(CVector3(1.0f, 1.0f, 1.0f));
+#endif
 }
 
 DamageCollisionWorld::~DamageCollisionWorld()
@@ -18,13 +21,13 @@ DamageCollisionWorld::~DamageCollisionWorld()
 const DamageCollisionWorld::Collision* DamageCollisionWorld::FindOverlappedDamageCollision(EnAttr attr, const CVector3& pos, float radius) const
 {
 	for (auto& collision : collisions) {
-		if (collision.attr == attr) {
-			float t = collision.radius + radius;
+		if (collision->attr == attr) {
+			float t = collision->radius + radius;
 			CVector3 diff;
-			diff.Subtract(collision.position, pos);
+			diff.Subtract(collision->position, pos);
 			if (diff.LengthSq() < t * t) {
 				//“–‚½‚Á‚½B
-				return &collision;
+				return collision.get();
 			}
 		}
 	}
@@ -32,14 +35,28 @@ const DamageCollisionWorld::Collision* DamageCollisionWorld::FindOverlappedDamag
 }
 void DamageCollisionWorld::Update()
 {
-	std::list<Collision>::iterator it = collisions.begin();
+	std::list<CollisionPtr>::iterator it = collisions.begin();
 	while(it != collisions.end()){
-		it->time += GameTime().GetFrameDeltaTime();
-		if(it->time > it->life){
+		(*it)->time += GameTime().GetFrameDeltaTime();
+		if((*it)->time > (*it)->life){
 			//Ž€–SB
 			it = collisions.erase(it);
 		}else{
 			it++;
 		}
 	}
+}
+/*!
+*@brief	•`‰æ
+*/
+void DamageCollisionWorld::Render(CRenderContext& renderContext) 
+{
+#ifdef DEBUG_DMG_COLLISION_DRAW
+	for (CollisionPtr coll : collisions) {
+		CMatrix mWVP;
+		mWVP.MakeTranslation(coll->position);
+		mWVP.Mul(mWVP, g_camera->GetCamera().GetViewProjectionMatrix());
+		coll->debugShape.RenderLightWVP(renderContext, mWVP, light, false, false);
+	}
+#endif
 }

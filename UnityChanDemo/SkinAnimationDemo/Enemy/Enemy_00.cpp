@@ -20,7 +20,7 @@ Enemy_00::Enemy_00()
 	moveDirection = CVector3::AxisZ;
 	radius = 0.0f;
 	height = 0.0f;
-	hp = 40;
+	hp = 70;
 }
 Enemy_00::~Enemy_00()
 {

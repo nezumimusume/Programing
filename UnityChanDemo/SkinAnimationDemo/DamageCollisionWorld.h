@@ -4,6 +4,13 @@
 
 #pragma once
 
+#include "tkEngine/shape/tkSphereShape.h"
+
+#ifdef _DEBUG
+#define DEBUG_DMG_COLLISION_DRAW
+#else
+#define DEBUG_DMG_COLLISION_DRAW
+#endif
 class DamageCollisionWorld : public IGameObject{
 public:
 	/*!
@@ -20,6 +27,9 @@ public:
 		float damage;			//ダメージ量。
 		EnAttr attr;			//属性。
 		float time;
+#ifdef DEBUG_DMG_COLLISION_DRAW
+		CSphereShape debugShape;
+#endif
 	};
 	
 	/*!
@@ -41,14 +51,17 @@ public:
 		EnAttr attr
 	)
 	{
-		Collision colli;
-		colli.radius = radius;
-		colli.position = pos;
-		colli.life = life;
-		colli.attr = attr;
-		colli.time = 0.0f;
-		colli.damage = damage;
+		CollisionPtr colli = CollisionPtr(new Collision);
+		colli->radius = radius;
+		colli->position = pos;
+		colli->life = life;
+		colli->attr = attr;
+		colli->time = 0.0f;
+		colli->damage = damage;
 		collisions.push_back(colli);
+#ifdef DEBUG_DMG_COLLISION_DRAW
+		colli->debugShape.Create(radius, 10, 0xFFFF0000, true);
+#endif
 	}
 	void Start() override
 	{
@@ -61,17 +74,18 @@ public:
 	/*!
 	*@brief	描画
 	*/
-	void Render(CRenderContext& renderContext) override
-	{
-
-	}
+	void Render(CRenderContext& renderContext) override;
 	/*!
 	*@brief	重なっているダメージコリジョンを取得する。
 	*/
 	const Collision* FindOverlappedDamageCollision(EnAttr attr, const CVector3& pos, float radius) const;
 private:
-	
-	std::list<Collision>		collisions;
+	typedef std::shared_ptr<Collision> CollisionPtr;
+	std::list<CollisionPtr>		collisions;
+#ifdef DEBUG_DMG_COLLISION_DRAW
+	CLight					light;
+#endif
+
 };
 
 extern DamageCollisionWorld* g_damageCollisionWorld;

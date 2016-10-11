@@ -8,12 +8,14 @@
 #include "tkEngine/graphics/tkLight.h"
 
 namespace tkEngine{
+	const CLight	CShapeBase::m_defaultLight;
 	CShapeBase::CShapeBase() :
 		m_isCreatePrimitive(false),
 		m_pPrimitive(nullptr),
 		m_position(CVector3::Zero),
 		m_worldMatrix(CMatrix::Identity),
-		m_rotationMatrix(CMatrix::Identity)
+		m_rotationMatrix(CMatrix::Identity),
+		m_pEffect(nullptr)
 	{
 	}
 	CShapeBase::~CShapeBase()
