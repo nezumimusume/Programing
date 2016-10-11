@@ -4,7 +4,7 @@
 
 #pragma once
 
-class UnityChan;
+class Player;
 class Car;
 /*!
  *@brief	ゲームカメラ。
@@ -16,9 +16,9 @@ public:
 	void Start() override ;
 	void Update() override ;
 	void Render( CRenderContext& renderContext ) override;
-	void SetUnityChan(UnityChan* unityChan)
+	void SetPlayer(Player* player)
 	{
-		this->unityChan = unityChan;
+		this->player = player;
 	}
 	void SetCar(Car* car)
 	{
@@ -31,7 +31,7 @@ public:
 private:
 	CCamera camera;
 	Car* car;
-	UnityChan*	unityChan;
+	Player*	player;
 	CVector3	toPosition;		//注視点から視点へのベクトル。
 };
 

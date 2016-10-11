@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "EnemyTest.h"
 #include "Car.h"
-#include "Ground.h"
+#include "Map/Ground.h"
 
 CSkinModelData*	EnemyTest::orgSkinModelData = NULL;	//オリジナルスキンモデルデータ。
 

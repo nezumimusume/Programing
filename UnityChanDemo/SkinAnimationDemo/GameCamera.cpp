@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "GameCamera.h"
-#include "UnityChan.h"
+#include "Player/Player.h"
 #include "Car.h"
 
 GameCamera			*g_camera;				//ƒJƒƒ‰B
 
 GameCamera::GameCamera() :
-	unityChan(nullptr),
+	player(nullptr),
 	car(nullptr)
 {
 }
@@ -68,7 +68,7 @@ void GameCamera::Update()
 		camera.SetPosition(v);
 	}
 	else {
-		v = unityChan->GetPosition();
+		v = player->GetPosition();
 		v.y += 1.0f;
 		camera.SetTarget(v);
 		v.Add(toPosition);

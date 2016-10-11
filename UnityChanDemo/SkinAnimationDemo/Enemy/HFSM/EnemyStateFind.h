@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "UnityChan.h"
+#include "Player/Player.h"
 #include "IEnemyState.h"
 
 /*!
@@ -32,5 +32,5 @@ public:
 	void Leave() override;
 private:
 	float timer;
-	UnityChan::SBattleSeat*		battleSeat;
+	Player::SBattleSeat*		battleSeat;
 };

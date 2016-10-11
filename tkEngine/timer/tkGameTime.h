@@ -12,7 +12,7 @@ namespace tkEngine{
 	 */
 	class CGameTime{
 		CGameTime() : 
-			m_frameDeltaTime(1.0/60.0f),
+			m_frameDeltaTime(1.0f/60.0f),
 			m_isReady(false)
 		{
 		}

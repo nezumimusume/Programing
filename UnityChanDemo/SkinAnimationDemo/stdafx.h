@@ -16,7 +16,8 @@
 #include "tkEngine/graphics/tkCamera.h"
 #include "tkEngine/graphics/tkLight.h"
 #include "tkEngine/graphics/tkTexture.h"
-#include "tkEngine/resource/CSkinModelDataHandle.h"
+#include "tkEngine/resource/tkSkinModelDataHandle.h"
+#include "tkEngine/graphics/tkSkinModelMaterial.h"
 #include "btBulletDynamicsCommon.h"
 #include "BulletCollision\CollisionDispatch\btGhostObject.h"
 #include "Physics\Physics.h"
@@ -24,7 +25,9 @@ using namespace tkEngine;
 #include "GameCamera.h"
 #include "tkEngine/random/tkRandom.h"
 
+class Player;
+
 extern PhysicsWorld* g_physicsWorld ;
-extern UnityChan* g_unityChan;
+extern Player* g_player;
 extern CRandom g_random;
 #endif // _STDAFX_H_

@@ -31,8 +31,8 @@ namespace tkEngine{
 		if(m_isEnable){
 			//アンチ有効。
 			float texSize[] = {
-				Engine().GetMainRenderTarget().GetWidth(),
-				Engine().GetMainRenderTarget().GetHeight()
+				s_cast<float>(Engine().GetMainRenderTarget().GetWidth()),
+				s_cast<float>(Engine().GetMainRenderTarget().GetHeight())
 			};
 			m_effect->SetTechnique(renderContext, "FXAA");
 			m_effect->Begin(renderContext);

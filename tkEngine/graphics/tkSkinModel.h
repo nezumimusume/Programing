@@ -7,7 +7,6 @@
 #include "tkEngine/graphics/tkAnimation.h"
 #include "tkEngine/graphics/tkSkinModelData.h"
 #include "tkEngine/graphics/prerender/tkShadowCaster.h"
-#include "tkEngine/graphics/tkMaterial.h"
 
 namespace tkEngine {
 	class CEffect;
@@ -69,20 +68,18 @@ namespace tkEngine {
 			m_light = light;
 		}
 		/*!
-		*@brief	法線マップを設定。
-		*@param[in] normalMap	法線マップ。
+		*@brief	法線マップの保持フラグを設定。
 		*/
-		void SetNormalMap(CTexture* normalMap)
+		void SetHasNormalMap(bool hasNormalMap)
 		{
-			m_normalMap = normalMap;
+			m_hasNormalMap = hasNormalMap;
 		}
 		/*!
-		*@brief	スペキュラマップを設定。
-		*@param[in] specMap		スペキュラマップ。
+		*@brief	スペキュラマップの保持フラグを設定。
 		*/
-		void SetSpeculerMap(CTexture* specMap)
+		void SetHasSpeculerMap(bool hasSpecMap)
 		{
-			m_speculerMap = specMap;
+			m_hasSpecMap = hasSpecMap;
 		}
 		/*!
 		 * @brief	シャドウキャスターのフラグを設定。
@@ -171,7 +168,6 @@ namespace tkEngine {
 			D3DXMATRIX* viewMatrix,
 			D3DXMATRIX* projMatrix,
 			CLight* light,
-			CTexture* normalMap,
 			bool isInstancingDraw,
 			bool isDrawToShadowMap
 		);
@@ -234,9 +230,6 @@ namespace tkEngine {
 		CEffect*						m_pEffect;			//!<エフェクト。
 		CAnimation						m_animation;		//!<アニメーション。
 		CLight*							m_light;			//!<ライト。
-		CTexture*					    m_normalMap;		//!<法線マップ。
-		CTexture*						m_speculerMap;		//!<スペキュラマップ。
-		std::unique_ptr<CMaterial[]>	m_materials;	//!<マテリアルの配列。
 		static const int MAX_MATRIX_PALLET = 128;	//!<マトリクスパレットの最大数。
 		D3DXMATRIX						m_boneMatrixPallet[MAX_MATRIX_PALLET];	//!<マトリクスパレット。
 		bool							m_isShadowReceiver;					//!<シャドウレシーバー。
@@ -247,6 +240,8 @@ namespace tkEngine {
 		float							m_fogParam[2];						//!<フォグのパラメータ
 		CShadowCaster_SkinModel			m_shadowCaster;						//!<シャドウキャスター。
 		D3DXHANDLE						m_hShaderHandle[enShaderHandleNum];	//!<シェーダーハンドル。
+		bool							m_hasNormalMap;						//!<法線マップを保持している？
+		bool							m_hasSpecMap;						//!<スペきゅらマップを保持している？
 	};
 }
 

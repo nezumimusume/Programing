@@ -11,6 +11,8 @@ public:
 		enAnimStand,
 		enAnimWalk,
 		enAnimAttack,
+		enAnimDamage,
+		enAnimDeath,
 		enAnimInvalid = 0xffffffff
 	};
 	Enemy() :
@@ -65,4 +67,5 @@ protected:
 	float							moveSpeed;			//移動速度。
 	CVector3						moveDirection;		//進行方向。
 	CVector3						direction;			//向き。
+	int								hp;					//体力。
 };

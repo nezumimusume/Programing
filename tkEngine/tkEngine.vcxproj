@@ -194,13 +194,13 @@
     <ClCompile Include="graphics\tkFont.cpp" />
     <ClCompile Include="graphics\tkGaussianBlur.cpp" />
     <ClCompile Include="graphics\tkIndexBuffer.cpp" />
-    <ClCompile Include="graphics\tkMaterial.cpp" />
     <ClCompile Include="graphics\tkPrimitive.cpp" />
     <ClCompile Include="graphics\tkRenderCommandBuffer.cpp" />
     <ClCompile Include="graphics\tkRenderContext.cpp" />
     <ClCompile Include="graphics\tkRenderTarget.cpp" />
     <ClCompile Include="graphics\tkSkinModel.cpp" />
     <ClCompile Include="graphics\tkSkinModelData.cpp" />
+    <ClCompile Include="graphics\tkSkinModelMaterial.cpp" />
     <ClCompile Include="graphics\tkTexture.cpp" />
     <ClCompile Include="graphics\tkVertexBuffer.cpp" />
     <ClCompile Include="Input\tkKeyInput.cpp" />
@@ -212,8 +212,8 @@
     <ClCompile Include="particle\tkParticleEmitter.cpp" />
     <ClCompile Include="particle\tkParticleResources.cpp" />
     <ClCompile Include="random\tkRandom.cpp" />
-    <ClCompile Include="resource\CSkinModelDataHandle.cpp" />
-    <ClCompile Include="resource\CSkinModelDataResources.cpp" />
+    <ClCompile Include="resource\tkSkinModelDataHandle.cpp" />
+    <ClCompile Include="resource\tkSkinModelDataResources.cpp" />
     <ClCompile Include="shape\tkBoxShape.cpp" />
     <ClCompile Include="shape\tkShapeBase.cpp" />
     <ClCompile Include="shape\tkSphereShape.cpp" />
@@ -267,6 +267,7 @@
     <ClInclude Include="graphics\tkRenderTarget.h" />
     <ClInclude Include="graphics\tkSkinModel.h" />
     <ClInclude Include="graphics\tkSkinModelData.h" />
+    <ClInclude Include="graphics\tkSKinModelMaterial.h" />
     <ClInclude Include="graphics\tkTexture.h" />
     <ClInclude Include="graphics\tkVertexBuffer.h" />
     <ClInclude Include="Input\tkKeyInput.h" />
@@ -279,8 +280,8 @@
     <ClInclude Include="particle\tkParticleResources.h" />
     <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="random\tkRandom.h" />
-    <ClInclude Include="resource\CSkinModelDataHandle.h" />
-    <ClInclude Include="resource\CSkinModelDataResources.h" />
+    <ClInclude Include="resource\tkSkinModelDataHandle.h" />
+    <ClInclude Include="resource\tkSkinModelDataResources.h" />
     <ClInclude Include="shape\tkBoxShape.h" />
     <ClInclude Include="shape\tkShapeBase.h" />
     <ClInclude Include="shape\tkShapeVertex.h" />

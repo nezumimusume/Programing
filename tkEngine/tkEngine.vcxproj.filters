@@ -182,9 +182,6 @@
     <ClCompile Include="graphics\tkBlur.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\tkMaterial.cpp">
-      <Filter>Source Files\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="graphics\tkGaussianBlur.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
@@ -194,11 +191,14 @@
     <ClCompile Include="graphics\postEffect\tkFxaa.cpp">
       <Filter>Source Files\graphics\postEffect</Filter>
     </ClCompile>
-    <ClCompile Include="resource\CSkinModelDataResources.cpp">
+    <ClCompile Include="resource\tkSkinModelDataHandle.cpp">
       <Filter>Source Files\resource</Filter>
     </ClCompile>
-    <ClCompile Include="resource\CSkinModelDataHandle.cpp">
+    <ClCompile Include="resource\tkSkinModelDataResources.cpp">
       <Filter>Source Files\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkSkinModelMaterial.cpp">
+      <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -367,11 +367,14 @@
     <ClInclude Include="timer\tkGameTime.h">
       <Filter>Source Files\timer</Filter>
     </ClInclude>
-    <ClInclude Include="resource\CSkinModelDataResources.h">
+    <ClInclude Include="resource\tkSkinModelDataResources.h">
       <Filter>Source Files\resource</Filter>
     </ClInclude>
-    <ClInclude Include="resource\CSkinModelDataHandle.h">
+    <ClInclude Include="resource\tkSkinModelDataHandle.h">
       <Filter>Source Files\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkSKinModelMaterial.h">
+      <Filter>Source Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
