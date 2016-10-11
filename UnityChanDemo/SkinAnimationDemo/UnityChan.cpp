@@ -86,9 +86,9 @@ namespace {
 */
 void UnityChan::Start()
 {
-	SkinModelDataResources().Load(skinModelData, "Assets/modelData/Unity.X", &animation);
-	normalMap.Load("Assets/modelData/utc_nomal.tga");
-	specMap.Load("Assets/modelData/utc_spec.tga");
+	SkinModelDataResources().Load(skinModelData, "Assets/modelData/Player.X", &animation);
+//	normalMap.Load("Assets/modelData/utc_nomal.tga");
+//	specMap.Load("Assets/modelData/utc_spec.tga");
 	//skinModelData.LoadModelData("Assets/modelData/unity.X", NULL);
 	skinModel.Init(skinModelData.GetBody());
 	skinModel.SetLight(&light);

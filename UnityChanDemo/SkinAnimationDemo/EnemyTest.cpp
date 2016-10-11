@@ -94,7 +94,7 @@ void EnemyTest::Start()
 		orgSkinModelData = new CSkinModelData;
 		orgAnimation = new CAnimation;
 		//orgSkinModelData->LoadModelData("Assets/modelData/Unity.X", orgAnimation);
-		orgSkinModelData->LoadModelData("Assets/modelData/enemy00.X", orgAnimation);
+		orgSkinModelData->LoadModelData("Assets/modelData/player.X", orgAnimation);
 	}
 	//オリジナルのモデルデータからクローンモデルを作成。
 	skinModelData.CloneModelData(*orgSkinModelData, &animation);
@@ -137,6 +137,7 @@ void EnemyTest::Start()
 	isJump = false;
 
 	radius = 0.4f;
+
 	collider.Create(radius);
 	RigidBodyInfo rbInfo;
 	rbInfo.pos = position;
