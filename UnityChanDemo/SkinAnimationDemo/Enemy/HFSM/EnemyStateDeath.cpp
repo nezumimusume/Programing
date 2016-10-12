@@ -23,8 +23,9 @@ void EnemyStateDeath::Update()
 	enemy->PlayAnimation(Enemy::enAnimDeath);
 	enemy->SetMoveSpeed(0.0f);
 }
-void EnemyStateDeath::Enter() 
+void EnemyStateDeath::Enter(const SEnterArg& enterArg)
 {
+	IEnemyState::Enter(enterArg);
 }
 void EnemyStateDeath::Leave()
 {

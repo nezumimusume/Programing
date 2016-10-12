@@ -111,9 +111,9 @@ void EnemyStateFind::Update()
 		enemy->SetDirection(toPlayer);
 	}
 }
-void EnemyStateFind::Enter() 
+void EnemyStateFind::Enter(const SEnterArg& enterArg)
 {
-	IEnemyState::Enter();
+	IEnemyState::Enter(enterArg);
 	timer = 0.0f;
 	battleSeat = NULL;
 	ChangeLocalState(enLocalState_Run);

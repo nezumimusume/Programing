@@ -20,6 +20,6 @@ public:
 	 */
 	~EnemyStateWalk();
 	void Update() override;
-	void Enter() override;
+	void Enter(const SEnterArg& enterArg) override;
 	void Leave() override;
 };

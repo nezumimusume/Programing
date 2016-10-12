@@ -80,9 +80,6 @@
     <ClCompile Include="Enemy\HFSM\EnemyStateFind.cpp">
       <Filter>Source Files\Enemy\HFSM</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy\HFSM\EnemyStateIdle.cpp">
-      <Filter>Source Files\Enemy\HFSM</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy\HFSM\EnemyStateRun.cpp">
       <Filter>Source Files\Enemy\HFSM</Filter>
     </ClCompile>
@@ -114,6 +111,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Enemy\HFSM\EnemyStateDeath.cpp">
+      <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\HFSM\EnemyStateIdle.cpp">
       <Filter>Source Files\Enemy\HFSM</Filter>
     </ClCompile>
   </ItemGroup>

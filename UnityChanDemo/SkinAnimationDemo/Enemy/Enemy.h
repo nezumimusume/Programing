@@ -32,6 +32,12 @@ public:
 			currentAnimNo = animNo;
 		}
 	}
+	//同じアニメーションが再生されていても気にせずにでも最初から流す。
+	void PlayAnimationForce(EnAnimation animNo)
+	{
+		animation.PlayAnimation(animNo, 0.3f);
+		currentAnimNo = animNo;
+	}
 	void SetMoveSpeed(float moveSpeed)
 	{
 		this->moveSpeed = moveSpeed;

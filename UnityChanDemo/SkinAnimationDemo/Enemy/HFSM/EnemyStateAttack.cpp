@@ -30,9 +30,9 @@ void EnemyStateAttack::Update()
 		enemy->SetMoveDirection(dir);
 	}
 }
-void EnemyStateAttack::Enter()
+void EnemyStateAttack::Enter(const SEnterArg& enterArg)
 {
-	IEnemyState::Enter();
+	IEnemyState::Enter(enterArg);
 }
 void EnemyStateAttack::Leave()
 {

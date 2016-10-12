@@ -17,6 +17,11 @@ public:
 	 */
 	~EnemyStateDeath();
 	void Update() override;
-	void Enter() override;
+	void Enter(const SEnterArg& enterArg) override;
 	void Leave() override;
+	//ダメージを受けることが出来るか判定。
+	bool IsPossibleApplyDamage(const DamageCollisionWorld::Collision* colli) const override
+	{
+		return false;
+	}
 };

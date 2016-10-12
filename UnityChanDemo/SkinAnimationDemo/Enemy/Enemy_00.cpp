@@ -109,7 +109,7 @@ void Enemy_00::InitHFSM()
 	//死亡状態を追加。
 	states.push_back( new EnemyStateDeath(this));
 	state = enLocalState_Search;
-	states[state]->Enter();
+	states[state]->Enter(IEnemyState::SEnterArg());
 }
 void Enemy_00::Start()
 {
@@ -127,7 +127,7 @@ void Enemy_00::Update()
 			//見つけた。
 			states[state]->Leave();
 			state = enLocalState_Find;
-			states[state]->Enter();
+			states[state]->Enter(IEnemyState::SEnterArg());
 		}
 	}break;
 	case enLocalState_Find:
@@ -138,7 +138,7 @@ void Enemy_00::Update()
 		if (!animation.IsPlay()) {
 			states[state]->Leave();
 			state = enLocalState_Find;
-			states[state]->Enter();
+			states[state]->Enter(IEnemyState::SEnterArg());
 		}
 		break;
 	}
@@ -187,21 +187,21 @@ void Enemy_00::Damage()
 			radius
 			);
 	}
-	if (state != enLocalState_Damage 
-		&& state != enLocalState_Death
-		&& dmgColli != NULL) {
+	if (dmgColli != NULL && states[state]->IsPossibleApplyDamage(dmgColli) ) {
 		//ダメージを食らっている。
 		hp -= dmgColli->damage;
 		if (hp < 0) {
 			//死亡。
 			states[state]->Leave();
 			state = enLocalState_Death;
-			states[state]->Enter();
+			states[state]->Enter(IEnemyState::SEnterArg());
 		}
 		else {
 			states[state]->Leave();
 			state = enLocalState_Damage;
-			states[state]->Enter();
+			IEnemyState::SEnterArg enterArg;
+			enterArg.arg[0] = dmgColli->groupID;	//ダメージを受けたコリジョンのグループＩＤを渡す。
+			states[state]->Enter(enterArg);
 		}
 	}
 }

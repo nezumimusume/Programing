@@ -24,9 +24,9 @@ void EnemyStateRun::Update()
 	enemy->PlayAnimation(Enemy::enAnimWalk);
 	enemy->SetMoveSpeed(3.0f);
 }
-void EnemyStateRun::Enter() 
+void EnemyStateRun::Enter(const SEnterArg& enterArg)
 {
-	IEnemyState::Enter();
+	IEnemyState::Enter(enterArg);
 }
 void EnemyStateRun::Leave() 
 {

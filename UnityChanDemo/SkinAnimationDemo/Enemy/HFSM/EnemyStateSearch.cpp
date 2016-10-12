@@ -56,9 +56,9 @@ void EnemyStateSearch::Update()
 	}
 	
 }
-void EnemyStateSearch::Enter() 
+void EnemyStateSearch::Enter(const SEnterArg& enterArg)
 {
-	IEnemyState::Enter();
+	IEnemyState::Enter(enterArg);
 	timer = 0.0f;
 	ChangeLocalState(enLocalState_Walk);
 }

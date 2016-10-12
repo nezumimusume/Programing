@@ -22,9 +22,9 @@ EnemyStateIdle::~EnemyStateIdle()
 void EnemyStateIdle::Update()
 {
 }
-void EnemyStateIdle::Enter() 
+void EnemyStateIdle::Enter(const SEnterArg& enterArg)
 {
-	IEnemyState::Enter();
+	IEnemyState::Enter(enterArg);
 	enemy->SetMoveSpeed(0.0f);
 	enemy->PlayAnimation(Enemy::enAnimStand);
 }

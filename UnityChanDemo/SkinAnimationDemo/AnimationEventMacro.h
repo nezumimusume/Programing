@@ -25,13 +25,14 @@
  *@param[in]	damage				ダメージ量。
  *@param[in]	boneName			ボーン名。
  *@param[in]	offsetLocalVector	ボーンからのオフセット座標。
+ *@param[in]	groupID				グループＩＤ。
  */
-#define EMIT_DAMAGE_TO_ENEMY_COLLISION_EVENT(invokeTime, life, radius, damage, boneName, offsetLocalVector)		\
+#define EMIT_DAMAGE_TO_ENEMY_COLLISION_EVENT(invokeTime, life, radius, damage, boneName, offsetLocalVector, groupID)		\
 	AnimationEvent(																				\
 		eAnimationEventType_EmitDamageToEnemyCollision,											\
 		(invokeTime),																			\
-		(life), (radius), 0.0f, 0.0f,																\
-		damage,0,0,0,																				\
+		(life), (radius), 0.0f, 0.0f,															\
+		damage,groupID,0,0,																		\
 		boneName, NULL, NULL, NULL,																\
 		offsetLocalVector, CVector3::Zero, CVector3::Zero, CVector3::Zero						\
 	)

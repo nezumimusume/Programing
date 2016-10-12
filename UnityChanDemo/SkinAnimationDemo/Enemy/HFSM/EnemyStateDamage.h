@@ -17,6 +17,12 @@ public:
 	 */
 	~EnemyStateDamage();
 	void Update() override;
-	void Enter() override;
+	void Enter(const SEnterArg& enterArg) override;
 	void Leave() override;
+	bool IsPossibleApplyDamage(const DamageCollisionWorld::Collision* colli) const override
+	{
+		return dmgCollisionGroupID != colli->groupID;	//同じグループＩＤのコリジョンからはダメージを受けない。
+	}
+private:
+	int dmgCollisionGroupID;	//ダメージを受けたコリジョンのグループＩＤ。
 };

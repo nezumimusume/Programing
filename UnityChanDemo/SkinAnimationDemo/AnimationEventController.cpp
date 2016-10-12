@@ -34,14 +34,14 @@ void AnimationEventController::InvokeAnimationEvent(const AnimationEvent& event)
 		CMatrix* bone = skinModel->FindBoneWorldMatrix(event.strArg[0]);
 		CVector3 pos = event.vArg[0];
 		bone->Mul(pos);
-		g_damageCollisionWorld->Add(event.fArg[1], pos, event.fArg[0], event.iArg[0], DamageCollisionWorld::enDamageToEnemy);
+		g_damageCollisionWorld->Add(event.fArg[1], pos, event.fArg[0], event.iArg[0], DamageCollisionWorld::enDamageToEnemy, event.iArg[1]);
 	}break;
 	case eAnimationEventType_EmitDamageToPlayerCollision: {
 		//プレイヤーにダメージを与えるコリジョンの発生。
 		CMatrix* bone = skinModel->FindBoneWorldMatrix(event.strArg[0]);
 		CVector3 pos = event.vArg[0];
 		bone->Mul(pos);
-		g_damageCollisionWorld->Add(event.fArg[1], event.vArg[0], event.fArg[0], event.iArg[0], DamageCollisionWorld::enDamageToPlayer);
+		g_damageCollisionWorld->Add(event.fArg[1], event.vArg[0], event.fArg[0], event.iArg[0], DamageCollisionWorld::enDamageToPlayer, event.iArg[1]);
 	}break;
 	default:
 		break;

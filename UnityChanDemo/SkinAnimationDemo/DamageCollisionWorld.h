@@ -9,7 +9,7 @@
 #ifdef _DEBUG
 #define DEBUG_DMG_COLLISION_DRAW
 #else
-//#define DEBUG_DMG_COLLISION_DRAW
+//%#define DEBUG_DMG_COLLISION_DRAW
 #endif
 class DamageCollisionWorld : public IGameObject{
 public:
@@ -26,6 +26,7 @@ public:
 		float life;				//寿命。
 		float damage;			//ダメージ量。
 		EnAttr attr;			//属性。
+		int groupID;			//コリジョンのグループＩＤ。
 		float time;
 #ifdef DEBUG_DMG_COLLISION_DRAW
 		CSphereShape debugShape;
@@ -43,12 +44,13 @@ public:
 	/*!
 	 * @brief	コリジョンを追加。
 	 */
-	void Add( 
-		float radius, 
-		const CVector3& pos, 
-		float life, 
+	void Add(
+		float radius,
+		const CVector3& pos,
+		float life,
 		float damage,
-		EnAttr attr
+		EnAttr attr,
+		int groupID
 	)
 	{
 		CollisionPtr colli = CollisionPtr(new Collision);
@@ -58,6 +60,7 @@ public:
 		colli->attr = attr;
 		colli->time = 0.0f;
 		colli->damage = damage;
+		colli->groupID = groupID;
 		collisions.push_back(colli);
 #ifdef DEBUG_DMG_COLLISION_DRAW
 		colli->debugShape.Create(radius, 10, 0xFFFF0000, true);
