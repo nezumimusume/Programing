@@ -8,6 +8,7 @@
 #include "Enemy/Enemy.h"
 #include "tkEngine/shape/tkSphereShape.h"
 
+
 class IEnemyState;
 /*!
  * @brief	タイプ0の敵。

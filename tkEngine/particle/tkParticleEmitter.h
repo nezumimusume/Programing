@@ -64,7 +64,7 @@ namespace tkEngine{
 		 *@param[in]	param		パーティクル生成用のパラメータ。
 		 *@param[in]	emitPosition	エミッターの座標。
 		 */
-		void Init(CRandom& random, CCamera& camera, const SParicleEmitParameter& param, const CVector3& emitPosition);
+		void Init(CRandom& random, const CCamera& camera, const SParicleEmitParameter& param, const CVector3& emitPosition);
 		void Start() override ;
 		void Update() override;
 		void Render( CRenderContext& renderContext ) override;
@@ -76,7 +76,7 @@ namespace tkEngine{
 	private:
 		float					timer;			//!<タイマー
 		CRandom*				random;			//!<乱数生成機。
-		CCamera*				camera;			//!<カメラ。
+		const CCamera*			camera;			//!<カメラ。
 		SParicleEmitParameter	param;			//!<パラメータ。
 		CVector3				emitPosition;	//!<エミッターの座標。
 		std::list<CParticle*>	particleList;	//!<パーティクルのリスト。

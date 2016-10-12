@@ -6,6 +6,9 @@
 
 #include "IEnemyState.h"
 
+namespace tkEngine {
+	class CParticleEmitter;
+}
 class EnemyStateDamage : public IEnemyState{
 public:
 	/*!
@@ -25,4 +28,5 @@ public:
 	}
 private:
 	int dmgCollisionGroupID;	//ダメージを受けたコリジョンのグループＩＤ。
+	CParticleEmitter*	particleEmitter;		//パーティクルエミッタ
 };

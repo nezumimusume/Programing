@@ -19,7 +19,7 @@ namespace tkEngine{
 	{
 		primitive.Release();
 	}
-	void CParticle::Init(CRandom& random, CCamera& camera, const SParicleEmitParameter& param, const CVector3& emitPosition )
+	void CParticle::Init(CRandom& random, const CCamera& camera, const SParicleEmitParameter& param, const CVector3& emitPosition )
 	{
 		float halfW = param.w * 0.5f;
 		float halfH = param.h * 0.5f;

@@ -21,7 +21,7 @@ namespace tkEngine{
 		CPrimitive		primitive;					//!<プリミティブ。
 		CTexture*		texture;					//!<テクスチャ。
 		CEffect*		shaderEffect;				//!<シェーダーエフェクト。
-		CCamera*		camera;						//!<カメラ。
+		const CCamera*	camera;						//!<カメラ。
 		CRandom*		random;						//!<乱数。
 		float			life;						//!<ライフ。
 		float			timer;						//!<タイマー。
@@ -45,7 +45,7 @@ namespace tkEngine{
 	public:
 		CParticle();
 		~CParticle();
-		void Init(CRandom& random, CCamera& camera, const SParicleEmitParameter& param, const CVector3& emitPosition);
+		void Init(CRandom& random, const CCamera& camera, const SParicleEmitParameter& param, const CVector3& emitPosition);
 		void Start() override ;
 		void Update() override;
 		void Render( CRenderContext& renderContext ) override;

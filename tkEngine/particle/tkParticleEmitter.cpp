@@ -18,7 +18,7 @@ namespace tkEngine{
 	CParticleEmitter::~CParticleEmitter()
 	{
 	}
-	void CParticleEmitter::Init(CRandom& random, CCamera& camera, const SParicleEmitParameter& param, const CVector3& emitPosition )
+	void CParticleEmitter::Init(CRandom& random, const CCamera& camera, const SParicleEmitParameter& param, const CVector3& emitPosition )
 	{
 		this->random = &random;
 		this->camera = &camera;
