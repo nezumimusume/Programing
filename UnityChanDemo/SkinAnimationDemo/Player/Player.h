@@ -93,6 +93,17 @@ public:
 	*@return		未使用のシートがない場合はNULLが返ってくる。
 	*/
 	SBattleSeat* FindUnuseSeat(const CVector3& pos) ;
+	/*!
+	* @brief	骨のワールド行列を検索
+	*@details
+	* 名前で検索を行っているため、遅いです。頻繁に呼ばないように。
+	*@param[in]	boneName	骨の名前。
+	*@return 見つかったら骨のワールド行列のアドレスを返す。見つからなかった場合はNULLを返す。
+	*/
+	CMatrix* FindBoneWorldMatrix(const char* boneName)
+	{
+		return skinModel.FindBoneWorldMatrix(boneName);
+	}
 private:
 	/*!
 	* @brief	ポイントライトの位置を更新。

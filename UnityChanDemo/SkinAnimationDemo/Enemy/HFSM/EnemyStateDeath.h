@@ -6,7 +6,14 @@
 
 #include "IEnemyState.h"
 
+namespace tkEngine {
+	class CParticleEmitter;
+}
+
 class EnemyStateDeath : public IEnemyState{
+private:
+	std::list<CParticleEmitter*>	particleEmitterList;
+	float timer;		//タイマ。
 public:
 	/*!
 	 * @brief	コンストラクタ。

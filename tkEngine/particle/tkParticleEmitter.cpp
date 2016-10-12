@@ -24,7 +24,7 @@ namespace tkEngine{
 		this->camera = &camera;
 		this->param = param;
 		this->emitPosition = emitPosition;
-		timer = 0.0f;
+		timer = param.intervalTime;
 	}
 	void CParticleEmitter::Start()
 	{

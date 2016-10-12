@@ -41,7 +41,7 @@ namespace tkEngine{
 		CVector3		applyForce;					//!<外部から加わる力。
 		float			brightness;					//!<輝度。ブルームが有効になっているとこれを強くすると光が溢れます。
 		int				alphaBlendMode;				//!<0半透明合成、1加算合成。
-		
+		CVector3		mulColor;					//!<乗算カラー。
 	public:
 		CParticle();
 		~CParticle();

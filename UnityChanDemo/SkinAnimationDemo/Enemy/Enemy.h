@@ -62,6 +62,17 @@ public:
 	{
 		return animation.IsPlay();
 	}
+	/*!
+	* @brief	骨のワールド行列を検索
+	*@details
+	* 名前で検索を行っているため、遅いです。頻繁に呼ばないように。
+	*@param[in]	boneName	骨の名前。
+	*@return 見つかったら骨のワールド行列のアドレスを返す。見つからなかった場合はNULLを返す。
+	*/
+	CMatrix* FindBoneWorldMatrix(const char* boneName)
+	{
+		return skinModel.FindBoneWorldMatrix(boneName);
+	}
 protected:
 	CSkinModelDataHandle			skinModelData;
 	CSkinModel						skinModel;			//スキンモデル。

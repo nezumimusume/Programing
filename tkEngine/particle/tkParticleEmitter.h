@@ -22,6 +22,7 @@ namespace tkEngine{
 			uvTableSize = 1;
 			brightness = 1.0f;
 			isBillboard = true;
+			mulColor = CVector3::Zero;
 		}
 		const char* texturePath;						//!<テクスチャのファイルパス。
 		CVector3	initVelocity;						//!<初速度。
@@ -41,7 +42,7 @@ namespace tkEngine{
 		bool		isBillboard;						//!<ビルボード？
 		float		brightness;							//!<輝度。ブルームが有効になっているとこれを強くすると光が溢れます。
 		int			alphaBlendMode;						//!<0半透明合成、1加算合成。
-		
+		CVector3	mulColor;							//!<乗算カラー。
 	};
 	/*!
 	 * @brief	パーティクルの発生機

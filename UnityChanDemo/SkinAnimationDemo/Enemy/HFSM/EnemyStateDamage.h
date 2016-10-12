@@ -28,5 +28,5 @@ public:
 	}
 private:
 	int dmgCollisionGroupID;	//ダメージを受けたコリジョンのグループＩＤ。
-	CParticleEmitter*	particleEmitter;		//パーティクルエミッタ
+	std::list<CParticleEmitter*>	particleEmitterList;
 };
