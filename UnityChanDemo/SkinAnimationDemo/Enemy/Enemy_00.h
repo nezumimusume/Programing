@@ -6,6 +6,7 @@
 
 #include "CharacterController.h"
 #include "Enemy/Enemy.h"
+#include "tkEngine/shape/tkSphereShape.h"
 
 class IEnemyState;
 /*!

@@ -8,7 +8,8 @@
 #include "tkEngine/graphics/tkLight.h"
 
 namespace tkEngine{
-	const CLight	CShapeBase::m_defaultLight;
+	CLight	CShapeBase::m_defaultLight;
+	bool CShapeBase::m_isInitDefaultLight = false;
 	CShapeBase::CShapeBase() :
 		m_isCreatePrimitive(false),
 		m_pPrimitive(nullptr),
@@ -17,6 +18,11 @@ namespace tkEngine{
 		m_rotationMatrix(CMatrix::Identity),
 		m_pEffect(nullptr)
 	{
+		if (!m_isInitDefaultLight) {
+			//デフォルトライトの初期化。
+			m_defaultLight.SetAmbinetLight(CVector3(1.0f, 1.0f, 1.0f));
+			m_isInitDefaultLight = false;
+		}
 	}
 	CShapeBase::~CShapeBase()
 	{
@@ -49,6 +55,7 @@ namespace tkEngine{
 	}
 	void CShapeBase::CreateEffect(bool hasNormal)
 	{
+		
 		if (hasNormal) {
 			m_pEffect = tkEngine::CEngine::Instance().EffectManager().LoadEffect("Assets/presetShader/ColorNormalPrim.fx");
 		}

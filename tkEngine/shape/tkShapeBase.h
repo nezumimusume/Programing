@@ -119,7 +119,8 @@ namespace tkEngine{
 		CMatrix		m_worldMatrix;		//!<ワールド行列。
 		CMatrix		m_rotationMatrix;	//!<ワールド回転行列。
 		CEffect*	m_pEffect;			//!<エフェクト。
-		static const CLight	m_defaultLight;		//!<デフォルトライト。
+		static CLight	m_defaultLight;		//!<デフォルトライト。
+		static bool m_isInitDefaultLight;		//!<デフォルトライトの初期化フラグ。
 	};
 	struct SMergeInfo{
 		int	delVertNo;

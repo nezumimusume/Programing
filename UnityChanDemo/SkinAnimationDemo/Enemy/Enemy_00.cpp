@@ -91,6 +91,7 @@ void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 	initPosition = position;
 	radius = 0.4f;
 	height = 0.3f;
+
 	characterController.Init(radius, height, position);
 	InitHFSM();
 }
@@ -168,14 +169,24 @@ void Enemy_00::Damage()
 		//Ž€‚ñ‚Å‚éB
 		return;
 	}
+	float offset = radius + height * 0.5f;
 	CVector3 centerPos;
 	centerPos = position;
-	centerPos.y += radius + height * 0.5f;
+	centerPos.y += offset;
+
 	const DamageCollisionWorld::Collision* dmgColli = g_damageCollisionWorld->FindOverlappedDamageCollision(
 		DamageCollisionWorld::enDamageToEnemy,
 		centerPos,
 		radius
 	);
+	if (!dmgColli) {
+		centerPos.y += offset;
+		dmgColli = g_damageCollisionWorld->FindOverlappedDamageCollision(
+			DamageCollisionWorld::enDamageToEnemy,
+			centerPos,
+			radius
+			);
+	}
 	if (state != enLocalState_Damage 
 		&& state != enLocalState_Death
 		&& dmgColli != NULL) {

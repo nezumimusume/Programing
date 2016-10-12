@@ -7,9 +7,6 @@
 
 DamageCollisionWorld::DamageCollisionWorld()
 {
-#ifdef DEBUG_DMG_COLLISION_DRAW
-	light.SetAmbinetLight(CVector3(1.0f, 1.0f, 1.0f));
-#endif
 }
 
 DamageCollisionWorld::~DamageCollisionWorld()
@@ -56,7 +53,7 @@ void DamageCollisionWorld::Render(CRenderContext& renderContext)
 		CMatrix mWVP;
 		mWVP.MakeTranslation(coll->position);
 		mWVP.Mul(mWVP, g_camera->GetCamera().GetViewProjectionMatrix());
-		coll->debugShape.RenderLightWVP(renderContext, mWVP, light, false, false);
+		coll->debugShape.RenderLightWVP(renderContext, mWVP);
 	}
 #endif
 }

@@ -9,7 +9,7 @@
 #ifdef _DEBUG
 #define DEBUG_DMG_COLLISION_DRAW
 #else
-#define DEBUG_DMG_COLLISION_DRAW
+//#define DEBUG_DMG_COLLISION_DRAW
 #endif
 class DamageCollisionWorld : public IGameObject{
 public:
@@ -82,10 +82,6 @@ public:
 private:
 	typedef std::shared_ptr<Collision> CollisionPtr;
 	std::list<CollisionPtr>		collisions;
-#ifdef DEBUG_DMG_COLLISION_DRAW
-	CLight					light;
-#endif
-
 };
 
 extern DamageCollisionWorld* g_damageCollisionWorld;
