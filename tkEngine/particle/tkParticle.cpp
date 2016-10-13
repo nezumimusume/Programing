@@ -182,7 +182,9 @@ namespace tkEngine{
 		shaderEffect->SetValue(renderContext, "g_mWVP", &m, sizeof(CMatrix));
 		shaderEffect->SetValue(renderContext, "g_alpha", &alpha, sizeof(alpha));
 		shaderEffect->SetValue(renderContext, "g_brightness", &brightness, sizeof(brightness));
-		shaderEffect->SetTexture(renderContext, "g_texture", texture);
+		if (texture) {
+			shaderEffect->SetTexture(renderContext, "g_texture", texture);
+		}
 		shaderEffect->SetValue(renderContext, "g_mulColor", &mulColor, sizeof(mulColor));
 		shaderEffect->CommitChanges(renderContext);
 		renderContext.SetStreamSource(0, primitive.GetVertexBuffer());
