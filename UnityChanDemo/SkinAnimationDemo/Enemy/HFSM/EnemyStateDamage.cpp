@@ -33,6 +33,10 @@ void EnemyStateDamage::Enter(const SEnterArg& enterArg)
 	enemy->PlayAnimationForce(Enemy::enAnimDamage);
 	
 	CMatrix* m = enemy->FindBoneWorldMatrix("Bip001_Neck");
+	if (m == NULL) {
+		//仮カリカリ
+		m = enemy->FindBoneWorldMatrix("spine");
+	}
 	if (m != NULL) {
 		//パーティクルエミッターを登録。
 		for (SParicleEmitParameter& param : bloodEmitterParam) {
