@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "Physics/SphereCollider.h"
 #include "tkEngine/shape/tkSphereShape.h"
 
 #ifdef _DEBUG
@@ -20,14 +21,17 @@ public:
 		enDamageToEnemy,		//敵にダメージを与えるコリジョン。
 		enDamageToPlayer,		//プレイヤーにダメージを与えるコリジョン。
 	};
-	struct Collision {
-		float radius;			//半径。
-		CVector3 position;		//中心。
-		float life;				//寿命。
-		float damage;			//ダメージ量。
-		EnAttr attr;			//属性。
-		int groupID;			//コリジョンのグループＩＤ。
+	class Collision {
+	public:
+		float radius;						//半径。
+		CVector3 position;					//中心。
+		float life;							//寿命。
+		float damage;						//ダメージ量。
+		EnAttr attr;						//属性。
+		int groupID;						//コリジョンのグループＩＤ。
 		float time;
+		std::shared_ptr<btCollisionObject>	collisionObject;	//コリジョンオブジェクト。
+		SphereCollider						sphereCollider;		//スフィアコライダー。
 #ifdef DEBUG_DMG_COLLISION_DRAW
 		CSphereShape debugShape;
 #endif
@@ -61,15 +65,21 @@ public:
 		colli->time = 0.0f;
 		colli->damage = damage;
 		colli->groupID = groupID;
+		colli->sphereCollider.Create(radius);
+		colli->collisionObject.reset(new btCollisionObject);
+		colli->collisionObject->setCollisionShape(colli->sphereCollider.GetBody());
+		btTransform worldTrans;
+		worldTrans.setIdentity();
+		worldTrans.setOrigin(btVector3(pos.x, pos.y, pos.z));
+		colli->collisionObject->setWorldTransform(worldTrans);
+		colli->collisionObject->setUserPointer(colli.get());
 		collisions.push_back(colli);
 #ifdef DEBUG_DMG_COLLISION_DRAW
 		colli->debugShape.Create(radius, 10, 0xFFFF0000, true);
 #endif
+		collisionWorld->addCollisionObject(colli->collisionObject.get());
 	}
-	void Start() override
-	{
-
-	}
+	void Start() override;
 	/*!
 	 * @brief	更新。
 	 */
@@ -82,10 +92,14 @@ public:
 	*@brief	重なっているダメージコリジョンを取得する。
 	*/
 	const Collision* FindOverlappedDamageCollision(EnAttr attr, const CVector3& pos, float radius) const;
+	const Collision* FindOverlappedDamageCollision(EnAttr attr, btCollisionObject* colliObject) const;
 private:
 	typedef std::shared_ptr<Collision> CollisionPtr;
-	std::list<CollisionPtr>		collisions;
-//	btCollisionWorld*			collisionWorld;
+	std::list<CollisionPtr>								collisions;
+	std::unique_ptr<btCollisionWorld>					collisionWorld;
+	std::unique_ptr<btDefaultCollisionConfiguration>	collisionConfig;
+	std::unique_ptr<btCollisionDispatcher>				collisionDispatcher;	//!<衝突解決処理。
+	std::unique_ptr<btBroadphaseInterface>				overlappingPairCache;	//!<ブロードフェーズ。衝突判定の枝切り。
 };
 
 extern DamageCollisionWorld* g_damageCollisionWorld;

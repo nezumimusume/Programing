@@ -40,7 +40,10 @@ void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 	
 	radius = 0.4f;
 	height = 0.3f;
-
+	sphereShape.reset(new SphereCollider);
+	sphereShape->Create(radius);
+	collisionObject.reset(new btCollisionObject());
+	collisionObject->setCollisionShape(sphereShape->GetBody());
 	characterController.Init(radius, height, position);
 	InitHFSM();
 }
@@ -111,6 +114,7 @@ void Enemy_00::Update()
 	light.SetPointLightColor(g_player->GetPointLightColor());
 	
 	skinModel.Update(position, rotation, CVector3::One);
+
 }
 void Enemy_00::Damage()
 {
@@ -122,19 +126,21 @@ void Enemy_00::Damage()
 	CVector3 centerPos;
 	centerPos = position;
 	centerPos.y += offset;
-
+	btTransform trans;
+	trans.setOrigin(btVector3(centerPos.x, centerPos.y, centerPos.z));
+	collisionObject->setWorldTransform(trans);
 	const DamageCollisionWorld::Collision* dmgColli = g_damageCollisionWorld->FindOverlappedDamageCollision(
 		DamageCollisionWorld::enDamageToEnemy,
-		centerPos,
-		radius
+		collisionObject.get()
 	);
 	if (!dmgColli) {
 		centerPos.y += offset;
-		dmgColli = g_damageCollisionWorld->FindOverlappedDamageCollision(
+		trans.setOrigin(btVector3(centerPos.x, centerPos.y, centerPos.z));
+		collisionObject->setWorldTransform(trans);
+		const DamageCollisionWorld::Collision* dmgColli = g_damageCollisionWorld->FindOverlappedDamageCollision(
 			DamageCollisionWorld::enDamageToEnemy,
-			centerPos,
-			radius
-			);
+			collisionObject.get()
+		);
 	}
 	if (dmgColli != NULL && states[state]->IsPossibleApplyDamage(dmgColli) ) {
 		//ダメージを食らっている。

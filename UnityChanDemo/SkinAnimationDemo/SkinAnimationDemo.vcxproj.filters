@@ -148,9 +148,6 @@
     <ClInclude Include="Physics\BoxCollider.h">
       <Filter>Source Files\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Physics\SphereCollider.h">
-      <Filter>Source Files\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyTest.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -222,6 +219,9 @@
     </ClInclude>
     <ClInclude Include="Enemy\EnemyParameter.h">
       <Filter>Source Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\SphereCollider.h">
+      <Filter>Source Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

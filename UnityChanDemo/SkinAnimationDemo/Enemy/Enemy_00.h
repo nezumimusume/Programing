@@ -32,9 +32,11 @@ private:
 	void Damage();
 	void InitHFSM();
 private:
-	std::vector<IEnemyState*>		states;					//ステートのリスト。
-	EnLocalState					state;					//ステート。
-	CharacterController				characterController;	//キャラクタコントローラ。
-	float							height;
-	float							radius;
+	std::vector<IEnemyState*>			states;					//ステートのリスト。
+	EnLocalState						state;					//ステート。
+	CharacterController					characterController;	//キャラクタコントローラ。
+	std::unique_ptr<btCollisionObject>	collisionObject;		//コリジョンオブジェクト。
+	std::unique_ptr<SphereCollider>		sphereShape;			//
+	float								height;
+	float								radius;
 };
