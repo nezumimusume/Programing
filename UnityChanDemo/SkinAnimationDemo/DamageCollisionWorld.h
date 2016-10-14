@@ -85,6 +85,7 @@ public:
 private:
 	typedef std::shared_ptr<Collision> CollisionPtr;
 	std::list<CollisionPtr>		collisions;
+//	btCollisionWorld*			collisionWorld;
 };
 
 extern DamageCollisionWorld* g_damageCollisionWorld;

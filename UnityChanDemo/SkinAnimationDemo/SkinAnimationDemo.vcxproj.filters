@@ -116,6 +116,9 @@
     <ClCompile Include="Enemy\HFSM\EnemyStateIdle.cpp">
       <Filter>Source Files\Enemy\HFSM</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy\Enemy.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -216,6 +219,9 @@
     </ClInclude>
     <ClInclude Include="Enemy\HFSM\EnemyStateDeath.h">
       <Filter>Source Files\Enemy\HFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\EnemyParameter.h">
+      <Filter>Source Files\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

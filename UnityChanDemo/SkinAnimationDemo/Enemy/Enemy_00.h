@@ -24,7 +24,7 @@ class Enemy_00 : public Enemy{
 public:
 	Enemy_00();
 	~Enemy_00();
-	void Init( const char* modelPath, CVector3 pos, CQuaternion	rotation);
+	void Init( const char* modelPath, CVector3 pos, CQuaternion	rotation) override;
 	void Start() override;
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;
@@ -33,10 +33,7 @@ private:
 	void InitHFSM();
 private:
 	std::vector<IEnemyState*>		states;					//ステートのリスト。
-	CVector3						initPosition;			//初期位置。
 	EnLocalState					state;					//ステート。
-	std::vector<CTexture>			specMapList;			//スペキュラマップ。
-	std::vector<CTexture>			normalMapList;			//法線マップ。
 	CharacterController				characterController;	//キャラクタコントローラ。
 	float							height;
 	float							radius;

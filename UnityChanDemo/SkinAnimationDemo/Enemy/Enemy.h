@@ -4,6 +4,7 @@
  
 #pragma once
 
+#include "Enemy/EnemyParameter.h"
 
 class Enemy : public IGameObject{
 public:
@@ -24,6 +25,7 @@ public:
 	virtual ~Enemy()
 	{
 	}
+	virtual void Init(const char* modelPath, CVector3 pos, CQuaternion rotation);
 	void PlayAnimation(EnAnimation animNo)
 	{
 		if(currentAnimNo != animNo)
@@ -73,6 +75,13 @@ public:
 	{
 		return skinModel.FindBoneWorldMatrix(boneName);
 	}
+	/*!
+	* @brief	敵のパラメータを取得。
+	*/
+	const EnemyParam* GetEnemyParam() const
+	{
+		return enemyParam;
+	}
 protected:
 	CSkinModelDataHandle			skinModelData;
 	CSkinModel						skinModel;			//スキンモデル。
@@ -85,4 +94,8 @@ protected:
 	CVector3						moveDirection;		//進行方向。
 	CVector3						direction;			//向き。
 	int								hp;					//体力。
+	std::vector<CTexture>			specMapList;		//スペキュラマップ。
+	std::vector<CTexture>			normalMapList;		//法線マップ。
+	const EnemyParam*				enemyParam;			//敵のパラメータ。
+	CVector3						initPosition;		//初期位置。
 };

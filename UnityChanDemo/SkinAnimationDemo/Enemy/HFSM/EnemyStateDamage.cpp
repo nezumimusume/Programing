@@ -32,11 +32,8 @@ void EnemyStateDamage::Enter(const SEnterArg& enterArg)
 	dmgCollisionGroupID = enterArg.arg[0];
 	enemy->PlayAnimationForce(Enemy::enAnimDamage);
 	
-	CMatrix* m = enemy->FindBoneWorldMatrix("Bip001_Neck");
-	if (m == NULL) {
-		//仮カリカリ
-		m = enemy->FindBoneWorldMatrix("spine");
-	}
+	const EnemyParam* enemyParam = enemy->GetEnemyParam();
+	CMatrix* m = enemy->FindBoneWorldMatrix(enemyParam->bloodEffectBoneName);
 	if (m != NULL) {
 		//パーティクルエミッターを登録。
 		for (SParicleEmitParameter& param : bloodEmitterParam) {

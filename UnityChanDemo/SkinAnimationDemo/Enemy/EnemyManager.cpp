@@ -28,9 +28,6 @@ void EnemyManager::Start()
 		Enemy_00* enemy = NewGO<Enemy_00>(0);
 		enemy->Init(info.modelName, info.pos, info.rotation);
 	}
-	
-	
-
 }
 void EnemyManager::Update()
 {
