@@ -3,6 +3,8 @@
  */
 #include "stdafx.h"
 #include "Enemy/Enemy.h"
+#include "Physics\Physics.h"
+#include "CollisionAttr.h"
 
 void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 {
@@ -66,4 +68,7 @@ void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 
 	light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
 	light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
+	radius = 0.6f;
+	height = 0.3f;
+	characterController.Init(radius, height, position);
 }

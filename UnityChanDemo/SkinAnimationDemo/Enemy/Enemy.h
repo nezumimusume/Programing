@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Enemy/EnemyParameter.h"
+#include "CharacterController.h"
 
 class Enemy : public IGameObject{
 public:
@@ -98,4 +99,8 @@ protected:
 	std::vector<CTexture>			normalMapList;		//法線マップ。
 	const EnemyParam*				enemyParam;			//敵のパラメータ。
 	CVector3						initPosition;		//初期位置。
+	
+	CharacterController				characterController;	//キャラクタコントローラ。
+	float							height;
+	float							radius;
 };

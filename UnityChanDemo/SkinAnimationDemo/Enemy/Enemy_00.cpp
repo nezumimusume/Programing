@@ -38,15 +38,15 @@ void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 	animation.SetAnimationLoopFlag(enAnimDamage, false);
 	animation.SetAnimationLoopFlag(enAnimDeath, false);
 	
-	radius = 0.4f;
-	height = 0.3f;
+	
 	sphereShape.reset(new SphereCollider);
 	sphereShape->Create(radius);
 	collisionObject.reset(new btCollisionObject());
 	collisionObject->setCollisionShape(sphereShape->GetBody());
-	characterController.Init(radius, height, position);
+	
 	InitHFSM();
 }
+
 /*!
  * @brief	HFSM‚ğ‰Šú‰»B
  */

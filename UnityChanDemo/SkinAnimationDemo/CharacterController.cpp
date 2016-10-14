@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "CharacterController.h"
+#include "CollisionAttr.h"
 
 namespace{
 	//地面との当たり判定。
@@ -13,6 +14,7 @@ namespace{
 		CVector3 hitPos;
 		CVector3 startPos;
 		CVector3 hitNormal;
+		btCollisionObject* me;
 		SweepResultGround()
 		{
 			isHit = false;
@@ -24,10 +26,16 @@ namespace{
 
 		virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 		{
+			if (convexResult.m_hitCollisionObject == me) {
+				//自分に衝突した。
+				return 0.0f;
+			}
 			CVector3 hitNormalTmp = *(CVector3*)&convexResult.m_hitNormalLocal;
 			float t = hitNormalTmp.Dot(CVector3::Up);
 			t = fabsf(acosf(t));
-			if (t < CMath::PI * 0.3f) {
+			if (t < CMath::PI * 0.3f
+				&& convexResult.m_hitCollisionObject->getUserIndex() != enCollisionAttr_Character
+				) {
 				isHit = true;
 				CVector3 hitPosTmp = *(CVector3*)&convexResult.m_hitPointLocal;
 				//交点の高さを調べる。。
@@ -50,6 +58,7 @@ namespace{
 		CVector3 startPos;
 		float dist;
 		CVector3 hitNormal;
+		btCollisionObject* me;
 		SweepResultWall()
 		{
 			isHit = false;
@@ -61,9 +70,15 @@ namespace{
 
 		virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 		{
+			if (convexResult.m_hitCollisionObject == me) {
+				//自分に衝突した。
+				return 0.0f;
+			}
 			CVector3 hitNormalTmp = *(CVector3*)&convexResult.m_hitNormalLocal;
 			float t = fabsf(acosf(hitNormalTmp.Dot(CVector3::Up)));
-			if (t >= CMath::PI * 0.3f) {
+			if (t >= CMath::PI * 0.3f 
+				|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Character
+			) {
 				isHit = true;
 				CVector3 hitPosTmp = *(CVector3*)&convexResult.m_hitPointLocal;
 				//交点との距離を調べる。
@@ -98,6 +113,20 @@ void CharacterController::Init(float radius, float height, const CVector3& posit
 	this->radius = radius;
 	this->height = height;
 	collider.Create(radius, height);
+
+	//剛体を初期化。
+	RigidBodyInfo rbInfo;
+	rbInfo.collider = &collider;
+	rbInfo.mass = 0.0f;
+	rigidBody.Create(rbInfo);
+	btTransform& trans = rigidBody.GetBody()->getWorldTransform();
+	//剛体の位置を更新。
+	trans.setOrigin(btVector3(position.x, position.y, position.z));
+	//@todo 未対応。trans.setRotation(btQuaternion(rotation.x, rotation.y, rotation.z));
+	rigidBody.GetBody()->setUserIndex(enCollisionAttr_Character);
+	rigidBody.GetBody()->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
+	g_physicsWorld->AddRigidBody(&rigidBody);
+
 }
 void CharacterController::Execute()
 {
@@ -123,6 +152,7 @@ void CharacterController::Execute()
 			start.setOrigin(btVector3(posTmp.x, posTmp.y, posTmp.z));
 			CVector3 newPos;
 			SweepResultWall callback;
+			callback.me = rigidBody.GetBody();
 			callback.startPos = position;
 			CVector3 addPosXZ = addPos;
 			addPosXZ.y = 0.0f;
@@ -175,6 +205,7 @@ void CharacterController::Execute()
 		start.setOrigin(btVector3(position.x, position.y + height * 0.5f + radius, position.z));
 		CVector3 newPos;
 		SweepResultGround callback;
+		callback.me = rigidBody.GetBody();
 		callback.startPos = position;
 		if (addPos.y < 0.0f) {
 			newPos = (*(CVector3*)&start.getOrigin());
@@ -207,4 +238,12 @@ void CharacterController::Execute()
 		}
 	}
 	position = nextPosition;
+
+	btRigidBody* btBody = rigidBody.GetBody();
+	//剛体を動かす。
+	btBody->setActivationState(DISABLE_DEACTIVATION);
+	btTransform& trans = btBody->getWorldTransform();
+	//剛体の位置を更新。
+	trans.setOrigin(btVector3(position.x, position.y, position.z));
+	//@todo 未対応。 trans.setRotation(btQuaternion(rotation.x, rotation.y, rotation.z));
 }

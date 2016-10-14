@@ -6,6 +6,7 @@
 
 #include "Physics/SphereCollider.h"
 #include "Physics/CapsuleCollider.h"
+#include "Physics/RigidBody.h"
 
 /*!
  * @brief
@@ -64,6 +65,13 @@ public:
 	{
 		return isJump;
 	}
+	/*!
+	* @brief	コライダーを取得。
+	*/
+	CapsuleCollider* GetCollider()
+	{
+		return &collider;
+	}
 private:
 	CVector3 			position;		//座標。
 	CVector3 			moveSpeed;		//移動速度。 
@@ -72,4 +80,5 @@ private:
 	CapsuleCollider		collider;		//コライダー。
 	float				radius;
 	float				height;		
+	RigidBody			rigidBody;			//剛体。
 };
