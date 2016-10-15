@@ -119,6 +119,9 @@
     <ClCompile Include="Enemy\Enemy.cpp">
       <Filter>Source Files\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy\EnemySensor.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -222,6 +225,9 @@
     </ClInclude>
     <ClInclude Include="Physics\SphereCollider.h">
       <Filter>Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\EnemySensor.h">
+      <Filter>Source Files\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
