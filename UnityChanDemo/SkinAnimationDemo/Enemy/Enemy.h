@@ -83,6 +83,10 @@ public:
 	{
 		return enemyParam;
 	}
+	/*!
+	* @brief	死亡したことを通知。
+	*/
+	void NotifyDead();
 protected:
 	CSkinModelDataHandle			skinModelData;
 	CSkinModel						skinModel;			//スキンモデル。

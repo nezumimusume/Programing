@@ -247,3 +247,10 @@ void CharacterController::Execute()
 	trans.setOrigin(btVector3(position.x, position.y, position.z));
 	//@todo –¢‘Î‰žB trans.setRotation(btQuaternion(rotation.x, rotation.y, rotation.z));
 }
+/*!
+* @brief	Ž€–S‚µ‚½‚±‚Æ‚ð’Ê’mB
+*/
+void CharacterController::NotifyDead()
+{
+	g_physicsWorld->RemoveRigidBody(&rigidBody);
+}

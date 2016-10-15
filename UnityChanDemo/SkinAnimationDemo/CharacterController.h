@@ -72,6 +72,10 @@ public:
 	{
 		return &collider;
 	}
+	/*!
+	* @brief	死亡したことを通知。
+	*/
+	void NotifyDead();
 private:
 	CVector3 			position;		//座標。
 	CVector3 			moveSpeed;		//移動速度。 

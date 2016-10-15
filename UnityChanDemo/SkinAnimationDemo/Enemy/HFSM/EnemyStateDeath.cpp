@@ -50,6 +50,7 @@ void EnemyStateDeath::Enter(const SEnterArg& enterArg)
 		}
 	}
 	timer = 0.0f;
+	enemy->NotifyDead();
 }
 void EnemyStateDeath::Leave()
 {
