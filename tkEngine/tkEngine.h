@@ -15,6 +15,7 @@
 #include "tkEngine/graphics/tkGraphicsConfig.h"
 #include "tkEngine/particle/tkParticleResources.h"
 #include "tkEngine/resource/tkSkinModelDataResources.h"
+#include "tkEngine/Sound/tkSoundEngine.h"
 
 namespace tkEngine{
 	class CReflectionMap;
@@ -195,6 +196,13 @@ namespace tkEngine{
 		{
 			return m_skinModelDataResources;
 		}
+		/*!
+		* @brief	サウンドエンジンの取得。
+		*/
+		CSoundEngine& GetSoundEngine()
+		{
+			return m_soundEngine;
+		}
 	private:
 		/*!
 		* @brief	メインレンダリングターゲットの内容をバックバッファにコピー。
@@ -243,6 +251,7 @@ namespace tkEngine{
 		CParticleResources						m_particleResource;			//!<パーティクルのリソース管理。
 		CFont									m_fpsFont;					//!<FPSを表示するデバッグフォント。
 		CSkinModelDataResources					m_skinModelDataResources;	//!<スキンモデルデータリソース。
+		CSoundEngine							m_soundEngine;				//!<サウンドエンジン。
 	};
 	static inline CEngine& Engine()
 	{
@@ -283,6 +292,10 @@ namespace tkEngine{
 	static inline CSkinModelDataResources& SkinModelDataResources()
 	{
 		return CEngine::Instance().GetSkinModelDataResources();
+	}
+	static inline CSoundEngine& SoundEngine()
+	{
+		return CEngine::Instance().GetSoundEngine();
 	}
 }
 

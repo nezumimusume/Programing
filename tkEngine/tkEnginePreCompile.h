@@ -19,11 +19,14 @@
 
 #if defined( TK_PLATFORM_DX9 )
 #include <windows.h>
+#include <mmsystem.h>
 #endif // #if defined( TK_PLATFORM_DX9 )
 #include <memory>
 #include <d3dx9.h>
 #include <d3d9.h>
 #include <XInput.h> // XInput API
+#include <xaudio2.h>
+#pragma comment(lib, "winmm.lib")
 #ifdef _DEBUG
 #include <DxErr.h>
 #pragma comment(lib, "dxerr.lib")

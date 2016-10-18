@@ -217,6 +217,9 @@
     <ClCompile Include="shape\tkBoxShape.cpp" />
     <ClCompile Include="shape\tkShapeBase.cpp" />
     <ClCompile Include="shape\tkSphereShape.cpp" />
+    <ClCompile Include="Sound\tkSoundEngine.cpp" />
+    <ClCompile Include="Sound\tkSoundSource.cpp" />
+    <ClCompile Include="Sound\tkWaveFile.cpp" />
     <ClCompile Include="tkEngine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -286,6 +289,9 @@
     <ClInclude Include="shape\tkShapeBase.h" />
     <ClInclude Include="shape\tkShapeVertex.h" />
     <ClInclude Include="shape\tkSphereShape.h" />
+    <ClInclude Include="Sound\tkSoundEngine.h" />
+    <ClInclude Include="Sound\tkSoundSource.h" />
+    <ClInclude Include="Sound\tkWaveFile.h" />
     <ClInclude Include="timer\tkGameTime.h" />
     <ClInclude Include="timer\tkStopwatch.h" />
     <ClInclude Include="tkEngine.h" />

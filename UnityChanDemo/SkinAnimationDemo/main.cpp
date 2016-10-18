@@ -11,13 +11,41 @@
 #include "Enemy/EnemyManager.h"
 #include <time.h>
 #include "DamageCollisionWorld.h"
-
+#include "tkEngine/Sound/tkSoundSource.h"
 PhysicsWorld* g_physicsWorld = NULL;
 Player* g_player = NULL;
 CRandom g_random;
 DamageCollisionWorld* g_damageCollisionWorld = NULL;
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
+#define PLAY_WAVE_FILE_TEST		//定義で波形データの再生テストが有効になる。
+#ifdef PLAY_WAVE_FILE_TEST
+class PlayWaveFileTest : public IGameObject {
+	/*CWaveFile waveFile;
+	char* buffer;*/
+	CSoundSource soundSource;
+public:
+	PlayWaveFileTest() 
+	{
+	}
+	~PlayWaveFileTest()
+	{
+	}
+	void Start() override
+	{
+		//サウンドソースを初期化。
+		soundSource.InitStreaming("Assets/sound/MusicMono.wav", 2 * 1024 * 1024, 1024 * 500);
+		//soundSource.Init("Assets/sound/MusicMono.wav");
+		soundSource.Play(true);
+	}
+	void Update() override
+	{
+	}
+	void Render(CRenderContext& renderContext) override
+	{
 
+	}
+};
+#endif
 #ifdef MEMORY_LEAK_TEST
 //メモリリークテスト。
 class MemoryLeakTest : public IGameObject {
@@ -113,6 +141,9 @@ int WINAPI wWinMain(
 	//tkEngineの初期化。
 	InitTkEngine( hInst );
 	g_random.Init((unsigned long)time(NULL));
+#ifdef PLAY_WAVE_FILE_TEST
+	NewGO<PlayWaveFileTest>(0);
+#endif
 #ifdef MEMORY_LEAK_TEST
 	NewGO<MemoryLeakTest>(0);
 #else

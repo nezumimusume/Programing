@@ -157,7 +157,7 @@ namespace tkEngine{
 		m_preRender.Create( initParam.graphicsConfig );
 		//ポストエフェクトをレンダリング。
 		m_postEffect.Create( initParam.graphicsConfig );
-		
+		m_soundEngine.Init();
 		ShowWindow(m_hWnd, SW_SHOWDEFAULT);
 		UpdateWindow(m_hWnd);
 		return true;

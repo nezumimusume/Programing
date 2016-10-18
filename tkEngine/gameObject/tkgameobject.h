@@ -37,7 +37,10 @@ namespace tkEngine{
 		/*!
 		 *@brief	描画
 		 */
-		virtual void Render( CRenderContext& renderContext ) = 0;
+		virtual void Render(CRenderContext& renderContext)
+		{
+
+		}
 		/*!
 		 *@brief	削除されるときに呼ばれる。
 		 *@details	CGameManager::DeleteGameObjectを呼んだときに実行されます。
@@ -141,12 +144,14 @@ namespace tkEngine{
 		{
 			return m_isNewFromGameObjectManager;
 		}
+		
 		friend class CGameObjectManager;
 	protected:
 		GameObjectPrio	m_priority;			//!<実行優先度。
 		bool m_isStart;						//!<Startの開始フラグ。
 		bool m_isDead;						//!<死亡フラグ。
 		bool m_isNewFromGameObjectManager;	//!<GameObjectManagerでnewされた。
+		bool m_isRegist = false;			//!<GameObjectManagerに登録されている？
 		
 	};
 }

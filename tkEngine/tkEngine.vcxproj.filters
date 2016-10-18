@@ -57,6 +57,9 @@
     <Filter Include="Source Files\resource">
       <UniqueIdentifier>{4f243545-da73-4b30-9eed-387319db8256}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Sound">
+      <UniqueIdentifier>{e7f1ec8b-1792-4c6e-9e5e-0c608bf495ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -199,6 +202,15 @@
     </ClCompile>
     <ClCompile Include="graphics\tkSkinModelMaterial.cpp">
       <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound\tkSoundEngine.cpp">
+      <Filter>Source Files\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound\tkWaveFile.cpp">
+      <Filter>Source Files\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound\tkSoundSource.cpp">
+      <Filter>Source Files\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -375,6 +387,15 @@
     </ClInclude>
     <ClInclude Include="graphics\tkSKinModelMaterial.h">
       <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound\tkSoundEngine.h">
+      <Filter>Source Files\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound\tkWaveFile.h">
+      <Filter>Source Files\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound\tkSoundSource.h">
+      <Filter>Source Files\Sound</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
