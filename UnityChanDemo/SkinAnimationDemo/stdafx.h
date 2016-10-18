@@ -5,7 +5,6 @@
 #ifndef _STDAFX_H_
 #define _STDAFX_H_
 
-//#define ENEMY_TEST
 
 #include <windows.h>
 #include "tkEngine/tkEnginePreCompile.h"

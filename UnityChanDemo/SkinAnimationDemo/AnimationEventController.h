@@ -14,6 +14,7 @@ const int ANIMATION_EVENT_MAX = 32;
 enum EAnimationEventType{
 	eAnimationEventType_EmitDamageToEnemyCollision,		//敵に対してダメージを与えるコリジョンを生成。
 	eAnimationEventType_EmitDamageToPlayerCollision,	//プレイヤに対してダメージを与えるコリジョンを生成。
+	eAnimationEventType_EmitSound,						//Soundの再生。
 	eAnimationEventType_Invalid = 0xffffffff,
 };
 /*!
@@ -107,5 +108,6 @@ private:
 	int									animNoLastFrame;	//!<一フレーム前のアニメーション番号。
 	CAnimation* 						animation;			//!<アニメーション。
 	std::vector<AnimationEventGroupEx>	eventGroupExTbl;	
-	CSkinModel*							skinModel;			//!<スキンモデル。
+	CSkinModel*							skinModel;					//!<スキンモデル。
+	float								lastFrameAnimTime = 0.0f;	//!<1フレーム前のアニメーションタイム。
 };

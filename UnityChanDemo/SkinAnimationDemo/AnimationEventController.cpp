@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "AnimationEventController.h"
 #include "DamageCollisionWorld.h"
+#include "tkEngine/Sound/tkSoundSource.h"
 
 AnimationEventController::AnimationEventController() :
 	animation(nullptr),
@@ -43,6 +44,13 @@ void AnimationEventController::InvokeAnimationEvent(const AnimationEvent& event)
 		bone->Mul(pos);
 		g_damageCollisionWorld->Add(event.fArg[1], event.vArg[0], event.fArg[0], event.iArg[0], DamageCollisionWorld::enDamageToPlayer, event.iArg[1]);
 	}break;
+	case eAnimationEventType_EmitSound: {
+		//ワンショットのサウンド発生。
+		CSoundSource* s = NewGO<CSoundSource>(0);
+		s->Init((char*)event.strArg[0]);
+		s->Play(false);
+		s->SetVolume(event.fArg[0]);
+	}
 	default:
 		break;
 	}
@@ -51,12 +59,30 @@ void AnimationEventController::Update()
 {
 	TK_ASSERT(animation != nullptr, "animation is null");
 	int currentAnimNo = animation->GetPlayAnimNo();
+	float animTime = animation->GetLocalAnimationTime();
 	if (animNoLastFrame != -1 && animNoLastFrame != currentAnimNo) {
 		//アニメーションが切り替わった。
 		//前のアニメーションのイベント発生フラグを初期化する。
 		memset(eventGroupExTbl[animNoLastFrame].invokeFlags, 0, sizeof(eventGroupExTbl[animNoLastFrame].invokeFlags));
 	}
-	float animTime = animation->GetLocalAnimationTime();
+	else if (animTime < lastFrameAnimTime) {
+		//前のフレームよりもアニメーション時間が小さくなった(ループした)
+		//残っているイベントを全部発生させてから初期化。
+		AnimationEventGroupEx& eventGroupEx = eventGroupExTbl[currentAnimNo];
+		for (
+			int i = 0;
+			eventGroupEx.eventGroup.event[i].eventType != eAnimationEventType_Invalid;
+			i++
+			) {
+			if (eventGroupEx.invokeFlags[i] == false) {
+				InvokeAnimationEvent(eventGroupEx.eventGroup.event[i]);
+				//発生済みの印。
+				eventGroupEx.invokeFlags[i] = true;
+			}
+		}
+		memset(eventGroupExTbl[currentAnimNo].invokeFlags, 0, sizeof(eventGroupExTbl[currentAnimNo].invokeFlags));
+	}
+	lastFrameAnimTime = animTime;
 	AnimationEventGroupEx& eventGroupEx = eventGroupExTbl[currentAnimNo];
 	for (
 		int i = 0;

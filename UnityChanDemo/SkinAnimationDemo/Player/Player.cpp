@@ -19,6 +19,8 @@ namespace {
 		},
 		//AnimationRun
 		{
+			EMIT_SOUND_EVENT(0.4f, 0.05f, "Assets/sound/Footstep_00.wav"),
+			EMIT_SOUND_EVENT(0.9f, 0.05f, "Assets/sound/Footstep_00.wav"),
 			END_ANIMATION_EVENT(),
 		},
 		//AnimationJump
@@ -408,9 +410,6 @@ Player::SBattleSeat* Player::FindUnuseSeat(const CVector3& pos)
 */
 void Player::Render(CRenderContext& renderContext)
 {
-#ifdef ENEMY_TEST
-	return;
-#endif
 	if (state != enState_RideOnCar) {
 		//ŽÔ‚Éæ‚Á‚Ä‚¢‚é‚Æ‚«‚Í”ñ•\Ž¦‚É‚·‚éB
 		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());

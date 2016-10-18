@@ -10,7 +10,7 @@ namespace tkEngine{
 	/*!
 	 * @brief	音源クラス。
 	 */
-	class CSoundSource : public IGameObject{
+	class CSoundSource : public IGameObject {
 	public:
 		/*!
 		 * @brief	コンストラクタ。
@@ -35,7 +35,7 @@ namespace tkEngine{
 		*@param[in] ringBufferSize	リングバッファのサイズ。
 		*@param[in]	bufferSize		ストリーミングの最大バッファリングサイズ。
 		*/
-		void InitStreaming(char* filePath, unsigned int ringBufferSize, unsigned int bufferingSize);
+		void InitStreaming(char* filePath, unsigned int ringBufferSize = 3 * 1024 * 1024, unsigned int bufferingSize = 1024 * 512);
 		/*!
 		* @brief	開放。
 		*/
@@ -45,7 +45,19 @@ namespace tkEngine{
 		*@param[in]	isLoop		ループ再生フラグ。
 		*/
 		void Play(bool isLoop);
+		/*!
+		* @brief	更新。
+		*@param[in]	isLoop		ループ再生フラグ。
+		*/
 		void Update() override;
+		/*!
+		* @brief	ボリュームを設定。
+		*@param[in]	vol		ボリューム。
+		*/
+		void SetVolume(float vol)
+		{
+			m_sourceVoice->SetVolume(vol);
+		}
 	private:
 		void UpdateStreaming();
 		void Play(char* buff, unsigned int bufferSize);

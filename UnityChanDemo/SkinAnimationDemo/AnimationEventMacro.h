@@ -36,4 +36,19 @@
 		boneName, NULL, NULL, NULL,																\
 		offsetLocalVector, CVector3::Zero, CVector3::Zero, CVector3::Zero						\
 	)
+ /*!
+ * @brief	サウンドの発生イベント
+ *@param[in]	invokeTime			サウンドを発生させる時間。該当するアニメーションが再生されてから経過時間です。単位は秒。
+ *@param[in]	volume				ボリューム
+ *@param[in]	filePath			サウンドのファイルパス。
+ */
+#define EMIT_SOUND_EVENT(invokeTime, volume, filePath)											\
+	AnimationEvent(																				\
+		eAnimationEventType_EmitSound,															\
+		(invokeTime),																			\
+		(volume), 0.0f, 0.0f, 0.0f,																\
+		0,0,0,0,																				\
+		filePath, NULL, NULL, NULL,																\
+		CVector3::Zero, CVector3::Zero, CVector3::Zero, CVector3::Zero							\
+	)
 

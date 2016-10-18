@@ -15,18 +15,15 @@ namespace tkEngine{
 	}
 	void CSoundSource::Init( char* filePath )
 	{
-		Release();
 		m_waveFile.Open(filePath);
 		m_buffer.reset(new char[m_waveFile.GetSize()]);
 		unsigned int dummy;
 		m_waveFile.Read(m_buffer.get(), m_waveFile.GetSize(), &dummy);
 		//サウンドボイスソースを作成。
 		m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(&m_waveFile);
-		AddGO(0, this);
 	}
 	void CSoundSource::InitStreaming(char* filePath, unsigned int ringBufferSize, unsigned int bufferSize)
 	{
-		Release();
 		m_waveFile.Open(filePath);
 		m_isStreaming = true;
 		m_streamingBufferSize = bufferSize;
@@ -37,7 +34,6 @@ namespace tkEngine{
 		//サウンドボイスソースを作成。
 		m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(&m_waveFile);
 		m_sourceVoice->Start(0,0);
-		AddGO(0, this);
 	}
 	void CSoundSource::Release()
 	{
@@ -46,7 +42,6 @@ namespace tkEngine{
 			m_sourceVoice->DestroyVoice();
 			m_sourceVoice = nullptr;
 		}
-		
 		DeleteGO(this);
 	}
 	void CSoundSource::Play(char* buff, unsigned int bufferSize)
@@ -124,6 +119,7 @@ namespace tkEngine{
 						if (state.BuffersQueued == 0) {
 							//再生終了。
 							m_isPlaying = false;
+							DeleteGO(this);
 						}
 					}
 				}
@@ -148,6 +144,9 @@ namespace tkEngine{
 				if (m_isLoop) {
 					//ループ。
 					Play(m_isLoop);
+				}
+				else {
+					DeleteGO(this);
 				}
 			}
 		}

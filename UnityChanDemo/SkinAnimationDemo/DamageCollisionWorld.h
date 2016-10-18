@@ -26,7 +26,7 @@ public:
 		float radius;						//半径。
 		CVector3 position;					//中心。
 		float life;							//寿命。
-		float damage;						//ダメージ量。
+		int damage;							//ダメージ量。
 		EnAttr attr;						//属性。
 		int groupID;						//コリジョンのグループＩＤ。
 		float time;
@@ -52,7 +52,7 @@ public:
 		float radius,
 		const CVector3& pos,
 		float life,
-		float damage,
+		int damage,
 		EnAttr attr,
 		int groupID
 	)

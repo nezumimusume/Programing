@@ -71,7 +71,6 @@ namespace tkEngine{
 				pAnimController->SetTrackEnable(currentTrackNo, TRUE);
 				pAnimController->SetTrackSpeed(currentTrackNo, 1.0f);
 				pAnimController->SetTrackPosition(currentTrackNo, 0.0f);
-					
 				localAnimationTime = 0.0;
 				currentAnimationSetNo = animationSetIndex;
 				UpdateTrackWeights();
@@ -169,7 +168,11 @@ namespace tkEngine{
 					pAnimController->AdvanceTime(deltaTime, NULL);
 				}
 			}
-			
+
+			//ローカルタイムをトラックから取得して同期。
+			D3DXTRACK_DESC trackDesk;
+			pAnimController->GetTrackDesc(currentTrackNo, &trackDesk);
+			localAnimationTime = fmod(trackDesk.Position, animationSets[currentAnimationSetNo]->GetPeriod());
 		}
 
 		if (isAnimEnd) {
