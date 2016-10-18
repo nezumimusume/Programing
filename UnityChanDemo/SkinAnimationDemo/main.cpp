@@ -17,7 +17,7 @@ Player* g_player = NULL;
 CRandom g_random;
 DamageCollisionWorld* g_damageCollisionWorld = NULL;
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
-//#define PLAY_WAVE_FILE_TEST		//定義で波形データの再生テストが有効になる。
+#define PLAY_WAVE_FILE_TEST		//定義で波形データの再生テストが有効になる。
 #ifdef PLAY_WAVE_FILE_TEST
 class PlayWaveFileTest : public IGameObject {
 	/*CWaveFile waveFile;
@@ -33,9 +33,10 @@ public:
 	void Start() override
 	{
 		//サウンドソースを初期化。
-		soundSource.InitStreaming("Assets/sound/SoundTest.wav");
+		soundSource.InitStreaming("Assets/sound/wind.wav");
 		//soundSource.Init("Assets/sound/MusicMono.wav");
-		soundSource.Play(false);
+		soundSource.Play(true);
+		soundSource.SetVolume(0.05f);
 		AddGO(0, &soundSource);
 	}
 	void Update() override
