@@ -34,22 +34,21 @@ void EnemyStateDeath::Update()
 void EnemyStateDeath::Enter(const SEnterArg& enterArg)
 {
 	IEnemyState::Enter(enterArg);
-	CMatrix* m = enemy->FindBoneWorldMatrix("Bip001_Neck");
-	if (m == NULL) {
-		//仮カリカリ
-		m = enemy->FindBoneWorldMatrix("spine");
-	}
+	const EnemyParam* ep = enemy->GetEnemyParam();
+	CMatrix* m = enemy->FindBoneWorldMatrix(ep->bloodEffectBoneName);
+	
 	if (m != NULL) {
+		CVector3 emitPos = ep->bloodEffectOffsetPosition;
+		m->Mul(emitPos);
 		//パーティクルエミッターを登録。
 		for (SParicleEmitParameter& param : bloodEmitterParam) {
 			CParticleEmitter* particleEmitter = NewGO<CParticleEmitter>(0);
-			CVector3 pos;
-			pos.Set(m->m[3][0], m->m[3][1], m->m[3][2]);
-			particleEmitter->Init(g_random, g_camera->GetCamera(), param, pos);
+			particleEmitter->Init(g_random, g_camera->GetCamera(), param, emitPos);
 			particleEmitterList.push_back(particleEmitter);
 		}
 	}
 	timer = 0.0f;
+	enemy->NotifyDead();
 }
 void EnemyStateDeath::Leave()
 {
