@@ -16,6 +16,7 @@ namespace tkEngine{
 			CVector3 startPos = CVector3::Zero;
 			CVector3 hitNormal = CVector3::Zero;
 			btCollisionObject* me = nullptr;
+			float dist = FLT_MAX;
 			SweepResultGround()
 			{
 			}
@@ -39,9 +40,10 @@ namespace tkEngine{
 					CVector3 vDist;
 					vDist.Subtract(hitPosTmp, startPos);
 					float distTmp = vDist.Length();
-					if (hitPos.y < hitPosTmp.y) {
+					if (dist > distTmp) {
 						hitPos = hitPosTmp;
 						hitNormal = *(CVector3*)&convexResult.m_hitNormalLocal;
+						dist = distTmp;
 					}
 				}
 				return 0.0f;
@@ -186,10 +188,15 @@ namespace tkEngine{
 				}
 			}
 		}
-		//上下方向を調べる。
+		//XZの移動は確定。
+		position.x = nextPosition.x;
+		position.z = nextPosition.z;
+		//下方向を調べる。
 		{
 			CVector3 addPos;
 			addPos.Subtract(nextPosition, position);
+			
+			position = nextPosition;	//移動の仮確定。
 			btTransform start, end;
 			start.setIdentity();
 			end.setIdentity();
@@ -197,10 +204,16 @@ namespace tkEngine{
 			CVector3 newPos;
 			SweepResultGround callback;
 			callback.me = rigidBody.GetBody();
-			callback.startPos = position;
+			callback.startPos = (*(CVector3*)&start.getOrigin());
 			newPos = (*(CVector3*)&start.getOrigin());
-			newPos.y += addPos.y;
-
+			if (addPos.y > 0.0f) {
+				//XZに移動した結果めり込んでいる可能性があるので上に移動していても下を調べる。
+				newPos.y -= addPos.y * 0.1f;
+			}
+			else {
+				//落下している場合はそのまま下を調べる。
+				newPos.y += addPos.y;
+			}
 			end.setOrigin(btVector3(newPos.x, newPos.y, newPos.z));
 
 			PhysicsWorld().ConvexSweepTest((const btConvexShape*)collider.GetBody(), start, end, callback);
@@ -225,6 +238,46 @@ namespace tkEngine{
 				nextPosition.y = callback.hitPos.y + offset - radius;
 			}
 		}
+		//下方向を調べる。
+		/*{
+			
+
+			btTransform start, end;
+			start.setIdentity();
+			end.setIdentity();
+			start.setOrigin(btVector3(nextPosition.x, nextPosition.y + height * 0.5f + radius + 0.1f, nextPosition.z));
+			CVector3 newPos;
+			SweepResultGround callback;
+			callback.me = rigidBody.GetBody();
+			callback.startPos = (*(CVector3*)&start.getOrigin());
+			newPos = (*(CVector3*)&start.getOrigin());
+			newPos.y += fabsf(nextPosition.y - position.y) * 0.5f;
+
+			end.setOrigin(btVector3(newPos.x, newPos.y, newPos.z));
+
+			PhysicsWorld().ConvexSweepTest((const btConvexShape*)collider.GetBody(), start, end, callback);
+
+			if (callback.isHit) {
+				//当たった。
+				CVector3 Circle;
+				float x = 0.0f;
+				float offset = 0.0f;	//押し戻す量。
+				Circle = CVector3::Zero;
+
+				Circle = nextPosition;
+				Circle.y = callback.hitPos.y;//円の中心
+				CVector3 v;
+				v.Subtract(Circle, callback.hitPos);
+				x = v.Length();//物体の角とプレイヤーの間の横幅の距離が求まる。
+
+				offset = sqrt(max(0.0f, radius*radius - x*x));//yの平方根を求める。
+
+				moveSpeed.y = 0.0f;
+				isJump = false;
+				nextPosition.y = callback.hitPos.y + offset - radius ;
+			}
+		}*/
+
 		position = nextPosition;
 		btRigidBody* btBody = rigidBody.GetBody();
 		//剛体を動かす。
