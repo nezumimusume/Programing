@@ -7,8 +7,8 @@
 #include "tkEngine/graphics/tkCamera.h"
 #include "tkEngine/graphics/tkLight.h"
 #include "tkEngine/graphics/tkTexture.h"
-#include "Physics/SphereCollider.h"
-#include "Physics/RigidBody.h"
+#include "tkEngine/Physics/tkSphereCollider.h"
+#include "tkEngine/Physics/tkRigidBody.h"
 
 /*!
  * @brief	敵のテストプログラム。
@@ -105,7 +105,7 @@ private:
 	EnState					lastFrameState;		//前のフレームの状態。
 	bool					isJump;				//ジャンプ中フラグ。
 	bool					isPointLightOn;		//ポイントライトのスイッチ。
-	SphereCollider			collider;			//ボックスコライダー。
+	CSphereCollider			collider;			//ボックスコライダー。
 	float					radius;				//半径。
-	RigidBody				rigidBody;			//剛体。
+	CRigidBody				rigidBody;			//剛体。
 };

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Physics/MeshCollider.h"
-#include "Physics/RigidBody.h"
+#include "tkEngine/Physics/tkMeshCollider.h"
+#include "tkEngine/Physics/tkRigidBody.h"
 
 class Ground : public IGameObject {
 	CSkinModelData	skinModelData;		//スキンモデルデータ。
@@ -10,8 +10,8 @@ class Ground : public IGameObject {
 	CLight			light;				//ライト。
 	CTexture		normalMap;
 	CMatrix*		m_worldMatrix;		//ワールド行列
-	MeshCollider	meshCollider;		//メッシュコライダー。
-	RigidBody		rigidBody;			//剛体。
+	CMeshCollider	meshCollider;		//メッシュコライダー。
+	CRigidBody		rigidBody;			//剛体。
 public:
 	Ground()
 	{

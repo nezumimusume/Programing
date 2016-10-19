@@ -34,6 +34,8 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include "btBulletDynamicsCommon.h"
+#include "BulletCollision\CollisionDispatch\btGhostObject.h"
 #include "tkEngine/typedef.h"
 #include "tkEngine/graphics/tkFont.h"
 #include "tkEngine/math/tkMath.h"

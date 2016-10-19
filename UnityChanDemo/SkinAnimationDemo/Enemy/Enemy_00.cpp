@@ -39,7 +39,7 @@ void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 	animation.SetAnimationLoopFlag(enAnimDeath, false);
 	
 	
-	sphereShape.reset(new SphereCollider);
+	sphereShape.reset(new CSphereCollider);
 	sphereShape->Create(radius);
 	collisionObject.reset(new btCollisionObject());
 	collisionObject->setCollisionShape(sphereShape->GetBody());

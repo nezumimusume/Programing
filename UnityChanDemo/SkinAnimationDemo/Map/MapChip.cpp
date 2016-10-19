@@ -46,8 +46,8 @@ void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 
 	//ワールド行列のバッファを作成。
 	worldMatrixBuffer.reset(new CMatrix[mapChipLocInfoList.size()]);
-	meshCollider.reset(new MeshCollider[mapChipLocInfoList.size()]);
-	rigidBody.reset(new RigidBody[mapChipLocInfoList.size()]);
+	meshCollider.reset(new CMeshCollider[mapChipLocInfoList.size()]);
+	rigidBody.reset(new CRigidBody[mapChipLocInfoList.size()]);
 	i = 0;
 	for (auto& mapChiplLocInfo : mapChipLocInfoList) {
 		CMatrix mTrans;

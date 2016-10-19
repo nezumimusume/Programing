@@ -3,7 +3,7 @@
  */
 #include "stdafx.h"
 #include "Enemy/Enemy.h"
-#include "Physics\Physics.h"
+#include "tkEngine/Physics/tkPhysics.h"
 #include "CollisionAttr.h"
 
 void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)

@@ -17,16 +17,14 @@
 #include "tkEngine/graphics/tkTexture.h"
 #include "tkEngine/resource/tkSkinModelDataHandle.h"
 #include "tkEngine/graphics/tkSkinModelMaterial.h"
-#include "btBulletDynamicsCommon.h"
-#include "BulletCollision\CollisionDispatch\btGhostObject.h"
-#include "Physics\Physics.h"
+#include "tkEngine/Physics/tkPhysics.h"
 using namespace tkEngine;
 #include "GameCamera.h"
 #include "tkEngine/random/tkRandom.h"
 
 class Player;
 
-extern PhysicsWorld* g_physicsWorld ;
+extern CPhysicsWorld* g_physicsWorld ;
 extern Player* g_player;
 extern CRandom g_random;
 #endif // _STDAFX_H_

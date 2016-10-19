@@ -36,5 +36,5 @@ private:
 	EnLocalState						state;					//ステート。
 	
 	std::unique_ptr<btCollisionObject>	collisionObject;		//コリジョンオブジェクト。
-	std::unique_ptr<SphereCollider>		sphereShape;			//
+	std::unique_ptr<CSphereCollider>	sphereShape;			//
 };

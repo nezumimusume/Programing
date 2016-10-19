@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Physics/SphereCollider.h"
+#include "tkEngine/Physics/tkSphereCollider.h"
 #include "tkEngine/shape/tkSphereShape.h"
 
 #ifdef _DEBUG
@@ -31,7 +31,7 @@ public:
 		int groupID;						//コリジョンのグループＩＤ。
 		float time;
 		std::shared_ptr<btCollisionObject>	collisionObject;	//コリジョンオブジェクト。
-		SphereCollider						sphereCollider;		//スフィアコライダー。
+		CSphereCollider						sphereCollider;		//スフィアコライダー。
 #ifdef DEBUG_DMG_COLLISION_DRAW
 		CSphereShape debugShape;
 #endif

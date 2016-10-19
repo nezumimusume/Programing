@@ -70,21 +70,21 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(ProjectDir)../;$(IncludePath);$(ProjectDir)/exlib/bulletPhysics/src</IncludePath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(ProjectDir)../;$(IncludePath);$(ProjectDir)/exlib/bulletPhysics/src;$(ProjectDir)/bulletPhysics/src</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
     <IntDir>$(Configuration)Objects\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/exlib/bulletPhysics/src</IncludePath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/bulletPhysics/src;$(ProjectDir)/bulletPhysics/src</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
     <IntDir>$(Configuration)Objects\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/exlib/bulletPhysics/src</IncludePath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/exlib/bulletPhysics/src;$(ProjectDir)/bulletPhysics/src</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/exlib/bulletPhysics/src</IncludePath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/exlib/bulletPhysics/src;$(ProjectDir)/bulletPhysics/src</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -213,6 +213,12 @@
     <ClCompile Include="particle\tkParticle.cpp" />
     <ClCompile Include="particle\tkParticleEmitter.cpp" />
     <ClCompile Include="particle\tkParticleResources.cpp" />
+    <ClCompile Include="physics\tkBoxCollider.cpp" />
+    <ClCompile Include="physics\tkCapsuleCollider.cpp" />
+    <ClCompile Include="physics\tkMeshCollider.cpp" />
+    <ClCompile Include="physics\tkPhysics.cpp" />
+    <ClCompile Include="physics\tkRigidBody.cpp" />
+    <ClCompile Include="physics\tkSphereCollider.cpp" />
     <ClCompile Include="random\tkRandom.cpp" />
     <ClCompile Include="resource\tkSkinModelDataHandle.cpp" />
     <ClCompile Include="resource\tkSkinModelDataResources.cpp" />
@@ -283,6 +289,13 @@
     <ClInclude Include="particle\tkParticle.h" />
     <ClInclude Include="particle\tkParticleEmitter.h" />
     <ClInclude Include="particle\tkParticleResources.h" />
+    <ClInclude Include="physics\tkBoxCollider.h" />
+    <ClInclude Include="physics\tkCapsuleCollider.h" />
+    <ClInclude Include="physics\tkICollider.h" />
+    <ClInclude Include="physics\tkMeshCollider.h" />
+    <ClInclude Include="physics\tkPhysics.h" />
+    <ClInclude Include="physics\tkRigidBody.h" />
+    <ClInclude Include="physics\tkSphereCollider.h" />
     <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="random\tkRandom.h" />
     <ClInclude Include="resource\tkSkinModelDataHandle.h" />

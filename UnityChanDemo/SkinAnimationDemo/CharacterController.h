@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Physics/SphereCollider.h"
-#include "Physics/CapsuleCollider.h"
-#include "Physics/RigidBody.h"
+#include "tkEngine/Physics/tkSphereCollider.h"
+#include "tkEngine/Physics/tkCapsuleCollider.h"
+#include "tkEngine/Physics/tkRigidBody.h"
 
 /*!
  * @brief
@@ -68,7 +68,7 @@ public:
 	/*!
 	* @brief	コライダーを取得。
 	*/
-	CapsuleCollider* GetCollider()
+	CCapsuleCollider* GetCollider()
 	{
 		return &collider;
 	}
@@ -80,9 +80,8 @@ private:
 	CVector3 			position;		//座標。
 	CVector3 			moveSpeed;		//移動速度。 
 	bool 				isJump;			//ジャンプ中？
-	//SphereCollider		collider;		//コライダ。
-	CapsuleCollider		collider;		//コライダー。
+	CCapsuleCollider	collider;		//コライダー。
 	float				radius;
 	float				height;		
-	RigidBody			rigidBody;			//剛体。
+	CRigidBody			rigidBody;		//剛体。
 };

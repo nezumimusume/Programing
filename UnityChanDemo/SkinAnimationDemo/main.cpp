@@ -6,13 +6,13 @@
 #include "Map/Map.h"
 #include "Map/Sky.h"
 #include "Map/Ground.h"
-#include "Physics/Physics.h"
+#include "tkEngine/Physics/tkPhysics.h"
 #include "EnemyTest.h"
 #include "Enemy/EnemyManager.h"
 #include <time.h>
 #include "DamageCollisionWorld.h"
 #include "tkEngine/Sound/tkSoundSource.h"
-PhysicsWorld* g_physicsWorld = NULL;
+CPhysicsWorld* g_physicsWorld = NULL;
 Player* g_player = NULL;
 CRandom g_random;
 DamageCollisionWorld* g_damageCollisionWorld = NULL;
@@ -33,7 +33,7 @@ public:
 	void Start() override
 	{
 		//サウンドソースを初期化。
-		soundSource.InitStreaming("Assets/sound/SoundTest.wav");
+		soundSource.InitStreaming("Assets/sound/wind.wav");
 		//soundSource.Init("Assets/sound/MusicMono.wav");
 		soundSource.Play(true);
 		AddGO(0, &soundSource);
@@ -160,7 +160,7 @@ int WINAPI wWinMain(
 	NewGO<MemoryLeakTest>(0);
 #else
 
-	g_physicsWorld = NewGO<PhysicsWorld>(0);
+	g_physicsWorld = NewGO<CPhysicsWorld>(0);
 	g_player = NewGO<Player>(0);
 	NewGO<UnityChanInstance>(0);
 	NewGO<EnemyManager>(0);
