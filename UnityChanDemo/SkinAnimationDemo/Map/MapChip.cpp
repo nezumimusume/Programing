@@ -72,7 +72,7 @@ void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 		rbInfo.collider = &meshCollider[i];
 		rbInfo.mass = 0.0f;
 		rigidBody[i].Create(rbInfo);
-		g_physicsWorld->AddRigidBody(&rigidBody[i]);
+		PhysicsWorld().AddRigidBody(&rigidBody[i]);
 		i++;
 	}
 	

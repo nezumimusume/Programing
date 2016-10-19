@@ -2,6 +2,7 @@
 #include "tkEngine/Physics/tkPhysics.h"
 #include "Map/Ground.h"
 #include "Player/Player.h"
+#include "tkEngine/character/tkCollisionAttr.h"
 
 Ground* g_ground = NULL;
 LPD3DXMESH testMesh;
@@ -40,8 +41,9 @@ void Ground::Start()
 	rbInfo.collider = &meshCollider;
 	rbInfo.mass = 0.0f;
 	rigidBody.Create(rbInfo);
+	rigidBody.GetBody()->setUserIndex(enCollisionAttr_Ground);
 	//„‘Ì‚ðƒ[ƒ‹ƒh‚É’Ç‰ÁB
-	g_physicsWorld->AddRigidBody(&rigidBody);
+	PhysicsWorld().AddRigidBody(&rigidBody);
 }
 
 void Ground::Update() 

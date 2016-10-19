@@ -160,7 +160,6 @@ int WINAPI wWinMain(
 	NewGO<MemoryLeakTest>(0);
 #else
 
-	g_physicsWorld = NewGO<CPhysicsWorld>(0);
 	g_player = NewGO<Player>(0);
 	NewGO<UnityChanInstance>(0);
 	NewGO<EnemyManager>(0);

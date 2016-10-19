@@ -41,9 +41,6 @@
     <ClCompile Include="EnemyTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy\Enemy_00.cpp">
       <Filter>Source Files\Enemy</Filter>
     </ClCompile>
@@ -116,9 +113,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="EnemyTest.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterController.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Enemy\Enemy_00.h">

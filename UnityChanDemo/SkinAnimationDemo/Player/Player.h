@@ -9,7 +9,7 @@
 #include "tkEngine/graphics/tkTexture.h"
 #include "tkEngine/Physics/tkSphereCollider.h"
 #include "tkEngine/Physics/tkRigidBody.h"
-#include "CharacterController.h"
+#include "tkEngine/character/tkCharacterController.h"
 #include "AnimationEventController.h"
 
 /*!
@@ -144,7 +144,7 @@ private:
 	EnState					lastFrameState;		//前のフレームの状態。
 	bool					isPointLightOn;		//ポイントライトのスイッチ。
 	CRigidBody				rigidBody;			//剛体。
-	CharacterController		characterController;	//キャラクタコントローラ。
+	CCharacterController	characterController;	//キャラクタコントローラ。
 	SBattleSeat				battleSeats[NUM_BATTLE_SEAT];	//シート。
 	AnimationNo				reqAttackAnimNo;		//再生のリクエストを出している攻撃モーション番号。
 	AnimationNo				nextAttackAnimNo;		//次の攻撃モーション番号。

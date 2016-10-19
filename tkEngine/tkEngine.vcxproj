@@ -176,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AI\tkPathFinding.cpp" />
+    <ClCompile Include="character\tkCharacterController.cpp" />
     <ClCompile Include="gameObject\tkGameObject.cpp" />
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
     <ClCompile Include="graphics\postEffect\tkBloomRender.cpp" />
@@ -246,6 +247,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI\tkPathFinding.h" />
+    <ClInclude Include="character\tkCharacterController.h" />
+    <ClInclude Include="character\tkCollisionAttr.h" />
     <ClInclude Include="debug\tkAssert.h" />
     <ClInclude Include="debug\tkLog.h" />
     <ClInclude Include="gameObject\tkGameObject.h" />

@@ -24,7 +24,6 @@ using namespace tkEngine;
 
 class Player;
 
-extern CPhysicsWorld* g_physicsWorld ;
 extern Player* g_player;
 extern CRandom g_random;
 #endif // _STDAFX_H_

@@ -5,7 +5,7 @@
 #pragma once
 
 #include "Enemy/EnemyParameter.h"
-#include "CharacterController.h"
+#include "tkEngine/character/tkCharacterController.h"
 
 class Enemy : public IGameObject{
 public:
@@ -104,7 +104,7 @@ protected:
 	const EnemyParam*				enemyParam;			//敵のパラメータ。
 	CVector3						initPosition;		//初期位置。
 	
-	CharacterController				characterController;	//キャラクタコントローラ。
+	CCharacterController			characterController;	//キャラクタコントローラ。
 	float							height;
 	float							radius;
 };

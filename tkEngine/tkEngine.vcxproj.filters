@@ -60,6 +60,9 @@
     <Filter Include="Source Files\Sound">
       <UniqueIdentifier>{e7f1ec8b-1792-4c6e-9e5e-0c608bf495ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\character">
+      <UniqueIdentifier>{0de922d4-3418-4774-84a2-d88020fe8447}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -229,6 +232,9 @@
     </ClCompile>
     <ClCompile Include="physics\tkCapsuleCollider.cpp">
       <Filter>Source Files\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="character\tkCharacterController.cpp">
+      <Filter>Source Files\character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -435,6 +441,12 @@
     </ClInclude>
     <ClInclude Include="physics\tkBoxCollider.h">
       <Filter>Source Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="character\tkCharacterController.h">
+      <Filter>Source Files\character</Filter>
+    </ClInclude>
+    <ClInclude Include="character\tkCollisionAttr.h">
+      <Filter>Source Files\character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

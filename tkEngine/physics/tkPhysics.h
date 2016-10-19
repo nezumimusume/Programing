@@ -3,7 +3,7 @@
 namespace tkEngine{
 	class CRigidBody;
 
-	class CPhysicsWorld : public IGameObject
+	class CPhysicsWorld
 	{
 		btDefaultCollisionConfiguration*		collisionConfig;
 		btCollisionDispatcher*					collisionDispatcher;	//!<衝突解決処理。
@@ -13,9 +13,8 @@ namespace tkEngine{
 	public:
 		CPhysicsWorld();
 		~CPhysicsWorld();
-		void Start() override;
-		void Update() override;
-		void Render(tkEngine::CRenderContext& renderContext)override;
+		void Init();
+		void Update() ;
 		/*!
 		* @brief	ダイナミックワールドを取得。
 		*/

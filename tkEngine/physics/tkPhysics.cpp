@@ -21,7 +21,7 @@ namespace tkEngine{
 		delete collisionDispatcher;
 		delete collisionConfig;
 	}
-	void CPhysicsWorld::Start()
+	void CPhysicsWorld::Init()
 	{
 		//•¨—ƒGƒ“ƒWƒ“‚ð‰Šú‰»B
 		///collision configuration contains default setup for memory, collision setup. Advanced users can create their own configuration.
@@ -48,10 +48,6 @@ namespace tkEngine{
 	void CPhysicsWorld::Update()
 	{
 		dynamicWorld->stepSimulation(GameTime().GetFrameDeltaTime());
-	}
-	void CPhysicsWorld::Render(CRenderContext& renderContext)
-	{
-
 	}
 	void CPhysicsWorld::AddRigidBody(CRigidBody* rb)
 	{

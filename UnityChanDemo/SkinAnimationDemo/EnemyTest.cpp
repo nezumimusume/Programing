@@ -296,7 +296,7 @@ void EnemyTest::CollisionDetectAndResolve(CVector3 nextPosition)
 				newPos.Add(posTmp, addPosXZ);
 				end.setOrigin(btVector3(newPos.x, newPos.y, newPos.z));
 
-				g_physicsWorld->ConvexSweepTest((const btConvexShape*)collider.GetBody(), start, end, callback);
+				PhysicsWorld().ConvexSweepTest((const btConvexShape*)collider.GetBody(), start, end, callback);
 			}
 			if (callback.isHit) {
 				//ìñÇΩÇ¡ÇΩÅB
@@ -351,7 +351,7 @@ void EnemyTest::CollisionDetectAndResolve(CVector3 nextPosition)
 
 			end.setOrigin(btVector3(newPos.x, newPos.y, newPos.z));
 
-			g_physicsWorld->ConvexSweepTest((const btConvexShape*)collider.GetBody(), start, end, callback);
+			PhysicsWorld().ConvexSweepTest((const btConvexShape*)collider.GetBody(), start, end, callback);
 		}
 		if (callback.isHit) {
 			//ìñÇΩÇ¡ÇΩÅB

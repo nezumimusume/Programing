@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "Enemy/Enemy.h"
 #include "tkEngine/Physics/tkPhysics.h"
-#include "CollisionAttr.h"
+#include "tkEngine/character/tkCollisionAttr.h"
 
 void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 {
@@ -77,5 +77,5 @@ void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 */
 void Enemy::NotifyDead()
 {
-	characterController.NotifyDead();
+	characterController.RemoveRigidBoby();
 }
