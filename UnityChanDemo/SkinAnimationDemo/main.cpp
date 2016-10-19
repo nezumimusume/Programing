@@ -33,13 +33,19 @@ public:
 	void Start() override
 	{
 		//サウンドソースを初期化。
-		soundSource.InitStreaming("Assets/sound/wind.wav");
+		soundSource.InitStreaming("Assets/sound/SoundTest.wav");
 		//soundSource.Init("Assets/sound/MusicMono.wav");
 		soundSource.Play(true);
 		AddGO(0, &soundSource);
 	}
 	void Update() override
 	{
+		if (Pad(0).IsTrigger(enButtonUp)) {
+			soundSource.Stop();
+		}
+		else if (Pad(0).IsTrigger(enButtonDown)) {
+			soundSource.Play(true);
+		}
 	}
 	void Render(CRenderContext& renderContext) override
 	{
@@ -63,11 +69,11 @@ public:
 	{
 		//スキンなしモデル。
 		CSkinModelDataHandle nonSkinModelData;		//スキンモデルデータ。
-		SkinModelDataResources().Load(nonSkinModelData, "Assets/modelData/Court.X", NULL);
+		SkinModelDataResources().Load(nonSkinModelData, "Assets/modelData/ground.X", NULL);
 		
 		//スキンなしインスタンシングモデル。
 		CSkinModelDataHandle nonSkinModelInstancing;
-		SkinModelDataResources().Load(nonSkinModelInstancing, "Assets/modelData/Court.X", NULL, true, 10);
+		SkinModelDataResources().Load(nonSkinModelInstancing, "Assets/modelData/ground.X", NULL, true, 10);
 		
 		//スキンありモデル。
 		CSkinModelDataHandle skinModelData;
@@ -75,6 +81,12 @@ public:
 		//スキンありインスタンシングモデル。
 		CSkinModelDataHandle skinModelInstancing;
 		SkinModelDataResources().Load(skinModelInstancing, "Assets/modelData/Unity.X", NULL, true, 10);
+
+		CSoundSource soundSource;
+		soundSource.InitStreaming("Assets/sound/SoundTest.wav");
+		//soundSource.Init("Assets/sound/MusicMono.wav");
+		soundSource.Play(true);
+
 	}
 	void Render(CRenderContext& renderContext) override
 	{

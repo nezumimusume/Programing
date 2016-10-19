@@ -80,6 +80,13 @@ namespace tkEngine{
 		*/
 		void Play(bool isLoop);
 		/*!
+		* @brief	停止。
+		*/
+		void Stop()
+		{
+			m_sourceVoice->Stop();
+		}
+		/*!
 		* @brief	更新。
 		*@param[in]	isLoop		ループ再生フラグ。
 		*/
@@ -93,7 +100,10 @@ namespace tkEngine{
 			m_sourceVoice->SetVolume(vol);
 		}
 	private:
+		//ストリーミング再生中の更新処理。
 		void UpdateStreaming();
+		//オンメモリ再生中の更新処理。
+		void UpdateOnMemory();
 		void Play(char* buff, unsigned int bufferSize);
 		/*!
 		* @brief	ストリーミングバッファリングの開始。

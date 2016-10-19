@@ -75,17 +75,23 @@ namespace tkEngine{
 	}
 	void CSoundSource::Play(bool isLoop)
 	{
-		if (m_isStreaming) {
-			//バッファリング開始
-			StartStreamingBuffring();
+		if (m_isPlaying) {
+			//再生中のものを再開する。
+			m_sourceVoice->Start(0);
 		}
 		else {
-			m_sourceVoice->FlushSourceBuffers();
-			m_sourceVoice->Start(0);
-			Play(m_buffer.get(), m_waveFile.GetSize());
+			if (m_isStreaming) {
+				//バッファリング開始
+				StartStreamingBuffring();
+			}
+			else {
+				m_sourceVoice->FlushSourceBuffers();
+				m_sourceVoice->Start(0);
+				Play(m_buffer.get(), m_waveFile.GetSize());
+			}
+			m_isPlaying = true;
 		}
 		m_isLoop = isLoop;
-		m_isPlaying = true;
 	}
 	void CSoundSource::UpdateStreaming()
 	{
@@ -129,6 +135,24 @@ namespace tkEngine{
 			}
 		}
 	}
+	void CSoundSource::UpdateOnMemory()
+	{
+		if (!m_isPlaying) {
+			return;
+		}
+		XAUDIO2_VOICE_STATE state;
+		m_sourceVoice->GetState(&state);
+		if (state.BuffersQueued <= 0) {
+			m_isPlaying = false;
+			if (m_isLoop) {
+				//ループ。
+				Play(m_isLoop);
+			}
+			else {
+				DeleteGO(this);
+			}
+		}
+	}
 	void CSoundSource::Update()
 	{
 		if (m_isStreaming) {
@@ -136,18 +160,8 @@ namespace tkEngine{
 			UpdateStreaming();
 		}
 		else {
-			XAUDIO2_VOICE_STATE state;
-			m_sourceVoice->GetState(&state);
-			if (state.BuffersQueued <= 0) {
-				m_isPlaying = false;
-				if (m_isLoop) {
-					//ループ。
-					Play(m_isLoop);
-				}
-				else {
-					DeleteGO(this);
-				}
-			}
+			//オンメモリ再生中の更新処理。
+			UpdateOnMemory();
 		}
 	}
 }

@@ -54,6 +54,10 @@ namespace tkEngine{
 			m_xAudio2->Release();
 			m_xAudio2 = nullptr;
 		}
+		if (m_masteringVoice != nullptr) {
+			m_masteringVoice->DestroyVoice();
+			m_masteringVoice = nullptr;
+		}
 		CoUninitialize();
 	}
 	/*!

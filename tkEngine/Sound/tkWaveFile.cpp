@@ -200,6 +200,11 @@ namespace tkEngine{
 	}
 	void CWaveFile::Release()
 	{
+		if (m_isInvokeReadAsyncThread) {
+			m_readAsyncThread.join();
+			m_isInvokeReadAsyncThread = false;
+		}
+
 		if ( m_hmmio != NULL )
         {
             mmioClose( m_hmmio, 0 );

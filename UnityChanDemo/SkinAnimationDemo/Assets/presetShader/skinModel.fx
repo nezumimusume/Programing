@@ -285,10 +285,6 @@ PSOutput PSMain( VS_OUTPUT In )
 		float t = min( z / g_fogParam.y, 1.0f);
 		color.xyz = lerp(color.xyz, float3(0.75f, 0.75f, 0.95f), t);
 	}
-#ifndef USE_BLOOM_FLOATING_BUFFER
-	//ÉøÇ…ãPìxÇñÑÇﬂçûÇﬁÅB
-	color.a = CalcLuminance(color.xyz) ;
-#endif
 	PSOutput psOut = (PSOutput)0;
 	psOut.color = color;
 	psOut.depth = In.worldPos_depth.w;

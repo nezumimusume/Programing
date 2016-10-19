@@ -16,7 +16,7 @@ void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 	//まずはスキンモデルをロード。
 	char modelPath[1024];
 	sprintf(modelPath, "Assets/modelData/%s.X", mapChipLocInfoList[0]->modelName);
-	SkinModelDataResources().Load(skinModelData, modelPath, NULL, true, mapChipLocInfoList.size());
+	SkinModelDataResources().Load(skinModelData, modelPath, NULL, true, (int)mapChipLocInfoList.size());
 	skinModel.Init(skinModelData.GetBody());
 	skinModel.SetLight(&light);
 	skinModel.SetShadowCasterFlag(true);

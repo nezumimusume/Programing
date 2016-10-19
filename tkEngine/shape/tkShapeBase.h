@@ -145,7 +145,7 @@ namespace tkEngine{
 	{	
 		//–Ê–@ü‚ğ‹‚ß‚éB
 		TK_ASSERT( primType == CPrimitive::eTriangleList, "not implement TraiangleStrip yet...");
-		int numFace = indexBuffer.size() / 3;
+		int numFace = (int)indexBuffer.size() / 3;
 		std::unique_ptr<SPolygonInfo[]> polygonInfo;
 		std::vector<std::list<SPolygonInfo>>	polygoninfos;
 		polygoninfos.resize(vertexBuffer.size());
