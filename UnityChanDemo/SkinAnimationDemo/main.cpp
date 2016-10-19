@@ -162,7 +162,7 @@ int WINAPI wWinMain(
 
 	g_player = NewGO<Player>(0);
 	NewGO<UnityChanInstance>(0);
-	NewGO<EnemyManager>(0);
+//	NewGO<EnemyManager>(0);
 	NewGO<Map>(0);
 	NewGO<Ground>(0);
 	g_damageCollisionWorld = NewGO<DamageCollisionWorld>(0);

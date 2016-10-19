@@ -67,21 +67,24 @@ namespace tkEngine{
 					//自分に衝突した。or 地面に衝突した。
 					return 0.0f;
 				}
-				CVector3 hitNormalTmp = *(CVector3*)&convexResult.m_hitNormalLocal;
+				CVector3 hitNormalTmp;
+				hitNormalTmp.Set(convexResult.m_hitNormalLocal);
 				float t = fabsf(acosf(hitNormalTmp.Dot(CVector3::Up)));
 				if (t >= CMath::PI * 0.3f 
 					|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Character
 				) {
 					isHit = true;
-					CVector3 hitPosTmp = *(CVector3*)&convexResult.m_hitPointLocal;
+					CVector3 hitPosTmp;
+					hitPosTmp.Set(convexResult.m_hitPointLocal);
 					//交点との距離を調べる。
 					CVector3 vDist;
 					vDist.Subtract(hitPosTmp, startPos);
+					vDist.y = 0.0f;
 					float distTmp = vDist.Length();
 					if (distTmp < dist) {
 						hitPos = hitPosTmp;
 						dist = distTmp;
-						hitNormal = *(CVector3*)&convexResult.m_hitNormalLocal;
+						hitNormal = hitNormalTmp;
 					}
 				}
 				return 0.0f;
@@ -184,7 +187,6 @@ namespace tkEngine{
 				}
 				loopCount++;
 				if (loopCount == 5) {
-					//移動できない。
 					break;
 				}
 			}

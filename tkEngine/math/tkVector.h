@@ -55,6 +55,12 @@ namespace tkEngine{
 			this->y = y;
 			this->z = z;
 		}
+		void Set(btVector3& v)
+		{
+			this->x = v.x();
+			this->y = v.y();
+			this->z = v.z();
+		}
 		/*!
 		 * @brief	ベクトルを加算。
 		 */
