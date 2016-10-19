@@ -77,7 +77,6 @@ namespace tkEngine{
 	{
 		if (m_isStreaming) {
 			//バッファリング開始
-			//バッファリングスタート。
 			StartStreamingBuffring();
 		}
 		else {
@@ -107,7 +106,7 @@ namespace tkEngine{
 			if (state.BuffersQueued <= 2) {	//キューイングされているバッファが２以下になったらキューイングできる。
 				Play(&m_buffer[m_readStartPos], m_currentBufferingSize);
 				if (m_currentBufferingSize == 0) {
-					//読み込みが終わった。
+					//読み込んだサイズが０ということは末端まで読み込みが終わったということ。
 					if (m_isLoop) {
 						//ループする？
 						//waveファイルの読み込み位置をリセットしてバッファリング再開。

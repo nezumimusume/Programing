@@ -7,6 +7,13 @@
 #include <thread>
 
 namespace tkEngine{
+	/*!
+	 *@brief	waveファイルを扱うためのクラス。
+	 *@details
+	 * waveファイルの同期読み込み、非同期読み込みをサポートします。</br>
+	 * CWaveFile::Readは同期読み込み、CWaveFile::ReadAsyncは非同期読み込みが行われます。</br>
+	 * ReadAsyncを使用した場合はCWaveFile::IsReadEndを使用して同期をとって下さい。</br>
+	 */
 	class CWaveFile {
 	public:
 		CWaveFile();

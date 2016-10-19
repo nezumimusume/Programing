@@ -19,8 +19,8 @@ namespace {
 		},
 		//AnimationRun
 		{
-			EMIT_SOUND_EVENT(0.4f, 0.05f, "Assets/sound/Footstep_00.wav"),
-			EMIT_SOUND_EVENT(0.9f, 0.05f, "Assets/sound/Footstep_00.wav"),
+			EMIT_SOUND_EVENT(0.4f, 1.0f, "Assets/sound/Footstep_00.wav"),
+			EMIT_SOUND_EVENT(0.9f, 1.0f, "Assets/sound/Footstep_00.wav"),
 			END_ANIMATION_EVENT(),
 		},
 		//AnimationJump

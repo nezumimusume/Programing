@@ -36,7 +36,6 @@ public:
 		soundSource.InitStreaming("Assets/sound/wind.wav");
 		//soundSource.Init("Assets/sound/MusicMono.wav");
 		soundSource.Play(true);
-		soundSource.SetVolume(0.05f);
 		AddGO(0, &soundSource);
 	}
 	void Update() override
