@@ -138,6 +138,7 @@ void Player::Start()
 	state = enStateStand;
 
 	characterController.Init(0.4f, 0.3f, position);
+	characterController.SetGravity(-18.8f);
 	toLampLocalPos.Set( 0.0f, 0.5f, 0.2f);
 	InitBattleSeats();
 	//g_physicsWorld->AddRigidBody(&rigidBody);

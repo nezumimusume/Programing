@@ -71,6 +71,7 @@ void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 	radius = 0.6f;
 	height = 0.3f;
 	characterController.Init(radius, height, position);
+	characterController.SetGravity(-18.8f);
 }
 /*!
 * @brief	€–S‚µ‚½‚±‚Æ‚ğ’Ê’mB
