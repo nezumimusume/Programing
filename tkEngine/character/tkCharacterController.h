@@ -14,8 +14,13 @@ namespace tkEngine{
 	 */
 	class CCharacterController{
 	public:
-		CCharacterController();
-		~CCharacterController();
+		CCharacterController() {
+
+		}
+		~CCharacterController()
+		{
+
+		}
 		/*!
 		 * @brief	‰Šú‰»B
 		 */

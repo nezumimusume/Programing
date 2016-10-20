@@ -96,12 +96,7 @@ namespace tkEngine{
 		};
 	}
 
-	CCharacterController::CCharacterController() 
-	{
-	}
-	CCharacterController::~CCharacterController()
-	{
-	}
+	
 	void CCharacterController::Init(float radius, float height, const CVector3& position)
 	{
 		m_position = position;
@@ -126,10 +121,11 @@ namespace tkEngine{
 	}
 	void CCharacterController::Execute()
 	{
-		//Y方向には重力落下を加える。
+		//速度に重力加速度を加える。
 		m_moveSpeed.y += m_gravity * GameTime().GetFrameDeltaTime();
 		//次の移動先となる座標を計算する。
 		CVector3 nextPosition = m_position;
+		//速度からこのフレームでの移動量を求める。オイラー積分。
 		CVector3 addPos = m_moveSpeed;
 		addPos.Scale(GameTime().GetFrameDeltaTime());
 		nextPosition.Add(addPos);
