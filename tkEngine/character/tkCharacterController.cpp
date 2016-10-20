@@ -92,11 +92,7 @@ namespace tkEngine{
 		};
 	}
 
-	CCharacterController::CCharacterController() :
-		moveSpeed(CVector3::Zero),
-		position(CVector3::Zero),
-		isJump(false),
-		radius(0.0f)
+	CCharacterController::CCharacterController() 
 	{
 	}
 	CCharacterController::~CCharacterController()
@@ -209,13 +205,19 @@ namespace tkEngine{
 			callback.me = rigidBody.GetBody();
 			callback.startPos = (*(CVector3*)&start.getOrigin());
 			newPos = (*(CVector3*)&start.getOrigin());
-			if (addPos.y > 0.0f) {
-				//XZに移動した結果めり込んでいる可能性があるので上に移動していても下を調べる。
-				newPos.y -= addPos.y * 0.1f;
+			if (isOnGround == false) {
+				if (addPos.y > 0.0f) {
+					//XZに移動した結果めり込んでいる可能性があるので上に移動していても下を調べる。
+					newPos.y -= addPos.y * 0.01f;
+				}
+				else {
+					//落下している場合はそのまま下を調べる。
+					newPos.y += addPos.y;
+				}
 			}
 			else {
-				//落下している場合はそのまま下を調べる。
-				newPos.y += addPos.y;
+				//ジャンプ中じゃない場合は1m下を見る。
+				newPos.y -= 1.0f;
 			}
 			end.setOrigin(btVector3(newPos.x, newPos.y, newPos.z));
 
@@ -238,7 +240,12 @@ namespace tkEngine{
 
 				moveSpeed.y = 0.0f;
 				isJump = false;
+				isOnGround = true;
 				nextPosition.y = callback.hitPos.y + offset - radius;
+			}
+			else {
+				//地面上にいない。
+				isOnGround = false;
 			}
 		}
 		position = nextPosition;

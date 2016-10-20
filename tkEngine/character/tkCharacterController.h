@@ -58,6 +58,7 @@ namespace tkEngine{
 		void Jump( )
 		{
 			isJump = true;
+			isOnGround = false;
 		}
 		/*!
 		 * @brief	ジャンプ中か判定
@@ -78,12 +79,13 @@ namespace tkEngine{
 		*/
 		void RemoveRigidBoby();
 	private:
-		CVector3 			position;		//座標。
-		CVector3 			moveSpeed;		//移動速度。 
-		bool 				isJump;			//ジャンプ中？
-		CCapsuleCollider	collider;		//コライダー。
-		float				radius;
-		float				height;		
-		CRigidBody			rigidBody;		//剛体。
+		CVector3 			position = CVector3::Zero;		//座標。
+		CVector3 			moveSpeed = CVector3::Zero;		//移動速度。 
+		bool 				isJump = false;					//ジャンプ中？
+		bool				isOnGround = true;				//地面の上にいる？
+		CCapsuleCollider	collider;						//コライダー。
+		float				radius = 0.0f;
+		float				height = 0.0f;		
+		CRigidBody			rigidBody;						//剛体。
 	};
 }
