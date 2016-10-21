@@ -414,6 +414,12 @@ Player::SBattleSeat* Player::FindUnuseSeat(const CVector3& pos)
 */
 void Player::Render(CRenderContext& renderContext)
 {
+	if (Pad(0).IsTrigger(enButtonDown)) {
+		hp = max(0, hp-5);
+	}
+	if (Pad(0).IsTrigger(enButtonUp)) {
+		hp = min(maxHP, hp + 5);
+	}
 	if (state != enState_RideOnCar) {
 		//ŽÔ‚Éæ‚Á‚Ä‚¢‚é‚Æ‚«‚Í”ñ•\Ž¦‚É‚·‚éB
 		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());

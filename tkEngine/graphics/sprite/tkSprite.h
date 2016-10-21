@@ -37,12 +37,26 @@ namespace tkEngine{
 			m_pos = pos;
 		}
 		/*!
+		*@brief	画像の位置を取得。
+		*/
+		const CVector2& GetPosition() const
+		{
+			return m_pos;
+		}
+		/*!
 		*@brief	スプライトのサイズを設定。
 		*@param[in]	size		サイズ。
 		*/
 		void SetSize(const CVector2& size)
 		{
 			m_size = size;
+		}
+		/*!
+		*@brief	スプライトのサイズを取得。
+		*/
+		const CVector2& GetSize() const
+		{
+			return m_size;
 		}
 		/*!
 		*@brief	ピボットを設定。

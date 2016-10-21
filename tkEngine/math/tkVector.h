@@ -15,6 +15,16 @@ namespace tkEngine{
 			struct { float x, y; };
 			float v[2];
 		};
+		/*!
+		* @brief	線形補間。
+		*@details
+		* this = v0 + (v1-v0) * t;
+		*/
+		void Lerp(float t, const CVector2& v0, const CVector2& v1)
+		{
+			x = v0.x + (v1.x - v0.x) * t;
+			y = v0.y + (v1.y - v0.y) * t;
+		}
 	};
 	/*!
 	 * @brief	ベクトル。
@@ -45,6 +55,17 @@ namespace tkEngine{
 		CVector3(float x, float y, float z)
 		{
 			Set(x, y, z);
+		}
+		/*!
+		* @brief	線形補間。
+		*@details
+		* this = v0 + (v1-v0) * t;
+		*/
+		void Lerp(float t, const CVector3& v0, const CVector3& v1)
+		{
+			x = v0.x + (v1.x - v0.x) * t;
+			y = v0.y + (v1.y - v0.y) * t;
+			z = v0.z + (v1.z - v0.z) * t;
 		}
 		/*!
 		* @brief	ベクトルの各要素を設定。

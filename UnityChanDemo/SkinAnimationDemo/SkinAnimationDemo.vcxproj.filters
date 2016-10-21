@@ -21,6 +21,9 @@
     <Filter Include="Source Files\Player">
       <UniqueIdentifier>{21f05900-a4dc-4bec-abbc-a6640d4a9a78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\HUD">
+      <UniqueIdentifier>{19ef75f3-9793-422a-af19-e7c1586a26ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -97,6 +100,9 @@
     </ClCompile>
     <ClCompile Include="Enemy\EnemySensor.cpp">
       <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD\PlayerHPBar.cpp">
+      <Filter>Source Files\HUD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +186,9 @@
     </ClInclude>
     <ClInclude Include="Enemy\EnemySensor.h">
       <Filter>Source Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD\PlayerHPBar.h">
+      <Filter>Source Files\HUD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

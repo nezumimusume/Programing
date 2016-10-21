@@ -104,6 +104,20 @@ public:
 	{
 		return skinModel.FindBoneWorldMatrix(boneName);
 	}
+	/*!
+	* @brief	HPの取得。
+	*/
+	int GetHP() const
+	{
+		return hp;
+	}
+	/*!
+	* @brief	最大HPの取得。
+	*/
+	int GetMaxHP() const
+	{
+		return maxHP;
+	}
 private:
 	/*!
 	* @brief	ポイントライトの位置を更新。
@@ -149,5 +163,6 @@ private:
 	AnimationNo				reqAttackAnimNo;		//再生のリクエストを出している攻撃モーション番号。
 	AnimationNo				nextAttackAnimNo;		//次の攻撃モーション番号。
 	AnimationEventController	animationEventController;	//アニメーションイベントコントローラ。
-
+	int						hp =  100;					//ヒットポイント。
+	int						maxHP = 100;				//最大ヒットポイント。
 };
