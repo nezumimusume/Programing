@@ -19,6 +19,7 @@ namespace tkEngine {
 			TK_LOG("FailedTextureLoad");
 			return false;
 		}
+		ComputeTexSize();
 		return true;
 	}
 }

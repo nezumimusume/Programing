@@ -12,12 +12,43 @@
 #include <time.h>
 #include "DamageCollisionWorld.h"
 #include "tkEngine/Sound/tkSoundSource.h"
+#include "tkEngine/graphics/sprite/tkSprite.h"
+
 CPhysicsWorld* g_physicsWorld = NULL;
 Player* g_player = NULL;
 CRandom g_random;
 DamageCollisionWorld* g_damageCollisionWorld = NULL;
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 #define PLAY_WAVE_FILE_TEST		//定義で波形データの再生テストが有効になる。
+//#define DRAW_SPRITE_TEST		//定義でスプライト描画テスト。
+
+#ifdef DRAW_SPRITE_TEST
+class DrawSpriteTest : public IGameObject {
+	CSprite	sprite;
+	CTexture texture;
+public:
+	DrawSpriteTest()
+	{
+	}
+	~DrawSpriteTest()
+	{
+	}
+	void Start() override
+	{
+		texture.Load("Assets/sprite/test.png");
+		sprite.Init(&texture);
+		sprite.SetPosition({ -640, 360 });
+		sprite.SetPivot({ 0.0f, 1.0f });
+	}
+	void Update() override
+	{
+	}
+	void PostRender( CRenderContext& renderContext ) override
+	{
+		sprite.Draw(renderContext);
+	}
+};
+#endif
 #ifdef PLAY_WAVE_FILE_TEST
 class PlayWaveFileTest : public IGameObject {
 	/*CWaveFile waveFile;
@@ -153,6 +184,9 @@ int WINAPI wWinMain(
 	//tkEngineの初期化。
 	InitTkEngine( hInst );
 	g_random.Init((unsigned long)time(NULL));
+#ifdef DRAW_SPRITE_TEST
+	NewGO<DrawSpriteTest>(1);
+#endif
 #ifdef PLAY_WAVE_FILE_TEST
 	NewGO<PlayWaveFileTest>(0);
 #endif

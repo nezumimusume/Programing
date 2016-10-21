@@ -74,6 +74,8 @@ namespace tkEngine{
 		virtual void PreRender( CRenderContext& renderContext ) {}
 		/*!
 		 *@brief	Render関数が実行された後で呼ばれる描画処理
+		 *@details
+		 * ポストエフェクトの後で実行されます。HUDなどポストエフェクトの影響を受けたくない描画物はここでレンダリングしてください。
 		 */
 		virtual void PostRender(CRenderContext& renderContext ) {}
 		/*!
