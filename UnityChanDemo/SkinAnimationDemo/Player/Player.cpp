@@ -3,6 +3,8 @@
 #include "Car.h"
 #include "Map/Ground.h"
 #include "tkEngine/graphics/tkSkinModelMaterial.h"
+#include "DamageCollisionWorld.h"
+#include "ParticleParam.h"
 
 namespace {
 	const float MAX_RUN_SPEED = 0.1f;					//ユニティちゃんの走りの最高速度。
@@ -139,19 +141,22 @@ void Player::Start()
 	toLightPos.Subtract(lightPos, position);
 	ShadowMap().SetCalcLightViewFunc(CShadowMap::enCalcLightViewFunc_PositionTarget);
 	state = enStateStand;
-
-	characterController.Init(0.4f, 0.3f, position);
+	radius = 0.4f;
+	height = 0.3f;
+	characterController.Init(radius, height, position);
 	characterController.SetGravity(-18.8f);
 	toLampLocalPos.Set( 0.0f, 0.5f, 0.2f);
 	InitBattleSeats();
 	//g_physicsWorld->AddRigidBody(&rigidBody);
 	animation.SetAnimationEndTime(AnimationAttack_00, 0.63333f);
 	animation.SetAnimationEndTime(AnimationAttack_01, 0.76666f);
+	animation.SetAnimationEndTime(AnimationDamage, 0.733333f);
 	animation.SetAnimationLoopFlag(AnimationJump, false);
 	animation.SetAnimationLoopFlag(AnimationAttack_00, false);
 	animation.SetAnimationLoopFlag(AnimationAttack_01, false);
 	animation.SetAnimationLoopFlag(AnimationAttack_02, false);
 	animation.SetAnimationLoopFlag(AnimationDamage, false);
+	animation.SetAnimationLoopFlag(AnimationDeath, false);
 	nextAttackAnimNo = AnimationInvalid;
 	reqAttackAnimNo = AnimationInvalid;
 
@@ -275,8 +280,14 @@ void Player::Update()
 			nextAttackAnimNo = (AnimationNo)(animation.GetPlayAnimNo() + 1);
 		}
 	}
+	else if (state == enState_Damage) {
+		if (!animation.IsPlay()) {
+			state = enStateStand;
+		}
+	}
 	position = characterController.GetPosition();
-
+	//ダメージ処理。
+	Damage();
 	//ポイントライトの位置を更新。
 	UpdatePointLightPosition();
 	//アニメーションコントロール。
@@ -285,6 +296,7 @@ void Player::Update()
 	UpdateBattleSeats();
 	//アニメーションイベントコントローラの実行。
 	animationEventController.Update();
+	
 
 	ShadowMap().SetLightTarget(position);
 	CVector3 lightPos;
@@ -295,6 +307,33 @@ void Player::Update()
 	
 	
 	lastFrameState = state;
+}
+/*!
+* @brief	ヤラレ処理。
+*/
+void Player::Damage()
+{
+	if (state == enState_Damage || state == enState_Dead) {
+		return;
+	}
+	CRigidBody* rb = characterController.GetRigidBody();
+	const DamageCollisionWorld::Collision* dmgColli = g_damageCollisionWorld->FindOverlappedDamageCollision(
+		DamageCollisionWorld::enDamageToPlayer,
+		rb->GetBody()
+	);
+	if (dmgColli != NULL) {
+		//ダメージを受けた。
+		hp -= dmgColli->damage;
+		if (hp < 0.0f) {
+			//死亡
+			hp = 0;
+			state = enState_Dead;
+		}
+		else {
+			state = enState_Damage;
+		}
+	}
+	
 }
 /*!
 * @brief	ポイントライトの位置を更新。
@@ -358,6 +397,12 @@ void Player::AnimationControl()
 				nextAttackAnimNo = AnimationInvalid;
 			}
 		}
+		else if (state == enState_Damage) {
+			PlayAnimation(AnimationDamage, 0.1f);
+		}
+		else if (state == enState_Dead) {
+			PlayAnimation(AnimationDeath, 0.1f);
+		}
 	}
 	animation.Update(GameTime().GetFrameDeltaTime());
 }
@@ -414,12 +459,6 @@ Player::SBattleSeat* Player::FindUnuseSeat(const CVector3& pos)
 */
 void Player::Render(CRenderContext& renderContext)
 {
-	if (Pad(0).IsTrigger(enButtonDown)) {
-		hp = max(0, hp-5);
-	}
-	if (Pad(0).IsTrigger(enButtonUp)) {
-		hp = min(maxHP, hp + 5);
-	}
 	if (state != enState_RideOnCar) {
 		//車に乗っているときは非表示にする。
 		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());

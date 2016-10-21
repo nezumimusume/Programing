@@ -7,10 +7,7 @@
 #include "DamageCollisionWorld.h"
 #include "tkEngine/Sound/tkSoundSource.h"
 
-AnimationEventController::AnimationEventController() :
-	animation(nullptr),
-	animNoLastFrame(-1),
-	skinModel(nullptr)
+AnimationEventController::AnimationEventController() 
 {
 }
 AnimationEventController::~AnimationEventController()
@@ -19,6 +16,9 @@ AnimationEventController::~AnimationEventController()
 void AnimationEventController::Init(CSkinModel* skinModel, CAnimation* animation, AnimationEventGroup* eventGroupTbl, int tblSize )
 {
 	TK_ASSERT(animation->GetNumAnimationSet() == tblSize, "tblSize is invalid");
+	if (eventGroupTbl == NULL) {
+		return;
+	}
 	this->skinModel = skinModel;
 	this->animation = animation;
 	eventGroupExTbl.resize(tblSize);
@@ -26,6 +26,7 @@ void AnimationEventController::Init(CSkinModel* skinModel, CAnimation* animation
 		eventGroupExTbl[i].eventGroup = eventGroupTbl[i];
 		memset(eventGroupExTbl[i].invokeFlags, 0, sizeof(eventGroupExTbl[i].invokeFlags));
 	}
+	isInited = true;
 }
 void AnimationEventController::InvokeAnimationEvent(const AnimationEvent& event)
 {
@@ -34,15 +35,25 @@ void AnimationEventController::InvokeAnimationEvent(const AnimationEvent& event)
 		//敵にダメージを与えるコリジョンの発生。
 		CMatrix* bone = skinModel->FindBoneWorldMatrix(event.strArg[0]);
 		CVector3 pos = event.vArg[0];
-		bone->Mul(pos);
-		g_damageCollisionWorld->Add(event.fArg[1], pos, event.fArg[0], event.iArg[0], DamageCollisionWorld::enDamageToEnemy, event.iArg[1]);
+		if (bone != NULL) {
+			bone->Mul(pos);
+			g_damageCollisionWorld->Add(event.fArg[1], pos, event.fArg[0], event.iArg[0], DamageCollisionWorld::enDamageToEnemy, event.iArg[1]);
+		}
+		else {
+			TK_LOG("bone is null AnimationEventController::InvokeAnimationEvent");
+		}
 	}break;
 	case eAnimationEventType_EmitDamageToPlayerCollision: {
 		//プレイヤーにダメージを与えるコリジョンの発生。
 		CMatrix* bone = skinModel->FindBoneWorldMatrix(event.strArg[0]);
 		CVector3 pos = event.vArg[0];
-		bone->Mul(pos);
-		g_damageCollisionWorld->Add(event.fArg[1], event.vArg[0], event.fArg[0], event.iArg[0], DamageCollisionWorld::enDamageToPlayer, event.iArg[1]);
+		if (bone != NULL) {
+			bone->Mul(pos);
+			g_damageCollisionWorld->Add(event.fArg[1], pos, event.fArg[0], event.iArg[0], DamageCollisionWorld::enDamageToPlayer, event.iArg[1]);
+		}
+		else {
+			TK_LOG("bone is null AnimationEventController::InvokeAnimationEvent");
+		}
 	}break;
 	case eAnimationEventType_EmitSound: {
 		//ワンショットのサウンド発生。
@@ -57,6 +68,10 @@ void AnimationEventController::InvokeAnimationEvent(const AnimationEvent& event)
 }
 void AnimationEventController::Update()
 {
+	if (isInited == false) {
+		//初期化が完了していない。
+		return;
+	}
 	TK_ASSERT(animation != nullptr, "animation is null");
 	int currentAnimNo = animation->GetPlayAnimNo();
 	float animTime = animation->GetLocalAnimationTime();

@@ -190,5 +190,8 @@
     <ClInclude Include="HUD\PlayerHPBar.h">
       <Filter>Source Files\HUD</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy\EnemyAnimationEventTbl.h">
+      <Filter>Source Files\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

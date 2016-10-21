@@ -105,9 +105,10 @@ private:
 		AnimationEventGroup eventGroup;
 		bool invokeFlags[ANIMATION_EVENT_MAX];	//イベントの発生フラグ。
 	};
-	int									animNoLastFrame;	//!<一フレーム前のアニメーション番号。
-	CAnimation* 						animation;			//!<アニメーション。
+	int									animNoLastFrame = -1;		//!<一フレーム前のアニメーション番号。
+	CAnimation* 						animation = nullptr;		//!<アニメーション。
 	std::vector<AnimationEventGroupEx>	eventGroupExTbl;	
-	CSkinModel*							skinModel;					//!<スキンモデル。
+	CSkinModel*							skinModel = nullptr;		//!<スキンモデル。
 	float								lastFrameAnimTime = 0.0f;	//!<1フレーム前のアニメーションタイム。
+	bool								isInited = false;			//!<初期化できたかどうかのフラグ。
 };

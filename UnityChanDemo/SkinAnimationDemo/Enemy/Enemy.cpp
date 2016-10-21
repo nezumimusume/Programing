@@ -5,6 +5,7 @@
 #include "Enemy/Enemy.h"
 #include "tkEngine/Physics/tkPhysics.h"
 #include "tkEngine/character/tkCollisionAttr.h"
+#include "Enemy/EnemyParameter.h"
 
 void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 {
@@ -72,6 +73,18 @@ void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 	height = 0.3f;
 	characterController.Init(radius, height, position);
 	characterController.SetGravity(-18.8f);
+	if (enemyParam->animationEventGroup != NULL) {
+		animationEventController.Init(
+			&skinModel, 
+			&animation, 
+			enemyParam->animationEventGroup, 
+			enNumAnim
+		);
+	}
+}
+void Enemy::Update()
+{
+	animationEventController.Update();
 }
 /*!
 * @brief	€–S‚µ‚½‚±‚Æ‚ğ’Ê’mB

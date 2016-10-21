@@ -201,6 +201,7 @@
     <ClInclude Include="DamageCollisionWorld.h" />
     <ClInclude Include="EnemyTest.h" />
     <ClInclude Include="Enemy\Enemy.h" />
+    <ClInclude Include="Enemy\EnemyAnimationEventTbl.h" />
     <ClInclude Include="Enemy\EnemyManager.h" />
     <ClInclude Include="Enemy\EnemyParameter.h" />
     <ClInclude Include="Enemy\EnemySensor.h" />

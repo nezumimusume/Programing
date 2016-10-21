@@ -87,6 +87,13 @@ namespace tkEngine{
 			m_gravity = gravity;
 		}
 		/*!
+		* @brief	剛体を取得。
+		*/
+		CRigidBody* GetRigidBody()
+		{
+			return &m_rigidBody;
+		}
+		/*!
 		* @brief	剛体を物理エンジンから削除。。
 		*/
 		void RemoveRigidBoby();

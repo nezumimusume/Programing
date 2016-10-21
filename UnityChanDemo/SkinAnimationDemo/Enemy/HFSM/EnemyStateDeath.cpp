@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "Enemy/HFSM/EnemyStateDeath.h"
 #include "ParticleParam.h"
+#include "Enemy/EnemyParameter.h"
 
 /*!
  * @brief	コンストラクタ。

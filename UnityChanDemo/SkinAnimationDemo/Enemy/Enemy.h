@@ -4,9 +4,10 @@
  
 #pragma once
 
-#include "Enemy/EnemyParameter.h"
 #include "tkEngine/character/tkCharacterController.h"
+#include "AnimationEventController.h"
 
+struct EnemyParam;
 class Enemy : public IGameObject{
 public:
 	enum EnAnimation {
@@ -15,6 +16,7 @@ public:
 		enAnimAttack,
 		enAnimDamage,
 		enAnimDeath,
+		enNumAnim,
 		enAnimInvalid = 0xffffffff
 	};
 	Enemy() :
@@ -27,6 +29,7 @@ public:
 	{
 	}
 	virtual void Init(const char* modelPath, CVector3 pos, CQuaternion rotation);
+	void Update() override;
 	void PlayAnimation(EnAnimation animNo)
 	{
 		if(currentAnimNo != animNo)
@@ -102,8 +105,8 @@ protected:
 	std::vector<CTexture>			specMapList;		//スペキュラマップ。
 	std::vector<CTexture>			normalMapList;		//法線マップ。
 	const EnemyParam*				enemyParam;			//敵のパラメータ。
-	CVector3						initPosition;		//初期位置。
-	
+	CVector3						initPosition;			//初期位置。
+	AnimationEventController		animationEventController;	//アニメーションイベントコントローラー。
 	CCharacterController			characterController;	//キャラクタコントローラ。
 	float							height;
 	float							radius;

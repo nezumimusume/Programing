@@ -7,6 +7,8 @@
 #include "GameCamera.h"
 #include "Player/Player.h"
 #include "ParticleParam.h"
+#include "Enemy/EnemyParameter.h"
+
 /*!
  * @brief	コンストラクタ。
  */

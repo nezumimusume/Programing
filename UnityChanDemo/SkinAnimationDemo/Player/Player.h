@@ -46,6 +46,8 @@ public:
 		enStateStand,		//立ち止まっている。
 		enState_RideOnCar,	//車に乗っている。
 		enState_Attack,		//攻撃。
+		enState_Damage,		//ダメージを受けている。
+		enState_Dead,		//死亡。
 	};
 	bool					isUpdateAnim;		//
 
@@ -120,6 +122,10 @@ public:
 	}
 private:
 	/*!
+	* @brief	ヤラレ処理。
+	*/
+	void Damage();
+	/*!
 	* @brief	ポイントライトの位置を更新。
 	*/
 	void UpdatePointLightPosition();
@@ -165,4 +171,6 @@ private:
 	AnimationEventController	animationEventController;	//アニメーションイベントコントローラ。
 	int						hp =  100;					//ヒットポイント。
 	int						maxHP = 100;				//最大ヒットポイント。
+	float					radius = 0.0f;
+	float					height = 0.0f;
 };

@@ -8,15 +8,14 @@
 namespace {
 	struct MyContactResultCallback : public btCollisionWorld::ContactResultCallback
 	{
-		MyContactResultCallback() :
-			queryCollisionObject(nullptr),
-			hitObject(nullptr)
+		MyContactResultCallback() 
 		{
 
 		}
-		btCollisionObject* queryCollisionObject;
-		DamageCollisionWorld:: Collision* hitObject;
+		btCollisionObject* queryCollisionObject = nullptr;
+		DamageCollisionWorld:: Collision* hitObject = nullptr;
 		float distSq = FLT_MAX;
+		DamageCollisionWorld::EnAttr queryAttr = DamageCollisionWorld::enDamageToEnemy;	//調べるコリジョン属性。
 		virtual	btScalar	addSingleResult(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1) override
 		{
 			const CVector3* vColl0Pos = (CVector3*)(&colObj0Wrap->getWorldTransform().getOrigin());
@@ -24,15 +23,19 @@ namespace {
 			CVector3 vDist;
 			vDist.Subtract(*vColl0Pos, *vColl1Pos);
 			float distTmpSq = vDist.LengthSq();
+			DamageCollisionWorld::Collision* hitObjectTmp;
 			if (distTmpSq < distSq) {
 				//こちらの方が近い。
 				if (queryCollisionObject == colObj0Wrap->getCollisionObject()) {
-					hitObject = (DamageCollisionWorld::Collision*)colObj1Wrap->getCollisionObject()->getUserPointer();
+					hitObjectTmp = (DamageCollisionWorld::Collision*)colObj1Wrap->getCollisionObject()->getUserPointer();
 				}
 				else {
-					hitObject = (DamageCollisionWorld::Collision*)colObj0Wrap->getCollisionObject()->getUserPointer();
+					hitObjectTmp = (DamageCollisionWorld::Collision*)colObj0Wrap->getCollisionObject()->getUserPointer();
 				}
-				distSq = distTmpSq;
+				if (hitObjectTmp->attr == queryAttr) {
+					distSq = distTmpSq;
+					hitObject = hitObjectTmp;
+				}
 			}
 			
 			return 0.0f;
@@ -75,6 +78,7 @@ const DamageCollisionWorld::Collision* DamageCollisionWorld::FindOverlappedDamag
 {
 	MyContactResultCallback callback;
 	callback.queryCollisionObject = colliObject;
+	callback.queryAttr = attr;
 	collisionWorld->contactTest(colliObject, callback);
 
 	return callback.hitObject;

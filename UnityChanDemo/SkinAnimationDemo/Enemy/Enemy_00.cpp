@@ -68,6 +68,8 @@ void Enemy_00::Start()
 }
 void Enemy_00::Update()
 {
+	Enemy::Update();
+
 	states[state]->Update();
 	switch (state) {
 	case enLocalState_Search:
@@ -145,7 +147,7 @@ void Enemy_00::Damage()
 	if (dmgColli != NULL && states[state]->IsPossibleApplyDamage(dmgColli) ) {
 		//ダメージを食らっている。
 		hp -= dmgColli->damage;
-		if (hp < 0) {
+		if (hp <= 0) {
 			//死亡。
 			states[state]->Leave();
 			state = enLocalState_Death;
