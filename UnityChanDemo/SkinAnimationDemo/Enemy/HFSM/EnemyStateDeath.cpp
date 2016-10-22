@@ -5,6 +5,7 @@
 #include "Enemy/HFSM/EnemyStateDeath.h"
 #include "ParticleParam.h"
 #include "Enemy/EnemyParameter.h"
+#include "tkEngine/Sound/tkSoundSource.h"
 
 /*!
  * @brief	コンストラクタ。
@@ -50,6 +51,10 @@ void EnemyStateDeath::Enter(const SEnterArg& enterArg)
 	}
 	timer = 0.0f;
 	enemy->NotifyDead();
+	CSoundSource* se = NewGO<CSoundSource>(0);
+	se->Init("Assets/sound/Damage_00.wav");
+	se->Play(false);
+	se->SetVolume(0.5f);
 }
 void EnemyStateDeath::Leave()
 {

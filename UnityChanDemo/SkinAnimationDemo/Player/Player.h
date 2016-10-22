@@ -12,6 +12,11 @@
 #include "tkEngine/character/tkCharacterController.h"
 #include "AnimationEventController.h"
 
+namespace tkEngine{
+	class CParticleEmitter;
+}
+
+
 /*!
  * @brief	プレイヤー。
  */
@@ -122,6 +127,10 @@ public:
 	}
 private:
 	/*!
+	* @brief	状態切り替え。
+	*/
+	void ChangeState(EnState nextState);
+	/*!
 	* @brief	ヤラレ処理。
 	*/
 	void Damage();
@@ -169,8 +178,10 @@ private:
 	AnimationNo				reqAttackAnimNo;		//再生のリクエストを出している攻撃モーション番号。
 	AnimationNo				nextAttackAnimNo;		//次の攻撃モーション番号。
 	AnimationEventController	animationEventController;	//アニメーションイベントコントローラ。
+	std::list<CParticleEmitter*>	particleEmitterList;
 	int						hp =  100;					//ヒットポイント。
 	int						maxHP = 100;				//最大ヒットポイント。
 	float					radius = 0.0f;
 	float					height = 0.0f;
+	float					timer = 0.0f;				//タイマー
 };

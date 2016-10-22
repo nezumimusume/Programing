@@ -72,12 +72,6 @@ public:
 	}
 	void Update() override
 	{
-		if (Pad(0).IsTrigger(enButtonUp)) {
-			soundSource.Stop();
-		}
-		else if (Pad(0).IsTrigger(enButtonDown)) {
-			soundSource.Play(true);
-		}
 	}
 	void Render(CRenderContext& renderContext) override
 	{

@@ -8,6 +8,7 @@
 #include "Player/Player.h"
 #include "ParticleParam.h"
 #include "Enemy/EnemyParameter.h"
+#include "tkEngine/Sound/tkSoundSource.h"
 
 /*!
  * @brief	コンストラクタ。
@@ -46,6 +47,11 @@ void EnemyStateDamage::Enter(const SEnterArg& enterArg)
 			particleEmitterList.push_back(particleEmitter);
 		}
 	}
+	
+	CSoundSource* se = NewGO<CSoundSource>(0);
+	se->Init("Assets/sound/Damage_00.wav");
+	se->Play(false);
+	se->SetVolume(0.5f);
 }
 void EnemyStateDamage::Leave()
 {

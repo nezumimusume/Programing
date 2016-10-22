@@ -6,6 +6,7 @@
 
 #include "IEnemyState.h"
 
+
 namespace tkEngine {
 	class CParticleEmitter;
 }

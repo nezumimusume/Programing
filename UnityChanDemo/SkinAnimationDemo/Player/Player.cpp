@@ -5,6 +5,8 @@
 #include "tkEngine/graphics/tkSkinModelMaterial.h"
 #include "DamageCollisionWorld.h"
 #include "ParticleParam.h"
+#include "Enemy/EnemyParameter.h"
+#include "tkEngine/Sound/tkSoundSource.h"
 
 namespace {
 	const float MAX_RUN_SPEED = 0.1f;					//ユニティちゃんの走りの最高速度。
@@ -34,6 +36,7 @@ namespace {
 			EMIT_DAMAGE_TO_ENEMY_COLLISION_EVENT(0.4f, 0.3f, 0.7f, 10, "thief_Bip01_R_Hand", CVector3(0.0f, 0.0f, 0.0f), 0),
 			EMIT_DAMAGE_TO_ENEMY_COLLISION_EVENT(0.48f, 0.3f, 0.7f, 10, "thief_Bip01_R_Hand", CVector3(0.0f, 0.0f, 0.0f), 0),
 			EMIT_DAMAGE_TO_ENEMY_COLLISION_EVENT(0.56f, 0.3f, 0.7f, 10, "thief_Bip01_R_Hand", CVector3(0.0f, 0.0f, 0.0f), 0),
+			EMIT_SOUND_EVENT(0.3f, 0.5f, "Assets/sound/PlayerAttack_00.wav"),
 			END_ANIMATION_EVENT(),
 		},
 		//AnimationAttack_01
@@ -41,6 +44,7 @@ namespace {
 			EMIT_DAMAGE_TO_ENEMY_COLLISION_EVENT(0.4f, 0.3f, 0.7f, 10, "thief_Bip01_R_Hand", CVector3(0.0f, 0.0f, 0.0f), 1),
 			EMIT_DAMAGE_TO_ENEMY_COLLISION_EVENT(0.48f, 0.3f, 0.7f, 10, "thief_Bip01_R_Hand", CVector3(0.0f, 0.0f, 0.0f), 1),
 			EMIT_DAMAGE_TO_ENEMY_COLLISION_EVENT(0.56f, 0.3f, 0.7f, 10, "thief_Bip01_R_Hand", CVector3(0.0f, 0.0f, 0.0f), 1),
+			EMIT_SOUND_EVENT(0.3f, 0.5f, "Assets/sound/PlayerAttack_00.wav"),
 			END_ANIMATION_EVENT(),
 		},
 		//AnimationAttack_02
@@ -66,7 +70,7 @@ namespace {
 			EMIT_DAMAGE_TO_ENEMY_COLLISION_EVENT(1.37f, 0.3f, 0.7f, 20, "thief_Bip01_L_Hand", CVector3(0.0f, 0.0f, 0.0f), 2),
 			EMIT_DAMAGE_TO_ENEMY_COLLISION_EVENT(1.38f, 0.3f, 0.7f, 20, "thief_Bip01_L_Hand", CVector3(0.0f, 0.0f, 0.0f), 2),
 			EMIT_DAMAGE_TO_ENEMY_COLLISION_EVENT(1.39f, 0.35f, 0.7f, 20, "thief_Bip01_L_Hand", CVector3(0.0f, 0.0f, 0.0f), 2),
-
+			EMIT_SOUND_EVENT(1.2f, 0.5f, "Assets/sound/PlayerAttack_01.wav"),
 			END_ANIMATION_EVENT(),
 		},
 		//AnimationDamage
@@ -185,7 +189,7 @@ void Player::Update()
 			diff.Subtract(position);
 			if (diff.Length() < 2.0f) {
 				//車との距離が2m以内。
-				state = enState_RideOnCar;
+				ChangeState(enState_RideOnCar);
 				skinModel.SetShadowReceiverFlag(false);
 				skinModel.SetShadowCasterFlag(false);
 				g_car->SetRideOnFlag(true);
@@ -228,18 +232,29 @@ void Player::Update()
 		if (moveDir.LengthSq() > 0.0001f) {
 			rotation.SetRotation(CVector3::Up, atan2f(moveDir.x, moveDir.z));
 			//走り状態に遷移。
-			state = enStateRun;
+			ChangeState(enStateRun);
 		}
 		else {
 			//立ち状態。
-			state = enStateStand;
+			ChangeState(enStateStand);
 		}
+		bool isOnGround = characterController.IsOnGround();
 		characterController.SetMoveSpeed(moveSpeed);
 		characterController.Execute();
+		if (isOnGround == false
+			&& characterController.IsOnGround()
+			) {
+			//着地した。
+			//着地音を再生。
+			CSoundSource* se = NewGO<CSoundSource>(0);
+			se->Init("Assets/sound/landing.wav");
+			se->Play(false);
+			se->SetVolume(0.25f);
+		}
 		
 		if (Pad(0).IsTrigger(enButtonX) && !characterController.IsJump()) {
 			nextAttackAnimNo = AnimationAttack_00;
-			state = enState_Attack;
+			ChangeState(enState_Attack);
 		}
 	}
 	else if (state == enState_RideOnCar) {
@@ -256,7 +271,7 @@ void Player::Update()
 				skinModel.SetShadowReceiverFlag(true);
 				skinModel.SetShadowCasterFlag(true);
 				position = g_car->GetPosition();
-				state = enStateStand;
+				ChangeState(enStateStand);
 			}
 		}
 	}
@@ -268,7 +283,7 @@ void Player::Update()
 		characterController.Execute();
 		int currentAnimNo = animation.GetPlayAnimNo();
 		if (!animation.IsPlay() && nextAttackAnimNo == AnimationInvalid) {
-			state = enStateStand;
+			ChangeState(enStateStand);
 		}
 		else if (
 				Pad(0).IsTrigger(enButtonX) 
@@ -282,7 +297,17 @@ void Player::Update()
 	}
 	else if (state == enState_Damage) {
 		if (!animation.IsPlay()) {
-			state = enStateStand;
+			ChangeState(enStateStand);
+		}
+	}
+	else if (state == enState_Dead) {
+		timer += GameTime().GetFrameDeltaTime();
+		if (timer > 1.0f) {
+			//エミッターを削除
+			for (auto& p : particleEmitterList) {
+				DeleteGO(p);
+			}
+			particleEmitterList.clear();
 		}
 	}
 	position = characterController.GetPosition();
@@ -324,13 +349,13 @@ void Player::Damage()
 	if (dmgColli != NULL) {
 		//ダメージを受けた。
 		hp -= dmgColli->damage;
-		if (hp < 0.0f) {
+		if (hp <= 0.0f) {
 			//死亡
 			hp = 0;
-			state = enState_Dead;
+			ChangeState(enState_Dead);
 		}
 		else {
-			state = enState_Damage;
+			ChangeState(enState_Damage);
 		}
 	}
 	
@@ -453,6 +478,45 @@ Player::SBattleSeat* Player::FindUnuseSeat(const CVector3& pos)
 		}
 	}
 	return result;
+}
+/*!
+* @brief	状態切り替え。
+*/
+void Player::ChangeState(EnState nextState)
+{
+	if (state == enState_Damage
+		|| state == enState_Dead
+	) {
+		//現在のステートがダメージ状態の場合。
+		//血しぶきのパーティクルエミッターを削除。
+		for (auto& p : particleEmitterList) {
+			DeleteGO(p);
+		}
+		particleEmitterList.clear();
+	}
+	state = nextState;
+	if (state == enState_Damage
+		|| state == enState_Dead)
+	{
+		//次のステートがダメージ状態or死亡状態の場合。
+		//血しぶきのエフェクトをエミット。
+		CMatrix* m = skinModel.FindBoneWorldMatrix("thief_Bip01_Neck");
+		for (SParicleEmitParameter& param : bloodEmitterParam) {
+			CParticleEmitter* particleEmitter = NewGO<CParticleEmitter>(0);
+			CVector3 pos;
+			pos.Set(m->m[3][0], m->m[3][1], m->m[3][2]);
+			particleEmitter->Init(g_random, g_camera->GetCamera(), param, pos);
+			particleEmitterList.push_back(particleEmitter);
+			CSoundSource* se = NewGO<CSoundSource>(0);
+			se->Init("Assets/sound/Damage_01.wav");
+			se->Play(false);
+			se->SetVolume(0.5f);
+		}
+	}
+	if (state == enState_Dead) {
+		timer = 0.0f;
+	}
+	
 }
 /*!
 * @brief	描画。

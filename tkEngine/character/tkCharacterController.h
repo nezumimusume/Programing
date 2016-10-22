@@ -73,6 +73,13 @@ namespace tkEngine{
 			return m_isJump;
 		}
 		/*!
+		* @brief	地面上にいるか判定。
+		*/
+		bool IsOnGround() const
+		{
+			return m_isOnGround;
+		}
+		/*!
 		* @brief	コライダーを取得。
 		*/
 		CCapsuleCollider* GetCollider()
