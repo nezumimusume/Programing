@@ -10,6 +10,7 @@
 #include "Enemy/HFSM/EnemyStateDamage.h"
 #include "Enemy/HFSM/EnemyStateDeath.h"
 #include "DamageCollisionWorld.h"
+#include "tkEngine/Sound/tkSoundSource.h"
 
 Enemy_00::Enemy_00()
 {
@@ -117,6 +118,18 @@ void Enemy_00::Update()
 	
 	skinModel.Update(position, rotation, CVector3::One);
 
+	if (state != enLocalState_Death) {
+		timer += GameTime().GetFrameDeltaTime();
+		if (timer > 2.0f) {
+			if (g_random.GetRandDouble() < 0.2f) {
+				CSoundSource* se = NewGO<CSoundSource>(0);
+				se->Init("Assets/Sound/enemy_umeki.wav", true);
+				se->Play(false);
+				se->SetPosition(position);
+			}
+			timer = 0.0f;
+		}
+	}
 }
 void Enemy_00::Damage()
 {

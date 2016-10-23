@@ -72,3 +72,19 @@
 		CVector3::Zero, CVector3::Zero, CVector3::Zero, CVector3::Zero							\
 	)
 
+ /*!
+ * @brief	3Dサウンドの発生イベント
+ *@param[in]	invokeTime			サウンドを発生させる時間。該当するアニメーションが再生されてから経過時間です。単位は秒。
+ *@param[in]	volume				ボリューム
+ *@param[in]	filePath			サウンドのファイルパス。
+ */
+#define EMIT_3D_SOUND_EVENT(invokeTime, volume, filePath)										\
+	AnimationEvent(																				\
+		eAnimationEventType_Emit3DSound,														\
+		(invokeTime),																			\
+		(volume), 0.0f, 0.0f, 0.0f,																\
+		0,0,0,0,																				\
+		filePath, NULL, NULL, NULL,																\
+		CVector3::Zero, CVector3::Zero, CVector3::Zero, CVector3::Zero							\
+	)
+

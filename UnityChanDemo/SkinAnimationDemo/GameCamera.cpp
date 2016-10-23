@@ -80,6 +80,11 @@ void GameCamera::Update()
 	Dof().SetFocalLength(26.0f);
 	Dof().SetFParam(5.6f);
 	Dof().SetPint(toPosition.Length() * 1000.0f);
+	//3Dサウンドのリスナーはカメラ。
+	SoundEngine().SetListenerPosition(g_player->GetPosition());
+	const CMatrix& m = camera.GetCameraRotation();
+	SoundEngine().SetListenerFront({ m.m[2][0], m.m[2][1], m.m[2][2] });
+	SoundEngine().SetListenerUp({ m.m[1][0], m.m[1][1], m.m[1][2] });
 }
 void GameCamera::Render( CRenderContext& renderContext )
 {

@@ -47,7 +47,7 @@ namespace tkEngine{
 		static const CVector3 AxisZ;
 		static const CVector3 One;
 	public:
-		operator D3DXVECTOR3(void) { return s_cast<D3DXVECTOR3>(*this); }
+		//operator D3DXVECTOR3(void) { return s_cast<D3DXVECTOR3>(*this); }
 		CVector3() {}
 		/*!
 		* @brief	コンストラクタ。
@@ -67,6 +67,13 @@ namespace tkEngine{
 			y = v0.y + (v1.y - v0.y) * t;
 			z = v0.z + (v1.z - v0.z) * t;
 		}
+		template<class TVector>
+		void CopyTo(TVector& dst) const
+		{
+			dst.x = x;
+			dst.y = y;
+			dst.z = z;
+		}
 		/*!
 		* @brief	ベクトルの各要素を設定。
 		*/
@@ -75,6 +82,13 @@ namespace tkEngine{
 			this->x = x;
 			this->y = y;
 			this->z = z;
+		}
+		template<class TVector>
+		void Set(TVector& v)
+		{
+			this->x = v.x;
+			this->y = v.y;
+			this->z = v.z;
 		}
 		void Set(btVector3& v)
 		{

@@ -25,6 +25,8 @@
 #include <d3d9.h>
 #include <XInput.h> // XInput API
 #include <xaudio2.h>
+#include <x3daudio.h>
+#include <xaudio2fx.h>
 #pragma comment(lib, "winmm.lib")
 #ifdef _DEBUG
 #include <DxErr.h>

@@ -79,6 +79,7 @@ namespace {
 		},
 		//AnimationDeath
 		{
+			EMIT_SOUND_EVENT(0.0f, 0.75f, "Assets/sound/PlayerDead.wav"),
 			END_ANIMATION_EVENT(),
 		},
 	};

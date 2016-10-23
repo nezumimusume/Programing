@@ -2,6 +2,7 @@
  * @brief	音源クラス。
  */
 #include "tkEngine/tkEnginePreCompile.h"
+#include "tkEngine/Sound/tkSoundEngine.h"
 #include "tkEngine/Sound/tkSoundSource.h"
 
 
@@ -13,16 +14,38 @@ namespace tkEngine{
 	{
 		Release();
 	}
-	void CSoundSource::Init( char* filePath )
+	void CSoundSource::InitCommon()
+	{
+		m_dspSettings.SrcChannelCount = INPUTCHANNELS;
+		m_dspSettings.DstChannelCount = SoundEngine().GetNumChannel();
+		m_dspSettings.pMatrixCoefficients = m_matrixCoefficients;
+		m_dspSettings.pDelayTimes = nullptr;
+		m_dspSettings.DopplerFactor = 1.0f;
+		m_dspSettings.LPFDirectCoefficient = 0.82142854f;
+		m_dspSettings.LPFReverbCoefficient = 0.75f;
+		m_dspSettings.ReverbLevel = 0.69114286f;
+		m_dspSettings.EmitterToListenerAngle = 0.0f;
+		m_dspSettings.EmitterToListenerDistance = 10.0f;
+		m_dspSettings.EmitterVelocityComponent = 0.0f;
+		m_dspSettings.ListenerVelocityComponent = 0.0f;
+	}
+	void CSoundSource::Init( char* filePath, bool is3DSound )
 	{
 		m_waveFile.Open(filePath);
 		m_buffer.reset(new char[m_waveFile.GetSize()]);
 		unsigned int dummy;
 		m_waveFile.Read(m_buffer.get(), m_waveFile.GetSize(), &dummy);
 		//サウンドボイスソースを作成。
-		m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(&m_waveFile);
+		m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(&m_waveFile, is3DSound);
+		if (is3DSound) {
+			SoundEngine().Add3DSoundSource(this);
+		}
+		InitCommon();
+		
+
+		m_is3DSound = is3DSound;
 	}
-	void CSoundSource::InitStreaming(char* filePath, unsigned int ringBufferSize, unsigned int bufferSize)
+	void CSoundSource::InitStreaming(char* filePath, bool is3DSound, unsigned int ringBufferSize, unsigned int bufferSize)
 	{
 		m_waveFile.Open(filePath);
 		m_isStreaming = true;
@@ -32,8 +55,14 @@ namespace tkEngine{
 		m_readStartPos = 0;
 		m_currentBufferingSize = 0;
 		//サウンドボイスソースを作成。
-		m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(&m_waveFile);
+		m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(&m_waveFile, is3DSound);
 		m_sourceVoice->Start(0,0);
+		if (is3DSound) {
+			SoundEngine().Add3DSoundSource(this);
+		}
+		InitCommon();
+		
+		m_is3DSound = is3DSound;
 	}
 	void CSoundSource::Release()
 	{
@@ -42,6 +71,7 @@ namespace tkEngine{
 			m_sourceVoice->DestroyVoice();
 			m_sourceVoice = nullptr;
 		}
+		Remove3DSound();
 		DeleteGO(this);
 	}
 	void CSoundSource::Play(char* buff, unsigned int bufferSize)
@@ -125,6 +155,7 @@ namespace tkEngine{
 							//再生終了。
 							m_isPlaying = false;
 							DeleteGO(this);
+							Remove3DSound();
 						}
 					}
 				}
@@ -133,6 +164,13 @@ namespace tkEngine{
 					StartStreamingBuffring();
 				}
 			}
+		}
+	}
+	void CSoundSource::Remove3DSound()
+	{
+		if (m_is3DSound) {
+			SoundEngine().Remove3DSoundSource(this);
+			m_is3DSound = false;
 		}
 	}
 	void CSoundSource::UpdateOnMemory()
@@ -150,6 +188,7 @@ namespace tkEngine{
 			}
 			else {
 				DeleteGO(this);
+				Remove3DSound();
 			}
 		}
 	}
@@ -162,6 +201,12 @@ namespace tkEngine{
 		else {
 			//オンメモリ再生中の更新処理。
 			UpdateOnMemory();
+		}
+		if (m_is3DSound == true) {
+			//音源の移動速度を更新。
+			m_velocity.Subtract(m_position, m_lastFramePosition);
+			m_velocity.Div(GameTime().GetFrameDeltaTime());
+			m_lastFramePosition = m_position;
 		}
 	}
 }

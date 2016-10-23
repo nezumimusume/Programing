@@ -68,10 +68,20 @@ public:
 		soundSource.InitStreaming("Assets/sound/wind.wav");
 		//soundSource.Init("Assets/sound/MusicMono.wav");
 		soundSource.Play(true);
+		soundSource.SetVolume(0.5f);
 		AddGO(0, &soundSource);
 	}
 	void Update() override
 	{
+		/*if (Pad(0).IsPress(enButtonDown)) {
+			CSoundSource* s = NewGO<CSoundSource>(0);
+			s->Init("Assets/sound/EnemyAttack.wav", true);
+			s->Play(false);
+			s->SetPosition(g_player->GetPosition());
+			s = NewGO<CSoundSource>(0);
+			s->Init("Assets/sound/Damage_00.wav");
+			s->Play(false);
+		}*/
 	}
 	void Render(CRenderContext& renderContext) override
 	{

@@ -51,7 +51,7 @@ void EnemyStateDamage::Enter(const SEnterArg& enterArg)
 	CSoundSource* se = NewGO<CSoundSource>(0);
 	se->Init("Assets/sound/Damage_00.wav");
 	se->Play(false);
-	se->SetVolume(0.5f);
+	se->SetVolume(1.0f);
 }
 void EnemyStateDamage::Leave()
 {

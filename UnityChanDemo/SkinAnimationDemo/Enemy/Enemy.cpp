@@ -7,6 +7,7 @@
 #include "tkEngine/character/tkCollisionAttr.h"
 #include "Enemy/EnemyParameter.h"
 
+
 void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 {
 	for (const EnemyParam& param : g_enemyParamTable) {

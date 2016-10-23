@@ -20,6 +20,7 @@ static AnimationEventGroup cEnemy00_AnimationEventGroupTbl[Enemy::enNumAnim] = {
 	//enAnimAttack
 	{
 		EMIT_DAMAGE_TO_PLAYER_COLLISION_EVENT(1.0f, 0.3f, 0.7f, 10, "Bip001_R_Hand", CVector3(0.0f, 0.0f, 0.0f), 0),
+		EMIT_3D_SOUND_EVENT( 0.5f, 1.0f, "Assets/sound/EnemyAttack.wav"),
 		END_ANIMATION_EVENT(),
 	},
 	//enAnimDamage

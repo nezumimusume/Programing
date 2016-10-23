@@ -15,6 +15,7 @@ enum EAnimationEventType{
 	eAnimationEventType_EmitDamageToEnemyCollision,		//敵に対してダメージを与えるコリジョンを生成。
 	eAnimationEventType_EmitDamageToPlayerCollision,	//プレイヤに対してダメージを与えるコリジョンを生成。
 	eAnimationEventType_EmitSound,						//Soundの再生。
+	eAnimationEventType_Emit3DSound,					//3DSoundの再生。
 	eAnimationEventType_Invalid = 0xffffffff,
 };
 /*!

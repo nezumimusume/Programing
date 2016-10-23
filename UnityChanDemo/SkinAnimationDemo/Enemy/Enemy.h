@@ -110,4 +110,5 @@ protected:
 	CCharacterController			characterController;	//キャラクタコントローラ。
 	float							height;
 	float							radius;
+	float							timer = 0.0f;
 };
