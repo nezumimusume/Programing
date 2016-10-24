@@ -9,6 +9,8 @@
 namespace tkEngine{
 	CSoundSource::CSoundSource()
 	{
+		memset(m_emitterAzimuths, 0, sizeof(m_emitterAzimuths));
+		memset(m_matrixCoefficients, 0, sizeof(m_matrixCoefficients));
 	}
 	CSoundSource::~CSoundSource()
 	{

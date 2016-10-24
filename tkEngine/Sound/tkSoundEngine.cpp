@@ -70,6 +70,7 @@ namespace tkEngine{
 	 */
 	CSoundEngine::CSoundEngine()
 	{
+		memset(m_hx3DAudio, 0, sizeof(m_hx3DAudio));
 	}
 	/*!
 	 * @brief	デストラクタ。

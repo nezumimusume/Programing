@@ -104,7 +104,7 @@ namespace tkEngine{
 	private:
 		IXAudio2* m_xAudio2 = nullptr;
 		IXAudio2MasteringVoice* m_masteringVoice = nullptr;
-		X3DAUDIO_HANDLE m_hx3DAudio = {0};				//!<3Dオーディオのハンドル。
+		X3DAUDIO_HANDLE m_hx3DAudio;					//!<3Dオーディオのハンドル。
 		IUnknown* m_reverbEffect = nullptr;				//!<リバープエフェクト。
 		IXAudio2SubmixVoice* m_submixVoice = nullptr;	//!<サブミックスボイス。
 		DWORD m_channelMask = 0;						//!<オーディオチャンネルマスク。

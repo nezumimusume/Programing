@@ -11,6 +11,15 @@ namespace tkEngine{
 	
 	class CVector2 {
 	public:
+		CVector2()
+		{
+
+		}
+		CVector2(float x, float y)
+		{
+			this->x = x;
+			this->y = y;
+		}
 		union {
 			struct { float x, y; };
 			float v[2];

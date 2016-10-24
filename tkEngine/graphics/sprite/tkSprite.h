@@ -4,11 +4,11 @@
 
 #pragma once
 
-namespace tkEngine{
+namespace tkEngine {
 	/*!
 	 *@brief	スプライト表示クラス。
 	 */
-	class CSprite{
+	class CSprite {
 	public:
 		CSprite();
 		~CSprite();
@@ -29,7 +29,7 @@ namespace tkEngine{
 		* 画面の中心が0,0となります。
 		* 座標系は上方向が+y、右方向が+xになります。
 		* UnityのuGUIに準拠。
-		* 
+		*
 		*@param[in]		pos		座標。
 		*/
 		void SetPosition(const CVector2& pos)
@@ -80,8 +80,8 @@ namespace tkEngine{
 		CEffect*		m_effect = nullptr;		//!<エフェクト。
 		CPrimitive		m_primitive;			//!<プリミティブ。
 		CTexture*		m_texture = nullptr;	//<!テクスチャ。
-		CVector2		m_pos = {0.0f, 0.0f};	//!<座標。
-		CVector2		m_size = {0.0f, 0.0f};	//!<スプライトのサイズ。
-		CVector2		m_pivot = {0.5f, 0.5f};	//!<ピボット
+		CVector2		m_pos = CVector2(0.0f, 0.0f);	//!<座標。
+		CVector2		m_size = CVector2(0.0f, 0.0f);	//!<スプライトのサイズ。
+		CVector2		m_pivot = CVector2(0.5f, 0.5f);	//!<ピボット
 	};
 }

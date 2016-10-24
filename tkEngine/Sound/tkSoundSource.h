@@ -186,8 +186,8 @@ namespace tkEngine{
 		CVector3				m_position = CVector3::Zero;	//!<音源の座標。3Dサウンドの時に必要。
 		CVector3				m_lastFramePosition = CVector3::Zero;//!<音源の1フレーム前の座標。3Dサウンドの時に必要。
 		CVector3				m_velocity = CVector3::Zero;	//!<速度。3Dサウンドの時に必要・
-		FLOAT32 m_emitterAzimuths[INPUTCHANNELS] = { 0 };
-		FLOAT32 m_matrixCoefficients[INPUTCHANNELS * OUTPUTCHANNELS] = { 0 };
+		FLOAT32 m_emitterAzimuths[INPUTCHANNELS];
+		FLOAT32 m_matrixCoefficients[INPUTCHANNELS * OUTPUTCHANNELS];
 		X3DAUDIO_DSP_SETTINGS m_dspSettings;
 		bool m_isSetPositionFirst = true;	//!<一番最初のsetPosition?
 	};
