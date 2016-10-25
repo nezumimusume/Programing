@@ -330,7 +330,7 @@ namespace tkEngine{
 				voice->SetOutputMatrix(m_masteringVoice, soundSource->GetNumInputChannel(), m_nChannels,
 					soundSource->GetMatrixCoefficients());
 
-				voice->SetOutputMatrix(m_submixVoice, 1, 1, &dspSettings->ReverbLevel);
+				voice->SetOutputMatrix(m_submixVoice, soundSource->GetNumInputChannel(), 1, &dspSettings->ReverbLevel);
 
 				XAUDIO2_FILTER_PARAMETERS FilterParametersDirect = { LowPassFilter, 2.0f * sinf(X3DAUDIO_PI / 6.0f * dspSettings->LPFDirectCoefficient), 1.0f }; // see XAudio2CutoffFrequencyToRadians() in XAudio2.h for more information on the formula used here
 				voice->SetOutputFilterParameters(m_masteringVoice, &FilterParametersDirect);

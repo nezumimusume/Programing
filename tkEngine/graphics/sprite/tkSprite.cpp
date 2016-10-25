@@ -78,6 +78,9 @@ namespace tkEngine{
 		trans.Add(pivotOffset);
 
 		mTrans.MakeTranslation(trans);
+		CMatrix mRot;
+		mRot.MakeRotationFromQuaternion(m_rotation);
+		mWorld.Mul(mWorld, mRot);
 		mWorld.Mul(mWorld, mTrans);
 
 		m_effect->Begin(renderContext);

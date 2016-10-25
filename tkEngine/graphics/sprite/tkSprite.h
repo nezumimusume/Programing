@@ -71,6 +71,10 @@ namespace tkEngine {
 		{
 			m_pivot = pivot;
 		}
+		void SetRotation( CQuaternion rot)
+		{
+			m_rotation = rot;
+		}
 		/*!
 		 *@brief	描画。
 		 *@param[in]	renderContext	レンダリングコンテキスト。
@@ -83,5 +87,6 @@ namespace tkEngine {
 		CVector2		m_pos = CVector2(0.0f, 0.0f);	//!<座標。
 		CVector2		m_size = CVector2(0.0f, 0.0f);	//!<スプライトのサイズ。
 		CVector2		m_pivot = CVector2(0.5f, 0.5f);	//!<ピボット
+		CQuaternion		m_rotation = CQuaternion::Identity;
 	};
 }
