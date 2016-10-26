@@ -211,7 +211,7 @@ namespace tkEngine{
 			end.setIdentity();
 			//始点はカプセルコライダーの中心。
 			start.setOrigin(btVector3(m_position.x, m_position.y + m_height * 0.5f + m_radius, m_position.z));
-			//終点は地面上にいない場合は1m下を見る。
+			//終点は地面上いる場合場合は1m下を見る。
 			//地面上にいなくてジャンプで上昇中の場合は上昇量の0.01倍下を見る。
 			//地面上にいなくて降下中の場合はそのまま落下先を調べる。
 			CVector3 endPos;
@@ -228,7 +228,7 @@ namespace tkEngine{
 				}
 			}
 			else {
-				//地面上にいない場合は1m下を見る。
+				//地面上にい場合は1m下を見る。
 				endPos.y -= 1.0f;
 			}
 			end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
@@ -239,23 +239,10 @@ namespace tkEngine{
 			PhysicsWorld().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
 			if (callback.isHit) {
 				//当たった。
-				CVector3 Circle;
-				float x = 0.0f;
-				float offset = 0.0f;	//押し戻す量。
-				Circle = CVector3::Zero;
-
-				Circle = m_position;
-				Circle.y = callback.hitPos.y;//円の中心
-				CVector3 v;
-				v.Subtract(Circle, callback.hitPos);
-				x = v.Length();//物体の角とプレイヤーの間の横幅の距離が求まる。
-
-				offset = sqrt(max(0.0f, m_radius*m_radius - x*x));//yの平方根を求める。
-
 				m_moveSpeed.y = 0.0f;
 				m_isJump = false;
 				m_isOnGround = true;
-				nextPosition.y = callback.hitPos.y + offset - m_radius;
+				nextPosition.y = callback.hitPos.y;
 			}
 			else {
 				//地面上にいない。
