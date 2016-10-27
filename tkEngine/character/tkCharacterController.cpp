@@ -1,13 +1,13 @@
 /*!
- * @brief	キャラクタのコリジョンコントロール。
- */
+* @brief	キャラクタのコリジョンコントロール。
+*/
 
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/character/tkCharacterController.h"
 #include "tkEngine/character/tkCollisionAttr.h"
-namespace tkEngine{
+namespace tkEngine {
 
-	namespace{
+	namespace {
 		//衝突したときに呼ばれる関数オブジェクト(地面用)
 		struct SweepResultGround : public btCollisionWorld::ConvexResultCallback
 		{
@@ -17,13 +17,13 @@ namespace tkEngine{
 			CVector3 hitNormal = CVector3::Zero;				//衝突点の法線。
 			btCollisionObject* me = nullptr;					//自分自身。自分自身との衝突を除外するためのメンバ。
 			float dist = FLT_MAX;								//衝突点までの距離。一番近い衝突点を求めるため。FLT_MAXは単精度の浮動小数点が取りうる最大の値。
-			
-			//衝突したときに呼ばれるコールバック関数。
+
+																//衝突したときに呼ばれるコールバック関数。
 			virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 			{
-				if (convexResult.m_hitCollisionObject == me 
+				if (convexResult.m_hitCollisionObject == me
 					|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Character
-				) {
+					) {
 					//自分に衝突した。or キャラクタ属性のコリジョンと衝突した。
 					return 0.0f;
 				}
@@ -34,7 +34,7 @@ namespace tkEngine{
 				angle = fabsf(acosf(angle));
 				if (angle < CMath::PI * 0.3f		//地面の傾斜が54度より小さいので地面とみなす。
 					|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Ground //もしくはコリジョン属性が地面と指定されている。
-				) {
+					) {
 					//衝突している。
 					isHit = true;
 					CVector3 hitPosTmp = *(CVector3*)&convexResult.m_hitPointLocal;
@@ -47,7 +47,6 @@ namespace tkEngine{
 						hitPos = hitPosTmp;
 						hitNormal = *(CVector3*)&convexResult.m_hitNormalLocal;
 						dist = distTmp;
-
 					}
 				}
 				return 0.0f;
@@ -62,11 +61,10 @@ namespace tkEngine{
 			float dist = FLT_MAX;					//衝突点までの距離。一番近い衝突点を求めるため。FLT_MAXは単精度の浮動小数点が取りうる最大の値。
 			CVector3 hitNormal = CVector3::Zero;	//衝突点の法線。
 			btCollisionObject* me = nullptr;		//自分自身。自分自身との衝突を除外するためのメンバ。
-			float fraction = 1.0f;
-			//衝突したときに呼ばれるコールバック関数。
+													//衝突したときに呼ばれるコールバック関数。
 			virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 			{
-				if (convexResult.m_hitCollisionObject == me ) {
+				if (convexResult.m_hitCollisionObject == me) {
 					//自分に衝突した。or 地面に衝突した。
 					return 0.0f;
 				}
@@ -77,7 +75,7 @@ namespace tkEngine{
 				float angle = fabsf(acosf(hitNormalTmp.Dot(CVector3::Up)));
 				if (angle >= CMath::PI * 0.3f		//地面の傾斜が54度以上なので壁とみなす。
 					|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Character	//もしくはコリジョン属性がキャラクタなので壁とみなす。
-				) {
+					) {
 					isHit = true;
 					CVector3 hitPosTmp;
 					hitPosTmp.Set(convexResult.m_hitPointLocal);
@@ -91,7 +89,6 @@ namespace tkEngine{
 						hitPos = hitPosTmp;
 						dist = distTmp;
 						hitNormal = hitNormalTmp;
-						fraction = convexResult.m_hitFraction;
 					}
 				}
 				return 0.0f;
@@ -99,7 +96,7 @@ namespace tkEngine{
 		};
 	}
 
-	
+
 	void CCharacterController::Init(float radius, float height, const CVector3& position)
 	{
 		m_position = position;
@@ -138,9 +135,7 @@ namespace tkEngine{
 		//XZ平面での衝突検出と衝突解決を行う。
 		{
 			int loopCount = 0;
-			CVector3 originalDir = addPos;
-			originalDir.Normalize();
-			while (loopCount++ < 10) {
+			while (true) {
 				//現在の座標から次の移動先へ向かうベクトルを求める。
 				CVector3 addPos;
 				addPos.Subtract(nextPosition, m_position);
@@ -168,36 +163,50 @@ namespace tkEngine{
 				callback.me = m_rigidBody.GetBody();
 				callback.startPos = posTmp;
 				//衝突検出。
-				btConvexShape* shape = (btConvexShape*)m_collider.GetBody();
-				PhysicsWorld().ConvexSweepTest(shape, start, end, callback);
-				if (callback.isHit ) {
+				PhysicsWorld().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
+
+				if (callback.isHit) {
 					//当たった。
 					//壁。
-					nextPosition.x = m_position.x;
-					nextPosition.z = m_position.z;
+					CVector3 vT0, vT1;
+					//XZ平面上での移動後の座標をvT0に、交点の座標をvT1に設定する。
+					vT0.Set(nextPosition.x, 0.0f, nextPosition.z);
+					vT1.Set(callback.hitPos.x, 0.0f, callback.hitPos.z);
+					//めり込みが発生している移動ベクトルを求める。
+					CVector3 vMerikomi;
+					vMerikomi.Subtract(vT0, vT1);
+					//XZ平面での衝突した壁の法線を求める。。
 					CVector3 hitNormalXZ = callback.hitNormal;
 					hitNormalXZ.y = 0.0f;
 					hitNormalXZ.Normalize();
-					float t = hitNormalXZ.Dot(addPosXZ);
-					CVector3 v = hitNormalXZ;
-					v.Scale(t);
-					addPosXZ.Subtract(v);
-					CVector3 currentDir = addPosXZ;
+					//めり込みベクトルを壁の法線に射影する。
+					float fT0 = hitNormalXZ.Dot(vMerikomi);
+					//押し戻し返すベクトルを求める。
+					//押し返すベクトルは壁の法線に射影されためり込みベクトル+半径。
+					CVector3 vOffset;
+					vOffset = hitNormalXZ;
+					vOffset.Scale(-fT0 + m_radius);
+					nextPosition.Add(vOffset);
+					CVector3 currentDir;
+					currentDir.Subtract(nextPosition, m_position);
+					currentDir.y = 0.0f;
 					currentDir.Normalize();
-					if (currentDir.Dot(originalXZDir) <= 0.0f) {
-						//角に当たった時にキャラクタが振動する現象を回避するために、
-						//滑らせるベクトルが元々の進行方向と逆向きになったら移動できないようにする。
+					if (currentDir.Dot(originalXZDir) < 0.0f) {
+						nextPosition.x = m_position.x;
+						nextPosition.z = m_position.z;
 						break;
 					}
-					nextPosition.Add(addPosXZ);
 				}
 				else {
+					//どことも当たらないので終わり。
 					break;
 				}
-			
+				loopCount++;
+				if (loopCount == 5) {
+					break;
+				}
 			}
 		}
-		
 		//XZの移動は確定。
 		m_position.x = nextPosition.x;
 		m_position.z = nextPosition.z;
@@ -205,9 +214,9 @@ namespace tkEngine{
 		{
 			CVector3 addPos;
 			addPos.Subtract(nextPosition, m_position);
-			
+
 			m_position = nextPosition;	//移動の仮確定。
-			//レイを作成する。
+										//レイを作成する。
 			btTransform start, end;
 			start.setIdentity();
 			end.setIdentity();
@@ -241,11 +250,23 @@ namespace tkEngine{
 			PhysicsWorld().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
 			if (callback.isHit) {
 				//当たった。
-				
+			/*	CVector3 Circle;
+				float x = 0.0f;
+				float offset = 0.0f;	//押し戻す量。
+				Circle = CVector3::Zero;
+
+				Circle = m_position;
+				Circle.y = callback.hitPos.y;//円の中心
+				CVector3 v;
+				v.Subtract(Circle, callback.hitPos);
+				x = v.Length();//物体の角とプレイヤーの間の横幅の距離が求まる。
+
+				offset = sqrt(max(0.0f, m_radius*m_radius - x*x));//yの平方根を求める。
+				*/
 				m_moveSpeed.y = 0.0f;
 				m_isJump = false;
 				m_isOnGround = true;
-				nextPosition.y = callback.hitPos.y;
+				nextPosition.y = callback.hitPos.y;//; + offset - m_radius;
 			}
 			else {
 				//地面上にいない。
