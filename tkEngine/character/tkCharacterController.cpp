@@ -47,6 +47,7 @@ namespace tkEngine{
 						hitPos = hitPosTmp;
 						hitNormal = *(CVector3*)&convexResult.m_hitNormalLocal;
 						dist = distTmp;
+
 					}
 				}
 				return 0.0f;
@@ -61,6 +62,7 @@ namespace tkEngine{
 			float dist = FLT_MAX;					//衝突点までの距離。一番近い衝突点を求めるため。FLT_MAXは単精度の浮動小数点が取りうる最大の値。
 			CVector3 hitNormal = CVector3::Zero;	//衝突点の法線。
 			btCollisionObject* me = nullptr;		//自分自身。自分自身との衝突を除外するためのメンバ。
+			float fraction = 1.0f;
 			//衝突したときに呼ばれるコールバック関数。
 			virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 			{
@@ -89,6 +91,7 @@ namespace tkEngine{
 						hitPos = hitPosTmp;
 						dist = distTmp;
 						hitNormal = hitNormalTmp;
+						fraction = convexResult.m_hitFraction;
 					}
 				}
 				return 0.0f;
@@ -166,7 +169,18 @@ namespace tkEngine{
 				if (callback.isHit) {
 					//当たった。
 					//壁。
-					CVector3 vT0, vT1;
+					nextPosition.x = m_position.x;
+					nextPosition.z = m_position.z;
+					CVector3 hitNormalXZ = callback.hitNormal;
+					hitNormalXZ.y = 0.0f;
+					hitNormalXZ.Normalize();
+					float t = hitNormalXZ.Dot(addPosXZ);
+					CVector3 v = hitNormalXZ;
+					v.Scale(t);
+					addPosXZ.Subtract(v);
+					nextPosition.Add(addPosXZ);
+					//nextPosition.Lerp(callback.fraction, m_position, nextPosition );
+				/*	CVector3 vT0, vT1;
 					//XZ平面上での移動後の座標をvT0に、交点の座標をvT1に設定する。
 					vT0.Set(nextPosition.x, 0.0f, nextPosition.z);
 					vT1.Set(callback.hitPos.x, 0.0f, callback.hitPos.z);
@@ -184,14 +198,14 @@ namespace tkEngine{
 					CVector3 vOffset;
 					vOffset = hitNormalXZ;
 					vOffset.Scale(-fT0 + m_radius);
-					nextPosition.Add(vOffset);
+					nextPosition.Add(vOffset);*/
 				}
 				else {
 					//どことも当たらないので終わり。
 					break;
 				}
 				loopCount++;
-				if (loopCount == 5) {
+				if (loopCount == 10) {
 					break;
 				}
 			}
