@@ -132,11 +132,15 @@ namespace tkEngine{
 		CVector3 addPos = m_moveSpeed;
 		addPos.Scale(GameTime().GetFrameDeltaTime());
 		nextPosition.Add(addPos);
-			
+		CVector3 originalXZDir = addPos;
+		originalXZDir.y = 0.0f;
+		originalXZDir.Normalize();
 		//XZ平面での衝突検出と衝突解決を行う。
 		{
 			int loopCount = 0;
-			while (true) {
+			CVector3 originalDir = addPos;
+			originalDir.Normalize();
+			while (loopCount++ < 10) {
 				//現在の座標から次の移動先へ向かうベクトルを求める。
 				CVector3 addPos;
 				addPos.Subtract(nextPosition, m_position);
@@ -164,9 +168,9 @@ namespace tkEngine{
 				callback.me = m_rigidBody.GetBody();
 				callback.startPos = posTmp;
 				//衝突検出。
-				PhysicsWorld().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
-			
-				if (callback.isHit) {
+				btConvexShape* shape = (btConvexShape*)m_collider.GetBody();
+				PhysicsWorld().ConvexSweepTest(shape, start, end, callback);
+				if (callback.isHit ) {
 					//当たった。
 					//壁。
 					nextPosition.x = m_position.x;
@@ -178,38 +182,22 @@ namespace tkEngine{
 					CVector3 v = hitNormalXZ;
 					v.Scale(t);
 					addPosXZ.Subtract(v);
+					CVector3 currentDir = addPosXZ;
+					currentDir.Normalize();
+					if (currentDir.Dot(originalXZDir) <= 0.0f) {
+						//角に当たった時にキャラクタが振動する現象を回避するために、
+						//滑らせるベクトルが元々の進行方向と逆向きになったら移動できないようにする。
+						break;
+					}
 					nextPosition.Add(addPosXZ);
-					//nextPosition.Lerp(callback.fraction, m_position, nextPosition );
-				/*	CVector3 vT0, vT1;
-					//XZ平面上での移動後の座標をvT0に、交点の座標をvT1に設定する。
-					vT0.Set(nextPosition.x, 0.0f, nextPosition.z);
-					vT1.Set(callback.hitPos.x, 0.0f, callback.hitPos.z);
-					//めり込みが発生している移動ベクトルを求める。
-					CVector3 vMerikomi;
-					vMerikomi.Subtract(vT0, vT1);
-					//XZ平面での衝突した壁の法線を求める。。
-					CVector3 hitNormalXZ = callback.hitNormal;
-					hitNormalXZ.y = 0.0f;
-					hitNormalXZ.Normalize();
-					//めり込みベクトルを壁の法線に射影する。
-					float fT0 = hitNormalXZ.Dot(vMerikomi);
-					//押し戻し返すベクトルを求める。
-					//押し返すベクトルは壁の法線に射影されためり込みベクトル+半径。
-					CVector3 vOffset;
-					vOffset = hitNormalXZ;
-					vOffset.Scale(-fT0 + m_radius);
-					nextPosition.Add(vOffset);*/
 				}
 				else {
-					//どことも当たらないので終わり。
 					break;
 				}
-				loopCount++;
-				if (loopCount == 10) {
-					break;
-				}
+			
 			}
 		}
+		
 		//XZの移動は確定。
 		m_position.x = nextPosition.x;
 		m_position.z = nextPosition.z;
@@ -253,23 +241,11 @@ namespace tkEngine{
 			PhysicsWorld().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
 			if (callback.isHit) {
 				//当たった。
-				CVector3 Circle;
-				float x = 0.0f;
-				float offset = 0.0f;	//押し戻す量。
-				Circle = CVector3::Zero;
-
-				Circle = m_position;
-				Circle.y = callback.hitPos.y;//円の中心
-				CVector3 v;
-				v.Subtract(Circle, callback.hitPos);
-				x = v.Length();//物体の角とプレイヤーの間の横幅の距離が求まる。
-
-				offset = sqrt(max(0.0f, m_radius*m_radius - x*x));//yの平方根を求める。
-
+				
 				m_moveSpeed.y = 0.0f;
 				m_isJump = false;
 				m_isOnGround = true;
-				nextPosition.y = callback.hitPos.y + offset - m_radius;
+				nextPosition.y = callback.hitPos.y;
 			}
 			else {
 				//地面上にいない。
