@@ -169,6 +169,7 @@ private:
 	CVector3				pointLightPosition;	//ポイントライトの位置。
 	CVector4				pointLightColor;	//ポイントライトのカラー。
 	CVector3				toLampLocalPos;		//ランプのローカル座標。
+	bool					isApplyDamageTrigger = false;
 	EnState					state;				//状態。
 	EnState					lastFrameState;		//前のフレームの状態。
 	bool					isPointLightOn;		//ポイントライトのスイッチ。

@@ -1,13 +1,13 @@
 /*!
- * @brief	キャラクタのコリジョンコントロール。
- */
+* @brief	キャラクタのコリジョンコントロール。
+*/
 
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/character/tkCharacterController.h"
 #include "tkEngine/character/tkCollisionAttr.h"
-namespace tkEngine{
+namespace tkEngine {
 
-	namespace{
+	namespace {
 		//衝突したときに呼ばれる関数オブジェクト(地面用)
 		struct SweepResultGround : public btCollisionWorld::ConvexResultCallback
 		{
@@ -17,13 +17,13 @@ namespace tkEngine{
 			CVector3 hitNormal = CVector3::Zero;				//衝突点の法線。
 			btCollisionObject* me = nullptr;					//自分自身。自分自身との衝突を除外するためのメンバ。
 			float dist = FLT_MAX;								//衝突点までの距離。一番近い衝突点を求めるため。FLT_MAXは単精度の浮動小数点が取りうる最大の値。
-			
-			//衝突したときに呼ばれるコールバック関数。
+
+																//衝突したときに呼ばれるコールバック関数。
 			virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 			{
-				if (convexResult.m_hitCollisionObject == me 
+				if (convexResult.m_hitCollisionObject == me
 					|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Character
-				) {
+					) {
 					//自分に衝突した。or キャラクタ属性のコリジョンと衝突した。
 					return 0.0f;
 				}
@@ -34,7 +34,7 @@ namespace tkEngine{
 				angle = fabsf(acosf(angle));
 				if (angle < CMath::PI * 0.3f		//地面の傾斜が54度より小さいので地面とみなす。
 					|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Ground //もしくはコリジョン属性が地面と指定されている。
-				) {
+					) {
 					//衝突している。
 					isHit = true;
 					CVector3 hitPosTmp = *(CVector3*)&convexResult.m_hitPointLocal;
@@ -61,10 +61,10 @@ namespace tkEngine{
 			float dist = FLT_MAX;					//衝突点までの距離。一番近い衝突点を求めるため。FLT_MAXは単精度の浮動小数点が取りうる最大の値。
 			CVector3 hitNormal = CVector3::Zero;	//衝突点の法線。
 			btCollisionObject* me = nullptr;		//自分自身。自分自身との衝突を除外するためのメンバ。
-			//衝突したときに呼ばれるコールバック関数。
+													//衝突したときに呼ばれるコールバック関数。
 			virtual	btScalar	addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 			{
-				if (convexResult.m_hitCollisionObject == me ) {
+				if (convexResult.m_hitCollisionObject == me) {
 					//自分に衝突した。or 地面に衝突した。
 					return 0.0f;
 				}
@@ -75,7 +75,7 @@ namespace tkEngine{
 				float angle = fabsf(acosf(hitNormalTmp.Dot(CVector3::Up)));
 				if (angle >= CMath::PI * 0.3f		//地面の傾斜が54度以上なので壁とみなす。
 					|| convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Character	//もしくはコリジョン属性がキャラクタなので壁とみなす。
-				) {
+					) {
 					isHit = true;
 					CVector3 hitPosTmp;
 					hitPosTmp.Set(convexResult.m_hitPointLocal);
@@ -96,7 +96,7 @@ namespace tkEngine{
 		};
 	}
 
-	
+
 	void CCharacterController::Init(float radius, float height, const CVector3& position)
 	{
 		m_position = position;
@@ -129,7 +129,9 @@ namespace tkEngine{
 		CVector3 addPos = m_moveSpeed;
 		addPos.Scale(GameTime().GetFrameDeltaTime());
 		nextPosition.Add(addPos);
-			
+		CVector3 originalXZDir = addPos;
+		originalXZDir.y = 0.0f;
+		originalXZDir.Normalize();
 		//XZ平面での衝突検出と衝突解決を行う。
 		{
 			int loopCount = 0;
@@ -162,7 +164,7 @@ namespace tkEngine{
 				callback.startPos = posTmp;
 				//衝突検出。
 				PhysicsWorld().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
-			
+
 				if (callback.isHit) {
 					//当たった。
 					//壁。
@@ -185,6 +187,15 @@ namespace tkEngine{
 					vOffset = hitNormalXZ;
 					vOffset.Scale(-fT0 + m_radius);
 					nextPosition.Add(vOffset);
+					CVector3 currentDir;
+					currentDir.Subtract(nextPosition, m_position);
+					currentDir.y = 0.0f;
+					currentDir.Normalize();
+					if (currentDir.Dot(originalXZDir) < 0.0f) {
+						nextPosition.x = m_position.x;
+						nextPosition.z = m_position.z;
+						break;
+					}
 				}
 				else {
 					//どことも当たらないので終わり。
@@ -203,15 +214,15 @@ namespace tkEngine{
 		{
 			CVector3 addPos;
 			addPos.Subtract(nextPosition, m_position);
-			
+
 			m_position = nextPosition;	//移動の仮確定。
-			//レイを作成する。
+										//レイを作成する。
 			btTransform start, end;
 			start.setIdentity();
 			end.setIdentity();
 			//始点はカプセルコライダーの中心。
 			start.setOrigin(btVector3(m_position.x, m_position.y + m_height * 0.5f + m_radius, m_position.z));
-			//終点は地面上いる場合場合は1m下を見る。
+			//終点は地面上にいない場合は1m下を見る。
 			//地面上にいなくてジャンプで上昇中の場合は上昇量の0.01倍下を見る。
 			//地面上にいなくて降下中の場合はそのまま落下先を調べる。
 			CVector3 endPos;
@@ -228,7 +239,7 @@ namespace tkEngine{
 				}
 			}
 			else {
-				//地面上にい場合は1m下を見る。
+				//地面上にいない場合は1m下を見る。
 				endPos.y -= 1.0f;
 			}
 			end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
@@ -239,10 +250,23 @@ namespace tkEngine{
 			PhysicsWorld().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
 			if (callback.isHit) {
 				//当たった。
+			/*	CVector3 Circle;
+				float x = 0.0f;
+				float offset = 0.0f;	//押し戻す量。
+				Circle = CVector3::Zero;
+
+				Circle = m_position;
+				Circle.y = callback.hitPos.y;//円の中心
+				CVector3 v;
+				v.Subtract(Circle, callback.hitPos);
+				x = v.Length();//物体の角とプレイヤーの間の横幅の距離が求まる。
+
+				offset = sqrt(max(0.0f, m_radius*m_radius - x*x));//yの平方根を求める。
+				*/
 				m_moveSpeed.y = 0.0f;
 				m_isJump = false;
 				m_isOnGround = true;
-				nextPosition.y = callback.hitPos.y;
+				nextPosition.y = callback.hitPos.y;//; + offset - m_radius;
 			}
 			else {
 				//地面上にいない。

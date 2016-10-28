@@ -90,7 +90,6 @@ namespace tkEngine{
 		*/
 		const CMatrix& GetLVPMatrix() const
 		{
-			TK_LOG("not implement");
 			return m_LVPMatrix[0];
 		}
 		/*!
