@@ -49,7 +49,6 @@ public:
 	enum EnState {
 		enStateRun,			//走っている。
 		enStateStand,		//立ち止まっている。
-		enState_RideOnCar,	//車に乗っている。
 		enState_Attack,		//攻撃。
 		enState_Damage,		//ダメージを受けている。
 		enState_Dead,		//死亡。

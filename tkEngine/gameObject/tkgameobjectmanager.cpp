@@ -101,7 +101,7 @@ namespace tkEngine{
 				GameObjectPrio prio = go->GetPriority();
 				GameObjectList& goExecList = m_gameObjectListArray.at(prio);
 				auto it = std::find( goExecList.begin(),goExecList.end(),go );
-				if ((*it)->IsNewFromGameObjectManager()) {
+				if (it != goExecList.end() && (*it)->IsNewFromGameObjectManager()) {
 					delete (*it);
 				}
 				goExecList.erase(it);

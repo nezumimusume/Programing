@@ -188,17 +188,8 @@ void Player::Update()
 			//車との距離を調べる。
 			CVector3 diff = g_car->GetPosition();
 			diff.Subtract(position);
-			if (diff.Length() < 2.0f) {
-				//車との距離が2m以内。
-				ChangeState(enState_RideOnCar);
-				skinModel.SetShadowReceiverFlag(false);
-				skinModel.SetShadowCasterFlag(false);
-				g_car->SetRideOnFlag(true);
-				g_camera->SetCar(g_car);
-				return;
-			}
-			else if (!characterController.IsJump()) {
-				//車との距離が離れていたらジャンプ。
+			if (!characterController.IsJump()) {
+				//ジャンプ。
 				moveSpeed.y = 8.0f;
 				characterController.Jump();
 			}
@@ -258,24 +249,7 @@ void Player::Update()
 			ChangeState(enState_Attack);
 		}
 	}
-	else if (state == enState_RideOnCar) {
-		ShadowMap().SetLightTarget(g_car->GetPosition());
-		CVector3 lightPos;
-		lightPos.Add(g_car->GetPosition(), toLightPos);
-		ShadowMap().SetLightPosition(lightPos);
-		if (g_car->GetMoveSpeed().Length() < 0.1f) {
-			//車が停止状態。
-			if (Pad(0).IsPress(enButtonB)) {
-				//降車。
-				g_camera->SetCar(NULL);
-				g_car->SetRideOnFlag(false);
-				skinModel.SetShadowReceiverFlag(true);
-				skinModel.SetShadowCasterFlag(true);
-				position = g_car->GetPosition();
-				ChangeState(enStateStand);
-			}
-		}
-	}
+
 	else if (state == enState_Attack) {
 		//移動がピタって止まると気持ちわるいので
 		CVector3 moveSpeed = characterController.GetMoveSpeed();
@@ -519,7 +493,7 @@ void Player::ChangeState(EnState nextState)
 		//血しぶきのエフェクトをエミット。
 		CMatrix* m = skinModel.FindBoneWorldMatrix("thief_Bip01_Neck");
 		for (SParicleEmitParameter& param : bloodEmitterParam) {
-			CParticleEmitter* particleEmitter = NewGO<CParticleEmitter>(0);
+			CParticleEmitter* particleEmitter = NewGO<CParticleEmitter>(1);
 			CVector3 pos;
 			pos.Set(m->m[3][0], m->m[3][1], m->m[3][2]);
 			particleEmitter->Init(g_random, g_camera->GetCamera(), param, pos);
@@ -540,9 +514,5 @@ void Player::ChangeState(EnState nextState)
 */
 void Player::Render(CRenderContext& renderContext)
 {
-	if (state != enState_RideOnCar) {
-		//車に乗っているときは非表示にする。
-		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
-	}
-
+	skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 }

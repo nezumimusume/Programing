@@ -44,7 +44,7 @@ void EnemyStateDeath::Enter(const SEnterArg& enterArg)
 		m->Mul(emitPos);
 		//パーティクルエミッターを登録。
 		for (SParicleEmitParameter& param : bloodEmitterParam) {
-			CParticleEmitter* particleEmitter = NewGO<CParticleEmitter>(0);
+			CParticleEmitter* particleEmitter = NewGO<CParticleEmitter>(1);
 			particleEmitter->Init(g_random, g_camera->GetCamera(), param, emitPos);
 			particleEmitterList.push_back(particleEmitter);
 		}
