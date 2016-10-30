@@ -192,10 +192,16 @@ namespace tkEngine{
 		void Normalize()
 		{
 			float len = Length();
-			TK_ASSERT( len > 0.0f, "zero vector!!!");
-			x /= len;
-			y /= len;
-			z /= len;
+			if (len > 0.0f) {
+				x /= len;
+				y /= len;
+				z /= len;
+			}
+			else {
+				x = 0.0f;
+				y = 0.0f;
+				z = 0.0f;
+			}
 		}
 		/*!
 		* @brief	œZB

@@ -18,6 +18,7 @@ namespace tkEngine{
 			delete ib;
 		}
 		delete stridingMeshInterface;
+		delete meshShape;
 	}
 
 	/*!

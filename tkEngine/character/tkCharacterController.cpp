@@ -192,6 +192,8 @@ namespace tkEngine {
 					currentDir.y = 0.0f;
 					currentDir.Normalize();
 					if (currentDir.Dot(originalXZDir) < 0.0f) {
+						//Šp‚É“ü‚Á‚½Žž‚ÌƒLƒƒƒ‰ƒNƒ^‚ÌU“®‚ð–hŽ~‚·‚é‚½‚ß‚ÉA
+						//ˆÚ“®æ‚ª‹tŒü‚«‚É‚È‚Á‚½‚çˆÚ“®‚ðƒLƒƒƒ“ƒZƒ‹‚·‚éB
 						nextPosition.x = m_position.x;
 						nextPosition.z = m_position.z;
 						break;
