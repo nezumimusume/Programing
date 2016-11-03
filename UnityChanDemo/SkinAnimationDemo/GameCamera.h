@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "tkEngine/camera/tkSpringCamera.h"
+
 class Player;
 class Car;
 /*!
@@ -26,10 +28,11 @@ public:
 	}
 	const CCamera& GetCamera() const
 	{
-		return camera;
+		return *springCamera.GetCamera();
 	}
 private:
-	CCamera camera;
+	//CCamera camera;
+	CSpringCamera springCamera;
 	Car* car;
 	Player*	player;
 	CVector3	toPosition;		//注視点から視点へのベクトル。

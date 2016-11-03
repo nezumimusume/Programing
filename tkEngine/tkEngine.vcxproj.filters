@@ -69,6 +69,9 @@
     <Filter Include="Source Files\graphics\sprite">
       <UniqueIdentifier>{5a977f00-bb44-407d-bb44-34acd9466a71}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\camera">
+      <UniqueIdentifier>{631d124d-931e-4510-8288-4e6088bc5667}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -244,6 +247,9 @@
     </ClCompile>
     <ClCompile Include="graphics\sprite\tkSprite.cpp">
       <Filter>Source Files\graphics\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="camera\tkSpringCamera.cpp">
+      <Filter>Source Files\camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -459,6 +465,9 @@
     </ClInclude>
     <ClInclude Include="graphics\sprite\tkSprite.h">
       <Filter>Source Files\graphics\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="camera\tkSpringCamera.h">
+      <Filter>Source Files\camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -15,13 +15,13 @@ GameCamera::~GameCamera()
 }
 void GameCamera::Start()
 {
-	camera.SetPosition(CVector3(0.0f, 0.8f, 3.0f));
-	camera.SetTarget(CVector3(0.0f, 0.2f, 0.0f));
-	toPosition.Subtract(camera.GetPosition(), camera.GetTarget());
-	camera.SetFar(1000.0f);
-	camera.Update();
+	springCamera.Init(CVector3(0.0f, 0.2f, 0.0f), CVector3(0.0f, 0.8f, 3.0f), 10.0f);
+	
+	toPosition.Subtract(springCamera.GetPosition(), springCamera.GetTarget());
+	springCamera.SetFar(1000.0f);
+	springCamera.Update();
 	//リフレクションマップにカメラを設定する。
-	ReflectionMap().SetCamera(camera);
+	ReflectionMap().SetCamera(*springCamera.GetCamera());
 }
 void GameCamera::Update()
 {
@@ -60,29 +60,29 @@ void GameCamera::Update()
 		//車の後ろに追従。
 		v = car->GetPosition();
 		v.y += 1.0f;
-		camera.SetTarget(v);
+		springCamera.SetTarget(v);
 		CVector3 toPosOnCar = car->GetMoveDirection();
 		toPosOnCar.Scale(-3.0f);
 		toPosOnCar.y += 1.0f;
 		v.Add(toPosOnCar);
-		camera.SetPosition(v);
+		springCamera.SetPosition(v);
 	}
 	else {
 		v = player->GetPosition();
 		v.y += 1.0f;
-		camera.SetTarget(v);
+		springCamera.SetTarget(v);
 		v.Add(toPosition);
-		camera.SetPosition(v);
+		springCamera.SetPosition(v);
 		
 	}
-	camera.Update();
+	springCamera.Update();
 	//被写界深度のパラメータを更新
 	Dof().SetFocalLength(26.0f);
 	Dof().SetFParam(5.6f);
 	Dof().SetPint(toPosition.Length() * 1000.0f);
 	//3Dサウンドのリスナーはカメラ。
 	SoundEngine().SetListenerPosition(g_player->GetPosition());
-	const CMatrix& m = camera.GetCameraRotation();
+	const CMatrix& m = springCamera.GetCameraRotation();
 	SoundEngine().SetListenerFront({ m.m[2][0], m.m[2][1], m.m[2][2] });
 	SoundEngine().SetListenerUp({ m.m[1][0], m.m[1][1], m.m[1][2] });
 }
