@@ -78,6 +78,15 @@ namespace tkEngine{
 			return &m_camera;
 		}
 		/*!
+		* @brief	バネの減衰率を設定。
+		*@detail
+		* 値が大きいほどカメラが遅れて付いてきます。
+		*/
+		void SetDampingRate(float dampingRate)
+		{
+			m_targetDampingRate = dampingRate;
+		}
+		/*!
 		* @brief	カメラを取得。
 		*/
 		CCamera* GetCamera() 
@@ -91,5 +100,8 @@ namespace tkEngine{
 		CVector3	m_targetMoveSpeed = CVector3::Zero;		//!<注視点の移動速度。
 		CVector3	m_positionMoveSpeed = CVector3::Zero;	//!<視点の移動速度。
 		float		m_maxMoveSpeed = 0.0f;					//!<最高移動速度。
+		float		m_targetDampingRate = 1.0f;				//!<減衰率。値が大きいほどカメラが遅れ付いてくる。
+		float		m_dampingRate = 1.0f;					//!<減衰率。
+		float		m_dampingRateVel = 0.0f;
 	};
 }

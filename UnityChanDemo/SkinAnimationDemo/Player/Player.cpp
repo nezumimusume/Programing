@@ -9,7 +9,7 @@
 #include "tkEngine/Sound/tkSoundSource.h"
 
 namespace {
-	const float MAX_RUN_SPEED = 0.1f;					//ユニティちゃんの走りの最高速度。
+	
 	const float RUN_THREADHOLD_SQ = 4.0f * 4.0f;		//走りアニメーションを再生する速度の閾値。
 	//アニメーションのイベントテーブル。
 	AnimationEventGroup animationEventGroupTbl[Player::NumAnimation] = {
@@ -218,8 +218,16 @@ void Player::Update()
 		moveDir.y = 0.0f;	//Y軸はいらない。
 		moveDir.z = cameraX.z * moveDirLocal.x + cameraZ.z * moveDirLocal.z;
 
-		moveSpeed.x = moveDir.x * MOVE_SPEED;
-		moveSpeed.z = moveDir.z * MOVE_SPEED;
+		float fMoveSpeed = MOVE_SPEED;
+		if (Pad(0).IsPress(enButtonRB2)) {
+			fMoveSpeed *= 1.4f;
+			g_camera->SetDampingRate(1.3f);
+		}
+		else {
+			g_camera->SetDampingRate(1.0f);
+		}
+		moveSpeed.x = moveDir.x * fMoveSpeed;
+		moveSpeed.z = moveDir.z * fMoveSpeed;
 
 		if (moveDir.LengthSq() > 0.0001f) {
 			rotation.SetRotation(CVector3::Up, atan2f(moveDir.x, moveDir.z));

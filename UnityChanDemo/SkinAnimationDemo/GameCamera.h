@@ -30,6 +30,10 @@ public:
 	{
 		return *springCamera.GetCamera();
 	}
+	void SetDampingRate(float rate)
+	{
+		springCamera.SetDampingRate(rate);
+	}
 private:
 	//CCamera camera;
 	CSpringCamera springCamera;

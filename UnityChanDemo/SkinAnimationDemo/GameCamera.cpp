@@ -15,9 +15,13 @@ GameCamera::~GameCamera()
 }
 void GameCamera::Start()
 {
-	springCamera.Init(CVector3(0.0f, 0.2f, 0.0f), CVector3(0.0f, 0.8f, 3.0f), 10.0f);
-	
-	toPosition.Subtract(springCamera.GetPosition(), springCamera.GetTarget());
+	CVector3 cameraPos(0.0f, 0.8f, 3.0f);
+	CVector3 cameraTarget(0.0f, 0.2f, 0.0f);
+	toPosition.Subtract(cameraPos, cameraTarget);
+	cameraTarget = player->GetPosition();
+	cameraTarget.y += 1.0f;
+	cameraPos.Add(cameraTarget, toPosition);
+	springCamera.Init(cameraTarget, cameraPos, 100.0f);
 	springCamera.SetFar(1000.0f);
 	springCamera.Update();
 	//リフレクションマップにカメラを設定する。
