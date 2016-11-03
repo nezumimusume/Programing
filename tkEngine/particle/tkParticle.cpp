@@ -178,6 +178,7 @@ namespace tkEngine{
 		shaderEffect->Begin(renderContext);
 		shaderEffect->BeginPass(renderContext, 0);
 		renderContext.SetRenderState(RS_ZENABLE, TRUE);
+		renderContext.SetRenderState(RS_ZWRITEENABLE, FALSE);
 
 		shaderEffect->SetValue(renderContext, "g_mWVP", &m, sizeof(CMatrix));
 		shaderEffect->SetValue(renderContext, "g_alpha", &alpha, sizeof(alpha));
@@ -196,6 +197,7 @@ namespace tkEngine{
 		renderContext.SetRenderState(RS_ALPHABLENDENABLE, FALSE);
 		renderContext.SetRenderState(RS_SRCBLEND, BLEND_ONE);
 		renderContext.SetRenderState(RS_DESTBLEND, BLEND_ZERO);
+		renderContext.SetRenderState(RS_ZWRITEENABLE, TRUE);
 		renderContext.SetRenderState(RS_ZENABLE, TRUE);
 		
 	}

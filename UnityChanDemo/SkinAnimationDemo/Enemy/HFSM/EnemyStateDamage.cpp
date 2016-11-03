@@ -40,7 +40,7 @@ void EnemyStateDamage::Enter(const SEnterArg& enterArg)
 	if (m != NULL) {
 		//パーティクルエミッターを登録。
 		for (SParicleEmitParameter& param : bloodEmitterParam) {
-			CParticleEmitter* particleEmitter = NewGO<CParticleEmitter>(0);
+			CParticleEmitter* particleEmitter = NewGO<CParticleEmitter>(1);
 			CVector3 pos;
 			pos.Set(m->m[3][0], m->m[3][1], m->m[3][2]);
 			particleEmitter->Init(g_random, g_camera->GetCamera(), param, pos);
