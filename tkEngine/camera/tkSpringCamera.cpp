@@ -44,11 +44,6 @@ namespace tkEngine{
 			CVector3 newPos = positionNow;
 			CVector3 addPos = moveSpeed;
 			addPos.Scale(GameTime().GetFrameDeltaTime());
-			if (moveSpeed.LengthSq() > maxMoveSpeed*maxMoveSpeed) {
-				//ç≈çÇë¨ìxÇÊÇËë¨Ç≠Ç»Ç¡ÇƒÇµÇ‹Ç¡ÇΩÅB
-				moveSpeed.Normalize();
-				moveSpeed.Scale(maxMoveSpeed);
-			}
 			newPos.Add(addPos);
 			return newPos;
 		}
