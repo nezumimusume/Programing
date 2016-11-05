@@ -93,6 +93,14 @@ namespace tkEngine{
 		{
 			return &m_camera;
 		}
+		void SetViewAngle(float angle)
+		{
+			m_camera.SetViewAngle(angle);
+		}
+		float GetViewAngle() const
+		{
+			return m_camera.GetViewAngle();
+		}
 	private:
 		CCamera		m_camera;						//!<カメラ。
 		CVector3	m_target = CVector3::Zero;		//!<目標となる注視点。

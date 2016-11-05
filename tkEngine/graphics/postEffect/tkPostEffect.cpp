@@ -31,6 +31,7 @@ namespace tkEngine{
 		}
 		m_dof.Create(config);
 		m_fxaa.Init(config);
+		m_motionBlur.Create(config);
 		static SShapeVertex_PT vertex[]{
 			{
 				-1.0f, 1.0f, 0.0f, 1.0f,
@@ -65,7 +66,10 @@ namespace tkEngine{
 	}
 	void CPostEffect::Render(CRenderContext& renderContext)
 	{
+		renderContext.SetRenderTarget(1, NULL);
+		renderContext.SetRenderTarget(2, NULL);
 		m_edgeRender.Render(renderContext, this);
+		m_motionBlur.Render(renderContext, this);
 		m_dof.Render(renderContext, this);
 		m_bloomRender.Render(renderContext, this);
 		m_fxaa.Render(renderContext, this);

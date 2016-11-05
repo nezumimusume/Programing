@@ -60,6 +60,12 @@ namespace tkEngine{
 		bool isEnable;					//アンチエイリアスが有効かどうかのフラグ。
 	};
 	/*!
+	* @brief	モーションブラーのコンフィグ。
+	*/
+	struct SMotionBlurConfig {
+		bool isEnable;
+	};
+	/*!
 	 * @brief	グラフィックスコンフィグ。
 	 */
 	struct SGraphicsConfig{
@@ -69,6 +75,7 @@ namespace tkEngine{
 		SReflectionMapConfig	reflectionMapConfig;	//!<リフレクションマップのコンフィグ。
 		SDofConfig				dofConfig;				//!<被写界深度のコンフィグ。
 		SAAConfig				aaConfig;				//!<アンチエイリアスのコンフィグ。
+		SMotionBlurConfig		motionBlurConfig;		//<!モーションブラーのコンフィグ。
 	};
 }
 

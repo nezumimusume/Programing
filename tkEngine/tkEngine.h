@@ -191,6 +191,13 @@ namespace tkEngine{
 			return m_postEffect.GetDof();
 		}
 		/*!
+		* @brief	モーションブラーを取得。
+		*/
+		CMotionBlur& GetMotionBlur()
+		{
+			return m_postEffect.GetMotionBlur();
+		}
+		/*!
 		* @brief	スキンモデルリソースを取得。
 		*/
 		CSkinModelDataResources& GetSkinModelDataResources()
@@ -297,6 +304,10 @@ namespace tkEngine{
 	static inline CDof& Dof()
 	{
 		return CEngine::Instance().GetDof();
+	}
+	static inline CMotionBlur& MotionBlur()
+	{
+		return CEngine::Instance().GetMotionBlur();
 	}
 	static inline CSkinModelDataResources& SkinModelDataResources()
 	{

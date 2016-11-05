@@ -34,12 +34,17 @@ public:
 	{
 		springCamera.SetDampingRate(rate);
 	}
+	void SetViewAngle(float angle)
+	{
+		m_targetViewAngle = angle;
+	}
 private:
 	//CCamera camera;
 	CSpringCamera springCamera;
 	Car* car;
 	Player*	player;
 	CVector3	toPosition;		//注視点から視点へのベクトル。
+	float m_targetViewAngle;	//ビューアングル。
 };
 
 

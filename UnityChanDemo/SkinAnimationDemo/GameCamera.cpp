@@ -23,12 +23,15 @@ void GameCamera::Start()
 	cameraPos.Add(cameraTarget, toPosition);
 	springCamera.Init(cameraTarget, cameraPos, 100.0f);
 	springCamera.SetFar(1000.0f);
+	m_targetViewAngle = springCamera.GetViewAngle();
 	springCamera.Update();
 	//リフレクションマップにカメラを設定する。
 	ReflectionMap().SetCamera(*springCamera.GetCamera());
 }
 void GameCamera::Update()
 {
+	float viewAngle = m_targetViewAngle * 0.1f + springCamera.GetViewAngle() * 0.9f;
+	springCamera.SetViewAngle(viewAngle);
 	//カメラを回転させる。
 	float rStick_x = Pad(0).GetRStickXF();
 	float rStick_y = Pad(0).GetRStickYF();

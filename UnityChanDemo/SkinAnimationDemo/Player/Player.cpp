@@ -118,6 +118,7 @@ void Player::Start()
 	skinModel.SetShadowReceiverFlag(true);
 	skinModel.SetFresnelFlag(true);
 	skinModel.SetReflectionCasterFlag(true);
+	skinModel.SetWriteVelocityMap(false);
 
 	light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
 	light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
@@ -220,11 +221,17 @@ void Player::Update()
 
 		float fMoveSpeed = MOVE_SPEED;
 		if (Pad(0).IsPress(enButtonRB2)) {
-			fMoveSpeed *= 1.4f;
-			g_camera->SetDampingRate(1.3f);
+			fMoveSpeed *= 1.7f;
+			g_camera->SetViewAngle(CMath::DegToRad(60.0f));
+			g_camera->SetDampingRate(0.9f);
+			animation.SetAnimationSpeedRate(1.4f);
+			MotionBlur().SetEnable(true);
 		}
 		else {
-			g_camera->SetDampingRate(1.0f);
+			g_camera->SetViewAngle(CMath::DegToRad(70.0f));
+			g_camera->SetDampingRate(0.9f);
+			animation.SetAnimationSpeedRate(1.0f);
+			MotionBlur().SetEnable(false);
 		}
 		moveSpeed.x = moveDir.x * fMoveSpeed;
 		moveSpeed.z = moveDir.z * fMoveSpeed;

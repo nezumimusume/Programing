@@ -11,9 +11,7 @@ namespace tkEngine{
 	 *@brief	ゲーム時間。
 	 */
 	class CGameTime{
-		CGameTime() : 
-			m_frameDeltaTime(1.0f/60.0f),
-			m_isReady(false)
+		CGameTime() 
 		{
 		}
 		~CGameTime()
@@ -30,21 +28,15 @@ namespace tkEngine{
 		 */
 		float GetFrameDeltaTime() const
 		{
-			return min(1.0f / 20.0f, m_frameDeltaTime);
+			return m_frameDeltaTime;
 		}
-		void Update()
+		void SetFrameDeltaTime(float deltaTime) 
 		{
-			if(m_isReady){
-				m_sw.Stop();
-				m_frameDeltaTime = s_cast<float>( m_sw.GetElapsed() );
-			}
-			m_sw.Start();
-			m_isReady = true;
+			m_frameDeltaTime = min( 1.0f/20.0f, deltaTime );
 		}
+		
 	private:
-		float		m_frameDeltaTime;		//1フレームの経過時間。
-		CStopwatch	m_sw;
-		bool		m_isReady;
+		float		m_frameDeltaTime = 1.0f / 60.0f;		//1フレームの経過時間。
 	};
 	static CGameTime& GameTime()
 	{

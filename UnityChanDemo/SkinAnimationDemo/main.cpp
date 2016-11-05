@@ -171,6 +171,8 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.graphicsConfig.dofConfig.isEnable = true;
 	//AA
 	initParam.graphicsConfig.aaConfig.isEnable = true;
+	//MotionBlur
+	initParam.graphicsConfig.motionBlurConfig.isEnable = true;
 
 	Engine().Init(initParam);	//初期化。
 	
@@ -213,6 +215,7 @@ int WINAPI wWinMain(
 	g_camera = NewGO<GameCamera>(0);
 	g_player->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
 	g_camera->SetPlayer(g_player);
+	MotionBlur().SetCamera(&g_camera->GetCamera());
 #endif
 	Engine().RunGameLoop();		//ゲームループを実行。
 

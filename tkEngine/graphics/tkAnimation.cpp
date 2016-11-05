@@ -123,6 +123,7 @@ namespace tkEngine{
 	}
 	void CAnimation::Update(float deltaTime)
 	{
+		deltaTime *= animationSpeedRate;
 		if (pAnimController && !isAnimEnd) {
 			localAnimationTime += deltaTime;
 			if (isInterpolate) {

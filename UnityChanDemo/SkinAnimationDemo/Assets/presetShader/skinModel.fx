@@ -14,11 +14,13 @@ float		g_numBone;			//骨の数。
 float4x4	g_worldMatrix;			//!<ワールド行列。
 float4x4	g_rotationMatrix;		//!<回転行列。
 float4x4	g_viewMatrixRotInv;		//!<カメラの回転行列の逆行列。
+float4x4	g_mViewProjLastFrame;	//!<1フレーム前のビュープロジェクション行列。
 float4		g_fogParam;				//フォグのパラメータ。xにフォグが掛かり始める深度。yにフォグが完全にかかる深度。zはフォグを計算するかどうかのフラグ。
 
 float2		g_farNear;	//遠平面と近平面。xに遠平面、yに近平面。
 
 int4 g_flags;				//xに法線マップ、yはシャドウレシーバー、zはリムライト、wはスペキュラマップ。
+int4 g_flags2;				//xに速度マップへの書き込み
 
 texture g_diffuseTexture;		//ディフューズテクスチャ。
 sampler g_diffuseTextureSampler = 
@@ -86,6 +88,8 @@ struct VS_OUTPUT
     float4  lightViewPos_0	: TEXCOORD3;
     float4  lightViewPos_1	: TEXCOORD4;
     float4  lightViewPos_2	: TEXCOORD5;
+    float4  velocity		: TEXCOORD6;	//速度。
+    float4  screenPos		: TEXCOORD7;
 };
 
 /*!
@@ -101,8 +105,9 @@ struct VS_OUTPUT_RENDER_SHADOW_MAP
  * @brief	ピクセルシェーダーからの出力。
  */
 struct PSOutput{
-	float4	color	: COLOR0;		//レンダリングターゲット0に書き込み。
-	float4	depth	: CoLOR1;		//レンダリングターゲット1に書き込み。
+	float4	color		: COLOR0;		//レンダリングターゲット0に書き込み。
+	float4	depth		: COLOR1;		//レンダリングターゲット1に書き込み。
+	float4  velocity 	: COLOR2;		//レンダリングターゲット2に書き込み。
 };
 
 /*!
@@ -176,12 +181,15 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 		CalcWorldPosAndNormal( In, Pos, Normal, Tangent, true );
 	}
 	o.worldPos_depth.xyz = Pos.xyz;
-	
+
+
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
     o.worldPos_depth.w = o.Pos.w;
     o.Normal = normalize(Normal);
     o.Tangent = normalize(Tangent);
     o.Tex0 = In.Tex0;
+    o.velocity = mul(float4(Pos.xyz, 1.0f), g_mViewProjLastFrame);
+    o.screenPos = o.Pos;
     if(g_flags.y){
 		//シャドウレシーバー。
 		o.lightViewPos_0 = mul(float4(Pos.xyz, 1.0f), gShadowReceiverParam.mLVP[0] );
@@ -212,11 +220,14 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
 	worldMat[2] = In.mWorld3;
 	worldMat[3] = In.mWorld4;
 	Pos = mul(float4(Pos.xyz, 1.0f), worldMat );	//ワールド行列をかける。
+
 	o.worldPos_depth.xyz = Pos.xyz;
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
     o.worldPos_depth.w = o.Pos.w;
     o.Normal = mul(normalize(Normal), worldMat);
     o.Tex0 = In.base.Tex0;
+   	o.velocity = mul(float4(Pos.xyz, 1.0f), g_mViewProjLastFrame);
+   	o.screenPos = o.Pos;
     if(g_flags.y){
 		//シャドウレシーバー。
 		o.lightViewPos_0 = mul(float4(Pos.xyz, 1.0f), gShadowReceiverParam.mLVP[0] );
@@ -288,6 +299,15 @@ PSOutput PSMain( VS_OUTPUT In )
 	PSOutput psOut = (PSOutput)0;
 	psOut.color = color;
 	psOut.depth = In.worldPos_depth.w;
+	if(g_flags2.x){
+		psOut.velocity.xy = In.velocity.xy / In.velocity.w-In.screenPos.xy / In.screenPos.w;
+		psOut.velocity.xy *= 0.5f;
+		psOut.velocity.xy += 0.5f;
+		psOut.velocity.zw = 0.0f;
+	}else{
+		//速度なし。
+		psOut.velocity = 0.5f;
+	}
 	return psOut;
 }
 

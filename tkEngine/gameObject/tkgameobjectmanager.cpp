@@ -73,6 +73,8 @@ namespace tkEngine{
 			//シングルスレッド描画。
 			//深度書き込み用のレンダリングターゲットを設定。
 			renderContext[0].SetRenderTarget(1, Dof().GetDepthRenderTarget());
+			//速度書き込み用のレンダリングターゲットを設定。
+			renderContext[0].SetRenderTarget(2, MotionBlur().GetVelocityMapRenderTarget());
 			for (GameObjectList objList : m_gameObjectListArray) {
 				for (IGameObject* obj : objList) {
 					obj->RenderWrapper(renderContext[0]);

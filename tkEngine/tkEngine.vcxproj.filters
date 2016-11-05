@@ -251,6 +251,9 @@
     <ClCompile Include="camera\tkSpringCamera.cpp">
       <Filter>Source Files\camera</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\postEffect\tkMotionBlur.cpp">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -468,6 +471,9 @@
     </ClInclude>
     <ClInclude Include="camera\tkSpringCamera.h">
       <Filter>Source Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\postEffect\tkMotionBlur.h">
+      <Filter>Source Files\graphics\postEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -115,6 +115,7 @@ namespace tkEngine{
 		{
 			//ビュープロジェクション
 			pEffect->SetMatrix(m_hShaderHandle[enShaderHandleViewProj], &viewProj);
+			pEffect->SetMatrix(m_hShaderHandle[enShaderHandleLastFrameViewProj], (D3DXMATRIX*)&MotionBlur().GetLastFrameViewProjectionMatrix());
 			//ライト
 			pEffect->SetValue(
 				m_hShaderHandle[enShaderHandleLight],
@@ -157,7 +158,14 @@ namespace tkEngine{
 				//スペキュラマップ。
 				flag[3] = true;
 			}
+
+
 			pEffect->SetValue(m_hShaderHandle[enShaderHandleFlags], flag, sizeof(flag));
+			int flag2[4] = { 0 };
+			if (m_isWriteVelocityMap) {
+				flag2[0] = 1;
+			}
+			pEffect->SetValue(m_hShaderHandle[enShaderHandleFlags2], flag2, sizeof(flag2));
 			if (isDrawToShadowMap || m_isShadowReceiver) {
 				float farNear[] = {
 					ShadowMap().GetFar(),
@@ -383,11 +391,13 @@ namespace tkEngine{
 	void CSkinModel::InitShaderConstHandle()
 	{
 		ID3DXEffect* effectDx = m_pEffect->GetD3DXEffect();
+		m_hShaderHandle[enShaderHandleLastFrameViewProj] = effectDx->GetParameterByName(NULL, "g_mViewProjLastFrame");
 		m_hShaderHandle[enShaderHandleViewProj] 	= effectDx->GetParameterByName(NULL, "g_mViewProj");
 		m_hShaderHandle[enShaderHandleLight] 		= effectDx->GetParameterByName(NULL, "g_light");
 		m_hShaderHandle[enShaderHandleLVP] 			= effectDx->GetParameterByName(NULL, "g_mLVP");
 		m_hShaderHandle[enShaderHandleCameraPos] 	= effectDx->GetParameterByName(NULL, "g_cameraPos");
 		m_hShaderHandle[enShaderHandleFlags] 		= effectDx->GetParameterByName(NULL, "g_flags");
+		m_hShaderHandle[enShaderHandleFlags2]		= effectDx->GetParameterByName(NULL, "g_flags2");
 		m_hShaderHandle[enShaderHandleFarNear] 		= effectDx->GetParameterByName(NULL, "g_farNear");
 		m_hShaderHandle[enShaderHandleFogParam] 	= effectDx->GetParameterByName(NULL, "g_fogParam");
 		m_hShaderHandle[enShaderHandleWorldMatrixArray] 	= effectDx->GetParameterByName(NULL, "g_mWorldMatrixArray");
