@@ -66,11 +66,11 @@
     <Filter Include="Source Files\HUD">
       <UniqueIdentifier>{d314ad2d-c9dc-4816-9f2d-a5551e0eb68c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\graphics\sprite">
-      <UniqueIdentifier>{5a977f00-bb44-407d-bb44-34acd9466a71}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\camera">
       <UniqueIdentifier>{631d124d-931e-4510-8288-4e6088bc5667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics\sprite">
+      <UniqueIdentifier>{5a977f00-bb44-407d-bb44-34acd9466a71}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -63,22 +63,14 @@ float4 PSMain(VS_OUTPUT In ) : COLOR
 	velocity.xy *= 2.0f;
 	velocity.xy -= 1.0f;
 	velocity.y *= -1.0f;
+	float4 color = 0.0f;
 	//4ピクセルを取得する。
-	float4 color = tex2D( g_SceneSampler, In.tex0 );
-	float t = 0.04f;
-	color += tex2D( g_SceneSampler, In.tex0 + velocity * t );
-	color += tex2D( g_SceneSampler, In.tex0 + velocity * (t*2) );
-	color += tex2D( g_SceneSampler, In.tex0 + velocity * (t*3) );
-	color += tex2D( g_SceneSampler, In.tex0 + velocity * (t*4) );
-	color += tex2D( g_SceneSampler, In.tex0 + velocity * (t*5) );
-	color += tex2D( g_SceneSampler, In.tex0 + velocity * (t*6) );
-	color += tex2D( g_SceneSampler, In.tex0 + velocity * (t*7) );
-	color += tex2D( g_SceneSampler, In.tex0 + velocity * (t*8) );
-	color += tex2D( g_SceneSampler, In.tex0 + velocity * (t*9) );
-	color += tex2D( g_SceneSampler, In.tex0 + velocity * (t*10) );
-	color += tex2D( g_SceneSampler, In.tex0 + velocity * (t*11) );
-	color += tex2D( g_SceneSampler, In.tex0 + velocity * (t*12) );
-	color.xyz /= 13.0f;
+	int numSample = 16;
+	float t = 0.03f;
+	for(int i = 0; i < numSample; i++){
+		color += tex2D( g_SceneSampler, In.tex0 + velocity * t*i );
+	}
+	color.xyz /= numSample;
 	return color;
 }
 technique MotionBlur
