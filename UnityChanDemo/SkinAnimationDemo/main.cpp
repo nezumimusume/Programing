@@ -14,6 +14,7 @@
 #include "tkEngine/Sound/tkSoundSource.h"
 #include "tkEngine/graphics/sprite/tkSprite.h"
 #include "HUD/PlayerHPBar.h"
+#include "HUD/PlayerMPBar.h"
 
 CPhysicsWorld* g_physicsWorld = NULL;
 Player* g_player = NULL;
@@ -207,6 +208,7 @@ int WINAPI wWinMain(
 	NewGO<Map>(0);
 	NewGO<Ground>(0);
 	NewGO<PlayerHPBar>(0);
+	NewGO<PlayerMPBar>(0);
 	g_damageCollisionWorld = NewGO<DamageCollisionWorld>(0);
 
 	Sky* sky = NewGO<Sky>(0);

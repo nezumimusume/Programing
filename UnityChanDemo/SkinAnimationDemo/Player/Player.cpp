@@ -126,10 +126,10 @@ void Player::Start()
 	light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
 
 
-	light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 10.0f));
-	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 10.0f));
-	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 10.0f));
-	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 10.0f));
+	light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
+	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
+	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
+	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
 	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
 
 	light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));

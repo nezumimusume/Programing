@@ -104,6 +104,9 @@
     <ClCompile Include="HUD\PlayerHPBar.cpp">
       <Filter>Source Files\HUD</Filter>
     </ClCompile>
+    <ClCompile Include="HUD\PlayerMPBar.cpp">
+      <Filter>Source Files\HUD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -192,6 +195,9 @@
     </ClInclude>
     <ClInclude Include="Enemy\EnemyAnimationEventTbl.h">
       <Filter>Source Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD\PlayerMPBar.h">
+      <Filter>Source Files\HUD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

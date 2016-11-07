@@ -124,6 +124,20 @@ public:
 	{
 		return maxHP;
 	}
+	/*!
+	* @brief	MPの取得。
+	*/
+	int GetMP() const
+	{
+		return mp;
+	}
+	/*!
+	* @brief	最大MPの取得。
+	*/
+	int GetMaxMP() const
+	{
+		return maxMP;
+	}
 private:
 	/*!
 	* @brief	状態切り替え。
@@ -181,6 +195,8 @@ private:
 	std::list<CParticleEmitter*>	particleEmitterList;
 	int						hp =  100;					//ヒットポイント。
 	int						maxHP = 100;				//最大ヒットポイント。
+	int						mp = 100;					//マジックポイント。
+	int						maxMP = 100;				//最大マジックポイント。
 	float					radius = 0.0f;
 	float					height = 0.0f;
 	float					timer = 0.0f;				//タイマー
