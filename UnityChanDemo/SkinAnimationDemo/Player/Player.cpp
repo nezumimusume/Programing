@@ -9,7 +9,9 @@
 #include "tkEngine/Sound/tkSoundSource.h"
 
 namespace {
-	
+	const float USE_MP_DASH = 50.0f;		//ダッシュ魔法を使った時のMP使用量。
+	const float RECOVER_MP = 20.0f;			//MP自然回復量。
+
 	const float RUN_THREADHOLD_SQ = 4.0f * 4.0f;		//走りアニメーションを再生する速度の閾値。
 	//アニメーションのイベントテーブル。
 	AnimationEventGroup animationEventGroupTbl[Player::NumAnimation] = {
@@ -174,10 +176,8 @@ void Player::Start()
 		sizeof(animationEventGroupTbl)/sizeof(animationEventGroupTbl[0])
 	);
 }
-void Player::Update()
+void Player::UpdateStateMachine()
 {
-	CVector3 nextPosition = position;
-
 	const float MOVE_SPEED = 7.0f;
 	if (state == enStateRun || state == enStateStand) {
 		CVector3 moveSpeed = characterController.GetMoveSpeed();
@@ -220,7 +220,19 @@ void Player::Update()
 		moveDir.z = cameraX.z * moveDirLocal.x + cameraZ.z * moveDirLocal.z;
 
 		float fMoveSpeed = MOVE_SPEED;
+		bool isDash = false;
 		if (Pad(0).IsPress(enButtonRB2)) {
+			//Mpの残量を見てダッシュできるか調べる。
+			float useMp = USE_MP_DASH * GameTime().GetFrameDeltaTime();
+			if (mp - useMp >= 0.0f) {
+				//MP使える。
+				isDash = true;
+			}
+			UseMagicPoint(useMp);
+		}
+
+		if (isDash) {
+			//ダッシュ中可能か調べる。
 			fMoveSpeed *= 1.7f;
 			g_camera->SetViewAngle(CMath::DegToRad(60.0f));
 			g_camera->SetDampingRate(0.9f);
@@ -301,29 +313,8 @@ void Player::Update()
 		}
 	}
 	position = characterController.GetPosition();
-	
-	//ダメージ処理。
-	Damage();
-	//ポイントライトの位置を更新。
-	UpdatePointLightPosition();
-	//アニメーションコントロール。
-	AnimationControl();
-	//バトル用のシートの更新。
-	UpdateBattleSeats();
-	//アニメーションイベントコントローラの実行。
-	animationEventController.Update();
-
-
-	ShadowMap().SetLightTarget(position);
-	CVector3 lightPos;
-	lightPos.Add(position, toLightPos);
-	ShadowMap().SetLightPosition(lightPos);
-
-	skinModel.Update(position, rotation, CVector3::One);
-
-
-	lastFrameState = state;
 }
+
 /*!
 * @brief	ヤラレ処理。
 */
@@ -481,15 +472,6 @@ Player::SBattleSeat* Player::FindUnuseSeat(const CVector3& pos)
 */
 void Player::ChangeState(EnState nextState)
 {
-	char* stateTable[] = {
-		"enStateRun",			//走っている。
-		"enStateStand",		//立ち止まっている。
-		"enState_RideOnCar",	//車に乗っている。
-		"enState_Attack",		//攻撃。
-		"enState_Damage",		//ダメージを受けている。
-		"enState_Dead",		//死亡。
-	};
-	TK_LOG("nextState = %s\n", stateTable[nextState]);
 	if (state == enState_Damage
 		|| state == enState_Dead
 	) {
@@ -530,4 +512,32 @@ void Player::ChangeState(EnState nextState)
 void Player::Render(CRenderContext& renderContext)
 {
 	skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
+}
+
+void Player::Update()
+{
+	//ステートマシーンの更新。
+	UpdateStateMachine();
+	//ダメージ処理。
+	Damage();
+	//ポイントライトの位置を更新。
+	UpdatePointLightPosition();
+	//アニメーションコントロール。
+	AnimationControl();
+	//バトル用のシートの更新。
+	UpdateBattleSeats();
+	//アニメーションイベントコントローラの実行。
+	animationEventController.Update();
+	//マジックポイントは少しづつ回復する。
+	RecoverMagicPoint(RECOVER_MP * GameTime().GetFrameDeltaTime());
+
+	ShadowMap().SetLightTarget(position);
+	CVector3 lightPos;
+	lightPos.Add(position, toLightPos);
+	ShadowMap().SetLightPosition(lightPos);
+
+	skinModel.Update(position, rotation, CVector3::One);
+
+
+	lastFrameState = state;
 }

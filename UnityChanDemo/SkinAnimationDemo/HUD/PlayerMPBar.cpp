@@ -40,7 +40,7 @@ void PlayerMPBar::Update()
 {
 	//プレイヤーの残HPに応じてMPバーのサイズを変える。
 	
-	float hpRate = (float)g_player->GetMP() / (float)g_player->GetMaxMP();
+	float hpRate = g_player->GetMP() / g_player->GetMaxMP();
 	CVector2 size = hpBarMaxSize;
 	size.x *= hpRate;
 	m_mpBar.SetSize(size);

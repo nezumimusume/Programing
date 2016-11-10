@@ -127,14 +127,14 @@ public:
 	/*!
 	* @brief	MPの取得。
 	*/
-	int GetMP() const
+	float GetMP() const
 	{
 		return mp;
 	}
 	/*!
 	* @brief	最大MPの取得。
 	*/
-	int GetMaxMP() const
+	float GetMaxMP() const
 	{
 		return maxMP;
 	}
@@ -167,6 +167,22 @@ private:
 	* @brief	バトルで使用するシートを更新。
 	*/
 	void UpdateBattleSeats();
+
+	void UpdateStateMachine();
+	/*!
+	* @brief	マジックポイントを使用する。
+	*/
+	void UseMagicPoint(float useMp)
+	{
+		mp = max(0, mp - useMp);
+	}
+	/*!
+	* @brief	マジックポイントの回復。
+	*/
+	void RecoverMagicPoint(float recoverMp)
+	{
+		mp = min(maxMP, mp + recoverMp);
+	}
 private:
 	CSkinModelDataHandle	skinModelData;
 	CSkinModel				skinModel;			//スキンモデル。
@@ -195,9 +211,10 @@ private:
 	std::list<CParticleEmitter*>	particleEmitterList;
 	int						hp =  100;					//ヒットポイント。
 	int						maxHP = 100;				//最大ヒットポイント。
-	int						mp = 100;					//マジックポイント。
-	int						maxMP = 100;				//最大マジックポイント。
+	float					mp = 100.0f;				//マジックポイント。
+	float					maxMP = 100.0f;				//最大マジックポイント。
 	float					radius = 0.0f;
 	float					height = 0.0f;
 	float					timer = 0.0f;				//タイマー
+	float					magicPointRecoverTimer = 0.0f;		//マジックポイントの回復タイマー。
 };
