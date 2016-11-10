@@ -254,6 +254,9 @@
     <ClCompile Include="graphics\postEffect\tkMotionBlur.cpp">
       <Filter>Source Files\graphics\postEffect</Filter>
     </ClCompile>
+    <ClCompile Include="Sound\tkWaveFileBank.cpp">
+      <Filter>Source Files\Sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -474,6 +477,9 @@
     </ClInclude>
     <ClInclude Include="graphics\postEffect\tkMotionBlur.h">
       <Filter>Source Files\graphics\postEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound\tkWaveFileBank.h">
+      <Filter>Source Files\Sound</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

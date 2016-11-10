@@ -19,6 +19,8 @@ namespace tkEngine{
 
 	void CWaveFile::Open(char* fileName)
 	{
+		m_filePath = fileName;
+		m_filePathHash = CUtil::MakeHash(fileName);
 		m_hmmio = mmioOpen(fileName, NULL, MMIO_ALLOCBUF | MMIO_READ);
 		if (m_hmmio == NULL) {
 			TK_LOG("Failed mmioOpen");

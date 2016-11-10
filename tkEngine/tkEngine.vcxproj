@@ -232,6 +232,7 @@
     <ClCompile Include="Sound\tkSoundEngine.cpp" />
     <ClCompile Include="Sound\tkSoundSource.cpp" />
     <ClCompile Include="Sound\tkWaveFile.cpp" />
+    <ClCompile Include="Sound\tkWaveFileBank.cpp" />
     <ClCompile Include="tkEngine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -316,6 +317,7 @@
     <ClInclude Include="Sound\tkSoundEngine.h" />
     <ClInclude Include="Sound\tkSoundSource.h" />
     <ClInclude Include="Sound\tkWaveFile.h" />
+    <ClInclude Include="Sound\tkWaveFileBank.h" />
     <ClInclude Include="timer\tkGameTime.h" />
     <ClInclude Include="timer\tkStopwatch.h" />
     <ClInclude Include="tkEngine.h" />

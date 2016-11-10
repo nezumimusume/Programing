@@ -171,11 +171,11 @@ namespace tkEngine{
 			enStreamingBuffering,	//バッファリング中。
 			enStreamingQueueing,	//キューイング中。
 		};
-		CWaveFile				m_waveFile;					//!<波形データ。
-		std::unique_ptr<char[]>	m_buffer;					//!<波形データを読み込むバッファ。ストリーミング再生の時はリングバッファとして利用される。
-		IXAudio2SourceVoice*	m_sourceVoice = nullptr;	//!<ソースボイス。
-		bool					m_isLoop = false;			//!<ループフラグ。
-		bool					m_isPlaying = false;		//!<再生中フラグ。
+		std::unique_ptr<CWaveFile>	m_waveFile;					//!<波形データ。
+		std::unique_ptr<char[]>		m_buffer;					//!<波形データを読み込むバッファ。ストリーミング再生の時はリングバッファとして利用される。
+		IXAudio2SourceVoice*		m_sourceVoice = nullptr;	//!<ソースボイス。
+		bool						m_isLoop = false;			//!<ループフラグ。
+		bool						m_isPlaying = false;		//!<再生中フラグ。
 		bool					m_isStreaming = false;		//!<ストリーミング再生？
 		unsigned int			m_streamingBufferSize = 0;	//!<ストリーミング用のバッファリングサイズ。
 		unsigned int			m_currentBufferingSize = 0;	//!<現在のバッファリングのサイズ。

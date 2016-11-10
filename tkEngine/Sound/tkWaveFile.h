@@ -64,6 +64,13 @@ namespace tkEngine{
 		{
 			return m_pwfx;
 		};
+		/*!
+		* @brief	ファイルパスのハッシュ値を取得。
+		*/
+		unsigned int GetFilePathHash() const
+		{
+			return m_filePathHash;
+		}
 	private:
 		HMMIO			m_hmmio = NULL;	//Waveファイルハンドル。
 		WAVEFORMATEX* 	m_pwfx = NULL;  //waveファイルのフォーマット定義。
@@ -76,5 +83,7 @@ namespace tkEngine{
 		bool			m_isReadEnd = true;	//読み込み終了フラグ。
 		std::thread		m_readAsyncThread;	//非同期読み込みスレッド。
 		bool			m_isInvokeReadAsyncThread = false;
+		std::string		m_filePath;			//ファイルパス。
+		unsigned int	m_filePathHash = 0;		//ファイルパスのハッシュコード。
 	};
 }

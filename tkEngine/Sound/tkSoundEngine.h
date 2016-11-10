@@ -3,6 +3,7 @@
  */
 
 #pragma once
+#include "tkEngine/Sound/tkWaveFileBank.h"
 
 #define INPUTCHANNELS 2  // number of source channels
 #define OUTPUTCHANNELS 8	//最大出力チャンネル数。
@@ -101,6 +102,13 @@ namespace tkEngine{
 		{
 			return m_nChannels;
 		}
+		/*!
+		* @brief	波形データバンクを取得。
+		*/
+		CWaveFileBank& GetWaveFileBank()
+		{
+			return m_waveFileBank;
+		}
 	private:
 		IXAudio2* m_xAudio2 = nullptr;
 		IXAudio2MasteringVoice* m_masteringVoice = nullptr;
@@ -118,5 +126,6 @@ namespace tkEngine{
 		X3DAUDIO_LISTENER m_listener;					//!<サウンドリスナー。
 		std::list<CSoundSource*>	m_3dSoundSource;	//!<3Dサウンドのサウンドソース。
 		X3DAUDIO_CONE	m_emitterCone;
+		CWaveFileBank m_waveFileBank;					//!<波形データのバンク。
 	};
 }
