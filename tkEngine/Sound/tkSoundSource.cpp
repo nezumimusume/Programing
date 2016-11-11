@@ -33,12 +33,19 @@ namespace tkEngine{
 	}
 	void CSoundSource::Init( char* filePath, bool is3DSound )
 	{
-		m_waveFile.Open(filePath);
-		m_buffer.reset(new char[m_waveFile.GetSize()]);
+		m_waveFile = SoundEngine().GetWaveFileBank().FindWaveFile(0, filePath);
+		if (!m_waveFile) {
+			m_waveFile.reset(new CWaveFile);
+			m_waveFile->Open(filePath);
+			SoundEngine().GetWaveFileBank().RegistWaveFile(0, m_waveFile);
+		}
+		
+		m_buffer.reset(new char[m_waveFile->GetSize()]);
 		unsigned int dummy;
-		m_waveFile.Read(m_buffer.get(), m_waveFile.GetSize(), &dummy);
+		m_waveFile->Read(m_buffer.get(), m_waveFile->GetSize(), &dummy);
+		m_waveFile->ResetFile();
 		//サウンドボイスソースを作成。
-		m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(&m_waveFile, is3DSound);
+		m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(m_waveFile.get(), is3DSound);
 		if (is3DSound) {
 			SoundEngine().Add3DSoundSource(this);
 		}
@@ -47,9 +54,35 @@ namespace tkEngine{
 
 		m_is3DSound = is3DSound;
 	}
+	void CSoundSource::Init(const NameKey& nameKey, bool is3DSound)
+	{
+		m_waveFile = SoundEngine().GetWaveFileBank().FindWaveFile(0, nameKey);
+		if (!m_waveFile) {
+			m_waveFile.reset(new CWaveFile);
+			m_waveFile->Open(nameKey.GetName());
+			SoundEngine().GetWaveFileBank().RegistWaveFile(0, m_waveFile);
+		}
+
+		m_buffer.reset(new char[m_waveFile->GetSize()]);
+		unsigned int dummy;
+		m_waveFile->Read(m_buffer.get(), m_waveFile->GetSize(), &dummy);
+		//サウンドボイスソースを作成。
+		m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(m_waveFile.get(), is3DSound);
+		if (is3DSound) {
+			SoundEngine().Add3DSoundSource(this);
+		}
+		InitCommon();
+
+
+		m_is3DSound = is3DSound;
+	}
+	
 	void CSoundSource::InitStreaming(char* filePath, bool is3DSound, unsigned int ringBufferSize, unsigned int bufferSize)
 	{
-		m_waveFile.Open(filePath);
+		//ストリーミングはCWaveFileの使いまわしはできない。
+		m_waveFile.reset(new CWaveFile);
+		m_waveFile->Open(filePath);
+
 		m_isStreaming = true;
 		m_streamingBufferSize = bufferSize;
 		m_buffer.reset( new char[ringBufferSize]);
@@ -57,7 +90,7 @@ namespace tkEngine{
 		m_readStartPos = 0;
 		m_currentBufferingSize = 0;
 		//サウンドボイスソースを作成。
-		m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(&m_waveFile, is3DSound);
+		m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(m_waveFile.get(), is3DSound);
 		m_sourceVoice->Start(0,0);
 		if (is3DSound) {
 			SoundEngine().Add3DSoundSource(this);
@@ -68,7 +101,9 @@ namespace tkEngine{
 	}
 	void CSoundSource::Release()
 	{
-		m_waveFile.Release();
+		if (m_isStreaming) {
+			m_waveFile->Release();
+		}
 		if (m_sourceVoice != nullptr) {
 			m_sourceVoice->DestroyVoice();
 			m_sourceVoice = nullptr;
@@ -102,7 +137,7 @@ namespace tkEngine{
 			//循環する。
 			m_readStartPos = 0;
 		}
-		m_waveFile.ReadAsync(&readStartBuff[m_readStartPos], m_streamingBufferSize, &m_currentBufferingSize);
+		m_waveFile->ReadAsync(&readStartBuff[m_readStartPos], m_streamingBufferSize, &m_currentBufferingSize);
 		m_streamingState = enStreamingBuffering;
 	}
 	void CSoundSource::Play(bool isLoop)
@@ -119,7 +154,7 @@ namespace tkEngine{
 			else {
 				m_sourceVoice->FlushSourceBuffers();
 				m_sourceVoice->Start(0);
-				Play(m_buffer.get(), m_waveFile.GetSize());
+				Play(m_buffer.get(), m_waveFile->GetSize());
 			}
 			m_isPlaying = true;
 		}
@@ -132,7 +167,7 @@ namespace tkEngine{
 		}
 		if (m_streamingState == enStreamingBuffering) {
 			//バッファリング中。
-			if (m_waveFile.IsReadEnd()) {
+			if (m_waveFile->IsReadEnd()) {
 				//バッファリングが終わった。
 				m_streamingState = enStreamingQueueing;
 			}
@@ -148,7 +183,7 @@ namespace tkEngine{
 					if (m_isLoop) {
 						//ループする？
 						//waveファイルの読み込み位置をリセットしてバッファリング再開。
-						m_waveFile.ResetFile();
+						m_waveFile->ResetFile();
 						StartStreamingBuffring();
 					}
 					else {

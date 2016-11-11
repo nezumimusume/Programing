@@ -60,6 +60,14 @@ namespace tkEngine{
 		 */
 		void Init(char* filePath, bool is3DSound = false );
 		/*!
+		 * @brief	初期化。
+		 *@details
+		 * オンメモリ再生向けの初期化。こちらを使う方がちょっとだけ速い。
+		 *@param[in]	nameKey		名前キー。
+		 *@param[in]	is3DSound	3Dサウンド？
+		 */
+		void Init(const NameKey& nameKey, bool is3DSound = false);
+		/*!
 		* @brief	初期化。
 		*@details
 		* ストリーミング再生向けの初期化。
@@ -140,7 +148,7 @@ namespace tkEngine{
 		//入力チャンネル数を取得。
 		int GetNumInputChannel()const
 		{
-			return m_waveFile.GetFormat()->nChannels;
+			return m_waveFile->GetFormat()->nChannels;
 		}
 		FLOAT32* GetEmitterAzimuths() 
 		{
@@ -171,7 +179,7 @@ namespace tkEngine{
 			enStreamingBuffering,	//バッファリング中。
 			enStreamingQueueing,	//キューイング中。
 		};
-		std::unique_ptr<CWaveFile>	m_waveFile;					//!<波形データ。
+		std::shared_ptr<CWaveFile>	m_waveFile;					//!<波形データ。
 		std::unique_ptr<char[]>		m_buffer;					//!<波形データを読み込むバッファ。ストリーミング再生の時はリングバッファとして利用される。
 		IXAudio2SourceVoice*		m_sourceVoice = nullptr;	//!<ソースボイス。
 		bool						m_isLoop = false;			//!<ループフラグ。

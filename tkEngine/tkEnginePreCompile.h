@@ -36,6 +36,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <string>
 #include "btBulletDynamicsCommon.h"
 #include "BulletCollision\CollisionDispatch\btGhostObject.h"
 #include "tkEngine/typedef.h"
@@ -48,6 +49,7 @@
 #include "tkEngine/math/tkVector.h"
 #include "tkEngine/graphics/tkGraphicsType.h"
 #include "tkEngine/Input/tkKeyInput.h"
+#include "tkEngine/Util/tkNameKey.h"
 #include "tkEngine/tkEngine.h"
 #include "tkEngine/gameObject/tkGameObjectManager.h"
 #include "tkEngine/gameObject/tkGameObject.h"

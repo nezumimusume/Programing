@@ -323,6 +323,7 @@
     <ClInclude Include="tkEngine.h" />
     <ClInclude Include="tkEnginePreCompile.h" />
     <ClInclude Include="typedef.h" />
+    <ClInclude Include="util\tkNameKey.h" />
     <ClInclude Include="util\tkUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

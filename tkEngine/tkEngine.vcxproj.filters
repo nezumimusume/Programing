@@ -63,9 +63,6 @@
     <Filter Include="Source Files\character">
       <UniqueIdentifier>{0de922d4-3418-4774-84a2-d88020fe8447}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\HUD">
-      <UniqueIdentifier>{d314ad2d-c9dc-4816-9f2d-a5551e0eb68c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\camera">
       <UniqueIdentifier>{631d124d-931e-4510-8288-4e6088bc5667}</UniqueIdentifier>
     </Filter>
@@ -480,6 +477,9 @@
     </ClInclude>
     <ClInclude Include="Sound\tkWaveFileBank.h">
       <Filter>Source Files\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="util\tkNameKey.h">
+      <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

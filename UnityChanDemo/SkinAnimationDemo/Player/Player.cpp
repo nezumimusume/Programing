@@ -222,7 +222,7 @@ void Player::UpdateStateMachine()
 		float fMoveSpeed = MOVE_SPEED;
 		bool isDash = false;
 		if (Pad(0).IsPress(enButtonRB2)) {
-			//Mpの残量を見てダッシュできるか調べる。
+			//MPの残量を見てダッシュできるか調べる。
 			float useMp = USE_MP_DASH * GameTime().GetFrameDeltaTime();
 			if (mp - useMp >= 0.0f) {
 				//MP使える。

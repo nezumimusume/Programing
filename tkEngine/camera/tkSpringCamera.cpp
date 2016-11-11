@@ -29,7 +29,7 @@ namespace tkEngine{
 
 			float t = dampingK / (2.0f * dampingRate);
 			float springK = t * t;
-			springAccel * springK;
+			springAccel *= springK;
 			//‰Á‘¬“x‚ğŒˆ’èB
 			float vt = moveSpeed;
 			vt *= dampingK;
