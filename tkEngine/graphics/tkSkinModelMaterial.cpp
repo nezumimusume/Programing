@@ -25,9 +25,26 @@ namespace tkEngine{
 	*/
 	void CSkinModelMaterial::SendMaterialParamToGPUImmidiate(ID3DXEffect* effect)
 	{
-		//マテリアルを転送。
+		if (this->effect != effect) {
+			//エフェクトが変わった。
+			this->effect = effect;
+			isDirty = true;
+		}
+		if (isDirty) {
+			//なにか変更が発生しているので、シェーダーハンドルのリストを更新。
+			shaderHandles.clear();
+			
+			for (auto matParam : textureMap) {
+				D3DXHANDLE handle = effect->GetParameterByName(NULL, matParam.second.paramName.c_str());
+				shaderHandles.push_back(handle);
+			}
+			isDirty = false;
+		}
+		//マテリアルパラメータを転送。
+		int i = 0;
 		for (auto& p : textureMap) {
-			effect->SetTexture(p.second.paramName.c_str(), p.second.param->GetTextureDX());
+			effect->SetTexture(shaderHandles[i], p.second.param->GetTextureDX());
+			i++;
 		}
 	}
 }

@@ -39,15 +39,13 @@ namespace tkEngine{
 			particleList.push_back(p);
 		}
 		timer += 1.0f / 60.0f;
-		list<CParticle*>::iterator p = particleList.begin();
-		while(p != particleList.end()){
-			if ((*p)->IsDead()) {
-				p = particleList.erase(p);
-			}
-			else {
-				p++;
-			}
-		}
+		//remove-eraseイディオム。
+		auto delIt = remove_if(
+			particleList.begin(), 
+			particleList.end(),
+			[](CParticle* p)->bool { return p->IsDead(); }
+		);
+		particleList.erase(delIt, particleList.end());
 	}
 	/*!
 	*@brief	パーティクルに力を加える。

@@ -4,9 +4,9 @@
 
 namespace tkEngine {
 	
-	class NameKey : Noncopyable{
-		std::string name;		//!<名前
-		unsigned int hashCode;	//!<ハッシュ値。
+	class NameKey {
+		std::string name;			//!<名前
+		unsigned int hashCode = 0;	//!<ハッシュ値。
 	public:
 		NameKey(){}
 		NameKey( const char* name )
@@ -16,9 +16,11 @@ namespace tkEngine {
 		//初期化。
 		void Init(const char* name)
 		{
-			this->name = name;
-			//名前をハッシュ値に変換。
-			hashCode = CUtil::MakeHash(name);
+			if (name != nullptr) {
+				this->name = name;
+				//名前をハッシュ値に変換。
+				hashCode = CUtil::MakeHash(name);
+			}
 		}
 		//ハッシュコードを取得。
 		unsigned int GetHashCode() const

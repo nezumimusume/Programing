@@ -58,13 +58,13 @@ void AnimationEventController::InvokeAnimationEvent(const AnimationEvent& event)
 	case eAnimationEventType_EmitSound: {
 		//ワンショットのサウンド発生。
 		CSoundSource* s = NewGO<CSoundSource>(0);
-		s->Init((char*)event.strArg[0]);
+		s->Init(event.nameKeyArg[0]);
 		s->Play(false);
 		s->SetVolume(event.fArg[0]);
 	}
 	case eAnimationEventType_Emit3DSound: {
 		CSoundSource* s = NewGO<CSoundSource>(0);
-		s->Init((char*)event.strArg[0], true);
+		s->Init(event.nameKeyArg[0], true);
 		const CMatrix& m = skinModel->GetWorldMatrix();
 		s->SetPosition({ m.m[3][0], m.m[3][1], m.m[3][2] });
 		s->Play(false);

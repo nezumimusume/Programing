@@ -38,6 +38,7 @@ namespace tkEngine{
 		{
 			int hash = CUtil::MakeHash(paramName);
 			textureMap.insert(std::pair<int, SShaderTextureParam>(hash, { paramName, texture }));
+			isDirty = true;
 		}
 		/*!
 		 *@brief	マテリアル名を取得。
@@ -59,9 +60,11 @@ namespace tkEngine{
 		*/
 		void SendMaterialParamToGPUImmidiate(ID3DXEffect* effect);
 	private:
-		CEffect*					effect;		//!<エフェクト。
-		std::string					name;		//!<マテリアル名。
+		ID3DXEffect*				effect = NULL;		//!<エフェクト。
+		std::string					name;				//!<マテリアル名。
 		std::map<int, SShaderTextureParam>	textureMap;	//!<テクスチャのマップ。
+		std::vector<D3DXHANDLE>		shaderHandles;		//!<シェーダーハンドルのリスト。
+		bool						isDirty = false;	//!<ダーティフラグ。
 	};
 }
 

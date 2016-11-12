@@ -167,6 +167,8 @@ namespace tkEngine{
 	 */
 	void CSoundEngine::Release()
 	{
+		//波形データバンクを解放。
+		m_waveFileBank.ReleaseAll();
 		if(m_xAudio2 != nullptr){
 			m_xAudio2->Release();
 			m_xAudio2 = nullptr;

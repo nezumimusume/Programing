@@ -10,9 +10,9 @@
 #include "tkEngine/timer/tkStopwatch.h"
 
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 #define USE_DISP_FPS
-//#endif
+#endif
 
 namespace tkEngine{
 	LRESULT CALLBACK CEngine::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -268,10 +268,11 @@ namespace tkEngine{
 #ifdef USE_DISP_FPS
 				m_fpsFont.Draw(text, 0, 0);
 #endif
+				sw.Stop();
 				m_pD3DDevice->EndScene();
 				m_pD3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
 
-				sw.Stop();
+				
 				
 				if (sw.GetElapsed() < 1.0f / 30.0f) {
 					//30fps‚ÉŠÔ‚É‡‚Á‚Ä‚¢‚é‚È‚ç–°‚éB

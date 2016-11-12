@@ -29,7 +29,8 @@ struct AnimationEvent{
 		float fArg0, float fArg1, float fArg2, float fArg3,
 		int iArg0, int iArg1, int iArg2, int iArg3,
 		const char* strArg0, const char* strArg1, const char* strArg2, const char* strArg3,
-		CVector3 vArg0, CVector3 vArg1, CVector3 vArg2, CVector3 vArg3
+		CVector3 vArg0, CVector3 vArg1, CVector3 vArg2, CVector3 vArg3,
+		const char* name0, const char* name1, const char* name2, const char* name3
 		)
 	{
 		this->eventType = type;
@@ -53,12 +54,18 @@ struct AnimationEvent{
 		vArg[1] = vArg1;
 		vArg[2] = vArg2;
 		vArg[3] = vArg3;
+
+		nameKeyArg[0].Init(name0);
+		nameKeyArg[1].Init(name1);
+		nameKeyArg[2].Init(name2);
+		nameKeyArg[3].Init(name3);
 	}
 	EAnimationEventType eventType;			//イベントのタイプ。
 	float 				time;				//イベントが発生する時間。該当するアニメーションが再生されて経過した時間です。単位は秒。
 	float				fArg[4];			//浮動小数点型の引数。
 	int					iArg[4];			//整数型の引数。
 	const char*			strArg[4];			//文字列引数。
+	NameKey				nameKeyArg[4];		//名前キー引数。
 	CVector3			vArg[4];			//ベクトル型の引数。
 };
 /*!

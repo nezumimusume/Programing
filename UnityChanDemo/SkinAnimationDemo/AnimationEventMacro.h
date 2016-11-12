@@ -14,7 +14,8 @@
 		0.0f, 0.0f, 0.0f, 0.0f, 												\
 		0, 0, 0, 0, 															\
 		NULL, NULL, NULL, NULL, 												\
-		CVector3::Zero, CVector3::Zero, CVector3::Zero, CVector3::Zero	 		\
+		CVector3::Zero, CVector3::Zero, CVector3::Zero, CVector3::Zero,	 		\
+		NULL, NULL, NULL, NULL													\
 	)
 
 /*!
@@ -34,7 +35,8 @@
 		(life), (radius), 0.0f, 0.0f,															\
 		damage,groupID,0,0,																		\
 		boneName, NULL, NULL, NULL,																\
-		offsetLocalVector, CVector3::Zero, CVector3::Zero, CVector3::Zero						\
+		offsetLocalVector, CVector3::Zero, CVector3::Zero, CVector3::Zero,						\
+		NULL, NULL, NULL, NULL																	\
 	)
 
  /*!
@@ -49,12 +51,13 @@
  */
 #define EMIT_DAMAGE_TO_PLAYER_COLLISION_EVENT(invokeTime, life, radius, damage, boneName, offsetLocalVector, groupID)		\
 	AnimationEvent(																				\
-		eAnimationEventType_EmitDamageToPlayerCollision,											\
+		eAnimationEventType_EmitDamageToPlayerCollision,										\
 		(invokeTime),																			\
 		(life), (radius), 0.0f, 0.0f,															\
 		damage,groupID,0,0,																		\
 		boneName, NULL, NULL, NULL,																\
-		offsetLocalVector, CVector3::Zero, CVector3::Zero, CVector3::Zero						\
+		offsetLocalVector, CVector3::Zero, CVector3::Zero, CVector3::Zero,						\
+		NULL, NULL, NULL, NULL																	\
 	)
  /*!
  * @brief	サウンドの発生イベント
@@ -68,8 +71,9 @@
 		(invokeTime),																			\
 		(volume), 0.0f, 0.0f, 0.0f,																\
 		0,0,0,0,																				\
-		filePath, NULL, NULL, NULL,																\
-		CVector3::Zero, CVector3::Zero, CVector3::Zero, CVector3::Zero							\
+		NULL, NULL, NULL, NULL,																	\
+		CVector3::Zero, CVector3::Zero, CVector3::Zero, CVector3::Zero,							\
+		filePath, NULL, NULL, NULL																\
 	)
 
  /*!
@@ -84,7 +88,8 @@
 		(invokeTime),																			\
 		(volume), 0.0f, 0.0f, 0.0f,																\
 		0,0,0,0,																				\
-		filePath, NULL, NULL, NULL,																\
-		CVector3::Zero, CVector3::Zero, CVector3::Zero, CVector3::Zero							\
+		NULL, NULL, NULL, NULL,																	\
+		CVector3::Zero, CVector3::Zero, CVector3::Zero, CVector3::Zero,							\
+		filePath, NULL, NULL, NULL																\
 	)
 
