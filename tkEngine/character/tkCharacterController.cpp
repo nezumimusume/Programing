@@ -252,23 +252,10 @@ namespace tkEngine {
 			PhysicsWorld().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
 			if (callback.isHit) {
 				//当たった。
-			/*	CVector3 Circle;
-				float x = 0.0f;
-				float offset = 0.0f;	//押し戻す量。
-				Circle = CVector3::Zero;
-
-				Circle = m_position;
-				Circle.y = callback.hitPos.y;//円の中心
-				CVector3 v;
-				v.Subtract(Circle, callback.hitPos);
-				x = v.Length();//物体の角とプレイヤーの間の横幅の距離が求まる。
-
-				offset = sqrt(max(0.0f, m_radius*m_radius - x*x));//yの平方根を求める。
-				*/
 				m_moveSpeed.y = 0.0f;
 				m_isJump = false;
 				m_isOnGround = true;
-				nextPosition.y = callback.hitPos.y;//; + offset - m_radius;
+				nextPosition.y = callback.hitPos.y;
 			}
 			else {
 				//地面上にいない。

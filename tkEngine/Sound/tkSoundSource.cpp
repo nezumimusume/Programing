@@ -37,13 +37,14 @@ namespace tkEngine{
 		if (!m_waveFile) {
 			m_waveFile.reset(new CWaveFile);
 			m_waveFile->Open(filePath);
+			m_waveFile->AllocReadBuffer(m_waveFile->GetSize());	//waveファイルのサイズ分の読み込みバッファを確保する。
 			SoundEngine().GetWaveFileBank().RegistWaveFile(0, m_waveFile);
+			unsigned int dummy;
+			m_waveFile->Read(m_waveFile->GetReadBuffer(), m_waveFile->GetSize(), &dummy);
+			m_waveFile->ResetFile();
+
 		}
-		
-		m_buffer.reset(new char[m_waveFile->GetSize()]);
-		unsigned int dummy;
-		m_waveFile->Read(m_buffer.get(), m_waveFile->GetSize(), &dummy);
-		m_waveFile->ResetFile();
+			
 		//サウンドボイスソースを作成。
 		m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(m_waveFile.get(), is3DSound);
 		if (is3DSound) {
@@ -61,11 +62,12 @@ namespace tkEngine{
 			m_waveFile.reset(new CWaveFile);
 			m_waveFile->Open(nameKey.GetName());
 			SoundEngine().GetWaveFileBank().RegistWaveFile(0, m_waveFile);
+			m_waveFile->AllocReadBuffer(m_waveFile->GetSize());	//waveファイルのサイズ分の読み込みバッファを確保する。
+			SoundEngine().GetWaveFileBank().RegistWaveFile(0, m_waveFile);
+			unsigned int dummy;
+			m_waveFile->Read(m_waveFile->GetReadBuffer(), m_waveFile->GetSize(), &dummy);
+			m_waveFile->ResetFile();
 		}
-
-		m_buffer.reset(new char[m_waveFile->GetSize()]);
-		unsigned int dummy;
-		m_waveFile->Read(m_buffer.get(), m_waveFile->GetSize(), &dummy);
 		//サウンドボイスソースを作成。
 		m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(m_waveFile.get(), is3DSound);
 		if (is3DSound) {
@@ -85,7 +87,7 @@ namespace tkEngine{
 
 		m_isStreaming = true;
 		m_streamingBufferSize = bufferSize;
-		m_buffer.reset( new char[ringBufferSize]);
+		m_waveFile->AllocReadBuffer(ringBufferSize);
 		m_ringBufferSize = ringBufferSize;
 		m_readStartPos = 0;
 		m_currentBufferingSize = 0;
@@ -130,7 +132,7 @@ namespace tkEngine{
 	
 	void CSoundSource::StartStreamingBuffring()
 	{
-		char* readStartBuff = m_buffer.get();
+		char* readStartBuff = m_waveFile->GetReadBuffer();
 		m_readStartPos += m_currentBufferingSize;
 		if (m_readStartPos + m_streamingBufferSize >= m_ringBufferSize) {
 			//リングバッファのサイズを超える。
@@ -154,7 +156,7 @@ namespace tkEngine{
 			else {
 				m_sourceVoice->FlushSourceBuffers();
 				m_sourceVoice->Start(0);
-				Play(m_buffer.get(), m_waveFile->GetSize());
+				Play(m_waveFile->GetReadBuffer(), m_waveFile->GetSize());
 			}
 			m_isPlaying = true;
 		}
@@ -177,7 +179,8 @@ namespace tkEngine{
 			XAUDIO2_VOICE_STATE state;
 			m_sourceVoice->GetState(&state);
 			if (state.BuffersQueued <= 2) {	//キューイングされているバッファが２以下になったらキューイングできる。
-				Play(&m_buffer[m_readStartPos], m_currentBufferingSize);
+				char* buff = m_waveFile->GetReadBuffer();
+				Play(&buff[m_readStartPos], m_currentBufferingSize);
 				if (m_currentBufferingSize == 0) {
 					//読み込んだサイズが０ということは末端まで読み込みが終わったということ。
 					if (m_isLoop) {

@@ -180,7 +180,6 @@ namespace tkEngine{
 			enStreamingQueueing,	//キューイング中。
 		};
 		std::shared_ptr<CWaveFile>	m_waveFile;					//!<波形データ。
-		std::unique_ptr<char[]>		m_buffer;					//!<波形データを読み込むバッファ。ストリーミング再生の時はリングバッファとして利用される。
 		IXAudio2SourceVoice*		m_sourceVoice = nullptr;	//!<ソースボイス。
 		bool						m_isLoop = false;			//!<ループフラグ。
 		bool						m_isPlaying = false;		//!<再生中フラグ。
