@@ -90,6 +90,17 @@ AnimationEvent hoge[] = {
 	END_ANIMATION_EVENT(),
 	END_ANIMATION_EVENT(),
 };
+Player::Player() :
+	position(CVector3::Zero),
+	isUpdateAnim(false),
+	attackState(this),
+	standState(this),
+	damageState(this),
+	deadState(this),
+	runState(this)
+{
+	memset(battleSeats, 0, sizeof(battleSeats));
+}
 /*!
 * @brief	開始
 */
@@ -148,7 +159,7 @@ void Player::Start()
 	ShadowMap().SetLightTarget(position);
 	toLightPos.Subtract(lightPos, position);
 	ShadowMap().SetCalcLightViewFunc(CShadowMap::enCalcLightViewFunc_PositionTarget);
-	state = enStateStand;
+	ChangeState( enStateStand );
 	radius = 0.4f;
 	height = 0.3f;
 	characterController.Init(radius, height, position);
@@ -178,139 +189,8 @@ void Player::Start()
 }
 void Player::UpdateStateMachine()
 {
-	const float MOVE_SPEED = 7.0f;
-	if (state == enStateRun || state == enStateStand) {
-		CVector3 moveSpeed = characterController.GetMoveSpeed();
-		if (Pad(0).IsTrigger(enButtonRB3)) {
-			isPointLightOn = !isPointLightOn;
-		}
-		if (Pad(0).IsPress(enButtonA)) {
-			//Aボタンが押された。
-			//車との距離を調べる。
-			CVector3 diff = g_car->GetPosition();
-			diff.Subtract(position);
-			if (!characterController.IsJump()) {
-				//ジャンプ。
-				moveSpeed.y = 8.0f;
-				characterController.Jump();
-			}
-		}
-		//走りか立ち状態の時。
-		CVector3 moveDirLocal;
-		moveDirLocal.y = 0.0f;
-		moveDirLocal.x = Pad(0).GetLStickXF();
-		moveDirLocal.z = Pad(0).GetLStickYF();
-		const CMatrix& mViewInv = g_camera->GetCamera().GetViewMatrixInv();
-		//カメラ空間から見た奥方向のベクトルを取得。
-		CVector3 cameraZ;
-		cameraZ.x = mViewInv.m[2][0];
-		cameraZ.y = 0.0f;		//Y軸いらない。
-		cameraZ.z = mViewInv.m[2][2];
-		cameraZ.Normalize();	//Y軸を打ち消しているので正規化する。
-								//カメラから見た横方向のベクトルを取得。
-		CVector3 cameraX;
-		cameraX.x = mViewInv.m[0][0];
-		cameraX.y = 0.0f;		//Y軸はいらない。
-		cameraX.z = mViewInv.m[0][2];
-		cameraX.Normalize();	//Y軸を打ち消しているので正規化する。
-
-		CVector3 moveDir;
-		moveDir.x = cameraX.x * moveDirLocal.x + cameraZ.x * moveDirLocal.z;
-		moveDir.y = 0.0f;	//Y軸はいらない。
-		moveDir.z = cameraX.z * moveDirLocal.x + cameraZ.z * moveDirLocal.z;
-
-		float fMoveSpeed = MOVE_SPEED;
-		bool isDash = false;
-		if (Pad(0).IsPress(enButtonRB2)) {
-			//MPの残量を見てダッシュできるか調べる。
-			float useMp = USE_MP_DASH * GameTime().GetFrameDeltaTime();
-			if (mp - useMp >= 0.0f) {
-				//MP使える。
-				isDash = true;
-			}
-			UseMagicPoint(useMp);
-		}
-
-		if (isDash) {
-			//ダッシュ中可能か調べる。
-			fMoveSpeed *= 1.7f;
-			g_camera->SetViewAngle(CMath::DegToRad(60.0f));
-			g_camera->SetDampingRate(0.9f);
-			animation.SetAnimationSpeedRate(1.4f);
-			MotionBlur().SetEnable(true);
-		}
-		else {
-			g_camera->SetViewAngle(CMath::DegToRad(70.0f));
-			g_camera->SetDampingRate(0.9f);
-			animation.SetAnimationSpeedRate(1.0f);
-			MotionBlur().SetEnable(false);
-		}
-		moveSpeed.x = moveDir.x * fMoveSpeed;
-		moveSpeed.z = moveDir.z * fMoveSpeed;
-
-		if (moveDir.LengthSq() > 0.0001f) {
-			rotation.SetRotation(CVector3::Up, atan2f(moveDir.x, moveDir.z));
-			//走り状態に遷移。
-			ChangeState(enStateRun);
-		}
-		else {
-			//立ち状態。
-			ChangeState(enStateStand);
-		}
-		bool isOnGround = characterController.IsOnGround();
-		characterController.SetMoveSpeed(moveSpeed);
-		characterController.Execute();
-		if (isOnGround == false
-			&& characterController.IsOnGround()
-			) {
-			//着地した。
-			//着地音を再生。
-			CSoundSource* se = NewGO<CSoundSource>(0);
-			se->Init("Assets/sound/landing.wav");
-			se->Play(false);
-			se->SetVolume(0.25f);
-		}
-
-		if (Pad(0).IsTrigger(enButtonX) && !characterController.IsJump()) {
-			nextAttackAnimNo = AnimationAttack_00;
-			ChangeState(enState_Attack);
-		}
-	}
-
-	else if (state == enState_Attack) {
-		//移動がピタって止まると気持ちわるいので
-		CVector3 moveSpeed = characterController.GetMoveSpeed();
-		moveSpeed.Scale(0.8f);
-		characterController.SetMoveSpeed(moveSpeed);
-		characterController.Execute();
-		int currentAnimNo = animation.GetPlayAnimNo();
-		if (!animation.IsPlay() && nextAttackAnimNo == AnimationInvalid) {
-			ChangeState(enStateStand);
-		}
-		else if (
-			Pad(0).IsTrigger(enButtonX)
-			&& currentAnimNo >= AnimationAttack_Start
-			&& currentAnimNo < AnimationAttack_End
-			&& currentAnimNo == reqAttackAnimNo
-			) {
-			//コンボ発生。
-			nextAttackAnimNo = (AnimationNo)(animation.GetPlayAnimNo() + 1);
-		}
-	}
-	else if (state == enState_Damage) {
-		if (!animation.IsPlay()) {
-			ChangeState(enStateStand);
-		}
-	}
-	else if (state == enState_Dead) {
-		timer += GameTime().GetFrameDeltaTime();
-		if (timer > 1.0f) {
-			//エミッターを削除
-			for (auto& p : particleEmitterList) {
-				DeleteGO(p);
-			}
-			particleEmitterList.clear();
-		}
+	if (currentState != NULL) {
+		currentState->Update();
 	}
 	position = characterController.GetPosition();
 }
@@ -321,29 +201,27 @@ void Player::UpdateStateMachine()
 void Player::Damage()
 {
 	isApplyDamageTrigger = false;
-	if (state == enState_Damage || state == enState_Dead) {
-		return;
-	}
-	CRigidBody* rb = characterController.GetRigidBody();
-	const DamageCollisionWorld::Collision* dmgColli = g_damageCollisionWorld->FindOverlappedDamageCollision(
-		DamageCollisionWorld::enDamageToPlayer,
-		rb->GetBody()
-	);
-	if (dmgColli != NULL) {
-		//ダメージを受けた。
-		hp -= dmgColli->damage;
-		if (hp <= 0.0f) {
-			//死亡
-			hp = 0;
-			ChangeState(enState_Dead);
-			isApplyDamageTrigger = true;
+	if(currentState->IsPossibleDamage()){
+		CRigidBody* rb = characterController.GetRigidBody();
+		const DamageCollisionWorld::Collision* dmgColli = g_damageCollisionWorld->FindOverlappedDamageCollision(
+			DamageCollisionWorld::enDamageToPlayer,
+			rb->GetBody()
+		);
+		if (dmgColli != NULL) {
+			//ダメージを受けた。
+			hp -= dmgColli->damage;
+			if (hp <= 0.0f) {
+				//死亡
+				hp = 0;
+				ChangeState(enState_Dead);
+				isApplyDamageTrigger = true;
+			}
+			else {
+				ChangeState(enState_Damage);
+				isApplyDamageTrigger = true;
+			}
 		}
-		else {
-			ChangeState(enState_Damage);
-			isApplyDamageTrigger = true;
-		}
 	}
-	
 }
 /*!
 * @brief	ポイントライトの位置を更新。
@@ -468,42 +346,54 @@ Player::SBattleSeat* Player::FindUnuseSeat(const CVector3& pos)
 	return result;
 }
 /*!
+* @brief	血しぶきのパーティクルをエミット。
+*/
+void Player::EmitBloodParticle()
+{
+	CMatrix* m = skinModel.FindBoneWorldMatrix("thief_Bip01_Neck");
+	for (SParicleEmitParameter& param : bloodEmitterParam) {
+		CParticleEmitter* particleEmitter = NewGO<CParticleEmitter>(1);
+		CVector3 pos;
+		pos.Set(m->m[3][0], m->m[3][1], m->m[3][2]);
+		particleEmitter->Init(g_random, g_camera->GetCamera(), param, pos);
+		particleEmitterList.push_back(particleEmitter);
+		CSoundSource* se = NewGO<CSoundSource>(0);
+		se->Init("Assets/sound/Damage_01.wav");
+		se->Play(false);
+		se->SetVolume(0.5f);
+	}
+}
+/*!
 * @brief	状態切り替え。
 */
 void Player::ChangeState(EnState nextState)
 {
-	if (state == enState_Damage
-		|| state == enState_Dead
-	) {
-		//現在のステートがダメージ状態の場合。
-		//血しぶきのパーティクルエミッターを削除。
-		for (auto& p : particleEmitterList) {
-			DeleteGO(p);
-		}
-		particleEmitterList.clear();
+	if (currentState != NULL) {
+		//現在のステートを抜ける。
+		currentState->Leave();
+	}
+	switch (nextState) {
+	case enStateStand:
+		currentState = &standState;
+		break;
+	case enStateRun:
+		currentState = &runState;
+		break;
+	case enState_Attack:
+		currentState = &attackState;
+		break;
+	case enState_Damage:
+		currentState = &damageState;
+		break;
+	case enState_Dead:
+		currentState = &deadState;
+		break;
+	default:
+		TK_ASSERT(false, "nextState is invalid");
+		break;
 	}
 	state = nextState;
-	if (state == enState_Damage
-		|| state == enState_Dead)
-	{
-		//次のステートがダメージ状態or死亡状態の場合。
-		//血しぶきのエフェクトをエミット。
-		CMatrix* m = skinModel.FindBoneWorldMatrix("thief_Bip01_Neck");
-		for (SParicleEmitParameter& param : bloodEmitterParam) {
-			CParticleEmitter* particleEmitter = NewGO<CParticleEmitter>(1);
-			CVector3 pos;
-			pos.Set(m->m[3][0], m->m[3][1], m->m[3][2]);
-			particleEmitter->Init(g_random, g_camera->GetCamera(), param, pos);
-			particleEmitterList.push_back(particleEmitter);
-			CSoundSource* se = NewGO<CSoundSource>(0);
-			se->Init("Assets/sound/Damage_01.wav");
-			se->Play(false);
-			se->SetVolume(0.5f);
-		}
-	}
-	if (state == enState_Dead) {
-		timer = 0.0f;
-	}
+	currentState->Enter();
 	
 }
 /*!
