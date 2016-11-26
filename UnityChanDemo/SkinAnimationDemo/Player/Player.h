@@ -216,7 +216,6 @@ private:
 	float					maxMP = 100.0f;						//最大マジックポイント。
 	float					radius = 0.0f;
 	float					height = 0.0f;
-	float					timer = 0.0f;						//タイマー
 	float					magicPointRecoverTimer = 0.0f;		//マジックポイントの回復タイマー。
 	bool					isLockOn = false;					//ロックオン？
 	IPlayerState*			currentState = NULL;				//現在のステート。

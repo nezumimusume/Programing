@@ -8,12 +8,28 @@ namespace tkEngine{
 	typedef std::shared_ptr<CSkinModelData> CSkinModelDataPtr;
 	/*!
 	* @brief	CSkinModelDataのハンドルクラス。
+	*@details
+	* このクラスを使用すると、すでにシーンにロード済みのモデルデータがある場合にそのデータを再利用するため
+	* ロード時間の短縮と、メモリ使用量の最適化が行えます。ほとんどのケースでCSkinModelDataを直接使用するより
+	* ロード時間とメモリ使用量で品質が向上します。
 	*/
 	class CSkinModelDataHandle : Noncopyable{
 		std::shared_ptr<CSkinModelData> m_originalSkinModelData;	//!<オリジナルのスキンモデルデータ。
 		std::unique_ptr<CSkinModelData> m_skinModelData;								//!<スキンモデルデータ。
 	public:
-		
+		/*!
+		* @brief	ロード。
+		*@param[in]	modelPath			モデルのファイルパス。
+		*@param[in]	anim				アニメーション。
+		*@param[in]	isInstancing		インスタンシングモデル？
+		*@param[in]	numInstance			インスタンスの数。
+		*/
+		void LoadModelData(
+			const char* modelPath,
+			CAnimation* anim,
+			bool isInstancing = false,
+			int numInstance = 1
+		);
 		/*!
 		 * @brief	CSkinModelDataの生ポインタを取得。
 		 */

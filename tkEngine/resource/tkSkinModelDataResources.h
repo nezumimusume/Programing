@@ -32,8 +32,8 @@ namespace tkEngine{
 			CSkinModelDataHandle& skinModelDataHandle,
 			const char* modelPath,
 			CAnimation* anim,
-			bool isInstancing = false,
-			int numInstance = 1
+			bool isInstancing ,
+			int numInstance 
 		);
 		/*!
 		* @brief	çXêVÅB

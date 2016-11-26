@@ -9,7 +9,6 @@
 #include "tkEngine/Sound/tkSoundSource.h"
 
 namespace {
-	const float USE_MP_DASH = 50.0f;		//ダッシュ魔法を使った時のMP使用量。
 	const float RECOVER_MP = 20.0f;			//MP自然回復量。
 
 	const float RUN_THREADHOLD_SQ = 4.0f * 4.0f;		//走りアニメーションを再生する速度の閾値。
@@ -86,10 +85,7 @@ namespace {
 		},
 	};
 }
-AnimationEvent hoge[] = {
-	END_ANIMATION_EVENT(),
-	END_ANIMATION_EVENT(),
-};
+
 Player::Player() :
 	position(CVector3::Zero),
 	isUpdateAnim(false),
@@ -106,7 +102,7 @@ Player::Player() :
 */
 void Player::Start()
 {
-	SkinModelDataResources().Load(skinModelData, "Assets/modelData/Player.X", &animation);
+	skinModelData.LoadModelData("Assets/modelData/Player.X", &animation);
 	normalMap.Load("Assets/modelData/Thethief_N.tga");
 	specMap.Load("Assets/modelData/Thethief_S.tga");
 	weaponNormalMap.Load("Assets/modelData/Thethief_wuqi_N.tga");

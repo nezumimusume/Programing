@@ -19,8 +19,7 @@ UnityChanInstance::~UnityChanInstance()
 }
 void UnityChanInstance::Start()
 {
-	SkinModelDataResources().Load(
-		skinModelData, 
+	skinModelData.LoadModelData(
 		"Assets/modelData/Unity.X", 
 		&animation, 
 		true, 

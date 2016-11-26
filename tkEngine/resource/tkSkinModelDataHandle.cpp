@@ -6,6 +6,16 @@
 #include "tkEngine/resource/tkSkinModelDataHandle.h"
 
 namespace tkEngine{
+	
+	void CSkinModelDataHandle::LoadModelData(
+		const char* modelPath,
+		CAnimation* anim,
+		bool isInstancing,
+		int numInstance
+		)
+	{
+		SkinModelDataResources().Load(*this, modelPath, anim, isInstancing, numInstance );
+	}
 	void CSkinModelDataHandle::Init(const std::shared_ptr<CSkinModelData>& skinModelData, CAnimation* anim, bool isClone)
 	{
 		m_originalSkinModelData = skinModelData;
