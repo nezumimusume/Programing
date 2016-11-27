@@ -1,16 +1,12 @@
 #pragma once
 
-#include "tkEngine/graphics/tkSkinModelData.h"
-#include "tkEngine/graphics/tkSkinModel.h"
-#include "tkEngine/graphics/tkAnimation.h"
-#include "tkEngine/graphics/tkEffect.h"
-#include "tkEngine/graphics/tkCamera.h"
-#include "tkEngine/graphics/tkLight.h"
-#include "tkEngine/graphics/tkTexture.h"
-#include "tkEngine/Physics/tkSphereCollider.h"
-#include "tkEngine/Physics/tkRigidBody.h"
-#include "tkEngine/character/tkCharacterController.h"
+
 #include "AnimationEventController.h"
+#include "Player/FSM/PlayerStateAttack.h"
+#include "Player/FSM/PlayerStateDamage.h"
+#include "Player/FSM/PlayerStateDead.h"
+#include "Player/FSM/PlayerStateRun.h"
+#include "Player/FSM/PlayerStateStand.h"
 
 namespace tkEngine{
 	class CParticleEmitter;
@@ -55,12 +51,7 @@ public:
 	};
 	bool					isUpdateAnim;		//
 
-	Player() :
-		position(CVector3::Zero),
-		isUpdateAnim(false)
-	{
-		memset(battleSeats, 0, sizeof(battleSeats));
-	}
+	Player(); 
 	void Start() override ;
 	void Update() override ;
 	void Render( CRenderContext& renderContext ) override;
@@ -140,6 +131,10 @@ public:
 	}
 private:
 	/*!
+	* @brief	血しぶきのパーティクルをエミット。
+	*/
+	void EmitBloodParticle();
+	/*!
 	* @brief	状態切り替え。
 	*/
 	void ChangeState(EnState nextState);
@@ -184,6 +179,12 @@ private:
 		mp = min(maxMP, mp + recoverMp);
 	}
 private:
+	friend class PlayerStateAttack;
+	friend class PlayerStateDamage;
+	friend class PlayerStateDead;
+	friend class PlayerStateRun;
+	friend class PlayerStateStand;
+
 	CSkinModelDataHandle	skinModelData;
 	CSkinModel				skinModel;			//スキンモデル。
 	CAnimation				animation;			//アニメーション。
@@ -199,22 +200,30 @@ private:
 	CVector4				pointLightColor;	//ポイントライトのカラー。
 	CVector3				toLampLocalPos;		//ランプのローカル座標。
 	bool					isApplyDamageTrigger = false;
-	EnState					state;				//状態。
-	EnState					lastFrameState;		//前のフレームの状態。
-	bool					isPointLightOn;		//ポイントライトのスイッチ。
-	CRigidBody				rigidBody;			//剛体。
-	CCharacterController	characterController;	//キャラクタコントローラ。
-	SBattleSeat				battleSeats[NUM_BATTLE_SEAT];	//シート。
-	AnimationNo				reqAttackAnimNo;		//再生のリクエストを出している攻撃モーション番号。
-	AnimationNo				nextAttackAnimNo;		//次の攻撃モーション番号。
-	AnimationEventController	animationEventController;	//アニメーションイベントコントローラ。
+	EnState					state;								//状態。
+	EnState					lastFrameState;						//前のフレームの状態。
+	bool					isPointLightOn;						//ポイントライトのスイッチ。
+	CRigidBody				rigidBody;							//剛体。
+	CCharacterController	characterController;				//キャラクタコントローラ。
+	SBattleSeat				battleSeats[NUM_BATTLE_SEAT];		//シート。
+	AnimationNo				reqAttackAnimNo;					//再生のリクエストを出している攻撃モーション番号。
+	AnimationNo				nextAttackAnimNo;					//次の攻撃モーション番号。
+	AnimationEventController	animationEventController;		//アニメーションイベントコントローラ。
 	std::list<CParticleEmitter*>	particleEmitterList;
-	int						hp =  100;					//ヒットポイント。
-	int						maxHP = 100;				//最大ヒットポイント。
-	float					mp = 100.0f;				//マジックポイント。
-	float					maxMP = 100.0f;				//最大マジックポイント。
+	int						hp =  100;							//ヒットポイント。
+	int						maxHP = 100;						//最大ヒットポイント。
+	float					mp = 100.0f;						//マジックポイント。
+	float					maxMP = 100.0f;						//最大マジックポイント。
 	float					radius = 0.0f;
 	float					height = 0.0f;
-	float					timer = 0.0f;				//タイマー
 	float					magicPointRecoverTimer = 0.0f;		//マジックポイントの回復タイマー。
+	bool					isLockOn = false;					//ロックオン？
+	IPlayerState*			currentState = NULL;				//現在のステート。
+	PlayerStateAttack		attackState;						//攻撃ステート。
+	PlayerStateDamage		damageState;						//ダメージステート。
+	PlayerStateDead			deadState;							//死亡ステート。
+	PlayerStateRun			runState;							//走りステート。
+	PlayerStateStand		standState;							//待機ステート。
+
+
 };

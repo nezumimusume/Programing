@@ -24,6 +24,9 @@
     <Filter Include="Source Files\HUD">
       <UniqueIdentifier>{19ef75f3-9793-422a-af19-e7c1586a26ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Player\FSM">
+      <UniqueIdentifier>{0fdf4d46-d3ca-406d-a857-524a7aa6e657}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -106,6 +109,21 @@
     </ClCompile>
     <ClCompile Include="HUD\PlayerMPBar.cpp">
       <Filter>Source Files\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\FSM\PlayerStateDead.cpp">
+      <Filter>Source Files\Player\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\FSM\PlayerStateRun.cpp">
+      <Filter>Source Files\Player\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\FSM\PlayerStateStand.cpp">
+      <Filter>Source Files\Player\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\FSM\PlayerStateAttack.cpp">
+      <Filter>Source Files\Player\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\FSM\PlayerStateDamage.cpp">
+      <Filter>Source Files\Player\FSM</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +216,24 @@
     </ClInclude>
     <ClInclude Include="HUD\PlayerMPBar.h">
       <Filter>Source Files\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\FSM\PlayerStateDamage.h">
+      <Filter>Source Files\Player\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\FSM\PlayerStateDead.h">
+      <Filter>Source Files\Player\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\FSM\PlayerStateRun.h">
+      <Filter>Source Files\Player\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\FSM\PlayerStateStand.h">
+      <Filter>Source Files\Player\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\FSM\IPlayerState.h">
+      <Filter>Source Files\Player\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\FSM\PlayerStateAttack.h">
+      <Filter>Source Files\Player\FSM</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

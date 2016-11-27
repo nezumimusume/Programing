@@ -4,14 +4,14 @@
 #include "tkEngine/Physics/tkRigidBody.h"
 
 class Ground : public IGameObject {
-	CSkinModelData	skinModelData;		//スキンモデルデータ。
-	CSkinModel		skinModel;			//スキンモデル。
-	CAnimation		animation;			//アニメーション。
-	CLight			light;				//ライト。
-	CTexture		normalMap;
-	CMatrix*		m_worldMatrix;		//ワールド行列
-	CMeshCollider	meshCollider;		//メッシュコライダー。
-	CRigidBody		rigidBody;			//剛体。
+	CSkinModelDataHandle	skinModelData;		//スキンモデルデータ。
+	CSkinModel				skinModel;			//スキンモデル。
+	CAnimation				animation;			//アニメーション。
+	CLight					light;				//ライト。
+	CTexture				normalMap;
+	CMatrix*				m_worldMatrix;		//ワールド行列
+	CMeshCollider			meshCollider;		//メッシュコライダー。
+	CRigidBody				rigidBody;			//剛体。
 public:
 	Ground()
 	{

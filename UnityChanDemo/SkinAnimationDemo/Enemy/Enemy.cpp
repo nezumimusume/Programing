@@ -18,11 +18,10 @@ void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 	}
 	char filePath[1024];
 	sprintf(filePath, "Assets/modelData/%s.x", modelPath);
-	SkinModelDataResources().Load(
-		skinModelData,
+	skinModelData.LoadModelData(
 		filePath,
 		&animation
-		);
+	);
 	//マテリアルを取得。
 	const std::vector<CSkinModelMaterial*> materials = skinModelData.GetBody()->GetSkinModelMaterials();
 	specMapList.resize(materials.size());

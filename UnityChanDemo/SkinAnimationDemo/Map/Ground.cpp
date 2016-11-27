@@ -11,9 +11,9 @@ void Ground::Start()
 {
 	g_ground = this;
 	skinModelData.LoadModelData("Assets/modelData/ground.X", NULL);
-	skinModel.Init(&skinModelData);
+	skinModel.Init(skinModelData.GetBody());
 	skinModel.SetLight(&light);
-	CSkinModelMaterial* mat = skinModelData.FindMaterial("Grass.tga");
+	CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("Grass.tga");
 	normalMap.Load("Assets/modelData/Grass_Normals.tga");
 	mat->SetTexture("g_normalTexture", &normalMap);
 	skinModel.SetHasNormalMap(true);
