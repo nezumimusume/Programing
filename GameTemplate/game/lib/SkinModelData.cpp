@@ -416,16 +416,18 @@ namespace {
 			pMeshContainer->pMaterials[0].MatD3D.Diffuse.b = 0.5f;
 			pMeshContainer->pMaterials[0].MatD3D.Specular = pMeshContainer->pMaterials[0].MatD3D.Diffuse;
 		}
-
+		
+		
 		// if there is skinning information, save off the required data and then setup for HW skinning
+		pMeshContainer->pOrigMesh = pMesh;
+		pMesh->AddRef();
 		if (pSkinInfo != NULL)
 		{
 			// first save off the SkinInfo and original mesh data
 			pMeshContainer->pSkinInfo = pSkinInfo;
 			pSkinInfo->AddRef();
 
-			pMeshContainer->pOrigMesh = pMesh;
-			pMesh->AddRef();
+		
 
 			// Will need an array of offset matrices to move the vertices from the figure space to the bone's space
 			cBones = pSkinInfo->GetNumBones();
