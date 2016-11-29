@@ -98,6 +98,14 @@ namespace tkEngine{
 		void Stop()
 		{
 			m_sourceVoice->Stop();
+			m_isPlaying = false;
+		}
+		/*!
+		* @brief	再生中？。
+		*/
+		bool IsPlaying() const
+		{
+			return m_isPlaying;
 		}
 		/*!
 		* @brief	更新。
