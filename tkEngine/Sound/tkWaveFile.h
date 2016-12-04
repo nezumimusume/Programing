@@ -95,7 +95,7 @@ namespace tkEngine{
 		BYTE*			m_pbData = nullptr;
 		BYTE*			m_pbDataCur = nullptr;
 		ULONG			m_ulDataSize = 0;
-		bool			m_isReadEnd = true;	//読み込み終了フラグ。
+		volatile bool	m_isReadEnd = true;	//読み込み終了フラグ。
 		std::thread		m_readAsyncThread;	//非同期読み込みスレッド。
 		bool			m_isInvokeReadAsyncThread = false;
 		std::string		m_filePath;			//ファイルパス。

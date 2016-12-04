@@ -93,7 +93,6 @@ namespace tkEngine{
 		m_currentBufferingSize = 0;
 		//サウンドボイスソースを作成。
 		m_sourceVoice = SoundEngine().CreateXAudio2SourceVoice(m_waveFile.get(), is3DSound);
-		m_sourceVoice->Start(0,0);
 		if (is3DSound) {
 			SoundEngine().Add3DSoundSource(this);
 		}
@@ -151,7 +150,9 @@ namespace tkEngine{
 		else {
 			if (m_isStreaming) {
 				//バッファリング開始
+				m_waveFile->ResetFile();
 				StartStreamingBuffring();
+				m_sourceVoice->Start(0, 0);
 			}
 			else {
 				m_sourceVoice->FlushSourceBuffers();

@@ -116,6 +116,7 @@ namespace tkEngine{
 	}
 	void CWaveFile::ResetFile()
 	{
+		while (!m_isReadEnd) {}	//読み込み中にリセットはさせない。
 		if (m_hmmio == NULL)
 			return;
 
