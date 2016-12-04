@@ -9,13 +9,12 @@ namespace tkEngine{
 	/*!
 	* @brief	CSkinModelDataのハンドルクラス。
 	*@details
-	* このクラスを使用すると、すでにシーンにロード済みのモデルデータがある場合にそのデータを再利用するため
-	* ロード時間の短縮と、メモリ使用量の最適化が行えます。ほとんどのケースでCSkinModelDataを直接使用するより
-	* ロード時間とメモリ使用量で品質が向上します。
+	* このクラスを使用すると、すでにシーンにロード済みのモデルデータがある場合にそのデータを再利用します。</br>
+	* そのためCSkinModelDataクラスを使用するよりもほとんどのケースでロード時間の短縮と、メモリ使用量の最適化が行えます。
 	*/
 	class CSkinModelDataHandle : Noncopyable{
 		std::shared_ptr<CSkinModelData> m_originalSkinModelData;	//!<オリジナルのスキンモデルデータ。
-		std::unique_ptr<CSkinModelData> m_skinModelData;								//!<スキンモデルデータ。
+		std::unique_ptr<CSkinModelData> m_skinModelData;			//!<スキンモデルデータ。
 	public:
 		/*!
 		* @brief	ロード。
