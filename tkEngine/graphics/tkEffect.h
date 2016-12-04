@@ -89,8 +89,32 @@ namespace tkEngine{
 		{
 			return m_pEffect;
 		}
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+		/*!
+		* @brief	ファイルパスを設定。
+		*/
+		void SetFilePath(const char* filePath)
+		{
+			this->filePath = filePath;
+		}
+		
+#endif
+		void Update();
+		/*!
+		* @brief	リロードが発生した？
+		*/
+		bool IsReloadTrigger() const
+		{
+			return m_isReloadTrigger;
+		}
 	private:
+		bool			m_isReloadTrigger = false;	//!<リロードが発生した？
 		ID3DXEffect*	m_pEffect;		//!<D3Dエフェクト
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+		std::string filePath;			//このエフェクトファイルのファイツパス。
+		FILETIME fLastWriteTime;		//最終書き込み時間。
+		HANDLE	 hFile = NULL;			//ファイルハンドル。
+#endif
 	};
 }
 

@@ -30,6 +30,7 @@ namespace tkEngine{
 			this->effect = effect;
 			isDirty = true;
 		}
+		
 		if (isDirty) {
 			//なにか変更が発生しているので、シェーダーハンドルのリストを更新。
 			shaderHandles.clear();

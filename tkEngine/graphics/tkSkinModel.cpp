@@ -439,6 +439,10 @@ namespace tkEngine{
 	{
 		if (m_skinModelData) {
 			CPIXPerfTag tag(renderContext, L"CSkinModel::Draw");
+			if (m_pEffect->IsReloadTrigger()) {
+				//ƒŠƒ[ƒh‚ª”­¶‚µ‚Ä‚¢‚éB
+				InitShaderConstHandle();
+			}
 			renderContext.DrawSkinModel(this, viewMatrix, projMatrix);
 		}
 	}

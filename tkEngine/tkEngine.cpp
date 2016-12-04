@@ -229,11 +229,12 @@ namespace tkEngine{
 			else {
 				CStopwatch sw;
 				sw.Start();
+				EffectManager().Update();	
 				m_keyInput.Update();
 				m_skinModelDataResources.Update();
 				m_physicsWorld.Update();
 				m_soundEngine.Update();
-
+				
 				CRenderContext& topRenderContext = m_renderContextArray[0];
 				CRenderContext& lastRenderContext = m_renderContextArray[m_numRenderContext - 1];
 

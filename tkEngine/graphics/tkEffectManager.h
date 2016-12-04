@@ -33,6 +33,10 @@ namespace tkEngine{
 		 * @brief	リリース。
 		 */
 		void Release();
+		/*!
+		* @brief	更新。
+		*/
+		void Update();
 	private:
 		std::map<int, CEffect*>		m_effectDictinary;	//!<CEffectのインスタンスのディクショナリ。ファイルパスのハッシュ値をキーに持ち、CEffectのインスタンスを値に持つ。
 	};
