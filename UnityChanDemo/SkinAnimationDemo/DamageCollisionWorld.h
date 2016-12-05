@@ -7,7 +7,7 @@
 #include "tkEngine/Physics/tkSphereCollider.h"
 #include "tkEngine/shape/tkSphereShape.h"
 
-#ifdef _DEBUG
+#if BUILD_LEVEL == BUILD_LEVEL_DEBUG
 #define DEBUG_DMG_COLLISION_DRAW
 #else
 //%#define DEBUG_DMG_COLLISION_DRAW

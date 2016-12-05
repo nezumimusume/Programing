@@ -12,7 +12,7 @@ namespace tkEngine{
 	 */
 	static inline void Log( const char* format, ... )
 	{
-		char log[256];
+		static char log[1024*10];
 		va_list va;
 		va_start( va, format );
 		vsprintf( log, format, va );
@@ -21,7 +21,7 @@ namespace tkEngine{
 	}
 }
 
-#ifdef _DEBUG
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
 	#define TK_LOG( format, ... )	Log(format, __VA_ARGS__)
 #else // _DEBUG
 #define TK_LOG( format, ... )

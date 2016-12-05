@@ -32,6 +32,8 @@
  */
 #ifdef _DEBUG
 #define BUILD_LEVEL		BUILD_LEVEL_DEBUG
+#elif defined(TK_MASTER)
+#define BUILD_LEVEL		BUILD_LEVEL_MASTER
 #else
 #define BUILD_LEVEL		BUILD_LEVEL_PREVIEW
 #endif

@@ -10,7 +10,7 @@
 #include "tkEngine/timer/tkStopwatch.h"
 
 
-#ifdef _DEBUG
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
 #define USE_DISP_FPS
 #endif
 

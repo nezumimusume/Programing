@@ -297,7 +297,7 @@ PSOutput PSMain( VS_OUTPUT In )
 		color.xyz = lerp(color.xyz, float3(0.75f, 0.75f, 0.95f), t);
 	}
 	PSOutput psOut = (PSOutput)0;
-	psOut.color = color;
+	psOut.color = color * 1.0f;
 	psOut.depth = In.worldPos_depth.w;
 	if(g_flags2.x){
 		psOut.velocity.xy = In.velocity.xy / In.velocity.w-In.screenPos.xy / In.screenPos.w;

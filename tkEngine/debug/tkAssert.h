@@ -29,7 +29,7 @@ namespace tkEngine{
 		}
 	}
 }
-#ifdef _DEBUG
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
 #define 	TK_ASSERT( flg, format, ... )	tkEngine::Assert( flg, format, __FILE__, __LINE__, __VA_ARGS__)
 #else
 #define 	TK_ASSERT( flg, format, ... )
