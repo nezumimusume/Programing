@@ -34,7 +34,9 @@ using namespace tkEngine;
 #include "tkEngine/random/tkRandom.h"
 
 class Player;
+class EnemyManager;
 
 extern Player* g_player;
 extern CRandom g_random;
+extern EnemyManager* g_enemyManager;
 #endif // _STDAFX_H_

@@ -12,6 +12,7 @@ namespace tkEngine{
 	class CParticleEmitter;
 }
 
+class Enemy;
 
 /*!
  * @brief	プレイヤー。
@@ -178,6 +179,12 @@ private:
 	{
 		mp = min(maxMP, mp + recoverMp);
 	}
+	/*!
+	* @brief	敵をロックオン。
+	*@retval	true	ロックオンできた。
+	*@retval	false	ロックオンできなかった。
+	*/
+	bool LockOnEnemy();
 private:
 	friend class PlayerStateAttack;
 	friend class PlayerStateDamage;
@@ -218,6 +225,7 @@ private:
 	float					height = 0.0f;
 	float					magicPointRecoverTimer = 0.0f;		//マジックポイントの回復タイマー。
 	bool					isLockOn = false;					//ロックオン？
+	Enemy*					lockOnEnemy = NULL;					//ロックオンしているエネミー。
 	IPlayerState*			currentState = NULL;				//現在のステート。
 	PlayerStateAttack		attackState;						//攻撃ステート。
 	PlayerStateDamage		damageState;						//ダメージステート。

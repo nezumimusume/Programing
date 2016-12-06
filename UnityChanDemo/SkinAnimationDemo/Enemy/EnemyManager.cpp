@@ -27,6 +27,7 @@ void EnemyManager::Start()
 	for (SEnemyLocInfo& info : enemyLocInfoTable) {
 		Enemy_00* enemy = NewGO<Enemy_00>(0);
 		enemy->Init(info.modelName, info.pos, info.rotation);
+		enemyList.push_back(enemy);
 	}
 }
 void EnemyManager::Update()

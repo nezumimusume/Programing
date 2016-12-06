@@ -2,6 +2,7 @@
 #include "PlayerStateRun.h"
 #include "Player/Player.h"
 #include "tkEngine/Sound/tkSoundSource.h"
+#include "Enemy/Enemy.h"
 
 PlayerStateRun::PlayerStateRun(Player* player) :
 	IPlayerState(player)
@@ -87,7 +88,15 @@ void PlayerStateRun::Update()
 		player->ChangeState(player->enStateStand);
 	}
 	else {
-		player->rotation.SetRotation(CVector3::Up, atan2f(moveDir.x, moveDir.z));
+		if (player->isLockOn) {
+			//ロックオン中。
+			CVector3 toEnemy;
+			toEnemy.Subtract(player->lockOnEnemy->GetPosition(), player->GetPosition());
+			player->rotation.SetRotation(CVector3::Up, atan2f(toEnemy.x, toEnemy.z));
+		}
+		else {
+			player->rotation.SetRotation(CVector3::Up, atan2f(moveDir.x, moveDir.z));
+		}
 	}
 	bool isOnGround = player->characterController.IsOnGround();
 	player->characterController.SetMoveSpeed(moveSpeed);

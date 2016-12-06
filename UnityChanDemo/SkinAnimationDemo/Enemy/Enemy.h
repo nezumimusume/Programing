@@ -60,10 +60,7 @@ public:
 	{
 		direction = dir;
 	}
-	const CVector3& GetPosition() const
-	{
-		return position;
-	}
+	
 	bool IsPlayAnimation() const
 	{
 		return animation.IsPlay();
@@ -90,6 +87,13 @@ public:
 	* @brief	死亡したことを通知。
 	*/
 	void NotifyDead();
+	/*!
+	* @brief	座標を取得。
+	*/
+	const CVector3& GetPosition() const
+	{
+		return position;
+	}
 protected:
 	CSkinModelDataHandle			skinModelData;
 	CSkinModel						skinModel;			//スキンモデル。

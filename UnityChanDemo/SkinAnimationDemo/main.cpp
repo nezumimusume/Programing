@@ -20,6 +20,8 @@ CPhysicsWorld* g_physicsWorld = NULL;
 Player* g_player = NULL;
 CRandom g_random;
 DamageCollisionWorld* g_damageCollisionWorld = NULL;
+EnemyManager* g_enemyManager = NULL;
+
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 #define PLAY_WAVE_FILE_TEST		//定義で波形データの再生テストが有効になる。
 //#define DRAW_SPRITE_TEST		//定義でスプライト描画テスト。
@@ -204,7 +206,7 @@ int WINAPI wWinMain(
 
 	g_player = NewGO<Player>(0);
 	NewGO<UnityChanInstance>(0);
-	NewGO<EnemyManager>(0);
+	g_enemyManager = NewGO<EnemyManager>(0);
 	NewGO<Map>(0);
 	NewGO<Ground>(0);
 	NewGO<PlayerHPBar>(0);

@@ -25,6 +25,11 @@ public:
 	{
 		return true;
 	}
+	//ロックオンが可能？
+	virtual bool IsPossibleLockOn() const
+	{
+		return false;
+	}
 protected:
 	Player* player;		//プレイヤー。
 };

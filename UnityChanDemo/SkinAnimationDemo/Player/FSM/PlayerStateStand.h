@@ -14,5 +14,9 @@ public:
 	void Update() override;
 	void Enter() override;
 	void Leave() override;
+	bool IsPossibleLockOn() const override
+	{
+		return true;
+	}
 };
 

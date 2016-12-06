@@ -7,6 +7,7 @@
 #include "ParticleParam.h"
 #include "Enemy/EnemyParameter.h"
 #include "tkEngine/Sound/tkSoundSource.h"
+#include "Enemy/EnemyManager.h"
 
 namespace {
 	const float RECOVER_MP = 20.0f;			//MP自然回復量。
@@ -183,11 +184,70 @@ void Player::Start()
 		sizeof(animationEventGroupTbl)/sizeof(animationEventGroupTbl[0])
 	);
 }
+bool Player::LockOnEnemy()
+{
+	bool result = false;
+
+	const CMatrix& mCamera = g_camera->GetCamera().GetViewMatrix();
+	const std::vector<Enemy*>& enemyList = g_enemyManager->GetEnemyList();
+	//ロック可能なZの閾値
+	const float lockOnZ = 5.0f;		//適当。
+	Enemy* nearEnemy = NULL;
+	float nearLen = FLT_MAX;
+	for (const auto& enemy : enemyList)
+	{
+		//敵の座標をカメラ座標系に変換する。
+		CVector3 posInCamera = enemy->GetPosition();
+		mCamera.Mul(posInCamera);
+		if (lockOnZ > posInCamera.z && posInCamera.z >= 0.0f) {
+			//ロックオン。
+			if (nearEnemy == NULL) {
+				nearEnemy = enemy;
+			}
+			else {
+				float lenTmp = posInCamera.Length();
+				if (lenTmp < nearLen) {
+					//こいつの方が近い。
+					nearEnemy = enemy;
+					nearLen = lenTmp;
+				}
+			}
+			result = true;
+		}
+	}
+	lockOnEnemy = nearEnemy;
+	return result;
+}
 void Player::UpdateStateMachine()
 {
 	if (currentState != NULL) {
 		currentState->Update();
+		if (currentState->IsPossibleLockOn()) {
+			//ロックオン可能？
+			if (!isLockOn) {
+				if (Pad(0).IsTrigger(enButtonRB3)) {
+					//ロックオン。
+					if (LockOnEnemy()) {
+						//敵をロックオンできた。
+						isLockOn = true;
+					}
+				}
+			}
+			else {
+				if (Pad(0).IsTrigger(enButtonRB3)) {
+					//ロックオン解除。
+					lockOnEnemy = NULL;
+					isLockOn = false;
+				}
+			}
+		}
+		else {
+			//ロックオン不可能。
+			lockOnEnemy = NULL;
+			isLockOn = false;
+		}
 	}
+	
 	position = characterController.GetPosition();
 }
 
