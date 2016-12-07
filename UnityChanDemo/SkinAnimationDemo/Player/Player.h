@@ -185,6 +185,10 @@ private:
 	*@retval	false	ロックオンできなかった。
 	*/
 	bool LockOnEnemy();
+	/*!
+	* @brief	旋回処理。
+	*/
+	void Turn();
 private:
 	friend class PlayerStateAttack;
 	friend class PlayerStateDamage;

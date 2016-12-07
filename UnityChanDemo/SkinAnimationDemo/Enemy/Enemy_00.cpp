@@ -179,3 +179,12 @@ void Enemy_00::Render(CRenderContext& renderContext)
 {
 	skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 }
+/*!
+* @brief	ロックオン可能か判定。
+*@retval	true	ロックオン可能。
+*@retval	false	ロックオン不可能。
+*/
+bool Enemy_00::IsPossibleLockOn() const 
+{
+	return states[state]->IsPossibleLockOn();
+}

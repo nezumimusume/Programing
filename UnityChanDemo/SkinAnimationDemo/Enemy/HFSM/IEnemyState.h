@@ -52,6 +52,11 @@ public:
 	{
 		return true;
 	}
+	//ロックオン可能か判定。
+	virtual bool IsPossibleLockOn() const
+	{
+		return true;
+	}
 protected:
 	std::vector<IEnemyState*>	m_localStates;		//ローカル。
 	int							m_localState;		//ローカルステート。

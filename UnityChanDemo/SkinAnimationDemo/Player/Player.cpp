@@ -188,24 +188,29 @@ bool Player::LockOnEnemy()
 {
 	bool result = false;
 
-	const CMatrix& mCamera = g_camera->GetCamera().GetViewMatrix();
+	CMatrix mToPlayerWorld = skinModel.GetWorldMatrix();
+	mToPlayerWorld.Inverse(mToPlayerWorld);
 	const std::vector<Enemy*>& enemyList = g_enemyManager->GetEnemyList();
 	//ロック可能なZの閾値
-	const float lockOnZ = 5.0f;		//適当。
+	const float lockOnLen = 20.0f;		//適当。
 	Enemy* nearEnemy = NULL;
 	float nearLen = FLT_MAX;
 	for (const auto& enemy : enemyList)
 	{
+		if (!enemy->IsPossibleLockOn()) {
+			continue;
+		}
 		//敵の座標をカメラ座標系に変換する。
-		CVector3 posInCamera = enemy->GetPosition();
-		mCamera.Mul(posInCamera);
-		if (lockOnZ > posInCamera.z && posInCamera.z >= 0.0f) {
+		CVector3 posInPlayer = enemy->GetPosition();
+		mToPlayerWorld.Mul(posInPlayer);
+		float lenTmp = posInPlayer.Length();
+		if (lockOnLen > lenTmp) {
 			//ロックオン。
 			if (nearEnemy == NULL) {
 				nearEnemy = enemy;
+				nearLen = lenTmp;
 			}
 			else {
-				float lenTmp = posInCamera.Length();
 				if (lenTmp < nearLen) {
 					//こいつの方が近い。
 					nearEnemy = enemy;
@@ -234,8 +239,12 @@ void Player::UpdateStateMachine()
 				}
 			}
 			else {
-				if (Pad(0).IsTrigger(enButtonRB3)) {
-					//ロックオン解除。
+				if (Pad(0).IsTrigger(enButtonRB3)
+					|| !lockOnEnemy->IsPossibleLockOn()
+				) {
+					//右スティックの押し込みボタンが押された
+					//または、ロックオン中のエネミーがロックオンできなくなったら
+					//ロックオンを解除する。
 					lockOnEnemy = NULL;
 					isLockOn = false;
 				}
@@ -295,6 +304,25 @@ void Player::UpdatePointLightPosition()
 	CMatrix mWorld = skinModel.GetWorldMatrix();
 	mWorld.Mul(pointLightPosition);
 	light.SetPointLightPosition(pointLightPosition);
+}
+/*!
+* @brief	旋回処理。
+*/
+void Player::Turn()
+{
+	if (isLockOn) {
+		CVector3 toEnemy;
+		toEnemy.Subtract(lockOnEnemy->GetPosition(), position);
+		rotation.SetRotation(CVector3::Up, atan2f(toEnemy.x, toEnemy.z));
+	}
+	else {
+		CVector3 moveSpeed = characterController.GetMoveSpeed();
+		moveSpeed.y = 0.0f;
+		if (moveSpeed.LengthSq() > 0.001f) {
+			rotation.SetRotation(CVector3::Up, atan2f(moveSpeed.x, moveSpeed.z));
+		}
+	}
+	
 }
 /*!
 * @brief	アニメーション再生。
@@ -464,6 +492,8 @@ void Player::Update()
 {
 	//ステートマシーンの更新。
 	UpdateStateMachine();
+	//旋回。
+	Turn();
 	//ダメージ処理。
 	Damage();
 	//ポイントライトの位置を更新。

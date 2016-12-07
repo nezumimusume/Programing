@@ -5,7 +5,7 @@
 	CQuaternion(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },
 //enemy_00
-{
+/*{
 	"enemy_00",
 	CVector3(-39.20f, 2.39f, 59.95f),             //平行移動
 	CQuaternion(0.00f, -0.93f, 0.00f, 0.37f ),  //回転
@@ -21,7 +21,7 @@
 	"enemy_00",
 	CVector3(-25.57f, 2.39f, 61.52f),             //平行移動
 	CQuaternion(0.00f, -0.93f, 0.00f, 0.37f ),  //回転
-},
+},*/
 //enemy_01
 {
 	"enemy_01",

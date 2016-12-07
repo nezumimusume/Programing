@@ -31,4 +31,9 @@ public:
 	{
 		return false;
 	}
+	//ロックオン可能か判定。
+	virtual bool IsPossibleLockOn() const
+	{
+		return false;
+	}
 };

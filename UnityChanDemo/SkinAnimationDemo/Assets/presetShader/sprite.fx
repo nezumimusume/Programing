@@ -14,6 +14,7 @@ struct VS_OUTPUT{
 };
 
 float4x4 mWorld;		//ワールド行列。
+float4 uvRect;			//UV矩形。
 
 texture g_tex;
 sampler TextureSampler = 
@@ -28,7 +29,7 @@ VS_OUTPUT VSMain( VS_INPUT In )
 {
 	VS_OUTPUT Out;
 	Out.pos = mul(In.pos, mWorld);
-	Out.uv 	= In.uv;
+	Out.uv	= uvRect.xy * (1.0f - In.uv) + uvRect.zw * (In.uv);
 	return Out;
 }
 float4 PSMain( VS_OUTPUT In ) : COLOR0

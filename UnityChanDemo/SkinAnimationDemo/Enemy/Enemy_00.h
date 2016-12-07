@@ -28,6 +28,12 @@ public:
 	void Start() override;
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;
+	/*!
+	* @brief	ロックオン可能か判定。
+	*@retval	true	ロックオン可能。
+	*@retval	false	ロックオン不可能。
+	*/
+	bool IsPossibleLockOn() const override;
 private:
 	void Damage();
 	void InitHFSM();

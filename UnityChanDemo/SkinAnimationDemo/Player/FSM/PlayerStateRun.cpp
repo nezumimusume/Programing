@@ -87,17 +87,17 @@ void PlayerStateRun::Update()
 		//立ち状態に遷移。
 		player->ChangeState(player->enStateStand);
 	}
-	else {
-		if (player->isLockOn) {
-			//ロックオン中。
-			CVector3 toEnemy;
-			toEnemy.Subtract(player->lockOnEnemy->GetPosition(), player->GetPosition());
-			player->rotation.SetRotation(CVector3::Up, atan2f(toEnemy.x, toEnemy.z));
-		}
-		else {
-			player->rotation.SetRotation(CVector3::Up, atan2f(moveDir.x, moveDir.z));
-		}
-	}
+	//else {
+	//	if (player->isLockOn) {
+	//		//ロックオン中。
+	//		CVector3 toEnemy;
+	//		toEnemy.Subtract(player->lockOnEnemy->GetPosition(), player->GetPosition());
+	//		player->rotation.SetRotation(CVector3::Up, atan2f(toEnemy.x, toEnemy.z));
+	//	}
+	//	else {
+	//		player->rotation.SetRotation(CVector3::Up, atan2f(moveDir.x, moveDir.z));
+	//	}
+	//}
 	bool isOnGround = player->characterController.IsOnGround();
 	player->characterController.SetMoveSpeed(moveSpeed);
 	player->characterController.Execute();

@@ -94,6 +94,15 @@ public:
 	{
 		return position;
 	}
+	/*!
+	* @brief	ロックオン可能か判定。
+	*@retval	true	ロックオン可能。
+	*@retval	false	ロックオン不可能。
+	*/
+	virtual bool IsPossibleLockOn() const
+	{
+		return true;
+	}
 protected:
 	CSkinModelDataHandle			skinModelData;
 	CSkinModel						skinModel;			//スキンモデル。

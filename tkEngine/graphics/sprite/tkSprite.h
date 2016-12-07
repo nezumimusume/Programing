@@ -76,6 +76,14 @@ namespace tkEngine {
 			m_rotation = rot;
 		}
 		/*!
+		*@brief	描画するUV座標の矩形を設定。
+		*@param[in]		uvRect		xはuの左座標、yはvの上座標、zはuの右座標、wはvの下座標。
+		*/
+		void SetUVRect(const CVector4& uvRect)
+		{
+			m_uvRect = uvRect;
+		}
+		/*!
 		 *@brief	描画。
 		 *@param[in]	renderContext	レンダリングコンテキスト。
 		 */
@@ -87,6 +95,7 @@ namespace tkEngine {
 		CVector2		m_pos = CVector2(0.0f, 0.0f);	//!<座標。
 		CVector2		m_size = CVector2(0.0f, 0.0f);	//!<スプライトのサイズ。
 		CVector2		m_pivot = CVector2(0.5f, 0.5f);	//!<ピボット
+		CVector4		m_uvRect = CVector4(0.0f, 0.0f, 1.0f, 1.0f);	//!<UV座標。
 		CQuaternion		m_rotation = CQuaternion::Identity;
 	};
 }

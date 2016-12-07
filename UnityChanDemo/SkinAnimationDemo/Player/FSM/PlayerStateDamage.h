@@ -17,5 +17,9 @@ public:
 	{
 		return false;
 	}
+	bool IsPossibleLockOn() const override
+	{
+		return true;
+	}
 };
 
