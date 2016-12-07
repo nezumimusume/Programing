@@ -125,6 +125,9 @@
     <ClCompile Include="Player\FSM\PlayerStateDamage.cpp">
       <Filter>Source Files\Player\FSM</Filter>
     </ClCompile>
+    <ClCompile Include="HUD\LockOn2D.cpp">
+      <Filter>Source Files\HUD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -234,6 +237,9 @@
     </ClInclude>
     <ClInclude Include="Player\FSM\PlayerStateAttack.h">
       <Filter>Source Files\Player\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD\LockOn2D.h">
+      <Filter>Source Files\HUD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

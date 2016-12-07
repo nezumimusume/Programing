@@ -52,5 +52,15 @@ namespace tkEngine{
 		m_cameraRotation.m[3][2] = 0.0f;
 		m_cameraRotation.m[3][3] = 1.0f;
 	}
+	void CCamera::CalcScreenPositionFromWorldPosition(CVector2& screenPos, const CVector3& worldPos) const
+	{
+		float half_w = (float)CEngine::Instance().GetFrameBufferWidth() * 0.5f;
+		float half_h = (float)CEngine::Instance().GetFrameBufferHeight() * 0.5f;
+		CVector4 _screenPos;
+		_screenPos.Set(worldPos.x, worldPos.y, worldPos.z, 1.0f);
+		m_viewProjectionMatrix.Mul(_screenPos);
+		screenPos.x = (_screenPos.x / _screenPos.w)*half_w;
+		screenPos.y = (_screenPos.y / _screenPos.w)*half_h;
+	}
 }
 

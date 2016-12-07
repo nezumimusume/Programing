@@ -137,6 +137,14 @@ namespace tkEngine{
 		{
 			return m_viewAngle;
 		}
+		/*!
+		* @brief	ワールド座標からスクリーン座標を計算する。
+		*@details
+		* 計算されるスクリーン座標は画面の中心を{0,0}とする座標です。
+		*@param[out]	screenPos		スクリーン座標の格納先。
+		*@param[in]		worldPos		ワールド座標。
+		*/
+		void CalcScreenPositionFromWorldPosition(CVector2& screenPos, const CVector3& worldPos) const;
 	protected:
 		CVector3	m_position;							//!<カメラ位置。
 		CVector3	m_up;								//!<カメラの上方向。

@@ -103,6 +103,13 @@ public:
 	{
 		return true;
 	}
+	/*!
+	* @brief	高さを取得。
+	*/
+	float GetHeight() const
+	{
+		return height;
+	}
 protected:
 	CSkinModelDataHandle			skinModelData;
 	CSkinModel						skinModel;			//スキンモデル。

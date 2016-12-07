@@ -8,6 +8,7 @@
 #include "Enemy/EnemyParameter.h"
 #include "tkEngine/Sound/tkSoundSource.h"
 #include "Enemy/EnemyManager.h"
+#include "HUD/LockOn2D.h"
 
 namespace {
 	const float RECOVER_MP = 20.0f;			//MP自然回復量。
@@ -98,11 +99,16 @@ Player::Player() :
 {
 	memset(battleSeats, 0, sizeof(battleSeats));
 }
+Player::~Player()
+{
+	DeleteGO(lockOn2D);
+}
 /*!
 * @brief	開始
 */
 void Player::Start()
 {
+	lockOn2D = NewGO<LockOn2D>(1);
 	skinModelData.LoadModelData("Assets/modelData/Player.X", &animation);
 	normalMap.Load("Assets/modelData/Thethief_N.tga");
 	specMap.Load("Assets/modelData/Thethief_S.tga");
@@ -249,6 +255,7 @@ void Player::UpdateStateMachine()
 					isLockOn = false;
 				}
 			}
+			lockOn2D->SetLockOnEnemy(lockOnEnemy);
 		}
 		else {
 			//ロックオン不可能。

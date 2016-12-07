@@ -13,7 +13,7 @@ namespace tkEngine{
 }
 
 class Enemy;
-
+class LockOn2D;
 /*!
  * @brief	プレイヤー。
  */
@@ -53,6 +53,7 @@ public:
 	bool					isUpdateAnim;		//
 
 	Player(); 
+	~Player();
 	void Start() override ;
 	void Update() override ;
 	void Render( CRenderContext& renderContext ) override;
@@ -236,6 +237,6 @@ private:
 	PlayerStateDead			deadState;							//死亡ステート。
 	PlayerStateRun			runState;							//走りステート。
 	PlayerStateStand		standState;							//待機ステート。
-
+	LockOn2D*				lockOn2D = NULL;							//ロックオン2D
 
 };

@@ -70,7 +70,7 @@ void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 	light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
 	light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
 	radius = 0.6f;
-	height = 0.3f;
+	height = 1.5f;
 	characterController.Init(radius, height, position);
 	characterController.SetGravity(-18.8f);
 	if (enemyParam->animationEventGroup != NULL) {
