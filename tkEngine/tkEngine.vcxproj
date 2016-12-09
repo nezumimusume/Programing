@@ -263,6 +263,7 @@
     <ClCompile Include="AI\tkPathFinding.cpp" />
     <ClCompile Include="camera\tkSpringCamera.cpp" />
     <ClCompile Include="character\tkCharacterController.cpp" />
+    <ClCompile Include="culling\tkCameraObjectCulling.cpp" />
     <ClCompile Include="gameObject\tkGameObject.cpp" />
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
     <ClCompile Include="graphics\postEffect\tkBloomRender.cpp" />
@@ -296,6 +297,7 @@
     <ClCompile Include="graphics\tkVertexBuffer.cpp" />
     <ClCompile Include="Input\tkKeyInput.cpp" />
     <ClCompile Include="Input\tkPad.cpp" />
+    <ClCompile Include="math\tkAabb.cpp" />
     <ClCompile Include="math\tkMath.cpp" />
     <ClCompile Include="math\tkMatrix.cpp" />
     <ClCompile Include="math\tkVector.cpp" />
@@ -345,6 +347,8 @@
     <ClInclude Include="camera\tkSpringCamera.h" />
     <ClInclude Include="character\tkCharacterController.h" />
     <ClInclude Include="character\tkCollisionAttr.h" />
+    <ClInclude Include="culling\tkCameraObjectCulling.h" />
+    <ClInclude Include="culling\tkObjectCulling.h" />
     <ClInclude Include="debug\tkAssert.h" />
     <ClInclude Include="debug\tkLog.h" />
     <ClInclude Include="gameObject\tkGameObject.h" />
@@ -384,6 +388,7 @@
     <ClInclude Include="graphics\tkVertexBuffer.h" />
     <ClInclude Include="Input\tkKeyInput.h" />
     <ClInclude Include="Input\tkPad.h" />
+    <ClInclude Include="math\tkAabb.h" />
     <ClInclude Include="math\tkMath.h" />
     <ClInclude Include="math\tkMatrix.h" />
     <ClInclude Include="math\tkVector.h" />
