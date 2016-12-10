@@ -257,11 +257,11 @@
     <ClCompile Include="Sound\tkWaveFileBank.cpp">
       <Filter>Source Files\Sound</Filter>
     </ClCompile>
-    <ClCompile Include="culling\tkCameraObjectCulling.cpp">
-      <Filter>Source Files\culling</Filter>
-    </ClCompile>
     <ClCompile Include="math\tkAabb.cpp">
       <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="culling\tkObjectFrustumCulling.cpp">
+      <Filter>Source Files\culling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -490,14 +490,14 @@
     <ClInclude Include="util\tkNameKey.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="culling\tkCameraObjectCulling.h">
-      <Filter>Source Files\culling</Filter>
-    </ClInclude>
     <ClInclude Include="culling\tkObjectCulling.h">
       <Filter>Source Files\culling</Filter>
     </ClInclude>
     <ClInclude Include="math\tkAabb.h">
       <Filter>Source Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="culling\tkObjectFrustumCulling.h">
+      <Filter>Source Files\culling</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

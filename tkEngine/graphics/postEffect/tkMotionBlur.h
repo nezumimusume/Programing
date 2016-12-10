@@ -36,6 +36,10 @@ namespace tkEngine{
 		}
 		/*!
 		* @brief	モーションブラーの有効、無効を設定。
+		*@details
+		* tkEngineの初期化時にモーションブラーを有効にしていない場合は</br>
+		* 本関数を使用してもモーションブラーは有効になりません。</br>
+		* 詳細はtkEngine::CEngine::Init関数を参照してください。
 		*/
 		void SetEnable(bool flag)
 		{
@@ -77,6 +81,7 @@ namespace tkEngine{
 		const CCamera*		m_camera = nullptr;		//!<カメラ。
 		CRenderTarget		m_velocityMapRT;		//!<速度マップを書き込むためのレンダリングターゲット。
 		bool				m_isEnable = false;		//!<速度マップ有効？
+		bool				m_isInited = false;		//!<初期化されている？
 		CMatrix				m_lastFrameViewProjMatrix = CMatrix::Identity;	//!<1フレーム前のビュープロジェクション行列。
 		CEffect*			m_effect = nullptr;		//!<エフェクト。
 	};

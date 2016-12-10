@@ -171,7 +171,7 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.graphicsConfig.reflectionMapConfig.reflectionMapWidth = 512;
 	initParam.graphicsConfig.reflectionMapConfig.reflectionMapHeight = 512;
 	//DOF
-	initParam.graphicsConfig.dofConfig.isEnable = false;
+	initParam.graphicsConfig.dofConfig.isEnable = true;
 	//AA
 	initParam.graphicsConfig.aaConfig.isEnable = true;
 	//MotionBlur

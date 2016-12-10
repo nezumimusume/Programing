@@ -6,7 +6,7 @@
 
 #include "tkEngine/character/tkCharacterController.h"
 #include "AnimationEventController.h"
-#include "tkEngine/culling/tkCameraObjectCulling.h"
+#include "tkEngine/culling/tkObjectFrustumCulling.h"
 
 struct EnemyParam;
 class Enemy : public IGameObject{
@@ -139,6 +139,6 @@ protected:
 	float							height;
 	float							radius;
 	float							timer = 0.0f;
-	CCameraObjectCulling			objectCulling;		//オブジェクトのカリング処理。
+	CObjectFrustumCulling			objectCulling;		//オブジェクトのカリング処理。
 	CAabb							aabb;				//オブジェクトを内包するAABB
 };

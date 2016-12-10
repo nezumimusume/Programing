@@ -15,9 +15,9 @@ namespace tkEngine{
 	}
 	void CMotionBlur::Create(const SGraphicsConfig& config)
 	{
-		if (config.dofConfig.isEnable) {
+		if (config.motionBlurConfig.isEnable) {
 			//DOFが有効。
-			m_isEnable = config.dofConfig.isEnable;
+			m_isEnable = config.motionBlurConfig.isEnable;
 			//DOFはメインレンダリングターゲットに書き込むときにMRTを使用して書き込むので、
 			//メインと同じ幅と高さ。
 			int w = Engine().GetFrameBufferWidth();
@@ -25,11 +25,12 @@ namespace tkEngine{
 			//16bit。
 			m_velocityMapRT.Create(w, h, 1, FMT_A8R8G8B8, FMT_INVALID, MULTISAMPLE_NONE, 0);
 			m_effect = EffectManager().LoadEffect("Assets/presetShader/motionBlur.fx");
+			m_isInited = true;
 		}
 	}
 	void CMotionBlur::Render(CRenderContext& renderContext, CPostEffect* postEffect)
 	{
-		if (m_isEnable) {
+		if (m_isEnable && m_isInited) {
 			CPIXPerfTag tag(renderContext, L"CMotionBlur::Render");
 			m_effect->SetTechnique(renderContext, "MotionBlur");
 			m_effect->Begin(renderContext);

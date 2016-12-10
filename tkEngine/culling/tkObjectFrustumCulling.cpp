@@ -1,27 +1,27 @@
 /*!
- *@brief	カメラを使用したオブジェクトカリング処理。
+ *@brief	フラスタムカリング処理。
  */
 
 #include "tkEngine/tkEnginePreCompile.h"
-#include "tkEngine/culling/tkCameraObjectCulling.h"
+#include "tkEngine/culling/tkObjectFrustumCulling.h"
 
 namespace tkEngine{
 	/*!
 	 *@brief	コンストラクタ。
 	 */
-	CCameraObjectCulling::CCameraObjectCulling()
+	CObjectFrustumCulling::CObjectFrustumCulling()
 	{
 	}
 	/*!
 	 *@brief	デストラクタ。
 	 */
-	CCameraObjectCulling::~CCameraObjectCulling()
+	CObjectFrustumCulling::~CObjectFrustumCulling()
 	{
 	}
 	/*!
 	 *@brief	カリングアルゴリズムの実行。
 	 */
-	void CCameraObjectCulling::Execute(const CAabb& aabb)
+	void CObjectFrustumCulling::Execute(const CAabb& aabb)
 	{
 		if (m_camera != nullptr) {
 			const CMatrix& viewProjMatrix = m_camera->GetViewProjectionMatrix();

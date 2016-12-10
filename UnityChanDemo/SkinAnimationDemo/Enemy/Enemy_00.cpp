@@ -116,7 +116,9 @@ void Enemy_00::Update()
 	light.SetPointLightPosition(g_player->GetPointLightPosition());
 	light.SetPointLightColor(g_player->GetPointLightColor());
 	
-	skinModel.Update(position, rotation, CVector3::One);
+	if (!objectCulling.IsCulling()) {
+		skinModel.Update(position, rotation, CVector3::One);
+	}
 
 	if (state != enLocalState_Death) {
 		timer += GameTime().GetFrameDeltaTime();
