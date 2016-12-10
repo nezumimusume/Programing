@@ -269,10 +269,11 @@ namespace tkEngine{
 #ifdef USE_DISP_FPS
 				m_fpsFont.Draw(text, 0, 0);
 #endif
+				sw.Stop();
 				m_pD3DDevice->EndScene();
 				m_pD3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
 
-				sw.Stop();
+			
 				
 				if (sw.GetElapsed() < 1.0f / 30.0f) {
 					//30fps‚ÉŠÔ‚É‡‚Á‚Ä‚¢‚é‚È‚ç–°‚éB
