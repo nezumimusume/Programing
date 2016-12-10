@@ -80,6 +80,7 @@
 #include "tkEngine/graphics/tkPIXPerfTag.h"
 #include "tkEngine/timer/tkGameTime.h"
 #include "tkEngine/graphics/sprite/tkSprite.h"
+#include "tkEngine/math/tkAabb.h"
 
 
 // TODO: reference additional headers your program requires here

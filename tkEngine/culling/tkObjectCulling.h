@@ -15,15 +15,15 @@ namespace tkEngine{
 		/*!
 		 *@brief	コンストラクタ。
 		 */
-		IObjectCulling();
+		IObjectCulling() {}
 		/*!
 		 *@brief	デストラクタ。
 		 */
-		virtual ~IObjectCulling();
+		virtual ~IObjectCulling() {}
 		/*!
 		 *@brief	カリングアルゴリズムを実行。
 		 */
-		virtual void Execute() = 0;
+		virtual void Execute(const CAabb& aabb) = 0;
 		/*!
 		 *@brief	カリングされているか判定。
 		 */

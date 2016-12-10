@@ -29,9 +29,20 @@ namespace tkEngine{
 		 *@param[in]	halfSize			バウンディングボックスのハーフサイズ。
 		 */
 		void Update( const CVector3& centerPosition, const CVector3& halfSize );
+		/*!
+		*@brief	バウンディングボックスを構成する8頂点の座標を取得。
+		*@param[in]	vertNo	頂点番号。0～7の番号を渡してください。
+		*/
+		const CVector3& GetVertexPosition(unsigned int vertNo) const
+		{
+			TK_ASSERT(vertNo < 8, "vertNo is invalid");
+			return m_vertexPosition[vertNo];
+		}
 	private:
-		CVector3	m_centerPosition;		//!<中心座標。
-		CVector3	m_halfSize;				//!<ハーフサイズ。
+		void CalcVertexPosition();
+	private:
+		CVector3	m_centerPosition = CVector3::Zero;		//!<中心座標。
+		CVector3	m_halfSize = CVector3::Zero;			//!<ハーフサイズ。
 		CVector3	m_vertexPosition[8];	//!<バウンディングボックスを構成する8頂点の座標。
 	};
 }

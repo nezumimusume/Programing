@@ -177,7 +177,9 @@ void Enemy_00::Damage()
 }
 void Enemy_00::Render(CRenderContext& renderContext)
 {
-	skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
+	if (!objectCulling.IsCulling()) {
+		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
+	}
 }
 /*!
 * @brief	ロックオン可能か判定。
