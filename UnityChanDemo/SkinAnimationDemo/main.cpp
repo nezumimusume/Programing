@@ -5,6 +5,9 @@
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 #define PLAY_WAVE_FILE_TEST		//定義で波形データの再生テストが有効になる。
 //#define DRAW_SPRITE_TEST		//定義でスプライト描画テスト。
+#define CHNAGE_SCENE_TEST		//有効でシーン切り替えテスト。
+
+GameScene* gameScene = NULL;
 
 #ifdef DRAW_SPRITE_TEST
 class DrawSpriteTest : public IGameObject {
@@ -114,6 +117,23 @@ public:
 };
 #endif
 
+#ifdef CHNAGE_SCENE_TEST
+class ChangeSceneTest : public IGameObject {
+public:
+	void Update() override
+	{
+		if (Pad(0).IsTrigger(enButtonStart)) {
+			if (gameScene == NULL) {
+				gameScene = NewGO<GameScene>(0);
+			}
+			else {
+				DeleteGO(gameScene);
+				gameScene = NULL;
+			}
+		}
+	}
+};
+#endif
 
 /*!
  * @brief	tkEngineの初期化。
@@ -183,7 +203,10 @@ int WINAPI wWinMain(
 #ifdef MEMORY_LEAK_TEST
 	NewGO<MemoryLeakTest>(0);
 #else
-	GameScene* gameScene = NewGO<GameScene>(0);
+	gameScene = NewGO<GameScene>(0);
+#endif
+#ifdef CHNAGE_SCENE_TEST
+	NewGO<ChangeSceneTest>(0);
 #endif
 	Engine().RunGameLoop();		//ゲームループを実行。
 

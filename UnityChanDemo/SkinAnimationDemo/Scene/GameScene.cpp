@@ -40,6 +40,7 @@ void GameScene::OnDestroy()
 	DeleteGO(playerHPBar);
 	DeleteGO(playerMPBar);
 	DeleteGO(sky);
+	DeleteGO(g_car);
 	DeleteGO(g_player);
 	DeleteGO(g_enemyManager);
 	DeleteGO(unityChanInstance);
