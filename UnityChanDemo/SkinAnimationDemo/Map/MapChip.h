@@ -28,5 +28,6 @@ private:
 	std::unique_ptr<CMeshCollider[]>	meshCollider;		//メッシュコライダー。
 	std::unique_ptr<CRigidBody[]>		rigidBody;			//剛体。
 	CMatrix*							rootBoneMatrix;		
+	int									numMapChip = 0;		//マップチップの数。
 };
 

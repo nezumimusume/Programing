@@ -18,6 +18,9 @@ EnemyManager::EnemyManager()
 }
 EnemyManager::~EnemyManager()
 {
+	for (auto& enemy : enemyList) {
+		DeleteGO(enemy);
+	}
 }
 void EnemyManager::Start()
 {

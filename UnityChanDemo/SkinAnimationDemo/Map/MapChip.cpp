@@ -10,6 +10,9 @@ MapChip::MapChip() :
 
 MapChip::~MapChip()
 {
+	for (int i = 0; i < numMapChip; i++) {
+		PhysicsWorld().RemoveRigidBody(&rigidBody[i]);
+	}
 }
 void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 {
@@ -45,9 +48,10 @@ void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 	}
 
 	//ワールド行列のバッファを作成。
-	worldMatrixBuffer.reset(new CMatrix[mapChipLocInfoList.size()]);
-	meshCollider.reset(new CMeshCollider[mapChipLocInfoList.size()]);
-	rigidBody.reset(new CRigidBody[mapChipLocInfoList.size()]);
+	numMapChip = mapChipLocInfoList.size();
+	worldMatrixBuffer.reset(new CMatrix[numMapChip]);
+	meshCollider.reset(new CMeshCollider[numMapChip]);
+	rigidBody.reset(new CRigidBody[numMapChip]);
 	i = 0;
 	for (auto& mapChiplLocInfo : mapChipLocInfoList) {
 		CMatrix mTrans;

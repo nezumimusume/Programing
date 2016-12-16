@@ -7,6 +7,11 @@
 Ground* g_ground = NULL;
 LPD3DXMESH testMesh;
 
+Ground::~Ground()
+{
+	PhysicsWorld().RemoveRigidBody(&rigidBody);
+}
+
 void Ground::Start()
 {
 	g_ground = this;

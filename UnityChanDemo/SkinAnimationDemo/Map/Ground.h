@@ -17,10 +17,7 @@ public:
 	{
 		
 	}
-	~Ground()
-	{
-
-	}
+	~Ground();
 	void Start() override;
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;

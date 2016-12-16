@@ -15,6 +15,8 @@ namespace tkEngine{
 		CPostEffect& postEffect
 	)
 	{
+		ExecuteDeleteGameObjects();
+
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
 				obj->StartWrapper();
@@ -94,7 +96,6 @@ namespace tkEngine{
 				obj->PostRenderWrapper(renderContext[numRenderContext-1]);
 			}
 		}
-		ExecuteDeleteGameObjects();
 	}
 	void CGameObjectManager::ExecuteDeleteGameObjects()
 	{

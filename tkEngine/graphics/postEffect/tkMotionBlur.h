@@ -30,7 +30,7 @@ namespace tkEngine{
 		*/
 		void Update()
 		{
-			if (m_isEnable) {
+			if (m_isEnable && m_camera != nullptr) {
 				m_lastFrameViewProjMatrix = m_camera->GetViewProjectionMatrix();
 			}
 		}
@@ -43,7 +43,7 @@ namespace tkEngine{
 		*/
 		void SetEnable(bool flag)
 		{
-			if (flag && !m_isEnable) {
+			if (flag && !m_isEnable && m_camera != nullptr) {
 				//ブラーが無効から有効に変更される場合はビュープロジェクション行列を更新する。
 				m_lastFrameViewProjMatrix = m_camera->GetViewProjectionMatrix();
 			}
