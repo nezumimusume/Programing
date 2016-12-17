@@ -1,11 +1,12 @@
 #include "stdafx.h"
 #include "Scene/GameScene.h"
+#include "Scene/TitleScene.h"
 #include "tkEngine/Sound/tkSoundSource.h"
 
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
-#define PLAY_WAVE_FILE_TEST		//定義で波形データの再生テストが有効になる。
+//#define PLAY_WAVE_FILE_TEST		//定義で波形データの再生テストが有効になる。
 //#define DRAW_SPRITE_TEST		//定義でスプライト描画テスト。
-#define CHNAGE_SCENE_TEST		//有効でシーン切り替えテスト。
+//#define CHNAGE_SCENE_TEST		//有効でシーン切り替えテスト。
 
 GameScene* gameScene = NULL;
 
@@ -203,7 +204,8 @@ int WINAPI wWinMain(
 #ifdef MEMORY_LEAK_TEST
 	NewGO<MemoryLeakTest>(0);
 #else
-	gameScene = NewGO<GameScene>(0);
+	//gameScene = NewGO<GameScene>(0);
+	NewGO<TitleScene>(0);
 #endif
 #ifdef CHNAGE_SCENE_TEST
 	NewGO<ChangeSceneTest>(0);

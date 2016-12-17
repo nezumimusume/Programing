@@ -46,6 +46,7 @@ void GameScene::OnDestroy()
 	DeleteGO(unityChanInstance);
 	DeleteGO(g_damageCollisionWorld);
 	DeleteGO(g_camera);
+	DeleteGO(&bgmSoundSource);
 }
 void GameScene::Start()
 {
@@ -65,6 +66,11 @@ void GameScene::Start()
 	g_player->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
 	g_camera->SetPlayer(g_player);
 	MotionBlur().SetCamera(&g_camera->GetCamera());
+
+	bgmSoundSource.InitStreaming("Assets/sound/wind.wav");
+	bgmSoundSource.Play(true);
+	bgmSoundSource.SetVolume(0.5f);
+	AddGO(0, &bgmSoundSource);
 }
 void GameScene::Update() 
 {

@@ -134,6 +134,9 @@
     <ClCompile Include="Scene\GameScene.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\TitleScene.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -248,6 +251,9 @@
       <Filter>Source Files\HUD</Filter>
     </ClInclude>
     <ClInclude Include="Scene\GameScene.h">
+      <Filter>Source Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\TitleScene.h">
       <Filter>Source Files\Scene</Filter>
     </ClInclude>
   </ItemGroup>

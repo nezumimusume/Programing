@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "tkEngine/Sound/tkSoundSource.h"
+
 class Map;
 class Ground;
 class PlayerHPBar;
@@ -31,4 +33,5 @@ private:
 	PlayerMPBar*		playerMPBar = NULL;
 	Sky* 				sky = NULL;
 	UnityChanInstance*	unityChanInstance = NULL;
+	CSoundSource		bgmSoundSource;
 };
