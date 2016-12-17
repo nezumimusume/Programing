@@ -116,7 +116,9 @@ void Enemy_00::Update()
 	light.SetPointLightPosition(g_player->GetPointLightPosition());
 	light.SetPointLightColor(g_player->GetPointLightColor());
 	
-	skinModel.Update(position, rotation, CVector3::One);
+	if (!objectCulling.IsCulling()) {
+		skinModel.Update(position, rotation, CVector3::One);
+	}
 
 	if (state != enLocalState_Death) {
 		timer += GameTime().GetFrameDeltaTime();
@@ -177,7 +179,9 @@ void Enemy_00::Damage()
 }
 void Enemy_00::Render(CRenderContext& renderContext)
 {
-	skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
+	if (!objectCulling.IsCulling()) {
+		skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
+	}
 }
 /*!
 * @brief	ロックオン可能か判定。

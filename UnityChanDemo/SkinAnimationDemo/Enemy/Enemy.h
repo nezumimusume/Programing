@@ -6,6 +6,7 @@
 
 #include "tkEngine/character/tkCharacterController.h"
 #include "AnimationEventController.h"
+#include "tkEngine/culling/tkObjectFrustumCulling.h"
 
 struct EnemyParam;
 class Enemy : public IGameObject{
@@ -110,6 +111,11 @@ public:
 	{
 		return height;
 	}
+private:
+	/*!
+	* @brief	AABBの中心座標とハーフサイズを計算。
+	*/
+	void CalcAABBCenterPosAndHalfSize();
 protected:
 	CSkinModelDataHandle			skinModelData;
 	CSkinModel						skinModel;			//スキンモデル。
@@ -117,6 +123,8 @@ protected:
 	CLight							light;				//ライト。
 	CVector3						position;			//位置
 	CQuaternion						rotation;			//回転。
+	CVector3						centerPosition;		//中心座標。
+	CVector3						aabbHalfSize;		//AABBのハーフサイズ。
 	EnAnimation						currentAnimNo;		//現在のアニメーション番号。
 	float							moveSpeed;			//移動速度。
 	CVector3						moveDirection;		//進行方向。
@@ -131,4 +139,6 @@ protected:
 	float							height;
 	float							radius;
 	float							timer = 0.0f;
+	CObjectFrustumCulling			objectCulling;		//オブジェクトのカリング処理。
+	CAabb							aabb;				//オブジェクトを内包するAABB
 };

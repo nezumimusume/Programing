@@ -1,30 +1,14 @@
 #include "stdafx.h"
-
-#include "Player/Player.h"
-#include "UnityChanInstance.h"
-#include "Car.h"
-#include "Map/Map.h"
-#include "Map/Sky.h"
-#include "Map/Ground.h"
-#include "tkEngine/Physics/tkPhysics.h"
-#include "EnemyTest.h"
-#include "Enemy/EnemyManager.h"
-#include <time.h>
-#include "DamageCollisionWorld.h"
+#include "Scene/GameScene.h"
+#include "Scene/TitleScene.h"
 #include "tkEngine/Sound/tkSoundSource.h"
-#include "tkEngine/graphics/sprite/tkSprite.h"
-#include "HUD/PlayerHPBar.h"
-#include "HUD/PlayerMPBar.h"
-
-CPhysicsWorld* g_physicsWorld = NULL;
-Player* g_player = NULL;
-CRandom g_random;
-DamageCollisionWorld* g_damageCollisionWorld = NULL;
-EnemyManager* g_enemyManager = NULL;
 
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
-#define PLAY_WAVE_FILE_TEST		//定義で波形データの再生テストが有効になる。
+//#define PLAY_WAVE_FILE_TEST		//定義で波形データの再生テストが有効になる。
 //#define DRAW_SPRITE_TEST		//定義でスプライト描画テスト。
+//#define CHNAGE_SCENE_TEST		//有効でシーン切り替えテスト。
+
+GameScene* gameScene = NULL;
 
 #ifdef DRAW_SPRITE_TEST
 class DrawSpriteTest : public IGameObject {
@@ -134,6 +118,23 @@ public:
 };
 #endif
 
+#ifdef CHNAGE_SCENE_TEST
+class ChangeSceneTest : public IGameObject {
+public:
+	void Update() override
+	{
+		if (Pad(0).IsTrigger(enButtonStart)) {
+			if (gameScene == NULL) {
+				gameScene = NewGO<GameScene>(0);
+			}
+			else {
+				DeleteGO(gameScene);
+				gameScene = NULL;
+			}
+		}
+	}
+};
+#endif
 
 /*!
  * @brief	tkEngineの初期化。
@@ -167,7 +168,7 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.graphicsConfig.shadowRenderConfig.numShadowMap = 3;
 	
 	//reflection
-	initParam.graphicsConfig.reflectionMapConfig.isEnable = true;
+	initParam.graphicsConfig.reflectionMapConfig.isEnable = false;
 	initParam.graphicsConfig.reflectionMapConfig.reflectionMapWidth = 512;
 	initParam.graphicsConfig.reflectionMapConfig.reflectionMapHeight = 512;
 	//DOF
@@ -203,23 +204,11 @@ int WINAPI wWinMain(
 #ifdef MEMORY_LEAK_TEST
 	NewGO<MemoryLeakTest>(0);
 #else
-
-	g_player = NewGO<Player>(0);
-	NewGO<UnityChanInstance>(0);
-	g_enemyManager = NewGO<EnemyManager>(0);
-	NewGO<Map>(0);
-	NewGO<Ground>(0);
-	NewGO<PlayerHPBar>(0);
-	NewGO<PlayerMPBar>(0);
-	g_damageCollisionWorld = NewGO<DamageCollisionWorld>(0);
-
-	Sky* sky = NewGO<Sky>(0);
-	sky->SetPlayer(g_player);
-	g_car = NewGO<Car>(0);
-	g_camera = NewGO<GameCamera>(0);
-	g_player->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
-	g_camera->SetPlayer(g_player);
-	MotionBlur().SetCamera(&g_camera->GetCamera());
+	//gameScene = NewGO<GameScene>(0);
+	NewGO<TitleScene>(0);
+#endif
+#ifdef CHNAGE_SCENE_TEST
+	NewGO<ChangeSceneTest>(0);
 #endif
 	Engine().RunGameLoop();		//ゲームループを実行。
 

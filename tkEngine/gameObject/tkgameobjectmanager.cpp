@@ -15,6 +15,8 @@ namespace tkEngine{
 		CPostEffect& postEffect
 	)
 	{
+		ExecuteDeleteGameObjects();
+
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
 				obj->StartWrapper();
@@ -94,11 +96,13 @@ namespace tkEngine{
 				obj->PostRenderWrapper(renderContext[numRenderContext-1]);
 			}
 		}
-		ExecuteDeleteGameObjects();
 	}
 	void CGameObjectManager::ExecuteDeleteGameObjects()
 	{
-		for(GameObjectList& goList : m_deleteObjectArray){
+		int preBufferNo = m_currentDeleteObjectBufferNo;
+		//バッファを切り替え。
+		m_currentDeleteObjectBufferNo = 1 ^ m_currentDeleteObjectBufferNo;
+		for(GameObjectList& goList : m_deleteObjectArray[preBufferNo]){
 			for(IGameObject* go : goList){
 				GameObjectPrio prio = go->GetPriority();
 				GameObjectList& goExecList = m_gameObjectListArray.at(prio);
@@ -116,6 +120,7 @@ namespace tkEngine{
 		TK_ASSERT( gameObjectPrioMax <= GAME_OBJECT_PRIO_MAX, "ゲームオブジェクトの優先度の最大数が大きすぎます。");
 		m_gameObjectPriorityMax = gameObjectPrioMax;
 		m_gameObjectListArray.resize(gameObjectPrioMax);
-		m_deleteObjectArray.resize(gameObjectPrioMax);
+		m_deleteObjectArray[0].resize(gameObjectPrioMax);
+		m_deleteObjectArray[1].resize(gameObjectPrioMax);
 	}
 }

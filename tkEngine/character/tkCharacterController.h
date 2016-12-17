@@ -19,7 +19,7 @@ namespace tkEngine{
 		}
 		~CCharacterController()
 		{
-
+			RemoveRigidBoby();
 		}
 		/*!
 		 * @brief	‰Šú‰»B

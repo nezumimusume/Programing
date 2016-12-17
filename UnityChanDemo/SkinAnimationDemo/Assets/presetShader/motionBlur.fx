@@ -67,10 +67,14 @@ float4 PSMain(VS_OUTPUT In ) : COLOR
 	//4ピクセルを取得する。
 	int numSample = 16;
 	float t = 0.03f;
-	for(int i = 0; i < numSample; i++){
-		color += tex2D( g_SceneSampler, In.tex0 + velocity * t*i );
+	if(length(velocity.xy) > 0.01f){
+		for(int i = 0; i < numSample; i++){
+			color += tex2D( g_SceneSampler, In.tex0 + velocity.xy * t*i );
+		}
+		color /= numSample;
+	}else{
+		color = tex2D( g_SceneSampler, In.tex0 );
 	}
-	color.xyz /= numSample;
 	return color;
 }
 technique MotionBlur

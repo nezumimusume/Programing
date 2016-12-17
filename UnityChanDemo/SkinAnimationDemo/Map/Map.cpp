@@ -15,10 +15,11 @@ Map::Map()
 }
 Map::~Map()
 {
-	for(auto& mapchip : mapChipList){
-		delete mapchip;
+	for (auto& mapchip : mapChipList) {
+		DeleteGO(mapchip);
 	}
 }
+
 void Map::Start()
 {
 	//配置情報からマップを構築
@@ -43,7 +44,7 @@ void Map::Start()
 	}
 	for (auto& mapchipList : m) {
 		//マップチップを生成
-		MapChip* mapChip = new MapChip;
+		MapChip* mapChip = NewGO<MapChip>(0);
 		mapChip->Init(*mapchipList.second);
 		mapChipList.push_back(mapChip);
 		delete mapchipList.second;
@@ -51,13 +52,7 @@ void Map::Start()
 }
 void Map::Update()
 {
-	for(auto& mapChip : mapChipList){
-		mapChip->Update();
-	}
 }
 void Map::Render(CRenderContext& renderContext)
 {
-	for(auto& mapChip : mapChipList){
-		mapChip->Render(renderContext);
-	}
 }

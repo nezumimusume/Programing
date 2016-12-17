@@ -81,10 +81,32 @@ void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 			enNumAnim
 		);
 	}
+
+	//オブジェクトのカリング処理の初期化。
+	objectCulling.Init(g_camera->GetCamera());
+	//AABBを初期化。
+	CalcAABBCenterPosAndHalfSize();
+	aabb.Init(centerPosition, aabbHalfSize);
+}
+/*!
+* @brief	AABBの中心座標とハーフサイズを計算。
+*/
+void Enemy::CalcAABBCenterPosAndHalfSize()
+{
+	aabbHalfSize.x = radius;
+	aabbHalfSize.y = height * 0.5f;
+	aabbHalfSize.z = radius;
+	centerPosition = position;
+	centerPosition.y += aabbHalfSize.y;
 }
 void Enemy::Update()
 {
 	animationEventController.Update();
+
+	CalcAABBCenterPosAndHalfSize();
+	aabb.Update(centerPosition, aabbHalfSize);
+	//オブジェクトカリング処理の実行。
+	objectCulling.Execute(aabb);
 }
 /*!
 * @brief	死亡したことを通知。
