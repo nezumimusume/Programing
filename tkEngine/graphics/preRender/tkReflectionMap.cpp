@@ -41,7 +41,7 @@ namespace tkEngine{
 	 */
 	void CReflectionMap::Render(CRenderContext& renderContext)
 	{
-		if (m_camera) {
+		if (m_isEnable && m_camera) {
 			CRenderTarget* rtBackup = renderContext.GetRenderTarget(0);
 			renderContext.SetRenderTarget(0, &m_renderTarget);
 			CMatrix projMatrix = m_camera->GetProjectionMatrix();
