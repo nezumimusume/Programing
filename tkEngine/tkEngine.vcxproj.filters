@@ -72,6 +72,9 @@
     <Filter Include="Source Files\culling">
       <UniqueIdentifier>{78ce6223-1b70-4430-8246-365a7412eade}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\thread">
+      <UniqueIdentifier>{364841d2-6926-44a8-859b-33122fac2536}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -498,6 +501,9 @@
     </ClInclude>
     <ClInclude Include="culling\tkObjectFrustumCulling.h">
       <Filter>Source Files\culling</Filter>
+    </ClInclude>
+    <ClInclude Include="thread\tkCriticalSection.h">
+      <Filter>Source Files\thread</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

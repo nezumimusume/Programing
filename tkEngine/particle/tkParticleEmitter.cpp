@@ -26,8 +26,9 @@ namespace tkEngine{
 		this->emitPosition = emitPosition;
 		timer = param.intervalTime;
 	}
-	void CParticleEmitter::Start()
+	bool CParticleEmitter::Start()
 	{
+		return true;
 	}
 	void CParticleEmitter::Update()
 	{

@@ -29,7 +29,15 @@ namespace tkEngine{
 		{
 		}
 	public:
-		virtual void Start() {}
+		/*!
+		*@brief	Updateの直前で呼ばれる開始処理。
+		*@details
+		* 本関数がtrueを返すとゲームオブジェクトの準備が完了したと判断されて</br>
+		* Update関数が呼ばれ出します。trueを返して以降はStart関数は呼ばれなくなります。</br>
+		* ゲームオブジェクトの初期化に複数フレームかかる場合などはfalseを返して、初期化ステップなどを使って</br>
+		* 適切に初期化を行ってください。
+		*/
+		virtual bool Start() { return true; }
 		/*!
 		 *@brief	更新
 		 */
@@ -134,8 +142,10 @@ namespace tkEngine{
 		void StartWrapper()
 		{
 			if (!m_isStart && !m_isDead) {
-				Start();
-				m_isStart = true;
+				if (Start()) {
+					//初期化処理完了。
+					m_isStart = true;
+				}
 			}
 		}
 		void SetMarkNewFromGameObjectManager()

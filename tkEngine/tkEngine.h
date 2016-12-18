@@ -218,6 +218,10 @@ namespace tkEngine{
 		{
 			return m_physicsWorld;
 		}
+		LPDIRECT3DDEVICE9 GetLoadDevice()
+		{
+			return m_pD3DDeviceLoading;
+		}
 	private:
 		/*!
 		* @brief	メインレンダリングターゲットの内容をバックバッファにコピー。
@@ -247,6 +251,7 @@ namespace tkEngine{
 		HWND									m_hWnd;						//!<ウィンドウハンドル。
 		LPDIRECT3D9								m_pD3D;						//!<D3DDevice
 		LPDIRECT3DDEVICE9						m_pD3DDevice;				//!<Rendering device
+		LPDIRECT3DDEVICE9						m_pD3DDeviceLoading;		//!<ローディング画面で使用するRenderingDevice
 		std::unique_ptr<CRenderContext[]>		m_renderContextArray;		//!<レンダリングコンテキスト
 		int										m_numRenderContext;			//!<レンダリングコンテキストの数。
 		std::unique_ptr<SRenderContextMap[]>	m_renderContextMap;			//!<レンダリングコンテキストのマップ。

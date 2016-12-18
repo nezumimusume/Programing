@@ -93,8 +93,9 @@ namespace tkEngine{
 		mulColor = param.mulColor;
 		rotateZ = CMath::PI * 2.0f * (float)random.GetRandDouble();
 	}
-	void CParticle::Start()
+	bool CParticle::Start()
 	{
+		return true;
 	}
 	void CParticle::Update()
 	{

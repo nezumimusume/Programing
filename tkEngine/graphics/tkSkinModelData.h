@@ -4,6 +4,7 @@
 #ifndef _TKSKINMODELDATA_H_
 #define _TKSKINMODELDATA_H_
 
+#include <thread>
 
 namespace tkEngine{
 	class CSkinModelMaterial;
@@ -44,6 +45,21 @@ namespace tkEngine{
 		 *@param[out]	anim		アニメーション付きモデルデータの場合、アニメーションクラスも構築されます。
 		 */
 		void LoadModelData( const char* filePath, CAnimation* anim );
+		/*!
+		* @brief	モデルデータの非同期ロード。
+		* @details
+		*  本関数を使用した場合は、IsLoadEnd関数を使用して同期を取ってください。
+		*@param[in]	filePath	ファイルパス。
+		*@param[out]	anim		アニメーション付きモデルデータの場合、アニメーションクラスも構築されます。
+		*/
+		void LoadModelDataAsync(const char* filePath, CAnimation* anim );
+		/*!
+		* @brief	モデルデータの読み込み終了判定。
+		*/
+		bool IsLoadEnd() const
+		{
+			return m_isLoadEnd;
+		}
 		/*!
 		 *@brief	インスタンシング描画を行うためのデータを作成する。
 		 *@param[in]	numInstance		インスタンスの数。
@@ -203,6 +219,8 @@ namespace tkEngine{
 		int									m_numInstance;					//インスタンスの数。
 		int									m_vertexBufferStride;			//頂点バッファのストライド。
 		std::vector<CSkinModelMaterial*>	m_materials;					//マテリアル。
+		bool								m_isLoadEnd = false;
+		std::thread							m_loadThread;		//読み込みスレッド
 	};
 }
 

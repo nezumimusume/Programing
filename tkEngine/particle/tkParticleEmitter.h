@@ -66,7 +66,7 @@ namespace tkEngine{
 		 *@param[in]	emitPosition	エミッターの座標。
 		 */
 		void Init(CRandom& random, const CCamera& camera, const SParicleEmitParameter& param, const CVector3& emitPosition);
-		void Start() override ;
+		bool Start() override ;
 		void Update() override;
 		void Render( CRenderContext& renderContext ) override;
 		/*!

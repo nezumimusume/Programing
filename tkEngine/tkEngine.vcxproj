@@ -414,6 +414,7 @@
     <ClInclude Include="Sound\tkSoundSource.h" />
     <ClInclude Include="Sound\tkWaveFile.h" />
     <ClInclude Include="Sound\tkWaveFileBank.h" />
+    <ClInclude Include="thread\tkCriticalSection.h" />
     <ClInclude Include="timer\tkGameTime.h" />
     <ClInclude Include="timer\tkStopwatch.h" />
     <ClInclude Include="tkEngine.h" />

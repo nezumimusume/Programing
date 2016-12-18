@@ -669,6 +669,9 @@ namespace tkEngine{
 	}
 	void CSkinModelData::LoadModelData( const char* filePath, CAnimation* anim )
 	{	
+		CStopwatch sw;
+		sw.Start();
+		m_isLoadEnd = false;
 		CAllocateHierarchy alloc(this);
 		HRESULT hr = D3DXLoadMeshHierarchyFromX(
 			filePath,
@@ -688,8 +691,21 @@ namespace tkEngine{
 		else {
 			SAFE_RELEASE(m_animController);
 		}
+		m_isLoadEnd = true;
+		sw.Stop();
+		char _filePath[1024];
+		sprintf(_filePath, "loaded file %s, time = %lf", filePath, sw.GetElapsedMillisecond());
+		TK_LOG(_filePath);
 	}
-	
+	void CSkinModelData::LoadModelDataAsync(const char* filePath, CAnimation* anim)
+	{
+		m_isLoadEnd = false;
+		//読み込みスレッドを立てる。
+		m_loadThread = std::thread([this, filePath, anim]{
+			this->LoadModelData(filePath, anim);
+			m_isLoadEnd = true;
+		});
+	}
 	void CSkinModelData::CloneSkeleton(LPD3DXFRAME& dstFrame, LPD3DXFRAME srcFrame)
 	{
 		//名前と行列をコピー。

@@ -25,7 +25,6 @@ namespace tkEngine{
 			tkEngine::KeyInput().OnMouseLButtonUp(x, y);
 		}break;
 		case WM_DESTROY:
-			Instance().Final();
 			PostQuitMessage(0);
 			return 0;
 		}
@@ -72,6 +71,7 @@ namespace tkEngine{
 
 	    D3DPRESENT_PARAMETERS d3dpp;
 	    ZeroMemory( &d3dpp, sizeof( d3dpp ) );
+		d3dpp.Flags = D3DCREATE_MULTITHREADED;
     	d3dpp.Windowed = TRUE;
 	    d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	    d3dpp.BackBufferFormat = D3DFMT_A8R8G8B8;
@@ -87,11 +87,17 @@ namespace tkEngine{
 
     	// Create the D3DDevice
 	    if( FAILED( m_pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hWnd,
-	                                      D3DCREATE_HARDWARE_VERTEXPROCESSING,
+	                                      D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED,
 	                                      &d3dpp, &m_pD3DDevice ) ) )
 	    {
 	        return false;
 	    }
+		if(FAILED(m_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hWnd,
+			D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED,
+			&d3dpp, &m_pD3DDeviceLoading)))
+		{
+			return false;
+		}
 		//バックバッファのレンダリングターゲットと深度ステンシルバッファを取得しておいて覚えておく。
 		LPDIRECT3DSURFACE9 rt, depth;
 		m_pD3DDevice->GetRenderTarget(0, &rt);
@@ -305,7 +311,9 @@ namespace tkEngine{
 		m_effectManager.Release();
 		if (m_pD3DDevice != nullptr)
 			m_pD3DDevice->Release();
-
+		if (m_pD3DDeviceLoading != nullptr) {
+			m_pD3DDeviceLoading->Release();
+		}
 		if (m_pD3D != nullptr)
 			m_pD3D->Release();
 	}
