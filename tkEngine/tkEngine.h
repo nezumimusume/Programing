@@ -218,10 +218,7 @@ namespace tkEngine{
 		{
 			return m_physicsWorld;
 		}
-		LPDIRECT3DDEVICE9 GetLoadDevice()
-		{
-			return m_pD3DDeviceLoading;
-		}
+		
 	private:
 		/*!
 		* @brief	メインレンダリングターゲットの内容をバックバッファにコピー。

@@ -25,7 +25,6 @@ public:
 	Enemy_00();
 	~Enemy_00();
 	void Init( const char* modelPath, CVector3 pos, CQuaternion	rotation) override;
-	void Start() override;
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;
 	/*!
@@ -37,6 +36,10 @@ public:
 private:
 	void Damage();
 	void InitHFSM();
+	/*!
+	* @brief	スキンモデルデータの読み込みが完了した時に呼ばれるコールバック。
+	*/
+	void OnLoadedSkinModelData()override;
 private:
 	std::vector<IEnemyState*>			states;					//ステートのリスト。
 	EnLocalState						state;					//ステート。

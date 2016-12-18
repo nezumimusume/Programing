@@ -10,7 +10,7 @@ public:
 	
 	Map();
 	~Map();
-	void Start() override;
+	bool Start() override;
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;
 private:

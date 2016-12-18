@@ -19,7 +19,7 @@ public:
 	~TitleScene();
 	void OnDestroy() override;
 	void Update() override;
-	void Start() override;
+	bool Start() override;
 private:
 	CSoundSource bgmSoundSource;
 };

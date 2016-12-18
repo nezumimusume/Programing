@@ -14,6 +14,7 @@ namespace tkEngine{
 	 */
 	CEffectManager::CEffectManager()
 	{
+		
 	}
 	/*!
 	 * @brief	デストラクタ。
@@ -21,6 +22,25 @@ namespace tkEngine{
 	CEffectManager::~CEffectManager()
 	{
 		Release();
+	}
+	/*!
+	*@brief	常駐エフェクトファイルのロード。
+	*/
+	void CEffectManager::LoadCommonEffect()
+	{
+		//プリセットシェーダーは全て最初に読み込む。
+		LoadEffect("Assets/presetShader/skinModel.fx");
+		LoadEffect("Assets/presetShader/bloom.fx");
+		LoadEffect("Assets/presetshader/idMap.fx");
+		LoadEffect("Assets/presetShader/fxaa.fx");
+		LoadEffect("Assets/presetShader/motionBlur.fx");
+		LoadEffect("Assets/presetshader/shadowMap.fx");
+		LoadEffect("Assets/presetShader/sprite.fx");
+		LoadEffect("Assets/presetShader/TransformedPrim.fx");
+		LoadEffect("Assets/presetShader/TransformedPrim.fx");
+		LoadEffect("Assets/presetShader/ColorTexPrim.fx");
+		LoadEffect("Assets/presetShader/ColorNormalPrim.fx");
+		LoadEffect("Assets/presetShader/TransformedPrim.fx");
 	}
 	/*!
 	 *@brief	エフェクトのロード。

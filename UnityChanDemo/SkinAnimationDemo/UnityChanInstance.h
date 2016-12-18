@@ -11,10 +11,15 @@
 class UnityChanInstance :
 	public IGameObject
 {
+private:
+	enum InitStep {
+		InitStep_Load,
+		InitStep_WaitLoad,
+	};
 public:
 	UnityChanInstance();
 	~UnityChanInstance();
-	void Start() override;
+	bool Start() override;
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;
 private:
@@ -26,6 +31,7 @@ private:
 	CTexture				normalMap;			//法線マップ。
 	CTexture				specMap;			//スペキュラマップ。
 	CMatrix*				worldMatrixBuffer;
+	InitStep				initStep = InitStep_Load;
 
 };
 

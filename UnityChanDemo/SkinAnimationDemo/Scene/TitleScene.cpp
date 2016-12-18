@@ -20,9 +20,10 @@ void TitleScene::Update()
 		NewGO<GameScene>(0);
 	}
 }
-void TitleScene::Start()
+bool TitleScene::Start()
 {
 	bgmSoundSource.InitStreaming("Assets/sound/titleBgm.wav");
 	bgmSoundSource.Play(true);
 	AddGO(0, &bgmSoundSource);
+	return true;
 }

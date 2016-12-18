@@ -669,10 +669,10 @@ namespace tkEngine{
 	}
 	void CSkinModelData::LoadModelData( const char* filePath, CAnimation* anim )
 	{	
-		CStopwatch sw;
-		sw.Start();
 		m_isLoadEnd = false;
 		CAllocateHierarchy alloc(this);
+		CStopwatch sw;
+		sw.Start();
 		HRESULT hr = D3DXLoadMeshHierarchyFromX(
 			filePath,
 			D3DXMESH_VB_MANAGED,
@@ -682,7 +682,10 @@ namespace tkEngine{
 			&m_frameRoot,
 			&m_animController
 		);
-		
+		sw.Stop();
+		char _filePath[1024];
+		sprintf(_filePath, "loaded file %s, time = %lf\n", filePath, sw.GetElapsedMillisecond());
+		TK_LOG(_filePath);
 		TK_ASSERT(SUCCEEDED(hr), "Failed D3DXLoadMeshHierarchyFromX");
 		SetupBoneMatrixPointers(m_frameRoot, m_frameRoot);
 		if (anim && m_animController) {
@@ -692,10 +695,6 @@ namespace tkEngine{
 			SAFE_RELEASE(m_animController);
 		}
 		m_isLoadEnd = true;
-		sw.Stop();
-		char _filePath[1024];
-		sprintf(_filePath, "loaded file %s, time = %lf", filePath, sw.GetElapsedMillisecond());
-		TK_LOG(_filePath);
 	}
 	void CSkinModelData::LoadModelDataAsync(const char* filePath, CAnimation* anim)
 	{

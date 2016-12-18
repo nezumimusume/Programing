@@ -47,9 +47,9 @@ Car::~Car()
 {
 
 }
-void Car::Start()
+bool Car::Start()
 {
-
+	return true;
 }
 void Car::Update()
 {

@@ -20,6 +20,11 @@ class LockOn2D;
 class Player : public IGameObject {
 private:
 	static const int NUM_BATTLE_SEAT = 8;		//シートの数。
+	//初期化ステップ。
+	enum InitStep {
+		InitStep_LoadModelData,
+		InitStep_WaitModelData,
+	};
 public:
 	enum AnimationNo {
 		AnimationInvalid = -1,
@@ -54,7 +59,7 @@ public:
 
 	Player(); 
 	~Player();
-	void Start() override ;
+	bool Start() override ;
 	void Update() override ;
 	void Render( CRenderContext& renderContext ) override;
 	void SetPosition(const CVector3& position)
@@ -238,5 +243,6 @@ private:
 	PlayerStateRun			runState;							//走りステート。
 	PlayerStateStand		standState;							//待機ステート。
 	LockOn2D*				lockOn2D = NULL;							//ロックオン2D
+	InitStep				initStep = InitStep_LoadModelData;	//初期化ステップ。
 
 };

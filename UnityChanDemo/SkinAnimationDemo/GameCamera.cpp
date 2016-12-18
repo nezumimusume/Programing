@@ -13,7 +13,7 @@ GameCamera::GameCamera() :
 GameCamera::~GameCamera()
 {
 }
-void GameCamera::Start()
+bool GameCamera::Start()
 {
 	CVector3 cameraPos(0.0f, 0.8f, 3.0f);
 	CVector3 cameraTarget(0.0f, 0.2f, 0.0f);
@@ -27,6 +27,7 @@ void GameCamera::Start()
 	springCamera.Update();
 	//リフレクションマップにカメラを設定する。
 	ReflectionMap().SetCamera(*springCamera.GetCamera());
+	return true;
 }
 void GameCamera::Update()
 {

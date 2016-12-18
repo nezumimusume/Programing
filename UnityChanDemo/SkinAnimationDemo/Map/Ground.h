@@ -4,6 +4,11 @@
 #include "tkEngine/Physics/tkRigidBody.h"
 
 class Ground : public IGameObject {
+	enum InitStep {
+		InitStep_Load,
+		InitStep_Wait,
+	};
+	InitStep				initStep = InitStep_Load;
 	CSkinModelDataHandle	skinModelData;		//スキンモデルデータ。
 	CSkinModel				skinModel;			//スキンモデル。
 	CAnimation				animation;			//アニメーション。
@@ -18,7 +23,7 @@ public:
 		
 	}
 	~Ground();
-	void Start() override;
+	bool Start() override;
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;
 	//地面との当たり判定。

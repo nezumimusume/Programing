@@ -25,7 +25,7 @@ namespace tkEngine{
 	{
 
 		D3DXCreateFont(
-			Engine().GetD3DDevice(),	// Direct3Dデバイス
+			Engine().GetD3DDevice(),					// Direct3Dデバイス
 			FONT_HEIGHT,				// 高さ
 			FONT_WIDTH,					// 幅
 			FW_REGULAR,					// フォントの太さ 普通

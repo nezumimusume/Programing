@@ -12,12 +12,13 @@ LockOn2D::LockOn2D()
 LockOn2D::~LockOn2D()
 {
 }
-void LockOn2D::Start()
+bool LockOn2D::Start()
 {
 	m_lockOnTexture.Load("Assets/sprite/LockOn.png");
 	m_lockOnSprite.Init(&m_lockOnTexture);
 	m_lockOnSprite.SetPosition({0.0f, 0.0f});
 	m_lockOnSprite.SetSize({ 64, 64 });
+	return true;
 }
 void LockOn2D::Update()
 {

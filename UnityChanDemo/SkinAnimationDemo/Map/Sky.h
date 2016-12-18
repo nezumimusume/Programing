@@ -1,12 +1,17 @@
 #pragma once
 
 class Sky : public IGameObject {
-	CSkinModelData	skinModelData;		//スキンモデルデータ。
-	CSkinModel		skinModel;			//スキンモデル。
-	CAnimation		animation;			//アニメーション。
-	CLight			light;				//ライト。
-	CTexture		normalMap;
-	Player*			player;				//プレイヤ。
+	enum InitStep {
+		InitStep_Load,
+		InitStep_Wait,
+	};
+	CSkinModelDataHandle	skinModelData;		//スキンモデルデータ。
+	CSkinModel				skinModel;			//スキンモデル。
+	CAnimation				animation;			//アニメーション。
+	CLight					light;				//ライト。
+	CTexture				normalMap;
+	Player*					player;				//プレイヤ。
+	InitStep				initStep = InitStep_Load;
 public:
 	Sky();
 	
@@ -14,10 +19,7 @@ public:
 	{
 
 	}
-	void Start() override
-	{
-
-	}
+	bool Start() override;
 	void SetPlayer(Player* player)
 	{
 		this->player = player;

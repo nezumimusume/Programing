@@ -22,7 +22,7 @@ EnemyManager::~EnemyManager()
 		DeleteGO(enemy);
 	}
 }
-void EnemyManager::Start()
+bool EnemyManager::Start()
 {
 	//配置情報から敵を構築。
 	map<const char*, vector<SEnemyLocInfo*>*> m;
@@ -32,6 +32,7 @@ void EnemyManager::Start()
 		enemy->Init(info.modelName, info.pos, info.rotation);
 		enemyList.push_back(enemy);
 	}
+	return true;
 }
 void EnemyManager::Update()
 {

@@ -94,7 +94,8 @@ namespace tkEngine{
 		CSkinModelDataMap	m_skinModelDataMap;
 		CSkinModelDataList	m_instancingModelDataList;
 		std::queue<SAsyncLoadRequest> m_asyncLoadRequestQueue;	//!<非同期読み込みリクエストのキュー。
-		CCriticalSection m_asyncLoadReqeustQueueCS;
+		CCriticalSection m_asyncLoadReqeustQueueCS;				//!<読み込みリクエストキューを守るクリティカルセクション。
+		CCriticalSection m_cs;
 		std::thread m_asyncLoadThread;							//!<非同期読み込みスレッド。
 	};
 }

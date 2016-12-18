@@ -8,7 +8,7 @@ class PlayerMPBar : public IGameObject{
 public:
 	PlayerMPBar();
 	~PlayerMPBar();
-	void Start() override;
+	bool Start() override;
 	void Update() override;
 	void PostRender(CRenderContext& renderContext) override;
 private:

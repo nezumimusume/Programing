@@ -14,10 +14,11 @@ public:
 	MapChip();
 	~MapChip();
 	void Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList);
-	void Start() override;
+	bool Start() override;
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;
 private:
+	std::vector<SMapChipLocInfo*>		mapChipLocInfoList;
 	CSkinModelDataHandle				skinModelData;
 	CSkinModel							skinModel;			//スキンモデル。
 	CAnimation							animation;			//アニメーション。

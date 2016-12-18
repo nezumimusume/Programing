@@ -57,6 +57,14 @@ namespace tkEngine{
 		 *@brief	コマンドバッファをサブミット。
 		 */
 		void Submit(LPDIRECT3DDEVICE9 pD3DDevice);
+		/*!
+		*@brief	コマンドバッファのクリア。
+		*/
+		void Clear()
+		{
+			m_command.clear();
+			m_writePos = 0;
+		}
 	private:
 		std::unique_ptr<unsigned char[]>	m_buffer;	//!<コマンドバッファ
 		std::vector<void*>		m_command;	//!<コマンド。

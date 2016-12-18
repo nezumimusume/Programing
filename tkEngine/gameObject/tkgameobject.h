@@ -102,6 +102,13 @@ namespace tkEngine{
 		{
 			return m_isDead;
 		}
+		/*!
+		*@brief StartŠÖ”‚ªŠ®—¹‚µ‚½H
+		*/
+		virtual bool IsStart() const
+		{
+			return m_isStart;
+		}
 	public:
 		void PostRenderWrapper(CRenderContext& renderContext)
 		{

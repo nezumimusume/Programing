@@ -34,20 +34,23 @@ void Enemy_00::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 {
 	Enemy::Init(modelPath, pos, rotation);
 
+	
+}
+void Enemy_00::OnLoadedSkinModelData()
+{
 	PlayAnimation(enAnimWalk);
 	animation.SetAnimationLoopFlag(enAnimAttack, false);
 	animation.SetAnimationLoopFlag(enAnimDamage, false);
 	animation.SetAnimationLoopFlag(enAnimDeath, false);
-	
-	
+
+
 	sphereShape.reset(new CSphereCollider);
 	sphereShape->Create(radius);
 	collisionObject.reset(new btCollisionObject());
 	collisionObject->setCollisionShape(sphereShape->GetBody());
-	
+
 	InitHFSM();
 }
-
 /*!
  * @brief	HFSM‚ð‰Šú‰»B
  */
@@ -64,9 +67,7 @@ void Enemy_00::InitHFSM()
 	state = enLocalState_Search;
 	states[state]->Enter(IEnemyState::SEnterArg());
 }
-void Enemy_00::Start()
-{
-}
+
 void Enemy_00::Update()
 {
 	Enemy::Update();

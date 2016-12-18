@@ -9,7 +9,7 @@ class LockOn2D : public IGameObject{
 public:
 	LockOn2D();
 	~LockOn2D();
-	void Start() override;
+	bool Start() override;
 	void Update() override;
 	void PostRender(CRenderContext& renderContext) override;
 	

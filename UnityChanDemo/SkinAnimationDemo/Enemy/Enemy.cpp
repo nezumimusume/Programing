@@ -16,77 +16,87 @@ void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 			break;
 		}
 	}
-	char filePath[1024];
-	sprintf(filePath, "Assets/modelData/%s.x", modelPath);
-	skinModelData.LoadModelData(
-		filePath,
+	position = pos;
+	this->rotation = rotation;
+	sprintf(modelFilePath, "Assets/modelData/%s.x", modelPath);
+	skinModelData.LoadModelDataAsync(
+		modelFilePath,
 		&animation
 	);
-	//マテリアルを取得。
-	const std::vector<CSkinModelMaterial*> materials = skinModelData.GetBody()->GetSkinModelMaterials();
-	specMapList.resize(materials.size());
-	normalMapList.resize(materials.size());
-	int i = 0;
-	for (CSkinModelMaterial* mat : materials) {
-		char work[256];
-		strcpy(work, mat->GetMaterialName());
-		strtok(work, ".");
-		sprintf(filePath, "Assets/modelData/%s_n.png", work);
-		if (normalMapList[i].Load(filePath)) {
-			mat->SetTexture("g_normalTexture", &normalMapList[i]);
-			skinModel.SetHasNormalMap(true);
+	
+}
+bool Enemy::Start()
+{
+	if (skinModelData.IsLoadEnd()) {
+		OnLoadedSkinModelData();
+		//マテリアルを取得。
+		const std::vector<CSkinModelMaterial*> materials = skinModelData.GetBody()->GetSkinModelMaterials();
+		specMapList.resize(materials.size());
+		normalMapList.resize(materials.size());
+		int i = 0;
+		for (CSkinModelMaterial* mat : materials) {
+			char work[256];
+			strcpy(work, mat->GetMaterialName());
+			strtok(work, ".");
+			sprintf(modelFilePath, "Assets/modelData/%s_n.png", work);
+			if (normalMapList[i].Load(modelFilePath)) {
+				mat->SetTexture("g_normalTexture", &normalMapList[i]);
+				skinModel.SetHasNormalMap(true);
+			}
+			sprintf(modelFilePath, "Assets/modelData/%s_s.png", work);
+			if (specMapList[i].Load(modelFilePath)) {
+				mat->SetTexture("g_speculerMap", &specMapList[i]);
+				skinModel.SetHasSpeculerMap(true);
+			}
+
+			i++;
 		}
-		sprintf(filePath, "Assets/modelData/%s_s.png", work);
-		if (specMapList[i].Load(filePath)) {
-			mat->SetTexture("g_speculerMap", &specMapList[i]);
-			skinModel.SetHasSpeculerMap(true);
+
+		skinModel.Init(skinModelData.GetBody());
+		
+		initPosition = position;
+		
+
+		skinModel.SetLight(&light);
+		skinModel.SetShadowCasterFlag(true);
+		skinModel.SetShadowReceiverFlag(true);
+		skinModel.SetFresnelFlag(true);
+
+		light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
+		light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
+		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
+		light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
+
+		light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+
+		light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
+
+		light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
+		light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
+		radius = 0.6f;
+		height = 1.5f;
+		characterController.Init(radius, height, position);
+		characterController.SetGravity(-18.8f);
+		if (enemyParam->animationEventGroup != NULL) {
+			animationEventController.Init(
+				&skinModel,
+				&animation,
+				enemyParam->animationEventGroup,
+				enNumAnim
+				);
 		}
 
-		i++;
+		//オブジェクトのカリング処理の初期化。
+		objectCulling.Init(g_camera->GetCamera());
+		//AABBを初期化。
+		CalcAABBCenterPosAndHalfSize();
+		aabb.Init(centerPosition, aabbHalfSize);
+		return true;
 	}
-
-	skinModel.Init(skinModelData.GetBody());
-	position = pos;
-	initPosition = position;
-	this->rotation = rotation;
-
-	skinModel.SetLight(&light);
-	skinModel.SetShadowCasterFlag(true);
-	skinModel.SetShadowReceiverFlag(true);
-	skinModel.SetFresnelFlag(true);
-
-	light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
-	light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
-	light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
-	light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
-
-	light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-
-	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
-
-	light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
-	light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
-	radius = 0.6f;
-	height = 1.5f;
-	characterController.Init(radius, height, position);
-	characterController.SetGravity(-18.8f);
-	if (enemyParam->animationEventGroup != NULL) {
-		animationEventController.Init(
-			&skinModel, 
-			&animation, 
-			enemyParam->animationEventGroup, 
-			enNumAnim
-		);
-	}
-
-	//オブジェクトのカリング処理の初期化。
-	objectCulling.Init(g_camera->GetCamera());
-	//AABBを初期化。
-	CalcAABBCenterPosAndHalfSize();
-	aabb.Init(centerPosition, aabbHalfSize);
+	return false;
 }
 /*!
 * @brief	AABBの中心座標とハーフサイズを計算。

@@ -106,89 +106,103 @@ Player::~Player()
 /*!
 * @brief	開始
 */
-void Player::Start()
+bool Player::Start()
 {
-	lockOn2D = NewGO<LockOn2D>(1);
-	skinModelData.LoadModelData("Assets/modelData/Player.X", &animation);
-	normalMap.Load("Assets/modelData/Thethief_N.tga");
-	specMap.Load("Assets/modelData/Thethief_S.tga");
-	weaponNormalMap.Load("Assets/modelData/Thethief_wuqi_N.tga");
-	weaponSpecMap.Load("Assets/modelData/Thethief_wuqi_S.tga");
-	//体のマテリアルを取得。
-	CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("Thethief_D.tga");
-	if (mat != NULL) {
-		mat->SetTexture("g_normalTexture", &normalMap);
-		mat->SetTexture("g_speculerMap", &specMap);
+	switch (initStep) {
+	case InitStep_LoadModelData:
+		skinModelData.LoadModelDataAsync("Assets/modelData/Player.X", &animation);
+		initStep = InitStep_WaitModelData;
+		break;
+	case InitStep_WaitModelData:
+		if (skinModelData.IsLoadEnd()) {
+			//スキンモデルの読み込み完了。
+			lockOn2D = NewGO<LockOn2D>(1);
+
+			normalMap.Load("Assets/modelData/Thethief_N.tga");
+			specMap.Load("Assets/modelData/Thethief_S.tga");
+			weaponNormalMap.Load("Assets/modelData/Thethief_wuqi_N.tga");
+			weaponSpecMap.Load("Assets/modelData/Thethief_wuqi_S.tga");
+			//体のマテリアルを取得。
+			CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("Thethief_D.tga");
+			if (mat != NULL) {
+				mat->SetTexture("g_normalTexture", &normalMap);
+				mat->SetTexture("g_speculerMap", &specMap);
+			}
+			//武器のマテリアルを取得。
+			mat = skinModelData.GetBody()->FindMaterial("Thethief_wuqi_D.tga");
+			if (mat != NULL) {
+				mat->SetTexture("g_normalTexture", &weaponNormalMap);
+				mat->SetTexture("g_speculerMap", &weaponSpecMap);
+			}
+			skinModel.Init(skinModelData.GetBody());
+			skinModel.SetLight(&light);
+			skinModel.SetHasNormalMap(true);
+			skinModel.SetHasSpeculerMap(true);
+			skinModel.SetShadowCasterFlag(true);
+			skinModel.SetShadowReceiverFlag(true);
+			skinModel.SetFresnelFlag(true);
+			skinModel.SetReflectionCasterFlag(true);
+			skinModel.SetWriteVelocityMap(false);
+
+			light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
+			light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
+			light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
+			light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
+
+
+			light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
+			light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
+			light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
+			light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
+			light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
+
+			light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
+			light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
+
+			isPointLightOn = false;
+			UpdatePointLightPosition();
+
+			PlayAnimation(AnimationInvalid, 0.0f);
+			rotation = CQuaternion::Identity;
+
+			CVector3 lightPos = CVector3(0.0f, 25.5f, 24.5f);
+			ShadowMap().SetLightPosition(lightPos);
+			ShadowMap().SetLightTarget(position);
+			toLightPos.Subtract(lightPos, position);
+			ShadowMap().SetCalcLightViewFunc(CShadowMap::enCalcLightViewFunc_PositionTarget);
+			ChangeState(enStateStand);
+			radius = 0.4f;
+			height = 0.3f;
+			characterController.Init(radius, height, position);
+			characterController.SetGravity(-18.8f);
+			toLampLocalPos.Set(0.0f, 0.5f, 0.2f);
+			InitBattleSeats();
+			//g_physicsWorld->AddRigidBody(&rigidBody);
+			animation.SetAnimationEndTime(AnimationAttack_00, 0.63333f);
+			animation.SetAnimationEndTime(AnimationAttack_01, 0.76666f);
+			animation.SetAnimationEndTime(AnimationDamage, 0.733333f);
+			animation.SetAnimationLoopFlag(AnimationJump, false);
+			animation.SetAnimationLoopFlag(AnimationAttack_00, false);
+			animation.SetAnimationLoopFlag(AnimationAttack_01, false);
+			animation.SetAnimationLoopFlag(AnimationAttack_02, false);
+			animation.SetAnimationLoopFlag(AnimationDamage, false);
+			animation.SetAnimationLoopFlag(AnimationDeath, false);
+			nextAttackAnimNo = AnimationInvalid;
+			reqAttackAnimNo = AnimationInvalid;
+
+			//アニメーションイベントコントローラの初期化。
+			animationEventController.Init(
+				&skinModel,
+				&animation,
+				animationEventGroupTbl,
+				sizeof(animationEventGroupTbl) / sizeof(animationEventGroupTbl[0])
+				);
+			return true;
+		}
+		break;
 	}
-	//武器のマテリアルを取得。
-	mat = skinModelData.GetBody()->FindMaterial("Thethief_wuqi_D.tga");
-	if (mat != NULL) {
-		mat->SetTexture("g_normalTexture", &weaponNormalMap);
-		mat->SetTexture("g_speculerMap", &weaponSpecMap);
-	}
-	skinModel.Init(skinModelData.GetBody());
-	skinModel.SetLight(&light);
-	skinModel.SetHasNormalMap(true);
-	skinModel.SetHasSpeculerMap(true);
-	skinModel.SetShadowCasterFlag(true);
-	skinModel.SetShadowReceiverFlag(true);
-	skinModel.SetFresnelFlag(true);
-	skinModel.SetReflectionCasterFlag(true);
-	skinModel.SetWriteVelocityMap(false);
-
-	light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
-	light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
-	light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
-	light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
-
-
-	light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
-	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
-	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
-	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
-	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
-
-	light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
-	light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
-
-	isPointLightOn = false;
-	UpdatePointLightPosition();
-
-	PlayAnimation(AnimationInvalid, 0.0f);
-	rotation = CQuaternion::Identity;
 	
-	CVector3 lightPos = CVector3(0.0f, 25.5f, 24.5f);
-	ShadowMap().SetLightPosition(lightPos);
-	ShadowMap().SetLightTarget(position);
-	toLightPos.Subtract(lightPos, position);
-	ShadowMap().SetCalcLightViewFunc(CShadowMap::enCalcLightViewFunc_PositionTarget);
-	ChangeState( enStateStand );
-	radius = 0.4f;
-	height = 0.3f;
-	characterController.Init(radius, height, position);
-	characterController.SetGravity(-18.8f);
-	toLampLocalPos.Set( 0.0f, 0.5f, 0.2f);
-	InitBattleSeats();
-	//g_physicsWorld->AddRigidBody(&rigidBody);
-	animation.SetAnimationEndTime(AnimationAttack_00, 0.63333f);
-	animation.SetAnimationEndTime(AnimationAttack_01, 0.76666f);
-	animation.SetAnimationEndTime(AnimationDamage, 0.733333f);
-	animation.SetAnimationLoopFlag(AnimationJump, false);
-	animation.SetAnimationLoopFlag(AnimationAttack_00, false);
-	animation.SetAnimationLoopFlag(AnimationAttack_01, false);
-	animation.SetAnimationLoopFlag(AnimationAttack_02, false);
-	animation.SetAnimationLoopFlag(AnimationDamage, false);
-	animation.SetAnimationLoopFlag(AnimationDeath, false);
-	nextAttackAnimNo = AnimationInvalid;
-	reqAttackAnimNo = AnimationInvalid;
-
-	//アニメーションイベントコントローラの初期化。
-	animationEventController.Init(
-		&skinModel, 
-		&animation, 
-		animationEventGroupTbl, 
-		sizeof(animationEventGroupTbl)/sizeof(animationEventGroupTbl[0])
-	);
+	return false;
 }
 bool Player::LockOnEnemy()
 {

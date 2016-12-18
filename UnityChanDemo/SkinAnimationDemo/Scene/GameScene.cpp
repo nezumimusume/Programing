@@ -40,7 +40,7 @@ void GameScene::OnDestroy()
 	DeleteGO(playerHPBar);
 	DeleteGO(playerMPBar);
 	DeleteGO(sky);
-	DeleteGO(g_car);
+	//DeleteGO(g_car);
 	DeleteGO(g_player);
 	DeleteGO(g_enemyManager);
 	DeleteGO(unityChanInstance);
@@ -48,29 +48,50 @@ void GameScene::OnDestroy()
 	DeleteGO(g_camera);
 	DeleteGO(&bgmSoundSource);
 }
-void GameScene::Start()
+bool GameScene::Start()
 {
-	g_player = NewGO<Player>(0);
-	unityChanInstance = NewGO<UnityChanInstance>(0);
-	g_enemyManager = NewGO<EnemyManager>(0);
-	map = NewGO<Map>(0);
-	ground = NewGO<Ground>(0);
-	playerHPBar = NewGO<PlayerHPBar>(0);
-	playerMPBar = NewGO<PlayerMPBar>(0);
-	g_damageCollisionWorld = NewGO<DamageCollisionWorld>(0);
+	switch (initStep) {
+	case InitStep_Load:	
+		unityChanInstance = NewGO<UnityChanInstance>(0);
+		map = NewGO<Map>(0);
+		ground = NewGO<Ground>(0);
+		g_enemyManager = NewGO<EnemyManager>(0);
+		playerHPBar = NewGO<PlayerHPBar>(0);
+		playerMPBar = NewGO<PlayerMPBar>(0);
+		g_damageCollisionWorld = NewGO<DamageCollisionWorld>(0);
+		g_player = NewGO<Player>(0);
+		sky = NewGO<Sky>(0);
+		sky->SetPlayer(g_player);
+		//g_car = NewGO<Car>(0);
+		g_camera = NewGO<GameCamera>(0);
+		g_player->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
+		g_camera->SetPlayer(g_player);
+		MotionBlur().SetCamera(&g_camera->GetCamera());
 
-	sky = NewGO<Sky>(0);
-	sky->SetPlayer(g_player);
-	g_car = NewGO<Car>(0);
-	g_camera = NewGO<GameCamera>(0);
-	g_player->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
-	g_camera->SetPlayer(g_player);
-	MotionBlur().SetCamera(&g_camera->GetCamera());
-
-	bgmSoundSource.InitStreaming("Assets/sound/wind.wav");
-	bgmSoundSource.Play(true);
-	bgmSoundSource.SetVolume(0.5f);
-	AddGO(0, &bgmSoundSource);
+		bgmSoundSource.InitStreaming("Assets/sound/wind.wav");
+		bgmSoundSource.Play(true);
+		bgmSoundSource.SetVolume(0.5f);
+		AddGO(0, &bgmSoundSource);
+		
+		initStep = InitStep_WaitLoad;
+		break;
+	case InitStep_WaitLoad:
+		if (g_player->IsStart()
+			&& g_enemyManager->IsStart()
+			&& map->IsStart()
+			&& ground->IsStart()
+			&& playerHPBar->IsStart()
+			&& playerMPBar->IsStart()
+			&& playerMPBar->IsStart()
+			&& sky->IsStart()
+		) {
+			//ëSÇƒèâä˙âªäÆóπÅB
+			return true;
+		}
+		break;
+	}
+	
+	return false;
 }
 void GameScene::Update() 
 {

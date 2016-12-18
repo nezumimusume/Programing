@@ -20,7 +20,7 @@ Map::~Map()
 	}
 }
 
-void Map::Start()
+bool Map::Start()
 {
 	//配置情報からマップを構築
 	int tableSize = sizeof(mapChipLocInfoTable)/sizeof(mapChipLocInfoTable[0]);
@@ -49,6 +49,7 @@ void Map::Start()
 		mapChipList.push_back(mapChip);
 		delete mapchipList.second;
 	}
+	return true;
 }
 void Map::Update()
 {

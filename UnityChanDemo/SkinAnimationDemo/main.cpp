@@ -21,12 +21,13 @@ public:
 	~DrawSpriteTest()
 	{
 	}
-	void Start() override
+	bool Start() override
 	{
 		texture.Load("Assets/sprite/test.png");
 		sprite.Init(&texture);
 		sprite.SetPosition({ -640, 360 });
 		sprite.SetPivot({ 0.0f, 1.0f });
+		return true;
 	}
 	void Update() override
 	{
@@ -49,7 +50,7 @@ public:
 	~PlayWaveFileTest()
 	{
 	}
-	void Start() override
+	bool Start() override
 	{
 		//サウンドソースを初期化。
 		soundSource.InitStreaming("Assets/sound/wind.wav");
@@ -57,6 +58,7 @@ public:
 		soundSource.Play(true);
 		soundSource.SetVolume(0.5f);
 		AddGO(0, &soundSource);
+		return true;
 	}
 	void Update() override
 	{
@@ -84,9 +86,9 @@ public:
 	{
 
 	}
-	void Start() override
+	bool Start() override
 	{
-
+		return true;
 	}
 	void Update() override
 	{

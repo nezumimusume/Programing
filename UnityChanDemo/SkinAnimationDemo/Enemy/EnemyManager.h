@@ -16,7 +16,7 @@ class EnemyManager : public IGameObject{
 public:
 	EnemyManager();
 	~EnemyManager();
-	void Start() override;
+	bool Start() override;
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;
 	const std::vector<Enemy*>& GetEnemyList() const

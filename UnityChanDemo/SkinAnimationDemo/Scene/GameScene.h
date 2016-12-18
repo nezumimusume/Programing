@@ -24,9 +24,13 @@ public:
 	 */
 	~GameScene();
 	void OnDestroy() override;
-	void Start() override;
+	bool Start() override;
 	void Update() override;
 private:
+	enum InitStep {
+		InitStep_Load,
+		InitStep_WaitLoad,
+	};
 	Map*				map = NULL;
 	Ground*				ground = NULL;
 	PlayerHPBar*		playerHPBar = NULL;
@@ -34,4 +38,5 @@ private:
 	Sky* 				sky = NULL;
 	UnityChanInstance*	unityChanInstance = NULL;
 	CSoundSource		bgmSoundSource;
+	InitStep			initStep = InitStep_Load;
 };

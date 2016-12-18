@@ -30,6 +30,10 @@ namespace tkEngine{
 		 */
 		CEffect* LoadEffect( const char* filePath );
 		/*!
+		*@brief	常駐エフェクトファイルのロード。
+		*/
+		void LoadCommonEffect();
+		/*!
 		 * @brief	リリース。
 		 */
 		void Release();

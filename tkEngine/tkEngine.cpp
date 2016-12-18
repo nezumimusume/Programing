@@ -119,6 +119,8 @@ namespace tkEngine{
 		if (!InitDirectX(initParam)) {
 			return false;
 		}
+		//常駐エフェクトのロード。
+		m_effectManager.LoadCommonEffect();
 		//メインレンダリングターゲットを作成。
 		for (int i = 0; i < 2; i++) {
 			m_mainRenderTarget[i].Create(
@@ -257,15 +259,17 @@ namespace tkEngine{
 					m_preRender,
 					m_postEffect
 				);
+
+				
 				lastRenderContext.SetRenderTarget(0, &m_backBufferRT);
 				lastRenderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
 					D3DCOLOR_RGBA(0, 0, 0, 0), 1.0f, 0
-				);
+					);
 				CopyMainRenderTargetToBackBuffer(lastRenderContext);
 
 				m_pD3DDevice->BeginScene();
 				//レンダリングコマンドのサブミット
-				for( int i = 0; i < m_numRenderContext; i++ ){
+				for (int i = 0; i < m_numRenderContext; i++) {
 					m_renderContextArray[i].SubmitCommandBuffer();
 				}
 
@@ -275,10 +279,10 @@ namespace tkEngine{
 #ifdef USE_DISP_FPS
 				m_fpsFont.Draw(text, 0, 0);
 #endif
-				
+
 				m_pD3DDevice->EndScene();
 				m_pD3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
-
+				
 				sw.Stop();
 				
 				if (sw.GetElapsed() < 1.0f / 30.0f) {

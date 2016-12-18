@@ -18,7 +18,7 @@ PlayerMPBar::PlayerMPBar()
 PlayerMPBar::~PlayerMPBar()
 {
 }
-void PlayerMPBar::Start()
+bool PlayerMPBar::Start()
 {
 	m_mpBarTex.Load("Assets/sprite/mp.png");
 	m_mpGaugeTex.Load("Assets/sprite/hpsp_bar.png");
@@ -34,7 +34,7 @@ void PlayerMPBar::Start()
 
 	m_mpBar.SetPosition(mpBarPos);
 	m_mpGauge.SetPosition(mpGaugePos);
-
+	return true;
 }
 void PlayerMPBar::Update()
 {

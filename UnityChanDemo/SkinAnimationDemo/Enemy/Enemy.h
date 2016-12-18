@@ -30,6 +30,7 @@ public:
 	{
 	}
 	virtual void Init(const char* modelPath, CVector3 pos, CQuaternion rotation);
+	bool Start() override;
 	void Update() override;
 	void PlayAnimation(EnAnimation animNo)
 	{
@@ -116,7 +117,12 @@ private:
 	* @brief	AABBの中心座標とハーフサイズを計算。
 	*/
 	void CalcAABBCenterPosAndHalfSize();
+	/*!
+	* @brief	スキンモデルデータの読み込みが完了した時に呼ばれるコールバック。
+	*/
+	virtual void OnLoadedSkinModelData() {} 
 protected:
+
 	CSkinModelDataHandle			skinModelData;
 	CSkinModel						skinModel;			//スキンモデル。
 	CAnimation						animation;			//アニメーション。
@@ -141,4 +147,5 @@ protected:
 	float							timer = 0.0f;
 	CObjectFrustumCulling			objectCulling;		//オブジェクトのカリング処理。
 	CAabb							aabb;				//オブジェクトを内包するAABB
+	char							modelFilePath[1024];
 };

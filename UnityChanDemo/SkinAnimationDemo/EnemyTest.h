@@ -35,7 +35,7 @@ public:
 	{
 
 	}
-	void Start() override ;
+	bool Start() override ;
 	void Update() override ;
 	void Render( CRenderContext& renderContext ) override;
 	void SetPosition(const CVector3& position)

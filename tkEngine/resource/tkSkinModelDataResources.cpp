@@ -40,7 +40,7 @@ namespace tkEngine{
 	)
 	{	
 		//ロックをかける。
-		m_asyncLoadReqeustQueueCS.Lock();
+		m_cs.Lock();
 		if (isInstancing) {
 			//インスシングモデルはモデルデータの使い回しは無理。
 			CSkinModelDataPtr newSkinModelData(new CSkinModelData);
@@ -74,7 +74,7 @@ namespace tkEngine{
 		}
 		//読み込み終了を通知する
 		skinModelDataHandle.NotifyLoadEnd();
-		m_asyncLoadReqeustQueueCS.Unlock();
+		m_cs.Unlock();
 	}
 	void CSkinModelDataResources::UpdateAsyncLoadThread()
 	{
@@ -88,46 +88,48 @@ namespace tkEngine{
 				Sleep(10);
 			}
 			else {
-				SAsyncLoadRequest& req = m_asyncLoadRequestQueue.front();
-				//リクエストに従ってロードを実行する。
-				Load(*req.skindModelDataHandle, req.modelPath.c_str(), req.anim, req.isInstancing, req.numInstance );
+				SAsyncLoadRequest req = m_asyncLoadRequestQueue.front();
 				m_asyncLoadRequestQueue.pop();
 				m_asyncLoadReqeustQueueCS.Unlock();
+				//リクエストに従ってロードを実行する。
+				Load(*req.skindModelDataHandle, req.modelPath.c_str(), req.anim, req.isInstancing, req.numInstance );
 			}
 		}
 	}
 	
 	void CSkinModelDataResources::Update()
 	{
-		m_asyncLoadReqeustQueueCS.Lock();
-		//参照カウンタが1になっているCSkinModelDataをガベージコレクト。
-		std::vector<CSkinModelDataMap::iterator>	deleteItList;
-		for (
-			CSkinModelDataMap::iterator it = m_skinModelDataMap.begin();
-			it != m_skinModelDataMap.end();
-			it++
-		) {
-			if (it->second.unique()) {
-				//こいつを参照しているモデルはもういない。
-				deleteItList.push_back(it);
+		if (m_cs.TryLock()) {
+			//参照カウンタが1になっているCSkinModelDataをガベージコレクト。
+			std::vector<CSkinModelDataMap::iterator>	deleteItList;
+			for (
+				CSkinModelDataMap::iterator it = m_skinModelDataMap.begin();
+				it != m_skinModelDataMap.end();
+				it++
+				) {
+				if (it->second.unique()) {
+					//こいつを参照しているモデルはもういない。
+					deleteItList.push_back(it);
+				}
 			}
-		}
-		for (auto& delIt : deleteItList) {
-			m_skinModelDataMap.erase(delIt);
-		}
-		//続いてインスタンシングモデル。
-		for (
-			CSkinModelDataList::iterator it = m_instancingModelDataList.begin();
-			it != m_instancingModelDataList.end();
-			) {
-			if (it->unique()) {
-				//こいつを参照しているモデルはもういない。
-				it = m_instancingModelDataList.erase(it);
+			for (auto& delIt : deleteItList) {
+				m_skinModelDataMap.erase(delIt);
 			}
-			else {
-				it++;
+			//続いてインスタンシングモデル。
+			for (
+				CSkinModelDataList::iterator it = m_instancingModelDataList.begin();
+				it != m_instancingModelDataList.end();
+				) {
+				if (it->unique()) {
+					//こいつを参照しているモデルはもういない。
+					it = m_instancingModelDataList.erase(it);
+				}
+				else {
+					it++;
+				}
 			}
+			m_cs.Unlock();
 		}
-		m_asyncLoadReqeustQueueCS.Unlock();
+		
 	}
 }

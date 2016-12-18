@@ -12,43 +12,54 @@ Ground::~Ground()
 	PhysicsWorld().RemoveRigidBody(&rigidBody);
 }
 
-void Ground::Start()
+bool Ground::Start()
 {
-	g_ground = this;
-	skinModelData.LoadModelData("Assets/modelData/ground.X", NULL);
-	skinModel.Init(skinModelData.GetBody());
-	skinModel.SetLight(&light);
-	CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("Grass.tga");
-	normalMap.Load("Assets/modelData/Grass_Normals.tga");
-	mat->SetTexture("g_normalTexture", &normalMap);
-	skinModel.SetHasNormalMap(true);
-	light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
-	light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
-	light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
-	light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
+	switch (initStep) {
+	case InitStep_Load:
+		g_ground = this;
+		skinModelData.LoadModelDataAsync("Assets/modelData/ground.X", NULL);
+		initStep = InitStep_Wait;
+		break;
+	case InitStep_Wait:
+		if (skinModelData.IsLoadEnd()) {
+			skinModel.Init(skinModelData.GetBody());
+			skinModel.SetLight(&light);
+			CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("Grass.tga");
+			normalMap.Load("Assets/modelData/Grass_Normals.tga");
+			mat->SetTexture("g_normalTexture", &normalMap);
+			skinModel.SetHasNormalMap(true);
+			light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
+			light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
+			light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
+			light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
 
-	light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-	light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
-	skinModel.SetShadowReceiverFlag(true);
-	skinModel.SetShadowCasterFlag(true);
-	//距離フォグをかける。
-	skinModel.SetFogParam(enFogFuncDist, 70.0f, 100.0f);
+			light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+			light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+			light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+			light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
+			light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
+			skinModel.SetShadowReceiverFlag(true);
+			skinModel.SetShadowCasterFlag(true);
+			//距離フォグをかける。
+			skinModel.SetFogParam(enFogFuncDist, 70.0f, 100.0f);
 
-	Update();
-	m_worldMatrix = skinModel.FindBoneWorldMatrix("Plane001");
-	//メッシュコライダーを作成。
-	meshCollider.CreateFromSkinModel(&skinModel, m_worldMatrix);
-	//剛体を作成。
-	RigidBodyInfo rbInfo;
-	rbInfo.collider = &meshCollider;
-	rbInfo.mass = 0.0f;
-	rigidBody.Create(rbInfo);
-	rigidBody.GetBody()->setUserIndex(enCollisionAttr_Ground);
-	//剛体をワールドに追加。
-	PhysicsWorld().AddRigidBody(&rigidBody);
+			Update();
+			m_worldMatrix = skinModel.FindBoneWorldMatrix("Plane001");
+			//メッシュコライダーを作成。
+			meshCollider.CreateFromSkinModel(&skinModel, m_worldMatrix);
+			//剛体を作成。
+			RigidBodyInfo rbInfo;
+			rbInfo.collider = &meshCollider;
+			rbInfo.mass = 0.0f;
+			rigidBody.Create(rbInfo);
+			rigidBody.GetBody()->setUserIndex(enCollisionAttr_Ground);
+			//剛体をワールドに追加。
+			PhysicsWorld().AddRigidBody(&rigidBody);
+			return true;
+		}
+		break;
+	}
+	return false;
 }
 
 void Ground::Update() 

@@ -79,7 +79,7 @@ public:
 #endif
 		collisionWorld->addCollisionObject(colli->collisionObject.get());
 	}
-	void Start() override;
+	bool Start() override;
 	/*!
 	 * @brief	XVB
 	 */

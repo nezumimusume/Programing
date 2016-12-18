@@ -8,7 +8,7 @@ class PlayerHPBar : public IGameObject{
 public:
 	PlayerHPBar();
 	~PlayerHPBar();
-	void Start() override;
+	bool Start() override;
 	void Update() override;
 	void PostRender(CRenderContext& renderContext) override;
 private:

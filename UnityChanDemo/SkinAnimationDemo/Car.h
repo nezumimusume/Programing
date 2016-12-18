@@ -7,7 +7,7 @@ class Car : public IGameObject{
 public:
 	Car();
 	~Car();
-	void Start() override ;
+	bool Start() override ;
 	void Update() override ;
 	void Render( CRenderContext& renderContext ) override;
 	const CVector3& GetPosition() const

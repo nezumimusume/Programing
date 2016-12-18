@@ -123,6 +123,13 @@ namespace tkEngine{
 			m_commandBuffer.Submit(m_pD3DDevice);
 		}
 		/*!
+		*@brief	コマンドバッファをクリア。
+		*/
+		void ClearCommandBuffer()
+		{
+			m_commandBuffer.Clear();
+		}
+		/*!
 		*@brief	コマンドバッファからアロケート
 		*/
 		void* AllocFromCommandBuffer(int sizeInByte)

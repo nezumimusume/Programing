@@ -49,12 +49,13 @@ DamageCollisionWorld::DamageCollisionWorld()
 DamageCollisionWorld::~DamageCollisionWorld()
 {
 }
-void DamageCollisionWorld::Start()
+bool DamageCollisionWorld::Start()
 {
 	collisionConfig.reset( new btDefaultCollisionConfiguration );
 	collisionDispatcher.reset( new btCollisionDispatcher(collisionConfig.get()) );
 	overlappingPairCache.reset(new btDbvtBroadphase() );
 	collisionWorld.reset(new btCollisionWorld(collisionDispatcher.get(), overlappingPairCache.get(), collisionConfig.get()));
+	return true;
 }
 /*!
 *@brief	ダメージコリジョンと重なっているか調べる。

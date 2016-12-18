@@ -16,7 +16,7 @@ namespace tkEngine {
 			device,
 			fileName,
 			&m_tex))) {
-			TK_LOG("FailedTextureLoad");
+			TK_LOG("FailedTextureLoad\n");
 			return false;
 		}
 		ComputeTexSize();

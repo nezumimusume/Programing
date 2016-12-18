@@ -88,7 +88,7 @@ namespace {
 /*!
 * @brief	ŠJŽn
 */
-void EnemyTest::Start()
+bool EnemyTest::Start()
 {
 	if (orgSkinModelData == NULL) {
 		orgSkinModelData = new CSkinModelData;
@@ -146,6 +146,7 @@ void EnemyTest::Start()
 	rigidBody.Create(rbInfo);
 	toLampLocalPos.Set( 0.0f, 0.5f, 0.2f);
 	//g_physicsWorld->AddRigidBody(&rigidBody);
+	return true;
 }
 void EnemyTest::Update()
 {

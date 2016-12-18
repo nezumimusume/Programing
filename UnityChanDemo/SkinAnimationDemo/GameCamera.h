@@ -15,7 +15,7 @@ class GameCamera : public IGameObject{
 public:
 	GameCamera();
 	~GameCamera();
-	void Start() override ;
+	bool Start() override ;
 	void Update() override ;
 	void Render( CRenderContext& renderContext ) override;
 	void SetPlayer(Player* player)

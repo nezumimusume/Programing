@@ -18,7 +18,7 @@ PlayerHPBar::PlayerHPBar()
 PlayerHPBar::~PlayerHPBar()
 {
 }
-void PlayerHPBar::Start()
+bool PlayerHPBar::Start()
 {
 	m_hpBarTex.Load("Assets/sprite/hp.png");
 	m_hpGaugeTex.Load("Assets/sprite/hpsp_bar.png");
@@ -41,6 +41,7 @@ void PlayerHPBar::Start()
 	m_hpGauge.SetPosition(hpGaugePos);
 
 	m_hpLastFrame = g_player->GetHP();
+	return true;
 }
 void PlayerHPBar::Update()
 {
