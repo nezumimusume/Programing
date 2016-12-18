@@ -259,6 +259,7 @@
     <ClCompile Include="Enemy\HFSM\EnemyStateWalk.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="HUD\LockOn2D.cpp" />
+    <ClCompile Include="HUD\NowLoading.cpp" />
     <ClCompile Include="HUD\PlayerHPBar.cpp" />
     <ClCompile Include="HUD\PlayerMPBar.cpp" />
     <ClCompile Include="main.cpp" />
@@ -307,6 +308,7 @@
     <ClInclude Include="Enemy\HFSM\IEnemyState.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="HUD\LockOn2D.h" />
+    <ClInclude Include="HUD\NowLoading.h" />
     <ClInclude Include="HUD\PlayerHPBar.h" />
     <ClInclude Include="HUD\PlayerMPBar.h" />
     <ClInclude Include="Map\Ground.h" />

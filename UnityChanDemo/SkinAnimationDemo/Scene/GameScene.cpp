@@ -19,6 +19,7 @@
 #include "tkEngine/graphics/sprite/tkSprite.h"
 #include "HUD/PlayerHPBar.h"
 #include "HUD/PlayerMPBar.h"
+#include "HUD/NowLoading.h"
 
 CPhysicsWorld* g_physicsWorld = NULL;
 Player* g_player = NULL;
@@ -43,7 +44,7 @@ void GameScene::OnDestroy()
 	//DeleteGO(g_car);
 	DeleteGO(g_player);
 	DeleteGO(g_enemyManager);
-	DeleteGO(unityChanInstance);
+	//DeleteGO(unityChanInstance);
 	DeleteGO(g_damageCollisionWorld);
 	DeleteGO(g_camera);
 	DeleteGO(&bgmSoundSource);
@@ -52,7 +53,7 @@ bool GameScene::Start()
 {
 	switch (initStep) {
 	case InitStep_Load:	
-		unityChanInstance = NewGO<UnityChanInstance>(0);
+		//unityChanInstance = NewGO<UnityChanInstance>(0);
 		map = NewGO<Map>(0);
 		ground = NewGO<Ground>(0);
 		g_enemyManager = NewGO<EnemyManager>(0);
@@ -86,6 +87,7 @@ bool GameScene::Start()
 			&& sky->IsStart()
 		) {
 			//‘S‚Ä‰Šú‰»Š®—¹B
+			g_nowLoading->SetActiveFlag(false);
 			return true;
 		}
 		break;

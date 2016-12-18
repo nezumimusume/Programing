@@ -2,6 +2,7 @@
 #include "Scene/GameScene.h"
 #include "Scene/TitleScene.h"
 #include "tkEngine/Sound/tkSoundSource.h"
+#include "HUD/NowLoading.h"
 
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 //#define PLAY_WAVE_FILE_TEST		//定義で波形データの再生テストが有効になる。
@@ -9,6 +10,7 @@
 //#define CHNAGE_SCENE_TEST		//有効でシーン切り替えテスト。
 
 GameScene* gameScene = NULL;
+NowLoading* g_nowLoading = NULL;
 
 #ifdef DRAW_SPRITE_TEST
 class DrawSpriteTest : public IGameObject {
@@ -196,6 +198,8 @@ int WINAPI wWinMain(
 {
 	//tkEngineの初期化。
 	InitTkEngine( hInst );
+	g_nowLoading = NewGO<NowLoading>(1);
+	
 	g_random.Init((unsigned long)time(NULL));
 #ifdef DRAW_SPRITE_TEST
 	NewGO<DrawSpriteTest>(1);

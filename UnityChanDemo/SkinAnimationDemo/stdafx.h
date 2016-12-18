@@ -35,8 +35,10 @@ using namespace tkEngine;
 
 class Player;
 class EnemyManager;
+class NowLoading;
 
 extern Player* g_player;
 extern CRandom g_random;
 extern EnemyManager* g_enemyManager;
+extern NowLoading* g_nowLoading;
 #endif // _STDAFX_H_

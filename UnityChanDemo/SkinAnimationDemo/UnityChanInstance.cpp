@@ -63,7 +63,7 @@ bool UnityChanInstance::Start()
 			specMap.Load("Assets/modelData/utc_spec.tga");
 			CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("utc_all2.tga");
 			mat->SetTexture("g_normalTexture", &normalMap);
-			mat->SetTexture("utc_spec.tga", &specMap);
+			mat->SetTexture("g_speculerMap", &specMap);
 			skinModel.Init(skinModelData.GetBody());
 			skinModel.SetLight(&light);
 			skinModel.SetHasNormalMap(true);

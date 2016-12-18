@@ -20,6 +20,9 @@ public:
 	void OnDestroy() override;
 	void Update() override;
 	bool Start() override;
+	void PostRender(CRenderContext& renderContext) override;
 private:
 	CSoundSource bgmSoundSource;
+	CSprite		bg;
+	CTexture	bgTex;
 };
