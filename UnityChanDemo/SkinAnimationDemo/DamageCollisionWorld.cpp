@@ -48,6 +48,10 @@ DamageCollisionWorld::DamageCollisionWorld()
 
 DamageCollisionWorld::~DamageCollisionWorld()
 {
+	collisionWorld.reset();
+	overlappingPairCache.reset();
+	collisionDispatcher.reset();
+	collisionWorld.reset();
 }
 bool DamageCollisionWorld::Start()
 {

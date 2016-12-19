@@ -15,6 +15,7 @@ struct VS_OUTPUT{
 
 float4x4 mWorld;		//ワールド行列。
 float4 uvRect;			//UV矩形。
+float alpha;			//不透明度。
 
 texture g_tex;
 sampler TextureSampler = 
@@ -34,7 +35,9 @@ VS_OUTPUT VSMain( VS_INPUT In )
 }
 float4 PSMain( VS_OUTPUT In ) : COLOR0
 {
-	return tex2D( TextureSampler, In.uv );
+	float4 color = tex2D( TextureSampler, In.uv );
+	color.a *= alpha;
+	return color;
 }
 
 technique SpriteTexture

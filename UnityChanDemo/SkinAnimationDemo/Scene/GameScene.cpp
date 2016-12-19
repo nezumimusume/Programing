@@ -20,6 +20,7 @@
 #include "HUD/PlayerHPBar.h"
 #include "HUD/PlayerMPBar.h"
 #include "HUD/NowLoading.h"
+#include "HUD/GameOver2D.h"
 
 CPhysicsWorld* g_physicsWorld = NULL;
 Player* g_player = NULL;
@@ -48,6 +49,7 @@ void GameScene::OnDestroy()
 	DeleteGO(g_damageCollisionWorld);
 	DeleteGO(g_camera);
 	DeleteGO(&bgmSoundSource);
+	DeleteGO(gameOver2D);
 }
 bool GameScene::Start()
 {
@@ -97,7 +99,22 @@ bool GameScene::Start()
 }
 void GameScene::Update() 
 {
-	if (Pad(0).IsTrigger(enButtonStart)) {
-		DeleteGO(this);
+	switch (state) {
+	case State_Play:
+		if (g_player->GetState() == Player::enState_Dead) {
+			//プレイヤーが死んだ。
+			gameOver2D = NewGO<GameOver2D>(0);
+			state = State_Over;
+		}
+		break;
+	case State_Over:
+		gameOverTimer += GameTime().GetFrameDeltaTime();
+		if (gameOverTimer > 6.0f) {
+			//死亡して2秒以上経過した。
+			DeleteGO(this);
+			g_nowLoading->SetActiveFlag(true);
+			gameScene = NewGO<GameScene>(0);
+		}
+		break;
 	}
 }

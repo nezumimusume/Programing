@@ -140,6 +140,9 @@
     <ClCompile Include="HUD\NowLoading.cpp">
       <Filter>Source Files\HUD</Filter>
     </ClCompile>
+    <ClCompile Include="HUD\GameOver2D.cpp">
+      <Filter>Source Files\HUD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -260,6 +263,9 @@
       <Filter>Source Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="HUD\NowLoading.h">
+      <Filter>Source Files\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD\GameOver2D.h">
       <Filter>Source Files\HUD</Filter>
     </ClInclude>
   </ItemGroup>

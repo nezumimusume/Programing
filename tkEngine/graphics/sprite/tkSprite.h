@@ -88,6 +88,21 @@ namespace tkEngine {
 		 *@param[in]	renderContext	レンダリングコンテキスト。
 		 */
 		void Draw(CRenderContext& renderContext);
+		/*!
+		*@brief	不透明度を設定。
+		*@param[in]	alpha		不透明度。0.0で完全に透明。
+		*/
+		void SetAlpha(float alpha)
+		{
+			m_alpha = alpha;
+		}
+		/*!
+		*@brief	不透明度を取得。
+		*/
+		float GetAlpha() const
+		{
+			return m_alpha;
+		}
 	private:
 		CEffect*		m_effect = nullptr;		//!<エフェクト。
 		CPrimitive		m_primitive;			//!<プリミティブ。
@@ -97,5 +112,6 @@ namespace tkEngine {
 		CVector2		m_pivot = CVector2(0.5f, 0.5f);	//!<ピボット
 		CVector4		m_uvRect = CVector4(0.0f, 0.0f, 1.0f, 1.0f);	//!<UV座標。
 		CQuaternion		m_rotation = CQuaternion::Identity;
+		float			m_alpha = 1.0f;			//!<不透明度。
 	};
 }

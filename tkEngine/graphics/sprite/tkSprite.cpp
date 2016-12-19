@@ -93,7 +93,7 @@ namespace tkEngine{
 		m_effect->SetValue(renderContext, "mWorld", &mWorld, sizeof(mWorld));
 		m_effect->SetTexture(renderContext, "g_tex", m_texture);
 		m_effect->SetValue(renderContext, "uvRect", &m_uvRect, sizeof(m_uvRect));
-
+		m_effect->SetValue(renderContext, "alpha", &m_alpha, sizeof(m_alpha));
 		m_effect->CommitChanges(renderContext);
 		renderContext.SetVertexDeclaration(m_primitive.GetVertexDecl());
 		renderContext.SetStreamSource(0, m_primitive.GetVertexBuffer());
