@@ -26,7 +26,7 @@ bool TitleScene::Start()
 	bgmSoundSource.InitStreaming("Assets/sound/titleBgm.wav");
 	bgmSoundSource.Play(true);
 	AddGO(0, &bgmSoundSource);
-	bgTex.Load("Assets/Sprite/NowLoadingBG.jpg");
+	bgTex.Load("Assets/Sprite/titleBG.jpg");
 	bg.Init(&bgTex);
 	CVector2 size;
 	size.x = (float)Engine().GetFrameBufferWidth();

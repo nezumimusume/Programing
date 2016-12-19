@@ -28,10 +28,10 @@ bool NowLoading::Start()
 	size.y = 64.0f;
 	m_icon.SetSize(size);
 	CVector2 pos;
-	pos.x = Engine().GetFrameBufferWidth() * -0.5f;
-	pos.y = Engine().GetFrameBufferHeight() * 0.5f;
-	pos.x += size.x;
-	pos.y -= size.y;
+	pos.x = Engine().GetFrameBufferWidth() * 0.5f;
+	pos.y = Engine().GetFrameBufferHeight() * -0.5f;
+	pos.x -= size.x * 1.4f;
+	pos.y += size.y * 1.4f;
 	m_icon.SetPosition(pos);
 	//ロードが終わったら非アクティブにする。
 	SetActiveFlag(false);

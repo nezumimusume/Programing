@@ -80,8 +80,12 @@ namespace tkEngine{
 		mTrans.MakeTranslation(trans);
 		CMatrix mRot;
 		mRot.MakeRotationFromQuaternion(m_rotation);
-		mWorld.Mul(mWorld, mRot);
+		mWorld.Mul(mRot, mWorld);
 		mWorld.Mul(mWorld, mTrans);
+
+		renderContext.SetRenderState(RS_ALPHABLENDENABLE, TRUE);
+		renderContext.SetRenderState(RS_SRCBLEND, BLEND_SRCALPHA);
+		renderContext.SetRenderState(RS_DESTBLEND, BLEND_INVSRCALPHA);
 
 		m_effect->Begin(renderContext);
 		m_effect->BeginPass(renderContext, 0);
@@ -97,5 +101,7 @@ namespace tkEngine{
 		renderContext.DrawIndexedPrimitive(&m_primitive);
 		m_effect->EndPass(renderContext);
 		m_effect->End(renderContext);
+
+		renderContext.SetRenderState(RS_ALPHABLENDENABLE, FALSE);
 	}
 }
