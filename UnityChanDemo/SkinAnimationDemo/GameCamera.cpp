@@ -87,7 +87,9 @@ void GameCamera::Update()
 	springCamera.Update();
 
 	//カメラコリジョン処理の実行。
-	cameraCollisionSolver.Execute(*springCamera.GetCamera());
+	if (cameraCollisionSolver.Execute(*springCamera.GetCamera())) {
+		springCamera.ClearSpring();
+	}
 
 	//被写界深度のパラメータを更新
 	Dof().SetFocalLength(26.0f);

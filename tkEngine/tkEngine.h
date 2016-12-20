@@ -18,6 +18,9 @@
 #include "tkEngine/Sound/tkSoundEngine.h"
 #include "tkEngine/Physics/tkPhysics.h"
 
+/*!
+* @brief	河原内製ゲームエンジン。
+*/
 namespace tkEngine{
 	class CReflectionMap;
 	/*!

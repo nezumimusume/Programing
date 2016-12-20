@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "Enemy/Enemy.h"
 #include "tkEngine/Physics/tkPhysics.h"
-#include "tkEngine/character/tkCollisionAttr.h"
+#include "tkEngine/Physics/tkCollisionAttr.h"
 #include "Enemy/EnemyParameter.h"
 
 

@@ -2,7 +2,7 @@
 #include "tkEngine/Physics/tkPhysics.h"
 #include "Map/Ground.h"
 #include "Player/Player.h"
-#include "tkEngine/character/tkCollisionAttr.h"
+#include "tkEngine/Physics/tkCollisionAttr.h"
 
 Ground* g_ground = NULL;
 LPD3DXMESH testMesh;

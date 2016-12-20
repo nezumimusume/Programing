@@ -1,5 +1,7 @@
 #pragma once
 
+#include "tkEngine/Physics/tkCollisionAttr.h"
+
 namespace tkEngine{
 	class CRigidBody;
 

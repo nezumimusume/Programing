@@ -478,9 +478,6 @@
     <ClInclude Include="character\tkCharacterController.h">
       <Filter>Source Files\character</Filter>
     </ClInclude>
-    <ClInclude Include="character\tkCollisionAttr.h">
-      <Filter>Source Files\character</Filter>
-    </ClInclude>
     <ClInclude Include="graphics\sprite\tkSprite.h">
       <Filter>Source Files\graphics\sprite</Filter>
     </ClInclude>
@@ -510,6 +507,9 @@
     </ClInclude>
     <ClInclude Include="camera\tkCameraCollisionSolver.h">
       <Filter>Source Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\tkCollisionAttr.h">
+      <Filter>Source Files\physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

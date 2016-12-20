@@ -101,6 +101,16 @@ namespace tkEngine{
 		{
 			return m_camera.GetViewAngle();
 		}
+		/*!
+		* @brief	バネの力をクリアする。
+		*/
+		void ClearSpring()
+		{
+			m_position = m_camera.GetPosition();
+			m_target = m_camera.GetTarget();
+			m_targetMoveSpeed = CVector3::Zero;
+			m_positionMoveSpeed = CVector3::Zero;
+		}
 	private:
 		CCamera		m_camera;						//!<カメラ。
 		CVector3	m_target = CVector3::Zero;		//!<目標となる注視点。

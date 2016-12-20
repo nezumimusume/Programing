@@ -4,7 +4,7 @@
 
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/character/tkCharacterController.h"
-#include "tkEngine/character/tkCollisionAttr.h"
+#include "tkEngine/Physics/tkCollisionAttr.h"
 namespace tkEngine {
 
 	namespace {

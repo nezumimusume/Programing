@@ -348,7 +348,6 @@
     <ClInclude Include="camera\tkCameraCollisionSolver.h" />
     <ClInclude Include="camera\tkSpringCamera.h" />
     <ClInclude Include="character\tkCharacterController.h" />
-    <ClInclude Include="character\tkCollisionAttr.h" />
     <ClInclude Include="culling\tkObjectCulling.h" />
     <ClInclude Include="culling\tkObjectFrustumCulling.h" />
     <ClInclude Include="debug\tkAssert.h" />
@@ -399,6 +398,7 @@
     <ClInclude Include="particle\tkParticleResources.h" />
     <ClInclude Include="physics\tkBoxCollider.h" />
     <ClInclude Include="physics\tkCapsuleCollider.h" />
+    <ClInclude Include="physics\tkCollisionAttr.h" />
     <ClInclude Include="physics\tkICollider.h" />
     <ClInclude Include="physics\tkMeshCollider.h" />
     <ClInclude Include="physics\tkPhysics.h" />
