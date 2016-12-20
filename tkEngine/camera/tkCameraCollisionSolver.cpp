@@ -17,9 +17,7 @@ namespace tkEngine{
 		{
 			CVector3 normal;
 			normal.Set(convexResult.m_hitNormalLocal);
-		/*	if (normal.Dot(m_rayDir) < 0.0f) {
-				return 1.0f;
-			}*/
+		
 			if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Character) {
 				return 1.0f;
 			}

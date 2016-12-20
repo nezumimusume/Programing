@@ -9,6 +9,36 @@
 namespace tkEngine{
 	/*!
 	 * @brief	バネカメラ。
+	 * @details
+	 *  バネに引っ張られるようなカメラの挙動を実現するクラスです。</br>
+	 *  SetTarTarget関数とSetTarPosition関数を使用して</br>
+	 *  カメラの目標となる注視点と視点を設定してください。</br>
+	 *  Update関数を実行することで、カメラが設定された目標座標に追従していきます。</br>
+	 * @code
+	 *		CSpringCamera springCamera;
+			//初期化。
+	 		void Init()
+	 		{
+				springCamera.Init(
+					CVector3(0.0f, 0.0f, 0.0f),			
+					CVector3(0.0f, 0.0f, 100.0f), 
+					100.0f
+				);
+	 		}
+			//更新。
+			void Update()
+			{
+					・
+					・
+					・
+				//カメラの注視点を設定する。
+				springCamera.SetTarTarget(target);
+				springCamera.SetTarPosition(position);
+
+				//カメラを動かす。
+				springCamera.Update();
+			}
+	 * @endcode 
 	 */
 	class CSpringCamera{
 	public:
@@ -132,11 +162,31 @@ namespace tkEngine{
 		{
 			return m_position;
 		}
-		void Clear()
+		/*!
+		* @brief	バネカメラ用のパラメータをクリア。
+		*/
+		void ClearSpringParame()
 		{
 			m_targetMoveSpeed = CVector3::Zero;
 			m_positionMoveSpeed = CVector3::Zero;
 
+		}
+		/*!
+		* @brief	バネカメラの更新処理。
+		* @details
+		*  Update関数から呼ばれています。</br>
+		*  バネカメラの更新処理だけ個別で呼びたいなどの特殊なケースで使用してください。</br>
+		*/
+		void UpdateSpringCamera();
+		/*!
+		* @brief	カメラの更新。
+		* @details
+		*  Update関数から呼ばれています。</br>
+		*  カメラの更新処理だけ個別で呼びたいなどの特殊なケースで使用してください。</br>
+		*/
+		void UpdateCamera()
+		{
+			m_camera.Update();
 		}
 	private:
 		CCamera		m_camera;						//!<カメラ。

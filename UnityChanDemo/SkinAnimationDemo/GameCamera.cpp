@@ -85,16 +85,14 @@ void GameCamera::Update()
 		
 	}
 	
-	springCamera.Update();
+	springCamera.UpdateSpringCamera();
 	//カメラコリジョン処理の実行。
 	CVector3 newPos;
 	if (cameraCollisionSolver.Execute(newPos, springCamera.GetPosition(), springCamera.GetTarget())) {
 		springCamera.SetPosition(newPos);
-		springCamera.Clear();
-		springCamera.GetCamera()->Update();
-		
+		springCamera.ClearSpringParame();
 	}
-	
+	springCamera.UpdateCamera();
 	//被写界深度のパラメータを更新
 	Dof().SetFocalLength(26.0f);
 	Dof().SetFParam(5.6f);

@@ -1,5 +1,5 @@
 /*!
- *@brief	カメラのコリジョンソルバー
+ *@brief	三人称視点のゲームカメラのコリジョンソルバー
  */
 
 #pragma once
@@ -10,7 +10,7 @@ namespace tkEngine{
 	/*!
 	 *@brief	カメラのコリジョンソルバー。
 	 *@details
-	 * 一般的なゲームのカメラのコリジョンソルバーを提供します。
+	 * 一般的な三人称視点のゲームカメラのコリジョンソルバーを提供します。
 	 */
 	class CCameraCollisionSolver{
 	public:
@@ -28,9 +28,11 @@ namespace tkEngine{
 		 */
 		void Init(float radius);
 		/*!
-		 *@brief	コリジョンソルバーの実行。
-		 
-		 *@return	衝突する場合trueが返ってくる。
+		 *@brief	コリジョン解決の実行。
+		 *@param[out]	result		コリジョン解決を行った結果のカメラの視点の座標が格納される。
+		 *@param[in]	position	カメラの視点。
+		 *@param[in]	target		カメラの注視点。
+		 *@return	コリジョン解決を行った場合はtrueが返ってくる。
 		 */
 		bool Execute(CVector3& result, const CVector3& position, const CVector3& target);
 	private:
