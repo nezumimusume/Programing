@@ -27,6 +27,7 @@ bool GameCamera::Start()
 	springCamera.Update();
 	//リフレクションマップにカメラを設定する。
 	ReflectionMap().SetCamera(*springCamera.GetCamera());
+	cameraCollisionSolver.Init(0.5f);
 	return true;
 }
 void GameCamera::Update()
@@ -84,6 +85,10 @@ void GameCamera::Update()
 		
 	}
 	springCamera.Update();
+
+	//カメラコリジョン処理の実行。
+	cameraCollisionSolver.Execute(*springCamera.GetCamera());
+
 	//被写界深度のパラメータを更新
 	Dof().SetFocalLength(26.0f);
 	Dof().SetFParam(5.6f);

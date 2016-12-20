@@ -5,6 +5,7 @@
 #pragma once
 
 #include "tkEngine/camera/tkSpringCamera.h"
+#include "tkEngine/camera/tkCameraCollisionSolver.h"
 
 class Player;
 class Car;
@@ -45,6 +46,7 @@ private:
 	Player*	player;
 	CVector3	toPosition;		//注視点から視点へのベクトル。
 	float m_targetViewAngle;	//ビューアングル。
+	CCameraCollisionSolver cameraCollisionSolver;
 };
 
 

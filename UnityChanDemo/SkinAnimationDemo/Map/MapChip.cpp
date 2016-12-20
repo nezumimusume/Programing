@@ -55,7 +55,7 @@ bool MapChip::Start()
 		}
 
 		//ワールド行列のバッファを作成。
-		numMapChip = mapChipLocInfoList.size();
+		numMapChip = (int)mapChipLocInfoList.size();
 		worldMatrixBuffer.reset(new CMatrix[numMapChip]);
 		meshCollider.reset(new CMeshCollider[numMapChip]);
 		rigidBody.reset(new CRigidBody[numMapChip]);

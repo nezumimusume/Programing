@@ -266,6 +266,9 @@
     <ClCompile Include="culling\tkObjectFrustumCulling.cpp">
       <Filter>Source Files\culling</Filter>
     </ClCompile>
+    <ClCompile Include="camera\tkCameraCollisionSolver.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -504,6 +507,9 @@
     </ClInclude>
     <ClInclude Include="thread\tkCriticalSection.h">
       <Filter>Source Files\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="camera\tkCameraCollisionSolver.h">
+      <Filter>Source Files\camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

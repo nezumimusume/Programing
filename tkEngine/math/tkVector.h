@@ -105,6 +105,7 @@ namespace tkEngine{
 			this->y = v.y();
 			this->z = v.z();
 		}
+		
 		/*!
 		 * @brief	ベクトルを加算。
 		 */
