@@ -171,7 +171,7 @@ bool Player::Start()
 			toLightPos.Subtract(lightPos, position);
 			ShadowMap().SetCalcLightViewFunc(CShadowMap::enCalcLightViewFunc_PositionTarget);
 			ChangeState(enStateStand);
-			radius = 0.4f;
+			radius = 0.6f;
 			height = 0.3f;
 			characterController.Init(radius, height, position);
 			characterController.SetGravity(-18.8f);

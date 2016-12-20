@@ -29,10 +29,10 @@ namespace tkEngine{
 		void Init(float radius);
 		/*!
 		 *@brief	コリジョンソルバーの実行。
-		 *@param[in]	camera		カメラ。
+		 
 		 *@return	衝突する場合trueが返ってくる。
 		 */
-		bool Execute( CCamera& camera );
+		bool Execute(CVector3& result, const CVector3& position, const CVector3& target);
 	private:
 		CSphereCollider		m_collider;		 //コライダー。
 		float				m_radius = 0.0f; //半径。

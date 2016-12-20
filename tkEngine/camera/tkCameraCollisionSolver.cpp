@@ -17,9 +17,9 @@ namespace tkEngine{
 		{
 			CVector3 normal;
 			normal.Set(convexResult.m_hitNormalLocal);
-			if (normal.Dot(m_rayDir) > 0.0f) {
+		/*	if (normal.Dot(m_rayDir) < 0.0f) {
 				return 1.0f;
-			}
+			}*/
 			if (convexResult.m_hitCollisionObject->getUserIndex() == enCollisionAttr_Character) {
 				return 1.0f;
 			}
@@ -37,10 +37,9 @@ namespace tkEngine{
 		m_radius = radius;
 		m_collider.Create(radius);
 	}
-	bool CCameraCollisionSolver::Execute( CCamera& camera )
+	bool CCameraCollisionSolver::Execute(CVector3& result, const CVector3& position, const CVector3& target )
 	{
-		CVector3 target = camera.GetTarget();
-		CVector3 position = camera.GetPosition();
+		result = position;
 		CVector3 vWk;
 		vWk.Subtract(target, position);
 		if (vWk.LengthSq() < FLT_EPSILON) {
@@ -58,19 +57,12 @@ namespace tkEngine{
 	//	callback.m_collisionFilterGroup = 
 		PhysicsWorld().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), btStart, btEnd, callback);
 		if (callback.hasHit()) {
-			CVector3 vHitPointNormal;
-			vHitPointNormal.Set(callback.m_hitNormalWorld);
-			vWk.Set(callback.m_hitPointWorld);
-			vWk.Subtract(vWk, position);
-			float t = vWk.Dot(vHitPointNormal);
+			CVector3 vHitPos;
+			vHitPos.Set(callback.m_hitPointWorld);
 			CVector3 vOffset;
-			vOffset = vHitPointNormal;
-			vOffset.Scale(t+m_radius*0.8f);
-
-			//視点を衝突点にしてみるテスト。
-			position.Add(vOffset);
-
-			camera.SetPosition(position);
+			vOffset.Set(callback.m_hitNormalWorld);
+			vOffset.Scale(m_radius);
+			result.Add(vHitPos, vOffset);
 			return true;
 		}
 		return false;

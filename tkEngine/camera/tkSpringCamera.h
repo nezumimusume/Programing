@@ -25,18 +25,32 @@ namespace tkEngine{
 		*/
 		void Init( const CVector3& target, const CVector3& position, float maxMoveSpeed);
 		/*!
-		 * @brief	注視点を設定。
+		 * @brief	目標となる注視点を設定。
 		 */
-		void SetTarget( const CVector3& target )
+		void SetTarTarget( const CVector3& target )
 		{
 			m_target = target;
 		}
 		/*!
-		 * @brief	視点を設定。
+		 * @brief	目標となる視点を設定。
 		 */
-		void SetPosition( const CVector3 position )
+		void SetTarPosition( const CVector3 position )
 		{
 			m_position = position ;
+		}
+		/*!
+		* @brief	注視点を設定。
+		*/
+		void SetTarget(const CVector3& target)
+		{
+			m_camera.SetTarget(target);
+		}
+		/*!
+		* @brief	視点を設定。
+		*/
+		void SetPosition(const CVector3 position)
+		{
+			m_camera.SetPosition(position);
 		}
 		/*!
 		* @brief	遠平面を設定。
@@ -58,6 +72,7 @@ namespace tkEngine{
 		const CVector3& GetTarget() const
 		{
 			return m_camera.GetTarget();
+
 		}
 		/*!
 		* @brief	視点を取得。
@@ -66,6 +81,7 @@ namespace tkEngine{
 		{
 			return m_camera.GetPosition();
 		}
+		
 		/*!
 		 * @brief	更新。
 		 */
@@ -101,15 +117,26 @@ namespace tkEngine{
 		{
 			return m_camera.GetViewAngle();
 		}
+
 		/*!
-		* @brief	バネの力をクリアする。
+		* @brief	目標となる注視点を取得。
 		*/
-		void ClearSpring()
+		const CVector3& GetTarTarget() const
 		{
-			m_position = m_camera.GetPosition();
-			m_target = m_camera.GetTarget();
+			return m_target;
+		}
+		/*!
+		* @brief	目標となる視点を取得。
+		*/
+		const CVector3& GetTarPosition() const
+		{
+			return m_position;
+		}
+		void Clear()
+		{
 			m_targetMoveSpeed = CVector3::Zero;
 			m_positionMoveSpeed = CVector3::Zero;
+
 		}
 	private:
 		CCamera		m_camera;						//!<カメラ。

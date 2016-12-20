@@ -27,7 +27,7 @@ bool GameCamera::Start()
 	springCamera.Update();
 	//リフレクションマップにカメラを設定する。
 	ReflectionMap().SetCamera(*springCamera.GetCamera());
-	cameraCollisionSolver.Init(0.5f);
+	cameraCollisionSolver.Init(0.2f);
 	return true;
 }
 void GameCamera::Update()
@@ -69,28 +69,32 @@ void GameCamera::Update()
 		//車の後ろに追従。
 		v = car->GetPosition();
 		v.y += 1.0f;
-		springCamera.SetTarget(v);
+		springCamera.SetTarTarget(v);
 		CVector3 toPosOnCar = car->GetMoveDirection();
 		toPosOnCar.Scale(-3.0f);
 		toPosOnCar.y += 1.0f;
 		v.Add(toPosOnCar);
-		springCamera.SetPosition(v);
+		springCamera.SetTarPosition(v);
 	}
 	else {
 		v = player->GetPosition();
 		v.y += 1.0f;
-		springCamera.SetTarget(v);
+		springCamera.SetTarTarget(v);
 		v.Add(toPosition);
-		springCamera.SetPosition(v);
+		springCamera.SetTarPosition(v);
 		
 	}
+	
 	springCamera.Update();
-
 	//カメラコリジョン処理の実行。
-	if (cameraCollisionSolver.Execute(*springCamera.GetCamera())) {
-		springCamera.ClearSpring();
+	CVector3 newPos;
+	if (cameraCollisionSolver.Execute(newPos, springCamera.GetPosition(), springCamera.GetTarget())) {
+		springCamera.SetPosition(newPos);
+		springCamera.Clear();
+		springCamera.GetCamera()->Update();
+		
 	}
-
+	
 	//被写界深度のパラメータを更新
 	Dof().SetFocalLength(26.0f);
 	Dof().SetFParam(5.6f);
