@@ -4,9 +4,141 @@
 #include "tkEngine/Sound/tkSoundSource.h"
 #include "HUD/NowLoading.h"
 
+//#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
+//#define PLAY_WAVE_FILE_TEST		//定義で波形データの再生テストが有効になる。
+//#define DRAW_SPRITE_TEST		//定義でスプライト描画テスト。
+//#define CHNAGE_SCENE_TEST		//有効でシーン切り替えテスト。
+
 GameScene* gameScene = NULL;
 NowLoading* g_nowLoading = NULL;
 
+#ifdef DRAW_SPRITE_TEST
+class DrawSpriteTest : public IGameObject {
+	CSprite	sprite;
+	CTexture texture;
+public:
+	DrawSpriteTest()
+	{
+	}
+	~DrawSpriteTest()
+	{
+	}
+	bool Start() override
+	{
+		texture.Load("Assets/sprite/test.png");
+		sprite.Init(&texture);
+		sprite.SetPosition({ -640, 360 });
+		sprite.SetPivot({ 0.0f, 1.0f });
+		return true;
+	}
+	void Update() override
+	{
+	}
+	void PostRender( CRenderContext& renderContext ) override
+	{
+		sprite.Draw(renderContext);
+	}
+};
+#endif
+#ifdef PLAY_WAVE_FILE_TEST
+class PlayWaveFileTest : public IGameObject {
+	/*CWaveFile waveFile;
+	char* buffer;*/
+	CSoundSource soundSource;
+public:
+	PlayWaveFileTest() 
+	{
+	}
+	~PlayWaveFileTest()
+	{
+	}
+	bool Start() override
+	{
+		//サウンドソースを初期化。
+		soundSource.InitStreaming("Assets/sound/wind.wav");
+		//soundSource.Init("Assets/sound/MusicMono.wav");
+		soundSource.Play(true);
+		soundSource.SetVolume(0.5f);
+		AddGO(0, &soundSource);
+		return true;
+	}
+	void Update() override
+	{
+		/*if (Pad(0).IsPress(enButtonDown)) {
+			CSoundSource* s = NewGO<CSoundSource>(0);
+			s->Init("Assets/sound/EnemyAttack.wav", true);
+			s->Play(false);
+			s->SetPosition(g_player->GetPosition());
+			s = NewGO<CSoundSource>(0);
+			s->Init("Assets/sound/Damage_00.wav");
+			s->Play(false);
+		}*/
+	}
+	void Render(CRenderContext& renderContext) override
+	{
+	}
+};
+#endif
+#ifdef MEMORY_LEAK_TEST
+//メモリリークテスト。
+class MemoryLeakTest : public IGameObject {
+	
+public:
+	MemoryLeakTest()
+	{
+
+	}
+	bool Start() override
+	{
+		return true;
+	}
+	void Update() override
+	{
+		//スキンなしモデル。
+		CSkinModelDataHandle nonSkinModelData;		//スキンモデルデータ。
+		SkinModelDataResources().Load(nonSkinModelData, "Assets/modelData/ground.X", NULL);
+		
+		//スキンなしインスタンシングモデル。
+		CSkinModelDataHandle nonSkinModelInstancing;
+		SkinModelDataResources().Load(nonSkinModelInstancing, "Assets/modelData/ground.X", NULL, true, 10);
+		
+		//スキンありモデル。
+		CSkinModelDataHandle skinModelData;
+		SkinModelDataResources().Load(skinModelData, "Assets/modelData/Unity.X", NULL);
+		//スキンありインスタンシングモデル。
+		CSkinModelDataHandle skinModelInstancing;
+		SkinModelDataResources().Load(skinModelInstancing, "Assets/modelData/Unity.X", NULL, true, 10);
+
+		CSoundSource soundSource;
+		soundSource.InitStreaming("Assets/sound/SoundTest.wav");
+		//soundSource.Init("Assets/sound/MusicMono.wav");
+		soundSource.Play(true);
+
+	}
+	void Render(CRenderContext& renderContext) override
+	{
+
+	}
+};
+#endif
+
+#ifdef CHNAGE_SCENE_TEST
+class ChangeSceneTest : public IGameObject {
+public:
+	void Update() override
+	{
+		if (Pad(0).IsTrigger(enButtonStart)) {
+			if (gameScene == NULL) {
+				gameScene = NewGO<GameScene>(0);
+			}
+			else {
+				DeleteGO(gameScene);
+				gameScene = NULL;
+			}
+		}
+	}
+};
+#endif
 
 /*!
  * @brief	tkEngineの初期化。
@@ -69,7 +201,7 @@ int WINAPI wWinMain(
 	g_nowLoading = NewGO<NowLoading>(1);
 	
 	g_random.Init((unsigned long)time(NULL));
-
+	NewGO<TitleScene>(0);
 	Engine().RunGameLoop();		//ゲームループを実行。
 
 	return 0;
