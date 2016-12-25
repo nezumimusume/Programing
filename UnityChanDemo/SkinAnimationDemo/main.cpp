@@ -201,21 +201,7 @@ int WINAPI wWinMain(
 	g_nowLoading = NewGO<NowLoading>(1);
 	
 	g_random.Init((unsigned long)time(NULL));
-#ifdef DRAW_SPRITE_TEST
-	NewGO<DrawSpriteTest>(1);
-#endif
-#ifdef PLAY_WAVE_FILE_TEST
-	NewGO<PlayWaveFileTest>(0);
-#endif
-#ifdef MEMORY_LEAK_TEST
-	NewGO<MemoryLeakTest>(0);
-#else
-	//gameScene = NewGO<GameScene>(0);
 	NewGO<TitleScene>(0);
-#endif
-#ifdef CHNAGE_SCENE_TEST
-	NewGO<ChangeSceneTest>(0);
-#endif
 	Engine().RunGameLoop();		//ゲームループを実行。
 
 	return 0;
