@@ -85,11 +85,8 @@ struct VS_OUTPUT
     float2  Tex0   			: TEXCOORD0;
     float3	Tangent			: TEXCOORD1;	//接ベクトル
     float4  worldPos_depth	: TEXCOORD2;	//xyzにワールド座標。wには射影空間でのdepthが格納される。
-    float4  lightViewPos_0	: TEXCOORD3;
-    float4  lightViewPos_1	: TEXCOORD4;
-    float4  lightViewPos_2	: TEXCOORD5;
-    float4  velocity		: TEXCOORD6;	//速度。
-    float4  screenPos		: TEXCOORD7;
+    float4  velocity		: TEXCOORD3;	//速度。
+    float4  screenPos		: TEXCOORD4;
 };
 
 /*!
@@ -190,12 +187,6 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
     o.Tex0 = In.Tex0;
     o.velocity = mul(float4(Pos.xyz, 1.0f), g_mViewProjLastFrame);
     o.screenPos = o.Pos;
-    if(g_flags.y){
-		//シャドウレシーバー。
-		o.lightViewPos_0 = mul(float4(Pos.xyz, 1.0f), gShadowReceiverParam.mLVP[0] );
-		o.lightViewPos_1 = mul(float4(Pos.xyz, 1.0f), gShadowReceiverParam.mLVP[1] );
-		o.lightViewPos_2 = mul(float4(Pos.xyz, 1.0f), gShadowReceiverParam.mLVP[2] );
-	}
 	return o;
 }
 /*!
@@ -228,12 +219,7 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
     o.Tex0 = In.base.Tex0;
    	o.velocity = mul(float4(Pos.xyz, 1.0f), g_mViewProjLastFrame);
    	o.screenPos = o.Pos;
-    if(g_flags.y){
-		//シャドウレシーバー。
-		o.lightViewPos_0 = mul(float4(Pos.xyz, 1.0f), gShadowReceiverParam.mLVP[0] );
-		o.lightViewPos_1 = mul(float4(Pos.xyz, 1.0f), gShadowReceiverParam.mLVP[1] );
-		o.lightViewPos_2 = mul(float4(Pos.xyz, 1.0f), gShadowReceiverParam.mLVP[2] );
-	}
+
 	return o;
 }
 
@@ -273,7 +259,7 @@ PSOutput PSMain( VS_OUTPUT In )
 	
 	if(g_flags.y){
 		//影
-		lig *= CalcShadow(In.lightViewPos_0, In.lightViewPos_1, In.lightViewPos_2);
+		lig *= CalcShadow(In.worldPos_depth.xyz);
 	
 	}
 	//ポイントライト。

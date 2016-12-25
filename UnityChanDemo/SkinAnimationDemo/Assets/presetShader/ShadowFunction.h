@@ -57,24 +57,16 @@ ShadowReceiverParam gShadowReceiverParam : register(c0);		//シャドウレシーバーの
 /*!
  * @brief	影計算。
  */
-float CalcShadow(
-	float4 lightViewPos_0, 
-	float4 lightViewPos_1, 
-	float4 lightViewPos_2
-)
+float CalcShadow(float3 worldPos)
 {
-	float4x4 mLightViewPos;
-	mLightViewPos[0] = lightViewPos_0;
-	mLightViewPos[1] = lightViewPos_1;
-	mLightViewPos[2] = lightViewPos_2;
-	
+
 	sampler texSampler[MAX_SHADOW_MAP];
 	texSampler[0] = g_shadowMapSampler_0;
 	texSampler[1] = g_shadowMapSampler_1;
 	texSampler[2] = g_shadowMapSampler_2;
 	float result = 1.0f;
 	for(int i = 0; i < gShadowReceiverParam.vsmFlag_numShadowMap.y; i++ ){
-		float4 posInLVP = mLightViewPos[i];
+		float4 posInLVP = mul(float4(worldPos, 1.0f), gShadowReceiverParam.mLVP[i] );
 		posInLVP.xyz /= posInLVP.w;
 		//uv座標に変換。
 		float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
