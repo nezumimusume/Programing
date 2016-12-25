@@ -87,6 +87,9 @@ struct VS_OUTPUT
     float4  worldPos_depth	: TEXCOORD2;	//xyzにワールド座標。wには射影空間でのdepthが格納される。
     float4  velocity		: TEXCOORD3;	//速度。
     float4  screenPos		: TEXCOORD4;
+    float4	mieColor		: TEXCOORD5;	//ミー錯乱色。
+    float4	rayColor		: TEXCOORD6;	//レイリー錯乱色。
+    float3  posToCameraDir	: TEXCOORD7;
 };
 
 /*!
@@ -107,6 +110,116 @@ struct PSOutput{
 	float4  velocity 	: COLOR2;		//レンダリングターゲット2に書き込み。
 };
 
+/*!
+ * @brief	大気錯乱パラメータ。
+ */
+struct SAtmosphericScatteringParam{
+	float3 v3LightPos;
+	float3 v3LightDirection;
+	float3 v3InvWavelength;	// 1 / pow(wavelength, 4) for the red, green, and blue channels
+	float fCameraHeight;		// The camera's current height
+	float fCameraHeight2;		// fCameraHeight^2
+	float fOuterRadius;		// The outer (atmosphere) radius
+	float fOuterRadius2;		// fOuterRadius^2
+	float fInnerRadius;		// The inner (planetary) radius
+	float fInnerRadius2;		// fInnerRadius^2
+	float fKrESun;				// Kr * ESun
+	float fKmESun;				// Km * ESun
+	float fKr4PI;				// Kr * 4 * PI
+	float fKm4PI;				// Km * 4 * PI
+	float fScale;				// 1 / (fOuterRadius - fInnerRadius)
+	float fScaleOverScaleDepth;// fScale / fScaleDepth
+	float g;
+	float g2;
+};
+
+SAtmosphericScatteringParam g_atmosParam;
+
+// The scale depth (the altitude at which the average atmospheric density is found)
+const float fScaleDepth = 0.25;
+const float fInvScaleDepth = 4;
+
+const int nSamples = 2;
+const float fSamples = 2.0f;
+
+
+
+// The scale equation calculated by Vernier's Graphical Analysis
+float scale(float fCos)
+{
+	float x = 1.0 - fCos;
+	return fScaleDepth * exp(-0.00287 + x*(0.459 + x*(3.83 + x*(-6.80 + x*5.25))));
+}
+// Returns the near intersection point of a line and a sphere
+float getNearIntersection(float3 v3Pos, float3 v3Ray, float fDistance2, float fRadius2)
+{
+	float B = 2.0 * dot(v3Pos, v3Ray);
+	float C = fDistance2 - fRadius2;
+	float fDet = max(0.0, B*B - 4.0 * C);
+	return 0.5 * (-B - sqrt(fDet));
+}
+// Calculates the Mie phase function
+float getMiePhase(float fCos, float fCos2, float g, float g2)
+{
+	return 1.5 * ((1.0 - g2) / (2.0 + g2)) * (1.0 + fCos2) / pow(1.0 + g2 - 2.0*g*fCos, 1.5);
+}
+
+// Calculates the Rayleigh phase function
+float getRayleighPhase(float fCos2)
+{
+	//return 1.0;
+	return 0.75 + 0.75*fCos2;
+}
+
+/*!
+ * @brief	ミー錯乱とレイリー錯乱を計算。
+ */
+void CalcMieAndRayleighColors( out float4 mieColor, out float4 rayColor, out float3 posToCameraDir, float3 worldPos )
+{
+	mieColor = 0.0f;
+	rayColor = 0.0f;
+	// Get the ray from the camera to the vertex and its length (which is the far point of the ray passing through the atmosphere)
+	float3 v3Ray = worldPos - g_cameraPos.xyz;
+	float fFar = length(v3Ray);
+	v3Ray /= fFar;
+	
+	// Calculate the closest intersection of the ray with the outer atmosphere (which is the near point of the ray passing through the atmosphere)
+	float fNear = getNearIntersection(g_cameraPos.xyz, v3Ray, g_atmosParam.fCameraHeight2, g_atmosParam.fOuterRadius2);
+	
+	float3 v3Start = g_cameraPos.xyz + v3Ray * fNear;
+	fFar -= fNear;
+	float fStartAngle = dot(v3Ray, v3Start) / g_atmosParam.fOuterRadius;
+	float fStartDepth = exp(-fInvScaleDepth);
+	float fStartOffset = fStartDepth*scale(fStartAngle);
+	
+	// Initialize the scattering loop variables
+	float fSampleLength = fFar / fSamples;
+	float fScaledLength = fSampleLength * g_atmosParam.fScale;
+	float3 v3SampleRay = v3Ray * fSampleLength;
+	float3 v3SamplePoint = v3Start + v3SampleRay * 0.5;
+	
+	// Now loop through the sample rays
+	float3 v3FrontColor = float3(0.0, 0.0, 0.0);
+	for(int i=0; i<nSamples; i++)
+	{
+		float fHeight = length(v3SamplePoint);
+		float fDepth = exp(g_atmosParam.fScaleOverScaleDepth * (g_atmosParam.fInnerRadius - fHeight));
+		float fLightAngle = dot(g_atmosParam.v3LightPos, v3SamplePoint) / fHeight;
+		float fCameraAngle = dot(v3Ray, v3SamplePoint) / fHeight;
+		float fScatter = (fStartOffset + fDepth*(scale(fLightAngle) - scale(fCameraAngle)));
+		float3 v3Attenuate = exp(-fScatter * (g_atmosParam.v3InvWavelength * g_atmosParam.fKr4PI + g_atmosParam.fKm4PI));
+		v3FrontColor += v3Attenuate * (fDepth * fScaledLength);
+		v3SamplePoint += v3SampleRay;
+	}
+	
+	// Finally, scale the Mie and Rayleigh colors and set up the varying variables for the pixel shader
+
+	mieColor.rgb =  g_atmosParam.fKmESun;
+	rayColor.rgb = v3FrontColor * (g_atmosParam.v3InvWavelength * g_atmosParam.fKrESun);
+	posToCameraDir = g_cameraPos.xyz - worldPos;
+
+
+}
 /*!
  *@brief	ワールド座標とワールド法線をスキン行列から計算する。
  *@param[in]	In		入力頂点。
@@ -187,6 +300,7 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
     o.Tex0 = In.Tex0;
     o.velocity = mul(float4(Pos.xyz, 1.0f), g_mViewProjLastFrame);
     o.screenPos = o.Pos;
+    CalcMieAndRayleighColors( o.mieColor, o.rayColor, o.posToCameraDir, o.worldPos_depth.xyz );
 	return o;
 }
 /*!
@@ -219,7 +333,8 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
     o.Tex0 = In.base.Tex0;
    	o.velocity = mul(float4(Pos.xyz, 1.0f), g_mViewProjLastFrame);
    	o.screenPos = o.Pos;
-
+   	CalcMieAndRayleighColors( o.mieColor, o.rayColor, o.posToCameraDir, o.worldPos_depth.xyz );
+   	
 	return o;
 }
 
@@ -270,7 +385,7 @@ PSOutput PSMain( VS_OUTPUT In )
 	color.xyz *= lig;
 	
 	
-	if(g_fogParam.z > 1.9f){
+	/*if(g_fogParam.z > 1.9f){
 		//高さフォグ
 		float h = max(In.worldPos_depth.y - g_fogParam.y, 0.0f);
 		float t = min(h / g_fogParam.x, 1.0f);
@@ -281,6 +396,14 @@ PSOutput PSMain( VS_OUTPUT In )
 		z = max(z - g_fogParam.x, 0.0f);
 		float t = min( z / g_fogParam.y, 1.0f);
 		color.xyz = lerp(color.xyz, float3(0.75f, 0.75f, 0.95f), t);
+	}*/
+	//大気錯乱
+	{
+		
+		float fCos = dot(g_atmosParam.v3LightDirection, In.posToCameraDir) / length(In.posToCameraDir);
+		float fMiePhase = 1.5 * ((1.0 - g_atmosParam.g2) / (2.0 + g_atmosParam.g2)) * (1.0 + fCos*fCos) / pow(1.0 + g_atmosParam.g2 - 2.0*g_atmosParam.g*fCos, 1.5);
+		float4 atmosColor = In.rayColor + fMiePhase * In.mieColor;
+		color *= atmosColor;
 	}
 	PSOutput psOut = (PSOutput)0;
 	psOut.color = color * 1.0f;

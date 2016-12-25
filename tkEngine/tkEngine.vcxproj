@@ -366,6 +366,7 @@
     <ClInclude Include="graphics\preRender\tkShadowCaster.h" />
     <ClInclude Include="graphics\preRender\tkShadowMap.h" />
     <ClInclude Include="graphics\sprite\tkSprite.h" />
+    <ClInclude Include="graphics\tkAtmosphericScatteringParam.h" />
     <ClInclude Include="graphics\tkBlur.h" />
     <ClInclude Include="graphics\tkCamera.h" />
     <ClInclude Include="graphics\tkEffect.h" />

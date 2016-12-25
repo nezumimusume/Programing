@@ -5,9 +5,11 @@
 #include "tkEngine/graphics/tkLight.h"
 #include "tkEngine/graphics/prerender/tkShadowMap.h"
 #include "tkEngine/graphics/tkSkinModelMaterial.h"
+#include "tkEngine/graphics/tkAtmosphericScatteringParam.h"
 
+tkEngine::SAtmosphericScatteringParam g_testAtmos;
 namespace tkEngine{
-	
+
 	void CSkinModel::DrawMeshContainer_InstancingDrawCommon(IDirect3DDevice9* pd3dDevice, D3DXMESHCONTAINER_DERIVED* meshContainer, int materialID)
 	{
 		LPDIRECT3DVERTEXBUFFER9 vb;
@@ -113,6 +115,7 @@ namespace tkEngine{
 		//共通の定数レジスタを設定
 		
 		{
+			pEffect->SetValue("g_atmosParam", &g_testAtmos, sizeof(g_testAtmos));
 			//ビュープロジェクション
 			pEffect->SetMatrix(m_hShaderHandle[enShaderHandleViewProj], &viewProj);
 			pEffect->SetMatrix(m_hShaderHandle[enShaderHandleLastFrameViewProj], (D3DXMATRIX*)&MotionBlur().GetLastFrameViewProjectionMatrix());

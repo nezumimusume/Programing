@@ -68,7 +68,9 @@ namespace tkEngine{
 						);
 					if (FAILED(hr)) {
 						//読み込み失敗。
-						TK_LOG(r_cast<char*>(compileErrorBuffer->GetBufferPointer()));
+						if (compileErrorBuffer) {
+							TK_LOG(r_cast<char*>(compileErrorBuffer->GetBufferPointer()));
+						}
 					}
 					else {
 						//リロード成功。

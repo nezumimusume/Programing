@@ -511,5 +511,8 @@
     <ClInclude Include="physics\tkCollisionAttr.h">
       <Filter>Source Files\physics</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\tkAtmosphericScatteringParam.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

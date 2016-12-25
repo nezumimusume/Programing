@@ -4,6 +4,7 @@
 #include "tkEngine/Sound/tkSoundSource.h"
 #include "HUD/NowLoading.h"
 
+
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 //#define PLAY_WAVE_FILE_TEST		//定義で波形データの再生テストが有効になる。
 //#define DRAW_SPRITE_TEST		//定義でスプライト描画テスト。
@@ -11,6 +12,8 @@
 
 GameScene* gameScene = NULL;
 NowLoading* g_nowLoading = NULL;
+
+
 
 #ifdef DRAW_SPRITE_TEST
 class DrawSpriteTest : public IGameObject {
@@ -160,7 +163,7 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.frameBufferHeight = 720;
 	initParam.frameBufferWidth = 1280;
 	//Bloom
-	initParam.graphicsConfig.bloomConfig.isEnable = true;
+	initParam.graphicsConfig.bloomConfig.isEnable = false;
 	initParam.graphicsConfig.edgeRenderConfig.isEnable = false;
 	initParam.graphicsConfig.edgeRenderConfig.idMapWidth = initParam.frameBufferWidth;
 	initParam.graphicsConfig.edgeRenderConfig.idMapHeight = initParam.frameBufferHeight;
@@ -186,6 +189,7 @@ void InitTkEngine( HINSTANCE hInst )
 	
 	ShadowMap().SetNear(2.0f);
 	ShadowMap().SetFar(40.0f);
+	
 	
 }
 

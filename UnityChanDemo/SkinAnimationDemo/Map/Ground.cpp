@@ -70,6 +70,7 @@ void Ground::Update()
 }
 void Ground::Render(CRenderContext& renderContext) 
 {
+	return;
 	skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 }
 void Ground::IsIntersect(const CVector3& pos, const CVector3& ray, int& bHit, float& len)
