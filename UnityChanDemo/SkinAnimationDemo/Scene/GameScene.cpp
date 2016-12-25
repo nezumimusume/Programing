@@ -119,7 +119,7 @@ void GameScene::Update()
 
 		g_testAtmos.fKr4PI = kr * 4.0f * CMath::PI;
 		g_testAtmos.fKrESun = kr * ESun;
-		g_testAtmos.fOuterRadius = 25.0f;
+		g_testAtmos.fOuterRadius = 50.0f;
 		g_testAtmos.fOuterRadius2 = g_testAtmos.fOuterRadius * g_testAtmos.fOuterRadius;
 		g_testAtmos.fInnerRadius = 1.0f;
 		g_testAtmos.fInnerRadius2 = g_testAtmos.fInnerRadius * g_testAtmos.fInnerRadius;
@@ -137,9 +137,10 @@ void GameScene::Update()
 		fWavelength4[1] = powf(fWavelength[1], 4.0f);
 		fWavelength4[2] = powf(fWavelength[2], 4.0f);
 		g_testAtmos.v3InvWavelength.Set(1 / fWavelength4[0], 1 / fWavelength4[1], 1 / fWavelength4[2]);
-		g_testAtmos.v3LightDirection.Set(0.0f, -1.0f, 0.0f);
-		g_testAtmos.v3LightPos.Set(0.0f, 2000.0f, 0.0f);
-
+		g_testAtmos.v3LightPos.Set(0.0f, 2000.0f, 2000.0f);
+		g_testAtmos.v3LightDirection = g_testAtmos.v3LightPos;
+		g_testAtmos.v3LightDirection.Scale(-1.0f);
+		g_testAtmos.v3LightDirection.Normalize();
 		g_testAtmos.fCameraHeight = g_camera->GetCamera().GetPosition().Length();
 		g_testAtmos.fCameraHeight2 = g_testAtmos.fCameraHeight * g_testAtmos.fCameraHeight;
 

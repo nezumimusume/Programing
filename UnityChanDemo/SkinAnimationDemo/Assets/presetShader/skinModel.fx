@@ -214,7 +214,7 @@ void CalcMieAndRayleighColors( out float4 mieColor, out float4 rayColor, out flo
 	
 	// Finally, scale the Mie and Rayleigh colors and set up the varying variables for the pixel shader
 
-	mieColor.rgb =  g_atmosParam.fKmESun;
+	mieColor.rgb =  v3FrontColor * g_atmosParam.fKmESun;
 	rayColor.rgb = v3FrontColor * (g_atmosParam.v3InvWavelength * g_atmosParam.fKrESun);
 	posToCameraDir = g_cameraPos.xyz - worldPos;
 
@@ -403,7 +403,7 @@ PSOutput PSMain( VS_OUTPUT In )
 		float fCos = dot(g_atmosParam.v3LightDirection, In.posToCameraDir) / length(In.posToCameraDir);
 		float fMiePhase = 1.5 * ((1.0 - g_atmosParam.g2) / (2.0 + g_atmosParam.g2)) * (1.0 + fCos*fCos) / pow(1.0 + g_atmosParam.g2 - 2.0*g_atmosParam.g*fCos, 1.5);
 		float4 atmosColor = In.rayColor + fMiePhase * In.mieColor;
-		color *= atmosColor;
+//		color = atmosColor;
 	}
 	PSOutput psOut = (PSOutput)0;
 	psOut.color = color * 1.0f;
