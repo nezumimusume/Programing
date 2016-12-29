@@ -28,93 +28,25 @@ Player* g_player = NULL;
 CRandom g_random;
 DamageCollisionWorld* g_damageCollisionWorld = NULL;
 EnemyManager* g_enemyManager = NULL;
-extern SAtmosphericScatteringParam g_testAtmos;
 
-namespace {
-	const float fScaleDepth = 0.25;
-	const float fInvScaleDepth = 4;
 
-	const int nSamples = 2;
-	const float fSamples = 2.0f;
-	float scale(float fCos)
-	{
-		float x = 1.0f - fCos;
-		return fScaleDepth * exp(-0.00287f + x*(0.459f + x*(3.83f + x*(-6.80f + x*5.25f))));
-	}
-	// Returns the near intersection point of a line and a sphere
-	float getNearIntersection(CVector3 v3Pos, CVector3 v3Ray, float fDistance2, float fRadius2)
-	{
-		float B = 2.0f * v3Pos.Dot(v3Ray);
-		float C = fDistance2 - fRadius2;
-		float fDet = max(0.0f, B*B - 4.0f * C);
-		return 0.5f * (-B - sqrt(fDet));
-	}
-	//ミー錯乱とレイリー錯乱を計算。
-	//CPUでデバッグするために実装。
-	void CalcMieAndRayleighColors(CVector4& mieColor, CVector4& rayColor, CVector3& posToCameraDir, CVector3 worldPos)
-	{
-		mieColor.Set(0.0f, 0.0f, 0.0f, 0.0f);
-		rayColor.Set(0.0f, 0.0f, 0.0f, 0.0f);
-		worldPos.Scale(0.001f);
-		worldPos.y += g_testAtmos.fInnerRadius;
-		CVector3 cameraPos = g_camera->GetCamera().GetPosition();
-		cameraPos.Scale(0.001f);
-		cameraPos.y += g_testAtmos.fInnerRadius;
-		// Get the ray from the camera to the vertex and its length (which is the far point of the ray passing through the atmosphere)
-		CVector3 v3Ray;
-		v3Ray.Subtract(worldPos, cameraPos);
-		float fFar = v3Ray.Length();
-		v3Ray.Normalize();
 
-		// Calculate the closest intersection of the ray with the outer atmosphere (which is the near point of the ray passing through the atmosphere)
-		//float fNear = getNearIntersection(g_camera->GetCamera().GetPosition(), v3Ray, g_testAtmos.fCameraHeight2, g_testAtmos.fOuterRadius2);
-
-		CVector3  v3Start = cameraPos;
-		float fHeight = v3Start.Length();
-		float fDepth = exp(g_testAtmos.fScaleOverScaleDepth * (g_testAtmos.fInnerRadius - g_testAtmos.fCameraHeight));
-		float fStartAngle = v3Ray.Dot(v3Start) / fHeight;
-		float fStartOffset = fDepth*scale(fStartAngle);
-
-		// Initialize the scattering loop variables
-		float fSampleLength = fFar / fSamples;
-		float fScaledLength = fSampleLength * g_testAtmos.fScale;
-		CVector3 v3SampleRay = v3Ray;
-		v3SampleRay.Scale(fSampleLength);
-		//float3 v3SamplePoint = v3Start + v3SampleRay * 0.5;
-		CVector3 v3SamplePoint = v3SampleRay;
-		v3SamplePoint.Scale(0.5f);
-		v3SamplePoint.Add(v3Start);
-
-		// Now loop through the sample rays
-		CVector3 v3FrontColor = CVector3::Zero;
-		for (int i = 0; i < nSamples; i++) {
-			float fHeight = v3SamplePoint.Length();
-			float fDepth = exp(g_testAtmos.fScaleOverScaleDepth * (g_testAtmos.fInnerRadius - fHeight));
-			float fLightAngle = g_testAtmos.v3LightDirection.Dot( v3SamplePoint ) / fHeight;
-			float fCameraAngle = v3Ray.Dot(v3SamplePoint) / fHeight;
-			float fScatter = (fStartOffset + fDepth*(scale(fLightAngle) - scale(fCameraAngle)));
-			CVector3 v3Attenuate;
-			v3Attenuate.x = exp(-fScatter * (g_testAtmos.v3InvWavelength.x * g_testAtmos.fKr4PI + g_testAtmos.fKm4PI));
-			v3Attenuate.y = exp(-fScatter * (g_testAtmos.v3InvWavelength.y * g_testAtmos.fKr4PI + g_testAtmos.fKm4PI));
-			v3Attenuate.z = exp(-fScatter * (g_testAtmos.v3InvWavelength.z * g_testAtmos.fKr4PI + g_testAtmos.fKm4PI));
-
-			v3Attenuate.Scale(fDepth * fScaledLength);
-			v3FrontColor.Add(v3Attenuate);
-			v3SamplePoint.Add(v3SampleRay);
-		}
-		mieColor = v3FrontColor;
-		mieColor.Scale(g_testAtmos.fKmESun);
-		rayColor = v3FrontColor;
-		CVector3 vWk;
-		vWk = g_testAtmos.v3InvWavelength;
-		vWk.Scale(g_testAtmos.fKrESun);
-		rayColor.x = v3FrontColor.x * vWk.x;
-		rayColor.y = v3FrontColor.y * vWk.y;
-		rayColor.z = v3FrontColor.z * vWk.z;
-	}
-}
 GameScene::GameScene()
 {
+	defaultLight.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
+	defaultLight.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
+	defaultLight.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
+	defaultLight.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
+
+
+	defaultLight.SetDiffuseLightColor(0, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
+	defaultLight.SetDiffuseLightColor(1, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
+	defaultLight.SetDiffuseLightColor(2, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
+	defaultLight.SetDiffuseLightColor(3, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
+	defaultLight.SetAmbinetLight(CVector3(0.25f, 0.25f, 0.25f));
+
+	defaultLight.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
+	defaultLight.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
 }
 GameScene::~GameScene()
 {
@@ -183,9 +115,8 @@ bool GameScene::Start()
 }
 void GameScene::Update() 
 {
-	const float km = 0.0010f;
-	const float ESun = 30.0f;
-	const float kr = 0.0025f;
+	defaultLight.SetPointLightPosition(g_player->GetPointLightPosition());
+	defaultLight.SetPointLightColor(g_player->GetPointLightColor());
 	switch (state) {
 	case State_Play: {
 		if (g_player->GetState() == Player::enState_Dead) {
@@ -193,45 +124,7 @@ void GameScene::Update()
 			gameOver2D = NewGO<GameOver2D>(0);
 			state = State_Over;
 		}
-		//待機錯乱のテスト
-
-		//惑星の半径。
-
-		g_testAtmos.fKm4PI = km * 4.0f * CMath::PI;
-		g_testAtmos.fKmESun = km * ESun;
-
-		g_testAtmos.fKr4PI = kr * 4.0f * CMath::PI;
-		g_testAtmos.fKrESun = kr * ESun;
-		g_testAtmos.fInnerRadius = 8.0f; //単位km
-		g_testAtmos.fInnerRadius2 = g_testAtmos.fInnerRadius * g_testAtmos.fInnerRadius;
-		g_testAtmos.fOuterRadius = g_testAtmos.fInnerRadius + (g_testAtmos.fInnerRadius * fScaleDepth*0.1f);
-		g_testAtmos.fOuterRadius2 = g_testAtmos.fOuterRadius * g_testAtmos.fOuterRadius;
-
-		g_testAtmos.fScale = 1.0f / (g_testAtmos.fOuterRadius - g_testAtmos.fInnerRadius);
-		g_testAtmos.fScaleDepth = 0.25f;
-		g_testAtmos.fScaleOverScaleDepth = (1.0f / (g_testAtmos.fOuterRadius - g_testAtmos.fInnerRadius)) / g_testAtmos.fScaleDepth;
-		g_testAtmos.g = -0.990f;
-		g_testAtmos.g2 = g_testAtmos.g * g_testAtmos.g;
-
-		float fWavelength[3], fWavelength4[3];
-		fWavelength[0] = 0.650f;		// 650 nm for red
-		fWavelength[1] = 0.570f;		// 570 nm for green
-		fWavelength[2] = 0.475f;		// 475 nm for blue
-		fWavelength4[0] = powf(fWavelength[0], 4.0f);
-		fWavelength4[1] = powf(fWavelength[1], 4.0f);
-		fWavelength4[2] = powf(fWavelength[2], 4.0f);
-		g_testAtmos.v3InvWavelength.Set(1 / fWavelength4[0], 1 / fWavelength4[1], 1 / fWavelength4[2]);
-		g_testAtmos.v3LightPos.Set(0.0f, 50.0f, -1000.0f);
-		g_testAtmos.v3LightDirection = g_testAtmos.v3LightPos;
-		g_testAtmos.v3LightDirection.Normalize();
-		CVector3 cameraPos = g_camera->GetCamera().GetPosition();
-		cameraPos.Scale(0.001f);
-		cameraPos.y += g_testAtmos.fInnerRadius;
-		g_testAtmos.fCameraHeight = cameraPos.Length();
-		g_testAtmos.fCameraHeight2 = g_testAtmos.fCameraHeight * g_testAtmos.fCameraHeight;
-		CVector4 mieColor, rayColor;
-		CVector3 posToCameraDir;
-		CalcMieAndRayleighColors(mieColor, rayColor, posToCameraDir, {0.0f, 0.0f, 0.0f});
+		//CalcMieAndRayleighColors(mieColor, rayColor, posToCameraDir, {0.0f, 0.0f, 0.0f});
 	}break;
 	case State_Over:
 		gameOverTimer += GameTime().GetFrameDeltaTime();

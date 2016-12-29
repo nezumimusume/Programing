@@ -19,7 +19,7 @@ bool GameCamera::Start()
 	CVector3 cameraTarget(0.0f, 0.2f, 0.0f);
 	toPosition.Subtract(cameraPos, cameraTarget);
 	cameraTarget = player->GetPosition();
-	cameraTarget.y += 1.0f;
+	cameraTarget.y += 1.5f;
 	cameraPos.Add(cameraTarget, toPosition);
 	springCamera.Init(cameraTarget, cameraPos, 100.0f);
 	springCamera.SetFar(1000.0f);
@@ -78,7 +78,7 @@ void GameCamera::Update()
 	}
 	else {
 		v = player->GetPosition();
-		v.y += 1.0f;
+		v.y += 1.5f;
 		springCamera.SetTarTarget(v);
 		v.Add(toPosition);
 		springCamera.SetTarPosition(v);

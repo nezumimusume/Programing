@@ -205,7 +205,6 @@ private:
 	CSkinModelDataHandle	skinModelData;
 	CSkinModel				skinModel;			//スキンモデル。
 	CAnimation				animation;			//アニメーション。
-	CLight					light;				//ライト。
 	CTexture				normalMap;			//法線マップ。
 	CTexture				specMap;			//スペキュラマップ。
 	CTexture				weaponNormalMap;	//武器の法線マップ。

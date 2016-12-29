@@ -3,6 +3,8 @@
 #include "Map/Ground.h"
 #include "Player/Player.h"
 #include "tkEngine/Physics/tkCollisionAttr.h"
+#include "Scene/GameScene.h"
+#include "map/sky.h"
 
 Ground* g_ground = NULL;
 LPD3DXMESH testMesh;
@@ -23,24 +25,14 @@ bool Ground::Start()
 	case InitStep_Wait:
 		if (skinModelData.IsLoadEnd()) {
 			skinModel.Init(skinModelData.GetBody());
-			skinModel.SetLight(&light);
+			skinModel.SetLight(&gameScene->GetDefaultLight());
 			CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("Grass.tga");
 			normalMap.Load("Assets/modelData/Grass_Normals.tga");
 			mat->SetTexture("g_normalTexture", &normalMap);
 			skinModel.SetHasNormalMap(true);
-			light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
-			light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
-			light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
-			light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
-
-			light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-			light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-			light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-			light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-			light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
 			skinModel.SetShadowReceiverFlag(true);
 			skinModel.SetShadowCasterFlag(true);
-			skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, g_testAtmos);
+			skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());
 
 			Update();
 			m_worldMatrix = skinModel.FindBoneWorldMatrix("Plane001");
@@ -63,8 +55,8 @@ bool Ground::Start()
 
 void Ground::Update() 
 {
-	light.SetPointLightPosition(g_player->GetPointLightPosition());
-	light.SetPointLightColor(g_player->GetPointLightColor());
+//	light.SetPointLightPosition(g_player->GetPointLightPosition());
+//	light.SetPointLightColor(g_player->GetPointLightColor());
 	skinModel.Update(CVector3(0.0f, 0.0f, 0.0f), CQuaternion::Identity, CVector3(1.0f, 1.0f, 1.0f));
 }
 void Ground::Render(CRenderContext& renderContext) 

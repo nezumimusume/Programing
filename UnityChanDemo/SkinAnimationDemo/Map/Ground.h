@@ -12,7 +12,6 @@ class Ground : public IGameObject {
 	CSkinModelDataHandle	skinModelData;		//スキンモデルデータ。
 	CSkinModel				skinModel;			//スキンモデル。
 	CAnimation				animation;			//アニメーション。
-	CLight					light;				//ライト。
 	CTexture				normalMap;
 	CMatrix*				m_worldMatrix;		//ワールド行列
 	CMeshCollider			meshCollider;		//メッシュコライダー。

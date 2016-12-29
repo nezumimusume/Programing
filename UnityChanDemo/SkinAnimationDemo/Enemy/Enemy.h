@@ -126,7 +126,6 @@ protected:
 	CSkinModelDataHandle			skinModelData;
 	CSkinModel						skinModel;			//スキンモデル。
 	CAnimation						animation;			//アニメーション。
-	CLight							light;				//ライト。
 	CVector3						position;			//位置
 	CQuaternion						rotation;			//回転。
 	CVector3						centerPosition;		//中心座標。

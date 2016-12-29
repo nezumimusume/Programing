@@ -9,6 +9,8 @@
 #include "tkEngine/Sound/tkSoundSource.h"
 #include "Enemy/EnemyManager.h"
 #include "HUD/LockOn2D.h"
+#include "Scene/GameScene.h"
+#include "map/sky.h"
 
 namespace {
 	const float RECOVER_MP = 20.0f;			//MP自然回復量。
@@ -135,7 +137,7 @@ bool Player::Start()
 				mat->SetTexture("g_speculerMap", &weaponSpecMap);
 			}
 			skinModel.Init(skinModelData.GetBody());
-			skinModel.SetLight(&light);
+			skinModel.SetLight(&gameScene->GetDefaultLight());
 			skinModel.SetHasNormalMap(true);
 			skinModel.SetHasSpeculerMap(true);
 			skinModel.SetShadowCasterFlag(true);
@@ -143,34 +145,15 @@ bool Player::Start()
 			skinModel.SetFresnelFlag(true);
 			skinModel.SetReflectionCasterFlag(true);
 			skinModel.SetWriteVelocityMap(false);
-			skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, g_testAtmos);
+			skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());
 
-			light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
-			light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
-			light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
-			light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
-
-
-			light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
-			light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
-			light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
-			light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 20.0f));
-			light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
-
-			light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
-			light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
 
 			isPointLightOn = false;
 			UpdatePointLightPosition();
 
 			PlayAnimation(AnimationInvalid, 0.0f);
 			rotation = CQuaternion::Identity;
-
-			CVector3 lightPos = CVector3(0.0f, 25.5f, 24.5f);
-			ShadowMap().SetLightPosition(lightPos);
-			ShadowMap().SetLightTarget(position);
-			toLightPos.Subtract(lightPos, position);
-			ShadowMap().SetCalcLightViewFunc(CShadowMap::enCalcLightViewFunc_PositionTarget);
+			
 			ChangeState(enStateStand);
 			radius = 0.6f;
 			height = 0.3f;
@@ -321,11 +304,11 @@ void Player::UpdatePointLightPosition()
 	else {
 		pointLightColor = CVector4(0.0f, 0.0f, 0.0f, 0.0f);
 	}
-	light.SetPointLightColor(pointLightColor);
+	//light.SetPointLightColor(pointLightColor);
 	pointLightPosition = toLampLocalPos;
 	CMatrix mWorld = skinModel.GetWorldMatrix();
 	mWorld.Mul(pointLightPosition);
-	light.SetPointLightPosition(pointLightPosition);
+//	light.SetPointLightPosition(pointLightPosition);
 }
 /*!
 * @brief	旋回処理。
@@ -528,11 +511,6 @@ void Player::Update()
 	animationEventController.Update();
 	//マジックポイントは少しづつ回復する。
 	RecoverMagicPoint(RECOVER_MP * GameTime().GetFrameDeltaTime());
-
-	ShadowMap().SetLightTarget(position);
-	CVector3 lightPos;
-	lightPos.Add(position, toLightPos);
-	ShadowMap().SetLightPosition(lightPos);
 
 	skinModel.Update(position, rotation, CVector3::One);
 

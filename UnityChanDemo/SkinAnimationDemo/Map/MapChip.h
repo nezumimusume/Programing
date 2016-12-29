@@ -22,7 +22,6 @@ private:
 	CSkinModelDataHandle				skinModelData;
 	CSkinModel							skinModel;			//スキンモデル。
 	CAnimation							animation;			//アニメーション。
-	CLight								light;				//ライト。
 	std::vector<CTexture>				specMapList;			//スペキュラマップ。
 	std::vector<CTexture>				normalMapList;			//法線マップ。
 	std::unique_ptr<CMatrix[]>			worldMatrixBuffer;	//ワールド行列のバッファ

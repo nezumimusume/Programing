@@ -18,7 +18,7 @@ void TitleScene::Update()
 	if (Pad(0).IsTrigger(enButtonStart)) {
 		DeleteGO(this);
 		g_nowLoading->SetActiveFlag(true);
-		NewGO<GameScene>(0);
+		gameScene = NewGO<GameScene>(0);
 	}
 }
 bool TitleScene::Start()

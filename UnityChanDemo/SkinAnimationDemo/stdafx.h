@@ -43,7 +43,4 @@ extern CRandom g_random;
 extern EnemyManager* g_enemyManager;
 extern NowLoading* g_nowLoading;
 
-extern SAtmosphericScatteringParam g_testAtmos;
-
-
 #endif // _STDAFX_H_

@@ -27,6 +27,16 @@ public:
 	void OnDestroy() override;
 	bool Start() override;
 	void Update() override;
+	//空を取得。
+	Sky* GetSky() const
+	{
+		return sky;
+	}
+	//デフォルトライトの取得。
+	CLight& GetDefaultLight()
+	{
+		return defaultLight;
+	}
 private:
 	enum InitStep {
 		InitStep_Load,
@@ -47,6 +57,7 @@ private:
 	State				state = State_Play;
 	float				gameOverTimer = 0.0f;
 	GameOver2D*			gameOver2D = NULL;
+	CLight				defaultLight;		//デフォルトライト。
 };
 
 extern GameScene* gameScene;

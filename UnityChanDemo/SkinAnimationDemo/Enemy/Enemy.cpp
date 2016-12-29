@@ -6,7 +6,8 @@
 #include "tkEngine/Physics/tkPhysics.h"
 #include "tkEngine/Physics/tkCollisionAttr.h"
 #include "Enemy/EnemyParameter.h"
-
+#include "Scene/GameScene.h"
+#include "map/sky.h"
 
 void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 {
@@ -57,25 +58,12 @@ bool Enemy::Start()
 		initPosition = position;
 		
 
-		skinModel.SetLight(&light);
+		skinModel.SetLight(&gameScene->GetDefaultLight());
 		skinModel.SetShadowCasterFlag(true);
 		skinModel.SetShadowReceiverFlag(true);
 		skinModel.SetFresnelFlag(true);
+		skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());
 
-		light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
-		light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
-		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
-		light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
-
-		light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-
-		light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
-		skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, g_testAtmos);
-		light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
-		light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
 		radius = 0.6f;
 		height = 1.5f;
 		characterController.Init(radius, height, position);

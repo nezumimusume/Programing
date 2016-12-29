@@ -7,7 +7,6 @@
 #include "tkEngine/graphics/tkSkinModelMaterial.h"
 #include "tkEngine/graphics/tkAtmosphericScatteringParam.h"
 
-tkEngine::SAtmosphericScatteringParam g_testAtmos;
 namespace tkEngine{
 
 	void CSkinModel::DrawMeshContainer_InstancingDrawCommon(IDirect3DDevice9* pd3dDevice, D3DXMESHCONTAINER_DERIVED* meshContainer, int materialID)

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Map/MapChip.h"
 #include "Player/Player.h"
+#include "Scene/GameScene.h"
+#include "map/sky.h"
 
 MapChip::MapChip() :
 	rootBoneMatrix(NULL)
@@ -28,7 +30,7 @@ bool MapChip::Start()
 {
 	if (skinModelData.IsLoadEnd()) {
 		skinModel.Init(skinModelData.GetBody());
-		skinModel.SetLight(&light);
+		skinModel.SetLight(&gameScene->GetDefaultLight());
 		skinModel.SetShadowCasterFlag(true);
 		skinModel.SetShadowReceiverFlag(true);
 		char filePath[256];
@@ -86,20 +88,7 @@ bool MapChip::Start()
 			PhysicsWorld().AddRigidBody(&rigidBody[i]);
 			i++;
 		}
-
-
-		light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
-		light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
-		light.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
-		light.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
-
-		light.SetDiffuseLightColor(0, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(1, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(2, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
-		light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
-	//	skinModel.SetFogParam(enFogFuncDist, 70.0f, 100.0f);
-		skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, g_testAtmos);
+		skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());
 
 		return true;
 	}
@@ -107,8 +96,8 @@ bool MapChip::Start()
 }
 void MapChip::Update()
 {
-	light.SetPointLightPosition(g_player->GetPointLightPosition());
-	light.SetPointLightColor(g_player->GetPointLightColor());
+//	light.SetPointLightPosition(g_player->GetPointLightPosition());
+//	light.SetPointLightColor(g_player->GetPointLightColor());
 	skinModel.UpdateInstancingDrawData(worldMatrixBuffer.get());
 	skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
 }
