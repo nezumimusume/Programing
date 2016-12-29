@@ -15,6 +15,9 @@ class Sky : public IGameObject {
 	SAtmosphericScatteringParam	atomosphereParam;	//大気錯乱パラメータ。
 	CVector3				sunPosition = CVector3::Zero;			//太陽の位置。
 	float					sunAngle = 0.0f;
+	CLight					sunLight;			//ライト。
+	CSkinModelDataHandle	sunModelData;		//太陽のモデルデータ。
+	CSkinModel				sunModel;			//太陽のモデル。
 public:
 	Sky();
 	
@@ -28,6 +31,7 @@ public:
 		this->player = player;
 	}
 	void Update() override;
+	
 	//大気錯乱パラメーターを取得。
 	const SAtmosphericScatteringParam& GetAtomosphereParam() const
 	{

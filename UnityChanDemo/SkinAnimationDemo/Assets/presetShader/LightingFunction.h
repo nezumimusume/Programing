@@ -25,6 +25,7 @@ struct SLight{
 	float4  pointLightPosition;						//ポイントライトの座標。
 	float4  pointLightColor;						//ポイントライトのカラー。
 	float3  ambient;								//アンビエントライト。
+	float3  emission;								//自己発光。
 };
 SLight	g_light;		//!<ライト
 float4	g_cameraPos;	//!<カメラの座標。

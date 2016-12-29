@@ -308,7 +308,9 @@ void Player::UpdatePointLightPosition()
 	pointLightPosition = toLampLocalPos;
 	CMatrix mWorld = skinModel.GetWorldMatrix();
 	mWorld.Mul(pointLightPosition);
-//	light.SetPointLightPosition(pointLightPosition);
+
+	gameScene->GetDefaultLight().SetPointLightPosition(g_player->GetPointLightPosition());
+	gameScene->GetDefaultLight().SetPointLightColor(g_player->GetPointLightColor());
 }
 /*!
 * @brief	ù‰ñˆ—B

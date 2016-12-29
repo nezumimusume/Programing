@@ -240,6 +240,7 @@ void CalcMieAndRayleighColorsObjectFromAtomosphere( out float4 mieColor, out flo
 	rayColor = 0.0f;
 	worldPos *= 0.001f; //単位をmからkmに変更。
 	worldPos.y += g_atmosParam.fInnerRadius;
+	worldPos.y = min(worldPos.y, cameraPos.y);
 	// Get the ray from the camera to the vertex and its length (which is the far point of the ray passing through the atmosphere)
 	float3 v3Ray = worldPos - cameraPos;
 	float fFar = length(v3Ray);
@@ -427,11 +428,12 @@ PSOutput PSMain( VS_OUTPUT In )
 {
 	float4 diffuseColor = tex2D(g_diffuseTextureSampler, In.Tex0);
 	float4 color = diffuseColor;
-	float3 normal = normalize(In.Normal);
+
 	if(g_flags2.y == AtomosphereFuncSkyFromAtomosphere){
 		//空の大気錯乱。
 		color = In.rayColor + 0.25f * In.mieColor;
 	}else{
+		float3 normal = normalize(In.Normal);
 		if(g_flags.x){
 			//法線マップあり。
 			float3 tangent = normalize(In.Tangent);
@@ -463,8 +465,11 @@ PSOutput PSMain( VS_OUTPUT In )
 			lig *= CalcShadow(In.worldPos_depth.xyz);
 		
 		}
-		color *= lig;
+		//自己発光色
+		lig.xyz += g_light.emission;
 		
+		color *= lig;
+
 		//大気錯乱
 		if(g_flags2.y == AtomosphereFuncObjectFromAtomosphere)
 		{

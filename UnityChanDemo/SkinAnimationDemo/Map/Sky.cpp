@@ -16,17 +16,22 @@ bool Sky::Start()
 	case InitStep_Load:
 		sunPosition.Set(0.0f, 1000000.0f, 0.0f);
 		skinModelData.LoadModelDataAsync("Assets/modelData/Sky.X", NULL);
+		sunModelData.LoadModelDataAsync("Assets/modelData/sun.x", NULL);
 		initStep = InitStep_Wait;
 		break;
 	case InitStep_Wait:
-		if (skinModelData.IsLoadEnd()) {
+		if (skinModelData.IsLoadEnd() && sunModelData.IsLoadEnd()) {
 			skinModel.Init(skinModelData.GetBody());
-			skinModel.SetLight(&light);
-
 			light.SetAmbinetLight(CVector3(1.2f, 1.0f, 1.0f));
+			skinModel.SetLight(&light);
+			sunModel.Init(sunModelData.GetBody());
+			sunLight.SetEmissionLightColor(CVector3(1.5f, 1.5f, 1.5f));
+			sunModel.SetLight(&sunLight);
+			
 			//高さフォグをかける。
 		//	skinModel.SetFogParam(enFogFuncHeight, 100.0f, 0.0f);
 			skinModel.SetAtomosphereParam(enAtomosphereFuncSkyFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());
+			sunModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());
 			return true;
 		}
 		break;
@@ -35,8 +40,15 @@ bool Sky::Start()
 }
 void Sky::Update()
 {
-	sunAngle += 0.1f * GameTime().GetFrameDeltaTime();
+	sunAngle += 0.05f * GameTime().GetFrameDeltaTime();
+	
+	CVector3 surDir;
 	sunPosition.Set(0.0f, sinf(sunAngle), cosf(sunAngle));
+	CMatrix mRotZ;
+	mRotZ.MakeRotationZ(CMath::PI * 0.15f);
+	mRotZ.Mul(sunPosition);
+
+	surDir = sunPosition;
 	sunPosition.Scale(1000000.0f);
 	atomosphereParam.Update(g_camera->GetCamera().GetPosition(), sunPosition);
 	CVector3 lightPos = sunPosition;
@@ -51,8 +63,14 @@ void Sky::Update()
 	pos.y = 0.0f;
 	pos.z = player->GetPosition().z;
 	skinModel.Update(pos, CQuaternion::Identity, CVector3(1.0f, 1.0f, 1.0f));
+	CVector3 sunModelPos = surDir;
+	sunModelPos.Scale(250.0f);
+	sunModelPos.Add(pos);
+	sunModel.Update(sunModelPos, CQuaternion::Identity, CVector3(1.0f, 1.0f, 1.0f));
 }
+
 void Sky::Render(CRenderContext& renderContext) 
 {
 	skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
+	sunModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 }

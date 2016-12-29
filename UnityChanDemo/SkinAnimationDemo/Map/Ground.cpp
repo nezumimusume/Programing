@@ -55,8 +55,6 @@ bool Ground::Start()
 
 void Ground::Update() 
 {
-//	light.SetPointLightPosition(g_player->GetPointLightPosition());
-//	light.SetPointLightColor(g_player->GetPointLightColor());
 	skinModel.Update(CVector3(0.0f, 0.0f, 0.0f), CQuaternion::Identity, CVector3(1.0f, 1.0f, 1.0f));
 }
 void Ground::Render(CRenderContext& renderContext) 

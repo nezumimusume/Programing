@@ -115,8 +115,7 @@ bool GameScene::Start()
 }
 void GameScene::Update() 
 {
-	defaultLight.SetPointLightPosition(g_player->GetPointLightPosition());
-	defaultLight.SetPointLightColor(g_player->GetPointLightColor());
+	
 	switch (state) {
 	case State_Play: {
 		if (g_player->GetState() == Player::enState_Dead) {
