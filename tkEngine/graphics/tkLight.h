@@ -9,6 +9,7 @@ namespace tkEngine {
 	/*!
 	 *@brief	ライト
 	 */
+	
 	class CLight : Noncopyable{
 	public:
 		static const int NUM_DIFFUSE_LIGHT = 4;
@@ -118,6 +119,13 @@ namespace tkEngine {
 		{
 			m_pointLightColor = col;
 		}
+		/*!
+		*@brief	自己発光色の設定。
+		*/
+		void SetEmissionLightColor(const CVector3& col)
+		{
+			m_emissionLightColor = col;
+		}
 	private:
 		CVector3		m_diffuseLightDirection[NUM_DIFFUSE_LIGHT];		//!<ディフューズライトの向き。
 		CVector4		m_diffuseLightColor[NUM_DIFFUSE_LIGHT];			//!<ディフューズライトのカラー(x:R成分、y:G成分、z:B成分、w:スペキュラの強さ)。
@@ -126,6 +134,8 @@ namespace tkEngine {
 		CVector4		m_pointLightPosition;							//!<点光源の位置。
 		CVector4		m_pointLightColor;								//!<点光源の色。
 		CVector3		m_ambientLight;									//!<アンビエントライト。
+		CVector3		m_emissionLightColor = CVector3::Zero;			//!<自己発行色
 	};
+	
 }
 #endif // _TKLIGHT_H_

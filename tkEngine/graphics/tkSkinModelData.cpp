@@ -718,7 +718,6 @@ namespace tkEngine{
 			dstFrame->pMeshContainer = NULL;
 		}
 		AllocateName(srcFrame->Name, &dstFrame->Name);
-	
 
 		if (srcFrame->pFrameSibling != nullptr) {
 			//兄弟がいるので、兄弟のためのメモリを確保。
@@ -784,6 +783,8 @@ namespace tkEngine{
 				anim->Init(m_animController);
 			}
 		}
+		//マテリアルをコピー
+		m_materials = modelData.m_materials;
 		SetupBoneMatrixPointers(m_frameRoot, m_frameRoot);
 	}
 	void CSkinModelData::UpdateBoneMatrix(const CMatrix& matWorld)
