@@ -43,7 +43,7 @@ GameScene::GameScene()
 	defaultLight.SetDiffuseLightColor(1, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
 	defaultLight.SetDiffuseLightColor(2, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
 	defaultLight.SetDiffuseLightColor(3, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
-	defaultLight.SetAmbinetLight(CVector3(0.25f, 0.25f, 0.25f));
+	defaultLight.SetAmbinetLight(CVector3(0.15f, 0.15f, 0.15f));
 
 	defaultLight.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
 	defaultLight.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));

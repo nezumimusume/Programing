@@ -40,7 +40,7 @@ bool Sky::Start()
 }
 void Sky::Update()
 {
-	sunAngle += 0.01f * GameTime().GetFrameDeltaTime();
+	sunAngle += 0.05f * GameTime().GetFrameDeltaTime();
 	
 	CVector3 surDir;
 	sunPosition.Set(0.0f, sinf(sunAngle), cosf(sunAngle));
