@@ -184,7 +184,7 @@ bool GameScene::Start()
 void GameScene::Update() 
 {
 	const float km = 0.0010f;
-	const float ESun = 20.0f;
+	const float ESun = 30.0f;
 	const float kr = 0.0025f;
 	switch (state) {
 	case State_Play: {
@@ -202,7 +202,7 @@ void GameScene::Update()
 
 		g_testAtmos.fKr4PI = kr * 4.0f * CMath::PI;
 		g_testAtmos.fKrESun = kr * ESun;
-		g_testAtmos.fInnerRadius = 10.0f; //’PˆÊkm
+		g_testAtmos.fInnerRadius = 8.0f; //’PˆÊkm
 		g_testAtmos.fInnerRadius2 = g_testAtmos.fInnerRadius * g_testAtmos.fInnerRadius;
 		g_testAtmos.fOuterRadius = g_testAtmos.fInnerRadius + (g_testAtmos.fInnerRadius * fScaleDepth*0.1f);
 		g_testAtmos.fOuterRadius2 = g_testAtmos.fOuterRadius * g_testAtmos.fOuterRadius;
@@ -221,9 +221,8 @@ void GameScene::Update()
 		fWavelength4[1] = powf(fWavelength[1], 4.0f);
 		fWavelength4[2] = powf(fWavelength[2], 4.0f);
 		g_testAtmos.v3InvWavelength.Set(1 / fWavelength4[0], 1 / fWavelength4[1], 1 / fWavelength4[2]);
-		g_testAtmos.v3LightPos.Set(0.0f, 10.0f, 1000.0f);
+		g_testAtmos.v3LightPos.Set(0.0f, 50.0f, -1000.0f);
 		g_testAtmos.v3LightDirection = g_testAtmos.v3LightPos;
-		g_testAtmos.v3LightDirection.Scale(1.0f);
 		g_testAtmos.v3LightDirection.Normalize();
 		CVector3 cameraPos = g_camera->GetCamera().GetPosition();
 		cameraPos.Scale(0.001f);

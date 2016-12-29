@@ -73,7 +73,7 @@ bool Enemy::Start()
 		light.SetDiffuseLightColor(3, CVector4(0.2f, 0.2f, 0.2f, 1.0f));
 
 		light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
-
+		skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, g_testAtmos);
 		light.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
 		light.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
 		radius = 0.6f;

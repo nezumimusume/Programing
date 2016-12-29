@@ -115,7 +115,7 @@ namespace tkEngine{
 		//共通の定数レジスタを設定
 		
 		{
-			pEffect->SetValue("g_atmosParam", &g_testAtmos, sizeof(g_testAtmos));
+			
 			//ビュープロジェクション
 			pEffect->SetMatrix(m_hShaderHandle[enShaderHandleViewProj], &viewProj);
 				pEffect->SetMatrix(m_hShaderHandle[enShaderHandleLastFrameViewProj], (D3DXMATRIX*)&MotionBlur().GetLastFrameViewProjectionMatrix());
@@ -168,6 +168,19 @@ namespace tkEngine{
 			if (m_isWriteVelocityMap) {
 				flag2[0] = 1;
 			}
+
+			if (m_atomosphereFunc != enAtomosphereFuncNone) {
+				flag2[1] = m_atomosphereFunc;
+				//大気錯乱シミュレーションを行う。
+				if (m_atomosphereParam != nullptr) {
+					pEffect->SetValue("g_atmosParam", m_atomosphereParam, sizeof(*m_atomosphereParam));
+				}
+
+			}
+			else {
+				//大気錯乱シミュレーションは行わない。
+			}
+
 			pEffect->SetValue(m_hShaderHandle[enShaderHandleFlags2], flag2, sizeof(flag2));
 			if (isDrawToShadowMap || m_isShadowReceiver) {
 				float farNear[] = {

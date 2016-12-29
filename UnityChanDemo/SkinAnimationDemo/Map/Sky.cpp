@@ -20,7 +20,8 @@ bool Sky::Start()
 
 			light.SetAmbinetLight(CVector3(1.2f, 1.0f, 1.0f));
 			//高さフォグをかける。
-			skinModel.SetFogParam(enFogFuncHeight, 100.0f, 0.0f);
+		//	skinModel.SetFogParam(enFogFuncHeight, 100.0f, 0.0f);
+			skinModel.SetAtomosphereParam(enAtomosphereFuncSkyFromAtomosphere, g_testAtmos);
 			return true;
 		}
 		break;
@@ -37,5 +38,5 @@ void Sky::Update()
 }
 void Sky::Render(CRenderContext& renderContext) 
 {
-	//skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
+	skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 }

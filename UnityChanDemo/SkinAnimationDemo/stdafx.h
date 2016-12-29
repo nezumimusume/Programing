@@ -28,6 +28,7 @@
 #include "tkEngine/Physics/tkSphereCollider.h"
 #include "tkEngine/Physics/tkRigidBody.h"
 #include "tkEngine/character/tkCharacterController.h"
+#include "tkEngine/graphics/tkAtmosphericScatteringParam.h"
 
 using namespace tkEngine;
 #include "GameCamera.h"
@@ -41,4 +42,8 @@ extern Player* g_player;
 extern CRandom g_random;
 extern EnemyManager* g_enemyManager;
 extern NowLoading* g_nowLoading;
+
+extern SAtmosphericScatteringParam g_testAtmos;
+
+
 #endif // _STDAFX_H_

@@ -143,6 +143,7 @@ bool Player::Start()
 			skinModel.SetFresnelFlag(true);
 			skinModel.SetReflectionCasterFlag(true);
 			skinModel.SetWriteVelocityMap(false);
+			skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, g_testAtmos);
 
 			light.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
 			light.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));

@@ -19,8 +19,11 @@ float4		g_fogParam;				//ƒtƒHƒO‚Ìƒpƒ‰ƒ[ƒ^Bx‚ÉƒtƒHƒO‚ªŠ|‚©‚èŽn‚ß‚é[“xBy‚Éƒtƒ
 
 float2		g_farNear;	//‰“•½–Ê‚Æ‹ß•½–ÊBx‚É‰“•½–ÊAy‚É‹ß•½–ÊB
 
+const int AtomosphereFuncNone = 0;						//‘å‹Cö—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚È‚µB
+const int AtomosphereFuncObjectFromAtomosphere = 1;		//ƒIƒuƒWƒFƒNƒg‚ð‘å‹CŒ—‚©‚çŒ©‚½ê‡‚Ì‘å‹Cö—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“B
+const int AtomosphereFuncSkyFromAtomosphere = 2;		//‹ó‚ð‘å‹CŒ—‚©‚çŒ©‚½ê‡‚Ì‘å‹Cö—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“B
 int4 g_flags;				//x‚É–@üƒ}ƒbƒvAy‚ÍƒVƒƒƒhƒEƒŒƒV[ƒo[Az‚ÍƒŠƒ€ƒ‰ƒCƒgAw‚ÍƒXƒyƒLƒ…ƒ‰ƒ}ƒbƒvB
-int4 g_flags2;				//x‚É‘¬“xƒ}ƒbƒv‚Ö‚Ì‘‚«ž‚Ý
+int4 g_flags2;				//x‚É‘¬“xƒ}ƒbƒv‚Ö‚Ì‘‚«ž‚ÝAy‚Í‘å‹Cö—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“Ží—ÞB
 
 texture g_diffuseTexture;		//ƒfƒBƒtƒ…[ƒYƒeƒNƒXƒ`ƒƒB
 sampler g_diffuseTextureSampler = 
@@ -278,9 +281,27 @@ void CalcMieAndRayleighColorsObjectFromAtomosphere( out float4 mieColor, out flo
 	mieColor.rgb =  v3Attenuate;
 	rayColor.rgb = v3FrontColor * (g_atmosParam.v3InvWavelength * g_atmosParam.fKrESun + g_atmosParam.fKmESun);
 	posToCameraDir = cameraPos - worldPos;
-
-
 }
+/*!
+ *@brief	‘å‹Cö—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“B
+ *@param[in]	In		“ü—Í’¸“_B
+ *@param[out]	Pos		ƒ[ƒ‹ƒhÀ•W‚ÌŠi”[æB
+ *@param[out]	Normal	ƒ[ƒ‹ƒh–@ü‚ÌŠi”[æB
+ *@param[out]	Tangent	ƒ[ƒ‹ƒhÚƒxƒNƒgƒ‹‚ÌŠi”[æB
+ */
+
+void CalcMieAndRayleighColors(out float4 mieColor, out float4 rayColor, out float3 posToCameraDir, float3 worldPos)
+{
+	if(g_flags2.y == AtomosphereFuncObjectFromAtomosphere){
+		CalcMieAndRayleighColorsObjectFromAtomosphere(mieColor, rayColor, posToCameraDir, worldPos);
+	}else if(g_flags2.y == AtomosphereFuncSkyFromAtomosphere){
+		CalcMieAndRayleighColorsSkyFromAtomosphere(mieColor, rayColor, posToCameraDir, worldPos);
+	}else{
+		mieColor = 0.0f;
+		rayColor = 0.0f;
+	}
+}
+
 /*!
  *@brief	ƒ[ƒ‹ƒhÀ•W‚Æƒ[ƒ‹ƒh–@ü‚ðƒXƒLƒ“s—ñ‚©‚çŒvŽZ‚·‚éB
  *@param[in]	In		“ü—Í’¸“_B
@@ -361,7 +382,7 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
     o.Tex0 = In.Tex0;
     o.velocity = mul(float4(Pos.xyz, 1.0f), g_mViewProjLastFrame);
     o.screenPos = o.Pos;
-    CalcMieAndRayleighColorsObjectFromAtomosphere( o.mieColor, o.rayColor, o.posToCameraDir, o.worldPos_depth.xyz );
+    CalcMieAndRayleighColors( o.mieColor, o.rayColor, o.posToCameraDir, o.worldPos_depth.xyz );
 	return o;
 }
 /*!
@@ -394,7 +415,7 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
     o.Tex0 = In.base.Tex0;
    	o.velocity = mul(float4(Pos.xyz, 1.0f), g_mViewProjLastFrame);
    	o.screenPos = o.Pos;
-   	CalcMieAndRayleighColorsObjectFromAtomosphere( o.mieColor, o.rayColor, o.posToCameraDir, o.worldPos_depth.xyz );
+   	CalcMieAndRayleighColors( o.mieColor, o.rayColor, o.posToCameraDir, o.worldPos_depth.xyz );
    	
 	return o;
 }
@@ -407,70 +428,68 @@ PSOutput PSMain( VS_OUTPUT In )
 	float4 diffuseColor = tex2D(g_diffuseTextureSampler, In.Tex0);
 	float4 color = diffuseColor;
 	float3 normal = normalize(In.Normal);
-	if(g_flags.x){
-		//–@üƒ}ƒbƒv‚ ‚èB
-		float3 tangent = normalize(In.Tangent);
-		float3 binSpaceNormal = tex2D( g_normalMapSampler, In.Tex0);
-		float4x4 tangentSpaceMatrix;
-		float3 biNormal = normalize( cross( tangent, normal) );
-		tangentSpaceMatrix[0] = float4( tangent, 0.0f);
-		tangentSpaceMatrix[1] = float4( biNormal, 0.0f);
-		tangentSpaceMatrix[2] = float4( normal, 0.0f);
-		tangentSpaceMatrix[3] = float4( 0.0f, 0.0f, 0.0f, 1.0f );
-		//-1.0`1.0‚Ì”ÍˆÍ‚Éƒ}ƒbƒsƒ“ƒO‚·‚éB
-		binSpaceNormal = (binSpaceNormal * 2.0f)- 1.0f;
-		normal = tangentSpaceMatrix[0] * binSpaceNormal.x + tangentSpaceMatrix[1] * binSpaceNormal.y + tangentSpaceMatrix[2] * binSpaceNormal.z; 
+	if(g_flags2.y == AtomosphereFuncSkyFromAtomosphere){
+		//‹ó‚Ì‘å‹Cö—B
+		color = In.rayColor + 0.25f * In.mieColor;
+	}else{
+		if(g_flags.x){
+			//–@üƒ}ƒbƒv‚ ‚èB
+			float3 tangent = normalize(In.Tangent);
+			float3 binSpaceNormal = tex2D( g_normalMapSampler, In.Tex0);
+			float4x4 tangentSpaceMatrix;
+			float3 biNormal = normalize( cross( tangent, normal) );
+			tangentSpaceMatrix[0] = float4( tangent, 0.0f);
+			tangentSpaceMatrix[1] = float4( biNormal, 0.0f);
+			tangentSpaceMatrix[2] = float4( normal, 0.0f);
+			tangentSpaceMatrix[3] = float4( 0.0f, 0.0f, 0.0f, 1.0f );
+			//-1.0`1.0‚Ì”ÍˆÍ‚Éƒ}ƒbƒsƒ“ƒO‚·‚éB
+			binSpaceNormal = (binSpaceNormal * 2.0f)- 1.0f;
+			normal = tangentSpaceMatrix[0] * binSpaceNormal.x + tangentSpaceMatrix[1] * binSpaceNormal.y + tangentSpaceMatrix[2] * binSpaceNormal.z; 
+			
+		}
 		
+		float4 lig = DiffuseLight(normal);
+		if(g_flags.z){
+			//ƒŠƒ€ƒ‰ƒCƒgB
+			lig.xyz += CalcLimLight(normal, g_light.limLightDir, g_light.limLightColor.xyz);
+		}
+		if(g_flags.w){
+			//ƒXƒyƒLƒ…ƒ‰ƒ‰ƒCƒgB
+			lig.xyz += SpecLight(normal, In.worldPos_depth.xyz, In.Tex0);
+		}
+		
+		if(g_flags.y){
+			//‰e
+			lig *= CalcShadow(In.worldPos_depth.xyz);
+		
+		}
+		color *= lig;
+		
+		//‘å‹Cö—
+		if(g_flags2.y == AtomosphereFuncObjectFromAtomosphere)
+		{
+			color = In.rayColor + color * In.mieColor;
+		}
+		
+		//ƒ|ƒCƒ“ƒgƒ‰ƒCƒgB
+		color.xyz += diffuseColor.xyz * PointLight(normal, In.worldPos_depth.xyz, g_flags.z);
+		
+		//ƒAƒ“ƒrƒGƒ“ƒgƒ‰ƒCƒg‚ð‰ÁŽZB
+		color.xyz += diffuseColor.xyz * g_light.ambient.xyz;	
+		
+		if(g_fogParam.z > 1.9f){
+			//‚‚³ƒtƒHƒO
+			float h = max(In.worldPos_depth.y - g_fogParam.y, 0.0f);
+			float t = min(h / g_fogParam.x, 1.0f);
+			color.xyz = lerp(float3(0.75f, 0.75f, 0.95f), color.xyz, t);
+		}else if(g_fogParam.z > 0.0f){
+			//‹——£ƒtƒHƒO
+			float z = length(In.worldPos_depth.xyz - g_cameraPos);
+			z = max(z - g_fogParam.x, 0.0f);
+			float t = min( z / g_fogParam.y, 1.0f);
+			color.xyz = lerp(color.xyz, float3(0.75f, 0.75f, 0.95f), t);
+		}
 	}
-	
-	float4 lig = DiffuseLight(normal);
-	if(g_flags.z){
-		//ƒŠƒ€ƒ‰ƒCƒgB
-		lig.xyz += CalcLimLight(normal, g_light.limLightDir, g_light.limLightColor.xyz);
-	}
-	if(g_flags.w){
-		//ƒXƒyƒLƒ…ƒ‰ƒ‰ƒCƒgB
-		lig.xyz += SpecLight(normal, In.worldPos_depth.xyz, In.Tex0);
-	}
-	
-	if(g_flags.y){
-		//‰e
-		lig *= CalcShadow(In.worldPos_depth.xyz);
-	
-	}
-	color *= lig;
-	
-	//‘å‹Cö—
-	{
-/*		float fCos = dot(g_atmosParam.v3LightDirection, In.posToCameraDir) / length(In.posToCameraDir);
-		float fMiePhase = 1.5 * ((1.0 - g_atmosParam.g2) / (2.0 + g_atmosParam.g2)) * (1.0 + fCos*fCos) / pow(1.0 + g_atmosParam.g2 - 2.0*g_atmosParam.g*fCos, 1.5);
-		color = In.rayColor + fMiePhase * In.mieColor;*/
-	//	float4 atmosColor = In.rayColor + 0.25f * In.mieColor;
-		color = In.rayColor + color * In.mieColor;
-	}
-	
-	
-	//ƒ|ƒCƒ“ƒgƒ‰ƒCƒgB
-	color.xyz += diffuseColor.xyz * PointLight(normal, In.worldPos_depth.xyz, g_flags.z);
-	
-	//ƒAƒ“ƒrƒGƒ“ƒgƒ‰ƒCƒg‚ð‰ÁŽZB
-//	lig.xyz += g_light.ambient.xyz;
-	color.xyz += diffuseColor.xyz * g_light.ambient.xyz;
-	
-	
-	/*if(g_fogParam.z > 1.9f){
-		//‚‚³ƒtƒHƒO
-		float h = max(In.worldPos_depth.y - g_fogParam.y, 0.0f);
-		float t = min(h / g_fogParam.x, 1.0f);
-		color.xyz = lerp(float3(0.75f, 0.75f, 0.95f), color.xyz, t);
-	}else if(g_fogParam.z > 0.0f){
-		//‹——£ƒtƒHƒO
-		float z = length(In.worldPos_depth.xyz - g_cameraPos);
-		z = max(z - g_fogParam.x, 0.0f);
-		float t = min( z / g_fogParam.y, 1.0f);
-		color.xyz = lerp(color.xyz, float3(0.75f, 0.75f, 0.95f), t);
-	}*/
-	
 	PSOutput psOut = (PSOutput)0;
 	psOut.color = color * 1.0f;
 	psOut.depth = In.worldPos_depth.w;

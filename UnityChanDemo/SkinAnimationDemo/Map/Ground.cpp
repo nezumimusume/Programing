@@ -40,8 +40,7 @@ bool Ground::Start()
 			light.SetAmbinetLight(CVector3(0.4f, 0.4f, 0.4f));
 			skinModel.SetShadowReceiverFlag(true);
 			skinModel.SetShadowCasterFlag(true);
-			//距離フォグをかける。
-			skinModel.SetFogParam(enFogFuncDist, 70.0f, 100.0f);
+			skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, g_testAtmos);
 
 			Update();
 			m_worldMatrix = skinModel.FindBoneWorldMatrix("Plane001");
