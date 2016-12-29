@@ -37,5 +37,5 @@ void Sky::Update()
 }
 void Sky::Render(CRenderContext& renderContext) 
 {
-	skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
+	//skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 }

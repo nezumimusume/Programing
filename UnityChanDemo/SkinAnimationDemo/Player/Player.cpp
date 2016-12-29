@@ -506,7 +506,6 @@ void Player::ChangeState(EnState nextState)
 */
 void Player::Render(CRenderContext& renderContext)
 {
-	return;
 	skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 }
 

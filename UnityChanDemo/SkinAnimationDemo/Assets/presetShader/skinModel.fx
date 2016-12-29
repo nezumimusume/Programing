@@ -172,25 +172,31 @@ float getRayleighPhase(float fCos2)
 }
 
 /*!
- * @brief	ミー錯乱とレイリー錯乱を計算。
+ * @brief	大気圏内から空を見た時のミー錯乱とレイリー錯乱を計算。
  */
-void CalcMieAndRayleighColors( out float4 mieColor, out float4 rayColor, out float3 posToCameraDir, float3 worldPos )
+void CalcMieAndRayleighColorsSkyFromAtomosphere( out float4 mieColor, out float4 rayColor, out float3 posToCameraDir, float3 worldPos )
 {
+//	worldPos.y += g_atmosParam.fInnerRadius;
+	float3 cameraPos = g_cameraPos.xyz;
+	cameraPos *= 0.001f;
+	cameraPos.y += g_atmosParam.fInnerRadius;
 	mieColor = 0.0f;
 	rayColor = 0.0f;
+	worldPos *= 0.001f;
+	worldPos.y += g_atmosParam.fInnerRadius;
 	// Get the ray from the camera to the vertex and its length (which is the far point of the ray passing through the atmosphere)
-	float3 v3Ray = worldPos - g_cameraPos.xyz;
+	float3 v3Ray = worldPos - cameraPos;
 	float fFar = length(v3Ray);
 	v3Ray /= fFar;
 	
 	// Calculate the closest intersection of the ray with the outer atmosphere (which is the near point of the ray passing through the atmosphere)
-	float fNear = getNearIntersection(g_cameraPos.xyz, v3Ray, g_atmosParam.fCameraHeight2, g_atmosParam.fOuterRadius2);
+//	float fNear = getNearIntersection(g_cameraPos.xyz, v3Ray, g_atmosParam.fCameraHeight2, g_atmosParam.fOuterRadius2);
 	
-	float3 v3Start = g_cameraPos.xyz + v3Ray * fNear;
-	fFar -= fNear;
-	float fStartAngle = dot(v3Ray, v3Start) / g_atmosParam.fOuterRadius;
-	float fStartDepth = exp(-fInvScaleDepth);
-	float fStartOffset = fStartDepth*scale(fStartAngle);
+	float3 v3Start = cameraPos;
+	float fHeight = length(v3Start);
+	float fDepth = exp(g_atmosParam.fScaleOverScaleDepth * (g_atmosParam.fInnerRadius - g_atmosParam.fCameraHeight));
+	float fStartAngle = dot(v3Ray, v3Start) / fHeight;
+	float fStartOffset = fDepth*scale(fStartAngle);
 	
 	// Initialize the scattering loop variables
 	float fSampleLength = fFar / fSamples;
@@ -204,7 +210,7 @@ void CalcMieAndRayleighColors( out float4 mieColor, out float4 rayColor, out flo
 	{
 		float fHeight = length(v3SamplePoint);
 		float fDepth = exp(g_atmosParam.fScaleOverScaleDepth * (g_atmosParam.fInnerRadius - fHeight));
-		float fLightAngle = dot(g_atmosParam.v3LightPos, v3SamplePoint) / fHeight;
+		float fLightAngle = dot(g_atmosParam.v3LightDirection, v3SamplePoint) / fHeight;
 		float fCameraAngle = dot(v3Ray, v3SamplePoint) / fHeight;
 		float fScatter = (fStartOffset + fDepth*(scale(fLightAngle) - scale(fCameraAngle)));
 		float3 v3Attenuate = exp(-fScatter * (g_atmosParam.v3InvWavelength * g_atmosParam.fKr4PI + g_atmosParam.fKm4PI));
@@ -216,7 +222,62 @@ void CalcMieAndRayleighColors( out float4 mieColor, out float4 rayColor, out flo
 
 	mieColor.rgb =  v3FrontColor * g_atmosParam.fKmESun;
 	rayColor.rgb = v3FrontColor * (g_atmosParam.v3InvWavelength * g_atmosParam.fKrESun);
-	posToCameraDir = g_cameraPos.xyz - worldPos;
+	posToCameraDir = cameraPos - worldPos;
+}
+/*!
+ * @brief	大気圏内からオブジェクトを見た時のミー錯乱とレイリー錯乱を計算。
+ */
+void CalcMieAndRayleighColorsObjectFromAtomosphere( out float4 mieColor, out float4 rayColor, out float3 posToCameraDir, float3 worldPos )
+{
+//	worldPos.y += g_atmosParam.fInnerRadius;
+	float3 cameraPos = g_cameraPos.xyz;
+	cameraPos *= 0.001f; //単位をmからkmに変更。
+	cameraPos.y += g_atmosParam.fInnerRadius;
+	mieColor = 0.0f;
+	rayColor = 0.0f;
+	worldPos *= 0.001f; //単位をmからkmに変更。
+	worldPos.y += g_atmosParam.fInnerRadius;
+	// Get the ray from the camera to the vertex and its length (which is the far point of the ray passing through the atmosphere)
+	float3 v3Ray = worldPos - cameraPos;
+	float fFar = length(v3Ray);
+	v3Ray /= fFar;
+	
+	// Calculate the closest intersection of the ray with the outer atmosphere (which is the near point of the ray passing through the atmosphere)
+//	float fNear = getNearIntersection(g_cameraPos.xyz, v3Ray, g_atmosParam.fCameraHeight2, g_atmosParam.fOuterRadius2);
+	
+	float3 v3Start = cameraPos;
+	float fDepth = exp((g_atmosParam.fInnerRadius - g_atmosParam.fCameraHeight) / fScaleDepth);
+	float fCameraAngle = dot(-v3Ray, worldPos) / length(worldPos);
+	float fLightAngle = dot(g_atmosParam.v3LightDirection, worldPos) / length(worldPos);
+	float fCameraScale = scale(fCameraAngle);
+	float fLightScale = scale(fLightAngle);
+	float fCameraOffset = fDepth*fCameraScale;
+	float fTemp = (fLightScale + fCameraScale);
+
+	// Initialize the scattering loop variables
+	float fSampleLength = fFar / fSamples;
+	float fScaledLength = fSampleLength * g_atmosParam.fScale;
+	float3 v3SampleRay = v3Ray * fSampleLength;
+	float3 v3SamplePoint = v3Start + v3SampleRay * 0.5;
+	
+	// Now loop through the sample rays
+	float3 v3FrontColor = float3(0.0, 0.0, 0.0);
+	float3 v3Attenuate;
+	for(int i=0; i<nSamples; i++)
+	{
+		float fHeight = length(v3SamplePoint);
+		float fDepth = exp(g_atmosParam.fScaleOverScaleDepth * (g_atmosParam.fInnerRadius - fHeight));
+		float fScatter = fDepth*fTemp - fCameraOffset;
+		v3Attenuate = exp(-fScatter * (g_atmosParam.v3InvWavelength * g_atmosParam.fKr4PI + g_atmosParam.fKm4PI));
+		v3FrontColor += v3Attenuate * (fDepth * fScaledLength);
+		v3SamplePoint += v3SampleRay;
+	}
+	
+	// Finally, scale the Mie and Rayleigh colors and set up the varying variables for the pixel shader
+
+	mieColor.rgb =  v3Attenuate;
+	rayColor.rgb = v3FrontColor * (g_atmosParam.v3InvWavelength * g_atmosParam.fKrESun + g_atmosParam.fKmESun);
+	posToCameraDir = cameraPos - worldPos;
 
 
 }
@@ -300,7 +361,7 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
     o.Tex0 = In.Tex0;
     o.velocity = mul(float4(Pos.xyz, 1.0f), g_mViewProjLastFrame);
     o.screenPos = o.Pos;
-    CalcMieAndRayleighColors( o.mieColor, o.rayColor, o.posToCameraDir, o.worldPos_depth.xyz );
+    CalcMieAndRayleighColorsObjectFromAtomosphere( o.mieColor, o.rayColor, o.posToCameraDir, o.worldPos_depth.xyz );
 	return o;
 }
 /*!
@@ -333,7 +394,7 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
     o.Tex0 = In.base.Tex0;
    	o.velocity = mul(float4(Pos.xyz, 1.0f), g_mViewProjLastFrame);
    	o.screenPos = o.Pos;
-   	CalcMieAndRayleighColors( o.mieColor, o.rayColor, o.posToCameraDir, o.worldPos_depth.xyz );
+   	CalcMieAndRayleighColorsObjectFromAtomosphere( o.mieColor, o.rayColor, o.posToCameraDir, o.worldPos_depth.xyz );
    	
 	return o;
 }
@@ -343,7 +404,8 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
  */
 PSOutput PSMain( VS_OUTPUT In )
 {
-	float4 color = tex2D(g_diffuseTextureSampler, In.Tex0);
+	float4 diffuseColor = tex2D(g_diffuseTextureSampler, In.Tex0);
+	float4 color = diffuseColor;
 	float3 normal = normalize(In.Normal);
 	if(g_flags.x){
 		//法線マップあり。
@@ -361,7 +423,6 @@ PSOutput PSMain( VS_OUTPUT In )
 		
 	}
 	
-	
 	float4 lig = DiffuseLight(normal);
 	if(g_flags.z){
 		//リムライト。
@@ -377,12 +438,24 @@ PSOutput PSMain( VS_OUTPUT In )
 		lig *= CalcShadow(In.worldPos_depth.xyz);
 	
 	}
+	color *= lig;
+	
+	//大気錯乱
+	{
+/*		float fCos = dot(g_atmosParam.v3LightDirection, In.posToCameraDir) / length(In.posToCameraDir);
+		float fMiePhase = 1.5 * ((1.0 - g_atmosParam.g2) / (2.0 + g_atmosParam.g2)) * (1.0 + fCos*fCos) / pow(1.0 + g_atmosParam.g2 - 2.0*g_atmosParam.g*fCos, 1.5);
+		color = In.rayColor + fMiePhase * In.mieColor;*/
+	//	float4 atmosColor = In.rayColor + 0.25f * In.mieColor;
+		color = In.rayColor + color * In.mieColor;
+	}
+	
+	
 	//ポイントライト。
-	lig.xyz += PointLight(normal, In.worldPos_depth.xyz, g_flags.z);
+	color.xyz += diffuseColor.xyz * PointLight(normal, In.worldPos_depth.xyz, g_flags.z);
 	
 	//アンビエントライトを加算。
-	lig.xyz += g_light.ambient.xyz;
-	color.xyz *= lig;
+//	lig.xyz += g_light.ambient.xyz;
+	color.xyz += diffuseColor.xyz * g_light.ambient.xyz;
 	
 	
 	/*if(g_fogParam.z > 1.9f){
@@ -397,14 +470,7 @@ PSOutput PSMain( VS_OUTPUT In )
 		float t = min( z / g_fogParam.y, 1.0f);
 		color.xyz = lerp(color.xyz, float3(0.75f, 0.75f, 0.95f), t);
 	}*/
-	//大気錯乱
-	{
-		
-		float fCos = dot(g_atmosParam.v3LightDirection, In.posToCameraDir) / length(In.posToCameraDir);
-		float fMiePhase = 1.5 * ((1.0 - g_atmosParam.g2) / (2.0 + g_atmosParam.g2)) * (1.0 + fCos*fCos) / pow(1.0 + g_atmosParam.g2 - 2.0*g_atmosParam.g*fCos, 1.5);
-		float4 atmosColor = In.rayColor + fMiePhase * In.mieColor;
-//		color = atmosColor;
-	}
+	
 	PSOutput psOut = (PSOutput)0;
 	psOut.color = color * 1.0f;
 	psOut.depth = In.worldPos_depth.w;

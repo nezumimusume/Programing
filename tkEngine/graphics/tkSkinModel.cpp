@@ -118,7 +118,7 @@ namespace tkEngine{
 			pEffect->SetValue("g_atmosParam", &g_testAtmos, sizeof(g_testAtmos));
 			//ビュープロジェクション
 			pEffect->SetMatrix(m_hShaderHandle[enShaderHandleViewProj], &viewProj);
-			pEffect->SetMatrix(m_hShaderHandle[enShaderHandleLastFrameViewProj], (D3DXMATRIX*)&MotionBlur().GetLastFrameViewProjectionMatrix());
+				pEffect->SetMatrix(m_hShaderHandle[enShaderHandleLastFrameViewProj], (D3DXMATRIX*)&MotionBlur().GetLastFrameViewProjectionMatrix());
 			//ライト
 			pEffect->SetValue(
 				m_hShaderHandle[enShaderHandleLight],
