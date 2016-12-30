@@ -433,7 +433,7 @@ PSOutput PSMain( VS_OUTPUT In )
 		//‹ó‚Ì‘å‹Cö—B
 		color = In.rayColor + 0.25f * In.mieColor;
 		float t = pow( 1.0f - min(1.0f, length(color)), 10.0f );
-		color += diffuseColor * t;
+		color += diffuseColor * t * 3.0f;
 	}else{
 		float3 normal = normalize(In.Normal);
 		if(g_flags.x){
