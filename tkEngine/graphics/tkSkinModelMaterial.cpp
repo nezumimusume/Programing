@@ -44,7 +44,12 @@ namespace tkEngine{
 		//マテリアルパラメータを転送。
 		int i = 0;
 		for (auto& p : textureMap) {
-			effect->SetTexture(shaderHandles[i], p.second.param->GetTextureDX());
+			if (p.second.param->IsCubeMap()) {
+				effect->SetTexture(shaderHandles[i], p.second.param->GetCubeMapDX());
+			}
+			else {
+				effect->SetTexture(shaderHandles[i], p.second.param->GetTextureDX());
+			}
 			i++;
 		}
 	}

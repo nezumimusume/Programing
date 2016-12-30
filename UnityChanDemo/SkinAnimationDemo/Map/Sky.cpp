@@ -27,7 +27,9 @@ bool Sky::Start()
 			sunModel.Init(sunModelData.GetBody());
 			sunLight.SetEmissionLightColor(CVector3(1.5f, 1.5f, 1.5f));
 			sunModel.SetLight(&sunLight);
-			
+			skyCubeMap.Load("Assets/modelData/skyCubeMap.dds", true);
+			CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("sky.png");
+			mat->SetTexture("g_skyCubeMap", &skyCubeMap);
 			//高さフォグをかける。
 		//	skinModel.SetFogParam(enFogFuncHeight, 100.0f, 0.0f);
 			skinModel.SetAtomosphereParam(enAtomosphereFuncSkyFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());

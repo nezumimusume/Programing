@@ -50,7 +50,16 @@ sampler_state
 	AddressV = Wrap;
 };
 
-
+//空用のキューブマップ。
+texture g_skyCubeMap;
+samplerCUBE g_skyCubeMapSampler = 
+sampler_state
+{
+    Texture = <g_skyCubeMap>;
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Linear;
+};
 
 
 /*!
@@ -426,15 +435,18 @@ VS_OUTPUT VSMainInstancing( VS_INPUT_INSTANCING In, uniform bool hasSkin )
  */
 PSOutput PSMain( VS_OUTPUT In )
 {
-	float4 diffuseColor = tex2D(g_diffuseTextureSampler, In.Tex0);
-	float4 color = diffuseColor;
+	
+	float4 color = 0.0f;
 
 	if(g_flags2.y == AtomosphereFuncSkyFromAtomosphere){
 		//空の大気錯乱。
+		float4 diffuseColor = texCUBE(g_skyCubeMapSampler, In.Normal * -1.0f);
 		color = In.rayColor + 0.25f * In.mieColor;
 		float t = pow( 1.0f - min(1.0f, length(color)), 10.0f );
-		color += diffuseColor * t * 3.0f;
+		color += diffuseColor * t ;
 	}else{
+		float4 diffuseColor = tex2D(g_diffuseTextureSampler, In.Tex0);
+		color = diffuseColor;
 		float3 normal = normalize(In.Normal);
 		if(g_flags.x){
 			//法線マップあり。
@@ -498,7 +510,7 @@ PSOutput PSMain( VS_OUTPUT In )
 		}
 	}
 	PSOutput psOut = (PSOutput)0;
-	psOut.color = color * 1.0f;
+	psOut.color = color;
 	psOut.depth = In.worldPos_depth.w;
 	if(g_flags2.x){
 		psOut.velocity.xy = In.velocity.xy / In.velocity.w-In.screenPos.xy / In.screenPos.w;
