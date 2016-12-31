@@ -69,6 +69,17 @@ void Sky::Update()
 	sunModelPos.Scale(250.0f);
 	sunModelPos.Add(pos);
 	sunModel.Update(sunModelPos, CQuaternion::Identity, CVector3(1.0f, 1.0f, 1.0f));
+	CLight& sceneLight = gameScene->GetDefaultLight();
+	//リムライトを更新。
+	sceneLight.SetLimLightDirection(surDir);
+	//アンビエントライト更新。
+	float t = max( 0.0f, surDir.Dot(CVector3::Up) );
+	
+	const CVector3 dayLight = CVector3(0.3f, 0.3f, 0.3f);//日中のアンビエントライト。
+	const CVector3 nightLight = CVector3(0.07f, 0.07f, 0.07f);	//夜間のアンビエントライト。
+	CVector3 ambientLight;
+	ambientLight.Lerp(t, nightLight, dayLight);
+	sceneLight.SetAmbinetLight(ambientLight);
 }
 
 void Sky::Render(CRenderContext& renderContext) 

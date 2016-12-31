@@ -490,11 +490,13 @@ PSOutput PSMain( VS_OUTPUT In )
 			color = In.rayColor + color * In.mieColor;
 		}
 		
+
 		//ポイントライト。
 		color.xyz += diffuseColor.xyz * PointLight(normal, In.worldPos_depth.xyz, g_flags.z);
 		
 		//アンビエントライトを加算。
 		color.xyz += diffuseColor.xyz * g_light.ambient.xyz;	
+		
 		
 		if(g_fogParam.z > 1.9f){
 			//高さフォグ

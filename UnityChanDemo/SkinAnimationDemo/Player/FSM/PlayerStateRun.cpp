@@ -18,9 +18,7 @@ void PlayerStateRun::Update()
 	const float USE_MP_DASH = 50.0f;		//ダッシュ魔法を使った時のMP使用量。
 	const float MOVE_SPEED = 7.0f;
 	CVector3 moveSpeed = player->characterController.GetMoveSpeed();
-	if (Pad(0).IsTrigger(enButtonRB3)) {
-		player->isPointLightOn = !player->isPointLightOn;
-	}
+	
 	if (Pad(0).IsPress(enButtonA)) {
 		//Aボタンが押された。
 		//車との距離を調べる。

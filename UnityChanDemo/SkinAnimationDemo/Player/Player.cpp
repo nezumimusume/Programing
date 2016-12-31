@@ -149,7 +149,7 @@ bool Player::Start()
 
 
 			isPointLightOn = false;
-			UpdatePointLightPosition();
+			UpdatePointLight();
 
 			PlayAnimation(AnimationInvalid, 0.0f);
 			rotation = CQuaternion::Identity;
@@ -159,7 +159,7 @@ bool Player::Start()
 			height = 0.3f;
 			characterController.Init(radius, height, position);
 			characterController.SetGravity(-18.8f);
-			toLampLocalPos.Set(0.0f, 0.5f, 0.2f);
+			toLampLocalPos.Set(0.0f, 1.0f, 0.5f);
 			InitBattleSeats();
 			//g_physicsWorld->AddRigidBody(&rigidBody);
 			animation.SetAnimationEndTime(AnimationAttack_00, 0.63333f);
@@ -294,12 +294,16 @@ void Player::Damage()
 	}
 }
 /*!
-* @brief	ポイントライトの位置を更新。
+* @brief	ポイントライトを更新。
 */
-void Player::UpdatePointLightPosition()
+void Player::UpdatePointLight()
 {
+	if (Pad(0).IsTrigger(enButtonLB3)) {
+		isPointLightOn = !isPointLightOn;
+	}
+
 	if (isPointLightOn) {
-		pointLightColor.Set(0.9f, 0.75f, 0.6f, 1.0f);
+		pointLightColor.Set(1.5f, 1.5f, 1.5f, 3.0f);
 	}
 	else {
 		pointLightColor = CVector4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -309,8 +313,8 @@ void Player::UpdatePointLightPosition()
 	CMatrix mWorld = skinModel.GetWorldMatrix();
 	mWorld.Mul(pointLightPosition);
 
-	gameScene->GetDefaultLight().SetPointLightPosition(g_player->GetPointLightPosition());
-	gameScene->GetDefaultLight().SetPointLightColor(g_player->GetPointLightColor());
+	gameScene->GetDefaultLight().SetPointLightPosition(pointLightPosition);
+	gameScene->GetDefaultLight().SetPointLightColor(pointLightColor);
 }
 /*!
 * @brief	旋回処理。
@@ -503,8 +507,6 @@ void Player::Update()
 	Turn();
 	//ダメージ処理。
 	Damage();
-	//ポイントライトの位置を更新。
-	UpdatePointLightPosition();
 	//アニメーションコントロール。
 	AnimationControl();
 	//バトル用のシートの更新。
@@ -513,9 +515,10 @@ void Player::Update()
 	animationEventController.Update();
 	//マジックポイントは少しづつ回復する。
 	RecoverMagicPoint(RECOVER_MP * GameTime().GetFrameDeltaTime());
-
+	//ワールド行列の更新。
 	skinModel.Update(position, rotation, CVector3::One);
-
+	//ポイントライトを更新。
+	UpdatePointLight();
 
 	lastFrameState = state;
 }
