@@ -3,7 +3,7 @@
 #include "Scene/TitleScene.h"
 #include "tkEngine/Sound/tkSoundSource.h"
 #include "HUD/NowLoading.h"
-
+#include "ScreenEffect/Fade.h"
 
 //#define MEMORY_LEAK_TEST		//定義でメモリリークテストが有効になる。
 //#define PLAY_WAVE_FILE_TEST		//定義で波形データの再生テストが有効になる。
@@ -12,7 +12,7 @@
 
 GameScene* gameScene = NULL;
 NowLoading* g_nowLoading = NULL;
-
+Fade* g_fade = NULL;
 
 
 #ifdef DRAW_SPRITE_TEST
@@ -170,8 +170,8 @@ void InitTkEngine( HINSTANCE hInst )
 	//Shadow
 	initParam.graphicsConfig.shadowRenderConfig.Init();
 	initParam.graphicsConfig.shadowRenderConfig.isEnable = true;
-	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 1024;
-	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 1024;
+	initParam.graphicsConfig.shadowRenderConfig.shadowMapWidth = 2048;
+	initParam.graphicsConfig.shadowRenderConfig.shadowMapHeight = 2048;
 	initParam.graphicsConfig.shadowRenderConfig.numShadowMap = 3;
 	
 	//reflection
@@ -203,6 +203,7 @@ int WINAPI wWinMain(
 	//tkEngineの初期化。
 	InitTkEngine( hInst );
 	g_nowLoading = NewGO<NowLoading>(1);
+	g_fade = NewGO<Fade>(1);
 	
 	g_random.Init((unsigned long)time(NULL));
 	NewGO<TitleScene>(0);

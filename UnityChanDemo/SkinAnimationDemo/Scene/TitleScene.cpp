@@ -2,6 +2,7 @@
 #include "Scene/TitleScene.h"
 #include "Scene/GameScene.h"
 #include "HUD/NowLoading.h"
+#include "ScreenEffect/Fade.h"
 
 TitleScene::TitleScene()
 {
@@ -15,10 +16,20 @@ void TitleScene::OnDestroy()
 }
 void TitleScene::Update()
 {
-	if (Pad(0).IsTrigger(enButtonStart)) {
-		DeleteGO(this);
-		g_nowLoading->SetActiveFlag(true);
-		gameScene = NewGO<GameScene>(0);
+	switch(state){
+	case enState_Run:
+		if (Pad(0).IsTrigger(enButtonStart)) {
+			g_fade->StartFadeOut();
+			state = enState_WaitFadeOut;
+		}
+		break;
+	case enState_WaitFadeOut:
+		if(!g_fade->IsExecute()){
+			DeleteGO(this);
+			g_nowLoading->SetActiveFlag(true);
+			gameScene = NewGO<GameScene>(0);
+		}
+		break;
 	}
 }
 bool TitleScene::Start()

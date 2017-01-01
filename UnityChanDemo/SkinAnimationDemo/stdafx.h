@@ -37,10 +37,11 @@ using namespace tkEngine;
 class Player;
 class EnemyManager;
 class NowLoading;
-
+class Fade;
 extern Player* g_player;
 extern CRandom g_random;
 extern EnemyManager* g_enemyManager;
 extern NowLoading* g_nowLoading;
+extern Fade* g_fade;
 
 #endif // _STDAFX_H_

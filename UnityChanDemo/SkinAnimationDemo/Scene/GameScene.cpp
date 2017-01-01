@@ -22,6 +22,7 @@
 #include "HUD/NowLoading.h"
 #include "HUD/GameOver2D.h"
 #include "tkEngine/graphics/tkAtmosphericScatteringParam.h"
+#include "ScreenEffect/Fade.h"
 
 CPhysicsWorld* g_physicsWorld = NULL;
 Player* g_player = NULL;
@@ -71,6 +72,7 @@ bool GameScene::Start()
 {
 	switch (initStep) {
 	case InitStep_Load:	
+		g_fade->StartFadeIn();
 		//unityChanInstance = NewGO<UnityChanInstance>(0);
 		map = NewGO<Map>(0);
 		ground = NewGO<Ground>(0);
@@ -103,6 +105,7 @@ bool GameScene::Start()
 			&& playerMPBar->IsStart()
 			&& playerMPBar->IsStart()
 			&& sky->IsStart()
+			&& !g_fade->IsExecute()
 		) {
 			//‘S‚Ä‰Šú‰»Š®—¹B
 			g_nowLoading->SetActiveFlag(false);

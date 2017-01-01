@@ -30,6 +30,9 @@
     <Filter Include="Source Files\Scene">
       <UniqueIdentifier>{23534f5d-bcfa-43b2-afcf-b1599ab79014}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ScreenEffect">
+      <UniqueIdentifier>{a71ee11f-9054-4b30-b14c-d9a00c49df49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -142,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="HUD\GameOver2D.cpp">
       <Filter>Source Files\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenEffect\Fade.cpp">
+      <Filter>Source Files\ScreenEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -267,6 +273,9 @@
     </ClInclude>
     <ClInclude Include="HUD\GameOver2D.h">
       <Filter>Source Files\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenEffect\Fade.h">
+      <Filter>Source Files\ScreenEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
