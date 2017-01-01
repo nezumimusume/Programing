@@ -20,6 +20,7 @@ namespace tkEngine{
 			T param;					//パラメータ。
 		};
 		typedef SShaderParam<CTexture*>	SShaderTextureParam;
+		typedef SShaderParam<CMatrix>	SShaderMatrixParam;
 	public:
 		/*!
 		 * @brief	コンストラクタ。

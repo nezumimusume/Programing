@@ -73,7 +73,10 @@ namespace tkEngine{
 			
 		//テクニックを設定。
 		{
-			if (isInstancingDraw) {
+			if (m_atomosphereFunc == enAtomosphereFuncSkyFromAtomosphere) {
+				//空をレンダリング。
+				pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_Sky]);
+			}else if (isInstancingDraw) {
 				if (pMeshContainer->pSkinInfo != NULL) {
 					if (isDrawToShadowMap) {
 						pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_SkinModelInstancingRenderToShadowMap]);
@@ -169,10 +172,10 @@ namespace tkEngine{
 			}
 
 			if (m_atomosphereFunc != enAtomosphereFuncNone) {
-				flag2[1] = m_atomosphereFunc;
+				flag2[1] = m_atomosphereFunc;	
 				//大気錯乱シミュレーションを行う。
 				if (m_atomosphereParam != nullptr) {
-					pEffect->SetValue("g_atmosParam", m_atomosphereParam, sizeof(*m_atomosphereParam));
+					pEffect->SetValue(m_hShaderHandle[enShaderHandleAtmosParam], m_atomosphereParam, sizeof(*m_atomosphereParam));
 				}
 
 			}
@@ -407,6 +410,7 @@ namespace tkEngine{
 	{
 		ID3DXEffect* effectDx = m_pEffect->GetD3DXEffect();
 		m_hShaderHandle[enShaderHandleLastFrameViewProj] = effectDx->GetParameterByName(NULL, "g_mViewProjLastFrame");
+		m_hShaderHandle[enShaderHandleAtmosParam]	= effectDx->GetParameterByName(NULL, "g_atmosParam");
 		m_hShaderHandle[enShaderHandleViewProj] 	= effectDx->GetParameterByName(NULL, "g_mViewProj");
 		m_hShaderHandle[enShaderHandleLight] 		= effectDx->GetParameterByName(NULL, "g_light");
 		m_hShaderHandle[enShaderHandleLVP] 			= effectDx->GetParameterByName(NULL, "g_mLVP");
@@ -437,6 +441,7 @@ namespace tkEngine{
 		m_hShaderHandle[enShaderHandleTec_NoSkinModelRenderShadowMap] = effectDx->GetTechniqueByName("NoSkinModelRenderShadowMap");
 		m_hShaderHandle[enShaderHandleTec_NoSkinModel] = effectDx->GetTechniqueByName("NoSkinModel");
 		m_hShaderHandle[enShaderHandleShadowRecieverParam] = effectDx->GetParameterByName(NULL, "gShadowReceiverParam");
+		m_hShaderHandle[enShaderHandleTec_Sky] = effectDx->GetTechniqueByName("Sky");
 	}
 	/*!
 	*@brief	シャドウマップに描画

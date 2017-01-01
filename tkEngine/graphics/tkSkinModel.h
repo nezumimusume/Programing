@@ -225,6 +225,7 @@ namespace tkEngine {
 			enShaderHandleLight,				//ライト。
 			enShaderHandleLVP,					//ライトビュープロジェクション行列。
 			enShaderHandleCameraPos,			//カメラの位置。
+			enShaderHandleAtmosParam,			//大気錯乱パラメータ。
 			enShaderHandleFlags,				//g_flags
 			enShaderHandleFlags2,				//g_flags2
 			enShaderHandleFarNear,				//FarNear
@@ -251,6 +252,7 @@ namespace tkEngine {
 			enShaderHandleTec_SkinModel,								//SkinModelテクニック。
 			enShaderHandleTec_NoSkinModelRenderShadowMap,				//NoSkinModelRenderShadowMapテクニック。
 			enShaderHandleTec_NoSkinModel,								//NoSkinModelテクニック。
+			enShaderHandleTec_Sky,										//Skyテクニック。
 			enShaderHandleNum,				//シェーダーハンドルの数。
 		};
 		CMatrix							m_worldMatrix;		//!<ワールド行列。
