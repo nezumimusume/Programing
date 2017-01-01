@@ -15,14 +15,15 @@ struct VS_OUTPUT{
 };
 float g_brightness;
 float g_alpha;			//!<アルファ
+float3 g_mulColor;		//!<乗算カラー。
 texture g_texture;		//ディフューズテクスチャ。
 sampler g_textureSampler = 
 sampler_state
 {
 	Texture = <g_texture>;
-    MipFilter = NONE;
-    MinFilter = NONE;
-    MagFilter = NONE;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
     AddressU = Wrap;
 	AddressV = Wrap;
 };
@@ -40,7 +41,7 @@ VS_OUTPUT VSMain( VS_INPUT In )
 float4 PSMainTrans( VS_OUTPUT In ) : COLOR0
 {
 	float4 tex = tex2D(g_textureSampler, In.uv);
-	return float4(tex.xyz, tex.a * g_alpha );
+	return float4(tex.xyz * g_mulColor, tex.a * g_alpha );
 }
 /*!
  * @brief	加算合成用のピクセルシェーダー。
@@ -48,7 +49,7 @@ float4 PSMainTrans( VS_OUTPUT In ) : COLOR0
 float4 PSMainAdd( VS_OUTPUT In ) : COLOR0
 {
 	float4 tex = tex2D(g_textureSampler, In.uv);
-	return float4(tex.xyz * g_alpha, 1.0f/g_brightness );
+	return float4(tex.xyz * g_alpha, 1.0f );
 }
 /*!
  * @brief	半透明合成用のテクニック。

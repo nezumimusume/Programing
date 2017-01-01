@@ -528,7 +528,6 @@ VS_OUTPUT VSSkyMain(VS_INPUT In)
 	o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
     o.worldPos_depth.w = o.Pos.w;
     o.Tex0 = In.Tex0;
-    o.Normal = In.Normal;
     o.velocity = mul(float4(Pos.xyz, 1.0f), g_mViewProjLastFrame);
     o.screenPos = o.Pos;
     CalcMieAndRayleighColors( o.mieColor, o.rayColor, o.posToCameraDir, o.worldPos_depth.xyz );
