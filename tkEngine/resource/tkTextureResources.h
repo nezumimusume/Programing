@@ -15,8 +15,9 @@ namespace tkEngine{
 		/*!
 		 *@brief	テクスチャをロード。
 		 *@param[in]	filePath		ファイルパス。
+		 *@param[in]	isCubeMap		キューブマップをロードする場合はtrueに設定してください。
 		 */
-		CTexture* Load( const char* filePath );
+		CTexture* Load( const char* filePath, bool isCubeMap = false );
 		/*!
 		*@brief	解放。
 		*/

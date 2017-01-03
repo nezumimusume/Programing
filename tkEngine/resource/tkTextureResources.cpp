@@ -17,23 +17,22 @@ namespace tkEngine{
 		}
 		textureMap.clear();
 	}
-	CTexture* CTextureResources::Load( const char* filePath )
+	CTexture* CTextureResources::Load( const char* filePath, bool isCubeMap )
 	{
 		int hash = CUtil::MakeHash(filePath);
 		auto it = textureMap.find(hash);
 		CTexture* tex = nullptr;
 		if (it == textureMap.end()) {
 			//V‹K
-			LPDIRECT3DTEXTURE9 texDx;
-			HRESULT hr = D3DXCreateTextureFromFileA(Engine().GetD3DDevice(), filePath, &texDx);
-			if (FAILED(hr)) {
-				if (FAILED(hr)) {
-					return nullptr;
-				}
-			}
 			tex = new CTexture;
-			tex->SetTextureDX(texDx);
-			textureMap.insert(std::pair<int, CTexture*>(hash, tex));
+			if (tex->Load(filePath, isCubeMap) ){
+				textureMap.insert(std::pair<int, CTexture*>(hash, tex));
+			}
+			else {
+				delete tex;
+				return nullptr;
+			}
+
 		}
 		else {
 			tex = it->second;

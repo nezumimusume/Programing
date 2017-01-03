@@ -96,39 +96,40 @@ namespace tkEngine{
 			}
 		}
 	}
-	
+	void CSkinModelDataResources::GC()
+	{
+		m_cs.Lock();
+		//参照カウンタが1になっているCSkinModelDataをガベージコレクト。
+		std::vector<CSkinModelDataMap::iterator>	deleteItList;
+		for (
+			CSkinModelDataMap::iterator it = m_skinModelDataMap.begin();
+			it != m_skinModelDataMap.end();
+			it++
+			) {
+			if (it->second.unique()) {
+				//こいつを参照しているモデルはもういない。
+				deleteItList.push_back(it);
+			}
+		}
+		for (auto& delIt : deleteItList) {
+			m_skinModelDataMap.erase(delIt);
+		}
+		//続いてインスタンシングモデル。
+		for (
+			CSkinModelDataList::iterator it = m_instancingModelDataList.begin();
+			it != m_instancingModelDataList.end();
+			) {
+			if (it->unique()) {
+				//こいつを参照しているモデルはもういない。
+				it = m_instancingModelDataList.erase(it);
+			}
+			else {
+				it++;
+			}
+		}
+		m_cs.Unlock();
+	}
 	void CSkinModelDataResources::Update()
 	{
-		/*if (m_cs.TryLock()) {
-			//参照カウンタが1になっているCSkinModelDataをガベージコレクト。
-			std::vector<CSkinModelDataMap::iterator>	deleteItList;
-			for (
-				CSkinModelDataMap::iterator it = m_skinModelDataMap.begin();
-				it != m_skinModelDataMap.end();
-				it++
-				) {
-				if (it->second.unique()) {
-					//こいつを参照しているモデルはもういない。
-					deleteItList.push_back(it);
-				}
-			}
-			for (auto& delIt : deleteItList) {
-				m_skinModelDataMap.erase(delIt);
-			}
-			//続いてインスタンシングモデル。
-			for (
-				CSkinModelDataList::iterator it = m_instancingModelDataList.begin();
-				it != m_instancingModelDataList.end();
-				) {
-				if (it->unique()) {
-					//こいつを参照しているモデルはもういない。
-					it = m_instancingModelDataList.erase(it);
-				}
-				else {
-					it++;
-				}
-			}
-			m_cs.Unlock();
-		}*/
 	}
 }

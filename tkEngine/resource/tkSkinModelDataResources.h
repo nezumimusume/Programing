@@ -88,6 +88,12 @@ namespace tkEngine{
 			m_skinModelDataMap.clear();
 			m_cs.Unlock();
 		}
+		/*!
+		* @brief	ガベージコレクトの実行。
+		*@details
+		* 参照カウンタがになっているCSkinModelDataが解放されます。
+		*/
+		void GC();
 	private:
 		/*!
 		 * @brief	非同期読み込みリクエスト

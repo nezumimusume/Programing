@@ -29,7 +29,7 @@ bool Sky::Start()
 			sunModel.SetLight(&sunLight);
 			CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("sky.png");
 			if (mat) {
-				mat->SetTexture("g_skyCubeMap", TextureResources().Load("Assets/modelData/skyCubeMap.dds"));
+				mat->SetTexture("g_skyCubeMap", TextureResources().Load("Assets/modelData/skyCubeMap.dds", true));
 			}
 			//高さフォグをかける。
 		//	skinModel.SetFogParam(enFogFuncHeight, 100.0f, 0.0f);
