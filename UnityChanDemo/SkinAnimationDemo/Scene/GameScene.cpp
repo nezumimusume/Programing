@@ -72,6 +72,8 @@ bool GameScene::Start()
 {
 	switch (initStep) {
 	case InitStep_Load:	
+		//完全にモデルデータを開放する。
+		//SkinModelDataResources().Release();
 		g_fade->StartFadeIn();
 		//unityChanInstance = NewGO<UnityChanInstance>(0);
 		map = NewGO<Map>(0);
@@ -132,6 +134,12 @@ void GameScene::Update()
 		gameOverTimer += GameTime().GetFrameDeltaTime();
 		if (gameOverTimer > 6.0f) {
 			//死亡して2秒以上経過した。
+			g_fade->StartFadeOut();
+			state = State_WaitFadeOut;
+		}
+		break;
+	case State_WaitFadeOut:
+		if (!g_fade->IsExecute()) {
 			DeleteGO(this);
 			g_nowLoading->SetActiveFlag(true);
 			gameScene = NewGO<GameScene>(0);

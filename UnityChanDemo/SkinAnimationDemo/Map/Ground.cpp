@@ -27,8 +27,7 @@ bool Ground::Start()
 			skinModel.Init(skinModelData.GetBody());
 			skinModel.SetLight(&gameScene->GetDefaultLight());
 			CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("Grass.tga");
-			normalMap.Load("Assets/modelData/Grass_Normals.tga");
-			mat->SetTexture("g_normalTexture", &normalMap);
+			mat->SetTexture("g_normalTexture", TextureResources().Load("Assets/modelData/Grass_Normals.tga"));
 			skinModel.SetHasNormalMap(true);
 			skinModel.SetShadowReceiverFlag(true);
 			skinModel.SetShadowCasterFlag(true);

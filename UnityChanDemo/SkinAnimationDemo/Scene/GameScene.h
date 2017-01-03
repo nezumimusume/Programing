@@ -45,6 +45,7 @@ private:
 	enum State {
 		State_Play,	//ゲームプレイ中。
 		State_Over,	//ゲームオーバー。
+		State_WaitFadeOut,	//フェードアウト待ち。
 	};
 	Map*				map = NULL;
 	Ground*				ground = NULL;

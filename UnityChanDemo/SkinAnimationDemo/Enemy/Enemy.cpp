@@ -32,21 +32,21 @@ bool Enemy::Start()
 		OnLoadedSkinModelData();
 		//マテリアルを取得。
 		const std::vector<CSkinModelMaterial*> materials = skinModelData.GetBody()->GetSkinModelMaterials();
-		specMapList.resize(materials.size());
-		normalMapList.resize(materials.size());
 		int i = 0;
 		for (CSkinModelMaterial* mat : materials) {
 			char work[256];
 			strcpy(work, mat->GetMaterialName());
 			strtok(work, ".");
 			sprintf(modelFilePath, "Assets/modelData/%s_n.png", work);
-			if (normalMapList[i].Load(modelFilePath)) {
-				mat->SetTexture("g_normalTexture", &normalMapList[i]);
+			CTexture* tex = TextureResources().Load(modelFilePath);
+			if (tex) {
+				mat->SetTexture("g_normalTexture", tex);
 				skinModel.SetHasNormalMap(true);
 			}
 			sprintf(modelFilePath, "Assets/modelData/%s_s.png", work);
-			if (specMapList[i].Load(modelFilePath)) {
-				mat->SetTexture("g_speculerMap", &specMapList[i]);
+			tex = TextureResources().Load(modelFilePath);
+			if (tex) {
+				mat->SetTexture("g_speculerMap", tex);
 				skinModel.SetHasSpeculerMap(true);
 			}
 

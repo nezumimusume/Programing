@@ -120,21 +120,18 @@ bool Player::Start()
 			//スキンモデルの読み込み完了。
 			lockOn2D = NewGO<LockOn2D>(1);
 
-			normalMap.Load("Assets/modelData/Thethief_N.tga");
-			specMap.Load("Assets/modelData/Thethief_S.tga");
-			weaponNormalMap.Load("Assets/modelData/Thethief_wuqi_N.tga");
-			weaponSpecMap.Load("Assets/modelData/Thethief_wuqi_S.tga");
 			//体のマテリアルを取得。
 			CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("Thethief_D.tga");
+			
 			if (mat != NULL) {
-				mat->SetTexture("g_normalTexture", &normalMap);
-				mat->SetTexture("g_speculerMap", &specMap);
+				mat->SetTexture("g_normalTexture", TextureResources().Load("Assets/modelData/Thethief_N.tga"));
+				mat->SetTexture("g_speculerMap", TextureResources().Load("Assets/modelData/Thethief_S.tga"));
 			}
 			//武器のマテリアルを取得。
 			mat = skinModelData.GetBody()->FindMaterial("Thethief_wuqi_D.tga");
 			if (mat != NULL) {
-				mat->SetTexture("g_normalTexture", &weaponNormalMap);
-				mat->SetTexture("g_speculerMap", &weaponSpecMap);
+				mat->SetTexture("g_normalTexture", TextureResources().Load("Assets/modelData/Thethief_wuqi_N.tga"));
+				mat->SetTexture("g_speculerMap", TextureResources().Load("Assets/modelData/Thethief_wuqi_S.tga"));
 			}
 			skinModel.Init(skinModelData.GetBody());
 			skinModel.SetLight(&gameScene->GetDefaultLight());
@@ -171,6 +168,7 @@ bool Player::Start()
 			animation.SetAnimationLoopFlag(AnimationAttack_02, false);
 			animation.SetAnimationLoopFlag(AnimationDamage, false);
 			animation.SetAnimationLoopFlag(AnimationDeath, false);
+			animation.PlayAnimation(AnimationStand);
 			nextAttackAnimNo = AnimationInvalid;
 			reqAttackAnimNo = AnimationInvalid;
 

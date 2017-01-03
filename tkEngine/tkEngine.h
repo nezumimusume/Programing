@@ -15,6 +15,7 @@
 #include "tkEngine/graphics/tkGraphicsConfig.h"
 #include "tkEngine/particle/tkParticleResources.h"
 #include "tkEngine/resource/tkSkinModelDataResources.h"
+#include "tkEngine/resource/tkTextureResources.h"
 #include "tkEngine/Sound/tkSoundEngine.h"
 #include "tkEngine/Physics/tkPhysics.h"
 
@@ -208,6 +209,13 @@ namespace tkEngine{
 			return m_skinModelDataResources;
 		}
 		/*!
+		* @brief	テクスチャリソースを取得。
+		*/
+		CTextureResources& GetTextureResources()
+		{
+			return m_textureResources;
+		}
+		/*!
 		* @brief	サウンドエンジンの取得。
 		*/
 		CSoundEngine& GetSoundEngine()
@@ -271,6 +279,7 @@ namespace tkEngine{
 		CParticleResources						m_particleResource;			//!<パーティクルのリソース管理。
 		CFont									m_fpsFont;					//!<FPSを表示するデバッグフォント。
 		CSkinModelDataResources					m_skinModelDataResources;	//!<スキンモデルデータリソース。
+		CTextureResources						m_textureResources;			//!<テクスチャリソース。
 		CSoundEngine							m_soundEngine;				//!<サウンドエンジン。
 		CPhysicsWorld							m_physicsWorld;				//!<物理ワールド。
 	};
@@ -317,6 +326,10 @@ namespace tkEngine{
 	static inline CSkinModelDataResources& SkinModelDataResources()
 	{
 		return CEngine::Instance().GetSkinModelDataResources();
+	}
+	static inline CTextureResources& TextureResources()
+	{
+		return CEngine::Instance().GetTextureResources();
 	}
 	static inline CSoundEngine& SoundEngine()
 	{

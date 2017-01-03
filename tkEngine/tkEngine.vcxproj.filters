@@ -269,6 +269,9 @@
     <ClCompile Include="camera\tkCameraCollisionSolver.cpp">
       <Filter>Source Files\camera</Filter>
     </ClCompile>
+    <ClCompile Include="resource\tkTextureResources.cpp">
+      <Filter>Source Files\resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -513,6 +516,9 @@
     </ClInclude>
     <ClInclude Include="graphics\tkAtmosphericScatteringParam.h">
       <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="resource\tkTextureResources.h">
+      <Filter>Source Files\resource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

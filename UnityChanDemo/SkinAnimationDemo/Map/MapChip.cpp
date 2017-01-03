@@ -35,21 +35,22 @@ bool MapChip::Start()
 		skinModel.SetShadowReceiverFlag(true);
 		char filePath[256];
 		const std::vector<CSkinModelMaterial*> materials = skinModelData.GetBody()->GetSkinModelMaterials();
-		specMapList.resize(materials.size());
-		normalMapList.resize(materials.size());
+	
 		int i = 0;
 		for (CSkinModelMaterial* mat : materials) {
 			char work[256];
 			strcpy(work, mat->GetMaterialName());
 			strtok(work, ".");
 			sprintf(filePath, "Assets/modelData/%s_n.png", work);
-			if (normalMapList[i].Load(filePath)) {
-				mat->SetTexture("g_normalTexture", &normalMapList[i]);
+			CTexture* tex = TextureResources().Load(filePath);
+			if (tex) {
+				mat->SetTexture("g_normalTexture", tex);
 				skinModel.SetHasNormalMap(true);
 			}
 			sprintf(filePath, "Assets/modelData/%s_s.png", work);
-			if (specMapList[i].Load(filePath)) {
-				mat->SetTexture("g_speculerMap", &specMapList[i]);
+			tex = TextureResources().Load(filePath);
+			if (tex) {
+				mat->SetTexture("g_speculerMap", tex);
 				skinModel.SetHasSpeculerMap(true);
 			}
 

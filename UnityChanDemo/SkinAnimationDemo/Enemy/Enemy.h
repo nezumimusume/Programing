@@ -135,8 +135,6 @@ protected:
 	CVector3						moveDirection;		//進行方向。
 	CVector3						direction;			//向き。
 	int								hp;					//体力。
-	std::vector<CTexture>			specMapList;		//スペキュラマップ。
-	std::vector<CTexture>			normalMapList;		//法線マップ。
 	const EnemyParam*				enemyParam;			//敵のパラメータ。
 	CVector3						initPosition;			//初期位置。
 	AnimationEventController		animationEventController;	//アニメーションイベントコントローラー。

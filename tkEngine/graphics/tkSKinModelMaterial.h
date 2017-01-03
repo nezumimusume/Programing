@@ -37,9 +37,11 @@ namespace tkEngine{
 		 */
 		void SetTexture( const char* paramName, CTexture* texture )
 		{
-			int hash = CUtil::MakeHash(paramName);
-			textureMap.insert(std::pair<int, SShaderTextureParam>(hash, { paramName, texture }));
-			isDirty = true;
+			if (texture) {
+				int hash = CUtil::MakeHash(paramName);
+				textureMap.insert(std::pair<int, SShaderTextureParam>(hash, { paramName, texture }));
+				isDirty = true;
+			}
 		}
 		/*!
 		 *@brief	マテリアル名を取得。

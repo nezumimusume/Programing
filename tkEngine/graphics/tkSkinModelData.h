@@ -221,6 +221,7 @@ namespace tkEngine{
 		std::vector<CSkinModelMaterial*>	m_materials;					//マテリアル。
 		bool								m_isLoadEnd = false;
 		std::thread							m_loadThread;		//読み込みスレッド
+		const CSkinModelData*						m_original = nullptr;
 	};
 }
 

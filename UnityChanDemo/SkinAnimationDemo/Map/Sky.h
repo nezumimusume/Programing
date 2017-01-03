@@ -7,7 +7,6 @@ class Sky : public IGameObject {
 	};
 	CSkinModelDataHandle	skinModelData;		//スキンモデルデータ。
 	CSkinModel				skinModel;			//スキンモデル。
-	CTexture				skyCubeMap;			//空用のキューブマップ。
 	CAnimation				animation;			//アニメーション。
 	CLight					light;				//ライト。
 	CTexture				normalMap;

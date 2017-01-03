@@ -78,6 +78,16 @@ namespace tkEngine{
 		* @brief	非同期読み込みスレッドから呼ばれる更新関数。
 		*/
 		void UpdateAsyncLoadThread();
+		/*!
+		* @brief	CSkinModelDataのリリースを破棄。
+		*/
+		void Release()
+		{
+			m_cs.Lock();
+			m_instancingModelDataList.clear();
+			m_skinModelDataMap.clear();
+			m_cs.Unlock();
+		}
 	private:
 		/*!
 		 * @brief	非同期読み込みリクエスト

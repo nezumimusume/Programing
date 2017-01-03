@@ -11,6 +11,7 @@ namespace tkEngine{
 	void CAnimation::Init(ID3DXAnimationController* anim)
 	{
 		pAnimController = anim;
+		pAnimController->AddRef();
 		ID3DXAnimationSet* animSet;
 		pAnimController->GetAnimationSet(0, &animSet);
 		numAnimSet = pAnimController->GetMaxNumAnimationSets();

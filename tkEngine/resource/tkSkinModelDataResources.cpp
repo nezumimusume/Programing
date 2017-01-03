@@ -99,7 +99,7 @@ namespace tkEngine{
 	
 	void CSkinModelDataResources::Update()
 	{
-		if (m_cs.TryLock()) {
+		/*if (m_cs.TryLock()) {
 			//参照カウンタが1になっているCSkinModelDataをガベージコレクト。
 			std::vector<CSkinModelDataMap::iterator>	deleteItList;
 			for (
@@ -129,7 +129,6 @@ namespace tkEngine{
 				}
 			}
 			m_cs.Unlock();
-		}
-		
+		}*/
 	}
 }
