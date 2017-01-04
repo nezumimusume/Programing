@@ -18,6 +18,7 @@ class Sky : public IGameObject {
 	CLight					sunLight;			//ライト。
 	CSkinModelDataHandle	sunModelData;		//太陽のモデルデータ。
 	CSkinModel				sunModel;			//太陽のモデル。
+	CVector3				sunDir;				//太陽の方向。
 public:
 	Sky();
 	
@@ -38,5 +39,14 @@ public:
 		return atomosphereParam;
 	}
 	void Render(CRenderContext& renderContext) override;
+	/*!
+	* @brief	太陽の方向を取得。
+	* @details
+	*  惑星の中心から見た場合の太陽の方向です。
+	*/
+	const CVector3& GetSunDir() const
+	{
+		return sunDir;
+	}
 	
 };

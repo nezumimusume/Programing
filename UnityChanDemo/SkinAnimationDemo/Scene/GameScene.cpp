@@ -34,21 +34,6 @@ EnemyManager* g_enemyManager = NULL;
 
 GameScene::GameScene()
 {
-	defaultLight.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
-	defaultLight.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
-	defaultLight.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
-	defaultLight.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
-
-
-	defaultLight.SetDiffuseLightColor(0, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
-	defaultLight.SetDiffuseLightColor(1, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
-	defaultLight.SetDiffuseLightColor(2, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
-	defaultLight.SetDiffuseLightColor(3, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
-	//アンビエントライトはSky.cppで計算されているため、ここで設定を変えても変わらないので注意。
-	//defaultLight.SetAmbinetLight(CVector3(0.2f, 0.2f, 0.2f));
-
-	defaultLight.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
-	defaultLight.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
 }
 GameScene::~GameScene()
 {
@@ -68,6 +53,7 @@ void GameScene::OnDestroy()
 	DeleteGO(g_camera);
 	DeleteGO(&bgmSoundSource);
 	DeleteGO(gameOver2D);
+	DeleteGO(&inGameLight);
 }
 bool GameScene::Start()
 {
@@ -77,6 +63,7 @@ bool GameScene::Start()
 		//SkinModelDataResources().Release();
 		g_fade->StartFadeIn();
 		//unityChanInstance = NewGO<UnityChanInstance>(0);
+		AddGO(0, &inGameLight);
 		map = NewGO<Map>(0);
 		ground = NewGO<Ground>(0);
 		g_enemyManager = NewGO<EnemyManager>(0);

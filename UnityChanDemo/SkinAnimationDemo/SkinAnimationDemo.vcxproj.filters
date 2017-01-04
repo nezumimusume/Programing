@@ -33,6 +33,9 @@
     <Filter Include="Source Files\ScreenEffect">
       <UniqueIdentifier>{a71ee11f-9054-4b30-b14c-d9a00c49df49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Light">
+      <UniqueIdentifier>{85d136dc-fba9-4c29-b63e-e2865638cf1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -148,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="ScreenEffect\Fade.cpp">
       <Filter>Source Files\ScreenEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Light\InGameLight.cpp">
+      <Filter>Source Files\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -276,6 +282,9 @@
     </ClInclude>
     <ClInclude Include="ScreenEffect\Fade.h">
       <Filter>Source Files\ScreenEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Light\InGameLight.h">
+      <Filter>Source Files\Light</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

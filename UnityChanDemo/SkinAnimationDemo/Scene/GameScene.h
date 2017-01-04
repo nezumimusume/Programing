@@ -5,6 +5,7 @@
 #pragma once
 
 #include "tkEngine/Sound/tkSoundSource.h"
+#include "Light/InGameLight.h"
 
 class Map;
 class Ground;
@@ -35,7 +36,7 @@ public:
 	//デフォルトライトの取得。
 	CLight& GetDefaultLight()
 	{
-		return defaultLight;
+		return inGameLight.GetDefaultLight();
 	}
 private:
 	enum InitStep {
@@ -58,7 +59,7 @@ private:
 	State				state = State_Play;
 	float				gameOverTimer = 0.0f;
 	GameOver2D*			gameOver2D = NULL;
-	CLight				defaultLight;		//デフォルトライト。
+	InGameLight			inGameLight;		//インゲームライト。
 };
 
 extern GameScene* gameScene;
