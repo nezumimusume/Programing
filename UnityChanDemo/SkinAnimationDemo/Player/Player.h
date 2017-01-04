@@ -27,7 +27,6 @@ private:
 	};
 public:
 	enum EMagicSkill{
-		eMagicSkillNone,			//!<魔法スキルなし。
 		eMagicSkillDash,			//!<ダッシュ力強化。
 		eMagicSkillSlow,			//!<周りがスローモーション。
 		eMagicSkillStopTheWorld,	//!<時間停止。
@@ -261,6 +260,6 @@ private:
 	PlayerStateStand		standState;							//待機ステート。
 	LockOn2D*				lockOn2D = NULL;							//ロックオン2D
 	InitStep				initStep = InitStep_LoadModelData;	//初期化ステップ。
-	EMagicSkill				currentMagicSkill = eMagicSkillNone;		//現在スロットにセットされている魔法。
+	EMagicSkill				currentMagicSkill = eMagicSkillDash;		//現在スロットにセットされている魔法。
 
 };
