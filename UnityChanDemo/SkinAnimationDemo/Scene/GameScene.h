@@ -14,6 +14,7 @@ class PlayerMPBar;
 class Sky;
 class UnityChanInstance;
 class GameOver2D;
+class MagicSkill2D;
 
 class GameScene : public IGameObject{
 public:
@@ -59,6 +60,7 @@ private:
 	State				state = State_Play;
 	float				gameOverTimer = 0.0f;
 	GameOver2D*			gameOver2D = NULL;
+	MagicSkill2D*		magicSkill2D = NULL;
 	InGameLight			inGameLight;		//インゲームライト。
 };
 

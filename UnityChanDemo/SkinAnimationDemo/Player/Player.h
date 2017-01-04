@@ -26,6 +26,16 @@ private:
 		InitStep_WaitModelData,
 	};
 public:
+	enum EMagicSkill{
+		eMagicSkillNone,			//!<魔法スキルなし。
+		eMagicSkillDash,			//!<ダッシュ力強化。
+		eMagicSkillSlow,			//!<周りがスローモーション。
+		eMagicSkillStopTheWorld,	//!<時間停止。
+		eMagicSkillStealth,		//!<透明化。
+		eMagicSkillHighJump,		//!<ジャンプ力強化。
+		eMagicSkillNum,			//!<マジックスキルの数。
+	};
+	
 	enum AnimationNo {
 		AnimationInvalid = -1,
 		AnimationStand,		//立ち。
@@ -136,6 +146,13 @@ public:
 	{
 		return maxMP;
 	}
+	/*!
+	 * @brief	現在スロットにセットされている魔法を取得。
+	 */
+	EMagicSkill GetCurrentMagicSkill() const
+	{
+		return currentMagicSkill;
+	}
 private:
 	/*!
 	* @brief	血しぶきのパーティクルをエミット。
@@ -195,7 +212,12 @@ private:
 	* @brief	旋回処理。
 	*/
 	void Turn();
+	/*!
+	* @brief	スロットに設定されている魔法を更新。
+	*/
+	void UpdateCurrentMagicSkill();
 private:
+
 	friend class PlayerStateAttack;
 	friend class PlayerStateDamage;
 	friend class PlayerStateDead;
@@ -239,5 +261,6 @@ private:
 	PlayerStateStand		standState;							//待機ステート。
 	LockOn2D*				lockOn2D = NULL;							//ロックオン2D
 	InitStep				initStep = InitStep_LoadModelData;	//初期化ステップ。
+	EMagicSkill				currentMagicSkill = eMagicSkillNone;		//現在スロットにセットされている魔法。
 
 };

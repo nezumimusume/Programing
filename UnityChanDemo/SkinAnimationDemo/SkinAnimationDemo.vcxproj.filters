@@ -155,6 +155,9 @@
     <ClCompile Include="Light\InGameLight.cpp">
       <Filter>Source Files\Light</Filter>
     </ClCompile>
+    <ClCompile Include="HUD\MagicSkill2D.cpp">
+      <Filter>Source Files\HUD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -285,6 +288,9 @@
     </ClInclude>
     <ClInclude Include="Light\InGameLight.h">
       <Filter>Source Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD\MagicSkill2D.h">
+      <Filter>Source Files\HUD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

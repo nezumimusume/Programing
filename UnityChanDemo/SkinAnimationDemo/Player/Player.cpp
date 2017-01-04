@@ -490,6 +490,24 @@ void Player::ChangeState(EnState nextState)
 	
 }
 /*!
+* @brief	スロットに設定されている魔法を更新。
+*/
+void Player::UpdateCurrentMagicSkill()
+{
+	if (Pad(0).IsTrigger(enButtonRB1)) {
+		currentMagicSkill = (EMagicSkill)((currentMagicSkill + 1) % eMagicSkillNum);
+	}
+	else if (Pad(0).IsTrigger(enButtonLB1)) {
+		int t = currentMagicSkill - 1;
+		if (t < 0) {
+			currentMagicSkill = (EMagicSkill)(eMagicSkillNum - 1);
+		}
+		else {
+			currentMagicSkill = (EMagicSkill)t;
+		}
+	}
+}
+/*!
 * @brief	描画。
 */
 void Player::Render(CRenderContext& renderContext)
@@ -517,6 +535,8 @@ void Player::Update()
 	skinModel.Update(position, rotation, CVector3::One);
 	//ポイントライトを更新。
 	UpdatePointLight();
+	//スロットに設定されている魔法を更新。
+	UpdateCurrentMagicSkill();
 
 	lastFrameState = state;
 }

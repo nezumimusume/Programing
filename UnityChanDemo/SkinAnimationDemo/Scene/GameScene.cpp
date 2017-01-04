@@ -23,6 +23,7 @@
 #include "HUD/GameOver2D.h"
 #include "tkEngine/graphics/tkAtmosphericScatteringParam.h"
 #include "ScreenEffect/Fade.h"
+#include "HUD/MagicSkill2D.h"
 
 CPhysicsWorld* g_physicsWorld = NULL;
 Player* g_player = NULL;
@@ -54,6 +55,7 @@ void GameScene::OnDestroy()
 	DeleteGO(&bgmSoundSource);
 	DeleteGO(gameOver2D);
 	DeleteGO(&inGameLight);
+	DeleteGO(magicSkill2D);
 }
 bool GameScene::Start()
 {
@@ -69,6 +71,7 @@ bool GameScene::Start()
 		g_enemyManager = NewGO<EnemyManager>(0);
 		playerHPBar = NewGO<PlayerHPBar>(0);
 		playerMPBar = NewGO<PlayerMPBar>(0);
+		magicSkill2D = NewGO<MagicSkill2D>(0);
 		g_damageCollisionWorld = NewGO<DamageCollisionWorld>(0);
 		g_player = NewGO<Player>(0);
 		sky = NewGO<Sky>(0);

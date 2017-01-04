@@ -9,8 +9,8 @@
 namespace {
 	const CVector2 mpGaugeMaxSize = { 245.0f, 31.5f };
 	const CVector2 mpBarMaxSize = { 230.5f, 14.2f };
-	const CVector2 mpBarPos = { -592.95f, 278.0f };
-	const CVector2 mpGaugePos = { -600.0f, 278.0f };
+	const CVector2 mpBarPos = { -592.95f + 80, 278.0f - 3 };
+	const CVector2 mpGaugePos = { -600.0f + 80, 278.0f - 3 };
 }
 PlayerMPBar::PlayerMPBar()
 {

@@ -9,8 +9,8 @@
 namespace {
 	const CVector2 hpGaugeMaxSize = { 245.0f, 31.5f };
 	const CVector2 hpBarMaxSize = { 230.5f, 14.2f };
-	const CVector2 hpBarPos = { -592.95f, 320.0f };
-	const CVector2 hpGaugePos = { -600.0f, 320.0f };
+	const CVector2 hpBarPos = { -592.95f + 80, 320.0f - 3 };
+	const CVector2 hpGaugePos = { -600.0f + 80, 320.0f - 3 };
 }
 PlayerHPBar::PlayerHPBar()
 {
