@@ -150,9 +150,9 @@ private:
 	*/
 	void Damage();
 	/*!
-	* @brief	ポイントライトの位置を更新。
+	* @brief	ポイントライトを更新。
 	*/
-	void UpdatePointLightPosition();
+	void UpdatePointLight();
 	/*!
 	* @brief	アニメーションコントロール。
 	*/
