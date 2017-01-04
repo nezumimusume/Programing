@@ -103,6 +103,10 @@ namespace tkEngine{
 			TK_ASSERT(false, "Faild CreateMasteringVoice");
 			return;
 		}
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+		//@todo for debug
+//		m_masteringVoice->SetVolume(0.0f);
+#endif
 		//サウンドデバイスの情報を取得。
 		XAUDIO2_DEVICE_DETAILS details;
 		if (FAILED(hr = m_xAudio2->GetDeviceDetails(0, &details)))

@@ -36,6 +36,9 @@
     <Filter Include="Source Files\Light">
       <UniqueIdentifier>{85d136dc-fba9-4c29-b63e-e2865638cf1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Player\MagicSkill">
+      <UniqueIdentifier>{a1c9a305-d96e-459f-96cc-b981ca31e2f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -157,6 +160,18 @@
     </ClCompile>
     <ClCompile Include="HUD\MagicSkill2D.cpp">
       <Filter>Source Files\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\MagicSkill\IMagicSkill.cpp">
+      <Filter>Source Files\Player\MagicSkill</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\MagicSkill\MagicSkillDash.cpp">
+      <Filter>Source Files\Player\MagicSkill</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\MagicSkill\MagicSkillSlow.cpp">
+      <Filter>Source Files\Player\MagicSkill</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\MagicSkill\MagicSkillStop.cpp">
+      <Filter>Source Files\Player\MagicSkill</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -291,6 +306,18 @@
     </ClInclude>
     <ClInclude Include="HUD\MagicSkill2D.h">
       <Filter>Source Files\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\MagicSkill\IMagicSkill.h">
+      <Filter>Source Files\Player\MagicSkill</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\MagicSkill\MagicSkillDash.h">
+      <Filter>Source Files\Player\MagicSkill</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\MagicSkill\MagicSkillSlow.h">
+      <Filter>Source Files\Player\MagicSkill</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\MagicSkill\MagicSkillStop.h">
+      <Filter>Source Files\Player\MagicSkill</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

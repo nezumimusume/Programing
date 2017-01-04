@@ -27,7 +27,7 @@ void EnemyStateSearch::Update()
 {
 	m_localStates[m_localState]->Update();
 	if(m_localState == enLocalState_Walk){
-		timer += GameTime().GetFrameDeltaTime();
+		timer += enemy->GetLocalFrameDeltaTime();
 		if (timer > 2.0f) {
 			//1秒間に50%の確率で待機状態に遷移する。。
 			if (g_random.GetRandDouble() < 0.5f) {
@@ -36,7 +36,7 @@ void EnemyStateSearch::Update()
 			timer = 0.0f;
 		}
 	}else{
-		timer += GameTime().GetFrameDeltaTime();
+		timer += enemy->GetLocalFrameDeltaTime();
 		if (timer > 2.0f) {
 			//1秒間に50%の確率で方向転換。
 			if (g_random.GetRandDouble() < 0.5f) {

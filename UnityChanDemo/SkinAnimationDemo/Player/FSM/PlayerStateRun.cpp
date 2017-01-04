@@ -53,31 +53,7 @@ void PlayerStateRun::Update()
 	moveDir.z = cameraX.z * moveDirLocal.x + cameraZ.z * moveDirLocal.z;
 
 	float fMoveSpeed = MOVE_SPEED;
-	bool isDash = false;
-	if (Pad(0).IsPress(enButtonRB2)) {
-		//MPの残量を見てダッシュできるか調べる。
-		float useMp = USE_MP_DASH * GameTime().GetFrameDeltaTime();
-		if (player->mp - useMp >= 0.0f) {
-			//MP使える。
-			isDash = true;
-		}
-		player->UseMagicPoint(useMp);
-	}
-
-	if (isDash) {
-		//ダッシュ中可能か調べる。
-		fMoveSpeed *= 1.7f;
-		g_camera->SetViewAngle(CMath::DegToRad(60.0f));
-		g_camera->SetDampingRate(0.9f);
-		player->animation.SetAnimationSpeedRate(1.4f);
-		MotionBlur().SetEnable(true);
-	}
-	else {
-		g_camera->SetViewAngle(CMath::DegToRad(70.0f));
-		g_camera->SetDampingRate(0.9f);
-		player->animation.SetAnimationSpeedRate(1.0f);
-		MotionBlur().SetEnable(false);
-	}
+	
 	moveSpeed.x = moveDir.x * fMoveSpeed;
 	moveSpeed.z = moveDir.z * fMoveSpeed;
 
@@ -85,20 +61,10 @@ void PlayerStateRun::Update()
 		//立ち状態に遷移。
 		player->ChangeState(player->enStateStand);
 	}
-	//else {
-	//	if (player->isLockOn) {
-	//		//ロックオン中。
-	//		CVector3 toEnemy;
-	//		toEnemy.Subtract(player->lockOnEnemy->GetPosition(), player->GetPosition());
-	//		player->rotation.SetRotation(CVector3::Up, atan2f(toEnemy.x, toEnemy.z));
-	//	}
-	//	else {
-	//		player->rotation.SetRotation(CVector3::Up, atan2f(moveDir.x, moveDir.z));
-	//	}
-	//}
+	
 	bool isOnGround = player->characterController.IsOnGround();
 	player->characterController.SetMoveSpeed(moveSpeed);
-	player->characterController.Execute();
+	player->characterController.Execute(player->GetLocalFrameDeltaTime());
 	if (isOnGround == false
 		&& player->characterController.IsOnGround()
 		) {

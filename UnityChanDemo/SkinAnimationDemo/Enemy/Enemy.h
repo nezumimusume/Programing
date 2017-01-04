@@ -112,6 +112,21 @@ public:
 	{
 		return height;
 	}
+	/*!
+	* @brief	ローカル⊿タイムを取得。
+	*/
+	float GetLocalFrameDeltaTime() const
+	{
+		return GameTime().GetFrameDeltaTime() * deltaTimeMul;
+	}
+	/*!
+	* @brief	⊿タイムに乗算される値を設定。
+	*@param[in]	mul		グローバル⊿タイムに乗算される値。この値に0.5を設定するとエネミーの挙動が0.5倍速になります。
+	*/
+	void SetFrameDeltaTimeMul(float mul)
+	{
+		deltaTimeMul = mul;
+	}
 private:
 	/*!
 	* @brief	AABBの中心座標とハーフサイズを計算。
@@ -142,7 +157,8 @@ protected:
 	float							height;
 	float							radius;
 	float							timer = 0.0f;
-	CObjectFrustumCulling			objectCulling;		//オブジェクトのカリング処理。
-	CAabb							aabb;				//オブジェクトを内包するAABB
+	CObjectFrustumCulling			objectCulling;			//オブジェクトのカリング処理。
+	CAabb							aabb;					//オブジェクトを内包するAABB
 	char							modelFilePath[1024];
+	float							deltaTimeMul = 1.0f;	//⊿タイムに乗算される値。
 };

@@ -33,6 +33,7 @@ EnemyStateFind::~EnemyStateFind()
 }
 void EnemyStateFind::Update()
 {
+	
 	m_localStates[m_localState]->Update();
 	CVector3 toPlayer;
 	toPlayer.Subtract(g_player->GetPosition(), enemy->GetPosition());
@@ -82,7 +83,7 @@ void EnemyStateFind::Update()
 		}
 	}
 	else if (m_localState == enLocalState_Idle) {
-		timer += GameTime().GetFrameDeltaTime();
+		timer += enemy->GetLocalFrameDeltaTime();
 		if (timer > 0.2f) {
 			CVector3 dist;
 			if (battleSeat != nullptr) {

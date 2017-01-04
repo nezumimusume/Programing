@@ -7,6 +7,10 @@
 #include "Player/FSM/PlayerStateDead.h"
 #include "Player/FSM/PlayerStateRun.h"
 #include "Player/FSM/PlayerStateStand.h"
+#include "Player/MagicSkill/IMagicSkill.h"
+#include "Player/MagicSkill/MagicSkillDash.h"
+#include "Player/MagicSkill/MagicSkillSlow.h"
+#include "Player/MagicSkill/MagicSkillStop.h"
 
 namespace tkEngine{
 	class CParticleEmitter;
@@ -14,6 +18,7 @@ namespace tkEngine{
 
 class Enemy;
 class LockOn2D;
+
 /*!
  * @brief	プレイヤー。
  */
@@ -30,9 +35,9 @@ public:
 		eMagicSkillDash,			//!<ダッシュ力強化。
 		eMagicSkillSlow,			//!<周りがスローモーション。
 		eMagicSkillStopTheWorld,	//!<時間停止。
-		eMagicSkillStealth,		//!<透明化。
+		eMagicSkillStealth,			//!<透明化。
 		eMagicSkillHighJump,		//!<ジャンプ力強化。
-		eMagicSkillNum,			//!<マジックスキルの数。
+		eMagicSkillNum,				//!<マジックスキルの数。
 	};
 	
 	enum AnimationNo {
@@ -152,6 +157,27 @@ public:
 	{
 		return currentMagicSkill;
 	}
+	/*!
+	* @brief	プレイヤーの内部⊿タイムを設定。
+	*/
+	void SetLocalFrameDeltaTime(float deltaTime)
+	{
+		localFrameDeltaTime = deltaTime;
+	}
+	/*!
+	* @brief	プレイヤーの内部⊿タイムを取得。
+	*/
+	float GetLocalFrameDeltaTime() const
+	{
+		return localFrameDeltaTime;
+	}
+	/*!
+	* @brief	マジックポイントを使用する。
+	*/
+	void UseMagicPoint(float useMp)
+	{
+		mp = max(0, mp - useMp);
+	}
 private:
 	/*!
 	* @brief	血しぶきのパーティクルをエミット。
@@ -187,13 +213,7 @@ private:
 	void UpdateBattleSeats();
 
 	void UpdateStateMachine();
-	/*!
-	* @brief	マジックポイントを使用する。
-	*/
-	void UseMagicPoint(float useMp)
-	{
-		mp = max(0, mp - useMp);
-	}
+	
 	/*!
 	* @brief	マジックポイントの回復。
 	*/
@@ -222,16 +242,16 @@ private:
 	friend class PlayerStateDead;
 	friend class PlayerStateRun;
 	friend class PlayerStateStand;
-
+	
 	CSkinModelDataHandle	skinModelData;
-	CSkinModel				skinModel;			//スキンモデル。
-	CAnimation				animation;			//アニメーション。
-	CVector3				position;			//座標。
-	CQuaternion				rotation;			//回転
-	CVector3				toLightPos;			//
-	CVector3				pointLightPosition;	//ポイントライトの位置。
-	CVector4				pointLightColor;	//ポイントライトのカラー。
-	CVector3				toLampLocalPos;		//ランプのローカル座標。
+	CSkinModel				skinModel;							//スキンモデル。
+	CAnimation				animation;							//アニメーション。
+	CVector3				position;							//座標。
+	CQuaternion				rotation;							//回転
+	CVector3				toLightPos;							//
+	CVector3				pointLightPosition;					//ポイントライトの位置。
+	CVector4				pointLightColor;					//ポイントライトのカラー。
+	CVector3				toLampLocalPos;						//ランプのローカル座標。
 	bool					isApplyDamageTrigger = false;
 	EnState					state;								//状態。
 	EnState					lastFrameState;						//前のフレームの状態。
@@ -245,8 +265,8 @@ private:
 	std::list<CParticleEmitter*>	particleEmitterList;
 	int						hp =  100;							//ヒットポイント。
 	int						maxHP = 100;						//最大ヒットポイント。
-	float					mp = 100.0f;						//マジックポイント。
-	float					maxMP = 100.0f;						//最大マジックポイント。
+	float					mp = 300.0f;						//マジックポイント。
+	float					maxMP = 300.0f;						//最大マジックポイント。
 	float					radius = 0.0f;
 	float					height = 0.0f;
 	float					magicPointRecoverTimer = 0.0f;		//マジックポイントの回復タイマー。
@@ -258,8 +278,12 @@ private:
 	PlayerStateDead			deadState;							//死亡ステート。
 	PlayerStateRun			runState;							//走りステート。
 	PlayerStateStand		standState;							//待機ステート。
-	LockOn2D*				lockOn2D = NULL;							//ロックオン2D
-	InitStep				initStep = InitStep_LoadModelData;	//初期化ステップ。
-	EMagicSkill				currentMagicSkill = eMagicSkillDash;		//現在スロットにセットされている魔法。
-
+	LockOn2D*				lockOn2D = NULL;						//ロックオン2D
+	InitStep				initStep = InitStep_LoadModelData;		//初期化ステップ。
+	EMagicSkill				currentMagicSkill = eMagicSkillDash;	//現在スロットにセットされている魔法。
+	IMagicSkill*			pCurrentMagicSkill = NULL;				//現在スロットにセットされている魔法。
+	MagicSkillDash			magicSkillDash;							//ダッシュ魔法。
+	MagicSkillSlow			magicSkillSlow;							//スロウ魔法。
+	MagicSkillStop			magicSkillStop;							//時間停止魔法。
+	float					localFrameDeltaTime = 0.0f;				//プレイヤーの内部⊿タイム(単位：秒)。
 };

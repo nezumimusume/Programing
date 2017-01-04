@@ -25,7 +25,7 @@ void EnemyStateDeath::Update()
 {
 	enemy->PlayAnimation(Enemy::enAnimDeath);
 	enemy->SetMoveSpeed(0.0f);
-	timer += GameTime().GetFrameDeltaTime();
+	timer += enemy->GetLocalFrameDeltaTime();
 	if(timer > 1.0f){
 		for (auto& p : particleEmitterList) {
 			DeleteGO(p);

@@ -65,6 +65,7 @@ namespace tkEngine{
 	struct SMotionBlurConfig {
 		bool isEnable;
 	};
+	
 	/*!
 	 * @brief	グラフィックスコンフィグ。
 	 */
@@ -76,6 +77,7 @@ namespace tkEngine{
 		SDofConfig				dofConfig;				//!<被写界深度のコンフィグ。
 		SAAConfig				aaConfig;				//!<アンチエイリアスのコンフィグ。
 		SMotionBlurConfig		motionBlurConfig;		//<!モーションブラーのコンフィグ。
+		
 	};
 }
 

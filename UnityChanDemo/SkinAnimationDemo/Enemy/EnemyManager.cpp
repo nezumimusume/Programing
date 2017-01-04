@@ -34,6 +34,12 @@ bool EnemyManager::Start()
 	}
 	return true;
 }
+void EnemyManager::SetFrameDeltaTimeMul(float mul)
+{
+	for (auto e : enemyList) {
+		e->SetFrameDeltaTimeMul(mul);
+	}
+}
 void EnemyManager::Update()
 {
 }

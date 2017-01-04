@@ -10,6 +10,8 @@
 #include "tkEngine/graphics/postEffect/tkDOF.h"
 #include "tkEngine/graphics/postEffect/tkFxaa.h"
 #include "tkEngine/graphics/postEffect/tkMotionBlur.h"
+#include "tkEngine/graphics/postEffect/tkMonochromeFilter.h"
+#include "tkEngine/graphics/postEffect/tkSepiaFilter.h"
 
 namespace tkEngine{
 	/*!
@@ -55,12 +57,22 @@ namespace tkEngine{
 		{
 			return m_motionBlur;
 		}
+		CMonochromeFilter& GetMonochromeFilter()
+		{
+			return m_monochromeFilter;
+		}
+		CSepiaFilter& GetSepiaFilter()
+		{
+			return m_sepiaFilter;
+		}
 	private:
-		CEdgeRender		m_edgeRender;		//!<エッジ描画。
-		CBloomRender	m_bloomRender;		//!<Bloom。
-		CDof			m_dof;				//!<被写界深度
-		CFxaa			m_fxaa;				//!<FXAA
-		CMotionBlur		m_motionBlur;		//!<モーションブラー。
+		CEdgeRender			m_edgeRender;		//!<エッジ描画。
+		CBloomRender		m_bloomRender;		//!<Bloom。
+		CDof				m_dof;				//!<被写界深度
+		CFxaa				m_fxaa;				//!<FXAA
+		CMotionBlur			m_motionBlur;		//!<モーションブラー。
+		CMonochromeFilter	m_monochromeFilter;	//!<モノクロフィルタ。
+		CSepiaFilter		m_sepiaFilter;		//!<セピアフィルタ。
 		CPrimitive		m_fullscreenRenderPrim;	//!<フルスクリーンをレンダリングするためのプリミティブ。
 	};
 }

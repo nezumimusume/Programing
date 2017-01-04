@@ -36,7 +36,7 @@ void PlayerStateStand::Update()
 	}
 
 	player->characterController.SetMoveSpeed(moveSpeed);
-	player->characterController.Execute();
+	player->characterController.Execute(player->GetLocalFrameDeltaTime());
 	if (isOnGround == false
 		&& player->characterController.IsOnGround()
 		) {

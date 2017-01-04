@@ -72,6 +72,14 @@ void Enemy_00::Update()
 {
 	Enemy::Update();
 
+	if (GetLocalFrameDeltaTime() < FLT_EPSILON) {
+		//停止中はダメージ処理と行列の更新(呼ばないと影が書かれないから)は行う。
+		Damage();
+		if (!objectCulling.IsCulling()) {
+			skinModel.Update(position, rotation, CVector3::One);
+		}
+		return;
+	}
 	states[state]->Update();
 	switch (state) {
 	case enLocalState_Search:
@@ -106,14 +114,14 @@ void Enemy_00::Update()
 		speed.x = moveDirection.x * moveSpeed;
 		speed.z = moveDirection.z * moveSpeed;
 		characterController.SetMoveSpeed(speed);
-		characterController.Execute();
+		characterController.Execute(GetLocalFrameDeltaTime());
 		position = characterController.GetPosition();
 
 		//回転は適当に。
 		float angle = atan2f(direction.x, direction.z);
 		rotation.SetRotation(CVector3::AxisY, angle);
 	}
-	animation.Update(GameTime().GetFrameDeltaTime());
+	animation.Update(GetLocalFrameDeltaTime());
 //	light.SetPointLightPosition(g_player->GetPointLightPosition());
 //	light.SetPointLightColor(g_player->GetPointLightColor());
 	
@@ -122,7 +130,7 @@ void Enemy_00::Update()
 	}
 
 	if (state != enLocalState_Death) {
-		timer += GameTime().GetFrameDeltaTime();
+		timer += GetLocalFrameDeltaTime();
 		if (timer > 2.0f) {
 			if (g_random.GetRandDouble() < 0.2f) {
 				CSoundSource* se = NewGO<CSoundSource>(0);

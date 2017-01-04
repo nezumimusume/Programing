@@ -17,7 +17,7 @@ void PlayerStateAttack::Update()
 	CVector3 moveSpeed = player->characterController.GetMoveSpeed();
 	moveSpeed.Scale(0.8f);
 	player->characterController.SetMoveSpeed(moveSpeed);
-	player->characterController.Execute();
+	player->characterController.Execute(player->GetLocalFrameDeltaTime());
 	int currentAnimNo = player->animation.GetPlayAnimNo();
 	if (!player->animation.IsPlay() && player->nextAttackAnimNo == Player::AnimationInvalid) {
 		player->ChangeState(Player::enStateStand);

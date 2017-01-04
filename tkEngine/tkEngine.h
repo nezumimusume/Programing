@@ -187,6 +187,14 @@ namespace tkEngine{
 		{
 			return m_particleResource;
 		}
+		CMonochromeFilter& GetMonochromeFilter()
+		{
+			return m_postEffect.GetMonochromeFilter();
+		}
+		CSepiaFilter& GetSepiaFilter()
+		{
+			return m_postEffect.GetSepiaFilter();
+		}
 		/*!
 		* @brief	DOF‚ğæ“¾B
 		*/
@@ -338,6 +346,14 @@ namespace tkEngine{
 	static inline CPhysicsWorld& PhysicsWorld()
 	{
 		return CEngine::Instance().GetPhysicsWorld();
+	}
+	static inline CMonochromeFilter& MonochromeFilter()
+	{
+		return CEngine::Instance().GetMonochromeFilter();
+	}
+	static inline CSepiaFilter& SepiaFilter()
+	{
+		return CEngine::Instance().GetSepiaFilter();
 	}
 }
 

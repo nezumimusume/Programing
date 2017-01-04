@@ -97,8 +97,12 @@ Player::Player() :
 	standState(this),
 	damageState(this),
 	deadState(this),
-	runState(this)
+	runState(this),
+	magicSkillDash(this),
+	magicSkillSlow(this),
+	magicSkillStop(this)
 {
+	pCurrentMagicSkill = &magicSkillDash;
 	memset(battleSeats, 0, sizeof(battleSeats));
 }
 Player::~Player()
@@ -388,7 +392,7 @@ void Player::AnimationControl()
 			PlayAnimation(AnimationDeath, 0.1f);
 		}
 	}
-	animation.Update(GameTime().GetFrameDeltaTime());
+	animation.Update(localFrameDeltaTime);
 }
 /*!
 * @brief	バトルで使用するシートを初期化。
@@ -494,8 +498,10 @@ void Player::ChangeState(EnState nextState)
 */
 void Player::UpdateCurrentMagicSkill()
 {
+	bool isChangeMagic = false;
 	if (Pad(0).IsTrigger(enButtonRB1)) {
 		currentMagicSkill = (EMagicSkill)((currentMagicSkill + 1) % eMagicSkillNum);
+		isChangeMagic = true;
 	}
 	else if (Pad(0).IsTrigger(enButtonLB1)) {
 		int t = currentMagicSkill - 1;
@@ -505,6 +511,42 @@ void Player::UpdateCurrentMagicSkill()
 		else {
 			currentMagicSkill = (EMagicSkill)t;
 		}
+		isChangeMagic = true;
+	}
+	if (isChangeMagic) {
+		switch (currentMagicSkill) {
+		case eMagicSkillDash:
+			if (pCurrentMagicSkill != NULL) {
+				pCurrentMagicSkill->OnEndMagic();
+			}
+			pCurrentMagicSkill = &magicSkillDash;
+			pCurrentMagicSkill->OnChangeMagic();
+			break;
+		case eMagicSkillSlow:
+			if (pCurrentMagicSkill != NULL) {
+				pCurrentMagicSkill->OnEndMagic();
+			}
+			pCurrentMagicSkill = &magicSkillSlow;
+			pCurrentMagicSkill->OnChangeMagic();
+			break;
+		case eMagicSkillStopTheWorld:
+			if (pCurrentMagicSkill != NULL) {
+				pCurrentMagicSkill->OnEndMagic();
+			}
+			pCurrentMagicSkill = &magicSkillStop;
+			pCurrentMagicSkill->OnChangeMagic();
+			break;
+		case eMagicSkillStealth:
+			break;
+		case eMagicSkillHighJump:
+			break;
+		default:
+			TK_LOG("未実装\n");
+			break;
+		}
+	}
+	if (pCurrentMagicSkill != NULL) {
+		pCurrentMagicSkill->Update();
 	}
 }
 /*!
@@ -517,6 +559,9 @@ void Player::Render(CRenderContext& renderContext)
 
 void Player::Update()
 {
+	localFrameDeltaTime = GameTime().GetFrameDeltaTime();
+	//スロットに設定されている魔法を更新。
+	UpdateCurrentMagicSkill();
 	//ステートマシーンの更新。
 	UpdateStateMachine();
 	//旋回。
@@ -535,8 +580,7 @@ void Player::Update()
 	skinModel.Update(position, rotation, CVector3::One);
 	//ポイントライトを更新。
 	UpdatePointLight();
-	//スロットに設定されている魔法を更新。
-	UpdateCurrentMagicSkill();
+	
 
 	lastFrameState = state;
 }

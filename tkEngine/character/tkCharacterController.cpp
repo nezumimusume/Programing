@@ -119,15 +119,15 @@ namespace tkEngine {
 		PhysicsWorld().AddRigidBody(&m_rigidBody);
 
 	}
-	void CCharacterController::Execute()
+	void CCharacterController::Execute(float deltaTime)
 	{
 		//速度に重力加速度を加える。
-		m_moveSpeed.y += m_gravity * GameTime().GetFrameDeltaTime();
+		m_moveSpeed.y += m_gravity * deltaTime;
 		//次の移動先となる座標を計算する。
 		CVector3 nextPosition = m_position;
 		//速度からこのフレームでの移動量を求める。オイラー積分。
 		CVector3 addPos = m_moveSpeed;
-		addPos.Scale(GameTime().GetFrameDeltaTime());
+		addPos.Scale(deltaTime);
 		nextPosition.Add(addPos);
 		CVector3 originalXZDir = addPos;
 		originalXZDir.y = 0.0f;

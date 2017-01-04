@@ -32,6 +32,8 @@ namespace tkEngine{
 		m_dof.Create(config);
 		m_fxaa.Init(config);
 		m_motionBlur.Create(config);
+		m_monochromeFilter.Create(config);
+		m_sepiaFilter.Create(config);
 		static SShapeVertex_PT vertex[]{
 			{
 				-1.0f, 1.0f, 0.0f, 1.0f,
@@ -73,7 +75,8 @@ namespace tkEngine{
 		m_dof.Render(renderContext, this);
 		m_bloomRender.Render(renderContext, this);
 		m_fxaa.Render(renderContext, this);
-		
+		m_monochromeFilter.Render(renderContext, this);
+		m_sepiaFilter.Render(renderContext, this);
 	}
 	/*!
 	* @brief	フルスクリーン描画。

@@ -74,11 +74,20 @@ namespace tkEngine{
 		*/
 		void AddGameObject(GameObjectPrio prio, IGameObject* go, const char* objectName = nullptr)
 		{
-			go->Awake();
-			unsigned int hash = MakeGameObjectNameKey(objectName);
-			m_gameObjectListArray.at(prio).push_back(go);
-			go->m_isRegist = true;
-			go->m_priority = prio;
+			if (!go->m_isRegist) {
+				go->Awake();
+				unsigned int hash = MakeGameObjectNameKey(objectName);
+				m_gameObjectListArray.at(prio).push_back(go);
+				go->m_isRegist = true;
+				go->m_priority = prio;
+				go->m_isStart = false;
+				if (go->m_isDead) {
+					//死亡フラグが立っている。
+					//削除リストに入っていたらそこから除去する。
+					go->m_isDead = false;
+				}
+				
+			}
 		}
 		/*!
 		 *@brief	ゲームオブジェクトのnew
@@ -109,6 +118,7 @@ namespace tkEngine{
 				gameObject->SetDeadMark();
 				gameObject->OnDestroy();
 				gameObject->m_isRegist = false;
+				gameObject->m_isRegistDeadList = true;
 				m_deleteObjectArray[m_currentDeleteObjectBufferNo].at(gameObject->GetPriority()).push_back(gameObject);
 			}
 		}

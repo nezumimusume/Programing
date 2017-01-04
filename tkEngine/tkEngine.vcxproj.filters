@@ -272,6 +272,12 @@
     <ClCompile Include="resource\tkTextureResources.cpp">
       <Filter>Source Files\resource</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\postEffect\tkMonochromeFilter.cpp">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\postEffect\tkSepiaFilter.cpp">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -519,6 +525,12 @@
     </ClInclude>
     <ClInclude Include="resource\tkTextureResources.h">
       <Filter>Source Files\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\postEffect\tkMonochromeFilter.h">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\postEffect\tkSepiaFilter.h">
+      <Filter>Source Files\graphics\postEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

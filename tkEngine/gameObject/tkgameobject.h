@@ -116,43 +116,43 @@ namespace tkEngine{
 	public:
 		void PostRenderWrapper(CRenderContext& renderContext)
 		{
-			if (m_isActive && m_isStart && !m_isDead) {
+			if (m_isActive && m_isStart && !m_isDead && !m_isRegistDeadList) {
 				PostRender(renderContext);
 			}
 		}
 		void RenderWrapper(CRenderContext& renderContext) 
 		{
-			if (m_isActive && m_isStart && !m_isDead) {
+			if (m_isActive && m_isStart && !m_isDead && !m_isRegistDeadList) {
 				Render(renderContext);
 			}
 		}
 		void PreRenderWrapper(CRenderContext& renderContext)
 		{
-			if (m_isActive && m_isStart && !m_isDead) {
+			if (m_isActive && m_isStart && !m_isDead && !m_isRegistDeadList) {
 				PreRender(renderContext);
 			}
 		}
 		void PostUpdateWrapper()
 		{
-			if (m_isActive && m_isStart && !m_isDead) {
+			if (m_isActive && m_isStart && !m_isDead && !m_isRegistDeadList) {
 				PostUpdate();
 			}
 		}
 		void PreUpdateWrapper()
 		{
-			if (m_isActive && m_isStart && !m_isDead) {
+			if (m_isActive && m_isStart && !m_isDead && !m_isRegistDeadList) {
 				PreUpdate();
 			}
 		}
 		void UpdateWrapper()
 		{
-			if (m_isActive && m_isStart && !m_isDead) {
+			if (m_isActive && m_isStart && !m_isDead && !m_isRegistDeadList) {
 				Update();
 			}
 		}
 		void StartWrapper()
 		{
-			if (m_isActive && !m_isStart && !m_isDead) {
+			if (m_isActive && !m_isStart && !m_isDead && !m_isRegistDeadList) {
 				if (Start()) {
 					//初期化処理完了。
 					m_isStart = true;
@@ -173,6 +173,7 @@ namespace tkEngine{
 		GameObjectPrio	m_priority;			//!<実行優先度。
 		bool m_isStart;						//!<Startの開始フラグ。
 		bool m_isDead;						//!<死亡フラグ。
+		bool m_isRegistDeadList = false;	//!<死亡リストに積まれている。
 		bool m_isNewFromGameObjectManager;	//!<GameObjectManagerでnewされた。
 		bool m_isRegist = false;			//!<GameObjectManagerに登録されている？
 		bool m_isActive = true;				//!<Activeフラグ。
