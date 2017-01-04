@@ -7,6 +7,7 @@
 #include "Player/Player.h"
 #include "Enemy/EnemyManager.h"
 #include "Enemy/Enemy.h"
+#include "tkEngine/Sound/tkSoundSource.h"
 
 void MagicSkillStop::MagicSkillStopFinish::Update()
 {
@@ -42,6 +43,10 @@ void MagicSkillStop::OnChangeMagic()
 }
 void MagicSkillStop::OnStartMagic()
 {
+	//ŒÛ“®‰¹‚ğÄ¶
+	CSoundSource* s = NewGO<CSoundSource>(0);
+	s->Init("Assets/Sound/heartbeat.wav");
+	s->Play(false);
 	g_enemyManager->SetFrameDeltaTimeMul(0.0f);
 	MotionBlur().SetEnable(true);
 	MonochromeFilter().SetEnalbe(true);
