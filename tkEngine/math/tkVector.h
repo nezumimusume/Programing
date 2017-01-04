@@ -139,7 +139,7 @@ namespace tkEngine{
 		/*!
 		 * @brief	“àÏB
 		 */
-		float Dot( const CVector3& v )
+		float Dot( const CVector3& v ) const
 		{
 			return x * v.x + y * v.y + z * v.z;
 		}
