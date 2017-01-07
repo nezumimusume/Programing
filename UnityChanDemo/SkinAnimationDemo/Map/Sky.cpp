@@ -44,12 +44,10 @@ bool Sky::Start()
 void Sky::Update()
 {
 	sunAngle += 0.02f * GameTime().GetFrameDeltaTime();
-	
-	
 	sunPosition.Set(0.0f, sinf(sunAngle), cosf(sunAngle));
-	CMatrix mRotZ;
-	mRotZ.MakeRotationZ(CMath::PI * 0.15f);
-	mRotZ.Mul(sunPosition);
+	const float angleY = CMath::PI * -0.15f;
+	sunPosition.x = sunPosition.y * sinf(angleY);
+	sunPosition.y *= cosf(angleY);
 
 	sunDir = sunPosition;
 	sunPosition.Scale(1000000.0f);
