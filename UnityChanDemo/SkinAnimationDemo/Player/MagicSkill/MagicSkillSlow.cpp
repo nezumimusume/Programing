@@ -8,6 +8,8 @@
 #include "Enemy/EnemyManager.h"
 #include "Enemy/Enemy.h"
 #include "tkEngine/Sound/tkSoundSource.h"
+#include "Scene/gameScene.h"
+#include "Map/Sky.h"
 
 void MagicSkillSlow::MagicSkillStopFinish::Update()
 {
@@ -46,16 +48,29 @@ void MagicSkillSlow::OnStartMagic()
 	CSoundSource* s = NewGO<CSoundSource>(0);
 	s->Init("Assets/Sound/heartbeat.wav");
 	s->Play(false);
-	g_enemyManager->SetFrameDeltaTimeMul(0.3f);
-	MotionBlur().SetEnable(true);
+	const float deltaTimeMul = 0.3f;
+	g_enemyManager->SetFrameDeltaTimeMul(deltaTimeMul);
+	gameScene->GetSky()->SetFrameDeltaTimeMul(deltaTimeMul);
 	SepiaFilter().SetEnalbe(true);
+	
+	auto pauseSound = [](IGameObject* go) {
+		CSoundSource* s = (CSoundSource*)go;
+		s->Pause();
+	};
+	FindGameObjectsWithTag(
+		GameScene::enGameObjectTags_BGM | GameScene::enGameObjectTags_EnemySound,
+		pauseSound
+	);
+	
 	//終了処理が走っているかもしれないので削除。
 	DeleteGO(&m_finish);
 }
 void MagicSkillSlow::OnEndMagic()
 {
 	g_enemyManager->SetFrameDeltaTimeMul(1.0f);
-	MotionBlur().SetEnable(false);
+	gameScene->GetSky()->SetFrameDeltaTimeMul(1.0f);
+	//終了処理をゲームオブジェクトマネージャーに登録。
+	AddGO(0, &m_finish);
 	//ここでもマスクを描画しないと１フレームだけマスクがない状態で描画されてしまう。
 	SepiaFilter().RegistMaskSkinModel([](CRenderContext& renderContext) {
 		//プレイヤーをレンダリングしてマスクを作成する。
@@ -64,8 +79,15 @@ void MagicSkillSlow::OnEndMagic()
 			e->Render(renderContext);
 		}
 	});
-	//終了処理をゲームオブジェクトマネージャーに登録。
-	AddGO(0, &m_finish);
+	
+	auto resumeSound = [](IGameObject* go) {
+		CSoundSource* s = (CSoundSource*)go;
+		s->Play(s->GetLoopFlag());
+	};
+	FindGameObjectsWithTag(
+		GameScene::enGameObjectTags_BGM | GameScene::enGameObjectTags_EnemySound,
+		resumeSound
+	);
 }
 void MagicSkillSlow::OnUsingMagicSkill()
 {

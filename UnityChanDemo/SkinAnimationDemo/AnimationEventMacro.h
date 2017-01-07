@@ -81,13 +81,14 @@
  *@param[in]	invokeTime			サウンドを発生させる時間。該当するアニメーションが再生されてから経過時間です。単位は秒。
  *@param[in]	volume				ボリューム
  *@param[in]	filePath			サウンドのファイルパス。
+ *@param[in]	goTags				ゲームオブジェクトのタグ。
  */
-#define EMIT_3D_SOUND_EVENT(invokeTime, volume, filePath)										\
+#define EMIT_3D_SOUND_EVENT(invokeTime, volume, filePath, goTags)								\
 	AnimationEvent(																				\
 		eAnimationEventType_Emit3DSound,														\
 		(invokeTime),																			\
 		(volume), 0.0f, 0.0f, 0.0f,																\
-		0,0,0,0,																				\
+		goTags,0,0,0,																			\
 		NULL, NULL, NULL, NULL,																	\
 		CVector3::Zero, CVector3::Zero, CVector3::Zero, CVector3::Zero,							\
 		filePath, NULL, NULL, NULL																\

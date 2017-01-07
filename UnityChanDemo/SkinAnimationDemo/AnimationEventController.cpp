@@ -66,6 +66,7 @@ void AnimationEventController::InvokeAnimationEvent(const AnimationEvent& event)
 		CSoundSource* s = NewGO<CSoundSource>(0);
 		s->Init(event.nameKeyArg[0], true);
 		const CMatrix& m = skinModel->GetWorldMatrix();
+		s->SetTags(event.iArg[0]);
 		s->SetPosition({ m.m[3][0], m.m[3][1], m.m[3][2] });
 		s->Play(false);
 		s->SetVolume(event.fArg[0]);

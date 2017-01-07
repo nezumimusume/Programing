@@ -8,6 +8,8 @@
 #include "Enemy/EnemyManager.h"
 #include "Enemy/Enemy.h"
 #include "tkEngine/Sound/tkSoundSource.h"
+#include "Scene/gameScene.h"
+#include "Map/Sky.h"
 
 void MagicSkillStop::MagicSkillStopFinish::Update()
 {
@@ -48,15 +50,25 @@ void MagicSkillStop::OnStartMagic()
 	s->Init("Assets/Sound/heartbeat.wav");
 	s->Play(false);
 	g_enemyManager->SetFrameDeltaTimeMul(0.0f);
-	MotionBlur().SetEnable(true);
+	gameScene->GetSky()->SetFrameDeltaTimeMul(0.0f);
 	MonochromeFilter().SetEnalbe(true);
+
+	auto pauseSound = [](IGameObject* go) {
+		CSoundSource* s = (CSoundSource*)go;
+		s->Pause();
+	};
+	FindGameObjectsWithTag(
+		GameScene::enGameObjectTags_BGM | GameScene::enGameObjectTags_EnemySound,
+		pauseSound
+	);
+
 	//終了処理が走っているかもしれないので削除。
 	DeleteGO(&m_finish);
-//	MonochromeFilter().SetBlendRate(0.0f);
 }
 void MagicSkillStop::OnEndMagic()
 {
 	g_enemyManager->SetFrameDeltaTimeMul(1.0f);
+	gameScene->GetSky()->SetFrameDeltaTimeMul(1.0f);
 	//終了処理をゲームオブジェクトマネージャーに登録。
 	AddGO(0, &m_finish);
 	//ここでもマスクを描画しないと１フレームだけマスクがない状態で描画されてしまう。
@@ -67,7 +79,14 @@ void MagicSkillStop::OnEndMagic()
 			e->Render(renderContext);
 		}
 	});
-	MotionBlur().SetEnable(false);
+	auto resumeSound = [](IGameObject* go) {
+		CSoundSource* s = (CSoundSource*)go;
+		s->Play(s->GetLoopFlag());
+	};
+	FindGameObjectsWithTag(
+		GameScene::enGameObjectTags_BGM | GameScene::enGameObjectTags_EnemySound,
+		resumeSound
+		);
 }
 void MagicSkillStop::OnUsingMagicSkill()
 {
