@@ -99,8 +99,8 @@ Player::Player() :
 	deadState(this),
 	runState(this),
 	magicSkillDash(this),
-	magicSkillSlow(this),
-	magicSkillStop(this)
+	magicSkillSlow(this, SepiaFilter(), 0.3f, 50.0f),
+	magicSkillStop(this, MonochromeFilter(), 0.0f, 100.0f)
 {
 	pCurrentMagicSkill = &magicSkillDash;
 	memset(battleSeats, 0, sizeof(battleSeats));

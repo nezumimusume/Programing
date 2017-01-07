@@ -1,9 +1,9 @@
 /*!
- * @brief	時間操作系(時間停止)
+ * @brief	時間操作系
  */
 
 #include "stdafx.h"
-#include "Player/MagicSkill/MagicSkillStop.h"
+#include "Player/MagicSkill/MagicSkillTimeCtr.h"
 #include "Player/Player.h"
 #include "Enemy/EnemyManager.h"
 #include "Enemy/Enemy.h"
@@ -11,47 +11,53 @@
 #include "Scene/gameScene.h"
 #include "Map/Sky.h"
 
-void MagicSkillStop::MagicSkillStopFinish::Update()
+void MagicSkillTimeCtr::Finish::Update()
 {
-	float blendRate = MonochromeFilter().GetBlendRate();
+	float blendRate = postEffectFilter.GetBlendRate();
 	blendRate = blendRate - 4.0f * GameTime().GetFrameDeltaTime();
 	
 
 	if (blendRate < 0.0f) {
 		//終わり。
 		DeleteGO(this);
-		MonochromeFilter().SetEnalbe(false);
+		postEffectFilter.SetEnalbe(false);
 	}
 	else {
-		MonochromeFilter().RegistMaskSkinModel([](CRenderContext& renderContext) {
+		//マスクをレンダリングする関数。
+		auto maskRender = [](CRenderContext& renderContext) {
 			//プレイヤーをレンダリングしてマスクを作成する。
 			g_player->Render(renderContext);
 			for (auto& e : g_enemyManager->GetEnemyList()) {
 				e->Render(renderContext);
 			}
-		});
-		MonochromeFilter().SetBlendRate(blendRate);
+		};
+		postEffectFilter.RegistMaskSkinModel(maskRender);
+		postEffectFilter.SetBlendRate(blendRate);
 	}
 }
-MagicSkillStop::MagicSkillStop(Player* pl) :
-	IMagicSkill(pl)
+MagicSkillTimeCtr::MagicSkillTimeCtr(Player* pl, IPostEffectFilter& filter, float mulDeltaTime, float useMp) :
+	IMagicSkill(pl),
+	finish(filter),
+	postEffectFilter(filter)
+{
+	this->mulDeltaTime = mulDeltaTime;
+	this->useMp = useMp;
+}
+MagicSkillTimeCtr::~MagicSkillTimeCtr()
 {
 }
-MagicSkillStop::~MagicSkillStop()
+void MagicSkillTimeCtr::OnChangeMagic()
 {
 }
-void MagicSkillStop::OnChangeMagic()
-{
-}
-void MagicSkillStop::OnStartMagic()
+void MagicSkillTimeCtr::OnStartMagic()
 {
 	//鼓動音を再生
 	CSoundSource* s = NewGO<CSoundSource>(0);
 	s->Init("Assets/Sound/heartbeat.wav");
 	s->Play(false);
-	g_enemyManager->SetFrameDeltaTimeMul(0.0f);
-	gameScene->GetSky()->SetFrameDeltaTimeMul(0.0f);
-	MonochromeFilter().SetEnalbe(true);
+	g_enemyManager->SetFrameDeltaTimeMul(mulDeltaTime);
+	gameScene->GetSky()->SetFrameDeltaTimeMul(mulDeltaTime);
+	postEffectFilter.SetEnalbe(true);
 
 	auto pauseSound = [](IGameObject* go) {
 		CSoundSource* s = (CSoundSource*)go;
@@ -63,16 +69,16 @@ void MagicSkillStop::OnStartMagic()
 	);
 
 	//終了処理が走っているかもしれないので削除。
-	DeleteGO(&m_finish);
+	DeleteGO(&finish);
 }
-void MagicSkillStop::OnEndMagic()
+void MagicSkillTimeCtr::OnEndMagic()
 {
 	g_enemyManager->SetFrameDeltaTimeMul(1.0f);
 	gameScene->GetSky()->SetFrameDeltaTimeMul(1.0f);
 	//終了処理をゲームオブジェクトマネージャーに登録。
-	AddGO(0, &m_finish);
+	AddGO(0, &finish);
 	//ここでもマスクを描画しないと１フレームだけマスクがない状態で描画されてしまう。
-	MonochromeFilter().RegistMaskSkinModel([](CRenderContext& renderContext) {
+	postEffectFilter.RegistMaskSkinModel([](CRenderContext& renderContext) {
 		//プレイヤーをレンダリングしてマスクを作成する。
 		g_player->Render(renderContext);
 		for (auto& e : g_enemyManager->GetEnemyList()) {
@@ -88,12 +94,12 @@ void MagicSkillStop::OnEndMagic()
 		resumeSound
 		);
 }
-void MagicSkillStop::OnUsingMagicSkill()
+void MagicSkillTimeCtr::OnUsingMagicSkill()
 {
-	float blendRate = MonochromeFilter().GetBlendRate();
+	float blendRate = postEffectFilter.GetBlendRate();
 	blendRate = min(1.0f, blendRate + 4.0f * GameTime().GetFrameDeltaTime());
-	MonochromeFilter().SetBlendRate(blendRate);
-	MonochromeFilter().RegistMaskSkinModel([](CRenderContext& renderContext){
+	postEffectFilter.SetBlendRate(blendRate);
+	postEffectFilter.RegistMaskSkinModel([](CRenderContext& renderContext){
 		//プレイヤーをレンダリングしてマスクを作成する。
 		g_player->Render(renderContext);
 		for (auto& e : g_enemyManager->GetEnemyList()) {
