@@ -167,10 +167,7 @@
     <ClCompile Include="Player\MagicSkill\MagicSkillDash.cpp">
       <Filter>Source Files\Player\MagicSkill</Filter>
     </ClCompile>
-    <ClCompile Include="Player\MagicSkill\MagicSkillSlow.cpp">
-      <Filter>Source Files\Player\MagicSkill</Filter>
-    </ClCompile>
-    <ClCompile Include="Player\MagicSkill\MagicSkillStop.cpp">
+    <ClCompile Include="Player\MagicSkill\MagicSkillTimeCtr.cpp">
       <Filter>Source Files\Player\MagicSkill</Filter>
     </ClCompile>
   </ItemGroup>
@@ -313,10 +310,7 @@
     <ClInclude Include="Player\MagicSkill\MagicSkillDash.h">
       <Filter>Source Files\Player\MagicSkill</Filter>
     </ClInclude>
-    <ClInclude Include="Player\MagicSkill\MagicSkillSlow.h">
-      <Filter>Source Files\Player\MagicSkill</Filter>
-    </ClInclude>
-    <ClInclude Include="Player\MagicSkill\MagicSkillStop.h">
+    <ClInclude Include="Player\MagicSkill\MagicSkillTimeCtr.h">
       <Filter>Source Files\Player\MagicSkill</Filter>
     </ClInclude>
   </ItemGroup>

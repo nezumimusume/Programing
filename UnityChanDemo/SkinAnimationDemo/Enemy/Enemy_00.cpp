@@ -11,6 +11,7 @@
 #include "Enemy/HFSM/EnemyStateDeath.h"
 #include "DamageCollisionWorld.h"
 #include "tkEngine/Sound/tkSoundSource.h"
+#include "Scene/GameScene.h"
 
 Enemy_00::Enemy_00()
 {
@@ -134,6 +135,7 @@ void Enemy_00::Update()
 		if (timer > 2.0f) {
 			if (g_random.GetRandDouble() < 0.2f) {
 				CSoundSource* se = NewGO<CSoundSource>(0);
+				se->SetTags(GameScene::enGameObjectTags_EnemySound);
 				se->Init("Assets/Sound/enemy_umeki.wav", true);
 				se->Play(false);
 				se->SetPosition(position);

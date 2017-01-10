@@ -87,6 +87,7 @@ namespace tkEngine{
 		* デストラクタから自動的に呼ばれます。明示的に開放を行いたい場合に使用してください。
 		*/
 		void Release();
+		
 		/*!
 		* @brief	再生。
 		*@param[in]	isLoop		ループ再生フラグ。
@@ -99,6 +100,13 @@ namespace tkEngine{
 		{
 			m_sourceVoice->Stop();
 			m_isPlaying = false;
+		}
+		/*!
+		* @brief	一時停止。
+		*/
+		void Pause()
+		{
+			m_sourceVoice->Stop(/*XAUDIO2_PLAY_TAILS*/);
 		}
 		/*!
 		* @brief	再生中？。
@@ -148,6 +156,25 @@ namespace tkEngine{
 		CVector3 GetVelocity() const
 		{
 			return m_velocity;
+		}
+		/*!
+		* @brief	ループフラグを取得。
+		*/
+		bool GetLoopFlag() const
+		{
+			return m_isLoop;
+		}
+		/*!
+		* @brief	ボイスの周波数調整比
+		*@details
+		* 詳細はIXAudio2SourceVoiceのSetFrequencyRatioを参照してください。
+		*@param[in]	ratio		周波数比。
+		*/
+		void SetFrequencyRatio(float ratio)
+		{
+			if (m_sourceVoice != nullptr) {
+				m_sourceVoice->SetFrequencyRatio(ratio);
+			}
 		}
 		IXAudio2SourceVoice* GetXAudio2SourceVoice()
 		{

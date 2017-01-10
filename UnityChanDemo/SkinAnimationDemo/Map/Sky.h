@@ -15,10 +15,11 @@ class Sky : public IGameObject {
 	SAtmosphericScatteringParam	atomosphereParam;	//大気錯乱パラメータ。
 	CVector3				sunPosition = CVector3::Zero;			//太陽の位置。
 	float					sunAngle = 0.0f;
-	CLight					sunLight;			//ライト。
-	CSkinModelDataHandle	sunModelData;		//太陽のモデルデータ。
-	CSkinModel				sunModel;			//太陽のモデル。
-	CVector3				sunDir;				//太陽の方向。
+	CLight					sunLight;				//ライト。
+	CSkinModelDataHandle	sunModelData;			//太陽のモデルデータ。
+	CSkinModel				sunModel;				//太陽のモデル。
+	CVector3				sunDir;					//太陽の方向。
+	float					deltaTimeMul = 1.0f;	//⊿タイムに乗算される値。
 public:
 	Sky();
 	
@@ -47,6 +48,14 @@ public:
 	const CVector3& GetSunDir() const
 	{
 		return sunDir;
+	}
+	/*!
+	* @brief	⊿タイムに乗算される値を設定。
+	*@param[in]	mul		グローバル⊿タイムに乗算される値。この値に0.5を設定するとエネミーの挙動が0.5倍速になります。
+	*/
+	void SetFrameDeltaTimeMul(float mul)
+	{
+		deltaTimeMul = mul;
 	}
 	
 };

@@ -277,8 +277,7 @@
     <ClCompile Include="Player\FSM\PlayerStateStand.cpp" />
     <ClCompile Include="Player\MagicSkill\IMagicSkill.cpp" />
     <ClCompile Include="Player\MagicSkill\MagicSkillDash.cpp" />
-    <ClCompile Include="Player\MagicSkill\MagicSkillSlow.cpp" />
-    <ClCompile Include="Player\MagicSkill\MagicSkillStop.cpp" />
+    <ClCompile Include="Player\MagicSkill\MagicSkillTimeCtr.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="Scene\GameScene.cpp" />
     <ClCompile Include="Scene\TitleScene.cpp" />
@@ -334,8 +333,7 @@
     <ClInclude Include="Player\FSM\PlayerStateStand.h" />
     <ClInclude Include="Player\MagicSkill\IMagicSkill.h" />
     <ClInclude Include="Player\MagicSkill\MagicSkillDash.h" />
-    <ClInclude Include="Player\MagicSkill\MagicSkillSlow.h" />
-    <ClInclude Include="Player\MagicSkill\MagicSkillStop.h" />
+    <ClInclude Include="Player\MagicSkill\MagicSkillTimeCtr.h" />
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="Scene\GameScene.h" />
     <ClInclude Include="Scene\TitleScene.h" />

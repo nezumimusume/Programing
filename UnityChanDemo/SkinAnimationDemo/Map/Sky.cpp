@@ -31,8 +31,6 @@ bool Sky::Start()
 			if (mat) {
 				mat->SetTexture("g_skyCubeMap", TextureResources().Load("Assets/modelData/skyCubeMap.dds", true));
 			}
-			//高さフォグをかける。
-		//	skinModel.SetFogParam(enFogFuncHeight, 100.0f, 0.0f);
 			skinModel.SetAtomosphereParam(enAtomosphereFuncSkyFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());
 			sunModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());
 			return true;
@@ -43,13 +41,13 @@ bool Sky::Start()
 }
 void Sky::Update()
 {
-	sunAngle += 0.02f * GameTime().GetFrameDeltaTime();
-	
-	
+	sunAngle += 0.02f * GameTime().GetFrameDeltaTime() * deltaTimeMul;
+	//X軸回転。
 	sunPosition.Set(0.0f, sinf(sunAngle), cosf(sunAngle));
-	CMatrix mRotZ;
-	mRotZ.MakeRotationZ(CMath::PI * 0.15f);
-	mRotZ.Mul(sunPosition);
+	//Z軸回転。
+	const float angleZ = CMath::PI * -0.15f;
+	sunPosition.x = sunPosition.y * sinf(angleZ);
+	sunPosition.y *= cosf(angleZ);
 
 	sunDir = sunPosition;
 	sunPosition.Scale(1000000.0f);

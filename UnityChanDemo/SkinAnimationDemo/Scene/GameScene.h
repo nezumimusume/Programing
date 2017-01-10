@@ -18,6 +18,11 @@ class MagicSkill2D;
 
 class GameScene : public IGameObject{
 public:
+	//ゲームオブジェクトのタグ。
+	enum EnGameObjectTags {
+		enGameObjectTags_BGM = 1,				//!<BGM
+		enGameObjectTags_EnemySound = 1 << 1,	//!<エネミーサウンド。
+	};
 	/*!
 	 *@brief	コンストラクタ。
 	 */

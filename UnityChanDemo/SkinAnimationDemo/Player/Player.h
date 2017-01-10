@@ -9,8 +9,7 @@
 #include "Player/FSM/PlayerStateStand.h"
 #include "Player/MagicSkill/IMagicSkill.h"
 #include "Player/MagicSkill/MagicSkillDash.h"
-#include "Player/MagicSkill/MagicSkillSlow.h"
-#include "Player/MagicSkill/MagicSkillStop.h"
+#include "Player/MagicSkill/MagicSkillTimeCtr.h"
 
 namespace tkEngine{
 	class CParticleEmitter;
@@ -283,7 +282,7 @@ private:
 	EMagicSkill				currentMagicSkill = eMagicSkillDash;	//現在スロットにセットされている魔法。
 	IMagicSkill*			pCurrentMagicSkill = NULL;				//現在スロットにセットされている魔法。
 	MagicSkillDash			magicSkillDash;							//ダッシュ魔法。
-	MagicSkillSlow			magicSkillSlow;							//スロウ魔法。
-	MagicSkillStop			magicSkillStop;							//時間停止魔法。
+	MagicSkillTimeCtr		magicSkillSlow;							//スロウ魔法。
+	MagicSkillTimeCtr		magicSkillStop;							//時間停止魔法。
 	float					localFrameDeltaTime = 0.0f;				//プレイヤーの内部⊿タイム(単位：秒)。
 };

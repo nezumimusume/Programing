@@ -271,6 +271,7 @@
     <ClCompile Include="graphics\postEffect\tkDOF.cpp" />
     <ClCompile Include="graphics\postEffect\tkEdgeRender.cpp" />
     <ClCompile Include="graphics\postEffect\tkFxaa.cpp" />
+    <ClCompile Include="graphics\postEffect\tkIPostEffectFilter.cpp" />
     <ClCompile Include="graphics\postEffect\tkMonochromeFilter.cpp" />
     <ClCompile Include="graphics\postEffect\tkMotionBlur.cpp" />
     <ClCompile Include="graphics\postEffect\tkPostEffect.cpp" />
@@ -361,6 +362,7 @@
     <ClInclude Include="graphics\postEffect\tkDOF.h" />
     <ClInclude Include="graphics\postEffect\tkEdgeRender.h" />
     <ClInclude Include="graphics\postEffect\tkFxaa.h" />
+    <ClInclude Include="graphics\postEffect\tkIPostEffectFilter.h" />
     <ClInclude Include="graphics\postEffect\tkMonochromeFilter.h" />
     <ClInclude Include="graphics\postEffect\tkMotionBlur.h" />
     <ClInclude Include="graphics\postEffect\tkPostEffect.h" />

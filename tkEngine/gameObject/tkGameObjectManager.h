@@ -122,6 +122,22 @@ namespace tkEngine{
 				m_deleteObjectArray[m_currentDeleteObjectBufferNo].at(gameObject->GetPriority()).push_back(gameObject);
 			}
 		}
+		/*!
+		*@brief	指定したタグのいずれかがが含まれるゲームオブジェクトを検索して、見つかった場合指定されたコールバック関数を呼び出す。
+		*/
+		
+		void FindGameObjectsWithTag(unsigned int tags, void (*func)(IGameObject* go) )
+		{
+			for (auto& goList : m_gameObjectListArray) {
+				for (auto& go : goList) {
+					unsigned int goTags = go->GetTags();
+					if ((goTags & tags) != 0) {
+						(*func)(go);
+					}
+				}
+			}
+			
+		}
 	private:
 		/*!
 		 *@brief	ゲームオブジェクトの削除を実行。
@@ -168,6 +184,13 @@ namespace tkEngine{
 	static inline void AddGO(int priority, IGameObject* go, const char* objectName = nullptr)
 	{
 		GameObjectManager().AddGameObject(priority, go, objectName);
+	}
+	/*!
+	*@brief	指定したタグのいずれかがが含まれるゲームオブジェクトを検索して、見つかった場合指定されたコールバック関数を呼び出す。
+	*/
+	static inline 	void FindGameObjectsWithTag(unsigned int tags, void (*func)(IGameObject* go))
+	{
+		GameObjectManager().FindGameObjectsWithTag(tags, func);
 	}
 }
 #endif // _CGAMEOBJECTMANAGER_H_

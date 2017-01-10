@@ -64,7 +64,6 @@ bool GameScene::Start()
 		//完全にモデルデータを開放する。
 		//SkinModelDataResources().Release();
 		g_fade->StartFadeIn();
-		//unityChanInstance = NewGO<UnityChanInstance>(0);
 		AddGO(0, &inGameLight);
 		map = NewGO<Map>(0);
 		ground = NewGO<Ground>(0);
@@ -76,13 +75,13 @@ bool GameScene::Start()
 		g_player = NewGO<Player>(0);
 		sky = NewGO<Sky>(0);
 		sky->SetPlayer(g_player);
-		//g_car = NewGO<Car>(0);
 		g_camera = NewGO<GameCamera>(0);
 		g_player->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
 		g_camera->SetPlayer(g_player);
 		MotionBlur().SetCamera(&g_camera->GetCamera());
 
 		bgmSoundSource.InitStreaming("Assets/sound/wind.wav");
+		bgmSoundSource.SetTags(enGameObjectTags_BGM);
 		bgmSoundSource.Play(true);
 		bgmSoundSource.SetVolume(0.5f);
 		AddGO(0, &bgmSoundSource);
