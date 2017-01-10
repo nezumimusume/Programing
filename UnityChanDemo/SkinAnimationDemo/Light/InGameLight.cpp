@@ -17,14 +17,14 @@ bool InGameLight::Start()
 {
 	defaultLight.SetDiffuseLightDirection(0, CVector3(0.707f, 0.0f, -0.707f));
 	defaultLight.SetDiffuseLightDirection(1, CVector3(-0.707f, 0.0f, -0.707f));
-	defaultLight.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, -0.707f));
-	defaultLight.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, -0.707f));
+	defaultLight.SetDiffuseLightDirection(2, CVector3(0.0f, 0.707f, 0.707f));
+	defaultLight.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, 0.0f));
 
 
-	defaultLight.SetDiffuseLightColor(0, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
-	defaultLight.SetDiffuseLightColor(1, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
-	defaultLight.SetDiffuseLightColor(2, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
-	defaultLight.SetDiffuseLightColor(3, CVector4(0.4f, 0.4f, 0.4f, 10.0f));
+	defaultLight.SetDiffuseLightColor(0, CVector4(0.8f, 0.8f, 0.8f, 10.0f));
+	defaultLight.SetDiffuseLightColor(1, CVector4(0.1f, 0.1f, 0.1f, 10.0f));
+	defaultLight.SetDiffuseLightColor(2, CVector4(0.1f, 0.1f, 0.1f, 10.0f));
+	defaultLight.SetDiffuseLightColor(3, CVector4(0.1f, 0.1f, 0.1f, 10.0f));
 	
 	defaultLight.SetAmbinetLight(CVector3(0.2f, 0.2f, 0.2f));
 
@@ -39,6 +39,7 @@ void InGameLight::Update()
 	//リムライトを更新。
 	CVector3 limLightDir = sunDir;
 	limLightDir.Scale(-1.0f);
+	defaultLight.SetDiffuseLightDirection(0, limLightDir);
 	defaultLight.SetLimLightDirection(limLightDir);
 	//アンビエントライト更新。
 	float t = max(0.0f, sunDir.Dot(CVector3::Up));
