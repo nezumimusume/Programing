@@ -174,7 +174,7 @@ VS_OUTPUT VSFinal( VS_INPUT In )
 float4 PSFinal( VS_OUTPUT In ) : COLOR
 {
 	float2 uv = In.tex;
-	return tex2D(g_blurSampler, uv );
+	return clamp(tex2D(g_blurSampler, uv ), 0.0f, 1.0f);
 }
 /*!
  * @brief	輝度抽出テクニック。

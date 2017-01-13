@@ -79,7 +79,7 @@ bool GameScene::Start()
 		g_player->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
 		g_camera->SetPlayer(g_player);
 		MotionBlur().SetCamera(&g_camera->GetCamera());
-
+		MotionBlur().SetEnable(false);
 		bgmSoundSource.InitStreaming("Assets/sound/wind.wav");
 		bgmSoundSource.SetTags(enGameObjectTags_BGM);
 		bgmSoundSource.Play(true);
