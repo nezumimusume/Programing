@@ -369,7 +369,7 @@ VOID Render()
         
 		g_pEffect->EndPass();
 		g_pEffect->End();
-
+	
 		// End the scene
 		g_pd3dDevice->EndScene();
 	}
