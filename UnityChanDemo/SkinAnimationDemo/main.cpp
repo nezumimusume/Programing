@@ -10,7 +10,6 @@ NowLoading* g_nowLoading = NULL;
 Fade* g_fade = NULL;
 
 
-
 /*!
  * @brief	tkEngine‚Ì‰Šú‰»B
  */

@@ -180,6 +180,13 @@ namespace tkEngine {
 		{
 			return m_skinModelData->FindBoneWorldMatrix(boneName);
 		}
+		/*!
+		* @brief	ステルスフラグを設定。
+		*/
+		void SetStealth(bool flag)
+		{
+			m_isStealth = flag;
+		}
 	private:
 		/*!
 		* @brief	シェーダ定の数ハンドルを初期化。
@@ -274,6 +281,7 @@ namespace tkEngine {
 		bool							m_hasNormalMap;						//!<法線マップを保持している？
 		bool							m_hasSpecMap;						//!<スペきゅらマップを保持している？
 		bool							m_isWriteVelocityMap = true;		//!<速度マップに書き込む？
+		bool							m_isStealth = false;				//!<ステルス迷彩？
 		EAtomosphereFunc					m_atomosphereFunc = enAtomosphereFuncNone;	//!<大気錯乱シミュレーションの種類。
 		const SAtmosphericScatteringParam*	m_atomosphereParam = nullptr;			//!<大気錯乱シミュレーションで使用するパラメータ。
 	};

@@ -102,14 +102,25 @@ namespace tkEngine{
 						//シャドウマップに描画。
 						pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_SkinModelRenderShadowMap]);
 					}else{
-						pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_SkinModel]);
+						if (m_isStealth) {
+							//ステルス
+							pEffect->SetTechnique("StealthSkin");
+						}
+						else {
+							pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_SkinModel]);
+						}
 					}
 				}
 				else {
 					if (isDrawToShadowMap) {
 						pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_NoSkinModelRenderShadowMap]);
 					}else{
-						pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_NoSkinModel]);
+						if (m_isStealth) {
+							//まだ。
+						}
+						else {
+							pEffect->SetTechnique(m_hShaderHandle[enShaderHandleTec_NoSkinModel]);
+						}
 					}
 				}
 			}

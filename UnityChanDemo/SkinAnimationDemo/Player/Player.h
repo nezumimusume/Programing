@@ -10,6 +10,7 @@
 #include "Player/MagicSkill/IMagicSkill.h"
 #include "Player/MagicSkill/MagicSkillDash.h"
 #include "Player/MagicSkill/MagicSkillTimeCtr.h"
+#include "Player/MagicSkill/MagicSkillStealth.h"
 
 namespace tkEngine{
 	class CParticleEmitter;
@@ -177,6 +178,13 @@ public:
 	{
 		mp = max(0, mp - useMp);
 	}
+	/*!
+	* @brief	ステルス迷彩フラグを設定。
+	*/
+	void SetStealthFlag(bool flag)
+	{
+		skinModel.SetStealth(flag);
+	}
 private:
 	/*!
 	* @brief	血しぶきのパーティクルをエミット。
@@ -284,5 +292,6 @@ private:
 	MagicSkillDash			magicSkillDash;							//ダッシュ魔法。
 	MagicSkillTimeCtr		magicSkillSlow;							//スロウ魔法。
 	MagicSkillTimeCtr		magicSkillStop;							//時間停止魔法。
+	MagicSkillStealth		magicSkillStealth;						//ステルス魔法。
 	float					localFrameDeltaTime = 0.0f;				//プレイヤーの内部⊿タイム(単位：秒)。
 };

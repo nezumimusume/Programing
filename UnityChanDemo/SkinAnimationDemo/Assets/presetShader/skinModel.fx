@@ -23,7 +23,7 @@ const int AtomosphereFuncNone = 0;						//大気錯乱シミュレーションなし。
 const int AtomosphereFuncObjectFromAtomosphere = 1;		//オブジェクトを大気圏から見た場合の大気錯乱シミュレーション。
 const int AtomosphereFuncSkyFromAtomosphere = 2;		//空を大気圏から見た場合の大気錯乱シミュレーション。
 int4 g_flags;				//xに法線マップ、yはシャドウレシーバー、zはリムライト、wはスペキュラマップ。
-int4 g_flags2;				//xに速度マップへの書き込み、yは大気錯乱シミュレーション種類。
+int4 g_flags2;				//xに速度マップへの書き込み、yは大気錯乱シミュレーション種類
 
 texture g_diffuseTexture;		//ディフューズテクスチャ。
 sampler g_diffuseTextureSampler = 
@@ -61,6 +61,16 @@ sampler_state
     MipFilter = Linear;
 };
 
+//シーンテクスチャ
+texture g_sceneTexture;		//シーンテクスチャ。
+sampler g_sceneTextureSampler = 
+sampler_state
+{
+	Texture = <g_sceneTexture>;
+	MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Linear;
+};
 
 /*!
  * @brief	入力頂点
@@ -370,8 +380,9 @@ void CalcWorldPosAndNormal( VS_INPUT In, out float3 Pos, out float3 Normal, out 
  *@brief	頂点シェーダー。
  *@param[in]	In			入力頂点。
  *@param[in]	hasSkin		スキンあり？
+ *@param[in]	doStealth	ステルス？
  */
-VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
+VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin, uniform bool doStealth )
 {
 	VS_OUTPUT o = (VS_OUTPUT)0;
 	float3 Pos, Normal, Tangent;
@@ -384,15 +395,17 @@ VS_OUTPUT VSMain( VS_INPUT In, uniform bool hasSkin )
 	}
 	o.worldPos_depth.xyz = Pos.xyz;
 
-
     o.Pos = mul(float4(Pos.xyz, 1.0f), g_mViewProj);
     o.worldPos_depth.w = o.Pos.w;
-    o.Normal = normalize(Normal);
-    o.Tangent = normalize(Tangent);
     o.Tex0 = In.Tex0;
     o.velocity = mul(float4(Pos.xyz, 1.0f), g_mViewProjLastFrame);
     o.screenPos = o.Pos;
-    CalcMieAndRayleighColors( o.mieColor, o.rayColor, o.posToCameraDir, o.worldPos_depth.xyz );
+    if(doStealth == false){
+		//ここらへんはステルス迷彩のときは計算しなくていいのでカット。
+    	o.Normal = normalize(Normal);
+	    o.Tangent = normalize(Tangent);
+	    CalcMieAndRayleighColors( o.mieColor, o.rayColor, o.posToCameraDir, o.worldPos_depth.xyz );
+	}
 	return o;
 }
 /*!
@@ -515,6 +528,30 @@ PSOutput PSMain( VS_OUTPUT In )
 	return psOut;
 }
 /*!
+ * @brief	ステルス迷彩用のシェーダー。
+ */
+PSOutput PSStealthMain(VS_OUTPUT In)
+{
+	float4 color = 0.0f;
+	float4 diffuseColor = tex2D(g_diffuseTextureSampler, In.Tex0);
+	color = diffuseColor;
+	
+	PSOutput psOut = (PSOutput)0;
+	psOut.color = color;
+	psOut.depth = In.worldPos_depth.w;
+	if(g_flags2.x){
+		psOut.velocity.xy = In.velocity.xy / In.velocity.w-In.screenPos.xy / In.screenPos.w;
+		psOut.velocity.xy *= 0.5f;
+		psOut.velocity.xy += 0.5f;
+		psOut.velocity.zw = 0.0f;
+	}else{
+		//速度なし。
+		psOut.velocity = 0.5f;
+	}
+	
+	return psOut;
+}
+/*!
  * @brief	空描画用の頂点シェーダー。
  */
 VS_OUTPUT VSSkyMain(VS_INPUT In)
@@ -620,7 +657,7 @@ technique SkinModel
 {
     pass p0
     {
-        VertexShader = compile vs_3_0 VSMain(true);
+        VertexShader = compile vs_3_0 VSMain(true, false);
         PixelShader = compile ps_3_0 PSMain();
     }
 }
@@ -631,7 +668,7 @@ technique NoSkinModel
 {
 	pass p0
 	{
-		VertexShader = compile vs_3_0 VSMain(false);
+		VertexShader = compile vs_3_0 VSMain(false, false);
 		PixelShader = compile ps_3_0 PSMain();
 	}
 }
@@ -705,5 +742,15 @@ technique Sky{
 	{
 		VertexShader =  compile vs_3_0 VSSkyMain();
 		PixelShader = compile ps_3_0 PSSkyMain();
+	}
+}
+/*!
+ * @brief	スキンありステルス。
+ */
+technique StealthSkin{
+	pass p0
+	{
+		VertexShader =  compile vs_3_0 VSMain(true, true);
+		PixelShader = compile ps_3_0 PSStealthMain();
 	}
 }

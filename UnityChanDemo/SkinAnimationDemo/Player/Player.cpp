@@ -100,7 +100,8 @@ Player::Player() :
 	runState(this),
 	magicSkillDash(this),
 	magicSkillSlow(this, SepiaFilter(), 0.3f, 50.0f),
-	magicSkillStop(this, MonochromeFilter(), 0.0f, 100.0f)
+	magicSkillStop(this, MonochromeFilter(), 0.0f, 100.0f),
+	magicSkillStealth(this)
 {
 	pCurrentMagicSkill = &magicSkillDash;
 	memset(battleSeats, 0, sizeof(battleSeats));
@@ -146,6 +147,7 @@ bool Player::Start()
 			skinModel.SetFresnelFlag(true);
 			skinModel.SetReflectionCasterFlag(true);
 			skinModel.SetWriteVelocityMap(false);
+			
 			skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());
 
 
@@ -537,6 +539,11 @@ void Player::UpdateCurrentMagicSkill()
 			pCurrentMagicSkill->OnChangeMagic();
 			break;
 		case eMagicSkillStealth:
+			if (pCurrentMagicSkill != NULL) {
+				pCurrentMagicSkill->OnEndMagic();
+			}
+			pCurrentMagicSkill = &magicSkillStealth;
+			pCurrentMagicSkill->OnChangeMagic();
 			break;
 		case eMagicSkillHighJump:
 			break;
