@@ -540,11 +540,11 @@ VS_OUTPUT VSSkyMain(VS_INPUT In)
 PSOutput PSSkyMain(VS_OUTPUT In){
 	float4 diffuseColor = texCUBE(g_skyCubeMapSampler, In.Normal * -1.0f);
 	float4 color = 0;
-
+	float cloudMap = pow(min( 1.0f, dot(diffuseColor.xyz, 1.0f) ), 3.0f )  * 0.7f;
 	color = In.rayColor + 0.25f * In.mieColor;
 	float t = pow( 1.0f - min(1.0f, length(color)), 10.0f );
 	color += diffuseColor * t ;
-	
+	color.xyz = lerp( color.xyz, 1.0f, cloudMap ) ;
 	PSOutput psOut = (PSOutput)0;
 	psOut.color = color;
 	psOut.depth = In.worldPos_depth.w;
