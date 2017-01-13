@@ -577,13 +577,25 @@ VS_OUTPUT VSSkyMain(VS_INPUT In)
 PSOutput PSSkyMain(VS_OUTPUT In){
 	float4 diffuseColor = texCUBE(g_skyCubeMapSampler, In.Normal * -1.0f);
 	float4 color = 0;
-	float cloudMap = pow(min( 1.0f, dot(diffuseColor.xyz, 1.0f) ), 3.0f )  * 0.7f;
+	//空のテクスチャを白黒化
+	float3 monochrome = float3(0.29900f, 0.58700f, 0.11400f );
+	float Y  =  dot(monochrome, diffuseColor);
+	//白黒化したテクスチャをn乗して白に近い成分だけ抜き出す。
+	float cloudRate = pow(Y, 3.0f );
 	color = In.rayColor + 0.25f * In.mieColor;
-	float t = pow( 1.0f - min(1.0f, length(color)), 10.0f );
-	color += diffuseColor * t ;
-	color.xyz = lerp( color.xyz, 1.0f, cloudMap ) ;
+	//大気の色もモノクロ化
+	float colorY = max( 0.0f, dot(monochrome, color) );
+	//このtは夜になると1.0fに近づいてくる。
+	float nightRate = pow( 1.0f - min(1.0f, colorY), 10.0f );
+	//夜空の色
+//	color.xyz += float3(0.0f, 0.0f, 0.1f ) * nightRate ;
+	//雲の色。昼間は1.0fで夜間は0.3f
+	float cloudColor = lerp(1.0f, 0.1f, nightRate );
+	//空の色と雲の色との間を雲率で線形補完。
+	color.xyz = lerp( color.xyz, cloudColor, cloudRate ) ;
 	PSOutput psOut = (PSOutput)0;
 	psOut.color = color;
+
 	psOut.depth = In.worldPos_depth.w;
 	if(g_flags2.x){
 		psOut.velocity.xy = In.velocity.xy / In.velocity.w-In.screenPos.xy / In.screenPos.w;
