@@ -77,6 +77,7 @@ bool GameScene::Start()
 		sky->SetPlayer(g_player);
 		g_camera = NewGO<GameCamera>(0);
 		g_player->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
+		//g_player->SetPosition(CVector3(0.0f, 0.5f, 177.0));
 		g_camera->SetPlayer(g_player);
 		MotionBlur().SetCamera(&g_camera->GetCamera());
 		MotionBlur().SetEnable(false);

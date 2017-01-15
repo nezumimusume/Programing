@@ -26,9 +26,29 @@ bool Ground::Start()
 		if (skinModelData.IsLoadEnd()) {
 			skinModel.Init(skinModelData.GetBody());
 			skinModel.SetLight(&gameScene->GetDefaultLight());
+#if 0
+			auto skinModelMaterial = skinModelData.GetBody()->GetSkinModelMaterials();
+			for (auto& material : skinModelMaterial) {
+				char work[256];
+				char normalMapName[256];
+				
+				//法線マップをロード。
+				strcpy(work, material->GetMaterialName());
+				char* pRep = strstr(work, "_");
+				strcpy(pRep, "_Normal.tga");
+				sprintf(normalMapName, "Assets/modelData/%s", work);
+				CTexture* tex = TextureResources().Load(normalMapName);
+				if (tex) {
+					//法線マップがあった。
+					material->SetTexture("g_normalTexture", tex);
+					skinModel.SetHasNormalMap(true);
+				}
+			}
+#else
 			CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("Grass.tga");
 			mat->SetTexture("g_normalTexture", TextureResources().Load("Assets/modelData/Grass_Normals.tga"));
 			skinModel.SetHasNormalMap(true);
+#endif
 			skinModel.SetShadowReceiverFlag(true);
 			skinModel.SetShadowCasterFlag(true);
 			skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());

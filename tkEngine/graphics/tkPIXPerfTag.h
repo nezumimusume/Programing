@@ -7,13 +7,13 @@ namespace tkEngine {
 		CPIXPerfTag(CRenderContext& rc, LPCWSTR name) :
 			renderContext(rc)
 		{
-#ifdef _DEBUG
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
 			renderContext.SetRenderCommand(CRenderCommand_PerfBeginEvent(name));
 #endif
 		}
 		~CPIXPerfTag()
 		{
-#ifdef _DEBUG
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
 			renderContext.SetRenderCommand(CRenderCommand_PerfEndEvent());
 #endif
 		}
