@@ -38,9 +38,10 @@ namespace tkEngine{
 		void UpdateWeight(float dispersion);
 	private:
 		static const int NUM_WEIGHTS = 8;
-		static const int NUM_DOWN_SAMPLING_RT = 4;
+		static const int NUM_DOWN_SAMPLING_RT = 10;
 		CEffect*		m_pEffect;						//!<エフェクト。
 		CRenderTarget	m_luminanceRenderTarget;		//!<輝度を抽出するレンダリングターゲット。
+		CRenderTarget	m_combineRenderTarget;			//!<ぼかし合成用のレンダリングターゲット。
 		CRenderTarget	m_downSamplingRenderTarget[NUM_DOWN_SAMPLING_RT];	//!<輝度をダウンサンプリングするためのレンダリングターゲット。
 		bool			m_isEnable;						//!<有効？
 		float				m_weights[NUM_WEIGHTS];

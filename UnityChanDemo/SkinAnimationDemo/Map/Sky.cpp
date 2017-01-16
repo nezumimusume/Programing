@@ -25,7 +25,7 @@ bool Sky::Start()
 			light.SetAmbinetLight(CVector3(1.2f, 1.0f, 1.0f));
 			skinModel.SetLight(&light);
 			sunModel.Init(sunModelData.GetBody());
-			sunLight.SetEmissionLightColor(CVector3(2.5f, 2.5f, 2.5f));
+			sunLight.SetEmissionLightColor(CVector3(5.5f, 5.5f, 5.5f));
 			sunModel.SetLight(&sunLight);
 			CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("sky.png");
 			if (mat) {
