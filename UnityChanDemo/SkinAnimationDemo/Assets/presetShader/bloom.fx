@@ -229,10 +229,11 @@ float4 PSCombine( VS_OUTPUT In ) : COLOR
 	float2 uv = In.tex;
 	uv += g_offset;
 	float4 combineColor = tex2D(g_combineSampler00, uv);
-	combineColor = max( combineColor, tex2D(g_combineSampler01, uv));
-	combineColor = max( combineColor, tex2D(g_combineSampler02, uv));
-	combineColor = max( combineColor, tex2D(g_combineSampler03, uv));
-	combineColor = max( combineColor, tex2D(g_combineSampler04, uv));
+	combineColor += tex2D(g_combineSampler01, uv);
+	combineColor += tex2D(g_combineSampler02, uv);
+	combineColor += tex2D(g_combineSampler03, uv);
+	combineColor += tex2D(g_combineSampler04, uv);
+	combineColor.xyz /= 5.0f;
 	return combineColor;
 }
 /*!
