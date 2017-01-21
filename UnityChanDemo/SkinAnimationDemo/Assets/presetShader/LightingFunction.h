@@ -27,9 +27,50 @@ struct SLight{
 	float3  ambient;								//アンビエントライト。
 	float3  emission;								//自己発光。
 };
+
+/*!
+ * @brief	大気錯乱パラメータ。
+ */
+struct SAtmosphericScatteringParam{
+	float3 v3LightPos;
+	float3 v3LightDirection;
+	float3 v3InvWavelength;	// 1 / pow(wavelength, 4) for the red, green, and blue channels
+	float fCameraHeight;		// The camera's current height
+	float fCameraHeight2;		// fCameraHeight^2
+	float fOuterRadius;		// The outer (atmosphere) radius
+	float fOuterRadius2;		// fOuterRadius^2
+	float fInnerRadius;		// The inner (planetary) radius
+	float fInnerRadius2;		// fInnerRadius^2
+	float fKrESun;				// Kr * ESun
+	float fKmESun;				// Km * ESun
+	float fKr4PI;				// Kr * 4 * PI
+	float fKm4PI;				// Km * 4 * PI
+	float fScale;				// 1 / (fOuterRadius - fInnerRadius)
+	float fScaleOverScaleDepth;// fScale / fScaleDepth
+	float g;
+	float g2;
+};
+
+SAtmosphericScatteringParam g_atmosParam;
+
+// The scale depth (the altitude at which the average atmospheric density is found)
+const float fScaleDepth = 0.25;
+const float fInvScaleDepth = 4;
+
+const int nSamples = 2;
+const float fSamples = 2.0f;
+
+
 SLight	g_light;		//!<ライト
 float4	g_cameraPos;	//!<カメラの座標。
 float3	g_cameraDir;	//!<カメラ方向。
+int4 g_flags2;				//xに速度マップへの書き込み、yは大気錯乱シミュレーション種類
+
+const int AtomosphereFuncNone = 0;						//大気錯乱シミュレーションなし。
+const int AtomosphereFuncObjectFromAtomosphere = 1;		//オブジェクトを大気圏から見た場合の大気錯乱シミュレーション。
+const int AtomosphereFuncSkyFromAtomosphere = 2;		//空を大気圏から見た場合の大気錯乱シミュレーション。
+
+
 /*!
  *@brief	ディフューズライトを計算。
  */	
@@ -41,6 +82,14 @@ float4 DiffuseLight( float3 normal )
 	color += max( 0, -dot(normal, g_light.diffuseLightDir[2])) * g_light.diffuseLightColor[2];
 	color += max( 0, -dot(normal, g_light.diffuseLightDir[3])) * g_light.diffuseLightColor[3];
 	
+	if(g_flags2.y == AtomosphereFuncObjectFromAtomosphere)
+	{
+		//大気錯乱が設定されている場合は0番目のライトを太陽光とする。
+		float t = max( 0.0f, dot(float3(0.0f, -1.0f, 0.0f ), g_light.diffuseLightDir[0]) );
+		t *= 2.0f;
+		t = min(1.0f, pow(t, 2.0f));
+		color *= t;
+	}
 	color.a = 1.0f;
 	return color;
 }

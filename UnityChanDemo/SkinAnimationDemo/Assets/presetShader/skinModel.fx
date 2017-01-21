@@ -19,11 +19,7 @@ float4		g_fogParam;				//ƒtƒHƒO‚Ìƒpƒ‰ƒ[ƒ^Bx‚ÉƒtƒHƒO‚ªŠ|‚©‚èn‚ß‚é[“xBy‚Éƒtƒ
 
 float2		g_farNear;	//‰“•½–Ê‚Æ‹ß•½–ÊBx‚É‰“•½–ÊAy‚É‹ß•½–ÊB
 
-const int AtomosphereFuncNone = 0;						//‘å‹Cö—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚È‚µB
-const int AtomosphereFuncObjectFromAtomosphere = 1;		//ƒIƒuƒWƒFƒNƒg‚ğ‘å‹CŒ—‚©‚çŒ©‚½ê‡‚Ì‘å‹Cö—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“B
-const int AtomosphereFuncSkyFromAtomosphere = 2;		//‹ó‚ğ‘å‹CŒ—‚©‚çŒ©‚½ê‡‚Ì‘å‹Cö—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“B
 int4 g_flags;				//x‚É–@üƒ}ƒbƒvAy‚ÍƒVƒƒƒhƒEƒŒƒV[ƒo[Az‚ÍƒŠƒ€ƒ‰ƒCƒgAw‚ÍƒXƒyƒLƒ…ƒ‰ƒ}ƒbƒvB
-int4 g_flags2;				//x‚É‘¬“xƒ}ƒbƒv‚Ö‚Ì‘‚«‚İAy‚Í‘å‹Cö—ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“í—Ş
 
 texture g_diffuseTexture;		//ƒfƒBƒtƒ…[ƒYƒeƒNƒXƒ`ƒƒB
 sampler g_diffuseTextureSampler = 
@@ -132,37 +128,6 @@ struct PSOutput{
 	float4  velocity 	: COLOR2;		//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg2‚É‘‚«‚İB
 };
 
-/*!
- * @brief	‘å‹Cö—ƒpƒ‰ƒ[ƒ^B
- */
-struct SAtmosphericScatteringParam{
-	float3 v3LightPos;
-	float3 v3LightDirection;
-	float3 v3InvWavelength;	// 1 / pow(wavelength, 4) for the red, green, and blue channels
-	float fCameraHeight;		// The camera's current height
-	float fCameraHeight2;		// fCameraHeight^2
-	float fOuterRadius;		// The outer (atmosphere) radius
-	float fOuterRadius2;		// fOuterRadius^2
-	float fInnerRadius;		// The inner (planetary) radius
-	float fInnerRadius2;		// fInnerRadius^2
-	float fKrESun;				// Kr * ESun
-	float fKmESun;				// Km * ESun
-	float fKr4PI;				// Kr * 4 * PI
-	float fKm4PI;				// Km * 4 * PI
-	float fScale;				// 1 / (fOuterRadius - fInnerRadius)
-	float fScaleOverScaleDepth;// fScale / fScaleDepth
-	float g;
-	float g2;
-};
-
-SAtmosphericScatteringParam g_atmosParam;
-
-// The scale depth (the altitude at which the average atmospheric density is found)
-const float fScaleDepth = 0.25;
-const float fInvScaleDepth = 4;
-
-const int nSamples = 2;
-const float fSamples = 2.0f;
 
 
 
