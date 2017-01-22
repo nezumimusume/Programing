@@ -182,13 +182,10 @@ namespace tkEngine{
 				flag2[0] = 1;
 			}
 
-			if (m_atomosphereFunc != enAtomosphereFuncNone) {
-				flag2[1] = m_atomosphereFunc;	
+			if (Sky().IsActive() && m_atomosphereFunc != enAtomosphereFuncNone) {
 				//大気錯乱シミュレーションを行う。
-				if (m_atomosphereParam != nullptr) {
-					pEffect->SetValue(m_hShaderHandle[enShaderHandleAtmosParam], m_atomosphereParam, sizeof(*m_atomosphereParam));
-				}
-
+				flag2[1] = m_atomosphereFunc;	
+				pEffect->SetValue(m_hShaderHandle[enShaderHandleAtmosParam], &Sky().GetAtomosphereParam(), sizeof(Sky().GetAtomosphereParam()));
 			}
 			else {
 				//大気錯乱シミュレーションは行わない。

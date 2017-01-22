@@ -144,15 +144,13 @@ namespace tkEngine {
 			m_fogParam[1] = param1;
 		}
 		/*!
-		* @brief	大気錯乱シミュレーションの種類を設定。。
+		* @brief	大気錯乱シミュレーションの種類を設定。
 		*@param[in]	func		大気錯乱シミュレーションの種類。EAtomosphereFuncを参照。
-		*@param[in]	param		大気錯乱シミュレーションで使用するパラメータ。
 		*/
-		void SetAtomosphereParam( EAtomosphereFunc func, const SAtmosphericScatteringParam& param)
+		void SetAtomosphereParam( EAtomosphereFunc func)
 		{
 			TK_ASSERT(func < enAtomosphereFuncNum, "func is invalid");
 			m_atomosphereFunc = func;
-			m_atomosphereParam = &param;
 		}
 		/*!
 		* @brief	ワールド行列を取得。
@@ -282,8 +280,7 @@ namespace tkEngine {
 		bool							m_hasSpecMap;						//!<スペきゅらマップを保持している？
 		bool							m_isWriteVelocityMap = true;		//!<速度マップに書き込む？
 		bool							m_isStealth = false;				//!<ステルス迷彩？
-		EAtomosphereFunc					m_atomosphereFunc = enAtomosphereFuncNone;	//!<大気錯乱シミュレーションの種類。
-		const SAtmosphericScatteringParam*	m_atomosphereParam = nullptr;			//!<大気錯乱シミュレーションで使用するパラメータ。
+		EAtomosphereFunc					m_atomosphereFunc = enAtomosphereFuncObjectFromAtomosphere;	//!<大気錯乱シミュレーションの種類。
 	};
 }
 

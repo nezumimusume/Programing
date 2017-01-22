@@ -110,6 +110,13 @@ namespace tkEngine{
 			return m_isStart;
 		}
 		/*!
+		*@brief アクティブかどうかを判定。
+		*/
+		bool IsActive() const
+		{
+			return m_isActive;
+		}
+		/*!
 		*@brief アクティブフラグを設定。
 		*/
 		void SetActiveFlag(bool flag)

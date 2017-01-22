@@ -155,6 +155,10 @@ namespace tkEngine{
 		m_preRender.Create( initParam.graphicsConfig );
 		//ポストエフェクトをレンダリング。
 		m_postEffect.Create( initParam.graphicsConfig );
+		//空を初期化。
+		AddGO(0, &m_sky);
+		m_sky.Init();
+		m_sky.SetActiveFlag(false);
 		m_soundEngine.Init();
 		m_physicsWorld.Init();
 		ShowWindow(m_hWnd, SW_SHOWDEFAULT);
