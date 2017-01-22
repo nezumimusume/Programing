@@ -77,8 +77,11 @@ namespace tkEngine{
 	void CSky::Render(CRenderContext& renderContext) 
 	{
 		if (camera != nullptr) {
+			//Z‚Í‘‚«ž‚Ü‚È‚¢B
+			renderContext.SetRenderState(RS_ZWRITEENABLE, FALSE);
 			skinModel.Draw(renderContext, camera->GetViewMatrix(), camera->GetProjectionMatrix());
 			sunModel.Draw(renderContext, camera->GetViewMatrix(), camera->GetProjectionMatrix());
+			renderContext.SetRenderState(RS_ZWRITEENABLE, TRUE);
 		}
 	}
 }

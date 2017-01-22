@@ -13,7 +13,17 @@ namespace tkEngine{
 	 * @brief	空のシミュレーションクラス。
 	 * @details
 	 *  tkEngine::Sky().SetEnableをコールすることで空のシミュレーションが行えるようになります。</br>
-	 *  SetEnable関数の詳細については関数の説明を参照して下さい。
+	 *  SetEnable関数の詳細については関数の説明を参照して下さい。</br>
+	 *  空は大きな球体のモデルがカメラの注視点を中心として描画されます。</br>
+	 *  空に貼られているテクスチャはAssets/modelData/sky.ddsです。</br>
+	 *  空のテクスチャを変更したい場合はこのテクスチャを上書きしてください。</br>
+	 *  テクスチャは空に投影するキューブマップになっている必要があるので注意してください。</br>
+	 *  また、このシミュレーションで行われている処理では空の色はテクスチャからサンプリングしているのではなく、</br>
+     *  大気錯乱の計算が行われて決定されます。テクスチャは雲の形状をレンダリングするためだけに使用されているので注意してください。</br>
+     * @todo
+     *  未実装の機能として、雲の形状を抽出するための閾値が決め打ちになっているため、異なるテクスチャを</br>
+     *  使用した場合に雲が綺麗に表示されないことが想定されます。</br>
+     *  問題が起きた場合はその閾値を調整できるようにする必要があります。</br>
      *@code
      		void Init()
      		{
@@ -42,8 +52,8 @@ namespace tkEngine{
 		CVector3				sunDir = CVector3::Zero;		//!<太陽の方向。
 		float					deltaTimeMul = 1.0f;			//!<⊿タイムに乗算される値。
 		const CCamera*			camera = nullptr;				//!<カメラ。
-		CLight*					sceneLight = nullptr;									//!<シーンライト。
-		CVector3				dayAmbinetLight = CVector3(0.3f, 0.3f, 0.3f);			//!<日中のアンビエントライト。
+		CLight*					sceneLight = nullptr;								//!<シーンライト。
+		CVector3				dayAmbinetLight = CVector3(0.3f, 0.3f, 0.3f);		//!<日中のアンビエントライト。
 		CVector3				nightAmbinetLight = CVector3(0.1f, 0.1f, 0.1f);		//!<夜間のアンビエントライト。
 	public:
 		CSky();
@@ -77,6 +87,13 @@ namespace tkEngine{
 		void SetDisable()
 		{
 			SetActiveFlag(false);
+		}
+		/*!
+		* @brief	太陽の明るさを設定。
+		*/
+		void SetLuminance(const CVector3& luminance)
+		{
+			sunLight.SetEmissionLightColor(luminance);
 		}
 		/*!
 		 * @brief	カメラを設定。
@@ -118,6 +135,13 @@ namespace tkEngine{
 			return atomosphereParam;
 		}
 		void Render(CRenderContext& renderContext) override;
+		/*!
+		 * @brief	太陽の位置を設定。
+		 */
+		void SetSunPosition( const CVector3& position )
+		{
+			sunPosition = position;
+		}
 		/*!
 		* @brief	太陽の座標を取得。
 		*/
