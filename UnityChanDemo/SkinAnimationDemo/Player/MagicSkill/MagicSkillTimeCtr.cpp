@@ -9,7 +9,7 @@
 #include "Enemy/Enemy.h"
 #include "tkEngine/Sound/tkSoundSource.h"
 #include "Scene/gameScene.h"
-#include "Map/Sky.h"
+
 
 void MagicSkillTimeCtr::Finish::Update()
 {
@@ -56,7 +56,7 @@ void MagicSkillTimeCtr::OnStartMagic()
 	s->Init("Assets/Sound/heartbeat.wav");
 	s->Play(false);
 	g_enemyManager->SetFrameDeltaTimeMul(mulDeltaTime);
-	gameScene->GetSky()->SetFrameDeltaTimeMul(mulDeltaTime);
+	Sky().SetFrameDeltaTimeMul(mulDeltaTime);
 	postEffectFilter.SetEnalbe(true);
 
 	auto pauseSound = [](IGameObject* go) {
@@ -74,7 +74,7 @@ void MagicSkillTimeCtr::OnStartMagic()
 void MagicSkillTimeCtr::OnEndMagic()
 {
 	g_enemyManager->SetFrameDeltaTimeMul(1.0f);
-	gameScene->GetSky()->SetFrameDeltaTimeMul(1.0f);
+	Sky().SetFrameDeltaTimeMul(1.0f);
 	//終了処理をゲームオブジェクトマネージャーに登録。
 	AddGO(0, &finish);
 	//ここでもマスクを描画しないと１フレームだけマスクがない状態で描画されてしまう。

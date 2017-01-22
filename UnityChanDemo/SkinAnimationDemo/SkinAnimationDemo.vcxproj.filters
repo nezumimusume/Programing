@@ -95,9 +95,6 @@
     <ClCompile Include="Map\Map.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Map\Sky.cpp">
-      <Filter>Source Files\Map</Filter>
-    </ClCompile>
     <ClCompile Include="Player\Player.cpp">
       <Filter>Source Files\Player</Filter>
     </ClCompile>
@@ -233,9 +230,6 @@
       <Filter>Source Files\Map</Filter>
     </ClInclude>
     <ClInclude Include="Map\Ground.h">
-      <Filter>Source Files\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Map\Sky.h">
       <Filter>Source Files\Map</Filter>
     </ClInclude>
     <ClInclude Include="Player\Player.h">

@@ -9,7 +9,7 @@
 #include "UnityChanInstance.h"
 #include "Car.h"
 #include "Map/Map.h"
-#include "Map/Sky.h"
+
 #include "Map/Ground.h"
 #include "tkEngine/Physics/tkPhysics.h"
 #include "EnemyTest.h"
@@ -45,7 +45,6 @@ void GameScene::OnDestroy()
 	DeleteGO(ground);
 	DeleteGO(playerHPBar);
 	DeleteGO(playerMPBar);
-	DeleteGO(sky);
 	//DeleteGO(g_car);
 	DeleteGO(g_player);
 	DeleteGO(g_enemyManager);
@@ -61,8 +60,10 @@ bool GameScene::Start()
 {
 	switch (initStep) {
 	case InitStep_Load:	
+		
 		//完全にモデルデータを開放する。
 		//SkinModelDataResources().Release();
+		
 		g_fade->StartFadeIn();
 		AddGO(0, &inGameLight);
 		map = NewGO<Map>(0);
@@ -73,8 +74,6 @@ bool GameScene::Start()
 		magicSkill2D = NewGO<MagicSkill2D>(0);
 		g_damageCollisionWorld = NewGO<DamageCollisionWorld>(0);
 		g_player = NewGO<Player>(0);
-		sky = NewGO<Sky>(0);
-		sky->SetPlayer(g_player);
 		g_camera = NewGO<GameCamera>(0);
 		g_player->SetPosition(CVector3(-10.0f, 4.5f, 0.0f));
 		//g_player->SetPosition(CVector3(0.0f, 0.5f, 177.0));
@@ -86,7 +85,8 @@ bool GameScene::Start()
 		bgmSoundSource.Play(true);
 		bgmSoundSource.SetVolume(0.5f);
 		AddGO(0, &bgmSoundSource);
-		
+
+		Sky().SetEnable(&g_camera->GetCamera(), &inGameLight.GetDefaultLight());
 		initStep = InitStep_WaitLoad;
 		break;
 	case InitStep_WaitLoad:
@@ -97,7 +97,6 @@ bool GameScene::Start()
 			&& playerHPBar->IsStart()
 			&& playerMPBar->IsStart()
 			&& playerMPBar->IsStart()
-			&& sky->IsStart()
 			&& !g_fade->IsExecute()
 		) {
 			//全て初期化完了。

@@ -2,7 +2,6 @@
 #include "Map/MapChip.h"
 #include "Player/Player.h"
 #include "Scene/GameScene.h"
-#include "map/sky.h"
 
 MapChip::MapChip() :
 	rootBoneMatrix(NULL)
@@ -89,7 +88,6 @@ bool MapChip::Start()
 			PhysicsWorld().AddRigidBody(&rigidBody[i]);
 			i++;
 		}
-		skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());
 
 		return true;
 	}

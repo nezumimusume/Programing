@@ -7,7 +7,7 @@
 #include "tkEngine/Physics/tkCollisionAttr.h"
 #include "Enemy/EnemyParameter.h"
 #include "Scene/GameScene.h"
-#include "map/sky.h"
+#include "tkEngine/nature/tkSky.h"
 
 void Enemy::Init(const char* modelPath, CVector3 pos, CQuaternion rotation)
 {
@@ -62,7 +62,6 @@ bool Enemy::Start()
 		skinModel.SetShadowCasterFlag(true);
 		skinModel.SetShadowReceiverFlag(true);
 		skinModel.SetFresnelFlag(true);
-		skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());
 
 		radius = 0.6f;
 		height = 1.5f;

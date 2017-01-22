@@ -5,7 +5,8 @@
 #include "stdafx.h"
 #include "Light/InGameLight.h"
 #include "Scene/GameScene.h"
-#include "Map/Sky.h"
+#include "tkEngine/nature/tkSky.h"
+#include "Player/Player.h"
 
 InGameLight::InGameLight()
 {
@@ -30,24 +31,19 @@ bool InGameLight::Start()
 
 	defaultLight.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
 	defaultLight.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
+	Sky().SetSceneLight(defaultLight);
+	Sky().SetNightAmbientLight({0.1f, 0.1f, 0.1f});
 	return true;
 }
 void InGameLight::Update() 
 {
-	const CVector3& sunDir = gameScene->GetSky()->GetSunDir();
+	const CVector3& sunDir = Sky().GetSunDir();
 
-	//リムライトを更新。
-	CVector3 limLightDir = sunDir;
-	limLightDir.Scale(-1.0f);
-	defaultLight.SetDiffuseLightDirection(0, limLightDir);
-	defaultLight.SetLimLightDirection(limLightDir);
-	//アンビエントライト更新。
-	float t = max(0.0f, sunDir.Dot(CVector3::Up));
-
-	//太陽の位置からアンビエントライトを計算。
-	const CVector3 dayLight = CVector3(0.3f, 0.3f, 0.3f);//日中のアンビエントライト。
-	const CVector3 nightLight = CVector3(0.07f, 0.07f, 0.07f);	//夜間のアンビエントライト。
-	CVector3 ambientLight;
-	ambientLight.Lerp(t, nightLight, dayLight);
-	defaultLight.SetAmbinetLight(ambientLight);
+	//シャドウマップのライトの位置を太陽の位置から計算する。
+	CVector3 lightPos = Sky().GetSunPosition();
+	lightPos.Normalize();
+	lightPos.Scale(30.0f);
+	lightPos.Add(g_player->GetPosition());
+	ShadowMap().SetLightPosition(lightPos);
+	ShadowMap().SetLightTarget(g_player->GetPosition());
 }

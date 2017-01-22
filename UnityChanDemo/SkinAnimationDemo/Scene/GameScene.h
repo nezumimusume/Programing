@@ -11,7 +11,7 @@ class Map;
 class Ground;
 class PlayerHPBar;
 class PlayerMPBar;
-class Sky;
+
 class UnityChanInstance;
 class GameOver2D;
 class MagicSkill2D;
@@ -34,11 +34,7 @@ public:
 	void OnDestroy() override;
 	bool Start() override;
 	void Update() override;
-	//空を取得。
-	Sky* GetSky() const
-	{
-		return sky;
-	}
+	
 	//デフォルトライトの取得。
 	CLight& GetDefaultLight()
 	{
@@ -58,7 +54,6 @@ private:
 	Ground*				ground = NULL;
 	PlayerHPBar*		playerHPBar = NULL;
 	PlayerMPBar*		playerMPBar = NULL;
-	Sky* 				sky = NULL;
 	UnityChanInstance*	unityChanInstance = NULL;
 	CSoundSource		bgmSoundSource;
 	InitStep			initStep = InitStep_Load;

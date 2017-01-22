@@ -269,7 +269,6 @@
     <ClCompile Include="Map\Ground.cpp" />
     <ClCompile Include="Map\Map.cpp" />
     <ClCompile Include="Map\MapChip.cpp" />
-    <ClCompile Include="Map\Sky.cpp" />
     <ClCompile Include="Player\FSM\PlayerStateAttack.cpp" />
     <ClCompile Include="Player\FSM\PlayerStateDamage.cpp" />
     <ClCompile Include="Player\FSM\PlayerStateDead.cpp" />
@@ -325,7 +324,6 @@
     <ClInclude Include="Map\Ground.h" />
     <ClInclude Include="Map\Map.h" />
     <ClInclude Include="Map\MapChip.h" />
-    <ClInclude Include="Map\Sky.h" />
     <ClInclude Include="Player\FSM\IPlayerState.h" />
     <ClInclude Include="Player\FSM\PlayerStateAttack.h" />
     <ClInclude Include="Player\FSM\PlayerStateDamage.h" />
