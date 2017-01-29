@@ -76,6 +76,7 @@ sampler_state
 float2 g_luminanceTexSize;		//輝度テクスチャのサイズ。
 float2 g_offset;				//オフセット
 float  g_weight[8];				//ガウスフィルタの重み。
+float2 g_renderTargetSize;		//レンダリングターゲットのサイズ。
 /*!
  * @brief	Xブラー頂点シェーダー。
  */
@@ -85,7 +86,7 @@ VS_BlurOutput VSXBlur(VS_INPUT In)
 	Out.pos = In.pos;
 	float2 tex = (In.pos * 0.5f) + 0.5f;;
 	tex.y = 1.0f - tex.y;
-	tex += float2( 0.5/g_luminanceTexSize.x, 0.5/g_luminanceTexSize.y);
+	tex += float2( 0.5/g_renderTargetSize.x, 0.5/g_renderTargetSize.y);
 	Out.tex0 = tex + float2( - 1.0f/g_luminanceTexSize.x, 0.0f );
     Out.tex1 = tex + float2( - 3.0f/g_luminanceTexSize.x, 0.0f );
     Out.tex2 = tex + float2( - 5.0f/g_luminanceTexSize.x, 0.0f );
@@ -129,7 +130,7 @@ VS_BlurOutput VSYBlur(VS_INPUT In)
 	Out.pos = In.pos;
 	float2 tex = (In.pos * 0.5f) + 0.5f;
 	tex.y = 1.0f - tex.y;
-	tex += float2( 0.5/g_luminanceTexSize.x, 0.5/g_luminanceTexSize.y);
+	tex += float2( 0.5/g_renderTargetSize.x, 0.5/g_renderTargetSize.y);
 	Out.tex0 = tex + float2( 0.0f,- 1.0f/g_luminanceTexSize.y  );
     Out.tex1 = tex + float2( 0.0f,- 3.0f/g_luminanceTexSize.y  );
     Out.tex2 = tex + float2( 0.0f,- 5.0f/g_luminanceTexSize.y  );
@@ -233,7 +234,7 @@ float4 PSCombine( VS_OUTPUT In ) : COLOR
 	combineColor += tex2D(g_combineSampler02, uv);
 	combineColor += tex2D(g_combineSampler03, uv);
 	combineColor += tex2D(g_combineSampler04, uv);
-	combineColor.xyz /= 5.0f;
+	combineColor /= 5.0f;
 	return combineColor;
 }
 /*!

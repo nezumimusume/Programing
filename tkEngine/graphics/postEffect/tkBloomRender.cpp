@@ -77,10 +77,14 @@ namespace tkEngine{
 						16.0f / s_cast<float>(prevRenderTarget->GetWidth()),
 						0.0f
 					};
+					float renderTargetSize[2] = {
+						(float)m_downSamplingRenderTarget[rtIndex].GetWidth(),
+						(float)m_downSamplingRenderTarget[rtIndex].GetHeight()
+					};
 					m_pEffect->SetValue(renderContext, "g_luminanceTexSize", size, sizeof(size));
 					m_pEffect->SetValue(renderContext, "g_offset", offset, sizeof(size));
 					m_pEffect->SetValue(renderContext, "g_weight", m_weights, sizeof(m_weights));
-
+					m_pEffect->SetValue(renderContext, "g_renderTargetSize", renderTargetSize, sizeof(renderTargetSize));
 					m_pEffect->SetTexture(renderContext, "g_blur", prevRenderTarget->GetTexture());
 					m_pEffect->CommitChanges(renderContext);
 					postEffect->RenderFullScreen(renderContext);
@@ -105,10 +109,14 @@ namespace tkEngine{
 						0.0f,
 						16.0f / s_cast<float>(prevRenderTarget->GetHeight()),
 					};
+					float renderTargetSize[2] = {
+						(float)m_downSamplingRenderTarget[rtIndex].GetWidth(),
+						(float)m_downSamplingRenderTarget[rtIndex].GetHeight()
+					};
 					m_pEffect->SetValue(renderContext, "g_luminanceTexSize", size, sizeof(size));
 					m_pEffect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
 					m_pEffect->SetValue(renderContext, "g_weight", m_weights, sizeof(m_weights));
-
+					m_pEffect->SetValue(renderContext, "g_renderTargetSize", renderTargetSize, sizeof(renderTargetSize));
 					m_pEffect->SetTexture(renderContext, "g_blur", prevRenderTarget->GetTexture());
 					m_pEffect->CommitChanges(renderContext);
 					postEffect->RenderFullScreen(renderContext);

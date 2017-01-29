@@ -114,7 +114,9 @@ namespace tkEngine{
 		 */
 		void DeleteGameObject( IGameObject* gameObject )
 		{
-			if (gameObject->m_isRegist) {
+			if (gameObject != nullptr
+				&& gameObject->m_isRegist
+			) {
 				gameObject->SetDeadMark();
 				gameObject->OnDestroy();
 				gameObject->m_isRegist = false;
