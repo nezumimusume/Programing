@@ -20,9 +20,15 @@ namespace tkEngine{
 		}
 		void SetTextureDX( LPDIRECT3DTEXTURE9 tex )
 		{
-			m_tex = tex;
-			m_tex->AddRef();
-			ComputeTexSize();
+			
+			if (tex != nullptr) {
+				if (m_tex != nullptr) {
+					m_tex->Release();
+				}
+				m_tex = tex;
+				m_tex->AddRef();
+				ComputeTexSize();
+			}
 		}
 		LPDIRECT3DTEXTURE9 GetTextureDX() const
 		{

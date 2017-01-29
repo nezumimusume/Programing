@@ -4,7 +4,7 @@
 #include "Player/Player.h"
 #include "tkEngine/Physics/tkCollisionAttr.h"
 #include "Scene/GameScene.h"
-#include "map/sky.h"
+#include "tkEngine/nature/tkSky.h"
 
 Ground* g_ground = NULL;
 LPD3DXMESH testMesh;
@@ -51,7 +51,6 @@ bool Ground::Start()
 #endif
 			skinModel.SetShadowReceiverFlag(true);
 			skinModel.SetShadowCasterFlag(true);
-			skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());
 
 			Update();
 			m_worldMatrix = skinModel.FindBoneWorldMatrix("Plane001");

@@ -75,6 +75,9 @@
     <Filter Include="Source Files\thread">
       <UniqueIdentifier>{364841d2-6926-44a8-859b-33122fac2536}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\nature">
+      <UniqueIdentifier>{a6455ce6-4638-4e2f-a3a5-9454f3c26eed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -280,6 +283,9 @@
     </ClCompile>
     <ClCompile Include="graphics\postEffect\tkIPostEffectFilter.cpp">
       <Filter>Source Files\graphics\postEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="nature\tkSky.cpp">
+      <Filter>Source Files\nature</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -537,6 +543,9 @@
     </ClInclude>
     <ClInclude Include="graphics\postEffect\tkIPostEffectFilter.h">
       <Filter>Source Files\graphics\postEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="nature\tkSky.h">
+      <Filter>Source Files\nature</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

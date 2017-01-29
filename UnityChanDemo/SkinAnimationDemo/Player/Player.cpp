@@ -10,7 +10,7 @@
 #include "Enemy/EnemyManager.h"
 #include "HUD/LockOn2D.h"
 #include "Scene/GameScene.h"
-#include "map/sky.h"
+
 
 namespace {
 	const float RECOVER_MP = 20.0f;			//MPŽ©‘R‰ñ•œ—ÊB
@@ -147,9 +147,6 @@ bool Player::Start()
 			skinModel.SetFresnelFlag(true);
 			skinModel.SetReflectionCasterFlag(true);
 			skinModel.SetWriteVelocityMap(false);
-			
-			skinModel.SetAtomosphereParam(enAtomosphereFuncObjectFromAtomosphere, gameScene->GetSky()->GetAtomosphereParam());
-
 
 			isPointLightOn = false;
 			UpdatePointLight();
