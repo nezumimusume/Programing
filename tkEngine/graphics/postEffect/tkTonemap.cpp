@@ -66,6 +66,19 @@ namespace tkEngine{
 					0
 				);
 			}
+
+			//最終的にトーンマップで使用する平均輝度を書き込むレンダリングターゲットを作成。
+			for (auto& rt : m_avgRT) {
+				rt.Create(
+					1,
+					1,
+					1,
+					FMT_A16B16G16R16F,
+					FMT_INVALID,
+					MULTISAMPLE_NONE,
+					0
+				);
+			}
 		}
 	}
 	void CTonemap::CalcLuminanceAvarage(CRenderContext& renderContext, CPostEffect* postEffect)
@@ -134,6 +147,22 @@ namespace tkEngine{
 			m_effect->EndPass(renderContext);
 			m_effect->End(renderContext);
 
+			//明暗順応。
+			CRenderTarget& lastRT = m_avgRT[1 ^ m_currentAvgRT];
+			m_currentAvgRT = 1 ^ m_currentAvgRT;
+			renderContext.SetRenderTarget(0, &m_avgRT[m_currentAvgRT]);
+			m_effect->SetTechnique(renderContext, "CalcAdaptedLuminance");
+			m_effect->Begin(renderContext);
+			m_effect->BeginPass(renderContext, 0);
+			float deltaTime = GameTime().GetFrameDeltaTime();
+			m_effect->SetValue(renderContext, "g_fElapsedTime", &deltaTime, sizeof(deltaTime));
+			m_effect->SetTexture(renderContext, "g_lumAvgTex", m_calcAvgRT[0].GetTexture());
+			m_effect->SetTexture(renderContext, "g_lastLumAvgTex", lastRT.GetTexture());
+			m_effect->CommitChanges(renderContext);
+			postEffect->RenderFullScreen(renderContext);
+			m_effect->EndPass(renderContext);
+			m_effect->End(renderContext);
+			
 			renderContext.SetRenderTarget(0, &Engine().GetMainRenderTarget());
 		}
 	}
@@ -148,7 +177,7 @@ namespace tkEngine{
 			m_effect->SetTechnique(renderContext, "Final");
 			m_effect->Begin(renderContext);
 			m_effect->BeginPass(renderContext, 0);
-			m_effect->SetTexture(renderContext, "g_lumAvgSampler", m_calcAvgRT[0].GetTexture());
+			m_effect->SetTexture(renderContext, "g_lumAvgTex", m_avgRT[m_currentAvgRT].GetTexture());
 			m_effect->SetTexture(renderContext, "g_scene", sceneTex);
 			m_effect->SetValue(renderContext, "g_fMiddleGray", &m_fMiddleGray, sizeof(m_fMiddleGray));
 			m_effect->CommitChanges(renderContext);
@@ -156,7 +185,7 @@ namespace tkEngine{
 			m_effect->EndPass(renderContext);
 			m_effect->End(renderContext);
 			renderContext.SetRenderState(RS_ZENABLE, TRUE);
-			renderContext.SetRenderState(RS_ALPHABLENDENABLE, TRUE);
+		//	renderContext.SetRenderState(RS_ALPHABLENDENABLE, TRUE);
 		}
 	}
 }

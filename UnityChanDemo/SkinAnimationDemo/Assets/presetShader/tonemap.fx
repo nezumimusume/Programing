@@ -40,8 +40,19 @@ sampler_state
     AddressV = CLAMP;
 };
 
+texture g_lastLumAvgTex;	//一フレーム前の輝度の平均値を格納した1×1のテクスチャ。
+sampler g_lastLumAvgSampler = 
+sampler_state
+{
+	Texture = <g_lastLumAvgTex>;
+	MipFilter = POINT;
+	MinFilter = POINT;
+	MagFilter = POINT;
+	AddressU = CLAMP;
+	AddressV = CLAMP;
+};
 float  g_fMiddleGray;       // The middle gray key value
-
+float g_fElapsedTime;
 /*!
  *@brief	頂点シェーダー。
  */
@@ -111,6 +122,21 @@ float4 PSCalcLuminanceExpAvarage( VS_OUTPUT In ) : COLOR
     return float4(fResampleSum, fResampleSum, fResampleSum, 1.0f);
 }
 /*!
+ *@brief	明暗順応のための平均輝度の適合させるピクセルシェーダー。
+ */
+float4 PSCalcAdaptedLuminance( VS_OUTPUT In ) : COLOR
+{
+	float fAdaptedLum = tex2D(g_lastLumAvgSampler, float2(0.5f, 0.5f));
+    float fCurrentLum = tex2D(g_lumAvgSampler, float2(0.5f, 0.5f));
+    
+    // The user's adapted luminance level is simulated by closing the gap between
+    // adapted luminance and current luminance by 2% every frame, based on a
+    // 30 fps rate. This is not an accurate model of human adaptation, which can
+    // take longer than half an hour.
+    float fNewAdaptation = fAdaptedLum + (fCurrentLum - fAdaptedLum) * ( 1 - pow( 0.98f, 30 * g_fElapsedTime ) );
+    return float4(fNewAdaptation, fNewAdaptation, fNewAdaptation, 1.0f);
+}
+/*!
  *@brief	平均輝度からトーンマップを行うピクセルシェーダー。
  */
 float4 PSFinal( VS_OUTPUT In) : COLOR
@@ -152,7 +178,17 @@ technique CalcLuminanceExpAvarage{
 		PixelShader = compile ps_3_0 PSCalcLuminanceExpAvarage();
 	}
 }
-
+/*!
+ *@brief	明暗順応のための平均輝度の適合処理。
+ *@details
+ * 時間に応じて平均輝度を適合させます。
+ */
+technique CalcAdaptedLuminance{
+	pass p0{
+		VertexShader = compile vs_3_0 VSMain();
+		PixelShader = compile ps_3_0 PSCalcAdaptedLuminance();
+	}
+}
 /*!
  *@brief	最終テクニック。
  *@details
