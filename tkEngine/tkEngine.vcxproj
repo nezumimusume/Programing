@@ -276,6 +276,7 @@
     <ClCompile Include="graphics\postEffect\tkMotionBlur.cpp" />
     <ClCompile Include="graphics\postEffect\tkPostEffect.cpp" />
     <ClCompile Include="graphics\postEffect\tkSepiaFilter.cpp" />
+    <ClCompile Include="graphics\postEffect\tkTonemap.cpp" />
     <ClCompile Include="graphics\preRender\tkIDMap.cpp" />
     <ClCompile Include="graphics\preRender\tkPreRender.cpp" />
     <ClCompile Include="graphics\preRender\tkReflectionMap.cpp" />
@@ -368,6 +369,7 @@
     <ClInclude Include="graphics\postEffect\tkMotionBlur.h" />
     <ClInclude Include="graphics\postEffect\tkPostEffect.h" />
     <ClInclude Include="graphics\postEffect\tkSepiaFilter.h" />
+    <ClInclude Include="graphics\postEffect\tkTonemap.h" />
     <ClInclude Include="graphics\preRender\tkIDMap.h" />
     <ClInclude Include="graphics\preRender\tkPreRender.h" />
     <ClInclude Include="graphics\preRender\tkReflectionMap.h" />

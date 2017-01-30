@@ -559,7 +559,7 @@ PSOutput PSSkyMain(VS_OUTPUT In){
 	//空の色と雲の色との間を雲率で線形補完。
 	color.xyz = lerp( color.xyz, cloudColor, cloudRate ) ;
 	PSOutput psOut = (PSOutput)0;
-	psOut.color = color;
+	psOut.color = color * 1.2f;
 
 	psOut.depth = In.worldPos_depth.w;
 	if(g_flags2.x){

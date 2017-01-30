@@ -29,6 +29,7 @@ namespace tkEngine{
 		if (config.bloomConfig.isEnable) {
 			m_bloomRender.Create(config);
 		}
+		m_tonemap.Create(config);
 		m_dof.Create(config);
 		m_fxaa.Init(config);
 		m_motionBlur.Create(config);
@@ -70,10 +71,12 @@ namespace tkEngine{
 	{
 		renderContext.SetRenderTarget(1, NULL);
 		renderContext.SetRenderTarget(2, NULL);
+		m_tonemap.CalcLuminanceAvarage(renderContext, this);
 		m_edgeRender.Render(renderContext, this);
 		m_motionBlur.Render(renderContext, this);
 		m_dof.Render(renderContext, this);
 		m_bloomRender.Render(renderContext, this);
+		m_tonemap.Execute(renderContext, this);
 		m_fxaa.Render(renderContext, this);
 		m_monochromeFilter.Render(renderContext, this);
 		m_sepiaFilter.Render(renderContext, this);

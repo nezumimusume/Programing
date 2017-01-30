@@ -51,6 +51,8 @@ void InitTkEngine( HINSTANCE hInst )
 	initParam.graphicsConfig.aaConfig.isEnable = true;
 	//MotionBlur
 	initParam.graphicsConfig.motionBlurConfig.isEnable = true;
+	//Tonemap
+	initParam.graphicsConfig.tonemapConfig.isEnable = true;
 
 	Engine().Init(initParam);	//èâä˙âªÅB
 	

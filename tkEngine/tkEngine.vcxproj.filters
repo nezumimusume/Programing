@@ -287,6 +287,9 @@
     <ClCompile Include="nature\tkSky.cpp">
       <Filter>Source Files\nature</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\postEffect\tkTonemap.cpp">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -546,6 +549,9 @@
     </ClInclude>
     <ClInclude Include="nature\tkSky.h">
       <Filter>Source Files\nature</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\postEffect\tkTonemap.h">
+      <Filter>Source Files\graphics\postEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -65,7 +65,12 @@ namespace tkEngine{
 	struct SMotionBlurConfig {
 		bool isEnable;
 	};
-	
+	/*!
+	* @brief	トーンマップのコンフィグ。
+	*/
+	struct STonemapConfig {
+		bool isEnable;
+	};
 	/*!
 	 * @brief	グラフィックスコンフィグ。
 	 */
@@ -77,7 +82,7 @@ namespace tkEngine{
 		SDofConfig				dofConfig;				//!<被写界深度のコンフィグ。
 		SAAConfig				aaConfig;				//!<アンチエイリアスのコンフィグ。
 		SMotionBlurConfig		motionBlurConfig;		//<!モーションブラーのコンフィグ。
-		
+		STonemapConfig			tonemapConfig;			//!<トーンマップのコンフィグ。
 	};
 }
 
