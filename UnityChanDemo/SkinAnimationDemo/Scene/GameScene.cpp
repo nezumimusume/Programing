@@ -87,7 +87,7 @@ bool GameScene::Start()
 		AddGO(0, &bgmSoundSource);
 
 		Sky().SetEnable(&g_camera->GetCamera(), &inGameLight.GetDefaultLight());
-		Sky().SetLuminance({ 5.5f, 5.5f, 5.5f });
+		Sky().SetLuminance({ 20.5f, 20.5f, 20.5f });
 		Sky().SetDayAmbientLight({ 0.5f, 0.5f, 0.5f });
 		initStep = InitStep_WaitLoad;
 		break;

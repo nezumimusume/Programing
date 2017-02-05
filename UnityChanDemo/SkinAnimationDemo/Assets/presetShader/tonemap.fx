@@ -133,7 +133,7 @@ float4 PSCalcAdaptedLuminance( VS_OUTPUT In ) : COLOR
     // adapted luminance and current luminance by 2% every frame, based on a
     // 30 fps rate. This is not an accurate model of human adaptation, which can
     // take longer than half an hour.
-    float fNewAdaptation = fAdaptedLum + (fCurrentLum - fAdaptedLum) * ( 1 - pow( 0.98f, 30 * g_fElapsedTime ) );
+    float fNewAdaptation = fAdaptedLum + (fCurrentLum - fAdaptedLum) * ( 1 - pow( 0.98f, 60 * g_fElapsedTime ) );
     return float4(fNewAdaptation, fNewAdaptation, fNewAdaptation, 1.0f);
 }
 /*!
@@ -145,7 +145,7 @@ float4 PSFinal( VS_OUTPUT In) : COLOR
 	float fAvgLum = tex2D(g_lumAvgSampler, float2( 0.5f, 0.5f));
 	
 	vSample.rgb *= g_fMiddleGray/(fAvgLum + 0.001f);
-	vSample.rgb /= (1.0f+vSample);
+//	vSample.rgb /= (1.0f+vSample);
 	return vSample;
 }
 /*!
