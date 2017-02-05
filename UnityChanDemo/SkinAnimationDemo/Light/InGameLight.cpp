@@ -22,17 +22,18 @@ bool InGameLight::Start()
 	defaultLight.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, 0.0f));
 
 
-	defaultLight.SetDiffuseLightColor(0, CVector4(2.8f, 2.8f, 2.8f, 1.0f));
-	defaultLight.SetDiffuseLightColor(1, CVector4(1.1f, 1.1f, 1.1f, 1.0f));
-	defaultLight.SetDiffuseLightColor(2, CVector4(1.1f, 1.1f, 1.1f, 1.0f));
-	defaultLight.SetDiffuseLightColor(3, CVector4(1.1f, 1.1f, 1.1f, 1.0f));
+	defaultLight.SetDiffuseLightColor(0, CVector4(2.0f, 2.0f, 2.0f, 20.0f));
+	defaultLight.SetDiffuseLightColor(1, CVector4(0.8f, 0.8f, 0.8f, 1.0f));
+	defaultLight.SetDiffuseLightColor(2, CVector4(0.8f, 0.8f, 0.8f, 1.0f));
+	defaultLight.SetDiffuseLightColor(3, CVector4(0.8f, 0.8f, 0.8f, 1.0f));
 
-	defaultLight.SetAmbinetLight(CVector3(0.2f, 0.2f, 0.2f));
 
-	defaultLight.SetLimLightColor(CVector4(0.6f, 0.6f, 0.6f, 1.0f));
+	defaultLight.SetLimLightColor(CVector4(2.0f, 2.0f, 2.0f, 1.0f));
 	defaultLight.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
 	Sky().SetSceneLight(defaultLight);
-	Sky().SetNightAmbientLight({0.1f, 0.1f, 0.1f});
+	Sky().SetLuminance({ 20.5f, 20.5f, 20.5f });
+	Sky().SetNightAmbientLight({0.02f, 0.02f, 0.02f});
+	Sky().SetDayAmbientLight({ 0.7f, 0.7f, 0.7f });
 	return true;
 }
 void InGameLight::Update() 

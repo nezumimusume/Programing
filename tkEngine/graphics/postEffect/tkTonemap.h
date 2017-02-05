@@ -36,6 +36,6 @@ namespace tkEngine{
 		CRenderTarget	m_calcAvgRT[NUM_CALC_AVG_RT];	//!<平均輝度計算用のレンダリングターゲット。
 		CRenderTarget   m_avgRT[2];						//!<平均輝度が格納されるレンダリングターゲット。
 		int				m_currentAvgRT = 0;				//!<
-		float			m_fMiddleGray = 0.18f;			//!<この値を大きくすると明るくなる。
+		float			m_fMiddleGray = 0.22f;			//!<この値を大きくすると明るくなる。
 	};
 }
