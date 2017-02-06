@@ -551,15 +551,16 @@ PSOutput PSSkyMain(VS_OUTPUT In){
 	//大気の色もモノクロ化
 	float colorY = max( 0.0f, dot(monochrome, color) );
 	//このtは夜になると1.0fに近づいてくる。
-	float nightRate = pow( 1.0f - min(1.0f, colorY), 2.0f );
+//	float nightRate = pow( 1.0f - min(1.0f, colorY), 1.0f );
+	float nightRate = max( 0.0f, dot(float3(0.0f, 1.0f, 0.0f ), g_atmosParam.v3LightDirection ));
 	//夜空の色
 //	color.xyz += float3(0.0f, 0.0f, 0.1f ) * nightRate ;
 	//雲の色。昼間は1.0fで夜間は0.3f
-	float cloudColor = lerp(3.5f, 0.1f, nightRate );
+	float cloudColor = lerp(3.0f, 0.1f,pow( 1.0f - nightRate, 3.0f));
 	//空の色と雲の色との間を雲率で線形補完。
 	color.xyz = lerp( color.xyz, cloudColor, cloudRate ) ;
 	PSOutput psOut = (PSOutput)0;
-	psOut.color = color * 1.25f;
+	psOut.color = color * 1.1f;
 
 	psOut.depth = In.worldPos_depth.w;
 	if(g_flags2.x){

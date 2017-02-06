@@ -32,7 +32,7 @@ bool InGameLight::Start()
 	defaultLight.SetLimLightDirection(CVector3(0.0f, 0.0f, -1.0f));
 	Sky().SetSceneLight(defaultLight);
 	Sky().SetLuminance({ 20.5f, 20.5f, 20.5f });
-	Sky().SetNightAmbientLight({0.02f, 0.02f, 0.02f});
+	Sky().SetNightAmbientLight({0.05f, 0.05f, 0.05f});
 	Sky().SetDayAmbientLight({ 0.7f, 0.7f, 0.7f });
 	return true;
 }
