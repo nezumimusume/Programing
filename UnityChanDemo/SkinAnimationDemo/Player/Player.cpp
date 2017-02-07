@@ -304,7 +304,7 @@ void Player::UpdatePointLight()
 	}
 
 	if (isPointLightOn) {
-		pointLightColor.Set(1.5f, 1.5f, 1.5f, 3.0f);
+		pointLightColor.Set(0.25f, 0.25f, 0.25f, 3.0f);
 	}
 	else {
 		pointLightColor = CVector4(0.0f, 0.0f, 0.0f, 0.0f);
