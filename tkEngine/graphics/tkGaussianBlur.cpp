@@ -50,8 +50,8 @@ namespace tkEngine{
 		m_srcTexWH[0] = w;
 		m_srcTexWH[1] = h;
 		int size[2][2]{
-			{ w, h },
-			{ w, h },
+			{ w >> 1, h },
+			{ w >> 1, h >> 1},
 		};
 		
 		for (int i = 0; i < 2; i++) {
@@ -100,6 +100,10 @@ namespace tkEngine{
 		//Xブラー。
 		{
 			renderContext.SetRenderTarget(0, &m_rt[0]);
+			float texelOffset[2] = {
+				0.5f / m_rt[0].GetWidth(),
+				0.5f / m_rt[0].GetHeight()
+			};
 			float size[2] = {
 				s_cast<float>(m_srcTexWH[0]),
 				s_cast<float>(m_srcTexWH[1])
@@ -118,6 +122,7 @@ namespace tkEngine{
 			m_effect->Begin(renderContext);
 			m_effect->BeginPass(renderContext, 0);
 			m_effect->SetTexture(renderContext, "g_tex", m_srcTexture);
+			m_effect->SetValue(renderContext, "g_texelOffset", texelOffset, sizeof(texelOffset));
 			m_effect->SetValue(renderContext, "g_texSize", size, sizeof(size));
 			m_effect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
 			m_effect->SetValue(renderContext, "g_weight", m_weights, sizeof(m_weights));
@@ -133,7 +138,10 @@ namespace tkEngine{
 		//Yブラー。
 		{
 			renderContext.SetRenderTarget(0, &m_rt[1]);
-
+			float texelOffset[2] = {
+				0.5f / m_rt[1].GetWidth(),
+				0.5f / m_rt[1].GetHeight()
+			};
 			float size[2] = {
 				s_cast<float>(m_rt[0].GetWidth()),
 				s_cast<float>(m_rt[0].GetHeight())
@@ -153,6 +161,7 @@ namespace tkEngine{
 			m_effect->SetTechnique(renderContext, tecNameTbl[m_useWeights]);
 			m_effect->Begin(renderContext);
 			m_effect->BeginPass(renderContext, 0);
+			m_effect->SetValue(renderContext, "g_texelOffset", texelOffset, sizeof(texelOffset));
 			m_effect->SetTexture(renderContext, "g_tex", m_rt[0].GetTexture());
 			m_effect->SetValue(renderContext, "g_texSize", size, sizeof(size));
 			m_effect->SetValue(renderContext, "g_offset", offset, sizeof(offset));

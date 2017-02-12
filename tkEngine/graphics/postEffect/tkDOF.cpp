@@ -48,6 +48,22 @@ namespace tkEngine{
 			m_blurForward.SetBlurPower(20.0f);
 			m_blurForward.SetUseWeights(CGaussianBlur::enUseWeight_8);
 			m_effect = EffectManager().LoadEffect("Assets/presetShader/dof.fx");
+
+			LPDIRECT3DTEXTURE9 tex = Engine().GetMainRenderTarget().GetTexture()->GetTextureDX();
+			D3DSURFACE_DESC desc;
+			tex->GetLevelDesc(0, &desc);
+
+			m_combineRenderTarget.Create(
+				m_blurBack.GetRenderTarget().GetWidth(),
+				m_blurBack.GetRenderTarget().GetHeight(),
+				1,
+				(EFormat)desc.Format,
+				FMT_INVALID, 
+				MULTISAMPLE_NONE, 
+				0
+			);
+			
+			m_copyEffect = EffectManager().LoadEffect("Assets/presetShader/TransformedPrim.fx");
 		}
 	}
 	
@@ -55,6 +71,7 @@ namespace tkEngine{
 	{
 		CPIXPerfTag tag(renderContext, L"CDof::Render");
 		if (m_isEnable) {
+			
 			//被写体との距離から、こちらで計算する。
 			static float CoC = 0.033f;			//許容錯乱円(単位はmm)
 			float forwardDof = (CoC * m_F * m_pint * m_pint) / (m_focalLength * m_focalLength + CoC * m_F * m_pint);
@@ -80,33 +97,57 @@ namespace tkEngine{
 				m_blurForward.Draw(renderContext);
 			}
 			
-			//合成。
+			//手前ボケと奥ボケを合成。
 			{
-				CPIXPerfTag tag(renderContext, L"CDof::Render(final)");
-				m_effect->SetTechnique(renderContext, "Dof");
+				CPIXPerfTag tag(renderContext, L"CDof::Render(CombineBackForwardBoke)");
+				m_effect->SetTechnique(renderContext, "CombineBackForwardBoke");
 				m_effect->Begin(renderContext);
 				m_effect->BeginPass(renderContext, 0);
 				m_effect->SetValue(renderContext, "g_dofParam", dofParam, sizeof(dofParam));
-				m_effect->SetTexture(renderContext, "g_scene", Engine().GetMainRenderTarget().GetTexture());
 				m_effect->SetTexture(renderContext, "g_depthTexture", m_depthRT.GetTexture());
 				m_effect->SetTexture(renderContext, "g_blurBack", m_blurBack.GetTexture());
 				m_effect->SetTexture(renderContext, "g_blurForward", m_blurForward.GetTexture());
 
 				float texSize[] = {
-					s_cast<float>(m_depthRT.GetWidth()),
-					s_cast<float>(m_depthRT.GetHeight()),
+					s_cast<float>(m_combineRenderTarget.GetWidth()),
+					s_cast<float>(m_combineRenderTarget.GetHeight()),
 				};
-				m_effect->SetValue(renderContext, "g_sceneTexSize", texSize, sizeof(texSize));
+				m_effect->SetValue(renderContext, "g_rtSize", texSize, sizeof(texSize));
 				m_effect->CommitChanges(renderContext);
 
-				Engine().ToggleMainRenderTarget();
-				renderContext.SetRenderTarget(0, &Engine().GetMainRenderTarget());
-
+				renderContext.SetRenderTarget(0, &m_combineRenderTarget);
+				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
+					D3DCOLOR_RGBA(0, 0, 255, 0), 1.0f, 0
+					);
 				postEffect->RenderFullScreen(renderContext);
 				m_effect->EndPass(renderContext);
 				m_effect->End(renderContext);
 			}
-			
+			//ボケ画像とシーンを合成
+			{
+				CPIXPerfTag tag(renderContext, L"CDof::Render(Final)");
+				renderContext.SetRenderTarget(0, &Engine().GetMainRenderTarget());
+				m_copyEffect->SetTechnique(renderContext, "TransformedPrim");
+				m_copyEffect->Begin(renderContext);
+				m_copyEffect->BeginPass(renderContext, 0);
+				float offset[] = {
+					0.5f/s_cast<float>(Engine().GetMainRenderTarget().GetWidth()),
+					0.5f/s_cast<float>(Engine().GetMainRenderTarget().GetHeight()),
+				};
+				m_copyEffect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
+				m_copyEffect->SetTexture(renderContext, "g_tex", m_combineRenderTarget.GetTexture());
+				m_copyEffect->CommitChanges(renderContext);
+				renderContext.SetRenderState(RS_ALPHABLENDENABLE, TRUE);
+				renderContext.SetRenderState(RS_SRCBLEND, BLEND_SRCALPHA);
+				renderContext.SetRenderState(RS_DESTBLEND, BLEND_INVSRCALPHA);
+
+				postEffect->RenderFullScreen(renderContext);
+
+				m_copyEffect->EndPass(renderContext);
+				m_copyEffect->End(renderContext);
+
+				renderContext.SetRenderState(RS_ALPHABLENDENABLE, FALSE);
+			}
 		}
 	}
 }

@@ -47,6 +47,7 @@ struct VS_OUTPUT_BLUR{
 
 float2 g_texSize;			//テクスチャサイズ。
 float  g_weight[8];				//ガウスフィルタの重み。
+float2 g_texelOffset;
 
 /*!
  * @brief	Xブラーの頂点シェーダー。
@@ -57,7 +58,7 @@ VS_OUTPUT_BLUR VSMainBlurX( VS_INPUT In )
 	Out.pos = In.pos;
 
 	float2 tex = In.uv ;
-	Out.tex0 = tex;
+	Out.tex0 = tex + g_texelOffset;
 	Out.tex1 = float2( 0.5f/g_texSize.x, 0.0f );
     Out.tex2 = float2( 1.0f/g_texSize.x, 0.0f );
 	return Out;
@@ -70,7 +71,7 @@ VS_OUTPUT_BLUR VSMainBlurY( VS_INPUT In )
 {
 	VS_OUTPUT_BLUR Out = (VS_OUTPUT_BLUR)0;
 	Out.pos = In.pos;
-	float2 tex = In.uv ;
+	float2 tex = In.uv + g_texelOffset;
 
 	Out.tex0 = tex + float2( 0.5/g_texSize.x, 0.5/g_texSize.y);;
 	Out.tex1 = float2( 0.0f, 0.5f/g_texSize.y  );
@@ -120,6 +121,7 @@ VS_OUTPUT_GBLUR VSMainGBlurX( VS_INPUT In )
 	Out.pos = In.pos;
 	float2 tex = (In.pos * 0.5f) + 0.5f;
 	tex.y = 1.0f - tex.y;
+	tex += g_texelOffset;
 	Out.tex0 = tex;
 	Out.tex1 = tex + float2( - 2.0f/g_texSize.x, 0.0f  );
     Out.tex2 = tex + float2( - 4.0f/g_texSize.x, 0.0f  );
@@ -141,6 +143,7 @@ VS_OUTPUT_GBLUR VSMainGBlurY( VS_INPUT In )
 	Out.pos = In.pos;
 	float2 tex = (In.pos * 0.5f) + 0.5f;
 	tex.y = 1.0f - tex.y;
+	tex += g_texelOffset;
 	Out.tex0 = tex;
 	Out.tex1 = tex + float2( 0.0f,- 2.0f/g_texSize.y  );
     Out.tex2 = tex + float2( 0.0f,- 4.0f/g_texSize.y  );

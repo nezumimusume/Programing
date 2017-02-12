@@ -41,6 +41,10 @@ namespace tkEngine{
 		{
 			return m_rt[1].GetTexture();
 		}
+		const CRenderTarget& GetRenderTarget() const
+		{
+			return m_rt[1];
+		}
 		/*!
 		* @brief	ブラーの強度を設定。
 		*@details

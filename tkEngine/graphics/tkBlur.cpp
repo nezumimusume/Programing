@@ -80,9 +80,14 @@ namespace tkEngine {
 				s_cast<float>(m_srcTexWH[0]),
 				s_cast<float>(m_srcTexWH[1])
 			};
+			float texelOffset[] = {
+				0.5f / m_rt[0].GetWidth(),
+				0.5f / m_rt[0].GetHeight()
+			};
 			m_effect->SetTechnique(renderContext, "TransformedPrimBlurX");
 			m_effect->Begin(renderContext);
 			m_effect->BeginPass(renderContext, 0);
+			m_effect->SetValue(renderContext, "g_texelOffset", texelOffset, sizeof(texelOffset));
 			m_effect->SetTexture(renderContext, "g_tex", m_srcTexture);
 			m_effect->SetValue(renderContext, "g_texSize", size, sizeof(size));
 			m_effect->CommitChanges(renderContext);
@@ -99,12 +104,17 @@ namespace tkEngine {
 			renderContext.SetRenderTarget(0, &m_rt[1]);
 
 			float size[2] = {
-				s_cast<float>(m_rt[0].GetWidth()),
-				s_cast<float>(m_rt[0].GetHeight())
+				s_cast<float>(m_rt[1].GetWidth()),
+				s_cast<float>(m_rt[1].GetHeight())
+			};
+			float texelOffset[] = {
+				0.5f / m_rt[0].GetWidth(),
+				0.5f / m_rt[0].GetHeight()
 			};
 			m_effect->SetTechnique(renderContext, "TransformedPrimBlurY");
 			m_effect->Begin(renderContext);
 			m_effect->BeginPass(renderContext, 0);
+			m_effect->SetValue(renderContext, "g_texelOffset", texelOffset, sizeof(texelOffset));
 			m_effect->SetTexture(renderContext, "g_tex", m_rt[0].GetTexture());
 			m_effect->SetValue(renderContext, "g_texSize", size, sizeof(size));
 			m_effect->CommitChanges(renderContext);

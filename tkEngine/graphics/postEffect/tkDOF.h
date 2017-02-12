@@ -70,7 +70,9 @@ namespace tkEngine{
 		bool				m_isEnable;		//!<DOF有効？
 		CGaussianBlur		m_blurForward;	//!<前ボケ用のブラー。
 		CGaussianBlur		m_blurBack;		//!<奥ボケ用のブラー。
+		CRenderTarget		m_combineRenderTarget;	//!<ボケ合成用のレンダリングターゲット。
 		CEffect*			m_effect;		//!<エフェクト。
+		CEffect*			m_copyEffect;	//!<コピーを行うだけのエフェクト。
 		float				m_focalLength;	//!<焦点距離。
 		float				m_F;			//!<F値。
 		float				m_pint;

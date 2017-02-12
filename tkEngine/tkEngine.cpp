@@ -288,7 +288,7 @@ namespace tkEngine{
 				m_pD3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
 				
 				sw.Stop();
-				
+#if 1	
 				if (sw.GetElapsed() < 1.0f / 30.0f) {
 					//30fps‚ÉŠÔ‚É‡‚Á‚Ä‚¢‚é‚È‚ç–°‚éB
 					DWORD sleepTime = max( 0.0, (1.0 / 30.0)*1000.0 - (DWORD)sw.GetElapsedMillisecond());
@@ -299,6 +299,9 @@ namespace tkEngine{
 					//ŠÔ‚É‡‚Á‚Ä‚¢‚È‚¢B
 					GameTime().SetFrameDeltaTime((float)sw.GetElapsed());
 				}
+#else
+				GameTime().SetFrameDeltaTime((float)sw.GetElapsed());
+#endif
 				//
 #ifdef USE_DISP_FPS
 				sprintf(text, "fps = %lf\n", 1.0f / sw.GetElapsed());
