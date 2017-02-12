@@ -22,7 +22,7 @@ bool InGameLight::Start()
 	defaultLight.SetDiffuseLightDirection(3, CVector3(0.0f, -0.707f, 0.0f));
 
 
-	defaultLight.SetDiffuseLightColor(0, CVector4(2.0f, 2.0f, 2.0f, 20.0f));
+	defaultLight.SetDiffuseLightColor(0, CVector4(2.0f, 2.0f, 2.0f, 10.0f));
 	defaultLight.SetDiffuseLightColor(1, CVector4(0.8f, 0.8f, 0.8f, 1.0f));
 	defaultLight.SetDiffuseLightColor(2, CVector4(0.8f, 0.8f, 0.8f, 1.0f));
 	defaultLight.SetDiffuseLightColor(3, CVector4(0.8f, 0.8f, 0.8f, 1.0f));
