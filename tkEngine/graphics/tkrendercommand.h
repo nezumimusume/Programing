@@ -348,10 +348,10 @@ namespace tkEngine{
 	*/
 	class CRenderCommand_SetRenderState : public CRenderCommandBase
 	{
-		ERenderStateType m_renderStateType;
+		D3DRENDERSTATETYPE m_renderStateType;
 		int m_value;
 	public:
-		CRenderCommand_SetRenderState(ERenderStateType renderStateType, int value) :
+		CRenderCommand_SetRenderState(D3DRENDERSTATETYPE renderStateType, int value) :
 			CRenderCommandBase(eRenderCommand_SetRenderState),
 			m_renderStateType(renderStateType),
 			m_value(value)

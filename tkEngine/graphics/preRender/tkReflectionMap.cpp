@@ -33,7 +33,7 @@ namespace tkEngine{
 	 */
 	void CReflectionMap::Init(int w, int h)
 	{
-		m_renderTarget.Create(w, h, 1, FMT_A8R8G8B8, FMT_D16, MULTISAMPLE_NONE, 0);
+		m_renderTarget.Create(w, h, 1, D3DFMT_A8R8G8B8, D3DFMT_D16, D3DMULTISAMPLE_NONE, 0);
 		m_isEnable = true;
 	}
 	/*!

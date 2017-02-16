@@ -22,9 +22,9 @@ namespace tkEngine{
 		int w, 
 		int h, 
 		int mipLevel,
-		EFormat colorFormat,
-		EFormat depthStencilFormat,
-		EMultisampleType multiSampleType,
+		D3DFORMAT colorFormat,
+		D3DFORMAT depthStencilFormat,
+		D3DMULTISAMPLE_TYPE multiSampleType,
 		int multiSampleQuality
 	)
 	{
@@ -33,7 +33,7 @@ namespace tkEngine{
 		m_height = h;
 		LPDIRECT3DDEVICE9 d3dDevice = CEngine::Instance().GetD3DDevice();
 		HRESULT hr;
-		if(depthStencilFormat != FMT_INVALID){
+		if(depthStencilFormat != D3DFMT_UNKNOWN){
 			//深度バッファの作成。
 			hr = d3dDevice->CreateDepthStencilSurface(
 				w,
@@ -47,7 +47,7 @@ namespace tkEngine{
 			);
 			TK_ASSERT(SUCCEEDED(hr), "failed CreateDepthStencilSurface");
 		}
-		if (colorFormat != FMT_INVALID) {
+		if (colorFormat != D3DFMT_UNKNOWN) {
 			//カラーバッファを作成。
 			hr = d3dDevice->CreateTexture(
 				w,

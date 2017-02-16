@@ -46,7 +46,7 @@ namespace tkEngine{
 			CSkinModelDataPtr newSkinModelData(new CSkinModelData);
 			newSkinModelData->LoadModelData(modelPath, anim);
 			//インスタンス描画用のデータを作成。
-			tkEngine::SVertexElement vertexElement[] = {
+			D3DVERTEXELEMENT9 vertexElement[] = {
 				{ 1,  0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 1 },  // WORLD 1行目
 				{ 1, 16, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 2 },  // WORLD 2行目
 				{ 1, 32, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 3 },  // WORLD 3行目

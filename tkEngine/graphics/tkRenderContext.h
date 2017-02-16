@@ -72,7 +72,7 @@ namespace tkEngine{
 		*@param[in]	renderStateType		設定するレンダリングステートの種類。
 		*@param[in]	value				設定する値。
 		*/
-		__inline void SetRenderState(ERenderStateType renderStateType, int value);
+		__inline void SetRenderState(D3DRENDERSTATETYPE renderStateType, int value);
 		/*!
 		* @brief	レンダリングターゲットを設定。
 		*@param[in]	renderTargetIndex	レンダリングターゲットのインデックス。
@@ -200,7 +200,7 @@ namespace tkEngine {
 	{
 		SetRenderCommand(CRenderCommand_SetViewport(viewport));
 	}
-	__inline void CRenderContext::SetRenderState(ERenderStateType renderStateType, int value)
+	__inline void CRenderContext::SetRenderState(D3DRENDERSTATETYPE renderStateType, int value)
 	{
 		SetRenderCommand(CRenderCommand_SetRenderState(renderStateType, value));
 	}

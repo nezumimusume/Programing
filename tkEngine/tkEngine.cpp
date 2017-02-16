@@ -127,9 +127,9 @@ namespace tkEngine{
 				m_frameBufferWidth,
 				m_frameBufferHeight,
 				1,
-				FMT_A16B16G16R16F,
-				FMT_D24S8,
-				MULTISAMPLE_NONE,
+				D3DFMT_A16B16G16R16F,
+				D3DFMT_D24S8,
+				D3DMULTISAMPLE_NONE,
 				0
 			);
 		}
@@ -211,7 +211,7 @@ namespace tkEngine{
 		};
 	
 		m_pTransformedPrimEffect->SetTexture(renderContext, "g_tex", rt.GetTexture());
-		m_pTransformedPrimEffect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
+		m_pTransformedPrimEffect->SetValue(renderContext, "g_texelOffset", offset, sizeof(offset));
 		m_pTransformedPrimEffect->CommitChanges(renderContext);
 		renderContext.SetVertexDeclaration(m_copyBackBufferPrim.GetVertexDecl());
 		renderContext.SetStreamSource(0, m_copyBackBufferPrim.GetVertexBuffer());

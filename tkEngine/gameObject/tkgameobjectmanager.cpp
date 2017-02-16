@@ -53,13 +53,13 @@ namespace tkEngine{
 				1.0f
 			};
 			renderContext[0].SetViewport(vp);
-			renderContext[0].SetRenderState(RS_CULLMODE, CULL_CCW);
-			renderContext[0].SetRenderState(RS_ALPHABLENDENABLE, TRUE);
-			renderContext[0].SetRenderState(RS_SRCBLEND, BLEND_ONE);
-			renderContext[0].SetRenderState(RS_DESTBLEND, BLEND_ZERO);
-			renderContext[0].SetRenderState(RS_ALPHATESTENABLE, FALSE);
-			renderContext[0].SetRenderState(RS_ZWRITEENABLE, TRUE);
-			renderContext[0].SetRenderState(RS_ZENABLE, TRUE);
+			renderContext[0].SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+			renderContext[0].SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+			renderContext[0].SetRenderState(D3DRS_SRCBLEND, BLEND_ONE);
+			renderContext[0].SetRenderState(D3DRS_DESTBLEND, BLEND_ZERO);
+			renderContext[0].SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+			renderContext[0].SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+			renderContext[0].SetRenderState(D3DRS_ZENABLE, TRUE);
 		}
 		//プリレンダリング。
 		preRender.Render(renderContext[0]);

@@ -795,12 +795,12 @@ namespace tkEngine{
 	{
 		UpdateFrameMatrices(m_frameRoot, r_cast<const D3DXMATRIX*>(&matWorld));
 	}
-	void CSkinModelData::CreateInstancingDrawData( int numInstance, SVertexElement* vertexElement )
+	void CSkinModelData::CreateInstancingDrawData( int numInstance, D3DVERTEXELEMENT9* vertexElement )
 	{
 		m_numInstance = numInstance;
 		CreateInstancingDrawData(m_frameRoot, numInstance, vertexElement);
 	}
-	bool CSkinModelData::CreateInstancingDrawData( LPD3DXFRAME frame, int numInstance, SVertexElement* vertexElement )
+	bool CSkinModelData::CreateInstancingDrawData( LPD3DXFRAME frame, int numInstance, D3DVERTEXELEMENT9* vertexElement )
 	{
 		if(frame->pMeshContainer){
 			

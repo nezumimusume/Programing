@@ -21,7 +21,7 @@ namespace tkEngine{
 	void CVertexBuffer::Create(
 			int numVertex, 
 			int stride, 
-			const SVertexElement* vertexLayout, 
+			const D3DVERTEXELEMENT9* vertexLayout,
 			const void* pSrcVertexBuffer )
 	{
 		Release();

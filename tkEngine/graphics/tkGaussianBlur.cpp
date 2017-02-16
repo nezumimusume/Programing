@@ -55,7 +55,7 @@ namespace tkEngine{
 		};
 		
 		for (int i = 0; i < 2; i++) {
-			m_rt[i].Create(size[i][0], size[i][1], 1, (EFormat)desc.Format, FMT_INVALID, MULTISAMPLE_NONE, 0);
+			m_rt[i].Create(size[i][0], size[i][1], 1, desc.Format, D3DFMT_UNKNOWN, D3DMULTISAMPLE_NONE, 0);
 		}
 		
 		static SShapeVertex_PT vertex[]{

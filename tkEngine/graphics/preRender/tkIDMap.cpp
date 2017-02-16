@@ -44,7 +44,7 @@ namespace tkEngine{
 	}
 	void CIDMap::Create(int w, int h)
 	{
-		m_idMapRT.Create( w, h, 1, FMT_A8, FMT_D16, MULTISAMPLE_NONE, 0);
+		m_idMapRT.Create( w, h, 1, D3DFMT_A8, D3DFMT_D16, D3DMULTISAMPLE_NONE, 0);
 		m_isEnable = true;
 		m_pIDMapEffect = CEngine::EffectManager().LoadEffect("Assets/presetshader/idMap.fx");
 	}

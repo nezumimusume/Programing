@@ -83,9 +83,9 @@ namespace tkEngine{
 		mWorld.Mul(mRot, mWorld);
 		mWorld.Mul(mWorld, mTrans);
 
-		renderContext.SetRenderState(RS_ALPHABLENDENABLE, TRUE);
-		renderContext.SetRenderState(RS_SRCBLEND, BLEND_SRCALPHA);
-		renderContext.SetRenderState(RS_DESTBLEND, BLEND_INVSRCALPHA);
+		renderContext.SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		renderContext.SetRenderState(D3DRS_SRCBLEND, BLEND_SRCALPHA);
+		renderContext.SetRenderState(D3DRS_DESTBLEND, BLEND_INVSRCALPHA);
 
 		m_effect->Begin(renderContext);
 		m_effect->BeginPass(renderContext, 0);
@@ -102,6 +102,6 @@ namespace tkEngine{
 		m_effect->EndPass(renderContext);
 		m_effect->End(renderContext);
 
-		renderContext.SetRenderState(RS_ALPHABLENDENABLE, FALSE);
+		renderContext.SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	}
 }

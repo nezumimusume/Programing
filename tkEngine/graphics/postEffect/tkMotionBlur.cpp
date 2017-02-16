@@ -23,7 +23,7 @@ namespace tkEngine{
 			int w = Engine().GetFrameBufferWidth();
 			int h = Engine().GetFrameBufferHeight();
 			//16bitÅB
-			m_velocityMapRT.Create(w, h, 1, FMT_A8R8G8B8, FMT_INVALID, MULTISAMPLE_NONE, 0);
+			m_velocityMapRT.Create(w, h, 1, D3DFMT_A8R8G8B8, D3DFMT_UNKNOWN, D3DMULTISAMPLE_NONE, 0);
 			m_effect = EffectManager().LoadEffect("Assets/presetShader/motionBlur.fx");
 			m_isInited = true;
 		}

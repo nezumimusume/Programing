@@ -18,9 +18,9 @@ namespace tkEngine{
 			renderContext.SetRenderTarget(0, &m_clearRenderTarget);
 			//Zバッファをクリア。
 			renderContext.Clear(0, nullptr, D3DCLEAR_ZBUFFER, 0, 0.0f, 0);
-			renderContext.SetRenderState(RS_ZWRITEENABLE, TRUE);
-			renderContext.SetRenderState(RS_ZENABLE, TRUE);
-			renderContext.SetRenderState(RS_ZFUNC, D3DCMP_GREATEREQUAL);
+			renderContext.SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+			renderContext.SetRenderState(D3DRS_ZENABLE, TRUE);
+			renderContext.SetRenderState(D3DRS_ZFUNC, D3DCMP_GREATEREQUAL);
 			//Zマスクをレンダリング。
 			for (auto func : maskModelsFunc) {
 				(*func)(renderContext);
@@ -39,10 +39,10 @@ namespace tkEngine{
 			m_effect->SetValue(renderContext, "g_sceneTexSize", texSize, sizeof(texSize));
 			m_effect->SetValue(renderContext, "g_blendRate", &m_blendRate, sizeof(m_blendRate));
 			m_effect->CommitChanges(renderContext);
-			renderContext.SetRenderState(RS_ZFUNC, D3DCMP_EQUAL);
+			renderContext.SetRenderState(D3DRS_ZFUNC, D3DCMP_EQUAL);
 			renderContext.SetRenderTarget(0, &Engine().GetMainRenderTarget());
 			postEffect->RenderFullScreen(renderContext);
-			renderContext.SetRenderState(RS_ZFUNC, D3DCMP_LESSEQUAL);
+			renderContext.SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 			m_effect->EndPass(renderContext);
 			m_effect->End(renderContext);
 		}

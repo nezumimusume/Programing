@@ -162,24 +162,24 @@ namespace tkEngine{
 		CMatrix m;
 		m.Mul(mWorld, camera->GetViewMatrix());
 		m.Mul(m, camera->GetProjectionMatrix());
-		renderContext.SetRenderState(RS_ALPHABLENDENABLE, TRUE);
+		renderContext.SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 		switch (alphaBlendMode) {
 		case 0:
-			renderContext.SetRenderState(RS_SRCBLEND, BLEND_SRCALPHA);
-			renderContext.SetRenderState(RS_DESTBLEND, BLEND_INVSRCALPHA);
+			renderContext.SetRenderState(D3DRS_SRCBLEND, BLEND_SRCALPHA);
+			renderContext.SetRenderState(D3DRS_DESTBLEND, BLEND_INVSRCALPHA);
 			shaderEffect->SetTechnique(renderContext, "ColorTexPrimTrans");
 			break;
 		case 1:
-			renderContext.SetRenderState(RS_SRCBLEND, BLEND_ONE);
-			renderContext.SetRenderState(RS_DESTBLEND, BLEND_ONE);
+			renderContext.SetRenderState(D3DRS_SRCBLEND, BLEND_ONE);
+			renderContext.SetRenderState(D3DRS_DESTBLEND, BLEND_ONE);
 			shaderEffect->SetTechnique(renderContext, "ColorTexPrimAdd");
 			break;
 		}
 		
 		shaderEffect->Begin(renderContext);
 		shaderEffect->BeginPass(renderContext, 0);
-		renderContext.SetRenderState(RS_ZENABLE, TRUE);
-		renderContext.SetRenderState(RS_ZWRITEENABLE, FALSE);
+		renderContext.SetRenderState(D3DRS_ZENABLE, TRUE);
+		renderContext.SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
 		shaderEffect->SetValue(renderContext, "g_mWVP", &m, sizeof(CMatrix));
 		shaderEffect->SetValue(renderContext, "g_alpha", &alpha, sizeof(alpha));
@@ -195,11 +195,11 @@ namespace tkEngine{
 		renderContext.DrawIndexedPrimitive(&primitive);
 		shaderEffect->EndPass(renderContext);
 		shaderEffect->End(renderContext);
-		renderContext.SetRenderState(RS_ALPHABLENDENABLE, FALSE);
-		renderContext.SetRenderState(RS_SRCBLEND, BLEND_ONE);
-		renderContext.SetRenderState(RS_DESTBLEND, BLEND_ZERO);
-		renderContext.SetRenderState(RS_ZWRITEENABLE, TRUE);
-		renderContext.SetRenderState(RS_ZENABLE, TRUE);
+		renderContext.SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+		renderContext.SetRenderState(D3DRS_SRCBLEND, BLEND_ONE);
+		renderContext.SetRenderState(D3DRS_DESTBLEND, BLEND_ZERO);
+		renderContext.SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+		renderContext.SetRenderState(D3DRS_ZENABLE, TRUE);
 		
 	}
 }

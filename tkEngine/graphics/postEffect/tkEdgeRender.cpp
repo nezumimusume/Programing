@@ -27,7 +27,7 @@ namespace tkEngine{
 	{
 		CPIXPerfTag tag(renderContext, L"CEdgeRender::Render");
 		if (m_isEnable) {
-			renderContext.SetRenderState(RS_ZENABLE, D3DZB_FALSE);
+			renderContext.SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
 			//IDMapのテクスチャを取得。
 			const CTexture* pIdMap = CEngine::Instance().IDMap().GetTexture();
 			//ポストエフェクト用のテクニックを設定。
@@ -43,7 +43,7 @@ namespace tkEngine{
 			postEffect->RenderFullScreen(renderContext);
 			m_pEffect->EndPass(renderContext);
 			m_pEffect->End(renderContext);
-			renderContext.SetRenderState(RS_ZENABLE, D3DZB_TRUE);
+			renderContext.SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
 		}
 	}
 }

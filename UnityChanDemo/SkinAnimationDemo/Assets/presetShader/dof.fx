@@ -105,10 +105,3 @@ technique CombineBackForwardBoke
 		PixelShader = compile ps_3_0 PSMain();
 	}
 }
-technique Dof
-{
-	pass p0{
-		VertexShader = compile vs_3_0 VSMain();
-		PixelShader = compile ps_3_0 PSMain();
-	}
-};
