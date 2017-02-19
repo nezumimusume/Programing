@@ -1,0 +1,158 @@
+fileFormatVersion: 2
+guid: 466f7e7bf0ada5c45a47f3a6139406db
+timeCreated: 1487481635
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Chest
+    100002: COB_CTRL
+    100004: Foot_Left
+    100006: Foot_Right
+    100008: //RootNode
+    100010: Footman_Mesh
+    100012: Hand_Left
+    100014: Hand_Right
+    100016: Head
+    100018: Hips
+    100020: Index_Intermediate_Left
+    100022: Index_Intermediate_Right
+    100024: Index_Proximal_Left
+    100026: Index_Proximal_Right
+    100028: J_Tip
+    100030: Jaw
+    100032: LowerArm_Left
+    100034: LowerArm_Right
+    100036: LowerLeg_Left
+    100038: LowerLeg_Right
+    100040: Neck
+    100042: RestOfFingers_Intermediate_Left
+    100044: RestOfFingers_Intermediate_Right
+    100046: RestOfFingers_Proximal_Left
+    100048: RestOfFingers_Proximal_Right
+    100050: Shield
+    100052: Shoulder_Left
+    100054: Shoulder_Right
+    100056: Spine
+    100058: Sword
+    100060: Thumb_Intermediate_Left
+    100062: Thumb_Intermediate_Right
+    100064: Thumb_Proximal_Left
+    100066: Thumb_Proximal_Right
+    100068: Toe_Left
+    100070: Toe_Right
+    100072: Toetip_Left
+    100074: Toetip_Right
+    100076: UpperArm_Left
+    100078: UpperArm_Right
+    100080: UpperLeg_Left
+    100082: UpperLeg_Right
+    400000: Chest
+    400002: COB_CTRL
+    400004: Foot_Left
+    400006: Foot_Right
+    400008: //RootNode
+    400010: Footman_Mesh
+    400012: Hand_Left
+    400014: Hand_Right
+    400016: Head
+    400018: Hips
+    400020: Index_Intermediate_Left
+    400022: Index_Intermediate_Right
+    400024: Index_Proximal_Left
+    400026: Index_Proximal_Right
+    400028: J_Tip
+    400030: Jaw
+    400032: LowerArm_Left
+    400034: LowerArm_Right
+    400036: LowerLeg_Left
+    400038: LowerLeg_Right
+    400040: Neck
+    400042: RestOfFingers_Intermediate_Left
+    400044: RestOfFingers_Intermediate_Right
+    400046: RestOfFingers_Proximal_Left
+    400048: RestOfFingers_Proximal_Right
+    400050: Shield
+    400052: Shoulder_Left
+    400054: Shoulder_Right
+    400056: Spine
+    400058: Sword
+    400060: Thumb_Intermediate_Left
+    400062: Thumb_Intermediate_Right
+    400064: Thumb_Proximal_Left
+    400066: Thumb_Proximal_Right
+    400068: Toe_Left
+    400070: Toe_Right
+    400072: Toetip_Left
+    400074: Toetip_Right
+    400076: UpperArm_Left
+    400078: UpperArm_Right
+    400080: UpperLeg_Left
+    400082: UpperLeg_Right
+    4300000: Footman_Mesh
+    9500000: //RootNode
+    13700000: Footman_Mesh
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
