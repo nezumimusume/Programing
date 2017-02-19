@@ -6,7 +6,10 @@ public class MapChip : MonoBehaviour {
 	// Use this for initialization
     void Awake()
     {
-        invRot = Quaternion.identity;
+        if (invRot == null)
+        {
+            invRot = Quaternion.identity;
+        }
     }
 	void Start () {
 	    

@@ -41,6 +41,30 @@ public class tkTools : EditorWindow
                 chip.invRot = Quaternion.Inverse(addObj.transform.localRotation);
             }
         }
+        if (GUILayout.Button("選択しているオブジェクトをコピー"))
+        {
+            if (Selection.activeGameObject )
+            {
+                //選択中のオブジェクトがある。
+                MapChip mapChip = Selection.activeGameObject.GetComponent<MapChip>();
+                if (mapChip)
+                {
+                    GameObject addObj = Object.Instantiate(Selection.activeGameObject) as GameObject;
+                    addObj.GetComponent<MapChip>().invRot = mapChip.invRot;
+                    addObj.transform.parent = Selection.activeGameObject.transform.parent;
+                    addObj.transform.localPosition = Selection.activeGameObject.transform.localPosition;
+                    addObj.transform.localRotation = Selection.activeGameObject.transform.localRotation;
+                    addObj.transform.localScale = Selection.activeGameObject.transform.localScale;
+                    Selection.activeGameObject = addObj;
+
+                }
+                else
+                {
+                    //MapChipが設定されているオブジェクトしかコピーできません。
+                    EditorUtility.DisplayDialog("エラー", "MapChipが設定されているオブジェクトしかコピーはできません。", "OK");
+                }
+            }
+        }
         EditorGUILayout.EndVertical();
     }
     /// <summary>
