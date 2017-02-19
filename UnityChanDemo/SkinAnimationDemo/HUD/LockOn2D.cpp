@@ -37,10 +37,10 @@ void LockOn2D::Update()
 void LockOn2D::PostRender(CRenderContext& renderContext) 
 {
 	if (m_lockOnEnemy) {
-		renderContext.SetRenderState(RS_ALPHABLENDENABLE, TRUE);
-		renderContext.SetRenderState(RS_SRCBLEND, BLEND_SRCALPHA);
-		renderContext.SetRenderState(RS_DESTBLEND, BLEND_INVSRCALPHA);
+		renderContext.SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		renderContext.SetRenderState(D3DRS_SRCBLEND, BLEND_SRCALPHA);
+		renderContext.SetRenderState(D3DRS_DESTBLEND, BLEND_INVSRCALPHA);
 		m_lockOnSprite.Draw(renderContext);
-		renderContext.SetRenderState(RS_ALPHABLENDENABLE, FALSE);
+		renderContext.SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	}
 }

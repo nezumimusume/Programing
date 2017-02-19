@@ -66,7 +66,7 @@ namespace tkEngine{
 			{ w >> 1, h >> 1},
 		};
 		for (int i = 0; i < m_numShadowMap; i++) {
-			m_shadowMapRT[i].Create(wh[i][0], wh[i][1], 1, FMT_G16R16F, FMT_D16, MULTISAMPLE_NONE, 0);
+			m_shadowMapRT[i].Create(wh[i][0], wh[i][1], 1, D3DFMT_G16R16F, D3DFMT_D16, D3DMULTISAMPLE_NONE, 0);
 			m_accpect = s_cast<float>(w) / s_cast<float>(h);
 #ifdef USE_ORTHO_PROJECTION
 			m_projectionMatrix.MakeOrthoProjectionMatrix(
@@ -163,11 +163,11 @@ namespace tkEngine{
 			for (int i = 0; i < m_numShadowMap; i++) {
 				renderContext.SetRenderTarget(0, &m_shadowMapRT[i]);
 				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xffffffff, 1.0f, 0);
-				renderContext.SetRenderState(RS_CULLMODE, CULL_NONE);
+				renderContext.SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 				for (auto caster : m_shadowCaster) {
 					caster->Render(renderContext, m_pShadowMapEffect, m_LVPMatrix[i]);
 				}
-				renderContext.SetRenderState(RS_CULLMODE, CULL_CCW);
+				renderContext.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 				//ブラーをかけて深度マップの平均値を求める。
 				if (!m_isDisableVSM) {
 					m_blur[i].Draw(renderContext);

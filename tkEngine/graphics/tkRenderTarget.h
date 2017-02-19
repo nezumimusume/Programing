@@ -34,9 +34,9 @@ namespace tkEngine{
 			int w,
 			int h,
 			int mipLevel,
-			EFormat colorFormat,
-			EFormat depthStencilFormat,
-			EMultisampleType multiSampleType,
+			D3DFORMAT colorFormat,
+			D3DFORMAT depthStencilFormat,
+			D3DMULTISAMPLE_TYPE multiSampleType,
 			int multiSampleQuality
 		);
 		/*!

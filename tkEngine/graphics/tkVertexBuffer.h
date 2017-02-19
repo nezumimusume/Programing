@@ -41,7 +41,7 @@ namespace tkEngine{
 		void Create( 
 			int numVertex, 
 			int stride, 
-			const SVertexElement* vertexLayout, 
+			const D3DVERTEXELEMENT9* vertexLayout,
 			const void* pSrcVertexBuffer 
 		);
 		/*!

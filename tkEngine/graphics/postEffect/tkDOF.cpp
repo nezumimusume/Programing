@@ -39,7 +39,7 @@ namespace tkEngine{
 			int w = Engine().GetFrameBufferWidth();
 			int h = Engine().GetFrameBufferHeight();
 			//16bitÅB
-			m_depthRT.Create(w, h, 1, FMT_R16F, FMT_INVALID, MULTISAMPLE_NONE, 0);
+			m_depthRT.Create(w, h, 1, D3DFMT_R16F, D3DFMT_UNKNOWN, D3DMULTISAMPLE_NONE, 0);
 			
 			m_blurForward.Init(w, h, *Engine().GetMainRenderTarget().GetTexture());
 			m_blurBack.Init(w, h, *Engine().GetMainRenderTarget().GetTexture());
@@ -57,9 +57,9 @@ namespace tkEngine{
 				m_blurBack.GetRenderTarget().GetWidth(),
 				m_blurBack.GetRenderTarget().GetHeight(),
 				1,
-				(EFormat)desc.Format,
-				FMT_INVALID, 
-				MULTISAMPLE_NONE, 
+				desc.Format,
+				D3DFMT_UNKNOWN,
+				D3DMULTISAMPLE_NONE, 
 				0
 			);
 			
@@ -134,19 +134,19 @@ namespace tkEngine{
 					0.5f/s_cast<float>(Engine().GetMainRenderTarget().GetWidth()),
 					0.5f/s_cast<float>(Engine().GetMainRenderTarget().GetHeight()),
 				};
-				m_copyEffect->SetValue(renderContext, "g_offset", offset, sizeof(offset));
+				m_copyEffect->SetValue(renderContext, "g_texelOffset", offset, sizeof(offset));
 				m_copyEffect->SetTexture(renderContext, "g_tex", m_combineRenderTarget.GetTexture());
 				m_copyEffect->CommitChanges(renderContext);
-				renderContext.SetRenderState(RS_ALPHABLENDENABLE, TRUE);
-				renderContext.SetRenderState(RS_SRCBLEND, BLEND_SRCALPHA);
-				renderContext.SetRenderState(RS_DESTBLEND, BLEND_INVSRCALPHA);
+				renderContext.SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+				renderContext.SetRenderState(D3DRS_SRCBLEND, BLEND_SRCALPHA);
+				renderContext.SetRenderState(D3DRS_DESTBLEND, BLEND_INVSRCALPHA);
 
 				postEffect->RenderFullScreen(renderContext);
 
 				m_copyEffect->EndPass(renderContext);
 				m_copyEffect->End(renderContext);
 
-				renderContext.SetRenderState(RS_ALPHABLENDENABLE, FALSE);
+				renderContext.SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 			}
 		}
 	}

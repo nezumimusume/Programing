@@ -65,7 +65,7 @@ namespace tkEngine{
 		 *@param[in]	numInstance		インスタンスの数。
 		 *@param[in]	vertexElement	インスタンシング描画用の頂点ストリーム１に流し込む頂点バッファの頂点レイアウト。
 		 */
-		void CreateInstancingDrawData( int numInstance, SVertexElement* vertexElement );
+		void CreateInstancingDrawData( int numInstance, D3DVERTEXELEMENT9* vertexElement );
 		/*!
 		* @brief	モデルデータのクローンを作成。
 		* @details
@@ -208,7 +208,7 @@ namespace tkEngine{
 		 *@param[in]	vertexElement	インスタンシング描画用の頂点ストリーム１に流し込む頂点バフェファの頂点レイアウト。
 		 *@return	trueが帰ってきたら再帰処理終了。
 		 */
-		bool CreateInstancingDrawData(LPD3DXFRAME frame, int numInstance, SVertexElement* vertexElement );
+		bool CreateInstancingDrawData(LPD3DXFRAME frame, int numInstance, D3DVERTEXELEMENT9* vertexElement );
 		HRESULT SetupBoneMatrixPointers(LPD3DXFRAME pFrame, LPD3DXFRAME pRootFrame);
 	private:
 		LPD3DXFRAME							m_frameRoot;		//フレームルート。

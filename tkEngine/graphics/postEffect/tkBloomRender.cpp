@@ -129,7 +129,7 @@ namespace tkEngine{
 			}
 			{
 				//ボケフィルターの合成。
-				renderContext.SetRenderState(RS_ALPHABLENDENABLE, FALSE);
+				renderContext.SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 				renderContext.SetRenderTarget(0, &m_combineRenderTarget);
 				renderContext.Clear(0, nullptr, D3DCLEAR_TARGET, 0, 1.0f, 0);
 				float offset[] = {
@@ -162,9 +162,9 @@ namespace tkEngine{
 				//戻す。
 				renderContext.SetRenderTarget(0, rt);
 				//加算合成。
-				renderContext.SetRenderState(RS_ALPHABLENDENABLE, TRUE);
-				renderContext.SetRenderState(RS_SRCBLEND, D3DBLEND_ONE);
-				renderContext.SetRenderState(RS_DESTBLEND, D3DBLEND_ONE);
+				renderContext.SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+				renderContext.SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
+				renderContext.SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 				m_pEffect->SetTechnique(renderContext, "Final");
 				m_pEffect->Begin(renderContext);
 				m_pEffect->BeginPass(renderContext, 0);
@@ -176,9 +176,9 @@ namespace tkEngine{
 				m_pEffect->EndPass(renderContext);
 				m_pEffect->End(renderContext);
 
-				renderContext.SetRenderState(RS_ALPHABLENDENABLE, FALSE);
-				renderContext.SetRenderState(RS_SRCBLEND, D3DBLEND_SRCALPHA);
-				renderContext.SetRenderState(RS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+				renderContext.SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+				renderContext.SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+				renderContext.SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 			}
 		}
 
@@ -202,16 +202,16 @@ namespace tkEngine{
 			int w = CEngine::Instance().GetFrameBufferWidth();
 			int h = CEngine::Instance().GetFrameBufferHeight();
 			//輝度抽出用のレンダリングターゲットを作成。
-			m_luminanceRenderTarget.Create(w, h, 1, FMT_A16B16G16R16F, FMT_INVALID, MULTISAMPLE_NONE, 0);
+			m_luminanceRenderTarget.Create(w, h, 1, D3DFMT_A16B16G16R16F, D3DFMT_UNKNOWN, D3DMULTISAMPLE_NONE, 0);
 			//ダウンサンプリング用のレンダリングターゲットを作成。
 			
 			for (int i = 0; i < NUM_DOWN_SAMPLING_RT/2; i++) {
 				int shift = i + 1;
 				int baseIndex = i * 2;
-				m_downSamplingRenderTarget[baseIndex].Create(w >> shift, h >> (shift -1), 1, FMT_A16B16G16R16F, FMT_INVALID, MULTISAMPLE_NONE, 0);			//横ブラー用。
-				m_downSamplingRenderTarget[baseIndex+1].Create(w >> shift, h >> shift, 1, FMT_A16B16G16R16F, FMT_INVALID, MULTISAMPLE_NONE, 0);	//縦ブラー用。
+				m_downSamplingRenderTarget[baseIndex].Create(w >> shift, h >> (shift -1), 1, D3DFMT_A16B16G16R16F, D3DFMT_UNKNOWN, D3DMULTISAMPLE_NONE, 0);			//横ブラー用。
+				m_downSamplingRenderTarget[baseIndex+1].Create(w >> shift, h >> shift, 1, D3DFMT_A16B16G16R16F, D3DFMT_UNKNOWN, D3DMULTISAMPLE_NONE, 0);	//縦ブラー用。
 			}
-			m_combineRenderTarget.Create(w >> 2, h >> 2, 1, FMT_A16B16G16R16F, FMT_INVALID, MULTISAMPLE_NONE, 0);				//ぼかし合成用
+			m_combineRenderTarget.Create(w >> 2, h >> 2, 1, D3DFMT_A16B16G16R16F, D3DFMT_UNKNOWN, D3DMULTISAMPLE_NONE, 0);				//ぼかし合成用
 			m_pEffect = CEngine::Instance().EffectManager().LoadEffect("Assets/presetShader/bloom.fx");
 			m_isEnable = true;
 		}

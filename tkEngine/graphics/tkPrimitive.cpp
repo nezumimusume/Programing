@@ -19,14 +19,14 @@ namespace tkEngine{
 		Release();
 	}
 	void CPrimitive::Create( 
-		EType 					primitiveType,
-		int 					numVertex,
-		int 					vertexStride,
-		const SVertexElement*	vertexLayout,
-		void*					pSrcVertexBuffer,
-		int 					numIndex,
-		EIndexFormat			indexFormat,
-		void*					pSrcIndexbuffer
+		EType 						primitiveType,
+		int 						numVertex,
+		int 						vertexStride,
+		const D3DVERTEXELEMENT9*	vertexLayout,
+		void*						pSrcVertexBuffer,
+		int 						numIndex,
+		EIndexFormat				indexFormat,
+		void*						pSrcIndexbuffer
 	)
 	{
 		TK_ASSERT( primitiveType < eTypeNum, "primitiveType is invalid" );

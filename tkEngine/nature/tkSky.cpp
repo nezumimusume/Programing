@@ -78,10 +78,10 @@ namespace tkEngine{
 	{
 		if (camera != nullptr) {
 			//Z‚Í‘‚«ž‚Ü‚È‚¢B
-			renderContext.SetRenderState(RS_ZWRITEENABLE, FALSE);
+			renderContext.SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 			skinModel.Draw(renderContext, camera->GetViewMatrix(), camera->GetProjectionMatrix());
 			sunModel.Draw(renderContext, camera->GetViewMatrix(), camera->GetProjectionMatrix());
-			renderContext.SetRenderState(RS_ZWRITEENABLE, TRUE);
+			renderContext.SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 		}
 	}
 }

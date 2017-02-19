@@ -14,6 +14,7 @@ struct VS_OUTPUT{
 	float2		uv		: TEXCOORD0;
 };
 float2 g_offset;				//オフセット
+float2 g_texelOffset;
 
 texture g_tex;
 sampler TextureSampler = 
@@ -28,7 +29,7 @@ VS_OUTPUT VSMain( VS_INPUT In )
 {
 	VS_OUTPUT Out;
 	Out.pos = In.pos;
-	Out.uv 	= In.uv + g_offset;
+	Out.uv 	= In.uv + g_texelOffset;
 	return Out;
 }
 float4 PSMain( VS_OUTPUT In ) : COLOR0
@@ -47,7 +48,6 @@ struct VS_OUTPUT_BLUR{
 
 float2 g_texSize;			//テクスチャサイズ。
 float  g_weight[8];				//ガウスフィルタの重み。
-float2 g_texelOffset;
 
 /*!
  * @brief	Xブラーの頂点シェーダー。

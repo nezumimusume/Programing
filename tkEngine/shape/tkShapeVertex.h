@@ -13,7 +13,7 @@ namespace tkEngine{
 		float		pos[4];
 		float		uv[2];
 	};
-	static const SVertexElement scShapeVertex_PT_Element[] = {
+	static const D3DVERTEXELEMENT9 scShapeVertex_PT_Element[] = {
 		{ 0, 0 ,   DECLTYPE_FLOAT4		, DECLMETHOD_DEFAULT, DECLUSAGE_POSITION	, 0 },
 		{ 0, 16 ,  DECLTYPE_FLOAT2		, DECLMETHOD_DEFAULT, DECLUSAGE_TEXCOORD	, 0 },
 		D3DDECL_END()
@@ -25,7 +25,7 @@ namespace tkEngine{
 		float		pos[4];
 		int		color;
 	}; 
-	static const SVertexElement scShapeVertex_PC_Element[] = {
+	static const D3DVERTEXELEMENT9 scShapeVertex_PC_Element[] = {
 		{ 0, 0 ,   DECLTYPE_FLOAT4		, DECLMETHOD_DEFAULT, DECLUSAGE_POSITION	, 0 },
 		{ 0, 16 ,  DECLTYPE_D3DCOLOR		, DECLMETHOD_DEFAULT, DECLUSAGE_COLOR	, 0 },
 		D3DDECL_END()
@@ -38,7 +38,7 @@ namespace tkEngine{
 		float		normal[4];
 		int		color;	
 	};
-	static const SVertexElement scShapeVertex_PNC_Element[] = {
+	static const D3DVERTEXELEMENT9 scShapeVertex_PNC_Element[] = {
 		{ 0, 0 ,  DECLTYPE_FLOAT4		, DECLMETHOD_DEFAULT, DECLUSAGE_POSITION	, 0 },
 		{ 0, 16 ,  DECLTYPE_FLOAT4		, DECLMETHOD_DEFAULT, DECLUSAGE_NORMAL	, 0 },
 		{ 0, 32 ,  DECLTYPE_D3DCOLOR		, DECLMETHOD_DEFAULT, DECLUSAGE_COLOR	, 0 },

@@ -60,9 +60,9 @@ namespace tkEngine{
 					rtSize,
 					rtSize,
 					1,
-					FMT_A16B16G16R16F,
-					FMT_INVALID,
-					MULTISAMPLE_NONE,
+					D3DFMT_A16B16G16R16F,
+					D3DFMT_UNKNOWN,
+					D3DMULTISAMPLE_NONE,
 					0
 				);
 			}
@@ -73,9 +73,9 @@ namespace tkEngine{
 					1,
 					1,
 					1,
-					FMT_A16B16G16R16F,
-					FMT_INVALID,
-					MULTISAMPLE_NONE,
+					D3DFMT_A16B16G16R16F,
+					D3DFMT_UNKNOWN,
+					D3DMULTISAMPLE_NONE,
 					0
 				);
 			}
@@ -172,8 +172,8 @@ namespace tkEngine{
 			const CTexture* sceneTex = Engine().GetMainRenderTarget().GetTexture();
 			Engine().ToggleMainRenderTarget();
 			renderContext.SetRenderTarget(0, &Engine().GetMainRenderTarget());
-			renderContext.SetRenderState(RS_ALPHABLENDENABLE, FALSE);
-			renderContext.SetRenderState(RS_ZENABLE, FALSE);
+			renderContext.SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+			renderContext.SetRenderState(D3DRS_ZENABLE, FALSE);
 			m_effect->SetTechnique(renderContext, "Final");
 			m_effect->Begin(renderContext);
 			m_effect->BeginPass(renderContext, 0);
@@ -184,7 +184,7 @@ namespace tkEngine{
 			postEffect->RenderFullScreen(renderContext);
 			m_effect->EndPass(renderContext);
 			m_effect->End(renderContext);
-			renderContext.SetRenderState(RS_ZENABLE, TRUE);
+			renderContext.SetRenderState(D3DRS_ZENABLE, TRUE);
 		//	renderContext.SetRenderState(RS_ALPHABLENDENABLE, TRUE);
 		}
 	}
