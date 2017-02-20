@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class MapChip : MonoBehaviour {
-    public Quaternion invRot { get; set; }
+    public Quaternion invRot;
 	// Use this for initialization
     void Awake()
     {
