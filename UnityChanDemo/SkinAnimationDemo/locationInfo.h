@@ -484,6 +484,48 @@
 	CVector3(-25.06f, 1.67f, -4.28f),             //平行移動
 	CQuaternion(0.00f, 0.71f, 0.00f, 0.71f ),  //回転
 },
+//Dungeon 4-way_00
+{
+	"Dungeon 4-way_00",
+	CVector3(-555.00f, 0.00f, -436.00f),             //平行移動
+	CQuaternion(0.00f, 0.93f, 0.00f, 0.37f ),  //回転
+},
+//Dungeon Walls Set_IN
+{
+	"Dungeon Walls Set_IN",
+	CVector3(-566.48f, 4.94f, -447.26f),             //平行移動
+	CQuaternion(0.00f, 0.39f, 0.00f, 0.92f ),  //回転
+},
+//Dungeon Walls Set_IN
+{
+	"Dungeon Walls Set_IN",
+	CVector3(-543.30f, 4.78f, -424.95f),             //平行移動
+	CQuaternion(0.00f, 0.92f, 0.00f, -0.39f ),  //回転
+},
+//Dungeon Walls Set_IN
+{
+	"Dungeon Walls Set_IN",
+	CVector3(-566.05f, 4.89f, -424.40f),             //平行移動
+	CQuaternion(0.00f, 0.93f, 0.00f, 0.37f ),  //回転
+},
+//Medium Room 2
+{
+	"Medium Room 2",
+	CVector3(-526.23f, 8.39f, -408.59f),             //平行移動
+	CQuaternion(0.00f, 0.39f, 0.00f, 0.92f ),  //回転
+},
+//Medium Room 2
+{
+	"Medium Room 2",
+	CVector3(-583.27f, 8.77f, -463.24f),             //平行移動
+	CQuaternion(0.00f, 0.92f, 0.00f, -0.39f ),  //回転
+},
+//Medium Room 2
+{
+	"Medium Room 2",
+	CVector3(-582.27f, 8.66f, -407.31f),             //平行移動
+	CQuaternion(0.00f, 0.38f, 0.00f, -0.93f ),  //回転
+},
 //ground
 {
 	"ground",
