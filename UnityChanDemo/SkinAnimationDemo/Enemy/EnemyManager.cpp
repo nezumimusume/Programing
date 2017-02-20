@@ -11,6 +11,7 @@ namespace {
 	};
 	SEnemyLocInfo enemyLocInfoTable[] = {
 		#include "EnemyInfo.h"
+		{NULL, CVector3::Zero, CQuaternion::Identity}
 	};
 }
 EnemyManager::EnemyManager()
@@ -28,9 +29,11 @@ bool EnemyManager::Start()
 	map<const char*, vector<SEnemyLocInfo*>*> m;
 	//同じ名前のモデルを集める。
 	for (SEnemyLocInfo& info : enemyLocInfoTable) {
-		Enemy_00* enemy = NewGO<Enemy_00>(0);
-		enemy->Init(info.modelName, info.pos, info.rotation);
-		enemyList.push_back(enemy);
+		if (info.modelName) {
+			Enemy_00* enemy = NewGO<Enemy_00>(0);
+			enemy->Init(info.modelName, info.pos, info.rotation);
+			enemyList.push_back(enemy);
+		}
 	}
 	return true;
 }
