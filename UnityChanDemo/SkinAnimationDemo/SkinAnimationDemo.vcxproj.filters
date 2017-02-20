@@ -170,6 +170,9 @@
     <ClCompile Include="Player\MagicSkill\MagicSkillStealth.cpp">
       <Filter>Source Files\Player\MagicSkill</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -312,6 +315,9 @@
     </ClInclude>
     <ClInclude Include="Player\MagicSkill\MagicSkillStealth.h">
       <Filter>Source Files\Player\MagicSkill</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
