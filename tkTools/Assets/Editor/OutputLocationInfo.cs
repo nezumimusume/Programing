@@ -8,14 +8,91 @@ public class tkTools : EditorWindow
 {
     GameObject selectLocObject = null;
     GameObject locationObject = null;
+    string outputLocFilePath = null;
     [MenuItem("Window/tkTools")]
     static void Open()
     {
         GetWindow<tkTools>();
     }
+    /// <summary>
+    /// 配置ファイル出力関係のGUI
+    /// </summary>
+    void OnGUI_OutputLocFileGroup()
+    {
+        EditorGUILayout.LabelField("配置データの出力パス");
+        outputLocFilePath = EditorGUILayout.TextField(outputLocFilePath);
+        if (GUILayout.Button("出力") && outputLocFilePath != null && outputLocFilePath.Length > 0)
+        {
+            GameObject location = GameObject.Find("Location");
+            Transform[] locs = location.GetComponentsInChildren<Transform>();
+            string outputTxt = "";
+            //マップチップを出力。
+            foreach (Transform tr in locs)
+            {
+                MapChip mapChip = tr.GetComponent<MapChip>();
+                if (!mapChip)
+                {
+                    //マップチップが取得できないオブジェクトは無視。
+                    continue;
+                }
+                string modelName = TrimModelName(tr.name);
+                outputTxt += string.Format("//{0}\n", modelName);
+                outputTxt += "{\n";
+                outputTxt += string.Format("\t\"{0}\",\n", modelName);
+                outputTxt += string.Format("\tCVector3({0:f}f, {1:f}f, {2:f}f),             //平行移動\n", tr.position.x, tr.position.y, tr.position.z);
+                Quaternion rot = tr.localRotation * mapChip.invRot;
+                outputTxt += string.Format("\tCQuaternion({0:f}f, {1:f}f, {2:f}f, {3:f}f ),  //回転\n", rot.x, rot.y, rot.z, rot.w);
+                outputTxt += "},\n";
+            }
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(outputLocFilePath, false, Encoding.UTF8))
+                {
+                    sw.Write(outputTxt);
+                }
+            }
+            catch { }
+
+            outputTxt = "";
+
+            //エネミーを出力。
+            foreach (Transform tr in locs)
+            {
+                Enemy e = tr.GetComponent<Enemy>();
+                if (e == null)
+                {
+                    //Enemyが取得できないオブジェクトは無視。
+                    continue;
+                }
+                string modelName = TrimModelName(tr.name);
+                outputTxt += string.Format("//{0}\n", modelName);
+                outputTxt += "{\n";
+                outputTxt += string.Format("\t\"{0}\",\n", modelName);
+                outputTxt += string.Format("\tCVector3({0:f}f, {1:f}f, {2:f}f),             //平行移動\n", tr.position.x, tr.position.y, tr.position.z);
+                outputTxt += string.Format("\tCQuaternion({0:f}f, {1:f}f, {2:f}f, {3:f}f ),  //回転\n", tr.rotation.x, tr.rotation.y, tr.rotation.z, tr.rotation.w);
+                outputTxt += "},\n";
+            }
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(@"C:\Users\Takay\Documents\GitHub\Programing\UnityChanDemo\SkinAnimationDemo\Enemy\EnemyInfo.h", false, Encoding.UTF8))
+                {
+                    sw.Write(outputTxt);
+                }
+            }
+            catch { }
+        }
+
+        EditorGUILayout.Separator();
+        GUILayout.Box("", GUILayout.Width(this.position.width), GUILayout.Height(1));
+        EditorGUILayout.Separator();
+    }
+    /// <summary>
+    /// GUIの処理。
+    /// </summary>
     void OnGUI()
     {
         EditorGUILayout.BeginVertical();
+       
         EditorGUILayout.LabelField("配置するオブジェクトを選択");
         selectLocObject = EditorGUILayout.ObjectField(selectLocObject, typeof(GameObject), true) as GameObject;
         if (GUILayout.Button("シーンに追加"))
@@ -41,6 +118,9 @@ public class tkTools : EditorWindow
                 chip.invRot = Quaternion.Inverse(addObj.transform.localRotation);
             }
         }
+        EditorGUILayout.Separator();
+        GUILayout.Box("", GUILayout.Width(this.position.width), GUILayout.Height(1));
+        EditorGUILayout.Separator();
         if (GUILayout.Button("選択しているオブジェクトをコピー"))
         {
             if (Selection.activeGameObject )
@@ -55,6 +135,7 @@ public class tkTools : EditorWindow
                     addObj.transform.localPosition = Selection.activeGameObject.transform.localPosition;
                     addObj.transform.localRotation = Selection.activeGameObject.transform.localRotation;
                     addObj.transform.localScale = Selection.activeGameObject.transform.localScale;
+                    addObj.name = Selection.activeGameObject.name;
                     Selection.activeGameObject = addObj;
 
                 }
@@ -65,6 +146,12 @@ public class tkTools : EditorWindow
                 }
             }
         }
+        EditorGUILayout.Separator();
+        GUILayout.Box("", GUILayout.Width(this.position.width), GUILayout.Height(1));
+        EditorGUILayout.Separator();
+
+        OnGUI_OutputLocFileGroup();
+
         EditorGUILayout.EndVertical();
     }
     /// <summary>
@@ -88,55 +175,5 @@ public class tkTools : EditorWindow
         }
         return modelName;
     }
-    [MenuItem("Window/配置情報 出力")]
-    public static void ShowWindow()
-    {
-        GameObject location = GameObject.Find("Location");
-        Transform[] locs = location.GetComponentsInChildren<Transform>();
-        string outputTxt = "";
-        //マップチップを出力。
-        foreach (Transform tr in locs)
-        {
-            MapChip mapChip = tr.GetComponent<MapChip>();
-            if (!mapChip)
-            {
-                //マップチップが取得できないオブジェクトは無視。
-                continue;
-            }
-            string modelName = TrimModelName(tr.name);
-            outputTxt += string.Format("//{0}\n", modelName);
-            outputTxt += "{\n";
-            outputTxt += string.Format("\t\"{0}\",\n", modelName);
-            outputTxt += string.Format("\tCVector3({0:f}f, {1:f}f, {2:f}f),             //平行移動\n", tr.position.x, tr.position.y, tr.position.z);
-            Quaternion rot = tr.localRotation * mapChip.invRot;
-            outputTxt += string.Format("\tCQuaternion({0:f}f, {1:f}f, {2:f}f, {3:f}f ),  //回転\n", rot.x, rot.y, rot.z, rot.w);
-            outputTxt += "},\n";
-        }
-        StreamWriter sw = new StreamWriter(@"C:\GitHub\Programing\UnityChanDemo\SkinAnimationDemo\locationInfo.h", false, Encoding.UTF8);
-        sw.Write(outputTxt);
-        sw.Close();
-
-        outputTxt = "";
-        //エネミーを出力。
-        foreach (Transform tr in locs)
-        {
-            Enemy e = tr.GetComponent<Enemy>();
-            if (e == null)
-            {
-                //Enemyが取得できないオブジェクトは無視。
-                continue;
-            }
-            string modelName = TrimModelName(tr.name);
-            outputTxt += string.Format("//{0}\n", modelName);
-            outputTxt += "{\n";
-            outputTxt += string.Format("\t\"{0}\",\n", modelName);
-            outputTxt += string.Format("\tCVector3({0:f}f, {1:f}f, {2:f}f),             //平行移動\n", tr.localPosition.x, tr.localPosition.y, tr.localPosition.z);
-            outputTxt += string.Format("\tCQuaternion({0:f}f, {1:f}f, {2:f}f, {3:f}f ),  //回転\n", tr.localRotation.x, tr.localRotation.y, tr.localRotation.z, tr.localRotation.w);
-            outputTxt += "},\n";
-        }
-        sw = new StreamWriter(@"C:\GitHub\Programing\UnityChanDemo\SkinAnimationDemo\Enemy\EnemyInfo.h", false, Encoding.UTF8);
-        sw.Write(outputTxt);
-        sw.Close();
-
-    }
+ 
 }
