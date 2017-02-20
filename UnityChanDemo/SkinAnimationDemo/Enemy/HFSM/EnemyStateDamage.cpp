@@ -43,6 +43,14 @@ void EnemyStateDamage::Enter(const SEnterArg& enterArg)
 			CParticleEmitter* particleEmitter = NewGO<CParticleEmitter>(1);
 			CVector3 pos;
 			pos.Set(m->m[3][0], m->m[3][1], m->m[3][2]);
+			if (!strcmp(enemy->GetEnemyParam()->name, "enemy_01"))
+			{
+				CVector3 direction;
+				direction.Subtract(g_player->GetPosition(), enemy->GetPosition());
+				direction.Normalize();
+				direction.Scale(0.5f);
+				pos.Add(direction);
+			}
 			particleEmitter->Init(g_random, g_camera->GetCamera(), param, pos);
 			particleEmitterList.push_back(particleEmitter);
 		}

@@ -30,6 +30,10 @@ public:
 	void Update() override;
 	void Enter(const SEnterArg& enterArg) override;
 	void Leave() override;
+	bool IsPossibleRotate() override
+	{
+		return m_localStates[m_localState]->IsPossibleRotate();
+	}
 private:
 	float timer;
 	Player::SBattleSeat*		battleSeat;

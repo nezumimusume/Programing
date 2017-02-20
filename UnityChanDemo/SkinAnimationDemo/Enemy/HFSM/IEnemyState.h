@@ -57,6 +57,10 @@ public:
 	{
 		return true;
 	}
+	virtual bool IsPossibleRotate()
+	{
+		return true;
+	}
 protected:
 	std::vector<IEnemyState*>	m_localStates;		//ローカル。
 	int							m_localState;		//ローカルステート。

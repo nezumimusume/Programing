@@ -10,7 +10,7 @@
 #if BUILD_LEVEL == BUILD_LEVEL_DEBUG
 #define DEBUG_DMG_COLLISION_DRAW
 #else
-//%#define DEBUG_DMG_COLLISION_DRAW
+//#define DEBUG_DMG_COLLISION_DRAW
 #endif
 class DamageCollisionWorld : public IGameObject{
 public:

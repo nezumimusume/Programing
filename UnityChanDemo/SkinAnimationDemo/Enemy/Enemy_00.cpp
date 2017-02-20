@@ -119,8 +119,11 @@ void Enemy_00::Update()
 		position = characterController.GetPosition();
 
 		//‰ñ“]‚Í“K“–‚ÉB
-		float angle = atan2f(direction.x, direction.z);
-		rotation.SetRotation(CVector3::AxisY, angle);
+		if (states[state]->IsPossibleRotate())
+		{
+			float angle = atan2f(direction.x, direction.z);
+			rotation.SetRotation(CVector3::AxisY, angle);
+		}
 	}
 	animation.Update(GetLocalFrameDeltaTime());
 //	light.SetPointLightPosition(g_player->GetPointLightPosition());
