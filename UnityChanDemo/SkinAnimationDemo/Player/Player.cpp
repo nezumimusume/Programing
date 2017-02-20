@@ -244,6 +244,51 @@ void Player::UpdateStateMachine()
 				}
 			}
 			else {
+				/*
+				ターゲット切り替えの処理(未完成のためコメントアウト中)
+				{
+					const std::vector<Enemy*>& enemyList = g_enemyManager->GetEnemyList();
+					CVector3 criteriaEnemy = lockOnEnemy->GetPosition();
+					criteriaEnemy.Subtract(position);
+					criteriaEnemy.Normalize();
+					Enemy *nearEnemy = lockOnEnemy;
+					float nearEnemyRad = 0.0f;
+					//ロックオンする敵を変更
+					if (Pad(0).IsTrigger(enButtonLeft))
+					{
+						for (Enemy *enemy : enemyList)
+						{
+							CVector3 enemyDirection = enemy->GetPosition();
+							enemyDirection.Subtract(position);
+							enemyDirection.Normalize();
+							float enemyRad;
+							enemyRad = criteriaEnemy.Dot(enemyDirection);
+							if (nearEnemyRad < enemyRad)
+							{
+								nearEnemyRad = enemyRad;
+								nearEnemy = enemy;
+							}
+						}
+					}
+					else if (Pad(0).IsTrigger(enButtonRight))
+					{
+						for (Enemy *enemy : enemyList)
+						{
+							CVector3 enemyDirection = enemy->GetPosition();
+							enemyDirection.Subtract(position);
+							enemyDirection.Normalize();
+							float enemyRad;
+							enemyRad = criteriaEnemy.Dot(enemyDirection);
+							if (enemyRad < nearEnemyRad)
+							{
+								nearEnemyRad = enemyRad;
+								nearEnemy = enemy;
+							}
+						}
+					}
+					lockOnEnemy = nearEnemy;
+				}
+				*/
 				if (Pad(0).IsTrigger(enButtonRB3)
 					|| !lockOnEnemy->IsPossibleLockOn()
 				) {

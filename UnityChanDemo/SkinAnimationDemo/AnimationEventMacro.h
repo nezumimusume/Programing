@@ -59,6 +59,18 @@
 		offsetLocalVector, CVector3::Zero, CVector3::Zero, CVector3::Zero,						\
 		NULL, NULL, NULL, NULL																	\
 	)
+
+#define EMIT_DAMAGE_TO_PLAYER_CUPSULE_COLLISION_EVENT(invokeTime, life, radius, damage, boneName, offsetLocalVector, groupID)	\
+	AnimationEvent(\
+		eAnimationEventType_EmitDamageToPlayerCollision, \
+		(invokeTime), \
+		(life), (radius), 0.0f, 0.0f, \
+		damage, groupID, 1, 0, \
+		boneName, NULL, NULL, NULL, \
+		offsetLocalVector, CVector3::Zero, CVector3::Zero, CVector3::Zero, \
+		NULL, NULL, NULL, NULL																	\
+	)
+
  /*!
  * @brief	サウンドの発生イベント
  *@param[in]	invokeTime			サウンドを発生させる時間。該当するアニメーションが再生されてから経過時間です。単位は秒。
