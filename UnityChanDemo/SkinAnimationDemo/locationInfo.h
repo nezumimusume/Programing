@@ -4,24 +4,6 @@
 	CVector3(11.72f, 1.70f, -9.14f),             //平行移動
 	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
 },
-//well
-{
-	"well",
-	CVector3(-2.06f, 1.38f, 7.06f),             //平行移動
-	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
-},
-//Building_e
-{
-	"Building_e",
-	CVector3(-9.19f, 2.88f, -21.99f),             //平行移動
-	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
-},
-//fence_a
-{
-	"fence_a",
-	CVector3(-22.36f, 0.35f, 34.94f),             //平行移動
-	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
-},
 //fence_a
 {
 	"fence_a",
@@ -46,10 +28,28 @@
 	CVector3(-10.36f, 0.35f, 34.94f),             //平行移動
 	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
 },
+//well
+{
+	"well",
+	CVector3(-2.06f, 1.38f, 7.06f),             //平行移動
+	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
+},
+//Building_e
+{
+	"Building_e",
+	CVector3(-9.19f, 2.88f, -21.99f),             //平行移動
+	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
+},
 //fence_a
 {
 	"fence_a",
 	CVector3(-7.36f, 0.35f, 34.94f),             //平行移動
+	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
+},
+//fence_a
+{
+	"fence_a",
+	CVector3(-22.36f, 0.35f, 34.94f),             //平行移動
 	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
 },
 //fence_a
@@ -62,12 +62,6 @@
 {
 	"fence_a",
 	CVector3(24.17f, 0.35f, 34.97f),             //平行移動
-	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
-},
-//fence_c
-{
-	"fence_c",
-	CVector3(-5.46f, 0.23f, 34.80f),             //平行移動
 	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
 },
 //fence_c
@@ -98,6 +92,12 @@
 {
 	"fence_a",
 	CVector3(9.03f, 0.35f, 34.95f),             //平行移動
+	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
+},
+//fence_c
+{
+	"fence_c",
+	CVector3(-5.46f, 0.23f, 34.80f),             //平行移動
 	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
 },
 //fence_a
@@ -133,12 +133,6 @@
 //fence_a
 {
 	"fence_a",
-	CVector3(26.12f, 0.27f, 33.58f),             //平行移動
-	CQuaternion(0.00f, 0.71f, 0.00f, 0.71f ),  //回転
-},
-//fence_a
-{
-	"fence_a",
 	CVector3(26.12f, 0.27f, 30.56f),             //平行移動
 	CQuaternion(0.00f, 0.71f, 0.00f, 0.71f ),  //回転
 },
@@ -164,6 +158,12 @@
 {
 	"fence_a",
 	CVector3(26.12f, 0.27f, 18.45f),             //平行移動
+	CQuaternion(0.00f, 0.71f, 0.00f, 0.71f ),  //回転
+},
+//fence_a
+{
+	"fence_a",
+	CVector3(26.12f, 0.27f, 33.58f),             //平行移動
 	CQuaternion(0.00f, 0.71f, 0.00f, 0.71f ),  //回転
 },
 //fence_a
@@ -334,23 +334,11 @@
 	CVector3(-8.24f, 0.27f, -31.81f),             //平行移動
 	CQuaternion(0.00f, 1.00f, 0.00f, 0.00f ),  //回転
 },
-//fence_c
-{
-	"fence_c",
-	CVector3(-12.92f, 0.13f, -31.67f),             //平行移動
-	CQuaternion(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
-},
 //fence_a
 {
 	"fence_a",
 	CVector3(-11.03f, 0.27f, -31.81f),             //平行移動
 	CQuaternion(0.00f, 1.00f, 0.00f, 0.00f ),  //回転
-},
-//fence_a
-{
-	"fence_a",
-	CVector3(-31.49f, 0.36f, 34.93f),             //平行移動
-	CQuaternion(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },
 //fence_a
 {
@@ -376,11 +364,23 @@
 	CVector3(-32.63f, 0.36f, 23.91f),             //平行移動
 	CQuaternion(0.00f, -0.71f, 0.00f, 0.71f ),  //回転
 },
+//fence_c
+{
+	"fence_c",
+	CVector3(-12.92f, 0.13f, -31.67f),             //平行移動
+	CQuaternion(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
+},
 //fence_a
 {
 	"fence_a",
 	CVector3(-32.63f, 0.36f, 20.88f),             //平行移動
 	CQuaternion(0.00f, -0.71f, 0.00f, 0.71f ),  //回転
+},
+//fence_a
+{
+	"fence_a",
+	CVector3(-31.49f, 0.36f, 34.93f),             //平行移動
+	CQuaternion(0.00f, 0.00f, 0.00f, 1.00f ),  //回転
 },
 //fence_a
 {
@@ -487,48 +487,54 @@
 //Dungeon 4-way_00
 {
 	"Dungeon 4-way_00",
-	CVector3(-555.00f, 0.00f, -436.00f),             //平行移動
-	CQuaternion(0.00f, 0.93f, 0.00f, 0.37f ),  //回転
+	CVector3(-559.90f, 0.00f, -433.30f),             //平行移動
+	CQuaternion(0.00f, 0.92f, 0.00f, 0.39f ),  //回転
 },
 //Dungeon Walls Set_IN
 {
 	"Dungeon Walls Set_IN",
-	CVector3(-566.48f, 4.94f, -447.26f),             //平行移動
-	CQuaternion(0.00f, 0.39f, 0.00f, 0.92f ),  //回転
+	CVector3(-571.12f, 4.86f, -444.85f),             //平行移動
+	CQuaternion(0.00f, 0.38f, 0.00f, 0.92f ),  //回転
 },
 //Dungeon Walls Set_IN
 {
 	"Dungeon Walls Set_IN",
-	CVector3(-543.30f, 4.78f, -424.95f),             //平行移動
-	CQuaternion(0.00f, 0.92f, 0.00f, -0.39f ),  //回転
+	CVector3(-548.50f, 4.86f, -421.97f),             //平行移動
+	CQuaternion(0.00f, 0.92f, 0.00f, -0.38f ),  //回転
 },
 //Dungeon Walls Set_IN
 {
 	"Dungeon Walls Set_IN",
-	CVector3(-566.05f, 4.89f, -424.40f),             //平行移動
-	CQuaternion(0.00f, 0.93f, 0.00f, 0.37f ),  //回転
+	CVector3(-571.26f, 4.86f, -421.99f),             //平行移動
+	CQuaternion(0.00f, 0.92f, 0.00f, 0.39f ),  //回転
 },
 //Medium Room 2
 {
 	"Medium Room 2",
-	CVector3(-526.23f, 8.39f, -408.59f),             //平行移動
-	CQuaternion(0.00f, 0.39f, 0.00f, 0.92f ),  //回転
+	CVector3(-531.86f, 8.58f, -405.20f),             //平行移動
+	CQuaternion(0.00f, 0.38f, 0.00f, 0.92f ),  //回転
 },
 //Medium Room 2
 {
 	"Medium Room 2",
-	CVector3(-583.27f, 8.77f, -463.24f),             //平行移動
-	CQuaternion(0.00f, 0.92f, 0.00f, -0.39f ),  //回転
+	CVector3(-587.54f, 8.58f, -461.24f),             //平行移動
+	CQuaternion(0.00f, 0.92f, 0.00f, -0.38f ),  //回転
 },
 //Medium Room 2
 {
 	"Medium Room 2",
-	CVector3(-582.27f, 8.66f, -407.31f),             //平行移動
-	CQuaternion(0.00f, 0.38f, 0.00f, -0.93f ),  //回転
+	CVector3(-587.92f, 8.58f, -405.31f),             //平行移動
+	CQuaternion(0.00f, 0.39f, 0.00f, -0.92f ),  //回転
 },
 //ground
 {
 	"ground",
 	CVector3(0.00f, 0.00f, 0.00f),             //平行移動
 	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
+},
+//commanders_hill
+{
+	"commanders_hill",
+	CVector3(-632.00f, 5.00f, 218.00f),             //平行移動
+	CQuaternion(0.00f, -0.65f, 0.00f, 0.76f ),  //回転
 },
