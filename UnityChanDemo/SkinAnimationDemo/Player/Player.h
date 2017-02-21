@@ -185,6 +185,11 @@ public:
 	{
 		skinModel.SetStealth(flag);
 	}
+
+	void Heel()
+	{
+		hp = maxHP;
+	}
 private:
 	/*!
 	* @brief	血しぶきのパーティクルをエミット。

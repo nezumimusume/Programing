@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "Enemy/Enemy_00.h"
 #include "Player/Player.h"
+#include "Item.h"
 #include "Enemy/HFSM/EnemyStateSearch.h"
 #include "Enemy/HFSM/EnemyStateFind.h"
 #include "Enemy/HFSM/EnemyStateDamage.h"
@@ -181,6 +182,9 @@ void Enemy_00::Damage()
 			states[state]->Leave();
 			state = enLocalState_Death;
 			states[state]->Enter(IEnemyState::SEnterArg());
+			Item *item = NewGO<Item>(0);
+			item->Init(position);
+
 		}
 		else {
 			states[state]->Leave();

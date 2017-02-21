@@ -40,6 +40,10 @@ public:
 	{
 		return inGameLight.GetDefaultLight();
 	}
+	CSkinModelData& GetItemModelData()
+	{
+		return *itemModelData.GetBody();
+	}
 private:
 	enum InitStep {
 		InitStep_Load,
@@ -62,6 +66,7 @@ private:
 	GameOver2D*			gameOver2D = NULL;
 	MagicSkill2D*		magicSkill2D = NULL;
 	InGameLight			inGameLight;		//インゲームライト。
+	CSkinModelDataHandle itemModelData;
 };
 
 extern GameScene* gameScene;

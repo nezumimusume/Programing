@@ -87,7 +87,7 @@ bool GameScene::Start()
 		AddGO(0, &bgmSoundSource);
 
 		Sky().SetEnable(&g_camera->GetCamera(), &inGameLight.GetDefaultLight());
-		
+		itemModelData.LoadModelDataAsync("Assets/modelData/Apple.X", NULL);
 		initStep = InitStep_WaitLoad;
 		break;
 	case InitStep_WaitLoad:
@@ -98,6 +98,7 @@ bool GameScene::Start()
 			&& playerHPBar->IsStart()
 			&& playerMPBar->IsStart()
 			&& playerMPBar->IsStart()
+			&& itemModelData.IsLoadEnd()
 			&& !g_fade->IsExecute()
 		) {
 			//‘S‚Ä‰Šú‰»Š®—¹B
