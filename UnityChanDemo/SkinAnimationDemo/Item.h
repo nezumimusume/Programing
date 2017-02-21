@@ -21,5 +21,6 @@ private:
 	CSkinModelData	skinModelData;
 	CVector3		position;
 	CQuaternion		rotation;
+	CLight			light;
 };
 

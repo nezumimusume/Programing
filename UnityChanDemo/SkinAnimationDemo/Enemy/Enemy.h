@@ -63,6 +63,8 @@ public:
 		direction = dir;
 	}
 	
+	
+
 	bool IsPlayAnimation() const
 	{
 		return animation.IsPlay();

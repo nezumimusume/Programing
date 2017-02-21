@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "HUD/LockOn2d.h"
 #include "Enemy/Enemy.h"
+#include "Enemy/EnemyParameter.h"
 
 LockOn2D::LockOn2D()
 {
@@ -26,7 +27,12 @@ void LockOn2D::Update()
 		//ロックオンカーソルの座標を更新する。
 		CVector2 lockOnCursorPos;
 		CVector3 enemyCenterPos = m_lockOnEnemy->GetPosition();
-		enemyCenterPos.y += m_lockOnEnemy->GetHeight() * 0.5f;
+		float positionMend = 0.0f;
+		if (!strcmp(m_lockOnEnemy->GetEnemyParam()->name, "enemy_01"))
+		{
+			positionMend = 1.0f;
+		}
+		enemyCenterPos.y += m_lockOnEnemy->GetHeight() * 0.5f + positionMend;
 		g_camera->GetCamera().CalcScreenPositionFromWorldPosition(
 			lockOnCursorPos,
 			enemyCenterPos
