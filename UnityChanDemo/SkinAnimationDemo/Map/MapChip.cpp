@@ -74,7 +74,8 @@ bool MapChip::Start()
 			i++;
 		}
 		//行列を更新。
-		Update();
+		skinModel.UpdateInstancingDrawData(worldMatrixBuffer.get());
+		skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
 		rootBoneMatrix = skinModelData.GetBody()->GetRootBoneWorldMatrix();
 		i = 0;
 		for (auto& mapChiplLocInfo : mapChipLocInfoList) {
@@ -88,8 +89,7 @@ bool MapChip::Start()
 			PhysicsWorld().AddRigidBody(&rigidBody[i]);
 			i++;
 		}
-		skinModel.UpdateInstancingDrawData(worldMatrixBuffer.get());
-		skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
+	
 		return true;
 	}
 	return false;
