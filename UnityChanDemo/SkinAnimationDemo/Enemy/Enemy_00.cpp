@@ -126,11 +126,11 @@ void Enemy_00::Update()
 			rotation.SetRotation(CVector3::AxisY, angle);
 		}
 	}
-	animation.Update(GetLocalFrameDeltaTime());
 //	light.SetPointLightPosition(g_player->GetPointLightPosition());
 //	light.SetPointLightColor(g_player->GetPointLightColor());
 	
 	if (!objectCulling.IsCulling()) {
+		animation.Update(GetLocalFrameDeltaTime());
 		skinModel.Update(position, rotation, CVector3::One);
 	}
 

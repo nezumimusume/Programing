@@ -74,7 +74,8 @@ bool MapChip::Start()
 			i++;
 		}
 		//行列を更新。
-		Update();
+		skinModel.UpdateInstancingDrawData(worldMatrixBuffer.get());
+		skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
 		rootBoneMatrix = skinModelData.GetBody()->GetRootBoneWorldMatrix();
 		i = 0;
 		for (auto& mapChiplLocInfo : mapChipLocInfoList) {
@@ -88,17 +89,14 @@ bool MapChip::Start()
 			PhysicsWorld().AddRigidBody(&rigidBody[i]);
 			i++;
 		}
-
+	
 		return true;
 	}
 	return false;
 }
 void MapChip::Update()
 {
-//	light.SetPointLightPosition(g_player->GetPointLightPosition());
-//	light.SetPointLightColor(g_player->GetPointLightColor());
-	skinModel.UpdateInstancingDrawData(worldMatrixBuffer.get());
-	skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
+	skinModel.EntryShadowMap();
 }
 void MapChip::Render(CRenderContext& renderContext)
 {

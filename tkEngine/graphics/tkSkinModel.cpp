@@ -394,12 +394,16 @@ namespace tkEngine{
 		m_skinModelData = modelData;
 		m_shadowCaster.Create(this);
 	}
-	void CSkinModel::Update(const CVector3& trans, const CQuaternion& rot, const CVector3& scale)
+	void CSkinModel::EntryShadowMap()
 	{
 		if (m_isShadowCaster && ShadowMap().IsEnable()) {
 			//シャドウキャスター。
 			ShadowMap().Entry(&m_shadowCaster);
 		}
+	}
+	void CSkinModel::Update(const CVector3& trans, const CQuaternion& rot, const CVector3& scale)
+	{
+		EntryShadowMap();
 		if (m_isReflectionCaster && ReflectionMap().IsEnable()) {
 			//リフレクションキャスター。
 			ReflectionMap().Entry(this);

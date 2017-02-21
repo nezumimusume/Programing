@@ -31,7 +31,6 @@ bool Item::Start()
 	rotation.SetRotation(CVector3::AxisY, CMath::DegToRad(0));
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
-
 	return true;
 }
 
@@ -54,6 +53,11 @@ void Item::Update()
 
 void Item::Render(CRenderContext& rendercontext)
 {
+<<<<<<< HEAD
 	skinModel.Draw(rendercontext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 }
 
+=======
+	//skinModel.Draw();
+}
+>>>>>>> 9d854c9ae3179a283cf2175d2057a768cf607f53
