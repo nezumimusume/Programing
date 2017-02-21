@@ -185,6 +185,12 @@ namespace tkEngine {
 		{
 			m_isStealth = flag;
 		}
+		/*!
+		* @brief	シャドウマップにエントリー。
+		* @details
+		*  Update関数を呼び出すと自動的に呼ばれます。シャドウマップへのエントリーだけを行いたい場合に使用してください。
+		*/
+		void EntryShadowMap();
 	private:
 		/*!
 		* @brief	シェーダ定の数ハンドルを初期化。

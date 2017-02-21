@@ -88,21 +88,19 @@ bool MapChip::Start()
 			PhysicsWorld().AddRigidBody(&rigidBody[i]);
 			i++;
 		}
-
+		skinModel.UpdateInstancingDrawData(worldMatrixBuffer.get());
+		skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
 		return true;
 	}
 	return false;
 }
 void MapChip::Update()
 {
-//	light.SetPointLightPosition(g_player->GetPointLightPosition());
-//	light.SetPointLightColor(g_player->GetPointLightColor());
-	skinModel.UpdateInstancingDrawData(worldMatrixBuffer.get());
-	skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
+	skinModel.EntryShadowMap();
 }
 void MapChip::Render(CRenderContext& renderContext)
 {
-//	renderContext.SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	renderContext.SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
-//	renderContext.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	renderContext.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
