@@ -92,12 +92,7 @@ namespace tkEngine{
 	    {
 	        return false;
 	    }
-		if(FAILED(m_pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hWnd,
-			D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED,
-			&d3dpp, &m_pD3DDeviceLoading)))
-		{
-			return false;
-		}
+		
 		//バックバッファのレンダリングターゲットと深度ステンシルバッファを取得しておいて覚えておく。
 		LPDIRECT3DSURFACE9 rt, depth;
 		m_pD3DDevice->GetRenderTarget(0, &rt);
@@ -156,7 +151,7 @@ namespace tkEngine{
 		//ポストエフェクトをレンダリング。
 		m_postEffect.Create( initParam.graphicsConfig );
 		//空を初期化。
-		AddGO(0, &m_sky);
+		AddGO(initParam.gameObjectPrioMax-1, &m_sky);
 		m_sky.Init();
 		m_sky.SetActiveFlag(false);
 		m_soundEngine.Init();
@@ -300,7 +295,7 @@ namespace tkEngine{
 					GameTime().SetFrameDeltaTime((float)sw.GetElapsed());
 				}
 #else
-				GameTime().SetFrameDeltaTime((float)sw.GetElapsed());
+				GameTime().SetFrameDeltaTime(1.0f/60.0f);
 #endif
 				//
 #ifdef USE_DISP_FPS

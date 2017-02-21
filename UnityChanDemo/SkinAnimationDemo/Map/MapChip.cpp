@@ -102,7 +102,7 @@ void MapChip::Update()
 }
 void MapChip::Render(CRenderContext& renderContext)
 {
-	renderContext.SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+//	renderContext.SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
-	renderContext.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+//	renderContext.SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }

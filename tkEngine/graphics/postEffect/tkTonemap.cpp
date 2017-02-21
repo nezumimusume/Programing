@@ -83,6 +83,7 @@ namespace tkEngine{
 	}
 	void CTonemap::CalcLuminanceAvarage(CRenderContext& renderContext, CPostEffect* postEffect)
 	{
+		CPIXPerfTag tag(renderContext, L"CTonemap::CalcLuminanceAvarage");
 		if (m_isEnable) {
 			//対数平均を求める。
 
@@ -103,72 +104,82 @@ namespace tkEngine{
 					index++;
 				}
 			}
-
+			
 			int curRtNo = NUM_CALC_AVG_RT - 1;
-			renderContext.SetRenderTarget(0, &m_calcAvgRT[curRtNo]);
-			m_effect->SetTechnique(renderContext, "CalcLuminanceLogAvarage");
-			m_effect->Begin(renderContext);
-			m_effect->BeginPass(renderContext, 0);
-			m_effect->SetValue(renderContext, "g_avSampleOffsets", avSampleOffsets, sizeof(avSampleOffsets));
-			m_effect->SetTexture(renderContext, "g_scene", Engine().GetMainRenderTarget().GetTexture());
-			m_effect->CommitChanges(renderContext);
-			postEffect->RenderFullScreen(renderContext);
-			m_effect->EndPass(renderContext);
-			m_effect->End(renderContext);
-
-			//ダウンサンプリングを行って平均を求める。
-			curRtNo--;
-			while (curRtNo > 0) {
+			{
+				CPIXPerfTag tag(renderContext, L"CTonemap::CalcLuminanceLogAvarage");
 				renderContext.SetRenderTarget(0, &m_calcAvgRT[curRtNo]);
-				GetSampleOffsets_DownScale4x4(m_calcAvgRT[curRtNo].GetWidth(), m_calcAvgRT[curRtNo].GetHeight(), avSampleOffsets);
-				m_effect->SetTechnique(renderContext, "CalcLuminanceAvarage");
+				m_effect->SetTechnique(renderContext, "CalcLuminanceLogAvarage");
 				m_effect->Begin(renderContext);
 				m_effect->BeginPass(renderContext, 0);
 				m_effect->SetValue(renderContext, "g_avSampleOffsets", avSampleOffsets, sizeof(avSampleOffsets));
-				m_effect->SetTexture(renderContext, "g_scene", m_calcAvgRT[curRtNo+1].GetTexture() );
+				m_effect->SetTexture(renderContext, "g_scene", Engine().GetMainRenderTarget().GetTexture());
+				m_effect->CommitChanges(renderContext);
+				postEffect->RenderFullScreen(renderContext);
+				m_effect->EndPass(renderContext);
+				m_effect->End(renderContext);
+			}
+			//ダウンサンプリングを行って平均を求める。
+			curRtNo--;
+			{
+				CPIXPerfTag tag(renderContext, L"CTonemap::CalcLuminanceAvarage");
+				while (curRtNo > 0) {
+					renderContext.SetRenderTarget(0, &m_calcAvgRT[curRtNo]);
+					GetSampleOffsets_DownScale4x4(m_calcAvgRT[curRtNo].GetWidth(), m_calcAvgRT[curRtNo].GetHeight(), avSampleOffsets);
+					m_effect->SetTechnique(renderContext, "CalcLuminanceAvarage");
+					m_effect->Begin(renderContext);
+					m_effect->BeginPass(renderContext, 0);
+					m_effect->SetValue(renderContext, "g_avSampleOffsets", avSampleOffsets, sizeof(avSampleOffsets));
+					m_effect->SetTexture(renderContext, "g_scene", m_calcAvgRT[curRtNo + 1].GetTexture());
+
+					m_effect->CommitChanges(renderContext);
+					postEffect->RenderFullScreen(renderContext);
+					m_effect->EndPass(renderContext);
+					m_effect->End(renderContext);
+					curRtNo--;
+				}
+			}
+			//exp関数を用いて最終平均を求める。
+			renderContext.SetRenderTarget(0, &m_calcAvgRT[curRtNo]);
+			GetSampleOffsets_DownScale4x4(m_calcAvgRT[curRtNo].GetWidth(), m_calcAvgRT[curRtNo].GetHeight(), avSampleOffsets);
+			{
+				CPIXPerfTag tag(renderContext, L"CTonemap::CalcLuminanceExpAvarage");
+				m_effect->SetTechnique(renderContext, "CalcLuminanceExpAvarage");
+				m_effect->Begin(renderContext);
+				m_effect->BeginPass(renderContext, 0);
+				m_effect->SetValue(renderContext, "g_avSampleOffsets", avSampleOffsets, sizeof(avSampleOffsets));
+				m_effect->SetTexture(renderContext, "g_scene", m_calcAvgRT[curRtNo + 1].GetTexture());
 
 				m_effect->CommitChanges(renderContext);
 				postEffect->RenderFullScreen(renderContext);
 				m_effect->EndPass(renderContext);
 				m_effect->End(renderContext);
-				curRtNo--;
 			}
-			//exp関数を用いて最終平均を求める。
-			renderContext.SetRenderTarget(0, &m_calcAvgRT[curRtNo]);
-			GetSampleOffsets_DownScale4x4(m_calcAvgRT[curRtNo].GetWidth(), m_calcAvgRT[curRtNo].GetHeight(), avSampleOffsets);
-			m_effect->SetTechnique(renderContext, "CalcLuminanceExpAvarage");
-			m_effect->Begin(renderContext);
-			m_effect->BeginPass(renderContext, 0);
-			m_effect->SetValue(renderContext, "g_avSampleOffsets", avSampleOffsets, sizeof(avSampleOffsets));
-			m_effect->SetTexture(renderContext, "g_scene", m_calcAvgRT[curRtNo + 1].GetTexture());
-
-			m_effect->CommitChanges(renderContext);
-			postEffect->RenderFullScreen(renderContext);
-			m_effect->EndPass(renderContext);
-			m_effect->End(renderContext);
-
 			//明暗順応。
-			CRenderTarget& lastRT = m_avgRT[1 ^ m_currentAvgRT];
-			m_currentAvgRT = 1 ^ m_currentAvgRT;
-			renderContext.SetRenderTarget(0, &m_avgRT[m_currentAvgRT]);
-			m_effect->SetTechnique(renderContext, "CalcAdaptedLuminance");
-			m_effect->Begin(renderContext);
-			m_effect->BeginPass(renderContext, 0);
-			float deltaTime = GameTime().GetFrameDeltaTime();
-			m_effect->SetValue(renderContext, "g_fElapsedTime", &deltaTime, sizeof(deltaTime));
-			m_effect->SetTexture(renderContext, "g_lumAvgTex", m_calcAvgRT[0].GetTexture());
-			m_effect->SetTexture(renderContext, "g_lastLumAvgTex", lastRT.GetTexture());
-			m_effect->CommitChanges(renderContext);
-			postEffect->RenderFullScreen(renderContext);
-			m_effect->EndPass(renderContext);
-			m_effect->End(renderContext);
-			
+			{
+				CPIXPerfTag tag(renderContext, L"CTonemap::CalcAdaptedLuminance");
+				CRenderTarget& lastRT = m_avgRT[1 ^ m_currentAvgRT];
+				m_currentAvgRT = 1 ^ m_currentAvgRT;
+				renderContext.SetRenderTarget(0, &m_avgRT[m_currentAvgRT]);
+				m_effect->SetTechnique(renderContext, "CalcAdaptedLuminance");
+				m_effect->Begin(renderContext);
+				m_effect->BeginPass(renderContext, 0);
+				float deltaTime = GameTime().GetFrameDeltaTime();
+				m_effect->SetValue(renderContext, "g_fElapsedTime", &deltaTime, sizeof(deltaTime));
+				m_effect->SetTexture(renderContext, "g_lumAvgTex", m_calcAvgRT[0].GetTexture());
+				m_effect->SetTexture(renderContext, "g_lastLumAvgTex", lastRT.GetTexture());
+				m_effect->CommitChanges(renderContext);
+				postEffect->RenderFullScreen(renderContext);
+				m_effect->EndPass(renderContext);
+				m_effect->End(renderContext);
+			}
 			renderContext.SetRenderTarget(0, &Engine().GetMainRenderTarget());
 		}
 	}
 	void CTonemap::Execute(CRenderContext& renderContext, CPostEffect* postEffect)
 	{
 		if (m_isEnable) {
+			CPIXPerfTag tag(renderContext, L"CTonemap::Execute");
 			const CTexture* sceneTex = Engine().GetMainRenderTarget().GetTexture();
 			Engine().ToggleMainRenderTarget();
 			renderContext.SetRenderTarget(0, &Engine().GetMainRenderTarget());

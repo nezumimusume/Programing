@@ -17,7 +17,7 @@ bool Item::Start()
 	skinModel.Init(&skinModelData);
 	light.SetAmbinetLight({ 1.0f, 1.0f, 1.0f });
 	skinModel.SetLight(&light);
-	rotation.SetRotation();
+	//rotation.SetRotation();
 	return true;
 }
 
@@ -28,5 +28,5 @@ void Item::Update()
 
 void Item::Render(CRenderContext& rendercontext)
 {
-	skinModel.Draw();
+	//skinModel.Draw();
 }
