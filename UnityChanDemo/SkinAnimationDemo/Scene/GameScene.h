@@ -40,9 +40,16 @@ public:
 	{
 		return inGameLight.GetDefaultLight();
 	}
-	CSkinModelData& GetItemModelData()
+	CSkinModelData* GetItemModelData()
 	{
-		return *itemModelData.GetBody();
+		if (itemModelData.IsLoadEnd())
+		{
+			return itemModelData.GetBody();
+		}
+		else
+		{
+			return nullptr;
+		}
 	}
 private:
 	enum InitStep {

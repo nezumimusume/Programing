@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Map/Map.h"
 #include "Map/MapChip.h"
+#include "ItemMaker.h"
 
 using namespace std;
 namespace {
@@ -11,13 +12,14 @@ namespace {
 }
 Map::Map()
 {
-
+	g_itemMaker = NewGO<ItemMaker>(0);
 }
 Map::~Map()
 {
 	for (auto& mapchip : mapChipList) {
 		DeleteGO(mapchip);
 	}
+	DeleteGO(g_itemMaker);
 }
 
 #define ENABLE_MAPCHIP_INSTANCING
@@ -47,10 +49,17 @@ bool Map::Start()
 		}
 	}
 	for (auto& mapchipList : m) {
-		//マップチップを生成
-		MapChip* mapChip = NewGO<MapChip>(0);
-		mapChip->Init(*mapchipList.second);
-		mapChipList.push_back(mapChip);
+		if (!strcmp((*mapchipList.second)[0]->modelName, "Apple"))
+		{
+			g_itemMaker->Init(*mapchipList.second);
+		}
+		else
+		{
+			//マップチップを生成
+			MapChip* mapChip = NewGO<MapChip>(0);
+			mapChip->Init(*mapchipList.second);
+			mapChipList.push_back(mapChip);
+		}
 		delete mapchipList.second;
 	}
 #else

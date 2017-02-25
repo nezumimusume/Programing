@@ -6,6 +6,8 @@
 
 Item::Item()
 {
+	rotation.SetRotation(CVector3::AxisY, CMath::DegToRad(0));
+	deleteFlg = false;
 }
 
 
@@ -17,25 +19,30 @@ void Item::OnDestroy()
 {
 }
 
+bool Item::Start()
+{
+	return true;
+}
+
 void Item::Init(CVector3 initPosition)
 {
 	position = initPosition;
 	position.y += 1.1f;
-}
-
-bool Item::Start()
-{
-	skinModelData.CloneModelData(gameScene->GetItemModelData(), NULL);
+	//GameSceneでロードしたデータのクローンを作る
+	skinModelData.CloneModelData(*gameScene->GetItemModelData(), NULL);
 	skinModel.Init(&skinModelData);
 	skinModel.SetLight(&gameScene->GetDefaultLight());
-	rotation.SetRotation(CVector3::AxisY, CMath::DegToRad(0));
 	skinModel.SetShadowCasterFlag(true);
 	skinModel.SetShadowReceiverFlag(true);
-	return true;
 }
+
 
 void Item::Update()
 {
+	if (deleteFlg)
+	{
+		true;
+	}
 	CQuaternion multi;
 	multi.SetRotation(CVector3::AxisY, CMath::DegToRad(5));
 	rotation.Multiply(multi);
@@ -43,21 +50,15 @@ void Item::Update()
 	CVector3 distance;
 	distance.Subtract(position, g_player->GetPosition());
 	distance.y = 0.0f;
-	if (distance.Length() < 0.4f)
+	if (distance.Length() < 0.5f)
 	{
 		g_player->Heel();
-		DeleteGO(this);
+		deleteFlg = true;
 	}
 	skinModel.Update(position, rotation, CVector3::One);
 }
 
 void Item::Render(CRenderContext& rendercontext)
 {
-<<<<<<< HEAD
 	skinModel.Draw(rendercontext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 }
-
-=======
-	//skinModel.Draw();
-}
->>>>>>> 9d854c9ae3179a283cf2175d2057a768cf607f53

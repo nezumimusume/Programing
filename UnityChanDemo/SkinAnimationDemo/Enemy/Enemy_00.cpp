@@ -13,6 +13,7 @@
 #include "DamageCollisionWorld.h"
 #include "tkEngine/Sound/tkSoundSource.h"
 #include "Scene/GameScene.h"
+#include "ItemMaker.h"
 
 Enemy_00::Enemy_00()
 {
@@ -182,9 +183,7 @@ void Enemy_00::Damage()
 			states[state]->Leave();
 			state = enLocalState_Death;
 			states[state]->Enter(IEnemyState::SEnterArg());
-			Item *item = NewGO<Item>(0);
-			item->Init(position);
-
+			g_itemMaker->NewItem(position);
 		}
 		else {
 			states[state]->Leave();

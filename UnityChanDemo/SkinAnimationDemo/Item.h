@@ -1,5 +1,6 @@
 #pragma once
 #include "Light/InGameLight.h"
+#include "Map/MapChip.h"
 /*
 回復アイテムクラス
 */
@@ -8,19 +9,28 @@ class Item : public IGameObject
 public:
 	Item();
 	~Item();
-	
 	void Init(CVector3);
-	void OnDestroy() override;
+
 	bool Start() override;
+
+	void OnDestroy() override;
+
 	void Update() override;
+
 	void Render(CRenderContext&) override;
+
+	bool IsDelete()
+	{
+		return deleteFlg;
+	}
 
 
 private:
-	CSkinModel		skinModel;
-	CSkinModelData	skinModelData;
-	CVector3		position;
-	CQuaternion		rotation;
-	CLight			light;
+	CSkinModelData			skinModelData;
+	CSkinModel				skinModel;
+	CQuaternion				rotation;
+	CLight					light;
+	CVector3				position;
+	bool					deleteFlg;		//プレイヤーにとられたかのフラグ
 };
 
