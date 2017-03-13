@@ -72,7 +72,7 @@ namespace tkEngine {
 		/*!
 		*@brief	ライトを設定。
 		*/
-		void SetLight(CLight* light)
+		void SetLight(const CLight* light)
 		{
 			m_light = light;
 		}
@@ -205,7 +205,7 @@ namespace tkEngine {
 			D3DXMATRIX* rotationMatrix,
 			D3DXMATRIX* viewMatrix,
 			D3DXMATRIX* projMatrix,
-			CLight* light,
+			const CLight* light,
 			bool isInstancingDraw,
 			bool isDrawToShadowMap
 		);
@@ -271,7 +271,7 @@ namespace tkEngine {
 		CSkinModelData*					m_skinModelData;	//!<スキンモデルデータ。
 		CEffect*						m_pEffect;			//!<エフェクト。
 		CAnimation						m_animation;		//!<アニメーション。
-		CLight*							m_light;			//!<ライト。
+		const CLight*					m_light;			//!<ライト。
 		static const int MAX_MATRIX_PALLET = 128;	//!<マトリクスパレットの最大数。
 		D3DXMATRIX						m_boneMatrixPallet[MAX_MATRIX_PALLET];	//!<マトリクスパレット。
 		bool							m_isShadowReceiver;					//!<シャドウレシーバー。

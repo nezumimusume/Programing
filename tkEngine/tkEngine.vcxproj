@@ -307,6 +307,7 @@
     <ClCompile Include="math\tkMatrix.cpp" />
     <ClCompile Include="math\tkVector.cpp" />
     <ClCompile Include="nature\tkSky.cpp" />
+    <ClCompile Include="nature\tkTerrain.cpp" />
     <ClCompile Include="particle\tkParticle.cpp" />
     <ClCompile Include="particle\tkParticleEmitter.cpp" />
     <ClCompile Include="particle\tkParticleResources.cpp" />
@@ -405,6 +406,7 @@
     <ClInclude Include="math\tkMatrix.h" />
     <ClInclude Include="math\tkVector.h" />
     <ClInclude Include="nature\tkSky.h" />
+    <ClInclude Include="nature\tkTerrain.h" />
     <ClInclude Include="particle\tkParticle.h" />
     <ClInclude Include="particle\tkParticleEmitter.h" />
     <ClInclude Include="particle\tkParticleResources.h" />

@@ -57,7 +57,7 @@ namespace tkEngine{
 		D3DXMATRIX* rotationMatrix,
 		D3DXMATRIX* viewMatrix,
 		D3DXMATRIX* projMatrix,
-		CLight* light,
+		const CLight* light,
 		bool isInstancingDraw,
 		bool isDrawToShadowMap
 	)
