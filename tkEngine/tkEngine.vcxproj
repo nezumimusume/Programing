@@ -267,6 +267,7 @@
     <ClCompile Include="culling\tkObjectFrustumCulling.cpp" />
     <ClCompile Include="gameObject\tkGameObject.cpp" />
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
+    <ClCompile Include="graphics\material\tkSkinModelMaterialEx.cpp" />
     <ClCompile Include="graphics\postEffect\tkBloomRender.cpp" />
     <ClCompile Include="graphics\postEffect\tkDOF.cpp" />
     <ClCompile Include="graphics\postEffect\tkEdgeRender.cpp" />
@@ -361,6 +362,9 @@
     <ClInclude Include="debug\tkLog.h" />
     <ClInclude Include="gameObject\tkGameObject.h" />
     <ClInclude Include="gameObject\tkGameObjectManager.h" />
+    <ClInclude Include="graphics\material\node\tkSkinModelMaterialNode.h" />
+    <ClInclude Include="graphics\material\node\tkSkinModelMaterialNode_DiffuseMap.h" />
+    <ClInclude Include="graphics\material\tkSkinModelMaterialEx.h" />
     <ClInclude Include="graphics\postEffect\tkBloomRender.h" />
     <ClInclude Include="graphics\postEffect\tkDOF.h" />
     <ClInclude Include="graphics\postEffect\tkEdgeRender.h" />

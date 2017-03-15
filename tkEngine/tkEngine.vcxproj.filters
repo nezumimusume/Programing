@@ -78,6 +78,12 @@
     <Filter Include="Source Files\nature">
       <UniqueIdentifier>{a6455ce6-4638-4e2f-a3a5-9454f3c26eed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphics\material">
+      <UniqueIdentifier>{b915376c-ae6e-4ee9-a744-be5982a1caf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics\material\node">
+      <UniqueIdentifier>{9d614757-4484-47cc-aafa-997fda8cb8f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -292,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="nature\tkTerrain.cpp">
       <Filter>Source Files\nature</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\material\tkSkinModelMaterialEx.cpp">
+      <Filter>Source Files\graphics\material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -558,6 +567,15 @@
     </ClInclude>
     <ClInclude Include="nature\tkTerrain.h">
       <Filter>Source Files\nature</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\material\tkSkinModelMaterialEx.h">
+      <Filter>Source Files\graphics\material</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\material\node\tkSkinModelMaterialNode_DiffuseMap.h">
+      <Filter>Source Files\graphics\material\node</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\material\node\tkSkinModelMaterialNode.h">
+      <Filter>Source Files\graphics\material\node</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
