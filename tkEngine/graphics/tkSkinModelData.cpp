@@ -6,6 +6,7 @@
 #include "tkEngine/graphics/tkSkinModelData.h"
 #include "tkEngine/graphics/tkAnimation.h"
 #include "tkEngine/graphics/tkSkinModelMaterial.h"
+#include "tkEngine/graphics/material/tkSkinModelMaterialEx.h"
 
 int refCount = 0;
 #ifndef SAFE_DELETE
@@ -53,6 +54,7 @@ namespace {
 		SAFE_DELETE_ARRAY(pMeshContainer->Name);
 		SAFE_DELETE_ARRAY(pMeshContainer->pAdjacency);
 		SAFE_DELETE_ARRAY(pMeshContainer->pMaterials);
+		SAFE_DELETE_ARRAY(pMeshContainer->newMaterials);
 		SAFE_DELETE_ARRAY(pMeshContainer->pBoneOffsetMatrices);
 
 		// release all the allocated textures
@@ -66,6 +68,7 @@ namespace {
 
 		SAFE_DELETE_ARRAY(pMeshContainer->ppTextures);
 		SAFE_DELETE_ARRAY(pMeshContainer->materials);
+		SAFE_DELETE_ARRAY(pMeshContainer->newMaterials);
 		SAFE_DELETE_ARRAY(pMeshContainer->ppBoneMatrixPtrs);
 		SAFE_RELEASE(pMeshContainer->pBoneCombinationBuf);
 		SAFE_RELEASE(pMeshContainer->MeshData.pMesh);
@@ -352,6 +355,7 @@ namespace {
 		pMeshContainer->pMaterials = new D3DXMATERIAL[pMeshContainer->NumMaterials];
 		pMeshContainer->ppTextures = new LPDIRECT3DTEXTURE9[pMeshContainer->NumMaterials];
 		pMeshContainer->materials = new CSkinModelMaterial[pMeshContainer->NumMaterials];
+		pMeshContainer->newMaterials = new CSkinModelMaterialEx[pMeshContainer->NumMaterials];
 		pMeshContainer->textures = new CTexture[pMeshContainer->NumMaterials];
 		pMeshContainer->pAdjacency = new DWORD[NumFaces * 3];
 		if ((pMeshContainer->pAdjacency == NULL) || (pMeshContainer->pMaterials == NULL))
@@ -389,9 +393,16 @@ namespace {
 					pMeshContainer->materials[iMaterial].SetMaterialName(pMeshContainer->pMaterials[iMaterial].pTextureFilename);
 					pMeshContainer->textures[iMaterial].SetTextureDX(pMeshContainer->ppTextures[iMaterial]);
 					pMeshContainer->materials[iMaterial].SetTexture("g_diffuseTexture", &pMeshContainer->textures[iMaterial]);
+					m_skinModelData->AddSkinModelMaterial(&pMeshContainer->materials[iMaterial]);
+					//ここから新規マテリアルの処理。
+					pMeshContainer->newMaterials[iMaterial].Init(
+						"SkinModel",	//デフォルトテクニックを割り当てる。
+						pMeshContainer->pMaterials[iMaterial].pTextureFilename	//マテリアルの名前はテクスチャの名前。
+					);
+					m_skinModelData->AddSkinModelMaterialEx(&pMeshContainer->newMaterials[iMaterial]);
 					// don't remember a pointer into the dynamic memory, just forget the name after loading
 					pMeshContainer->pMaterials[iMaterial].pTextureFilename = NULL;
-					m_skinModelData->AddSkinModelMaterial(&pMeshContainer->materials[iMaterial]);
+					
 				}
 			}
 		}

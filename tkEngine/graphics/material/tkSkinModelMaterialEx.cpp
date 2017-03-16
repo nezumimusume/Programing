@@ -8,9 +8,10 @@
 
 
 namespace tkEngine{
-	void CSkinModelMaterialEx::Init(CEffect* effect, const char* tecName)
+	void CSkinModelMaterialEx::Init(const char* tecName, const char* matName)
 	{
-		m_pEffect = effect;
+		m_pEffect = EffectManager().LoadEffect("Assets/presetShader/skinModel.fx");
+		m_materialName = matName;
 		InitShaderHandles(tecName);
 	}
 	void CSkinModelMaterialEx::InitShaderHandles(const char* tecName)
@@ -74,6 +75,22 @@ namespace tkEngine{
 #endif
 		if (m_pEffect) {
 			ID3DXEffect* effect = m_pEffect->GetD3DXEffect();
+			//‚¿‚å‚¢“K“–
+			for( int i = 0; i < enTextureShaderHandle_Num; i++ ){
+				effect->SetTexture(m_hTexShaderHandle[i], m_textures[i]->GetTextureDX());
+			}
+			for (int i = 0; i < enMatrixShaderHandle_Num; i++) {
+				effect->SetMatrix(m_hMatrixShaderHandle[i], (D3DXMATRIX*)&m_matrices[i]);
+			}
+			for (int i = 0; i < enFVectorShaderHandle_Num; i++) {
+				effect->SetVector(m_hFVectorShaderHandle[i], (D3DXVECTOR4*)&m_fVector[i]);
+			}
+			for (int i = 0; i < enIVectorShaderHandle_Num; i++) {
+				effect->SetIntArray(m_hIVectorShaderHandle[i], (int*)&m_iVector[i], 4);
+			}
+			for (int i = 0; i < enIntShaderHandle_Num; i++) {
+				effect->SetInt(m_hIntShaderHandle[i], m_int[i]);
+			}
 			for (auto& node : m_materialNodes) {
 				node->SendMaterialParamToGPU();
 			}

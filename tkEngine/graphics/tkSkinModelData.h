@@ -8,6 +8,7 @@
 
 namespace tkEngine{
 	class CSkinModelMaterial;
+	class CSkinModelMaterialEx;
 	struct D3DXFRAME_DERIVED : public D3DXFRAME {
 		D3DXMATRIX	CombinedTransformationMatrix;	//合成済み行列。
 	};
@@ -23,6 +24,7 @@ namespace tkEngine{
 		DWORD NumPaletteEntries;
 		DWORD iAttributeSW;
 		CSkinModelMaterial* materials;
+		CSkinModelMaterialEx* newMaterials;
 		CTexture* textures;
 	};
 	class CAnimation;
@@ -169,12 +171,20 @@ namespace tkEngine{
 		{
 			m_materials.push_back(mat);
 		}
+		void AddSkinModelMaterialEx(CSkinModelMaterialEx* mat)
+		{
+			m_newMaterials.push_back(mat);
+		}
 		/*!
 		* @brief	スキンモデルマテリアルのリストを取得。
 		*/
 		const std::vector<CSkinModelMaterial*>& GetSkinModelMaterials() const
 		{
 			return m_materials;
+		}
+		const std::vector<CSkinModelMaterialEx*>& GetSkinModelMaterialsEx() const
+		{
+			return m_newMaterials;
 		}
 	private:
 		CMatrix* FindBoneWorldMatrix(const char* boneName, LPD3DXFRAME frame);
@@ -219,6 +229,7 @@ namespace tkEngine{
 		int									m_numInstance;					//インスタンスの数。
 		int									m_vertexBufferStride;			//頂点バッファのストライド。
 		std::vector<CSkinModelMaterial*>	m_materials;					//マテリアル。
+		std::vector<CSkinModelMaterialEx*>	m_newMaterials;					//マテリアル。
 		bool								m_isLoadEnd = false;
 		std::thread							m_loadThread;		//読み込みスレッド
 		const CSkinModelData*						m_original = nullptr;

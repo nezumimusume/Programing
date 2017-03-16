@@ -62,6 +62,8 @@ namespace tkEngine{
 		bool isDrawToShadowMap
 	)
 	{
+#if 1
+#else
 		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
 		D3DXFRAME_DERIVED* pFrame = (D3DXFRAME_DERIVED*)pFrameBase;
 		UINT iAttrib;
@@ -301,6 +303,7 @@ namespace tkEngine{
 			pEffect->EndPass();
 			pEffect->End();
 		}
+#endif
 	}
 	void CSkinModel::DrawFrame(
 		IDirect3DDevice9* pd3dDevice,

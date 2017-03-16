@@ -83,6 +83,7 @@ namespace tkEngine{
 		~CSkinModelMaterialEx()
 		{
 		}
+		
 		/*!
 		 *@brief	テクスチャを設定。
 		 */
@@ -147,10 +148,10 @@ namespace tkEngine{
 		}
 		/*!
 		*@brief	初期化。
-		*@param[in]		effect		エフェクト
 		*@param[in]		tecName		テクニック名。
+		*@param[in]		matName		マテリアル名。
 		*/
-		void Init(CEffect* effect, const char* tecName);
+		void Init(const char* tecName, const char* matName);
 		/*!
 		 *@brief	描画開始。
 		 */
@@ -178,6 +179,7 @@ namespace tkEngine{
 		CLight m_light;										//!<ライト。
 		CShadowMap::ShadowRecieverParam m_shadowRecParam;	//!<シャドウレシーバーパラメータ。
 	private:
+		std::string m_materialName;										//!<マテリアル名。
 		std::vector<ISkinModelMaterialNode*>	m_materialNodes;		//!<マテリアルのノード。
 		CEffect* m_pEffect = nullptr;									//!<エフェクト。
 		D3DXHANDLE m_hTec;												//!<テクニックハンドル。
