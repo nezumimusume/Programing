@@ -272,9 +272,17 @@ namespace tkEngine{
 		}
 		/*!
 		*@brief	ベクトルを設定。
+		*/
+		void Set(const CVector4& v)
+		{
+			*this = v;
+		}
+		/*!
+		*@brief	ベクトルを設定。
 		*@details
 		* wには1.0が格納されます。
 		*/
+		
 		void Set(const CVector3& v)
 		{
 			this->x = v.x;

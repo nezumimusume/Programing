@@ -10,7 +10,7 @@ namespace tkEngine {
 	 *@brief	ƒ‰ƒCƒg
 	 */
 	
-	class CLight : Noncopyable{
+	class CLight {
 	public:
 		static const int NUM_DIFFUSE_LIGHT = 4;
 	public:
