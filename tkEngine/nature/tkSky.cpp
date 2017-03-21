@@ -1,6 +1,7 @@
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/nature/tkSky.h"
 #include "tkEngine/graphics/tkSKinModelMaterial.h"
+#include "tkEngine/graphics/material/tkSKinModelMaterialEx.h"
 
 namespace tkEngine{
 	CSky::CSky() 
@@ -17,10 +18,11 @@ namespace tkEngine{
 		sunModel.Init(sunModelData.GetBody());
 		sunLight.SetEmissionLightColor(CVector3(1.5f, 1.5f, 1.5f));
 		sunModel.SetLight(&sunLight);
-		CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("sky.png");
+		CSkinModelMaterialEx* mat = skinModelData.GetBody()->FindMaterialEx("sky.png");
 		if (mat) {
-			mat->SetTexture("g_skyCubeMap", TextureResources().Load("Assets/modelData/skyCubeMap.dds", true));
-		}
+			mat->SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_SkyCubeMap, *TextureResources().Load("Assets/modelData/skyCubeMap.dds", true));
+			mat->SetTechnique(CSkinModelMaterialEx::enTecShaderHandle_Sky);
+		}		
 		skinModel.SetAtomosphereParam(enAtomosphereFuncSkyFromAtomosphere);
 	}
 	bool CSky::Start() 

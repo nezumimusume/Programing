@@ -561,7 +561,7 @@ PSOutput PSSkyMain(VS_OUTPUT In){
 	color.xyz = lerp( color.xyz, cloudColor, cloudRate ) ;
 	PSOutput psOut = (PSOutput)0;
 	psOut.color = color * 1.1f;
-
+	psOut.color = diffuseColor;
 	psOut.depth = In.worldPos_depth.w;
 	if(g_flags2.x){
 		psOut.velocity.xy = In.velocity.xy / In.velocity.w-In.screenPos.xy / In.screenPos.w;

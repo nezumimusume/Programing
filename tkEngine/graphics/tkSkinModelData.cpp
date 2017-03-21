@@ -399,9 +399,15 @@ namespace {
 						"SkinModel",	//デフォルトテクニックを割り当てる。
 						pMeshContainer->pMaterials[iMaterial].pTextureFilename	//マテリアルの名前はテクスチャの名前。
 					);
+					pMeshContainer->newMaterials[iMaterial].SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_DiffuseMap, pMeshContainer->textures[iMaterial]);
 					m_skinModelData->AddSkinModelMaterialEx(&pMeshContainer->newMaterials[iMaterial]);
+					if (pSkinInfo == NULL) {
+						//テクニックを設定。
+						pMeshContainer->newMaterials[iMaterial].SetTechnique(CSkinModelMaterialEx::enTecShaderHandle_NoSkinModel);
+					}
 					// don't remember a pointer into the dynamic memory, just forget the name after loading
 					pMeshContainer->pMaterials[iMaterial].pTextureFilename = NULL;
+					
 					
 				}
 			}
@@ -810,6 +816,15 @@ namespace tkEngine{
 	{
 		m_numInstance = numInstance;
 		CreateInstancingDrawData(m_frameRoot, numInstance, vertexElement);
+		//シェーダーテクニックをインスタンシング描画用に変更する。
+		for (auto& mat : m_newMaterials) {
+			if (mat->GetTechnique() == CSkinModelMaterialEx::enTecShaderHandle_SkinModel) {
+				mat->SetTechnique(CSkinModelMaterialEx::enTecShaderHandle_SkinModelInstancing);
+			}
+			else if (mat->GetTechnique() == CSkinModelMaterialEx::enTecShaderHandle_NoSkinModel) {
+				mat->SetTechnique(CSkinModelMaterialEx::enTecShaderHandle_NoSkinModelInstancing);
+			}
+		}
 	}
 	bool CSkinModelData::CreateInstancingDrawData( LPD3DXFRAME frame, int numInstance, D3DVERTEXELEMENT9* vertexElement )
 	{
@@ -923,6 +938,15 @@ namespace tkEngine{
 	{
 		for (CSkinModelMaterial* mat : m_materials) {
 			if (strcmp(mat->GetMaterialName(), matName) == 0) {
+				return mat;
+			}
+		}
+		return nullptr;
+	}
+	CSkinModelMaterialEx* CSkinModelData::FindMaterialEx(const char* matName)
+	{
+		for (CSkinModelMaterialEx* mat : m_newMaterials) {
+			if (strcmp(mat->GetName(), matName) == 0) {
 				return mat;
 			}
 		}

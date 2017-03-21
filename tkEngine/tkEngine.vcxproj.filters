@@ -568,14 +568,14 @@
     <ClInclude Include="nature\tkTerrain.h">
       <Filter>Source Files\nature</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\material\tkSkinModelMaterialEx.h">
-      <Filter>Source Files\graphics\material</Filter>
-    </ClInclude>
     <ClInclude Include="graphics\material\node\tkSkinModelMaterialNode_DiffuseMap.h">
       <Filter>Source Files\graphics\material\node</Filter>
     </ClInclude>
     <ClInclude Include="graphics\material\node\tkSkinModelMaterialNode.h">
       <Filter>Source Files\graphics\material\node</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\material\tkSkinModelMaterialEx.h">
+      <Filter>Source Files\graphics\material</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 #include "Car.h"
 #include "Map/Ground.h"
 #include "tkEngine/graphics/tkSkinModelMaterial.h"
+#include "tkEngine/graphics/material/tkSkinModelMaterialEx.h"
 #include "DamageCollisionWorld.h"
 #include "ParticleParam.h"
 #include "Enemy/EnemyParameter.h"
@@ -126,17 +127,17 @@ bool Player::Start()
 			lockOn2D = NewGO<LockOn2D>(1);
 
 			//体のマテリアルを取得。
-			CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("Thethief_D.tga");
+			CSkinModelMaterialEx* mat = skinModelData.GetBody()->FindMaterialEx("Thethief_D.tga");
 			
 			if (mat != NULL) {
-				mat->SetTexture("g_normalTexture", TextureResources().Load("Assets/modelData/Thethief_N.tga"));
-				mat->SetTexture("g_speculerMap", TextureResources().Load("Assets/modelData/Thethief_S.tga"));
+				mat->SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_NormalMap, *TextureResources().Load("Assets/modelData/Thethief_N.tga"));
+				mat->SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_SpecularMap, *TextureResources().Load("Assets/modelData/Thethief_S.tga"));
 			}
 			//武器のマテリアルを取得。
-			mat = skinModelData.GetBody()->FindMaterial("Thethief_wuqi_D.tga");
+			mat = skinModelData.GetBody()->FindMaterialEx("Thethief_wuqi_D.tga");
 			if (mat != NULL) {
-				mat->SetTexture("g_normalTexture", TextureResources().Load("Assets/modelData/Thethief_wuqi_N.tga"));
-				mat->SetTexture("g_speculerMap", TextureResources().Load("Assets/modelData/Thethief_wuqi_S.tga"));
+				mat->SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_NormalMap, *TextureResources().Load("Assets/modelData/Thethief_wuqi_N.tga"));
+				mat->SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_SpecularMap, *TextureResources().Load("Assets/modelData/Thethief_wuqi_S.tga"));
 			}
 			skinModel.Init(skinModelData.GetBody());
 			skinModel.SetLight(&gameScene->GetDefaultLight());

@@ -25,6 +25,7 @@ namespace tkEngine{
 			m_hTexShaderHandle[enTextureShaderHandle_ShadowMap_1] = effectDx->GetParameterByName(NULL, "g_shadowMap_1");
 			m_hTexShaderHandle[enTextureShaderHandle_ShadowMap_2] = effectDx->GetParameterByName(NULL, "g_shadowMap_2");
 			m_hTexShaderHandle[enTextureShaderHandle_SpecularMap] = effectDx->GetParameterByName(NULL, "g_speculerMap");
+			m_hTexShaderHandle[enTextureShaderHandle_SkyCubeMap] = effectDx->GetParameterByName(NULL, "g_skyCubeMap");
 			//行列のシェーダーハンドル。
 			m_hMatrixShaderHandle[enMatrixShaderHandle_LastFrameViewProj] = effectDx->GetParameterByName(NULL, "g_mViewProjLastFrame");
 			m_hMatrixShaderHandle[enMatrixShaderHandle_ViewProj] = effectDx->GetParameterByName(NULL, "g_mViewProj");
@@ -49,10 +50,24 @@ namespace tkEngine{
 			m_hLightShaderHandle = effectDx->GetParameterByName(NULL, "g_light");
 			//シャドウレシーバーパラメータハンドル。
 			m_hShadowRecieverParamShaderHandle = effectDx->GetParameterByName(NULL, "gShadowReceiverParam");
-
+			//ボーン行列のシェーダーハンドル。
+			m_hBoneMatrixArrayShaderHandle = effectDx->GetParameterByName(NULL, "g_mWorldMatrixArray");
+			
 			m_hShaderHandle[enShaderHandleWorldMatrixArray] = effectDx->GetParameterByName(NULL, "g_mWorldMatrixArray");
 			m_hShaderHandle[enShaderHandleShadowRecieverParam] = effectDx->GetParameterByName(NULL, "gShadowReceiverParam");
-			m_hTec = effectDx->GetTechniqueByName(tecName);
+
+			//シェーダーテクニック。
+			m_hTechniqueHandle[enTecShaderHandle_SkinModelInstancingRenderToShadowMap] = effectDx->GetTechniqueByName("SkinModelInstancingRenderToShadowMap");
+			m_hTechniqueHandle[enTecShaderHandle_SkinModelInstancing] = effectDx->GetTechniqueByName("SkinModelInstancing");
+			m_hTechniqueHandle[enTecShaderHandle_NoSkinModelInstancingRenderToShadowMap] = effectDx->GetTechniqueByName("NoSkinModelInstancingRenderToShadowMap");
+			m_hTechniqueHandle[enTecShaderHandle_NoSkinModelInstancing] = effectDx->GetTechniqueByName("NoSkinModelInstancing");
+			m_hTechniqueHandle[enTecShaderHandle_SkinModelRenderShadowMap] = effectDx->GetTechniqueByName("SkinModelRenderShadowMap");
+			m_hTechniqueHandle[enTecShaderHandle_SkinModel] = effectDx->GetTechniqueByName("SkinModel");
+			m_hTechniqueHandle[enTecShaderHandle_NoSkinModelRenderShadowMap] = effectDx->GetTechniqueByName("NoSkinModelRenderShadowMap");
+			m_hTechniqueHandle[enTecShaderHandle_NoSkinModel] = effectDx->GetTechniqueByName("NoSkinModel");
+			m_hTechniqueHandle[enTecShaderHandle_Sky] = effectDx->GetTechniqueByName("Sky");
+			
+			SetTechnique(enTecShaderHandle_SkinModel);
 		}
 	}
 	void CSkinModelMaterialEx::BeginDraw()
@@ -77,7 +92,14 @@ namespace tkEngine{
 			ID3DXEffect* effect = m_pEffect->GetD3DXEffect();
 			//ちょい適当
 			for( int i = 0; i < enTextureShaderHandle_Num; i++ ){
-				effect->SetTexture(m_hTexShaderHandle[i], m_textures[i]->GetTextureDX());
+				if (m_textures[i]) {
+					if (m_textures[i]->IsCubeMap()) {
+						effect->SetTexture(m_hTexShaderHandle[i], m_textures[i]->GetCubeMapDX());
+					}
+					else {
+						effect->SetTexture(m_hTexShaderHandle[i], m_textures[i]->GetTextureDX());
+					}
+				}
 			}
 			for (int i = 0; i < enMatrixShaderHandle_Num; i++) {
 				effect->SetMatrix(m_hMatrixShaderHandle[i], (D3DXMATRIX*)&m_matrices[i]);
@@ -91,6 +113,10 @@ namespace tkEngine{
 			for (int i = 0; i < enIntShaderHandle_Num; i++) {
 				effect->SetInt(m_hIntShaderHandle[i], m_int[i]);
 			}
+			effect->SetValue(m_hLightShaderHandle, &m_light, sizeof(m_light));
+			effect->SetValue(m_hAtmosShaderHandle, &m_atmosParam, sizeof(m_atmosParam));
+			effect->SetValue(m_hShadowRecieverParamShaderHandle, &m_shadowRecParam, sizeof(m_shadowRecParam));
+			effect->SetMatrixArray(m_hBoneMatrixArrayShaderHandle, m_boneMatrixArray, m_boneMatrixArraySize);
 			for (auto& node : m_materialNodes) {
 				node->SendMaterialParamToGPU();
 			}

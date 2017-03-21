@@ -5,10 +5,94 @@
 #include "tkEngine/graphics/tkLight.h"
 #include "tkEngine/graphics/prerender/tkShadowMap.h"
 #include "tkEngine/graphics/tkSkinModelMaterial.h"
+#include "tkEngine/graphics/material/tkSkinModelMaterialEx.h"
 #include "tkEngine/graphics/tkAtmosphericScatteringParam.h"
 
 namespace tkEngine{
+	void CSkinModel::SetupMaterialCommonParameter(CSkinModelMaterialEx& material, D3DXMATRIX& viewMatrix, D3DXMATRIX& viewProj, bool isDrawToShadowMap)
+	{
+		//マテリアルに共通パラメータを設定していく。
+		material.SetMatrix(CSkinModelMaterialEx::enMatrixShaderHandle_ViewProj, (CMatrix&)viewProj);
+		material.SetMatrix(CSkinModelMaterialEx::enMatrixShaderHandle_LastFrameViewProj, MotionBlur().GetLastFrameViewProjectionMatrix());
+		//ライト
+		material.SetLight(*m_light);
+		CVector4i flag = { 0 };
+		if (m_hasNormalMap) {
+			//法線マップ。
+			flag.x = 1;
+		}
+		if (!isDrawToShadowMap && m_isShadowReceiver) {
+			//シャドウレシーバー
+			flag.y = 1;
+			//シャドウマップを設定する<-初期化の時にやるだけでいいはず。
+			material.SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_ShadowMap_0, *ShadowMap().GetTexture(0));
+			material.SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_ShadowMap_1, *ShadowMap().GetTexture(1));
+			material.SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_ShadowMap_2, *ShadowMap().GetTexture(2));
+			//ライトビュープロジェクション行列。<-ポインタを渡すようにしたら毎フレームやる必要はなくなる。
+			material.SetMatrix(CSkinModelMaterialEx::enMatrixShaderHandle_LVP, ShadowMap().GetLVPMatrix());
+			//シャドウレシーバーパラメータ。
+			material.SetShadowRecieverParam(ShadowMap().GetShadowRecieverParam());
+		}
+		if (m_isFresnel) {
+			//リムライト
+			flag.z = 1;
+		}
+		CVector3 cameraPos;
+		CVector3 cameraDir;
+		D3DXMATRIX viewMatInv;
+		D3DXMatrixInverse(&viewMatInv, NULL, &viewMatrix);
 
+		cameraPos.x = viewMatInv.m[3][0];
+		cameraPos.y = viewMatInv.m[3][1];
+		cameraPos.z = viewMatInv.m[3][2];
+		cameraDir.x = viewMatInv.m[2][0];
+		cameraDir.y = viewMatInv.m[2][1];
+		cameraDir.z = viewMatInv.m[2][2];
+		material.SetFVector(CSkinModelMaterialEx::enFVectorShaderHandle_CameraPos, cameraPos);
+		material.SetFVector(CSkinModelMaterialEx::enFVectorShaderHandle_CameraDir, cameraDir);
+		if (m_hasSpecMap) {
+			flag.w = 1;
+		}
+		material.SetIVector(CSkinModelMaterialEx::enIVectorShaderHandle_Flags, flag);
+
+		CVector4i flag2 = { 0 };
+		if (m_isWriteVelocityMap) {
+			flag2.x = 0;
+		}
+		if (Sky().IsActive() && m_atomosphereFunc != enAtomosphereFuncNone) {
+			flag2.y = m_atomosphereFunc;
+			material.SetAtmosphericScatteringParam(Sky().GetAtomosphereParam());
+		}
+		material.SetIVector(CSkinModelMaterialEx::enIVectorShaderHandle_Flags2, flag2);
+
+		if (isDrawToShadowMap || m_isShadowReceiver) {
+			CVector4 farNear;
+			farNear.x = ShadowMap().GetFar();
+			farNear.y = ShadowMap().GetNear();
+			farNear.z = 0.0f;
+			farNear.w = 0.0f;
+			material.SetFVector(CSkinModelMaterialEx::enFVectorShaderHandle_FarNear, farNear);
+		}
+		//フォグ
+		CVector4 fogParam;
+		if (m_fogFunc == enFogFuncDist) {
+			//距離フォグ
+			fogParam.x = m_fogParam[0];
+			fogParam.y = m_fogParam[1];
+			fogParam.z = 1.0f;
+		}
+		else if (m_fogFunc == enFogFuncHeight) {
+			//高さフォグ
+			fogParam.x = m_fogParam[0];
+			fogParam.y = m_fogParam[1];
+			fogParam.z = 2.0f;
+		}
+		else {
+			fogParam.z = 0.0f;
+		}
+		material.SetFVector(CSkinModelMaterialEx::enFVectorShaderHandle_FogParam, fogParam);
+	}
+	
 	void CSkinModel::DrawMeshContainer_InstancingDrawCommon(IDirect3DDevice9* pd3dDevice, D3DXMESHCONTAINER_DERIVED* meshContainer, int materialID)
 	{
 		LPDIRECT3DVERTEXBUFFER9 vb;
@@ -63,6 +147,122 @@ namespace tkEngine{
 	)
 	{
 #if 1
+		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
+		D3DXFRAME_DERIVED* pFrame = (D3DXFRAME_DERIVED*)pFrameBase;
+		UINT iAttrib;
+		LPD3DXBONECOMBINATION pBoneComb;
+
+		D3DXMATRIXA16 matTemp;
+		D3DXMATRIX viewProj;
+		D3DXMatrixMultiply(&viewProj, viewMatrix, projMatrix);
+		
+		if (pMeshContainer->pSkinInfo != NULL)
+		{
+			//スキン情報有り。
+			pBoneComb = reinterpret_cast<LPD3DXBONECOMBINATION>(pMeshContainer->pBoneCombinationBuf->GetBufferPointer());
+			for (iAttrib = 0; iAttrib < pMeshContainer->NumAttributeGroups; iAttrib++)
+			{
+				// マテリアルパラメータを転送。
+				CSkinModelMaterialEx& material = pMeshContainer->newMaterials[pBoneComb[iAttrib].AttribId];
+				//レンダリングパスに応じて対応するシェーダーテクニックに差し替える。
+				CSkinModelMaterialEx::EnShaderTechnique oldTec = material.GetTechnique();
+				if (isDrawToShadowMap) {
+					//シャドウマップへの書き込み中。
+					if (oldTec == CSkinModelMaterialEx::enTecShaderHandle_SkinModel) {
+						material.SetTechnique(CSkinModelMaterialEx::enTecShaderHandle_SkinModelRenderShadowMap);
+					}
+					else if (oldTec == CSkinModelMaterialEx::enTecShaderHandle_SkinModelInstancing) {
+						material.SetTechnique(CSkinModelMaterialEx::enTecShaderHandle_SkinModelInstancingRenderToShadowMap);
+					}
+				}
+				material.BeginDraw();
+
+				//共通パラメータを設定。
+				SetupMaterialCommonParameter(material, *viewMatrix, viewProj, isDrawToShadowMap);
+			
+				//ボーン行列を送る。
+				// first calculate all the world matrices
+				for (DWORD iPaletteEntry = 0; iPaletteEntry < pMeshContainer->NumPaletteEntries; ++iPaletteEntry)
+				{
+					DWORD iMatrixIndex = pBoneComb[iAttrib].BoneId[iPaletteEntry];
+					if (iMatrixIndex != UINT_MAX)
+					{
+						TK_ASSERT(iPaletteEntry < MAX_MATRIX_PALLET, "ボーン行列パレットの最大数を超えた");
+						TK_ASSERT(pMeshContainer->ppBoneMatrixPtrs[iMatrixIndex] != NULL, "NULL");
+						D3DXMatrixMultiply(
+							&m_boneMatrixPallet[iPaletteEntry],
+							&pMeshContainer->pBoneOffsetMatrices[iMatrixIndex],
+							pMeshContainer->ppBoneMatrixPtrs[iMatrixIndex]
+						);
+					}
+				}
+
+
+				material.SetBoneMatrixAddr(m_boneMatrixPallet, pMeshContainer->NumPaletteEntries);
+				material.SetInt(CSkinModelMaterialEx::enIntShaderHandle_NumBone, pMeshContainer->NumInfl);
+				material.SetInt(CSkinModelMaterialEx::enIntshaderHandle_CurNumBone, pMeshContainer->NumInfl-1);
+
+				material.SendMaterialParamToGPU();
+
+				// draw the subset with the current world matrix palette and material state
+				if (isInstancingDraw) {
+					//インスタンシング描画。
+					DrawMeshContainer_InstancingDrawCommon(pd3dDevice, pMeshContainer, iAttrib);
+				}
+				else {
+					pMeshContainer->MeshData.pMesh->DrawSubset(iAttrib);
+				}
+
+				material.EndDraw();
+				//テクニックを戻す。
+				material.SetTechnique(oldTec);
+			}
+		}
+		else {
+
+			D3DXMATRIX mWorld;
+			if (pFrame != NULL) {
+				mWorld = pFrame->CombinedTransformationMatrix;
+			}
+			else {
+				mWorld = *worldMatrix;
+			}
+
+
+			for (DWORD i = 0; i < pMeshContainer->NumMaterials; i++) {
+
+				CSkinModelMaterialEx& material = pMeshContainer->newMaterials[i];
+
+				CSkinModelMaterialEx::EnShaderTechnique oldTec = material.GetTechnique();
+				if (isDrawToShadowMap) {
+					//シャドウマップへの書き込み中。
+					if (oldTec == CSkinModelMaterialEx::enTecShaderHandle_NoSkinModel) {
+						material.SetTechnique(CSkinModelMaterialEx::enTecShaderHandle_NoSkinModelRenderShadowMap);
+					}
+					else if (oldTec == CSkinModelMaterialEx::enTecShaderHandle_NoSkinModelInstancing) {
+						material.SetTechnique(CSkinModelMaterialEx::enTecShaderHandle_NoSkinModelInstancingRenderToShadowMap);
+					}
+				}
+
+				material.BeginDraw();
+				//共通パラメータを設定。
+				SetupMaterialCommonParameter(material, *viewMatrix, viewProj, isDrawToShadowMap);
+				material.SetMatrix(CSkinModelMaterialEx::enMatrixShaderHandle_WorldMatrix, (CMatrix&)mWorld);
+				material.SetMatrix(CSkinModelMaterialEx::enMatrixShaderHandle_RotationMatrix, (CMatrix&)rotationMatrix);
+
+				material.SendMaterialParamToGPU();
+				if (isInstancingDraw) {
+					//インスタンシング描画。
+					DrawMeshContainer_InstancingDrawCommon(pd3dDevice, pMeshContainer, 0);
+				}
+				else {
+					pMeshContainer->MeshData.pMesh->DrawSubset(i);
+				}
+				material.EndDraw();
+
+				material.SetTechnique(oldTec);
+			}
+		}
 #else
 		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
 		D3DXFRAME_DERIVED* pFrame = (D3DXFRAME_DERIVED*)pFrameBase;
@@ -194,13 +394,7 @@ namespace tkEngine{
 			}
 
 			pEffect->SetValue(m_hShaderHandle[enShaderHandleFlags2], flag2, sizeof(flag2));
-			if (isDrawToShadowMap || m_isShadowReceiver) {
-				float farNear[] = {
-					ShadowMap().GetFar(),
-					ShadowMap().GetNear()
-				};
-				pEffect->SetValue(m_hShaderHandle[enShaderHandleFarNear], farNear, sizeof(farNear));
-			}
+			
 			CVector4 fogParam;
 			if (m_fogFunc == enFogFuncDist) {
 				//距離フォグ

@@ -17,6 +17,7 @@
 #include "tkEngine/graphics/tkTexture.h"
 #include "tkEngine/resource/tkSkinModelDataHandle.h"
 #include "tkEngine/graphics/tkSkinModelMaterial.h"
+#include "tkEngine/graphics/material/tkSkinModelMaterialEx.h"
 #include "tkEngine/Physics/tkPhysics.h"
 #include "tkEngine/graphics/tkSkinModelData.h"
 #include "tkEngine/graphics/tkSkinModel.h"

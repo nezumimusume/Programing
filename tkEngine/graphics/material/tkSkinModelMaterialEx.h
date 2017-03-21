@@ -24,6 +24,7 @@ namespace tkEngine{
 			enTextureShaderHandle_ShadowMap_2,	//!<シャドウマップ2
 			enTextureShaderHandle_NormalMap,	//!<法線マップ。
 			enTextureShaderHandle_SpecularMap,	//!<スペキュラマップ。
+			enTextureShaderHandle_SkyCubeMap,	//!<スカイキューブ。
 			enTextureShaderHandle_Num,
 		};
 		/*!
@@ -64,6 +65,21 @@ namespace tkEngine{
 			enIntshaderHandle_CurNumBone,		//!<スキニングを行うボーンの数。
 			enIntShaderHandle_Num,
 		};
+		/*!
+		*@brief	シェーダーテクニックのハンドル。
+		*/
+		enum EnShaderTechnique {
+			enTecShaderHandle_SkinModelInstancingRenderToShadowMap,		//!<SkinModelInstancingRenderToShadowMapテクニック
+			enTecShaderHandle_SkinModelInstancing,						//!<SkinModelInstancingテクニック。
+			enTecShaderHandle_NoSkinModelInstancingRenderToShadowMap,	//!<NoSkinModelInstancingRenderToShadowMapテクニック。
+			enTecShaderHandle_NoSkinModelInstancing,					//NoSkinModelInstancingテクニック。
+			enTecShaderHandle_SkinModelRenderShadowMap,					//!<SkinModelRenderShadowMapテクニック。
+			enTecShaderHandle_SkinModel,								//!<SkinModelテクニック。
+			enTecShaderHandle_NoSkinModelRenderShadowMap,				//!<NoSkinModelRenderShadowMapテクニック。
+			enTecShaderHandle_NoSkinModel,								//!<NoSkinModelテクニック。
+			enTecShaderHandle_Sky,										//!<Skyテクニック。
+			enTecShaderHandle_Num,
+		};
 		enum EnShaderHandle {
 			enShaderHandleLight,				//ライト。
 			enShaderHandleWorldMatrixArray,		//ボーン行列
@@ -76,6 +92,20 @@ namespace tkEngine{
 		 */
 		CSkinModelMaterialEx()
 		{
+			memset(m_textures, 0, sizeof(m_textures));
+			for (auto& m : m_matrices) {
+				m = CMatrix::Identity;
+			}
+			for (auto& v : m_fVector) {
+				v = CVector3::Zero;
+			}
+			for (auto& v : m_iVector) {
+				v.x = 0;
+				v.y = 0;
+				v.z = 0;
+				v.w = 0;
+			}
+			memset(m_int, 0, sizeof(m_int));
 		}
 		/*!
 		 *@brief	デストラクタ。
@@ -87,7 +117,7 @@ namespace tkEngine{
 		/*!
 		 *@brief	テクスチャを設定。
 		 */
-		void SetTexture(EnTextureShaderHandle eTexHandle, CTexture& tex)
+		void SetTexture(EnTextureShaderHandle eTexHandle, const CTexture& tex)
 		{
 			TK_ASSERT(eTexHandle < enTextureShaderHandle_Num, "eTexHandle is invalid");
 			m_textures[eTexHandle] = &tex;
@@ -147,6 +177,30 @@ namespace tkEngine{
 			m_shadowRecParam = shadowRecParam;
 		}
 		/*!
+		*@brief	ボーン行列のアドレスを設定。
+		*/
+		void SetBoneMatrixAddr(const D3DXMATRIX* boneMatrix, int arraySize)
+		{
+			m_boneMatrixArray = boneMatrix;
+			m_boneMatrixArraySize = arraySize;
+		}
+		/*!
+		*@brief	テクニックハンドルを設定。
+		*/
+		void SetTechnique(EnShaderTechnique eTec)
+		{
+			m_hTec = m_hTechniqueHandle[eTec];
+			m_eTec = eTec;
+		}
+		/*!
+		*@brief	シェーダーテクニックを取得。
+		*/
+		EnShaderTechnique GetTechnique() const
+		{
+			return m_eTec;
+		}
+		
+		/*!
 		*@brief	初期化。
 		*@param[in]		tecName		テクニック名。
 		*@param[in]		matName		マテリアル名。
@@ -164,13 +218,20 @@ namespace tkEngine{
 		 *@brief	描画終了。
 		 */
 		void EndDraw();
+		/*!
+		*@brief	マテリアル名を取得。
+		*/
+		const char* GetName() const
+		{
+			return m_materialName.c_str();
+		}
 	private:
 		/*!
 		*@brief	シェーダーハンドルの初期化。
 		*/
 		void InitShaderHandles(const char* tecName);
 	protected:
-		CTexture*	m_textures[enTextureShaderHandle_Num];	//!<テクスチャ。
+		const CTexture*	m_textures[enTextureShaderHandle_Num];	//!<テクスチャ。
 		CMatrix 	m_matrices[enMatrixShaderHandle_Num];	//!<行列。
 		CVector4 	m_fVector[enFVectorShaderHandle_Num];	//!<4要素の浮動小数ベクトル。
 		CVector4i	m_iVector[enIVectorShaderHandle_Num];	//!<4要素の整数ベクトル。
@@ -183,6 +244,7 @@ namespace tkEngine{
 		std::vector<ISkinModelMaterialNode*>	m_materialNodes;		//!<マテリアルのノード。
 		CEffect* m_pEffect = nullptr;									//!<エフェクト。
 		D3DXHANDLE m_hTec;												//!<テクニックハンドル。
+		EnShaderTechnique m_eTec = enTecShaderHandle_SkinModel;			//!<現在のシェーダーテクニック。
 		D3DXHANDLE m_hTexShaderHandle[enTextureShaderHandle_Num];		//!<テクスチャシェーダーハンドル。
 		D3DXHANDLE m_hMatrixShaderHandle[enMatrixShaderHandle_Num];		//!<行列のシェーダーハンドル。
 		D3DXHANDLE m_hFVectorShaderHandle[enFVectorShaderHandle_Num];	//!<浮動小数ベクトルのシェーダーハンドル。
@@ -190,8 +252,14 @@ namespace tkEngine{
 		D3DXHANDLE m_hIntShaderHandle[enIntShaderHandle_Num];			//!<整数のシェーダーハンドル。
 		D3DXHANDLE m_hAtmosShaderHandle;								//!<大気錯乱のシェーダーハンドル。
 		D3DXHANDLE m_hLightShaderHandle;								//!<ライト用のシェーダーハンドル。
+		D3DXHANDLE m_hBoneMatrixArrayHandle;							//!<ボーン行列のハンドル。
 		D3DXHANDLE m_hShadowRecieverParamShaderHandle;					//!<シャドウレシーバーパラメータのシェーダーハンドル。						
-		D3DXHANDLE m_hShaderHandle[enShaderHandleNum];				//!<シェーダーハンドル。
+		D3DXHANDLE m_hBoneMatrixArrayShaderHandle;						//!<ボーン行列の配列のシェーダーハンドル。
+		D3DXHANDLE m_hTechniqueHandle[enTecShaderHandle_Num];			//!<テクニックのハンドル。
+		D3DXHANDLE m_hShaderHandle[enShaderHandleNum];					//!<シェーダーハンドル。
+		
+		const D3DXMATRIX* m_boneMatrixArray = nullptr;					//!<ボーン行列へのポインタ。
+		int m_boneMatrixArraySize = 0;									//!<ボーン行列の配列のサイズ。
 #if BUILD_LEVEL != BUILD_LEVEL_MASTER
 		bool m_isBeginDraw = false;						//!<BeginDrawが呼ばれている？
 #endif

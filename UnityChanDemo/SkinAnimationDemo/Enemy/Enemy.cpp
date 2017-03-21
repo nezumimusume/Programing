@@ -31,22 +31,22 @@ bool Enemy::Start()
 	if (skinModelData.IsLoadEnd()) {
 		OnLoadedSkinModelData();
 		//マテリアルを取得。
-		const std::vector<CSkinModelMaterial*> materials = skinModelData.GetBody()->GetSkinModelMaterials();
+		const std::vector<CSkinModelMaterialEx*> materials = skinModelData.GetBody()->GetSkinModelMaterialsEx();
 		int i = 0;
-		for (CSkinModelMaterial* mat : materials) {
+		for (CSkinModelMaterialEx* mat : materials) {
 			char work[256];
-			strcpy(work, mat->GetMaterialName());
+			strcpy(work, mat->GetName());
 			strtok(work, ".");
 			sprintf(modelFilePath, "Assets/modelData/%s_n.png", work);
 			CTexture* tex = TextureResources().Load(modelFilePath);
 			if (tex) {
-				mat->SetTexture("g_normalTexture", tex);
+				mat->SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_NormalMap, *tex);
 				skinModel.SetHasNormalMap(true);
 			}
 			sprintf(modelFilePath, "Assets/modelData/%s_s.png", work);
 			tex = TextureResources().Load(modelFilePath);
 			if (tex) {
-				mat->SetTexture("g_speculerMap", tex);
+				mat->SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_SpecularMap, *tex);
 				skinModel.SetHasSpeculerMap(true);
 			}
 

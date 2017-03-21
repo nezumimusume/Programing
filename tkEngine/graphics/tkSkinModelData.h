@@ -147,7 +147,7 @@ namespace tkEngine{
 		*/
 		CMatrix* FindBoneWorldMatrix(const char* boneName);
 		/*!
-		* @brief	マテリアルを検索。
+		* @brief	マテリアルを検索。(削除予定)
 		*@details
 		* 名前で検索を行っているため、遅いです。頻繁に呼ばないように。
 		*@param[in]	matName	マテリアル名。ディフューズテクスチャ名がマテリアル名になります。
@@ -163,7 +163,7 @@ namespace tkEngine{
 			return (CMatrix*)&frameDer->CombinedTransformationMatrix;
 		}
 		/*!
-		* @brief	スキンモデルマテリアルを追加。
+		* @brief	スキンモデルマテリアルを追加。(削除予定)
 		*@details
 		* tkEngineの中でだけ使用されます。外部から使用しないようにしてください。
 		*/
@@ -171,6 +171,18 @@ namespace tkEngine{
 		{
 			m_materials.push_back(mat);
 		}
+		/*!
+		* @brief	マテリアルを検索。
+		*@details
+		* 名前で検索を行っているため、遅いです。頻繁に呼ばないように。
+		*@param[in]	matName	マテリアル名。ディフューズテクスチャ名がマテリアル名になります。
+		*/
+		CSkinModelMaterialEx* FindMaterialEx(const char* matName);
+		/*!
+		* @brief	スキンモデルマテリアルを追加。
+		*@details
+		* tkEngineの中でだけ使用されます。外部から使用しないようにしてください。
+		*/
 		void AddSkinModelMaterialEx(CSkinModelMaterialEx* mat)
 		{
 			m_newMaterials.push_back(mat);

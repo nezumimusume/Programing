@@ -22,8 +22,6 @@ void MapChip::Init(const std::vector<SMapChipLocInfo*>& mapChipLocInfoList)
 	char modelPath[1024];
 	sprintf(modelPath, "Assets/modelData/%s.X", mapChipLocInfoList[0]->modelName);
 	skinModelData.LoadModelDataAsync(modelPath, NULL, true, (int)mapChipLocInfoList.size());
-	
-
 }
 bool MapChip::Start()
 {
@@ -33,23 +31,23 @@ bool MapChip::Start()
 		skinModel.SetShadowCasterFlag(true);
 		skinModel.SetShadowReceiverFlag(true);
 		char filePath[256];
-		const std::vector<CSkinModelMaterial*> materials = skinModelData.GetBody()->GetSkinModelMaterials();
+		const std::vector<CSkinModelMaterialEx*> materials = skinModelData.GetBody()->GetSkinModelMaterialsEx();
 	
 		int i = 0;
-		for (CSkinModelMaterial* mat : materials) {
+		for (CSkinModelMaterialEx* mat : materials) {
 			char work[256];
-			strcpy(work, mat->GetMaterialName());
+			strcpy(work, mat->GetName());
 			strtok(work, ".");
 			sprintf(filePath, "Assets/modelData/%s_n.png", work);
 			CTexture* tex = TextureResources().Load(filePath);
 			if (tex) {
-				mat->SetTexture("g_normalTexture", tex);
+				mat->SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_NormalMap, *tex);
 				skinModel.SetHasNormalMap(true);
 			}
 			sprintf(filePath, "Assets/modelData/%s_s.png", work);
 			tex = TextureResources().Load(filePath);
 			if (tex) {
-				mat->SetTexture("g_speculerMap", tex);
+				mat->SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_SpecularMap, *tex);
 				skinModel.SetHasSpeculerMap(true);
 			}
 
