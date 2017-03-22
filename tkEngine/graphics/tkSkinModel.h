@@ -222,7 +222,7 @@ namespace tkEngine {
 		);
 		//DrawMeshContainerから呼ばれるインスタンシング描画の共通処理。
 		void DrawMeshContainer_InstancingDrawCommon(IDirect3DDevice9* pd3dDevice, D3DXMESHCONTAINER_DERIVED* meshContainer, int materialID);		
-		void SetupMaterialCommonParameter(CSkinModelMaterialEx& material, D3DXMATRIX& viewMatrix, D3DXMATRIX& viewProj, bool isDrawToShadowMap);
+		void SetupMaterialCommonParameter(CSkinModelMaterial& material, D3DXMATRIX& viewMatrix, D3DXMATRIX& viewProj, bool isDrawToShadowMap);
 	public:
 		/*!
 		*@brief	シャドウマップに描画

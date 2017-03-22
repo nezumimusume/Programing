@@ -31,23 +31,23 @@ bool MapChip::Start()
 		skinModel.SetShadowCasterFlag(true);
 		skinModel.SetShadowReceiverFlag(true);
 		char filePath[256];
-		const std::vector<CSkinModelMaterialEx*> materials = skinModelData.GetBody()->GetSkinModelMaterialsEx();
+		const std::vector<CSkinModelMaterial*> materials = skinModelData.GetBody()->GetSkinModelMaterials();
 	
 		int i = 0;
-		for (CSkinModelMaterialEx* mat : materials) {
+		for (CSkinModelMaterial* mat : materials) {
 			char work[256];
 			strcpy(work, mat->GetName());
 			strtok(work, ".");
 			sprintf(filePath, "Assets/modelData/%s_n.png", work);
 			CTexture* tex = TextureResources().Load(filePath);
 			if (tex) {
-				mat->SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_NormalMap, *tex);
+				mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_NormalMap, *tex);
 				skinModel.SetHasNormalMap(true);
 			}
 			sprintf(filePath, "Assets/modelData/%s_s.png", work);
 			tex = TextureResources().Load(filePath);
 			if (tex) {
-				mat->SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_SpecularMap, *tex);
+				mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_SpecularMap, *tex);
 				skinModel.SetHasSpeculerMap(true);
 			}
 

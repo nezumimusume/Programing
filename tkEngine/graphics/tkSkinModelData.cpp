@@ -5,8 +5,7 @@
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/graphics/tkSkinModelData.h"
 #include "tkEngine/graphics/tkAnimation.h"
-#include "tkEngine/graphics/tkSkinModelMaterial.h"
-#include "tkEngine/graphics/material/tkSkinModelMaterialEx.h"
+#include "tkEngine/graphics/material/tkSkinModelMaterial.h"
 
 int refCount = 0;
 #ifndef SAFE_DELETE
@@ -54,7 +53,7 @@ namespace {
 		SAFE_DELETE_ARRAY(pMeshContainer->Name);
 		SAFE_DELETE_ARRAY(pMeshContainer->pAdjacency);
 		SAFE_DELETE_ARRAY(pMeshContainer->pMaterials);
-		SAFE_DELETE_ARRAY(pMeshContainer->newMaterials);
+		SAFE_DELETE_ARRAY(pMeshContainer->materials);
 		SAFE_DELETE_ARRAY(pMeshContainer->pBoneOffsetMatrices);
 
 		// release all the allocated textures
@@ -68,7 +67,6 @@ namespace {
 
 		SAFE_DELETE_ARRAY(pMeshContainer->ppTextures);
 		SAFE_DELETE_ARRAY(pMeshContainer->materials);
-		SAFE_DELETE_ARRAY(pMeshContainer->newMaterials);
 		SAFE_DELETE_ARRAY(pMeshContainer->ppBoneMatrixPtrs);
 		SAFE_RELEASE(pMeshContainer->pBoneCombinationBuf);
 		SAFE_RELEASE(pMeshContainer->MeshData.pMesh);
@@ -355,7 +353,6 @@ namespace {
 		pMeshContainer->pMaterials = new D3DXMATERIAL[pMeshContainer->NumMaterials];
 		pMeshContainer->ppTextures = new LPDIRECT3DTEXTURE9[pMeshContainer->NumMaterials];
 		pMeshContainer->materials = new CSkinModelMaterial[pMeshContainer->NumMaterials];
-		pMeshContainer->newMaterials = new CSkinModelMaterialEx[pMeshContainer->NumMaterials];
 		pMeshContainer->textures = new CTexture[pMeshContainer->NumMaterials];
 		pMeshContainer->pAdjacency = new DWORD[NumFaces * 3];
 		if ((pMeshContainer->pAdjacency == NULL) || (pMeshContainer->pMaterials == NULL))
@@ -390,20 +387,17 @@ namespace {
 
 					//マテリアルを生成。
 					//マテリアル名はディフューズテクスチャの名前。
-					pMeshContainer->materials[iMaterial].SetMaterialName(pMeshContainer->pMaterials[iMaterial].pTextureFilename);
 					pMeshContainer->textures[iMaterial].SetTextureDX(pMeshContainer->ppTextures[iMaterial]);
-					pMeshContainer->materials[iMaterial].SetTexture("g_diffuseTexture", &pMeshContainer->textures[iMaterial]);
-					m_skinModelData->AddSkinModelMaterial(&pMeshContainer->materials[iMaterial]);
 					//ここから新規マテリアルの処理。
-					pMeshContainer->newMaterials[iMaterial].Init(
+					pMeshContainer->materials[iMaterial].Init(
 						"SkinModel",	//デフォルトテクニックを割り当てる。
 						pMeshContainer->pMaterials[iMaterial].pTextureFilename	//マテリアルの名前はテクスチャの名前。
 					);
-					pMeshContainer->newMaterials[iMaterial].SetTexture(CSkinModelMaterialEx::enTextureShaderHandle_DiffuseMap, pMeshContainer->textures[iMaterial]);
-					m_skinModelData->AddSkinModelMaterialEx(&pMeshContainer->newMaterials[iMaterial]);
+					pMeshContainer->materials[iMaterial].SetTexture(CSkinModelMaterial::enTextureShaderHandle_DiffuseMap, pMeshContainer->textures[iMaterial]);
+					m_skinModelData->AddSkinModelMaterial(&pMeshContainer->materials[iMaterial]);
 					if (pSkinInfo == NULL) {
 						//テクニックを設定。
-						pMeshContainer->newMaterials[iMaterial].SetTechnique(CSkinModelMaterialEx::enTecShaderHandle_NoSkinModel);
+						pMeshContainer->materials[iMaterial].SetTechnique(CSkinModelMaterial::enTecShaderHandle_NoSkinModel);
 					}
 					// don't remember a pointer into the dynamic memory, just forget the name after loading
 					pMeshContainer->pMaterials[iMaterial].pTextureFilename = NULL;
@@ -817,12 +811,12 @@ namespace tkEngine{
 		m_numInstance = numInstance;
 		CreateInstancingDrawData(m_frameRoot, numInstance, vertexElement);
 		//シェーダーテクニックをインスタンシング描画用に変更する。
-		for (auto& mat : m_newMaterials) {
-			if (mat->GetTechnique() == CSkinModelMaterialEx::enTecShaderHandle_SkinModel) {
-				mat->SetTechnique(CSkinModelMaterialEx::enTecShaderHandle_SkinModelInstancing);
+		for (auto& mat : m_materials) {
+			if (mat->GetTechnique() == CSkinModelMaterial::enTecShaderHandle_SkinModel) {
+				mat->SetTechnique(CSkinModelMaterial::enTecShaderHandle_SkinModelInstancing);
 			}
-			else if (mat->GetTechnique() == CSkinModelMaterialEx::enTecShaderHandle_NoSkinModel) {
-				mat->SetTechnique(CSkinModelMaterialEx::enTecShaderHandle_NoSkinModelInstancing);
+			else if (mat->GetTechnique() == CSkinModelMaterial::enTecShaderHandle_NoSkinModel) {
+				mat->SetTechnique(CSkinModelMaterial::enTecShaderHandle_NoSkinModelInstancing);
 			}
 		}
 	}
@@ -934,18 +928,10 @@ namespace tkEngine{
 		}
 		return nullptr;
 	}
+	
 	CSkinModelMaterial* CSkinModelData::FindMaterial(const char* matName)
 	{
 		for (CSkinModelMaterial* mat : m_materials) {
-			if (strcmp(mat->GetMaterialName(), matName) == 0) {
-				return mat;
-			}
-		}
-		return nullptr;
-	}
-	CSkinModelMaterialEx* CSkinModelData::FindMaterialEx(const char* matName)
-	{
-		for (CSkinModelMaterialEx* mat : m_newMaterials) {
 			if (strcmp(mat->GetName(), matName) == 0) {
 				return mat;
 			}

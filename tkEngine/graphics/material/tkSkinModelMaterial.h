@@ -11,7 +11,7 @@ namespace tkEngine{
 	/*!
 	 *@brief	スキンモデルマテリアル。
 	 */
-	class CSkinModelMaterialEx
+	class CSkinModelMaterial
 	{
 	public:
 		/*!
@@ -90,7 +90,7 @@ namespace tkEngine{
 		/*!
 		 *@brief	コンストラクタ。
 		 */
-		CSkinModelMaterialEx()
+		CSkinModelMaterial()
 		{
 			memset(m_textures, 0, sizeof(m_textures));
 			for (auto& m : m_matrices) {
@@ -110,7 +110,7 @@ namespace tkEngine{
 		/*!
 		 *@brief	デストラクタ。
 		 */
-		~CSkinModelMaterialEx()
+		~CSkinModelMaterial()
 		{
 		}
 		

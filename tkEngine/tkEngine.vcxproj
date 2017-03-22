@@ -267,7 +267,7 @@
     <ClCompile Include="culling\tkObjectFrustumCulling.cpp" />
     <ClCompile Include="gameObject\tkGameObject.cpp" />
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
-    <ClCompile Include="graphics\material\tkSkinModelMaterialEx.cpp" />
+    <ClCompile Include="graphics\material\tkSkinModelMaterial.cpp" />
     <ClCompile Include="graphics\postEffect\tkBloomRender.cpp" />
     <ClCompile Include="graphics\postEffect\tkDOF.cpp" />
     <ClCompile Include="graphics\postEffect\tkEdgeRender.cpp" />
@@ -298,7 +298,6 @@
     <ClCompile Include="graphics\tkRenderTarget.cpp" />
     <ClCompile Include="graphics\tkSkinModel.cpp" />
     <ClCompile Include="graphics\tkSkinModelData.cpp" />
-    <ClCompile Include="graphics\tkSkinModelMaterial.cpp" />
     <ClCompile Include="graphics\tkTexture.cpp" />
     <ClCompile Include="graphics\tkVertexBuffer.cpp" />
     <ClCompile Include="Input\tkKeyInput.cpp" />
@@ -364,7 +363,7 @@
     <ClInclude Include="gameObject\tkGameObjectManager.h" />
     <ClInclude Include="graphics\material\node\tkSkinModelMaterialNode.h" />
     <ClInclude Include="graphics\material\node\tkSkinModelMaterialNode_DiffuseMap.h" />
-    <ClInclude Include="graphics\material\tkSkinModelMaterialEx.h" />
+    <ClInclude Include="graphics\material\tkSkinModelMaterial.h" />
     <ClInclude Include="graphics\postEffect\tkBloomRender.h" />
     <ClInclude Include="graphics\postEffect\tkDOF.h" />
     <ClInclude Include="graphics\postEffect\tkEdgeRender.h" />
@@ -400,7 +399,6 @@
     <ClInclude Include="graphics\tkRenderTarget.h" />
     <ClInclude Include="graphics\tkSkinModel.h" />
     <ClInclude Include="graphics\tkSkinModelData.h" />
-    <ClInclude Include="graphics\tkSKinModelMaterial.h" />
     <ClInclude Include="graphics\tkTexture.h" />
     <ClInclude Include="graphics\tkVertexBuffer.h" />
     <ClInclude Include="Input\tkKeyInput.h" />

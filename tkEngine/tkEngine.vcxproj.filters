@@ -224,9 +224,6 @@
     <ClCompile Include="resource\tkSkinModelDataResources.cpp">
       <Filter>Source Files\resource</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\tkSkinModelMaterial.cpp">
-      <Filter>Source Files\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Sound\tkSoundEngine.cpp">
       <Filter>Source Files\Sound</Filter>
     </ClCompile>
@@ -299,7 +296,7 @@
     <ClCompile Include="nature\tkTerrain.cpp">
       <Filter>Source Files\nature</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\material\tkSkinModelMaterialEx.cpp">
+    <ClCompile Include="graphics\material\tkSkinModelMaterial.cpp">
       <Filter>Source Files\graphics\material</Filter>
     </ClCompile>
   </ItemGroup>
@@ -475,9 +472,6 @@
     <ClInclude Include="resource\tkSkinModelDataHandle.h">
       <Filter>Source Files\resource</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\tkSKinModelMaterial.h">
-      <Filter>Source Files\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Sound\tkSoundEngine.h">
       <Filter>Source Files\Sound</Filter>
     </ClInclude>
@@ -574,7 +568,7 @@
     <ClInclude Include="graphics\material\node\tkSkinModelMaterialNode.h">
       <Filter>Source Files\graphics\material\node</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\material\tkSkinModelMaterialEx.h">
+    <ClInclude Include="graphics\material\tkSkinModelMaterial.h">
       <Filter>Source Files\graphics\material</Filter>
     </ClInclude>
   </ItemGroup>

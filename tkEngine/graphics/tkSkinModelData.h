@@ -8,7 +8,6 @@
 
 namespace tkEngine{
 	class CSkinModelMaterial;
-	class CSkinModelMaterialEx;
 	struct D3DXFRAME_DERIVED : public D3DXFRAME {
 		D3DXMATRIX	CombinedTransformationMatrix;	//合成済み行列。
 	};
@@ -24,7 +23,6 @@ namespace tkEngine{
 		DWORD NumPaletteEntries;
 		DWORD iAttributeSW;
 		CSkinModelMaterial* materials;
-		CSkinModelMaterialEx* newMaterials;
 		CTexture* textures;
 	};
 	class CAnimation;
@@ -147,13 +145,6 @@ namespace tkEngine{
 		*/
 		CMatrix* FindBoneWorldMatrix(const char* boneName);
 		/*!
-		* @brief	マテリアルを検索。(削除予定)
-		*@details
-		* 名前で検索を行っているため、遅いです。頻繁に呼ばないように。
-		*@param[in]	matName	マテリアル名。ディフューズテクスチャ名がマテリアル名になります。
-		*/
-		CSkinModelMaterial* FindMaterial(const char* matName);
-		/*!
 		* @brief	ルートのボーンを取得。
 		*/
 		CMatrix* GetRootBoneWorldMatrix()
@@ -163,7 +154,14 @@ namespace tkEngine{
 			return (CMatrix*)&frameDer->CombinedTransformationMatrix;
 		}
 		/*!
-		* @brief	スキンモデルマテリアルを追加。(削除予定)
+		* @brief	マテリアルを検索。
+		*@details
+		* 名前で検索を行っているため、遅いです。頻繁に呼ばないように。
+		*@param[in]	matName	マテリアル名。ディフューズテクスチャ名がマテリアル名になります。
+		*/
+		CSkinModelMaterial* FindMaterial(const char* matName);
+		/*!
+		* @brief	スキンモデルマテリアルを追加。
 		*@details
 		* tkEngineの中でだけ使用されます。外部から使用しないようにしてください。
 		*/
@@ -172,31 +170,11 @@ namespace tkEngine{
 			m_materials.push_back(mat);
 		}
 		/*!
-		* @brief	マテリアルを検索。
-		*@details
-		* 名前で検索を行っているため、遅いです。頻繁に呼ばないように。
-		*@param[in]	matName	マテリアル名。ディフューズテクスチャ名がマテリアル名になります。
-		*/
-		CSkinModelMaterialEx* FindMaterialEx(const char* matName);
-		/*!
-		* @brief	スキンモデルマテリアルを追加。
-		*@details
-		* tkEngineの中でだけ使用されます。外部から使用しないようにしてください。
-		*/
-		void AddSkinModelMaterialEx(CSkinModelMaterialEx* mat)
-		{
-			m_newMaterials.push_back(mat);
-		}
-		/*!
 		* @brief	スキンモデルマテリアルのリストを取得。
 		*/
 		const std::vector<CSkinModelMaterial*>& GetSkinModelMaterials() const
 		{
 			return m_materials;
-		}
-		const std::vector<CSkinModelMaterialEx*>& GetSkinModelMaterialsEx() const
-		{
-			return m_newMaterials;
 		}
 	private:
 		CMatrix* FindBoneWorldMatrix(const char* boneName, LPD3DXFRAME frame);
@@ -241,7 +219,6 @@ namespace tkEngine{
 		int									m_numInstance;					//インスタンスの数。
 		int									m_vertexBufferStride;			//頂点バッファのストライド。
 		std::vector<CSkinModelMaterial*>	m_materials;					//マテリアル。
-		std::vector<CSkinModelMaterialEx*>	m_newMaterials;					//マテリアル。
 		bool								m_isLoadEnd = false;
 		std::thread							m_loadThread;		//読み込みスレッド
 		const CSkinModelData*						m_original = nullptr;

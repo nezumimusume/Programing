@@ -3,18 +3,18 @@
  */
 
 #include "tkEngine/tkEnginePreCompile.h"
-#include "tkEngine/graphics/material/tkSkinModelMaterialEx.h"
+#include "tkEngine/graphics/material/tkSkinModelMaterial.h"
 #include "tkEngine/graphics/tkEffect.h"
 
 
 namespace tkEngine{
-	void CSkinModelMaterialEx::Init(const char* tecName, const char* matName)
+	void CSkinModelMaterial::Init(const char* tecName, const char* matName)
 	{
 		m_pEffect = EffectManager().LoadEffect("Assets/presetShader/skinModel.fx");
 		m_materialName = matName;
 		InitShaderHandles(tecName);
 	}
-	void CSkinModelMaterialEx::InitShaderHandles(const char* tecName)
+	void CSkinModelMaterial::InitShaderHandles(const char* tecName)
 	{
 		if (m_pEffect) {
 			ID3DXEffect* effectDx = m_pEffect->GetD3DXEffect();
@@ -70,7 +70,7 @@ namespace tkEngine{
 			SetTechnique(enTecShaderHandle_SkinModel);
 		}
 	}
-	void CSkinModelMaterialEx::BeginDraw()
+	void CSkinModelMaterial::BeginDraw()
 	{
 #if BUILD_LEVEL != BUILD_LEVEL_MASTER
 		TK_ASSERT(!m_isBeginDraw, "forgot call EndDraw!!!!");
@@ -83,7 +83,7 @@ namespace tkEngine{
 			effect->BeginPass(0);
 		}
 	}
-	void CSkinModelMaterialEx::SendMaterialParamToGPU()
+	void CSkinModelMaterial::SendMaterialParamToGPU()
 	{
 #if BUILD_LEVEL != BUILD_LEVEL_MASTER
 		TK_ASSERT(m_isBeginDraw, "forgot call BeginDraw!!!!");
@@ -124,7 +124,7 @@ namespace tkEngine{
 			effect->CommitChanges();
 		}
 	}
-	void CSkinModelMaterialEx::EndDraw()
+	void CSkinModelMaterial::EndDraw()
 	{
 #if BUILD_LEVEL != BUILD_LEVEL_MASTER
 		TK_ASSERT(m_isBeginDraw, "forgot call BeginDraw!!!!");

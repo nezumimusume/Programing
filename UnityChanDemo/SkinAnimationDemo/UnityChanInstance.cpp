@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "UnityChanInstance.h"
 #include "Player/Player.h"
-#include "tkEngine/graphics/tkSkinModelMaterial.h"
 
 namespace {
 	const int NUM_INSTANCE = 10;
@@ -61,9 +60,7 @@ bool UnityChanInstance::Start()
 			}
 			normalMap.Load("Assets/modelData/utc_nomal.tga");
 			specMap.Load("Assets/modelData/utc_spec.tga");
-			CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("utc_all2.tga");
-			mat->SetTexture("g_normalTexture", &normalMap);
-			mat->SetTexture("g_speculerMap", &specMap);
+	
 			skinModel.Init(skinModelData.GetBody());
 			skinModel.SetLight(&light);
 			skinModel.SetHasNormalMap(true);
