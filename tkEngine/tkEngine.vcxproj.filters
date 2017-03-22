@@ -15,9 +15,6 @@
     <Filter Include="Source Files\debug">
       <UniqueIdentifier>{04314229-1a3c-4ce7-b308-c02d10624720}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\gameObject">
-      <UniqueIdentifier>{ccc04095-1959-45da-98d0-f25e7e9c86ea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\policy">
       <UniqueIdentifier>{4ed3ddea-92df-402f-bef7-6a16d99b7a49}</UniqueIdentifier>
     </Filter>
@@ -83,6 +80,9 @@
     </Filter>
     <Filter Include="Source Files\graphics\material\node">
       <UniqueIdentifier>{9d614757-4484-47cc-aafa-997fda8cb8f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gameObject">
+      <UniqueIdentifier>{ccc04095-1959-45da-98d0-f25e7e9c86ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

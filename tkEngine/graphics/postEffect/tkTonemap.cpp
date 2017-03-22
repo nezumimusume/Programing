@@ -158,20 +158,37 @@ namespace tkEngine{
 			//明暗順応。
 			{
 				CPIXPerfTag tag(renderContext, L"CTonemap::CalcAdaptedLuminance");
-				CRenderTarget& lastRT = m_avgRT[1 ^ m_currentAvgRT];
-				m_currentAvgRT = 1 ^ m_currentAvgRT;
-				renderContext.SetRenderTarget(0, &m_avgRT[m_currentAvgRT]);
-				m_effect->SetTechnique(renderContext, "CalcAdaptedLuminance");
-				m_effect->Begin(renderContext);
-				m_effect->BeginPass(renderContext, 0);
-				float deltaTime = GameTime().GetFrameDeltaTime();
-				m_effect->SetValue(renderContext, "g_fElapsedTime", &deltaTime, sizeof(deltaTime));
-				m_effect->SetTexture(renderContext, "g_lumAvgTex", m_calcAvgRT[0].GetTexture());
-				m_effect->SetTexture(renderContext, "g_lastLumAvgTex", lastRT.GetTexture());
-				m_effect->CommitChanges(renderContext);
-				postEffect->RenderFullScreen(renderContext);
-				m_effect->EndPass(renderContext);
-				m_effect->End(renderContext);
+				if (m_isFirstWhenChangeScene == true) {
+					//シーンが切り替わって初回。
+					m_currentAvgRT = 1 ^ m_currentAvgRT;
+					renderContext.SetRenderTarget(0, &m_avgRT[m_currentAvgRT]);
+					m_effect->SetTechnique(renderContext, "CalcAdaptedLuminanceFirst");
+					m_effect->Begin(renderContext);
+					m_effect->BeginPass(renderContext, 0);
+					m_effect->SetTexture(renderContext, "g_lumAvgTex", m_calcAvgRT[0].GetTexture());
+					m_effect->CommitChanges(renderContext);
+					postEffect->RenderFullScreen(renderContext);
+					m_effect->EndPass(renderContext);
+					m_effect->End(renderContext);
+					m_isFirstWhenChangeScene = false;
+				}
+				else {
+					
+					CRenderTarget& lastRT = m_avgRT[m_currentAvgRT];
+					m_currentAvgRT = 1 ^ m_currentAvgRT;
+					renderContext.SetRenderTarget(0, &m_avgRT[m_currentAvgRT]);
+					m_effect->SetTechnique(renderContext, "CalcAdaptedLuminance");
+					m_effect->Begin(renderContext);
+					m_effect->BeginPass(renderContext, 0);
+					float deltaTime = GameTime().GetFrameDeltaTime();
+					m_effect->SetValue(renderContext, "g_fElapsedTime", &deltaTime, sizeof(deltaTime));
+					m_effect->SetTexture(renderContext, "g_lumAvgTex", m_calcAvgRT[0].GetTexture());
+					m_effect->SetTexture(renderContext, "g_lastLumAvgTex", lastRT.GetTexture());
+					m_effect->CommitChanges(renderContext);
+					postEffect->RenderFullScreen(renderContext);
+					m_effect->EndPass(renderContext);
+					m_effect->End(renderContext);
+				}
 			}
 			renderContext.SetRenderTarget(0, &Engine().GetMainRenderTarget());
 		}

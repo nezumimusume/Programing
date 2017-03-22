@@ -98,6 +98,9 @@ void Enemy::CalcAABBCenterPosAndHalfSize()
 }
 void Enemy::Update()
 {
+	if (!gameScene->IsStart()) {
+		return;
+	}
 	animationEventController.Update();
 
 	CalcAABBCenterPosAndHalfSize();

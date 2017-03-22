@@ -136,6 +136,11 @@ float4 PSCalcAdaptedLuminance( VS_OUTPUT In ) : COLOR
     float fNewAdaptation = fAdaptedLum + (fCurrentLum - fAdaptedLum) * ( 1 - pow( 0.98f, 60 * g_fElapsedTime ) );
     return float4(fNewAdaptation, fNewAdaptation, fNewAdaptation, 1.0f);
 }
+float4 PSCalcAdaptedLuminanceFirst(VS_OUTPUT In) : COLOR
+{
+	float fAvgLum = tex2D(g_lumAvgSampler, float2(0.5f, 0.5f));
+	return float4(fAvgLum, fAvgLum, fAvgLum, 1.0f);
+}
 /*!
  *@brief	平均輝度からトーンマップを行うピクセルシェーダー。
  */
@@ -187,6 +192,15 @@ technique CalcAdaptedLuminance{
 	pass p0{
 		VertexShader = compile vs_3_0 VSMain();
 		PixelShader = compile ps_3_0 PSCalcAdaptedLuminance();
+	}
+}
+/*!
+ *@brief	シーンが切り替わって一回目の描画の時にだけ使用する明暗順応のための処理。
+ */
+technique CalcAdaptedLuminanceFirst{		
+	pass p0{
+		VertexShader = compile vs_3_0 VSMain();
+		PixelShader = compile ps_3_0 PSCalcAdaptedLuminanceFirst();
 	}
 }
 /*!

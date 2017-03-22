@@ -2,34 +2,24 @@
 
 #include "tkEngine/Physics/tkMeshCollider.h"
 #include "tkEngine/Physics/tkRigidBody.h"
-
+#include "tkEngine/nature/tkTerrain.h"
 class Ground : public IGameObject {
 	enum InitStep {
 		InitStep_Load,
 		InitStep_Wait,
 	};
 	InitStep				initStep = InitStep_Load;
-	CSkinModelDataHandle	skinModelData;		//スキンモデルデータ。
-	CSkinModel				skinModel;			//スキンモデル。
-	CAnimation				animation;			//アニメーション。
-	CMatrix*				m_worldMatrix;		//ワールド行列
+	CTerrain				terrain;			//地面。
 	CMeshCollider			meshCollider;		//メッシュコライダー。
 	CRigidBody				rigidBody;			//剛体。
 public:
-	Ground()
-	{
-		
-	}
+	Ground();
+	
 	~Ground();
 	bool Start() override;
 	void Update() override;
 	void Render(CRenderContext& renderContext) override;
-	//地面との当たり判定。
-	//pos	レイの始点。
-	//ray	レイ方向
-	//bHit	レイと地面が衝突したら1が設定される。
-	//len	レイの始点から交点までの距離。
-	void IsIntersect(const CVector3& pos, const CVector3& ray, int& bHit, float& len);
+	void OnDestroy() override;
 private:
 };
 extern Ground* g_ground;

@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include "tkEngine/Physics/tkMeshCollider.h"
+#include "tkEngine/Physics/tkRigidBody.h"
+
 namespace tkEngine{
 	/*!
 	 *@brief	地形。
@@ -88,5 +91,7 @@ namespace tkEngine{
 		std::string				m_splatMapPath;						//!<スプラットマップのパス。
 		std::string				m_texturePaths[MAX_TEXTURE];		//!<地形のテクスチャのパス。
 		const CCamera*			m_camera = nullptr;					//!<カメラ。
+		CMeshCollider			m_meshCollider;						//!<メッシュコライダー。
+		CRigidBody				m_rigidBody;						//!<剛体。
 	};
 }

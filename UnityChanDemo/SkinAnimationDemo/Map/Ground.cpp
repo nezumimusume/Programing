@@ -5,102 +5,50 @@
 #include "tkEngine/Physics/tkCollisionAttr.h"
 #include "Scene/GameScene.h"
 #include "tkEngine/nature/tkSky.h"
+#include "GameCamera.h"
 
 Ground* g_ground = NULL;
 LPD3DXMESH testMesh;
 
+Ground::Ground()
+{
+
+}
 Ground::~Ground()
 {
-	PhysicsWorld().RemoveRigidBody(&rigidBody);
 }
-
+void Ground::OnDestroy()
+{
+	DeleteGO(&terrain);
+}
 bool Ground::Start()
 {
 	switch (initStep) {
-	case InitStep_Load:
+	case InitStep_Load: {
 		g_ground = this;
-		skinModelData.LoadModelDataAsync("Assets/modelData/ground.X", NULL);
+		AddGO(GetPriority(), &terrain);
+		const char* textures[] = {
+			NULL
+		};
+		terrain.Init("Assets/modelData/ground.X", NULL, textures, g_camera->GetCamera(), gameScene->GetDefaultLight());
 		initStep = InitStep_Wait;
-		break;
-	case InitStep_Wait:
-		if (skinModelData.IsLoadEnd()) {
-			skinModel.Init(skinModelData.GetBody());
-			skinModel.SetLight(&gameScene->GetDefaultLight());
-#if 0
-			auto skinModelMaterial = skinModelData.GetBody()->GetSkinModelMaterials();
-			for (auto& material : skinModelMaterial) {
-				char work[256];
-				char normalMapName[256];
-				
-				//法線マップをロード。
-				strcpy(work, material->GetMaterialName());
-				char* pRep = strstr(work, "_");
-				strcpy(pRep, "_Normal.tga");
-				sprintf(normalMapName, "Assets/modelData/%s", work);
-				CTexture* tex = TextureResources().Load(normalMapName);
-				if (tex) {
-					//法線マップがあった。
-					material->SetTexture("g_normalTexture", tex);
-					skinModel.SetHasNormalMap(true);
-				}
-			}
-#else
-			CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("Grass.tga");
-			mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_NormalMap, *TextureResources().Load("Assets/modelData/Grass_Normals.tga"));
-			skinModel.SetHasNormalMap(true);
-#endif
-			skinModel.SetShadowReceiverFlag(true);
-			skinModel.SetShadowCasterFlag(true);
-
-			Update();
-			m_worldMatrix = skinModel.FindBoneWorldMatrix("Plane001");
-			//メッシュコライダーを作成。
-			meshCollider.CreateFromSkinModel(&skinModel, m_worldMatrix);
-			//剛体を作成。
-			RigidBodyInfo rbInfo;
-			rbInfo.collider = &meshCollider;
-			rbInfo.mass = 0.0f;
-			rigidBody.Create(rbInfo);
-			rigidBody.GetBody()->setUserIndex(enCollisionAttr_Ground);
-			//剛体をワールドに追加。
-			PhysicsWorld().AddRigidBody(&rigidBody);
+	}break;
+	case InitStep_Wait: {
+		if (terrain.IsStart()) {
+			//地面のStart関数が完了した。
 			return true;
 		}
-		break;
+	}break;
 	}
+	
 	return false;
 }
 
 void Ground::Update() 
 {
-	skinModel.Update(CVector3(0.0f, 0.0f, 0.0f), CQuaternion::Identity, CVector3(1.0f, 1.0f, 1.0f));
+	//skinModel.Update(CVector3(0.0f, 0.0f, 0.0f), CQuaternion::Identity, CVector3(1.0f, 1.0f, 1.0f));
 }
 void Ground::Render(CRenderContext& renderContext) 
 {
-	skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
-}
-void Ground::IsIntersect(const CVector3& pos, const CVector3& ray, int& bHit, float& len)
-{
-	CMatrix mWorldInv;
-	mWorldInv.Inverse(*m_worldMatrix);
-	CVector3 posInGround = pos;
-	mWorldInv.Mul(posInGround);
-	CVector3 rayInGround = ray;
-	mWorldInv.Mul3x3(rayInGround);	//レイは回すだけなので3x3行列を乗算する。
-	//レイは回すだけ
-	HRESULT hr = D3DXIntersect(
-		skinModel.GetOrgMeshFirst(),		//コースからメッシュを引っ張ってくる。 
-		(const D3DXVECTOR3*)&posInGround,	//車の座標・・・ただし、コース座標系。
-		(const D3DXVECTOR3*)&rayInGround,	//レイ・・・ただし、コース座標系。 
-		&bHit,								//衝突していたら1、衝突してなかったら0 
-		NULL, 
-		NULL, 
-		NULL, 
-		&len,								//始点から交点までの距離。
-		NULL, 
-		NULL
-	);
-	if (FAILED(hr)) {
-		TK_LOG("IsInterSect Error");
-	}
+	//skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 }

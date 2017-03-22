@@ -11,6 +11,9 @@ namespace tkEngine {
 	 */
 	bool CTexture::Load(const char* fileName, bool isCubeMap)
 	{
+		if (fileName == nullptr) {
+			return false;
+		}
 		Release();
 		LPDIRECT3DDEVICE9 device = Engine().GetD3DDevice();
 		if (!isCubeMap) {

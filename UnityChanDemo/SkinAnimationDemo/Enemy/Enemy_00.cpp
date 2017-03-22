@@ -73,6 +73,9 @@ void Enemy_00::InitHFSM()
 
 void Enemy_00::Update()
 {
+	if (!gameScene->IsStart()) {
+		return;
+	}
 	Enemy::Update();
 
 	if (GetLocalFrameDeltaTime() < FLT_EPSILON) {

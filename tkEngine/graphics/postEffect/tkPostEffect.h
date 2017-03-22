@@ -58,6 +58,13 @@ namespace tkEngine{
 		{
 			return m_motionBlur;
 		}
+		/*!
+		* @brief	トーンマップを取得。
+		*/
+		CTonemap& GetTonemap()
+		{
+			return m_tonemap;
+		}
 		CMonochromeFilter& GetMonochromeFilter()
 		{
 			return m_monochromeFilter;

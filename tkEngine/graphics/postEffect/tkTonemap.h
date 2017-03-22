@@ -29,13 +29,21 @@ namespace tkEngine{
 		 *@param[in]	renderContext		レンダリングコンテキスト
 		 */
 		void Execute(CRenderContext& renderContext, CPostEffect* postEffect);
+		/*!
+		*@brief	シーンが切り替わったことを通知。
+		*/
+		void NotifyChangeScene()
+		{
+			m_isFirstWhenChangeScene = true;
+		}
 	private:
-		static const int NUM_CALC_AVG_RT = 5;			//!<平均輝度計算用のレンダリングターゲットの枚数。
-		CEffect*		m_effect = nullptr;				//!<エフェクト。
-		bool			m_isEnable = false;				//!<トーンマップ有効？
-		CRenderTarget	m_calcAvgRT[NUM_CALC_AVG_RT];	//!<平均輝度計算用のレンダリングターゲット。
-		CRenderTarget   m_avgRT[2];						//!<平均輝度が格納されるレンダリングターゲット。
-		int				m_currentAvgRT = 0;				//!<
-		float			m_fMiddleGray = 0.22f;			//!<この値を大きくすると明るくなる。
+		static const int NUM_CALC_AVG_RT = 5;				//!<平均輝度計算用のレンダリングターゲットの枚数。
+		CEffect*		m_effect = nullptr;					//!<エフェクト。
+		bool			m_isEnable = false;					//!<トーンマップ有効？
+		CRenderTarget	m_calcAvgRT[NUM_CALC_AVG_RT];		//!<平均輝度計算用のレンダリングターゲット。
+		CRenderTarget   m_avgRT[2];							//!<平均輝度が格納されるレンダリングターゲット。
+		int				m_currentAvgRT = 0;					//!<
+		float			m_fMiddleGray = 0.22f;				//!<この値を大きくすると明るくなる。
+		bool			m_isFirstWhenChangeScene = true;	//!<シーンが切り替わって初回の描画かどうかのフラグ。
 	};
 }

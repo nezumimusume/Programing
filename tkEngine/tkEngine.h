@@ -213,6 +213,10 @@ namespace tkEngine{
 		{
 			return m_postEffect.GetMotionBlur();
 		}
+		CTonemap& GetTonemap()
+		{
+			return m_postEffect.GetTonemap();
+		}
 		/*!
 		* @brief	スキンモデルリソースを取得。
 		*/
@@ -341,6 +345,10 @@ namespace tkEngine{
 	static inline CMotionBlur& MotionBlur()
 	{
 		return CEngine::Instance().GetMotionBlur();
+	}
+	static inline CTonemap& Tonemap()
+	{
+		return CEngine::Instance().GetTonemap();
 	}
 	static inline CSkinModelDataResources& SkinModelDataResources()
 	{

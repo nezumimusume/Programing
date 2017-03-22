@@ -607,6 +607,9 @@ void Player::Render(CRenderContext& renderContext)
 
 void Player::Update()
 {
+	if (!gameScene->IsStart()) {
+		return;
+	}
 	localFrameDeltaTime = GameTime().GetFrameDeltaTime();
 	//スロットに設定されている魔法を更新。
 	UpdateCurrentMagicSkill();

@@ -526,12 +526,7 @@
 	CVector3(-587.92f, 8.58f, -405.31f),             //平行移動
 	CQuaternion(0.00f, 0.39f, 0.00f, -0.92f ),  //回転
 },
-//ground
-{
-	"ground",
-	CVector3(0.00f, 0.00f, 0.00f),             //平行移動
-	CQuaternion(0.00f, 0.00f, 0.00f, 0.00f ),  //回転
-},
+
 //commanders_hill
 {
 	"commanders_hill",
