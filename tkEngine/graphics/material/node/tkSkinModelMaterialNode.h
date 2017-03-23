@@ -46,6 +46,27 @@ namespace tkEngine{
 			m_material->SendTextureTGPU(TTex);
 		}
 	};
+	
+	/*!
+	*@brief	行列転送ノードのテンプレートクラス。
+	*/
+	template<CSkinModelMaterial::EnMatrixShaderHandle TMatrix>
+	class TSkinModelMaterialNode_SendMatrix : public ISkinModelMaterialNode {
+	public:
+		TSkinModelMaterialNode_SendMatrix(CSkinModelMaterial* mat) :
+			ISkinModelMaterialNode(mat)
+		{
+		}
+		/*!
+		*@brief	マテリアルパラメータをGPUに転送。
+		*/
+		void SendMaterialParamToGPU() final
+		{
+			//スプラットマップを転送。
+			m_material->SendMatrixToGPU(TMatrix);
+		}
+	};
+
 	//ディフューズマップ転送ノード。
 	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_DiffuseMap>
 		CSkinModelMaterialNode_SendDiffuseMap;
@@ -80,23 +101,7 @@ namespace tkEngine{
 	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_TerrainTex2>
 		CSkinModelMaterialNode_SendTerrainTex2;
 
-	//行列転送ノードのテンプレートクラス。
-	template<CSkinModelMaterial::EnMatrixShaderHandle TMatrix>
-	class TSkinModelMaterialNode_SendMatrix : public ISkinModelMaterialNode {
-	public:
-		TSkinModelMaterialNode_SendMatrix(CSkinModelMaterial* mat) :
-			ISkinModelMaterialNode(mat)
-		{
-		}
-		/*!
-		*@brief	マテリアルパラメータをGPUに転送。
-		*/
-		void SendMaterialParamToGPU() final
-		{
-			//スプラットマップを転送。
-			m_material->SendMatrixToGPU(TMatrix);
-		}
-	};
+	
 	//1フレーム前のビュープロジェクション行列転送ノード。
 	typedef TSkinModelMaterialNode_SendMatrix<CSkinModelMaterial::enMatrixShaderHandle_LastFrameViewProj>
 		CSkinModelMaterialNode_SendLastFrameViewProj;
