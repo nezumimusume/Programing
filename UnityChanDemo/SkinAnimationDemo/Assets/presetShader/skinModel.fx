@@ -561,7 +561,6 @@ PSOutput PSSkyMain(VS_OUTPUT In){
 	color.xyz = lerp( color.xyz, cloudColor, cloudRate ) ;
 	PSOutput psOut = (PSOutput)0;
 	psOut.color = color * 1.1f;
-	psOut.color = diffuseColor;
 	psOut.depth = In.worldPos_depth.w;
 	if(g_flags2.x){
 		psOut.velocity.xy = In.velocity.xy / In.velocity.w-In.screenPos.xy / In.screenPos.w;
@@ -626,6 +625,94 @@ float4 PSMainRenderShadowMap( VS_OUTPUT_RENDER_SHADOW_MAP In ) : COLOR
 	float dx = ddx(z);
 	float dy = ddy(z);
 	return float4(z, z*z+0.25f*(dx*dx+dy*dy), 0.0f, 1.0f);
+}
+
+texture g_splatMap;			//Splatmap
+sampler g_splatMapSampler = 
+sampler_state
+{
+	Texture = <g_splatMap>;
+	MipFilter = LINEAR;
+	MinFilter = LINEAR;
+	MagFilter = LINEAR;
+	AddressU = Wrap;
+	AddressV = Wrap;
+};
+texture g_terrainTex0;
+texture g_terrainTex1;
+texture g_terrainTex2;
+texture g_terrainTex3;
+sampler g_terrainTexSampler[4] = {
+	sampler_state
+	{
+		Texture = <g_terrainTex0>;
+		MipFilter = LINEAR;
+		MinFilter = LINEAR;
+		MagFilter = LINEAR;
+		AddressU = Wrap;
+		AddressV = Wrap;
+	},
+	sampler_state
+	{
+		Texture = <g_terrainTex1>;
+		MipFilter = LINEAR;
+		MinFilter = LINEAR;
+		MagFilter = LINEAR;
+		AddressU = Wrap;
+		AddressV = Wrap;
+	},
+	sampler_state
+	{
+		Texture = <g_terrainTex2>;
+		MipFilter = LINEAR;
+		MinFilter = LINEAR;
+		MagFilter = LINEAR;
+		AddressU = Wrap;
+		AddressV = Wrap;
+	},
+	sampler_state
+	{
+		Texture = <g_terrainTex3>;
+		MipFilter = LINEAR;
+		MinFilter = LINEAR;
+		MagFilter = LINEAR;
+		AddressU = Wrap;
+		AddressV = Wrap;
+	},
+};
+/*!
+ *@brief	地形用ピクセルシェーダー。
+ */
+PSOutput PSTerrain(VS_OUTPUT In) : COLOR
+{
+	float4 diffuseColor = tex2D(g_splatMapSampler, In.Tex0);
+	float4 color = diffuseColor;
+	
+	float3 normal = normalize(In.Normal);
+	//ディフューズライト
+	float4 lig = DiffuseLight(normal);
+	//影
+	lig *= CalcShadow(In.worldPos_depth.xyz);
+	color *= lig;
+	
+	//大気錯乱。
+	color = In.rayColor + color * In.mieColor;
+	
+	//ポイントライト。
+	color.xyz += diffuseColor.xyz * PointLight(normal, In.worldPos_depth.xyz, 0);
+	//アンビエントライトを加算。
+	color.xyz += diffuseColor.xyz * g_light.ambient.xyz;
+	
+	PSOutput psOut = (PSOutput)0;
+	psOut.velocity.xy = In.velocity.xy / In.velocity.w-In.screenPos.xy / In.screenPos.w;
+	psOut.velocity.xy *= 0.5f;
+	psOut.velocity.xy += 0.5f;
+	psOut.velocity.zw = 0.0f;
+	
+	psOut.color = color;
+	psOut.depth = In.worldPos_depth.w;
+	
+	return psOut;
 }
 
 /*!
@@ -730,5 +817,15 @@ technique StealthSkin{
 	{
 		VertexShader =  compile vs_3_0 VSMain(true, true);
 		PixelShader = compile ps_3_0 PSStealthMain();
+	}
+}
+/*!
+ *@brief	地形
+ */
+technique Terrain{
+	pass p0
+	{
+		VertexShader = compile vs_3_0 VSMain(false, false);
+		PixelShader = compile ps_3_0 PSTerrain();
 	}
 }

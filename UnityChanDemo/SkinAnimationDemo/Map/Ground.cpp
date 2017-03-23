@@ -30,7 +30,7 @@ bool Ground::Start()
 		const char* textures[] = {
 			NULL
 		};
-		terrain.Init("Assets/modelData/ground.X", NULL, textures, g_camera->GetCamera(), gameScene->GetDefaultLight());
+		terrain.Init("Assets/modelData/ground.X", "Assets/modelData/utc_all2.tga", textures, g_camera->GetCamera(), gameScene->GetDefaultLight());
 		initStep = InitStep_Wait;
 	}break;
 	case InitStep_Wait: {
@@ -46,9 +46,7 @@ bool Ground::Start()
 
 void Ground::Update() 
 {
-	//skinModel.Update(CVector3(0.0f, 0.0f, 0.0f), CQuaternion::Identity, CVector3(1.0f, 1.0f, 1.0f));
 }
 void Ground::Render(CRenderContext& renderContext) 
 {
-	//skinModel.Draw(renderContext, g_camera->GetCamera().GetViewMatrix(), g_camera->GetCamera().GetProjectionMatrix());
 }

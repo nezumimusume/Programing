@@ -103,7 +103,7 @@ bool GameScene::Start()
 		) {
 			//‘S‚Ä‰Šú‰»Š®—¹B
 			g_nowLoading->SetActiveFlag(false);
-			Tonemap().NotifyChangeScene();
+			Tonemap().Reset();
 			return true;
 		}
 		break;
