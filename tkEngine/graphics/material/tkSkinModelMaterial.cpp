@@ -152,39 +152,30 @@ namespace tkEngine{
 		TK_ASSERT(m_isBeginDraw, "forgot call BeginDraw!!!!");
 #endif
 		if (m_pEffect) {
-			ID3DXEffect* effect = m_pEffect->GetD3DXEffect();
+			m_pEffectRaw = m_pEffect->GetD3DXEffect();
 			//‚¿‚å‚¢“K“–
-			/*for( int i = 0; i < enTextureShaderHandle_Num; i++ ){
-				if (m_textures[i]) {
-					if (m_textures[i]->IsCubeMap()) {
-						effect->SetTexture(m_hTexShaderHandle[i], m_textures[i]->GetCubeMapDX());
-					}
-					else {
-						effect->SetTexture(m_hTexShaderHandle[i], m_textures[i]->GetTextureDX());
-					}
-				}
-			}*/
 			for (int i = 0; i < enMatrixShaderHandle_Num; i++) {
-				effect->SetMatrix(m_hMatrixShaderHandle[i], (D3DXMATRIX*)&m_matrices[i]);
+				m_pEffectRaw->SetMatrix(m_hMatrixShaderHandle[i], (D3DXMATRIX*)&m_matrices[i]);
 			}
 			for (int i = 0; i < enFVectorShaderHandle_Num; i++) {
-				effect->SetVector(m_hFVectorShaderHandle[i], (D3DXVECTOR4*)&m_fVector[i]);
+				m_pEffectRaw->SetVector(m_hFVectorShaderHandle[i], (D3DXVECTOR4*)&m_fVector[i]);
 			}
 			for (int i = 0; i < enIVectorShaderHandle_Num; i++) {
-				effect->SetIntArray(m_hIVectorShaderHandle[i], (int*)&m_iVector[i], 4);
+				m_pEffectRaw->SetIntArray(m_hIVectorShaderHandle[i], (int*)&m_iVector[i], 4);
 			}
 			for (int i = 0; i < enIntShaderHandle_Num; i++) {
-				effect->SetInt(m_hIntShaderHandle[i], m_int[i]);
+				m_pEffectRaw->SetInt(m_hIntShaderHandle[i], m_int[i]);
 			}
-			effect->SetValue(m_hLightShaderHandle, &m_light, sizeof(m_light));
-			effect->SetValue(m_hAtmosShaderHandle, &m_atmosParam, sizeof(m_atmosParam));
-			effect->SetValue(m_hShadowRecieverParamShaderHandle, &m_shadowRecParam, sizeof(m_shadowRecParam));
-			effect->SetMatrixArray(m_hBoneMatrixArrayShaderHandle, m_boneMatrixArray, m_boneMatrixArraySize);
+			m_pEffectRaw->SetValue(m_hLightShaderHandle, &m_light, sizeof(m_light));
+			m_pEffectRaw->SetValue(m_hAtmosShaderHandle, &m_atmosParam, sizeof(m_atmosParam));
+			m_pEffectRaw->SetValue(m_hShadowRecieverParamShaderHandle, &m_shadowRecParam, sizeof(m_shadowRecParam));
+			m_pEffectRaw->SetMatrixArray(m_hBoneMatrixArrayShaderHandle, m_boneMatrixArray, m_boneMatrixArraySize);
 			for (auto& node : m_materialNodes) {
 				node->SendMaterialParamToGPU();
 			}
 
-			effect->CommitChanges();
+			m_pEffectRaw->CommitChanges();
+			m_pEffectRaw = nullptr;
 		}
 	}
 	void CSkinModelMaterial::EndDraw()

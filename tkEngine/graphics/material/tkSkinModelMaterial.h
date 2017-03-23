@@ -229,14 +229,14 @@ namespace tkEngine{
 		*/
 		void SendTextureTGPU(EnTextureShaderHandle eTex)
 		{
-			if (m_pEffect) {
-				ID3DXEffect* effect = m_pEffect->GetD3DXEffect();
+			TK_ASSERT(m_isBeginDraw, "Please call BeginDraw!!!!");
+			if (m_pEffectRaw) {
 				if (m_textures[eTex] != nullptr) {
 					if (m_textures[eTex]->IsCubeMap()) {
-						effect->SetTexture(m_hTexShaderHandle[eTex], m_textures[eTex]->GetCubeMapDX());
+						m_pEffectRaw->SetTexture(m_hTexShaderHandle[eTex], m_textures[eTex]->GetCubeMapDX());
 					}
 					else {
-						effect->SetTexture(m_hTexShaderHandle[eTex], m_textures[eTex]->GetTextureDX());
+						m_pEffectRaw->SetTexture(m_hTexShaderHandle[eTex], m_textures[eTex]->GetTextureDX());
 					}
 				}
 			}
@@ -262,6 +262,7 @@ namespace tkEngine{
 
 		std::string m_materialName;										//!<マテリアル名。
 		CEffect* m_pEffect = nullptr;									//!<エフェクト。
+		ID3DXEffect* m_pEffectRaw = nullptr;
 		D3DXHANDLE m_hTec;												//!<テクニックハンドル。
 		EnShaderTechnique m_eTec = enTecShaderHandle_SkinModel;			//!<現在のシェーダーテクニック。
 		D3DXHANDLE m_hTexShaderHandle[enTextureShaderHandle_Num];		//!<テクスチャシェーダーハンドル。
