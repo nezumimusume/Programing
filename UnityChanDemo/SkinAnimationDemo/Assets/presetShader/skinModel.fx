@@ -12,8 +12,6 @@ float4x3    g_mWorldMatrixArray[MAX_MATRICES] : WORLDMATRIXARRAY;
 float4x4    g_mViewProj : VIEWPROJECTION;
 float		g_numBone;			//骨の数。
 float4x4	g_worldMatrix;			//!<ワールド行列。
-float4x4	g_rotationMatrix;		//!<回転行列。
-float4x4	g_viewMatrixRotInv;		//!<カメラの回転行列の逆行列。
 float4x4	g_mViewProjLastFrame;	//!<1フレーム前のビュープロジェクション行列。
 float4		g_fogParam;				//フォグのパラメータ。xにフォグが掛かり始める深度。yにフォグが完全にかかる深度。zはフォグを計算するかどうかのフラグ。
 
@@ -685,7 +683,7 @@ sampler g_terrainTexSampler[4] = {
  */
 PSOutput PSTerrain(VS_OUTPUT In) : COLOR
 {
-	float4 diffuseColor = tex2D(g_splatMapSampler, In.Tex0);
+	float4 diffuseColor = tex2D(g_terrainTexSampler[0], In.Tex0);
 	float4 color = diffuseColor;
 	
 	float3 normal = normalize(In.Normal);

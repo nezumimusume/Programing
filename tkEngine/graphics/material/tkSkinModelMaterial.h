@@ -47,9 +47,7 @@ namespace tkEngine{
 			enMatrixShaderHandle_LastFrameViewProj,		//!<1フレーム前のビュープロジェクション行列。
 			enMatrixShaderHandle_ViewProj,				//!<ビュープロジェクション行列。
 			enMatrixShaderHandle_LVP,					//!<ライトビュープロジェクション行列。
-			enMatrixShaderHandle_ViewMatrixRotInv,		//!<ビュー行列の回転逆行列。
 			enMatrixShaderHandle_WorldMatrix,			//!<ワールド行列
-			enMatrixShaderHandle_RotationMatrix,		//!<回転行列（不要）
 			enMatrixShaderHandle_Num,
 		};
 		/*!
@@ -230,7 +228,7 @@ namespace tkEngine{
 		void SendTextureTGPU(EnTextureShaderHandle eTex)
 		{
 			TK_ASSERT(m_isBeginDraw, "Please call BeginDraw!!!!");
-			if (m_pEffectRaw) {
+			if (m_pEffectRaw != nullptr) {
 				if (m_textures[eTex] != nullptr) {
 					if (m_textures[eTex]->IsCubeMap()) {
 						m_pEffectRaw->SetTexture(m_hTexShaderHandle[eTex], m_textures[eTex]->GetCubeMapDX());
@@ -239,6 +237,18 @@ namespace tkEngine{
 						m_pEffectRaw->SetTexture(m_hTexShaderHandle[eTex], m_textures[eTex]->GetTextureDX());
 					}
 				}
+			}
+		}
+		/*!
+		*@brief	行列をGPUに転送。
+		*@details
+		* この関数はISkinModelMaterialNodeの派生クラスでしか使用しないように注意してください。
+		*/
+		void SendMatrixToGPU(EnMatrixShaderHandle eMatrix)
+		{
+			TK_ASSERT(m_isBeginDraw, "Please call BeginDraw!!!!");
+			if (m_pEffectRaw != nullptr) {
+				m_pEffectRaw->SetMatrix(m_hMatrixShaderHandle[eMatrix], (D3DXMATRIX*)&m_matrices[eMatrix]);
 			}
 		}
 	private:

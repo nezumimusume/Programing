@@ -28,6 +28,7 @@ bool Ground::Start()
 		g_ground = this;
 		AddGO(GetPriority(), &terrain);
 		const char* textures[] = {
+			"Assets/modelData/Grass.tga",
 			NULL
 		};
 		terrain.Init("Assets/modelData/ground.X", "Assets/modelData/utc_all2.tga", textures, g_camera->GetCamera(), gameScene->GetDefaultLight());

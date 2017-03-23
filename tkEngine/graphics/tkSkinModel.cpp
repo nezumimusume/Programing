@@ -248,8 +248,7 @@ namespace tkEngine{
 				//共通パラメータを設定。
 				SetupMaterialCommonParameter(material, *viewMatrix, viewProj, isDrawToShadowMap);
 				material.SetMatrix(CSkinModelMaterial::enMatrixShaderHandle_WorldMatrix, (CMatrix&)mWorld);
-				material.SetMatrix(CSkinModelMaterial::enMatrixShaderHandle_RotationMatrix, (CMatrix&)rotationMatrix);
-
+				
 				material.SendMaterialParamToGPU();
 				if (isInstancingDraw) {
 					//インスタンシング描画。

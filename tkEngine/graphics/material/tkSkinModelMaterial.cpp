@@ -61,9 +61,7 @@ namespace tkEngine{
 			m_hMatrixShaderHandle[enMatrixShaderHandle_LastFrameViewProj] = effectDx->GetParameterByName(NULL, "g_mViewProjLastFrame");
 			m_hMatrixShaderHandle[enMatrixShaderHandle_ViewProj] = effectDx->GetParameterByName(NULL, "g_mViewProj");
 			m_hMatrixShaderHandle[enMatrixShaderHandle_LVP] = effectDx->GetParameterByName(NULL, "g_mLVP");
-			m_hMatrixShaderHandle[enMatrixShaderHandle_ViewMatrixRotInv] = effectDx->GetParameterByName(NULL, "g_viewMatrixRotInv");
 			m_hMatrixShaderHandle[enMatrixShaderHandle_WorldMatrix] = effectDx->GetParameterByName(NULL, "g_worldMatrix");
-			m_hMatrixShaderHandle[enMatrixShaderHandle_RotationMatrix] = effectDx->GetParameterByName(NULL, "g_rotationMatrix");
 			//浮動小数ベクトルのシェーダーハンドル。
 			m_hFVectorShaderHandle[enFVectorShaderHandle_CameraPos] = effectDx->GetParameterByName(NULL, "g_cameraPos");
 			m_hFVectorShaderHandle[enFVectorShaderHandle_FarNear] = effectDx->GetParameterByName(NULL, "g_farNear");
@@ -109,6 +107,12 @@ namespace tkEngine{
 		switch(type){
 		case enTypeStandard:
 			//スタンダード。
+			//行列。
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendLastFrameViewProj(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendViewProj(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendLVP(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendWorldMatrix(this)));
+			//テクスチャ。
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendDiffuseMap(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendShadowMap_0(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendShadowMap_1(this)));
@@ -120,11 +124,26 @@ namespace tkEngine{
 			break;
 		case enTypeTerrain:
 			//地形。
+			//行列。
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendLastFrameViewProj(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendViewProj(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendLVP(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendWorldMatrix(this)));
+			//テクスチャ。
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendSplatMap(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainTex0(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainTex1(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainTex2(this)));
 			SetTechnique(enTecShaderHandle_Terrain);
 			break;
 		case enTypeSky:
 			//空。
+			//行列。
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendLastFrameViewProj(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendViewProj(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendLVP(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendWorldMatrix(this)));
+			//テクスチャ。
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendSkyCubeMap(this)));
 			SetTechnique(enTecShaderHandle_Sky);
 			break;
@@ -154,9 +173,6 @@ namespace tkEngine{
 		if (m_pEffect) {
 			m_pEffectRaw = m_pEffect->GetD3DXEffect();
 			//ちょい適当
-			for (int i = 0; i < enMatrixShaderHandle_Num; i++) {
-				m_pEffectRaw->SetMatrix(m_hMatrixShaderHandle[i], (D3DXMATRIX*)&m_matrices[i]);
-			}
 			for (int i = 0; i < enFVectorShaderHandle_Num; i++) {
 				m_pEffectRaw->SetVector(m_hFVectorShaderHandle[i], (D3DXVECTOR4*)&m_fVector[i]);
 			}

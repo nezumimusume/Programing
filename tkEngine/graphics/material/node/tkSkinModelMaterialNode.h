@@ -49,14 +49,14 @@ namespace tkEngine{
 	//ディフューズマップ転送ノード。
 	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_DiffuseMap>
 		CSkinModelMaterialNode_SendDiffuseMap;
-	//シャドウマップ転送ノード。
+	//シャドウマップ0転送ノード。
 	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_ShadowMap_0>
 		CSkinModelMaterialNode_SendShadowMap_0;
-	//シャドウマップ転送ノード。
-	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_ShadowMap_0>
+	//シャドウマップ1転送ノード。
+	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_ShadowMap_1>
 		CSkinModelMaterialNode_SendShadowMap_1;
-	//シャドウマップ転送ノード。
-	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_ShadowMap_0>
+	//シャドウマップ2転送ノード。
+	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_ShadowMap_2>
 		CSkinModelMaterialNode_SendShadowMap_2;
 	//法線マップ転送ノード。
 	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_NormalMap>
@@ -70,4 +70,43 @@ namespace tkEngine{
 	//スプラットマップ転送ノード
 	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_SplatMap>
 		CSkinModelMaterialNode_SendSplatMap;
+	//地形テクスチャ0転送ノード
+	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_TerrainTex0>
+		CSkinModelMaterialNode_SendTerrainTex0;
+	//地形テクスチャ1転送ノード
+	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_TerrainTex1>
+		CSkinModelMaterialNode_SendTerrainTex1;
+	//地形テクスチャ2転送ノード
+	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_TerrainTex2>
+		CSkinModelMaterialNode_SendTerrainTex2;
+
+	//行列転送ノードのテンプレートクラス。
+	template<CSkinModelMaterial::EnMatrixShaderHandle TMatrix>
+	class TSkinModelMaterialNode_SendMatrix : public ISkinModelMaterialNode {
+	public:
+		TSkinModelMaterialNode_SendMatrix(CSkinModelMaterial* mat) :
+			ISkinModelMaterialNode(mat)
+		{
+		}
+		/*!
+		*@brief	マテリアルパラメータをGPUに転送。
+		*/
+		void SendMaterialParamToGPU() final
+		{
+			//スプラットマップを転送。
+			m_material->SendMatrixToGPU(TMatrix);
+		}
+	};
+	//1フレーム前のビュープロジェクション行列転送ノード。
+	typedef TSkinModelMaterialNode_SendMatrix<CSkinModelMaterial::enMatrixShaderHandle_LastFrameViewProj>
+		CSkinModelMaterialNode_SendLastFrameViewProj;
+	//ビュープロジェクション行列転送ノード。
+	typedef TSkinModelMaterialNode_SendMatrix<CSkinModelMaterial::enMatrixShaderHandle_ViewProj>
+		CSkinModelMaterialNode_SendViewProj;
+	//ライトビュープロジェクション行列転送ノード。
+	typedef TSkinModelMaterialNode_SendMatrix<CSkinModelMaterial::enMatrixShaderHandle_LVP>
+		CSkinModelMaterialNode_SendLVP;
+	//ワールド行列
+	typedef TSkinModelMaterialNode_SendMatrix<CSkinModelMaterial::enMatrixShaderHandle_WorldMatrix>
+		CSkinModelMaterialNode_SendWorldMatrix;
 }

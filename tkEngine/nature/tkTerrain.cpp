@@ -58,9 +58,13 @@ namespace tkEngine{
 				const std::vector<CSkinModelMaterial*>& materials = m_skinModelData.GetBody()->GetSkinModelMaterials();
 				//地形用のマテリアルを構築する。
 				for (auto& mat : materials) {
-					mat->Build(CSkinModelMaterial::enTypeTerrain);
+				//	mat->Build(CSkinModelMaterial::enTypeTerrain);
 					//スプラットマップを設定する。
 					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_SplatMap, m_splatMap);
+					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_TerrainTex0, m_textures[0]);
+					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_TerrainTex1, m_textures[1]);
+					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_TerrainTex2, m_textures[2]);
+					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_TerrainTex3, m_textures[3]);
 				}
 				//コリジョンを初期化。
 				Update();
