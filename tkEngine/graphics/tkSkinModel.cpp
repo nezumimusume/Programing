@@ -234,7 +234,9 @@ namespace tkEngine{
 				CSkinModelMaterial::EnShaderTechnique oldTec = material.GetTechnique();
 				if (isDrawToShadowMap) {
 					//シャドウマップへの書き込み中。
-					if (oldTec == CSkinModelMaterial::enTecShaderHandle_NoSkinModel) {
+					if (oldTec == CSkinModelMaterial::enTecShaderHandle_NoSkinModel 
+						|| oldTec == CSkinModelMaterial::enTecShaderHandle_Terrain
+					) {
 						material.SetTechnique(CSkinModelMaterial::enTecShaderHandle_NoSkinModelRenderShadowMap);
 					}
 					else if (oldTec == CSkinModelMaterial::enTecShaderHandle_NoSkinModelInstancing) {

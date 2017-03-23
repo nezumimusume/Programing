@@ -30,9 +30,12 @@ namespace tkEngine{
 		 */
 		void Execute(CRenderContext& renderContext, CPostEffect* postEffect);
 		/*!
-		*@brief	シーンが切り替わったことを通知。
+		*@brief	トーンマップの処理をリセット。
+		*@details
+		*　輝度が大きく変わるシーン切り替えなどが発生する場合などに明暗順応がおかしく見える場合があります。
+		* そのような場合はシーン切り替えのタイミングでリセットを行ってみてください。
 		*/
-		void NotifyChangeScene()
+		void Reset()
 		{
 			m_isFirstWhenChangeScene = true;
 		}

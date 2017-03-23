@@ -4,6 +4,7 @@
 
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/nature/tkTerrain.h"
+#include "tkEngine/graphics/material/tkSkinModelMaterial.h"
 
 namespace tkEngine{
 	CTerrain::CTerrain()
@@ -53,6 +54,13 @@ namespace tkEngine{
 				for (auto& texPath : m_texturePaths) {
 					m_textures[i].Load(texPath.c_str());
 					i++;
+				}
+				const std::vector<CSkinModelMaterial*>& materials = m_skinModelData.GetBody()->GetSkinModelMaterials();
+				//地形用のマテリアルを構築する。
+				for (auto& mat : materials) {
+					mat->Build(CSkinModelMaterial::enTypeTerrain);
+					//スプラットマップを設定する。
+					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_SplatMap, m_splatMap);
 				}
 				//コリジョンを初期化。
 				Update();

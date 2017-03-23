@@ -362,7 +362,6 @@
     <ClInclude Include="gameObject\tkGameObject.h" />
     <ClInclude Include="gameObject\tkGameObjectManager.h" />
     <ClInclude Include="graphics\material\node\tkSkinModelMaterialNode.h" />
-    <ClInclude Include="graphics\material\node\tkSkinModelMaterialNode_DiffuseMap.h" />
     <ClInclude Include="graphics\material\tkSkinModelMaterial.h" />
     <ClInclude Include="graphics\postEffect\tkBloomRender.h" />
     <ClInclude Include="graphics\postEffect\tkDOF.h" />

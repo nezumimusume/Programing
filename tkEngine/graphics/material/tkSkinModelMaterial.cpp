@@ -4,10 +4,35 @@
 
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/graphics/material/tkSkinModelMaterial.h"
-#include "tkEngine/graphics/tkEffect.h"
+
+#include "tkEngine/graphics/material/node/tkSkinModelMaterialNode.h"
 
 
 namespace tkEngine{
+	/*!
+	 *@brief	コンストラクタ。
+	 */
+	CSkinModelMaterial::CSkinModelMaterial()
+	{
+		memset(m_textures, 0, sizeof(m_textures));
+		for (auto& m : m_matrices) {
+			m = CMatrix::Identity;
+		}
+		for (auto& v : m_fVector) {
+			v = CVector3::Zero;
+		}
+		for (auto& v : m_iVector) {
+			v.x = 0;
+			v.y = 0;
+			v.z = 0;
+			v.w = 0;
+		}
+		memset(m_int, 0, sizeof(m_int));
+	}
+	CSkinModelMaterial::~CSkinModelMaterial()
+	{
+
+	}
 	void CSkinModelMaterial::Init(const char* tecName, const char* matName)
 	{
 		m_pEffect = EffectManager().LoadEffect("Assets/presetShader/skinModel.fx");
@@ -26,6 +51,12 @@ namespace tkEngine{
 			m_hTexShaderHandle[enTextureShaderHandle_ShadowMap_2] = effectDx->GetParameterByName(NULL, "g_shadowMap_2");
 			m_hTexShaderHandle[enTextureShaderHandle_SpecularMap] = effectDx->GetParameterByName(NULL, "g_speculerMap");
 			m_hTexShaderHandle[enTextureShaderHandle_SkyCubeMap] = effectDx->GetParameterByName(NULL, "g_skyCubeMap");
+			m_hTexShaderHandle[enTextureShaderHandle_SplatMap] = effectDx->GetParameterByName(NULL, "g_splatMap");
+			m_hTexShaderHandle[enTextureShaderHandle_TerrainTex0] = effectDx->GetParameterByName(NULL, "g_terrainTex0");
+			m_hTexShaderHandle[enTextureShaderHandle_TerrainTex1] = effectDx->GetParameterByName(NULL, "g_terrainTex1");
+			m_hTexShaderHandle[enTextureShaderHandle_TerrainTex2] = effectDx->GetParameterByName(NULL, "g_terrainTex2");
+			m_hTexShaderHandle[enTextureShaderHandle_TerrainTex3] = effectDx->GetParameterByName(NULL, "g_terrainTex3");
+
 			//行列のシェーダーハンドル。
 			m_hMatrixShaderHandle[enMatrixShaderHandle_LastFrameViewProj] = effectDx->GetParameterByName(NULL, "g_mViewProjLastFrame");
 			m_hMatrixShaderHandle[enMatrixShaderHandle_ViewProj] = effectDx->GetParameterByName(NULL, "g_mViewProj");
@@ -52,9 +83,6 @@ namespace tkEngine{
 			m_hShadowRecieverParamShaderHandle = effectDx->GetParameterByName(NULL, "gShadowReceiverParam");
 			//ボーン行列のシェーダーハンドル。
 			m_hBoneMatrixArrayShaderHandle = effectDx->GetParameterByName(NULL, "g_mWorldMatrixArray");
-			
-			m_hShaderHandle[enShaderHandleWorldMatrixArray] = effectDx->GetParameterByName(NULL, "g_mWorldMatrixArray");
-			m_hShaderHandle[enShaderHandleShadowRecieverParam] = effectDx->GetParameterByName(NULL, "gShadowReceiverParam");
 
 			//シェーダーテクニック。
 			m_hTechniqueHandle[enTecShaderHandle_SkinModelInstancingRenderToShadowMap] = effectDx->GetTechniqueByName("SkinModelInstancingRenderToShadowMap");
@@ -66,8 +94,43 @@ namespace tkEngine{
 			m_hTechniqueHandle[enTecShaderHandle_NoSkinModelRenderShadowMap] = effectDx->GetTechniqueByName("NoSkinModelRenderShadowMap");
 			m_hTechniqueHandle[enTecShaderHandle_NoSkinModel] = effectDx->GetTechniqueByName("NoSkinModel");
 			m_hTechniqueHandle[enTecShaderHandle_Sky] = effectDx->GetTechniqueByName("Sky");
+			m_hTechniqueHandle[enTecShaderHandle_Terrain] = effectDx->GetTechniqueByName("Terrain");
 			
+			//初期化時はStandardマテリアルを構築する。
+			Build(enTypeStandard);
+		}
+	}
+	/*!
+	 *@brief	マテリアルを構築。
+	 */
+	void CSkinModelMaterial::Build(EnType type)
+	{
+		m_materialNodes.clear();
+		switch(type){
+		case enTypeStandard:
+			//スタンダード。
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendDiffuseMap(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendShadowMap_0(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendShadowMap_1(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendShadowMap_2(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendNormalMap(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendNormalMap(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendSpecularMap(this)));
 			SetTechnique(enTecShaderHandle_SkinModel);
+			break;
+		case enTypeTerrain:
+			//地形。
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendSplatMap(this)));
+			SetTechnique(enTecShaderHandle_Terrain);
+			break;
+		case enTypeSky:
+			//空。
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendSkyCubeMap(this)));
+			SetTechnique(enTecShaderHandle_Sky);
+			break;
+		default:
+			TK_ASSERT(false, "不正なマテリアルを構築しようとしています。");
+			break;
 		}
 	}
 	void CSkinModelMaterial::BeginDraw()
@@ -91,7 +154,7 @@ namespace tkEngine{
 		if (m_pEffect) {
 			ID3DXEffect* effect = m_pEffect->GetD3DXEffect();
 			//ちょい適当
-			for( int i = 0; i < enTextureShaderHandle_Num; i++ ){
+			/*for( int i = 0; i < enTextureShaderHandle_Num; i++ ){
 				if (m_textures[i]) {
 					if (m_textures[i]->IsCubeMap()) {
 						effect->SetTexture(m_hTexShaderHandle[i], m_textures[i]->GetCubeMapDX());
@@ -100,7 +163,7 @@ namespace tkEngine{
 						effect->SetTexture(m_hTexShaderHandle[i], m_textures[i]->GetTextureDX());
 					}
 				}
-			}
+			}*/
 			for (int i = 0; i < enMatrixShaderHandle_Num; i++) {
 				effect->SetMatrix(m_hMatrixShaderHandle[i], (D3DXMATRIX*)&m_matrices[i]);
 			}

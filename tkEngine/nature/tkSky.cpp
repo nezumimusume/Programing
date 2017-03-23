@@ -20,7 +20,7 @@ namespace tkEngine{
 		CSkinModelMaterial* mat = skinModelData.GetBody()->FindMaterial("sky.png");
 		if (mat) {
 			mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_SkyCubeMap, *TextureResources().Load("Assets/modelData/skyCubeMap.dds", true));
-			mat->SetTechnique(CSkinModelMaterial::enTecShaderHandle_Sky);
+			mat->Build(CSkinModelMaterial::enTypeSky);
 		}		
 		skinModel.SetAtomosphereParam(enAtomosphereFuncSkyFromAtomosphere);
 	}

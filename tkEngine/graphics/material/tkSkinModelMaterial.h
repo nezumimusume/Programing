@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "tkEngine/graphics/material/node/tkSkinModelMaterialNode.h"
+#include "tkEngine/graphics/tkEffect.h"
 
 namespace tkEngine{
 	class ISkinModelMaterialNode;
@@ -14,6 +14,14 @@ namespace tkEngine{
 	class CSkinModelMaterial
 	{
 	public:
+		/*!
+		 *@brief	マテリアルの種類。
+		 */
+		enum EnType{
+			enTypeStandard,		//!<スタンダード。
+			enTypeTerrain,		//!<地形。
+			enTypeSky,			//!<空。
+		};
 		/*!
 		*@brief	テクスチャのシェーダーハンドル。
 		*/
@@ -25,6 +33,11 @@ namespace tkEngine{
 			enTextureShaderHandle_NormalMap,	//!<法線マップ。
 			enTextureShaderHandle_SpecularMap,	//!<スペキュラマップ。
 			enTextureShaderHandle_SkyCubeMap,	//!<スカイキューブ。
+			enTextureShaderHandle_SplatMap,		//!<スプラットマップ。
+			enTextureShaderHandle_TerrainTex0,	//!<地形テクスチャ0
+			enTextureShaderHandle_TerrainTex1,	//!<地形テクスチャ1
+			enTextureShaderHandle_TerrainTex2,	//!<地形テクスチャ2
+			enTextureShaderHandle_TerrainTex3,	//!<地形テクスチャ3
 			enTextureShaderHandle_Num,
 		};
 		/*!
@@ -78,42 +91,26 @@ namespace tkEngine{
 			enTecShaderHandle_NoSkinModelRenderShadowMap,				//!<NoSkinModelRenderShadowMapテクニック。
 			enTecShaderHandle_NoSkinModel,								//!<NoSkinModelテクニック。
 			enTecShaderHandle_Sky,										//!<Skyテクニック。
+			enTecShaderHandle_Terrain,									//!<Terrain用テクニック。
 			enTecShaderHandle_Num,
 		};
-		enum EnShaderHandle {
-			enShaderHandleLight,				//ライト。
-			enShaderHandleWorldMatrixArray,		//ボーン行列
-			enShaderHandleShadowRecieverParam,	//シャドウレシーバー用のパラメータ。
-			enShaderHandleNum,					//シェーダーハンドルの数。
-		};
+	
 	public:
 		/*!
 		 *@brief	コンストラクタ。
 		 */
-		CSkinModelMaterial()
-		{
-			memset(m_textures, 0, sizeof(m_textures));
-			for (auto& m : m_matrices) {
-				m = CMatrix::Identity;
-			}
-			for (auto& v : m_fVector) {
-				v = CVector3::Zero;
-			}
-			for (auto& v : m_iVector) {
-				v.x = 0;
-				v.y = 0;
-				v.z = 0;
-				v.w = 0;
-			}
-			memset(m_int, 0, sizeof(m_int));
-		}
+		CSkinModelMaterial();
+		
 		/*!
 		 *@brief	デストラクタ。
 		 */
-		~CSkinModelMaterial()
-		{
-		}
+		~CSkinModelMaterial();
 		
+		/*!
+		 *@brief	マテリアルを構築。
+		 *@param[in]	type		マテリアルのタイプ。
+		 */
+		void Build(EnType type);
 		/*!
 		 *@brief	テクスチャを設定。
 		 */
@@ -225,6 +222,25 @@ namespace tkEngine{
 		{
 			return m_materialName.c_str();
 		}
+		/*!
+		*@brief	テクスチャをGPUに転送。
+		*@details
+		* この関数はISkinModelMaterialNodeの派生クラスでしか使用しないように注意してください。
+		*/
+		void SendTextureTGPU(EnTextureShaderHandle eTex)
+		{
+			if (m_pEffect) {
+				ID3DXEffect* effect = m_pEffect->GetD3DXEffect();
+				if (m_textures[eTex] != nullptr) {
+					if (m_textures[eTex]->IsCubeMap()) {
+						effect->SetTexture(m_hTexShaderHandle[eTex], m_textures[eTex]->GetCubeMapDX());
+					}
+					else {
+						effect->SetTexture(m_hTexShaderHandle[eTex], m_textures[eTex]->GetTextureDX());
+					}
+				}
+			}
+		}
 	private:
 		/*!
 		*@brief	シェーダーハンドルの初期化。
@@ -240,8 +256,11 @@ namespace tkEngine{
 		CLight m_light;										//!<ライト。
 		CShadowMap::ShadowRecieverParam m_shadowRecParam;	//!<シャドウレシーバーパラメータ。
 	private:
+		
+		typedef std::unique_ptr<ISkinModelMaterialNode>	ISkinModelMaterialNodePtr;
+		std::vector<ISkinModelMaterialNodePtr>	m_materialNodes;		//!<マテリアルのノード。
+
 		std::string m_materialName;										//!<マテリアル名。
-		std::vector<ISkinModelMaterialNode*>	m_materialNodes;		//!<マテリアルのノード。
 		CEffect* m_pEffect = nullptr;									//!<エフェクト。
 		D3DXHANDLE m_hTec;												//!<テクニックハンドル。
 		EnShaderTechnique m_eTec = enTecShaderHandle_SkinModel;			//!<現在のシェーダーテクニック。
@@ -256,7 +275,6 @@ namespace tkEngine{
 		D3DXHANDLE m_hShadowRecieverParamShaderHandle;					//!<シャドウレシーバーパラメータのシェーダーハンドル。						
 		D3DXHANDLE m_hBoneMatrixArrayShaderHandle;						//!<ボーン行列の配列のシェーダーハンドル。
 		D3DXHANDLE m_hTechniqueHandle[enTecShaderHandle_Num];			//!<テクニックのハンドル。
-		D3DXHANDLE m_hShaderHandle[enShaderHandleNum];					//!<シェーダーハンドル。
 		
 		const D3DXMATRIX* m_boneMatrixArray = nullptr;					//!<ボーン行列へのポインタ。
 		int m_boneMatrixArraySize = 0;									//!<ボーン行列の配列のサイズ。
