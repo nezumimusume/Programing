@@ -142,6 +142,10 @@ namespace tkEngine{
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainTex1(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainTex2(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainTex3(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainNormalMap0(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainNormalMap1(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainNormalMap2(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainNormalMap3(this)));
 			SetTechnique(enTecShaderHandle_Terrain);
 			break;
 		case enTypeSky:

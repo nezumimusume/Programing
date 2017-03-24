@@ -119,11 +119,23 @@ namespace tkEngine{
 	//地形テクスチャ2転送ノード
 	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_TerrainTex2>
 		CSkinModelMaterialNode_SendTerrainTex2;
-	//地形テクスチャ2転送ノード
+	//地形テクスチャ3転送ノード
 	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_TerrainTex3>
 		CSkinModelMaterialNode_SendTerrainTex3;
 
-	
+	//地形法線マップ0転送ノード
+	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_TerrainNormalMap0>
+		CSkinModelMaterialNode_SendTerrainNormalMap0;
+	//地形法線マップ1転送ノード
+	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_TerrainNormalMap1>
+		CSkinModelMaterialNode_SendTerrainNormalMap1;
+	//地形法線マップ2転送ノード
+	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_TerrainNormalMap2>
+		CSkinModelMaterialNode_SendTerrainNormalMap2;
+	//地形法線マップ3転送ノード
+	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_TerrainNormalMap3>
+		CSkinModelMaterialNode_SendTerrainNormalMap3;
+
 	//1フレーム前のビュープロジェクション行列転送ノード。
 	typedef TSkinModelMaterialNode_SendMatrix<CSkinModelMaterial::enMatrixShaderHandle_LastFrameViewProj>
 		CSkinModelMaterialNode_SendLastFrameViewProj;
