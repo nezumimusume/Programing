@@ -68,7 +68,6 @@ namespace tkEngine{
 			m_hMatrixShaderHandle[enMatrixShaderHandle_WorldMatrix] = effectDx->GetParameterByName(NULL, "g_worldMatrix");
 			//浮動小数ベクトルのシェーダーハンドル。
 			m_hFVectorShaderHandle[enFVectorShaderHandle_CameraPos] = effectDx->GetParameterByName(NULL, "g_cameraPos");
-			m_hFVectorShaderHandle[enFVectorShaderHandle_FarNear] = effectDx->GetParameterByName(NULL, "g_farNear");
 			m_hFVectorShaderHandle[enFVectorShaderHandle_FogParam] = effectDx->GetParameterByName(NULL, "g_fogParam");
 			m_hFVectorShaderHandle[enFVectorShaderHandle_CameraDir] = effectDx->GetParameterByName(NULL, "g_cameraDir");
 			m_hFVectorShaderHandle[enFVectorShaderHandle_TerrainRect] = effectDx->GetParameterByName(NULL, "g_terrainRect");
@@ -125,6 +124,19 @@ namespace tkEngine{
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendShadowMap_2(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendNormalMap(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendSpecularMap(this)));
+			//浮動小数点ベクトル。
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendCameraPos(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendFogParam(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendCameraDir(this)));
+
+			//整数ベクトル。
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendFlags(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendFlags2(this)));
+
+			//整数。
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_NumBone(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_CurNumBone(this)));
+
 			SetTechnique(enTecShaderHandle_SkinModel);
 			break;
 		case enTypeTerrain:
@@ -135,6 +147,7 @@ namespace tkEngine{
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendLVP(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendWorldMatrix(this)));
 			//ベクトル。
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendCameraPos(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainRect(this)));
 			//テクスチャ。
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendSplatMap(this)));
@@ -146,6 +159,10 @@ namespace tkEngine{
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainNormalMap1(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainNormalMap2(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainNormalMap3(this)));
+			//整数ベクトル。
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendFlags(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendFlags2(this)));
+
 			SetTechnique(enTecShaderHandle_Terrain);
 			break;
 		case enTypeSky:
@@ -157,6 +174,10 @@ namespace tkEngine{
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendWorldMatrix(this)));
 			//テクスチャ。
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendSkyCubeMap(this)));
+			//ベクトル。
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendCameraPos(this)));
+			//整数ベクトル。
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendFlags2(this)));
 			SetTechnique(enTecShaderHandle_Sky);
 			break;
 		default:
@@ -185,15 +206,7 @@ namespace tkEngine{
 		if (m_pEffect) {
 			m_pEffectRaw = m_pEffect->GetD3DXEffect();
 			//ちょい適当
-			for (int i = 0; i < enFVectorShaderHandle_Num; i++) {
-				m_pEffectRaw->SetVector(m_hFVectorShaderHandle[i], (D3DXVECTOR4*)&m_fVector[i]);
-			}
-			for (int i = 0; i < enIVectorShaderHandle_Num; i++) {
-				m_pEffectRaw->SetIntArray(m_hIVectorShaderHandle[i], (int*)&m_iVector[i], 4);
-			}
-			for (int i = 0; i < enIntShaderHandle_Num; i++) {
-				m_pEffectRaw->SetInt(m_hIntShaderHandle[i], m_int[i]);
-			}
+
 			m_pEffectRaw->SetValue(m_hLightShaderHandle, &m_light, sizeof(m_light));
 			m_pEffectRaw->SetValue(m_hAtmosShaderHandle, &m_atmosParam, sizeof(m_atmosParam));
 			m_pEffectRaw->SetValue(m_hShadowRecieverParamShaderHandle, &m_shadowRecParam, sizeof(m_shadowRecParam));

@@ -64,14 +64,6 @@ namespace tkEngine{
 		}
 		material.SetIVector(CSkinModelMaterial::enIVectorShaderHandle_Flags2, flag2);
 
-		if (isDrawToShadowMap || m_isShadowReceiver) {
-			CVector4 farNear;
-			farNear.x = ShadowMap().GetFar();
-			farNear.y = ShadowMap().GetNear();
-			farNear.z = 0.0f;
-			farNear.w = 0.0f;
-			material.SetFVector(CSkinModelMaterial::enFVectorShaderHandle_FarNear, farNear);
-		}
 		//ÉtÉHÉO
 		CVector4 fogParam;
 		if (m_fogFunc == enFogFuncDist) {

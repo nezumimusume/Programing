@@ -15,7 +15,6 @@ float4x4	g_worldMatrix;			//!<ワールド行列。
 float4x4	g_mViewProjLastFrame;	//!<1フレーム前のビュープロジェクション行列。
 float4		g_fogParam;				//フォグのパラメータ。xにフォグが掛かり始める深度。yにフォグが完全にかかる深度。zはフォグを計算するかどうかのフラグ。
 
-float2		g_farNear;	//遠平面と近平面。xに遠平面、yに近平面。
 
 int4 g_flags;				//xに法線マップ、yはシャドウレシーバー、zはリムライト、wはスペキュラマップ。
 

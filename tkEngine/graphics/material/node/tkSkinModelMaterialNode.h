@@ -42,7 +42,6 @@ namespace tkEngine{
 		 */
 		void SendMaterialParamToGPU() final
 		{
-			//スプラットマップを転送。
 			m_material->SendTextureTGPU(TTex);
 		}
 	};
@@ -62,7 +61,6 @@ namespace tkEngine{
 		*/
 		void SendMaterialParamToGPU() final
 		{
-			//スプラットマップを転送。
 			m_material->SendMatrixToGPU(TMatrix);
 		}
 	};
@@ -81,8 +79,44 @@ namespace tkEngine{
 		*/
 		void SendMaterialParamToGPU() final
 		{
-			//スプラットマップを転送。
 			m_material->SendFVectorToGPU(TVector);
+		}
+	};
+	/*!
+	*@brief	整数ベクトル転送ノードのテンプレートクラス。
+	*/
+	template<CSkinModelMaterial::EnIVectorShaderHandle TVector>
+	class TSkinModelMaterialNode_SendIVector : public ISkinModelMaterialNode {
+	public:
+		TSkinModelMaterialNode_SendIVector(CSkinModelMaterial* mat) :
+			ISkinModelMaterialNode(mat)
+		{
+		}
+		/*!
+		*@brief	マテリアルパラメータをGPUに転送。
+		*/
+		void SendMaterialParamToGPU() final
+		{
+			m_material->SendIVectorToGPU(TVector);
+		}
+	};
+
+	/*!
+	*@brief	整数転送ノードのテンプレートクラス。
+	*/
+	template<CSkinModelMaterial::EnIntShaderHandle TInt>
+	class TSkinModelMaterialNode_SendInt : public ISkinModelMaterialNode {
+	public:
+		TSkinModelMaterialNode_SendInt(CSkinModelMaterial* mat) :
+			ISkinModelMaterialNode(mat)
+		{
+		}
+		/*!
+		*@brief	マテリアルパラメータをGPUに転送。
+		*/
+		void SendMaterialParamToGPU() final
+		{
+			m_material->SendIntToGPU(TInt);
 		}
 	};
 
@@ -149,7 +183,32 @@ namespace tkEngine{
 	typedef TSkinModelMaterialNode_SendMatrix<CSkinModelMaterial::enMatrixShaderHandle_WorldMatrix>
 		CSkinModelMaterialNode_SendWorldMatrix;
 
+	//カメラの位置。
+	typedef TSkinModelMaterialNode_SendFVector<CSkinModelMaterial::enFVectorShaderHandle_CameraPos>
+		CSkinModelMaterialNode_SendCameraPos;
+	//Fogパラメータ転送ノード。
+	typedef TSkinModelMaterialNode_SendFVector<CSkinModelMaterial::enFVectorShaderHandle_FogParam>
+		CSkinModelMaterialNode_SendFogParam;
+	//カメラの方向転送ノード。
+	typedef TSkinModelMaterialNode_SendFVector<CSkinModelMaterial::enFVectorShaderHandle_CameraDir>
+		CSkinModelMaterialNode_SendCameraDir;
 	//地形のXZ平面上のサイズ転送ノード。
 	typedef TSkinModelMaterialNode_SendFVector<CSkinModelMaterial::enFVectorShaderHandle_TerrainRect>
 		CSkinModelMaterialNode_SendTerrainRect;
+
+	//!<各種フラグ。xに法線マップ、yはシャドウレシーバー、zはリムライト、wはスペキュラマップ。転送ノード。
+	typedef TSkinModelMaterialNode_SendIVector<CSkinModelMaterial::enIVectorShaderHandle_Flags>
+		CSkinModelMaterialNode_SendFlags;
+
+	//!<各種フラグ。xに速度マップへの書き込み、yは大気錯乱シミュレーション種類。
+	typedef TSkinModelMaterialNode_SendIVector<CSkinModelMaterial::enIVectorShaderHandle_Flags2>
+		CSkinModelMaterialNode_SendFlags2;
+
+	//!<ボーンの数。
+	typedef TSkinModelMaterialNode_SendInt<CSkinModelMaterial::enIntShaderHandle_NumBone>
+		CSkinModelMaterialNode_NumBone;	
+
+	//!<スキニングを行うボーンの数。
+	typedef TSkinModelMaterialNode_SendInt<CSkinModelMaterial::enIntshaderHandle_CurNumBone>
+		CSkinModelMaterialNode_CurNumBone;
 }

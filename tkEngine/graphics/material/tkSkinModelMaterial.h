@@ -59,7 +59,7 @@ namespace tkEngine{
 		*/
 		enum EnFVectorShaderHandle {
 			enFVectorShaderHandle_CameraPos,	//!<カメラの位置。
-			enFVectorShaderHandle_FarNear,		//!<遠平面と近平面。
+
 			enFVectorShaderHandle_FogParam,		//!<Fogパラメータ。
 			enFVectorShaderHandle_CameraDir,	//!<カメラの方向。
 			enFVectorShaderHandle_TerrainRect,	//!<地形のサイズ。
@@ -266,6 +266,30 @@ namespace tkEngine{
 			TK_ASSERT(m_isBeginDraw, "Please call BeginDraw!!!!");
 			if (m_pEffectRaw != nullptr) {
 				m_pEffectRaw->SetVector(m_hFVectorShaderHandle[eVector], (D3DXVECTOR4*)&m_fVector[eVector]);
+			}
+		}
+		/*!
+		*@brief	整数ベクトルをGPUに転送。
+		*@details
+		* この関数はISkinModelMaterialNodeの派生クラスでしか使用しないように注意してください。
+		*/
+		void SendIVectorToGPU(EnIVectorShaderHandle eVector)
+		{
+			TK_ASSERT(m_isBeginDraw, "Please call BeginDraw!!!!");
+			if (m_pEffectRaw != nullptr) {
+				m_pEffectRaw->SetIntArray(m_hIVectorShaderHandle[eVector], (int*)&m_iVector[eVector], 4);
+			}
+		}
+		/*!
+		*@brief	整数をGPUに転送。
+		*@details
+		* この関数はISkinModelMaterialNodeの派生クラスでしか使用しないように注意してください。
+		*/
+		void SendIntToGPU(EnIntShaderHandle eInt)
+		{
+			TK_ASSERT(m_isBeginDraw, "Please call BeginDraw!!!!");
+			if (m_pEffectRaw != nullptr) {
+				m_pEffectRaw->SetInt(m_hIntShaderHandle[eInt], m_int[eInt]);
 			}
 		}
 	private:
