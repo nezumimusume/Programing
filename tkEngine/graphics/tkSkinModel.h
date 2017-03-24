@@ -166,7 +166,13 @@ namespace tkEngine {
 		{
 			return m_skinModelData->GetOrgMeshFirst();
 		}
-		
+		/*!
+		* @brief	メッシュリストを取得。
+		*/
+		const std::vector<LPD3DXMESH>& GetMeshList() const
+		{
+			return m_skinModelData->GetMeshList();
+		}
 		/*!
 		* @brief	骨のワールド行列を検索
 		*@details
@@ -288,6 +294,7 @@ namespace tkEngine {
 		bool							m_isWriteVelocityMap = true;		//!<速度マップに書き込む？
 		bool							m_isStealth = false;				//!<ステルス迷彩？
 		EAtomosphereFunc					m_atomosphereFunc = enAtomosphereFuncObjectFromAtomosphere;	//!<大気錯乱シミュレーションの種類。
+
 	};
 }
 

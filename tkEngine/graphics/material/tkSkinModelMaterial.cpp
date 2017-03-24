@@ -56,6 +56,10 @@ namespace tkEngine{
 			m_hTexShaderHandle[enTextureShaderHandle_TerrainTex1] = effectDx->GetParameterByName(NULL, "g_terrainTex1");
 			m_hTexShaderHandle[enTextureShaderHandle_TerrainTex2] = effectDx->GetParameterByName(NULL, "g_terrainTex2");
 			m_hTexShaderHandle[enTextureShaderHandle_TerrainTex3] = effectDx->GetParameterByName(NULL, "g_terrainTex3");
+			m_hTexShaderHandle[enTextureShaderHandle_TerrainNormalMap0] = effectDx->GetParameterByName(NULL, "g_terrainNormalMap0");
+			m_hTexShaderHandle[enTextureShaderHandle_TerrainNormalMap1] = effectDx->GetParameterByName(NULL, "g_terrainNormalMap1");
+			m_hTexShaderHandle[enTextureShaderHandle_TerrainNormalMap2] = effectDx->GetParameterByName(NULL, "g_terrainNormalMap2");
+			m_hTexShaderHandle[enTextureShaderHandle_TerrainNormalMap3] = effectDx->GetParameterByName(NULL, "g_terrainNormalMap3");
 
 			//行列のシェーダーハンドル。
 			m_hMatrixShaderHandle[enMatrixShaderHandle_LastFrameViewProj] = effectDx->GetParameterByName(NULL, "g_mViewProjLastFrame");
@@ -67,6 +71,8 @@ namespace tkEngine{
 			m_hFVectorShaderHandle[enFVectorShaderHandle_FarNear] = effectDx->GetParameterByName(NULL, "g_farNear");
 			m_hFVectorShaderHandle[enFVectorShaderHandle_FogParam] = effectDx->GetParameterByName(NULL, "g_fogParam");
 			m_hFVectorShaderHandle[enFVectorShaderHandle_CameraDir] = effectDx->GetParameterByName(NULL, "g_cameraDir");
+			m_hFVectorShaderHandle[enFVectorShaderHandle_TerrainRect] = effectDx->GetParameterByName(NULL, "g_terrainRect");
+
 			//整数ベクトルのシェーダーハンドル。
 			m_hIVectorShaderHandle[enIVectorShaderHandle_Flags] = effectDx->GetParameterByName(NULL, "g_flags");
 			m_hIVectorShaderHandle[enIVectorShaderHandle_Flags2] = effectDx->GetParameterByName(NULL, "g_flags2");
@@ -128,11 +134,14 @@ namespace tkEngine{
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendViewProj(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendLVP(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendWorldMatrix(this)));
+			//ベクトル。
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainRect(this)));
 			//テクスチャ。
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendSplatMap(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainTex0(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainTex1(this)));
 			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainTex2(this)));
+			m_materialNodes.push_back(ISkinModelMaterialNodePtr(new CSkinModelMaterialNode_SendTerrainTex3(this)));
 			SetTechnique(enTecShaderHandle_Terrain);
 			break;
 		case enTypeSky:

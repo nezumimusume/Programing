@@ -38,6 +38,10 @@ namespace tkEngine{
 			enTextureShaderHandle_TerrainTex1,	//!<地形テクスチャ1
 			enTextureShaderHandle_TerrainTex2,	//!<地形テクスチャ2
 			enTextureShaderHandle_TerrainTex3,	//!<地形テクスチャ3
+			enTextureShaderHandle_TerrainNormalMap0,	//!<地形の法線マップ0。
+			enTextureShaderHandle_TerrainNormalMap1,	//!<地形の法線マップ1。
+			enTextureShaderHandle_TerrainNormalMap2,	//!<地形の法線マップ2。
+			enTextureShaderHandle_TerrainNormalMap3,	//!<地形の法線マップ3。
 			enTextureShaderHandle_Num,
 		};
 		/*!
@@ -58,6 +62,7 @@ namespace tkEngine{
 			enFVectorShaderHandle_FarNear,		//!<遠平面と近平面。
 			enFVectorShaderHandle_FogParam,		//!<Fogパラメータ。
 			enFVectorShaderHandle_CameraDir,	//!<カメラの方向。
+			enFVectorShaderHandle_TerrainRect,	//!<地形のサイズ。
 			enFVectorShaderHandle_Num,
 		};
 		/*!
@@ -249,6 +254,18 @@ namespace tkEngine{
 			TK_ASSERT(m_isBeginDraw, "Please call BeginDraw!!!!");
 			if (m_pEffectRaw != nullptr) {
 				m_pEffectRaw->SetMatrix(m_hMatrixShaderHandle[eMatrix], (D3DXMATRIX*)&m_matrices[eMatrix]);
+			}
+		}
+		/*!
+		*@brief	浮動小数ベクトルをGPUに転送。
+		*@details
+		* この関数はISkinModelMaterialNodeの派生クラスでしか使用しないように注意してください。
+		*/
+		void SendFVectorToGPU(EnFVectorShaderHandle eVector)
+		{
+			TK_ASSERT(m_isBeginDraw, "Please call BeginDraw!!!!");
+			if (m_pEffectRaw != nullptr) {
+				m_pEffectRaw->SetVector(m_hFVectorShaderHandle[eVector], (D3DXVECTOR4*)&m_fVector[eVector]);
 			}
 		}
 	private:

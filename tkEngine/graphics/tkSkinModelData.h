@@ -176,7 +176,16 @@ namespace tkEngine{
 		{
 			return m_materials;
 		}
+		/*!
+		* @brief	スキンモデルのメッシュのリストを取得。
+		*/
+		const std::vector<LPD3DXMESH>& GetMeshList() const
+		{
+			return m_meshList;
+		}
 	private:
+		typedef std::function<void(LPD3DXMESH)> QueryMeshCallback;
+
 		CMatrix* FindBoneWorldMatrix(const char* boneName, LPD3DXFRAME frame);
 		/*!
 		* @brief	オリジナルメッシュを取得。
@@ -210,6 +219,14 @@ namespace tkEngine{
 		 */
 		bool CreateInstancingDrawData(LPD3DXFRAME frame, int numInstance, D3DVERTEXELEMENT9* vertexElement );
 		HRESULT SetupBoneMatrixPointers(LPD3DXFRAME pFrame, LPD3DXFRAME pRootFrame);
+		/*!
+		* @brief	メッシュのリストを作成。
+		*/
+		void CreateMeshList();
+		/*!
+		* @brief	メッシュに対して問い合わせを行う。
+		*/
+		void QueryMeshes(LPD3DXFRAME frame, QueryMeshCallback cb);
 	private:
 		LPD3DXFRAME							m_frameRoot;		//フレームルート。
 		ID3DXAnimationController*			m_animController;	//アニメーションコントローラ。
@@ -219,6 +236,7 @@ namespace tkEngine{
 		int									m_numInstance;					//インスタンスの数。
 		int									m_vertexBufferStride;			//頂点バッファのストライド。
 		std::vector<CSkinModelMaterial*>	m_materials;					//マテリアル。
+		std::vector<LPD3DXMESH>				m_meshList;						//メッシュのリスト。
 		bool								m_isLoadEnd = false;
 		std::thread							m_loadThread;		//読み込みスレッド
 		const CSkinModelData*						m_original = nullptr;

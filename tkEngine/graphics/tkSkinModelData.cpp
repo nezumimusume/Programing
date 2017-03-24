@@ -708,6 +708,8 @@ namespace tkEngine{
 		else {
 			SAFE_RELEASE(m_animController);
 		}
+		//メッシュリストを作成。
+		CreateMeshList();
 		m_isLoadEnd = true;
 	}
 	void CSkinModelData::LoadModelDataAsync(const char* filePath, CAnimation* anim)
@@ -894,8 +896,37 @@ namespace tkEngine{
 		
 		return nullptr;
 	}
+	void CSkinModelData::CreateMeshList()
+	{
+		CSkinModelData* _this = this;
+		auto cb = [this](LPD3DXMESH mesh)
+		{
+			m_meshList.push_back(mesh);
+		};
+		QueryMeshes(m_frameRoot, cb);
+	}
+	void CSkinModelData::QueryMeshes(LPD3DXFRAME frame, QueryMeshCallback cb)
+	{
+		LPD3DXMESHCONTAINER pMeshContainer;
+		pMeshContainer = frame->pMeshContainer;
+		while (pMeshContainer != NULL)
+		{
+			D3DXFRAME_DERIVED* _frame = (D3DXFRAME_DERIVED*)frame;
+			cb(pMeshContainer->MeshData.pMesh);
+			pMeshContainer = pMeshContainer->pNextMeshContainer;
+		}
+		if (frame->pFrameSibling != NULL)
+		{
+			QueryMeshes(frame->pFrameSibling, cb);
+		}
+		if (frame->pFrameFirstChild != NULL)
+		{
+			QueryMeshes(frame->pFrameFirstChild, cb);
+		}
+	}
 	LPD3DXMESH CSkinModelData::GetOrgMeshFirst() const
 	{
+		
 		return GetOrgMesh(m_frameRoot);
 	}
 	

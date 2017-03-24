@@ -70,6 +70,11 @@ namespace tkEngine{
 		}
 	private:
 		/*!
+		*@brief	地形の幅と高さを計算。
+		*/
+		void CalcWidthAndHeight();
+	private:
+		/*!
 		 *@brief	初期化ステップ。
 		 */
 		enum class InitStep{
@@ -93,5 +98,6 @@ namespace tkEngine{
 		const CCamera*			m_camera = nullptr;					//!<カメラ。
 		CMeshCollider			m_meshCollider;						//!<メッシュコライダー。
 		CRigidBody				m_rigidBody;						//!<剛体。
+		CVector4				m_terrainSize = {0.0f, 0.0f, 0.0f, 0.0f};	//!<地形のサイズ。
 	};
 }

@@ -29,9 +29,11 @@ bool Ground::Start()
 		AddGO(GetPriority(), &terrain);
 		const char* textures[] = {
 			"Assets/modelData/Grass.tga",
+			"Assets/modelData/snow.png",
+			"Assets/modelData/Sand_Albedo.tga",
 			NULL
 		};
-		terrain.Init("Assets/modelData/ground.X", "Assets/modelData/utc_all2.tga", textures, g_camera->GetCamera(), gameScene->GetDefaultLight());
+		terrain.Init("Assets/modelData/ground.X", "Assets/modelData/groundSplatmap.png", textures, g_camera->GetCamera(), gameScene->GetDefaultLight());
 		initStep = InitStep_Wait;
 	}break;
 	case InitStep_Wait: {

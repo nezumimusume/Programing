@@ -66,6 +66,25 @@ namespace tkEngine{
 			m_material->SendMatrixToGPU(TMatrix);
 		}
 	};
+	/*!
+	*@brief	浮動小数ベクトル転送ノードのテンプレートクラス。
+	*/
+	template<CSkinModelMaterial::EnFVectorShaderHandle TVector>
+	class TSkinModelMaterialNode_SendFVector : public ISkinModelMaterialNode {
+	public:
+		TSkinModelMaterialNode_SendFVector(CSkinModelMaterial* mat) :
+			ISkinModelMaterialNode(mat)
+		{
+		}
+		/*!
+		*@brief	マテリアルパラメータをGPUに転送。
+		*/
+		void SendMaterialParamToGPU() final
+		{
+			//スプラットマップを転送。
+			m_material->SendFVectorToGPU(TVector);
+		}
+	};
 
 	//ディフューズマップ転送ノード。
 	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_DiffuseMap>
@@ -100,6 +119,9 @@ namespace tkEngine{
 	//地形テクスチャ2転送ノード
 	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_TerrainTex2>
 		CSkinModelMaterialNode_SendTerrainTex2;
+	//地形テクスチャ2転送ノード
+	typedef TSkinModelMaterialNode_SendTexture<CSkinModelMaterial::enTextureShaderHandle_TerrainTex3>
+		CSkinModelMaterialNode_SendTerrainTex3;
 
 	
 	//1フレーム前のビュープロジェクション行列転送ノード。
@@ -114,4 +136,8 @@ namespace tkEngine{
 	//ワールド行列
 	typedef TSkinModelMaterialNode_SendMatrix<CSkinModelMaterial::enMatrixShaderHandle_WorldMatrix>
 		CSkinModelMaterialNode_SendWorldMatrix;
+
+	//地形のXZ平面上のサイズ転送ノード。
+	typedef TSkinModelMaterialNode_SendFVector<CSkinModelMaterial::enFVectorShaderHandle_TerrainRect>
+		CSkinModelMaterialNode_SendTerrainRect;
 }

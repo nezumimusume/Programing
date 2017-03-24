@@ -36,6 +36,42 @@ namespace tkEngine{
 		m_camera = &camera;
 		m_light = &light;
 	}
+	void CTerrain::CalcWidthAndHeight()
+	{
+		const std::vector<LPD3DXMESH>& meshList = m_skinModel.GetMeshList();
+		float minX = FLT_MAX;
+		float minZ = FLT_MAX;
+		float maxX = -FLT_MAX;
+		float maxZ = -FLT_MAX;
+		for (auto& mesh : meshList) {
+			//頂点バッファを取得。
+			LPDIRECT3DVERTEXBUFFER9 vb;
+			mesh->GetVertexBuffer(&vb);
+			//頂点定義を取得。
+			D3DVERTEXBUFFER_DESC desc;
+			vb->GetDesc(&desc);
+			//頂点ストライドを取得。
+			int stride = mesh->GetNumBytesPerVertex();
+			D3DXVECTOR3* vertexPos;
+			vb->Lock(0, desc.Size, (void**)&vertexPos, D3DLOCK_READONLY);
+			for (unsigned int i = 0; i < mesh->GetNumVertices(); i++) {
+				minX = min(minX, vertexPos->x);
+				minZ = min(minZ, vertexPos->z);
+				maxX = max(maxX, vertexPos->x);
+				maxZ = max(maxZ, vertexPos->z);
+				//次の頂点へ。
+				char* p = (char*)vertexPos;
+				p += stride;
+				vertexPos = (D3DXVECTOR3*)p;
+			}
+			vb->Unlock();
+			vb->Release();
+		}
+		m_terrainSize.x = minX;
+		m_terrainSize.y = maxX;
+		m_terrainSize.z = minZ;
+		m_terrainSize.w = maxZ;
+	}
 	bool CTerrain::Start()
 	{
 		switch (m_initStep) {
@@ -55,17 +91,7 @@ namespace tkEngine{
 					m_textures[i].Load(texPath.c_str());
 					i++;
 				}
-				const std::vector<CSkinModelMaterial*>& materials = m_skinModelData.GetBody()->GetSkinModelMaterials();
-				//地形用のマテリアルを構築する。
-				for (auto& mat : materials) {
-				//	mat->Build(CSkinModelMaterial::enTypeTerrain);
-					//スプラットマップを設定する。
-					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_SplatMap, m_splatMap);
-					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_TerrainTex0, m_textures[0]);
-					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_TerrainTex1, m_textures[1]);
-					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_TerrainTex2, m_textures[2]);
-					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_TerrainTex3, m_textures[3]);
-				}
+				
 				//コリジョンを初期化。
 				Update();
 				CMatrix* rootBoneMatrix = m_skinModelData.GetBody()->GetRootBoneWorldMatrix();
@@ -79,6 +105,22 @@ namespace tkEngine{
 				m_rigidBody.GetBody()->setUserIndex(enCollisionAttr_Ground);
 				//剛体をワールドに追加。
 				PhysicsWorld().AddRigidBody(&m_rigidBody);
+				//地形の幅と高さを計算。
+				CalcWidthAndHeight();
+
+				
+				const std::vector<CSkinModelMaterial*>& materials = m_skinModelData.GetBody()->GetSkinModelMaterials();
+				//地形用のマテリアルを構築する。
+				for (auto& mat : materials) {
+					mat->Build(CSkinModelMaterial::enTypeTerrain);
+					//スプラットマップを設定する。
+					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_SplatMap, m_splatMap);
+					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_TerrainTex0, m_textures[0]);
+					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_TerrainTex1, m_textures[1]);
+					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_TerrainTex2, m_textures[2]);
+					mat->SetTexture(CSkinModelMaterial::enTextureShaderHandle_TerrainTex3, m_textures[3]);
+					mat->SetFVector(CSkinModelMaterial::enFVectorShaderHandle_TerrainRect, m_terrainSize);
+				}
 
 				return true;
 			}

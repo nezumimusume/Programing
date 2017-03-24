@@ -640,6 +640,8 @@ texture g_terrainTex0;
 texture g_terrainTex1;
 texture g_terrainTex2;
 texture g_terrainTex3;
+float4 g_terrainRect;	//!<地形をXZ平面で見た矩形。
+
 sampler g_terrainTexSampler[4] = {
 	sampler_state
 	{
@@ -678,16 +680,70 @@ sampler g_terrainTexSampler[4] = {
 		AddressV = Wrap;
 	},
 };
+
+texture g_terrainNormalMap0;
+texture g_terrainNormalMap1;
+texture g_terrainNormalMap2;
+texture g_terrainNormalMap3;
+sampler g_terrainNormalMapSampler[4] = {
+	sampler_state
+	{
+		Texture = <g_terrainNormalMap0>;
+		MipFilter = LINEAR;
+		MinFilter = LINEAR;
+		MagFilter = LINEAR;
+		AddressU = Wrap;
+		AddressV = Wrap;
+	},
+	sampler_state
+	{
+		Texture = <g_terrainNormalMap1>;
+		MipFilter = LINEAR;
+		MinFilter = LINEAR;
+		MagFilter = LINEAR;
+		AddressU = Wrap;
+		AddressV = Wrap;
+	},
+	sampler_state
+	{
+		Texture = <g_terrainNormalMap2>;
+		MipFilter = LINEAR;
+		MinFilter = LINEAR;
+		MagFilter = LINEAR;
+		AddressU = Wrap;
+		AddressV = Wrap;
+	},
+	sampler_state
+	{
+		Texture = <g_terrainNormalMap3>;
+		MipFilter = LINEAR;
+		MinFilter = LINEAR;
+		MagFilter = LINEAR;
+		AddressU = Wrap;
+		AddressV = Wrap;
+	},
+};
 /*!
  *@brief	地形用ピクセルシェーダー。
  */
 PSOutput PSTerrain(VS_OUTPUT In) : COLOR
 {
-	float4 diffuseColor = tex2D(g_terrainTexSampler[0], In.Tex0);
+	//スプラットマップのUV座標を求める。
+	float2 splatMapUV;
+	splatMapUV.x = (In.worldPos_depth.x - g_terrainRect.x) / (g_terrainRect.y-g_terrainRect.x);
+	splatMapUV.y = (In.worldPos_depth.z - g_terrainRect.z) / (g_terrainRect.w-g_terrainRect.z);
+	float4 splatMap = tex2D(g_splatMapSampler, splatMapUV);
+	float t = splatMap.r + splatMap.g + splatMap.b /*+ splatMap.w*/;
+	float4 weights = float4(splatMap.r/t, splatMap.g/t, splatMap.b/t, splatMap.w/t);
+	
+	float4 diffuseColor = tex2D(g_terrainTexSampler[0], In.Tex0) * weights.x;
+	diffuseColor += tex2D(g_terrainTexSampler[1], In.Tex0) * weights.y;
+	diffuseColor += tex2D(g_terrainTexSampler[2], In.Tex0) * weights.z;
+	//diffuseColor += tex2D(g_terrainTexSampler[3], In.Tex0) * weights.w;
 	float4 color = diffuseColor;
 	
 	float3 normal = normalize(In.Normal);
-	//ディフューズライト
+	//ディwwwwwフューズライト
 	float4 lig = DiffuseLight(normal);
 	//影
 	lig *= CalcShadow(In.worldPos_depth.xyz);
