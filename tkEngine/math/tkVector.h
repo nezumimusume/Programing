@@ -148,7 +148,7 @@ namespace tkEngine{
 		 */
 		void Cross(const CVector3& v)
 		{
-			float _x = ( x * v.z ) - ( v.y * z );
+			float _x = ( y * v.z ) - ( v.y * z );
 			float _y = ( z * v.x ) - ( v.z * x );
 			float _z = ( x * v.y ) - ( v.x * y );
 			x = _x;
