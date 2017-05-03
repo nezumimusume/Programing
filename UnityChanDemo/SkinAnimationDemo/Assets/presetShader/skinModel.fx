@@ -735,9 +735,9 @@ PSOutput PSTerrain(VS_OUTPUT In) : COLOR
 	float t = splatMap.r + splatMap.g + splatMap.b /*+ splatMap.w*/;
 	float4 weights = float4(splatMap.r/t, splatMap.g/t, splatMap.b/t, splatMap.w/t);
 	
-	float4 diffuseColor = tex2D(g_terrainTexSampler[0], In.Tex0) * weights.x;
-	diffuseColor += tex2D(g_terrainTexSampler[1], In.Tex0) * weights.y;
-	diffuseColor += tex2D(g_terrainTexSampler[2], In.Tex0) * weights.z;
+	float4 diffuseColor = tex2D(g_terrainTexSampler[0], In.Tex0*0.2f) * weights.x;
+	diffuseColor += tex2D(g_terrainTexSampler[1], In.Tex0*0.2f) * weights.y;
+	diffuseColor += tex2D(g_terrainTexSampler[2], In.Tex0*0.2f) * weights.z;
 	//diffuseColor += tex2D(g_terrainTexSampler[3], In.Tex0) * weights.w;
 	float4 color = diffuseColor;
 	
