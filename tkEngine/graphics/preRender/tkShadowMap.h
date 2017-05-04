@@ -23,7 +23,6 @@ namespace tkEngine{
 		enum EnCalcLightViewFunc {
 			enCalcLightViewFunc_PositionDirection,	//ライトの位置と方向で計算する。
 			enCalcLightViewFunc_PositionTarget,		//ライトの位置と注視点で計算する。
-			enCalcLightViewFunc_Camera,				//カメラを使って計算する。
 		};
 		/*!
 		 * @brief	コンストラクタ。

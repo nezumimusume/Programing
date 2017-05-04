@@ -135,8 +135,8 @@ namespace tkEngine{
 
 		static float shadowAreaTbl[MAX_SHADOW_MAP] = {
 			20.0f,
-			45.0f,
-			60.0f
+			40.0f,
+			80.0f
 		};
 		//ライトの位置を決めて、カメラ行列を確定させていく。
 		
@@ -179,43 +179,15 @@ namespace tkEngine{
 	{
 		if (m_isEnable) {
 			//@todo strategyパターンにリファクタした方が良い。
-			if (m_calcLightViewFunc == enCalcLightViewFunc_Camera) {
-				CalcLVPMatrixFromCamera();
-			}
-			else {
-				if (m_calcLightViewFunc == enCalcLightViewFunc_PositionTarget) {
-					//ライトの位置と注視点で計算。
-					m_lightDirection.Subtract(m_lightTarget, m_lightPosition);
-					m_lightDirection.Normalize();
 
-				}
-				//ライトビュープロジェクション行列を作成。
-				CVector3 lightUp;
-				float t = fabsf(m_lightDirection.Dot(CVector3::AxisY));
-				if (fabsf((t - 1.0f)) < 0.00001f) {
-					//ライトの方向がほぼY軸と並行。
-					lightUp = CVector3::AxisX;
-				}
-				else {
-					lightUp = CVector3::AxisY;
-				}
-				//ライトからみたビュー行列を作成。
-				CVector3 target;
-				target.Add(m_lightPosition, m_lightDirection);
-				CMatrix viewMatrix;
-				viewMatrix.MakeLookAt(m_lightPosition, target, lightUp);
-				for (int i = 0; i < m_numShadowMap; i++) {
-					CMatrix proj;
-					proj.MakeOrthoProjectionMatrix(
-						m_shadowAreaW[i] * m_accpect,
-						m_shadowAreaH[i],
-						m_near,
-						m_far
-					);
-					m_LVPMatrix[i].Mul(viewMatrix, proj);
-					m_shadowRecieverParam.mLVP[i] = m_LVPMatrix[i];
-				}
+			if (m_calcLightViewFunc == enCalcLightViewFunc_PositionTarget) {
+				//ライトの位置と注視点で計算。
+				m_lightDirection.Subtract(m_lightTarget, m_lightPosition);
+				m_lightDirection.Normalize();
+
 			}
+			CalcLVPMatrixFromCamera();
+
 			m_shadowRecieverParam.vsmFlag_numShadowMap[0] = m_isDisableVSM ? 0 : 1;
 			m_shadowRecieverParam.vsmFlag_numShadowMap[1] = m_numShadowMap;
 		}

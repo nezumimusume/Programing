@@ -32,7 +32,7 @@ namespace tkEngine{
 	{
 		if (camera != nullptr) {
 			sunAngle += 0.02f * GameTime().GetFrameDeltaTime() * deltaTimeMul;
-			sunAngle = CMath::PI * 0.2f;
+			//sunAngle = CMath::PI * 0.2f;
 			//Xé≤âÒì]ÅB
 			sunPosition.Set(0.0f, sinf(sunAngle), cosf(sunAngle));
 			//Zé≤âÒì]ÅB

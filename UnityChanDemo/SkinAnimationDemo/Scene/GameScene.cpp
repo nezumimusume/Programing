@@ -86,7 +86,6 @@ bool GameScene::Start()
 		bgmSoundSource.SetVolume(0.5f);
 		AddGO(0, &bgmSoundSource);
 		ShadowMap().SetCamera(g_camera->GetCamera());
-		ShadowMap().SetCalcLightViewFunc(CShadowMap::enCalcLightViewFunc_Camera);
 		Sky().SetEnable(&g_camera->GetCamera(), &inGameLight.GetDefaultLight());
 		itemModelData.LoadModelDataAsync("Assets/modelData/Apple.X", NULL);
 		initStep = InitStep_WaitLoad;
