@@ -23,6 +23,7 @@ namespace tkEngine{
 		enum EnCalcLightViewFunc {
 			enCalcLightViewFunc_PositionDirection,	//ライトの位置と方向で計算する。
 			enCalcLightViewFunc_PositionTarget,		//ライトの位置と注視点で計算する。
+			enCalcLightViewFunc_Camera,				//カメラを使って計算する。
 		};
 		/*!
 		 * @brief	コンストラクタ。
@@ -132,11 +133,11 @@ namespace tkEngine{
 			return m_isEnable;
 		}
 		/*!
-		* @brief	カメラを設定。PSMを行うときに使用される。
+		* @brief	カメラを設定。
 		*/
-		void SetCamera(CCamera* camera)
+		void SetCamera(const CCamera& camera)
 		{
-			m_camera = camera;
+			m_camera = &camera;
 		}
 		/*!
 		* @brief	ライトビューの計算の仕方を設定。
@@ -153,6 +154,11 @@ namespace tkEngine{
 			return m_shadowRecieverParam;
 		}
 	private:
+		/*!
+		* @brief	ライトビュープロジェクション行列を計算。
+		*/
+		void CalcLVPMatrixFromCamera();
+	private:
 		bool								m_isEnable;								//!<有効？
 		int									m_numShadowMap;							//!<シャドウマップの枚数。
 		std::vector<IShadowCaster*>			m_shadowCaster;							//!<シャドウキャスター。
@@ -160,15 +166,13 @@ namespace tkEngine{
 		CVector3							m_lightPosition;						//!<ライトの位置。
 		CVector3							m_lightDirection;						//!<ライトの向き。
 		CVector3							m_lightTarget;							//!<注視点
-		CMatrix								m_lvMatrix;
 		CMatrix								m_LVPMatrix[MAX_SHADOW_MAP];			//!<ライトビュープロジェクション行列。
-		CMatrix								m_projectionMatrix;
 		float								m_near;									//!<近平面。
 		float								m_far;									//!<遠平面。
 		float								m_accpect;
 		float								m_shadowAreaW[MAX_SHADOW_MAP];			//!<影を落とす範囲の幅。
 		float								m_shadowAreaH[MAX_SHADOW_MAP];			//!<影を落とす範囲の高さ。
-		CCamera*							m_camera;								//!<PSMを計算するときに使用するカメラ。
+		const CCamera*						m_camera;								//!<
 		EnCalcLightViewFunc					m_calcLightViewFunc;					//!<ライトビューの計算方法。
 		bool								m_isDisableVSM;							//!<VSMが無効？
 		CBlur								m_blur[MAX_SHADOW_MAP];					//!<深度マップの平均値を求めるためのブラー処理。

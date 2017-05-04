@@ -24,7 +24,6 @@ namespace tkEngine{
 		m_pShadowMapEffect(nullptr),
 		m_near(1.0f),
 		m_far(100.0f),
-		m_lvMatrix(CMatrix::Identity),
 		m_accpect(1.0f),
 		m_camera(nullptr),
 		m_calcLightViewFunc(enCalcLightViewFunc_PositionTarget),
@@ -68,21 +67,6 @@ namespace tkEngine{
 		for (int i = 0; i < m_numShadowMap; i++) {
 			m_shadowMapRT[i].Create(wh[i][0], wh[i][1], 1, D3DFMT_G16R16F, D3DFMT_D16, D3DMULTISAMPLE_NONE, 0);
 			m_accpect = s_cast<float>(w) / s_cast<float>(h);
-#ifdef USE_ORTHO_PROJECTION
-			m_projectionMatrix.MakeOrthoProjectionMatrix(
-				m_shadowAreaW[i] * m_accpect, 
-				m_shadowAreaH[i], 
-				m_near, 
-				m_far
-			);
-#else
-			m_projectionMatrix.MakeProjectionMatrix(
-				CMath::DegToRad(60.0f),
-				m_accpect,
-				m_near,
-				m_far
-				);
-#endif
 		}
 		
 		m_isDisableVSM = isDisableSoftShadow;
@@ -105,50 +89,132 @@ namespace tkEngine{
 	{
 		m_shadowCaster.push_back(caster);
 	}
-	/*!
-	* @brief	更新。
-	*/
+	
+	void CShadowMap::CalcLVPMatrixFromCamera()
+	{
+		if (m_camera == nullptr) {
+			TK_LOG("カメラを設定してね。");
+			return;
+		}
+		//シーンをレンダリング使用としているカメラを使って、ライトカメラの回転を求める。
+		CVector3 cameraDir;
+		cameraDir.Subtract(m_camera->GetTarget(), m_camera->GetPosition());
+		if (fabs(cameraDir.x) < FLT_EPSILON && fabsf(cameraDir.z) < FLT_EPSILON) {
+			//ほぼ真上をむいている。
+			return;
+		}
+		cameraDir.y = 0.0f;
+		cameraDir.Normalize();
+		CVector3 lightViewForward;
+		lightViewForward.Subtract(m_lightTarget, m_lightPosition);
+		lightViewForward.Normalize();
+		
+		CVector3 lightViewUp;
+		lightViewUp.Cross(lightViewForward, cameraDir);
+		lightViewUp.Normalize();
+		CVector3 lgihtViewRight;
+		lgihtViewRight.Cross(lightViewUp, lightViewForward);
+		lgihtViewRight.Normalize();
+		//ライトビューはカメラの横方向を上、カメラの下方向を前、カメラの前方向を横とするといい感じになるよ。
+		CMatrix lightViewRot;
+		//ライトビューの横を設定する。
+		lightViewRot.m[0][0] = lgihtViewRight.x;
+		lightViewRot.m[0][1] = lgihtViewRight.y;
+		lightViewRot.m[0][2] = lgihtViewRight.z;
+		lightViewRot.m[0][3] = 0.0f;
+		//ライトビューの上を設定する。
+		lightViewRot.m[1][0] = lightViewUp.x;
+		lightViewRot.m[1][1] = lightViewUp.y;
+		lightViewRot.m[1][2] = lightViewUp.z;
+		lightViewRot.m[1][3] = 0.0f;
+		//ライトビューの前を設定する。
+		lightViewRot.m[2][0] = lightViewForward.x;
+		lightViewRot.m[2][1] = lightViewForward.y;
+		lightViewRot.m[2][2] = lightViewForward.z;
+		lightViewRot.m[2][3] = 0.0f;
+
+		static float shadowAreaTbl[MAX_SHADOW_MAP] = {
+			20.0f,
+			45.0f,
+			60.0f
+		};
+		//ライトの位置を決めて、カメラ行列を確定させていく。
+		
+		const CVector3& cameraPos = m_camera->GetPosition();
+		CVector3 lightPos = cameraPos;
+		CVector3 lightOffset = cameraDir;
+		lightOffset.Scale(shadowAreaTbl[0] * 0.2f);
+		lightPos.Add(lightOffset);
+		for (int i = 0; i < m_numShadowMap; i++) {
+			
+			CMatrix mLightView;
+			CVector3 vTmp;
+			vTmp = lightViewForward;
+			vTmp.Scale(-30.0f);
+
+			mLightView = lightViewRot;
+			mLightView.m[3][0] = lightPos.x + vTmp.x;
+			mLightView.m[3][1] = lightPos.y + vTmp.y;
+			mLightView.m[3][2] = lightPos.z + vTmp.z;
+			mLightView.m[3][3] = 1.0f;
+			mLightView.Inverse(mLightView);	//カメラビュー完成。
+			//続いてプロジェクション行列。
+			float viewAngle = m_camera->GetViewAngle();
+			CMatrix proj;
+			proj.MakeOrthoProjectionMatrix(
+				shadowAreaTbl[i] * m_accpect,
+				tan(viewAngle * 0.5f) * (shadowAreaTbl[i] *(i+1))* 2.0f,
+				m_near,
+				m_far
+			);
+			m_LVPMatrix[i].Mul(mLightView, proj);
+			m_shadowRecieverParam.mLVP[i] = m_LVPMatrix[i];
+			lightOffset = cameraDir;
+			lightOffset.Scale(shadowAreaTbl[i] * 0.9f);
+			lightPos.Add(lightOffset);
+		}
+	}
+	
 	void CShadowMap::Update()
 	{
 		if (m_isEnable) {
-			if (m_calcLightViewFunc == enCalcLightViewFunc_PositionTarget) {
-				//ライトの位置と注視点で計算。
-				m_lightDirection.Subtract(m_lightTarget, m_lightPosition);
-				m_lightDirection.Normalize();
-
-			}
-			//ライトビュープロジェクション行列を作成。
-			CVector3 lightUp;
-			float t = fabsf(m_lightDirection.Dot(CVector3::AxisY));
-			if (fabsf((t - 1.0f)) < 0.00001f) {
-				//ライトの方向がほぼY軸と並行。
-				lightUp = CVector3::AxisX;
+			//@todo strategyパターンにリファクタした方が良い。
+			if (m_calcLightViewFunc == enCalcLightViewFunc_Camera) {
+				CalcLVPMatrixFromCamera();
 			}
 			else {
-				lightUp = CVector3::AxisY;
-			}
-			//ライトからみたビュー行列を作成。
-			CVector3 target;
-			target.Add(m_lightPosition, m_lightDirection);
-			m_lvMatrix.MakeLookAt(m_lightPosition, target, lightUp); 
-			for (int i = 0; i < m_numShadowMap; i++) {
-#ifdef USE_ORTHO_PROJECTION
-				m_projectionMatrix.MakeOrthoProjectionMatrix(
-					m_shadowAreaW[i] * m_accpect, 
-					m_shadowAreaH[i], 
-					m_near, 
-					m_far
-				);
-#else
-				m_projectionMatrix.MakeProjectionMatrix(
-					CMath::DegToRad(60.0f),
-					m_accpect,
-					m_near,
-					m_far
+				if (m_calcLightViewFunc == enCalcLightViewFunc_PositionTarget) {
+					//ライトの位置と注視点で計算。
+					m_lightDirection.Subtract(m_lightTarget, m_lightPosition);
+					m_lightDirection.Normalize();
+
+				}
+				//ライトビュープロジェクション行列を作成。
+				CVector3 lightUp;
+				float t = fabsf(m_lightDirection.Dot(CVector3::AxisY));
+				if (fabsf((t - 1.0f)) < 0.00001f) {
+					//ライトの方向がほぼY軸と並行。
+					lightUp = CVector3::AxisX;
+				}
+				else {
+					lightUp = CVector3::AxisY;
+				}
+				//ライトからみたビュー行列を作成。
+				CVector3 target;
+				target.Add(m_lightPosition, m_lightDirection);
+				CMatrix viewMatrix;
+				viewMatrix.MakeLookAt(m_lightPosition, target, lightUp);
+				for (int i = 0; i < m_numShadowMap; i++) {
+					CMatrix proj;
+					proj.MakeOrthoProjectionMatrix(
+						m_shadowAreaW[i] * m_accpect,
+						m_shadowAreaH[i],
+						m_near,
+						m_far
 					);
-#endif
-				m_LVPMatrix[i].Mul(m_lvMatrix, m_projectionMatrix);
-				m_shadowRecieverParam.mLVP[i] = m_LVPMatrix[i];
+					m_LVPMatrix[i].Mul(viewMatrix, proj);
+					m_shadowRecieverParam.mLVP[i] = m_LVPMatrix[i];
+				}
 			}
 			m_shadowRecieverParam.vsmFlag_numShadowMap[0] = m_isDisableVSM ? 0 : 1;
 			m_shadowRecieverParam.vsmFlag_numShadowMap[1] = m_numShadowMap;

@@ -132,7 +132,7 @@ bool EnemyTest::Start()
 	ShadowMap().SetLightPosition(lightPos);
 	ShadowMap().SetLightTarget(position);
 	toLightPos.Subtract(lightPos, position);
-	ShadowMap().SetCalcLightViewFunc(CShadowMap::enCalcLightViewFunc_PositionTarget);
+	
 	state = enStateStand;
 	isJump = false;
 
