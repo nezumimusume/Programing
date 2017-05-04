@@ -299,6 +299,9 @@
     <ClCompile Include="graphics\material\tkSkinModelMaterial.cpp">
       <Filter>Source Files\graphics\material</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\postEffect\tkSSAO.cpp">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tkEnginePreCompile.h">
@@ -567,6 +570,9 @@
     </ClInclude>
     <ClInclude Include="graphics\material\tkSkinModelMaterial.h">
       <Filter>Source Files\graphics\material</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\postEffect\tkSSAO.h">
+      <Filter>Source Files\graphics\postEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
