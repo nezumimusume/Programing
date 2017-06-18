@@ -96,7 +96,7 @@ D3DXMATRIX Camera::GetProjectionMatrix()
 void Camera::Update()
 {
 	D3DXMatrixLookAtLH(&viewMatrix, &vEyePt, &vLookatPt, &vUpVec);
-	D3DXMatrixPerspectiveFovLH(&projectionMatrix, D3DX_PI / 4, aspect, Near, Far);
+	D3DXMatrixPerspectiveFovLH(&projectionMatrix, D3DX_PI / 4, (float)WINDOW_WIDTH/(float)WINDOW_HEIGHT, Near, Far);
 }
 //ƒJƒƒ‰‚Ì‰Šú‰»B
 void Camera::Init()

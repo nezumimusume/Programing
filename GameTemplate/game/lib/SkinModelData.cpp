@@ -20,6 +20,58 @@ UINT                        g_NumBoneMatricesMax = 0;
 D3DXMATRIXA16*              g_pBoneMatrices = NULL;
 
 namespace {
+	void InnerDestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerBase)
+	{
+		UINT iMaterial;
+		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
+
+		SAFE_DELETE_ARRAY(pMeshContainer->Name);
+		SAFE_DELETE_ARRAY(pMeshContainer->pAdjacency);
+		SAFE_DELETE_ARRAY(pMeshContainer->pMaterials);
+		SAFE_DELETE_ARRAY(pMeshContainer->pBoneOffsetMatrices);
+
+		// release all the allocated textures
+		if (pMeshContainer->ppTextures != NULL)
+		{
+			for (iMaterial = 0; iMaterial < pMeshContainer->NumMaterials; iMaterial++)
+			{
+				SAFE_RELEASE(pMeshContainer->ppTextures[iMaterial]);
+			}
+		}
+
+		SAFE_DELETE_ARRAY(pMeshContainer->ppTextures);
+		SAFE_DELETE_ARRAY(pMeshContainer->ppBoneMatrixPtrs);
+		SAFE_RELEASE(pMeshContainer->pBoneCombinationBuf);
+		SAFE_RELEASE(pMeshContainer->MeshData.pMesh);
+		SAFE_RELEASE(pMeshContainer->pSkinInfo);
+		SAFE_RELEASE(pMeshContainer->pOrigMesh);
+		SAFE_DELETE(pMeshContainer);
+	}
+	void ReleaseFrame(LPD3DXFRAME frame)
+	{
+		if (!frame) {
+			return;
+		}
+		if (frame->pMeshContainer != NULL)
+		{
+			//メッシュコンテナがある。
+			InnerDestroyMeshContainer(frame->pMeshContainer);
+		}
+
+		if (frame->pFrameSibling != NULL)
+		{
+			//兄弟がいる。
+			ReleaseFrame(frame->pFrameSibling);
+		}
+
+		if (frame->pFrameFirstChild != NULL)
+		{
+			//子供がいる。
+			ReleaseFrame(frame->pFrameFirstChild);
+		}
+		SAFE_DELETE_ARRAY(frame->Name);
+		SAFE_DELETE(frame);
+	}
 	//--------------------------------------------------------------------------------------
 	// update the frame matrices
 	//--------------------------------------------------------------------------------------
@@ -477,15 +529,6 @@ namespace {
 			pMeshContainer->MeshData.pMesh->Release();
 			pMeshContainer->MeshData.pMesh = pOutMesh;
 
-
-			std::vector<DWORD> adjList;
-			adjList.resize(3 * pOutMesh->GetNumFaces());
-			pOutMesh->GenerateAdjacency(1.0f/512.0f, &adjList[0]); // EPSIONは適当な値(1.0f/512とか)
-
-			DWORD numVert = pOutMesh->GetNumVertices();  // Optimizeの一種
-			pOutMesh->OptimizeInplace(D3DXMESHOPT_COMPACT, &adjList[0], NULL, NULL, NULL);
-			numVert = pOutMesh->GetNumVertices();
-
 			if (FAILED(hr))
 				goto e_Exit;
 		}
@@ -519,15 +562,6 @@ namespace {
 			numVert = pOutMesh->GetNumVertices();
 			pMeshContainer->MeshData.pMesh->Release();
 			pMeshContainer->MeshData.pMesh = pOutMesh;
-			if (FAILED(hr))
-				goto e_Exit;
-			LPD3DXMESH optMesh;
-			std::vector<DWORD> adjList;
-			adjList.resize(3 * pOutMesh->GetNumFaces());
-			pOutMesh->GenerateAdjacency(1.0f , &adjList[0]); // EPSIONは適当な値(1.0f/512とか)
-			numVert = pOutMesh->GetNumVertices();  // Optimizeの一種
-			pOutMesh->Optimize(D3DXMESHOPT_COMPACT, &adjList[0], NULL, NULL, NULL, &optMesh);
-			numVert = optMesh->GetNumVertices();
 
 		}
 
@@ -556,39 +590,13 @@ namespace {
 		return S_OK;
 	}
 
-
-
-
 	//--------------------------------------------------------------------------------------
 	// Name: AllocateHierarchy::DestroyMeshContainer()
 	// Desc: 
 	//--------------------------------------------------------------------------------------
 	HRESULT AllocateHierarchy::DestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerBase)
 	{
-		UINT iMaterial;
-		D3DXMESHCONTAINER_DERIVED* pMeshContainer = (D3DXMESHCONTAINER_DERIVED*)pMeshContainerBase;
-
-		SAFE_DELETE_ARRAY(pMeshContainer->Name);
-		SAFE_DELETE_ARRAY(pMeshContainer->pAdjacency);
-		SAFE_DELETE_ARRAY(pMeshContainer->pMaterials);
-		SAFE_DELETE_ARRAY(pMeshContainer->pBoneOffsetMatrices);
-
-		// release all the allocated textures
-		if (pMeshContainer->ppTextures != NULL)
-		{
-			for (iMaterial = 0; iMaterial < pMeshContainer->NumMaterials; iMaterial++)
-			{
-				SAFE_RELEASE(pMeshContainer->ppTextures[iMaterial]);
-			}
-		}
-
-		SAFE_DELETE_ARRAY(pMeshContainer->ppTextures);
-		SAFE_DELETE_ARRAY(pMeshContainer->ppBoneMatrixPtrs);
-		SAFE_RELEASE(pMeshContainer->pBoneCombinationBuf);
-		SAFE_RELEASE(pMeshContainer->MeshData.pMesh);
-		SAFE_RELEASE(pMeshContainer->pSkinInfo);
-		SAFE_RELEASE(pMeshContainer->pOrigMesh);
-		SAFE_DELETE(pMeshContainer);
+		InnerDestroyMeshContainer(pMeshContainerBase);
 		return S_OK;
 	}
 
@@ -601,16 +609,21 @@ SkinModelData::SkinModelData() :
 }
 SkinModelData::~SkinModelData()
 {
+	Release();
 }
 void SkinModelData::Release()
 {
 	if (pAnimController) {
 		pAnimController->Release();
+		pAnimController = nullptr;
 	}
+	ReleaseFrame(frameRoot);
+	frameRoot = nullptr;
 }
 
 void SkinModelData::LoadModelData( const char* filePath, Animation* anim )
 {
+	Release();
 	AllocateHierarchy alloc;
 	HRESULT hr = D3DXLoadMeshHierarchyFromX(
 		filePath,
@@ -621,7 +634,6 @@ void SkinModelData::LoadModelData( const char* filePath, Animation* anim )
 		&frameRoot,
 		&pAnimController
 	);
-	//m_pAnimController->(0);
 	SetupBoneMatrixPointers(frameRoot, frameRoot);
 	if (anim && pAnimController) {
 		anim->Init(pAnimController);
