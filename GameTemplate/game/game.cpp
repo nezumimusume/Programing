@@ -24,8 +24,8 @@ void Game::Start()
 {
 	//カメラ初期化。
 	camera.Init();
-	camera.SetEyePt(D3DXVECTOR3(0.0f, 1.0f, 2.0f));
-	camera.SetLookatPt(D3DXVECTOR3(0.0f, 0.5f, 0.0f));
+	camera.SetEyePt(D3DXVECTOR3(0.0f, 2.0f, 4.0f));
+	camera.SetLookatPt(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
 	camera.Update();
 
 	//ライトを初期化。
