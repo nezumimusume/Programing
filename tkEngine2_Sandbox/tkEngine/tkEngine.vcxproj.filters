@@ -48,6 +48,12 @@
     <Filter Include="Source Files\util">
       <UniqueIdentifier>{8049c32f-7105-4bbd-bf48-5ac66164be83}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphics\preRender">
+      <UniqueIdentifier>{35c0f556-e446-4cc4-bfeb-bffa57822ac2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics\postEffect">
+      <UniqueIdentifier>{f54b925d-d8dd-4881-ab00-7403308c7b1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

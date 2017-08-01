@@ -15,7 +15,7 @@ namespace tkEngine{
 		static char log[1024*10];
 		va_list va;
 		va_start( va, format );
-		vsprintf( log, format, va );
+		vsprintf_s( log, format, va );
 		OutputDebugString( log );
 		va_end( va );
 	}
