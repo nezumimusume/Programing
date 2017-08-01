@@ -339,11 +339,19 @@
     <ClInclude Include="Player\MagicSkill\MagicSkillStealth.h" />
     <ClInclude Include="Player\MagicSkill\MagicSkillTimeCtr.h" />
     <ClInclude Include="Player\Player.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="Scene\GameScene.h" />
     <ClInclude Include="Scene\TitleScene.h" />
     <ClInclude Include="ScreenEffect\Fade.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="UnityChanInstance.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SkinAnimationDemo.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

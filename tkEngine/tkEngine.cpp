@@ -41,10 +41,11 @@ namespace tkEngine{
 
 		m_screenHeight = initParam.screenHeight;
 		m_screenWidth = initParam.screenWidth;
+		HICON hIcon = LoadIcon(initParam.hInstance, MAKEINTRESOURCE(101));
 		WNDCLASSEX wc =
 		{
 			sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
-			GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr,
+			GetModuleHandle(nullptr), hIcon, nullptr, nullptr, nullptr,
 			TEXT("D3D Tutorial"), nullptr
 		};
 		RegisterClassEx(&wc);

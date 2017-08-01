@@ -19,7 +19,8 @@ namespace tkEngine{
 			m_priority(0),
 			m_isStart(false),
 			m_isDead(false),
-			m_isNewFromGameObjectManager(false)
+			m_isNewFromGameObjectManager(false),
+			m_nameKey(0)
 		{
 		}
 		/*!
@@ -202,6 +203,7 @@ namespace tkEngine{
 		bool m_isRegist = false;			//!<GameObjectManagerに登録されている？
 		bool m_isActive = true;				//!<Activeフラグ。
 		unsigned int m_tags = 0;			//!<タグ。
+		unsigned int m_nameKey;				//!<名前キー。
 	};
 }
 #endif // _CGAMEOBJECT_H_
