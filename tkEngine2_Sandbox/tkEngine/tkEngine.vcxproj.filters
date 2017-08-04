@@ -54,6 +54,9 @@
     <Filter Include="Source Files\graphics\postEffect">
       <UniqueIdentifier>{f54b925d-d8dd-4881-ab00-7403308c7b1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\gameObject\light">
+      <UniqueIdentifier>{382f3645-8790-4894-ada0-0f2eabeef366}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -188,6 +191,18 @@
     <ClInclude Include="graphics\preRender\tkPreRender.h">
       <Filter>Source Files\graphics\preRender</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\preRender\tkLIghtCulling.h">
+      <Filter>Source Files\graphics\preRender</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\light\tkDirectionLight.h">
+      <Filter>Source Files\gameObject\light</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\light\tkPointLight.h">
+      <Filter>Source Files\gameObject\light</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkGraphicsEngine.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -282,6 +297,18 @@
     </ClCompile>
     <ClCompile Include="graphics\preRender\tkPreRender.cpp">
       <Filter>Source Files\graphics\preRender</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\preRender\tkLightCulling.cpp">
+      <Filter>Source Files\graphics\preRender</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\light\tkDirectionLight.cpp">
+      <Filter>Source Files\gameObject\light</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\light\tkPointLight.cpp">
+      <Filter>Source Files\gameObject\light</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkGraphicsEngine.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

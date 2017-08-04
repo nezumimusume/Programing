@@ -262,6 +262,8 @@
   <ItemGroup>
     <ClInclude Include="debug\tkAssert.h" />
     <ClInclude Include="debug\tkLog.h" />
+    <ClInclude Include="gameObject\light\tkDirectionLight.h" />
+    <ClInclude Include="gameObject\light\tkPointLight.h" />
     <ClInclude Include="gameObject\tkgameobject.h" />
     <ClInclude Include="gameObject\tkGameObjectManager.h" />
     <ClInclude Include="gameObject\tkTransform.h" />
@@ -271,10 +273,12 @@
     <ClInclude Include="graphics\GPUBuffer\tkVertexBuffer.h" />
     <ClInclude Include="graphics\GPUView\tkShaderResourceView.h" />
     <ClInclude Include="graphics\GPUView\tkUnorderedAccessView.h" />
+    <ClInclude Include="graphics\preRender\tkLIghtCulling.h" />
     <ClInclude Include="graphics\preRender\tkPreRender.h" />
     <ClInclude Include="graphics\preRender\tkZPrepass.h" />
     <ClInclude Include="graphics\tkAnimationClip.h" />
     <ClInclude Include="graphics\tkCamera.h" />
+    <ClInclude Include="graphics\tkGraphicsEngine.h" />
     <ClInclude Include="graphics\tkMapper.h" />
     <ClInclude Include="graphics\tkRenderContext.h" />
     <ClInclude Include="graphics\tkRenderState.h" />
@@ -305,6 +309,8 @@
     <ClInclude Include="util\tkUtil.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="gameObject\light\tkDirectionLight.cpp" />
+    <ClCompile Include="gameObject\light\tkPointLight.cpp" />
     <ClCompile Include="gameObject\tkGameObject.cpp" />
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
     <ClCompile Include="gameObject\tkTransform.cpp" />
@@ -314,10 +320,12 @@
     <ClCompile Include="graphics\GPUBuffer\tkVertexBuffer.cpp" />
     <ClCompile Include="graphics\GPUView\tkShaderResourceView.cpp" />
     <ClCompile Include="graphics\GPUView\tkUnorderedAccessView.cpp" />
+    <ClCompile Include="graphics\preRender\tkLightCulling.cpp" />
     <ClCompile Include="graphics\preRender\tkPreRender.cpp" />
     <ClCompile Include="graphics\preRender\tkZPrepass.cpp" />
     <ClCompile Include="graphics\tkAnimationClip.cpp" />
     <ClCompile Include="graphics\tkCamera.cpp" />
+    <ClCompile Include="graphics\tkGraphicsEngine.cpp" />
     <ClCompile Include="graphics\tkRenderContext.cpp" />
     <ClCompile Include="graphics\tkRenderTarget.cpp" />
     <ClCompile Include="graphics\tkSamplerState.cpp" />
