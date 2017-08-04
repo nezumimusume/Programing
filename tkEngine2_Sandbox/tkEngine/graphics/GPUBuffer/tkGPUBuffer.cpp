@@ -27,10 +27,10 @@ namespace tkEngine{
 		if (pInitData) {
 			D3D11_SUBRESOURCE_DATA InitData;
 			InitData.pSysMem = pInitData;
-			hr = Engine().GetD3DDevice()->CreateBuffer(&bufferDesc, &InitData, &m_gpuBuffer);
+			hr = GraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc, &InitData, &m_gpuBuffer);
 		}
 		else {
-			hr = Engine().GetD3DDevice()->CreateBuffer(&bufferDesc, NULL, &m_gpuBuffer);
+			hr = GraphicsEngine().GetD3DDevice()->CreateBuffer(&bufferDesc, NULL, &m_gpuBuffer);
 		}
 		if (FAILED(hr)) {
 			return false;

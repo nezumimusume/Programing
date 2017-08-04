@@ -156,7 +156,7 @@ namespace tkEngine{
 			}
 	        return false;
 	    }
-		ID3D11Device* pD3DDevice = Engine().GetD3DDevice();
+		ID3D11Device* pD3DDevice = GraphicsEngine().GetD3DDevice();
 		switch(shaderType){
 		case EnType::VS:{
 			//頂点シェーダー。

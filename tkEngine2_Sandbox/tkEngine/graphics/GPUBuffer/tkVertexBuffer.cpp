@@ -27,7 +27,7 @@ namespace tkEngine{
 		ZeroMemory(&InitData, sizeof(InitData));
 		InitData.pSysMem = pSrcVertexBuffer;
 
-		HRESULT hr = Engine().GetD3DDevice()->CreateBuffer(&bd, &InitData, &m_vertexBuffer);
+		HRESULT hr = GraphicsEngine().GetD3DDevice()->CreateBuffer(&bd, &InitData, &m_vertexBuffer);
 		if (FAILED(hr)) {
 			return false;
 		}

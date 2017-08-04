@@ -39,7 +39,7 @@ namespace tkEngine{
 	{
 		(void)renderContext;
 		if (m_skinModelData != nullptr) {
-			DirectX::CommonStates state(Engine().GetD3DDevice());
+			DirectX::CommonStates state(GraphicsEngine().GetD3DDevice());
 			//定数バッファを更新。
 			SVSConstantBuffer vsCb;
 			vsCb.mWorld = m_worldMatrix;
@@ -47,14 +47,14 @@ namespace tkEngine{
 			vsCb.mView = viewMatrix;
 			vsCb.screenParam.x = 0.0f;
 			vsCb.screenParam.y = 0.0f;
-			vsCb.screenParam.z = static_cast<float>(Engine().GetFrameBufferWidth());
-			vsCb.screenParam.w = static_cast<float>(Engine().GetFrameBufferHeight());
+			vsCb.screenParam.z = static_cast<float>(GraphicsEngine().GetFrameBufferWidth());
+			vsCb.screenParam.w = static_cast<float>(GraphicsEngine().GetFrameBufferHeight());
 			vsCb.isZPrepass = isZPrepass ? 1 : 0;
 			renderContext.UpdateSubresource(m_cb, vsCb);
 			renderContext.VSSetConstantBuffer(0, m_cb);
 			renderContext.PSSetConstantBuffer(0, m_cb);
 			m_skinModelData->GetBody().Draw(
-				Engine().GetD3DDeviceContext(),
+				GraphicsEngine().GetD3DDeviceContext(),
 				state,
 				m_worldMatrix,
 				viewMatrix,

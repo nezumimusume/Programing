@@ -51,8 +51,8 @@ namespace tkEngine{
 	
 	bool CSkinModelData::Load(const wchar_t* filePath)
 	{
-		CSkinModelEffectFactory effectFactory(Engine().GetD3DDevice());
-		m_modelDx = DirectX::Model::CreateFromCMO(Engine().GetD3DDevice(), filePath, effectFactory, false);
+		CSkinModelEffectFactory effectFactory(GraphicsEngine().GetD3DDevice());
+		m_modelDx = DirectX::Model::CreateFromCMO(GraphicsEngine().GetD3DDevice(), filePath, effectFactory, false);
 		return true;
 	}
 }

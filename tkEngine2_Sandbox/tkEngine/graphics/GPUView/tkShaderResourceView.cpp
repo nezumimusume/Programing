@@ -39,7 +39,7 @@ namespace tkEngine{
 	    	desc.Format = DXGI_FORMAT_UNKNOWN;
 	        desc.BufferEx.NumElements = descBuf.ByteWidth / descBuf.StructureByteStride;
 	        
-	        HRESULT hr = Engine().GetD3DDevice()->CreateShaderResourceView( pBuf, &desc, &m_srv);
+	        HRESULT hr = GraphicsEngine().GetD3DDevice()->CreateShaderResourceView( pBuf, &desc, &m_srv);
 			if (FAILED(hr)) {
 				return false;
 			}
@@ -62,7 +62,7 @@ namespace tkEngine{
 			SRVDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;
 			SRVDesc.Texture2D.MipLevels = texDesc.MipLevels;
 
-			HRESULT hr = Engine().GetD3DDevice()->CreateShaderResourceView(texture, &SRVDesc, &m_srv);
+			HRESULT hr = GraphicsEngine().GetD3DDevice()->CreateShaderResourceView(texture, &SRVDesc, &m_srv);
 			if (FAILED(hr)) {
 				return false;
 			}

@@ -74,8 +74,8 @@ public:
 		m_materialParamCB.Create(&m_materialParam, sizeof(m_materialParam));
 			
 		//フォントを初期化。
-		m_font.reset(new DirectX::SpriteFont(Engine().GetD3DDevice(), L"Assets/font/myfile.spritefont"));
-		m_bach.reset(new DirectX::SpriteBatch(Engine().GetD3DDeviceContext()));
+		m_font.reset(new DirectX::SpriteFont(GraphicsEngine().GetD3DDevice(), L"Assets/font/myfile.spritefont"));
+		m_bach.reset(new DirectX::SpriteBatch(GraphicsEngine().GetD3DDeviceContext()));
 		return true;
 	}
 	void Update() override
@@ -134,7 +134,7 @@ public:
 			cursor[2], m_materialParam.anisotropic
 		);
 		CRenderTarget* rts[] = {
-			&Engine().GetMainRenderTarget()
+			&GraphicsEngine().GetMainRenderTarget()
 		};
 		rc.OMSetRenderTargets(1, rts);
 		m_bach->Begin();

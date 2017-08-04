@@ -40,7 +40,7 @@ namespace tkEngine{
 		texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
 		texDesc.CPUAccessFlags = 0;
 		texDesc.MiscFlags = 0;
-		ID3D11Device* pD3DDevice = Engine().GetD3DDevice();
+		ID3D11Device* pD3DDevice = GraphicsEngine().GetD3DDevice();
 		HRESULT hr;
 		if (renderTarget == nullptr) {
 			hr = pD3DDevice->CreateTexture2D(&texDesc, NULL, &m_renderTarget);

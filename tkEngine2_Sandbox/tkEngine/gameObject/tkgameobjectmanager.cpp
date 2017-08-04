@@ -8,7 +8,7 @@
 #include "tkEngine/graphics/preRender/tkPreRender.h"
 
 namespace tkEngine{
-	void CGameObjectManager::Execute(CRenderContext& renderContext, CPreRender& preRender)
+	void CGameObjectManager::Execute()
 	{
 		ExecuteDeleteGameObjects();
 
@@ -22,8 +22,9 @@ namespace tkEngine{
 				obj->PreUpdateWrapper();
 			}
 		}
+		CRenderContext& renderContext = GraphicsEngine().GetRenderContext();
 		//プリレンダリング。
-		preRender.Update();
+		GraphicsEngine().GetPreRender().Update();
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
 				obj->UpdateWrapper();
@@ -40,14 +41,14 @@ namespace tkEngine{
 		//画面をクリア
 		float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f }; //red,green,blue,alpha
 		CRenderTarget* renderTargets[] = {
-			&Engine().GetMainRenderTarget()
+			&GraphicsEngine().GetMainRenderTarget()
 		};
 		renderContext.OMSetRenderTargets(1, renderTargets);
 		renderContext.ClearRenderTargetView(0, ClearColor);
-		renderContext.RSSetViewport(0.0f, 0.0f, (float)Engine().GetFrameBufferWidth(), (float)Engine().GetFrameBufferHeight());
+		renderContext.RSSetViewport(0.0f, 0.0f, (float)GraphicsEngine().GetFrameBufferWidth(), (float)GraphicsEngine().GetFrameBufferHeight());
 		
 		//プリレンダリング。
-		preRender.Render(renderContext);
+		GraphicsEngine().GetPreRender().Render(renderContext);
 
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {

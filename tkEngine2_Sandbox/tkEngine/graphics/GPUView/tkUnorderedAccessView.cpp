@@ -40,7 +40,7 @@ namespace tkEngine{
 		    desc.Format = DXGI_FORMAT_UNKNOWN;      // Format must be must be DXGI_FORMAT_UNKNOWN, when creating a View of a Structured Buffer
 	        desc.Buffer.NumElements = descBuf.ByteWidth / descBuf.StructureByteStride; 
 	        
-			HRESULT hr = Engine().GetD3DDevice()->CreateUnorderedAccessView(pBuf, &desc, &m_uav);
+			HRESULT hr = GraphicsEngine().GetD3DDevice()->CreateUnorderedAccessView(pBuf, &desc, &m_uav);
 			if (FAILED(hr)) {
 				return false;
 			}
@@ -65,7 +65,7 @@ namespace tkEngine{
 			UAVDesc.Format = texDesc.Format;
 			UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE2D;
 
-			HRESULT hr = Engine().GetD3DDevice()->CreateUnorderedAccessView(texture, &UAVDesc, &m_uav);
+			HRESULT hr = GraphicsEngine().GetD3DDevice()->CreateUnorderedAccessView(texture, &UAVDesc, &m_uav);
 			if (FAILED(hr)) {
 				return false;
 			}

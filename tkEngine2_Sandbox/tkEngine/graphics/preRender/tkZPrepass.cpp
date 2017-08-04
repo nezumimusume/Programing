@@ -24,8 +24,8 @@ namespace tkEngine{
 		multiSampleDesc.Count = 1;
 		multiSampleDesc.Quality = 0;
 		m_depthBuffer.Create(
-			Engine().GetFrameBufferWidth(),
-			Engine().GetFrameBufferHeight(),
+			GraphicsEngine().GetFrameBufferWidth(),
+			GraphicsEngine().GetFrameBufferHeight(),
 			1,
 			DXGI_FORMAT_R32_FLOAT,
 			DXGI_FORMAT_D24_UNORM_S8_UINT,

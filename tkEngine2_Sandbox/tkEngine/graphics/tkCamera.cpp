@@ -30,7 +30,7 @@ namespace tkEngine{
 	void CCamera::Update()
 	{
 		if(m_isNeedUpdateProjectionMatrix){
-			float aspect = (float)Engine().GetFrameBufferWidth() / (float)Engine().GetFrameBufferHeight();
+			float aspect = (float)GraphicsEngine().GetFrameBufferWidth() / (float)GraphicsEngine().GetFrameBufferHeight();
 			//プロジェクション行列を計算。
 			m_projectionMatrix.MakeProjectionMatrix(
 				m_viewAngle,
@@ -54,8 +54,8 @@ namespace tkEngine{
 	}
 	void CCamera::CalcScreenPositionFromWorldPosition(CVector2& screenPos, const CVector3& worldPos) const
 	{
-		float half_w = (float)Engine().GetFrameBufferWidth() * 0.5f;
-		float half_h = (float)Engine().GetFrameBufferHeight() * 0.5f;
+		float half_w = (float)GraphicsEngine().GetFrameBufferWidth() * 0.5f;
+		float half_h = (float)GraphicsEngine().GetFrameBufferHeight() * 0.5f;
 		CVector4 _screenPos;
 		_screenPos.Set(worldPos.x, worldPos.y, worldPos.z, 1.0f);
 		m_viewProjectionMatrix.Mul(_screenPos);

@@ -51,7 +51,7 @@ namespace tkEngine{
 		/*!
 		*@brief	実行。
 		*/
-		void Execute(CRenderContext& renderContext, CPreRender& preRender);
+		void Execute();
 		/*!
 		 *@brief	初期化。
 		 *@param[in]	gameObjectPrioMax	ゲームオブジェクトの優先度の最大値。(255まで)

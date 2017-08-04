@@ -201,7 +201,7 @@
       <Filter>Source Files\gameObject\light</Filter>
     </ClInclude>
     <ClInclude Include="graphics\tkGraphicsEngine.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -308,7 +308,7 @@
       <Filter>Source Files\gameObject\light</Filter>
     </ClCompile>
     <ClCompile Include="graphics\tkGraphicsEngine.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
