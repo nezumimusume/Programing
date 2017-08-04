@@ -6,7 +6,7 @@
 #define _TKCAMERA_H_
 
 namespace tkEngine{
-	class CCamera{
+	class CCamera : Noncopyable{
 	public:
 		CCamera();
 		~CCamera();

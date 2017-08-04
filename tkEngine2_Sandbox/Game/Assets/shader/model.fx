@@ -18,6 +18,7 @@ PSInput VSMain( VSInputNmTxVcTangent In )
 	pos = mul(mWorld, In.Position);
 	psInput.Pos = pos;
 	pos = mul(mView, pos);
+	psInput.posInView = pos;
 	pos = mul(mProj, pos);
 	psInput.Position = pos;
 	psInput.TexCoord = In.TexCoord;
@@ -35,6 +36,7 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
 	pos = mul(mWorld, In.Position);
 	psInput.Pos = pos;
 	pos = mul(mView, pos);
+	psInput.posInView = pos;
 	pos = mul(mProj, pos);
 	psInput.Position = pos;
 	psInput.TexCoord = In.TexCoord;
@@ -46,6 +48,10 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
 //--------------------------------------------------------------------------------------
 float4 PSMain( PSInput In ) : SV_Target0
 {
+	if(isZPrepass){
+		//ZPrepass?
+		return In.posInView.z;
+	}
 	float4 color = float4(Texture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
 	//従ベクトルと接ベクトルを求める。<-多くの場合で事前計算済みのデータとして、頂点データに埋め込まれているから計算しなくてよい。
 //	float3 lig = max(0.0f, -dot( In.Normal, diffuseLightDir )) * diffuseLightColor;

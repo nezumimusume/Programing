@@ -44,6 +44,7 @@
 #include "DirectXTK/Inc/CommonStates.h"
 #include "DirectXTK/Inc/SpriteFont.h"
 
+#include "tkEngine/tkEngineConst.h"
 #include "tkEngine/policy/tkNoncopyable.h"
 #include "tkEngine/policy/tkScopedResource.h"
 #include "tkEngine/debug/tkLog.h"
@@ -70,3 +71,4 @@
 #include "tkEngine/Input/tkPad.h"
 #include "tkEngine/tkEngine.h"
 #include "tkEngine/sound/tkSoundSource.h"
+

@@ -12,6 +12,7 @@
 #include "tkEngine/graphics/GPUView/tkShaderResourceView.h"
 #include "tkEngine/graphics/GPUView/tkUnorderedAccessView.h"
 #include "tkEngine/graphics/tkSamplerState.h"
+#include "tkEngine/graphics/tkRenderTarget.h"
 
 namespace tkEngine{
 	class CVertexBuffer;
@@ -32,7 +33,17 @@ namespace tkEngine{
 		 *@param[in]	NumViews		バインドするレンダリングターゲットの数。
 		 *@param[in]	renderTarget	バインドするレンダリングターゲットの配列へのポインタ。
 		 */
-		void OMSetRenderTargets(unsigned int NumViews, CRenderTarget* renderTarget);
+		void OMSetRenderTargets(unsigned int NumViews, CRenderTarget* renderTarget[]);
+		/*!
+		* @brief	現在バインドされているレンダリングターゲットビューを取得。
+		*@param[out]	numViews		バインドされているレンダリングターゲットの数。
+		*@param[out]	renderTarget	バインドするレンダリングターゲットの配列へのポインタ。
+		*/
+		void OMGetRenderTargets(unsigned int& numViews, CRenderTarget* renderTargets[MRT_MAX])
+		{
+			memcpy(renderTargets, m_renderTargetViews, sizeof(CRenderTarget*)*m_numRenderTargetView);
+			numViews = m_numRenderTargetView;
+		}
 		/*!
 		 * @brief	ビューポートを設定。
 		 *@param[in]	topLeftX	ビューポートの左上のX座標。
@@ -59,8 +70,8 @@ namespace tkEngine{
 		{
 			if (rtNo < m_numRenderTargetView
 				&& m_renderTargetViews != nullptr) {
-				m_pD3DDeviceContext->ClearRenderTargetView(m_renderTargetViews[rtNo], clearColor);
-				m_pD3DDeviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+				m_pD3DDeviceContext->ClearRenderTargetView(m_renderTargetViews[rtNo]->GetRenderTargetView(), clearColor);
+				m_pD3DDeviceContext->ClearDepthStencilView(m_renderTargetViews[0]->GetDepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 			}
 		}
 		/*!
@@ -283,11 +294,10 @@ namespace tkEngine{
 			}
 		}
 	private:
-		static const int MRT_MAX = 8;	//MRTの最大数。
+		
 		ID3D11DeviceContext*			m_pD3DDeviceContext = nullptr;	//!<D3Dデバイスコンテキスト。
 		D3D11_VIEWPORT 					m_viewport;						//!<ビューポート。
-		ID3D11RenderTargetView*			m_renderTargetViews[MRT_MAX] = {nullptr};	//!<現在使用されているレンダリングターゲットビュー。
-		ID3D11DepthStencilView*			m_depthStencilView;				//!<現在設定されているデプスステンシルビュー。
+		CRenderTarget*					m_renderTargetViews[MRT_MAX] = { nullptr };
 		unsigned int 					m_numRenderTargetView = 0;		//!<レンダリングターゲットビューの数。
 	};
 }

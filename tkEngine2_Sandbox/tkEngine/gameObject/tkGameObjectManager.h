@@ -11,6 +11,7 @@
 
 namespace tkEngine{
 	struct SRenderContextMap;
+	class CPreRender;
 	/*!
 	 *@brief	CGameObjectのマネージャ
 	 */
@@ -50,7 +51,7 @@ namespace tkEngine{
 		/*!
 		*@brief	実行。
 		*/
-		void Execute(CRenderContext& renderContext);
+		void Execute(CRenderContext& renderContext, CPreRender& preRender);
 		/*!
 		 *@brief	初期化。
 		 *@param[in]	gameObjectPrioMax	ゲームオブジェクトの優先度の最大値。(255まで)
@@ -170,7 +171,12 @@ namespace tkEngine{
 	 * NewGOを使用して作成したオブジェクトは必ずDeleteGOを実行するように。
 	 *@param[in]	go		削除するゲームオブジェクト。
 	 */
-	static inline void DeleteGO(IGameObject* go )
+	static inline void DeleteGO(IGameObject*& go )
+	{
+		GameObjectManager().DeleteGameObject(go);
+		go = nullptr;
+	}
+	static inline void DeleteGO(IGameObject* go)
 	{
 		GameObjectManager().DeleteGameObject(go);
 	}

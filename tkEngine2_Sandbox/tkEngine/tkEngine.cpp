@@ -27,6 +27,8 @@ namespace tkEngine {
 		}
 		//GameObjectManagerの初期化。
 		GameObjectManager().Init(initParam.gameObjectPrioMax);
+		//PreRenderの初期化。
+		m_preRender.Create(initParam.graphicsConfing);
 		//SoundEngineの初期化
 		m_soundEngine.Init();
 		return true;
@@ -139,7 +141,10 @@ namespace tkEngine {
 		//レンダリングコンテキストの初期化。
 		m_renderContext.Init(m_pImmediateContext);
 
-		m_renderContext.OMSetRenderTargets(1, &m_mainRenderTarget[0]);
+		CRenderTarget* renderTargets[] = {
+			&m_mainRenderTarget[0]
+		};
+		m_renderContext.OMSetRenderTargets(1, renderTargets);
 
 		//ビューポートを設定。
 		m_renderContext.RSSetViewport(0.0f, 0.0f, (FLOAT)m_frameBufferWidth, (FLOAT)m_frameBufferHeight);
@@ -206,7 +211,7 @@ namespace tkEngine {
 		//サウンドエンジンの更新。
 		m_soundEngine.Update();
 		//GameObjectManager更新
-		GameObjectManager().Execute(m_renderContext);
+		GameObjectManager().Execute(m_renderContext, m_preRender);
 		//メインレンダリングターゲットの内容をバックバッファにコピー。
 		CopyMainRenderTargetToBackBuffer();
 		

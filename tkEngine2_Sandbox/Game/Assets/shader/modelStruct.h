@@ -29,8 +29,9 @@ struct VSInputNmTxWeights
  * @brief	ピクセルシェーダーの入力。
  */
 struct PSInput{
-	float4 Position : SV_POSITION;
-	float3 Normal	: NORMAL;
-	float2 TexCoord : TEXCOORD0;
-	float3 Pos		: TEXCOORD1;		//ワールド座標系での頂点座標。
+	float4 Position 	: SV_POSITION;
+	float3 Normal		: NORMAL;
+	float2 TexCoord 	: TEXCOORD0;
+	float3 Pos			: TEXCOORD1;		//ワールド座標系での頂点座標。
+	float3 posInView	: TEXCOORD2;		//カメラ空間での座標。
 };

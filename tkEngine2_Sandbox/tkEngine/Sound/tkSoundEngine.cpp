@@ -155,22 +155,25 @@ namespace tkEngine{
 	{
 		//波形データバンクを解放。
 		m_waveFileBank.ReleaseAll();
-		if(m_xAudio2 != nullptr){
-			m_xAudio2->Release();
-			m_xAudio2 = nullptr;
-		}
-		if (m_masteringVoice != nullptr) {
-			m_masteringVoice->DestroyVoice();
-			m_masteringVoice = nullptr;
+
+		if (m_submixVoice != nullptr) {
+			m_submixVoice->DestroyVoice();
+			m_submixVoice = nullptr;
 		}
 		if (m_reverbEffect != nullptr) {
 			m_reverbEffect->Release();
 			m_reverbEffect = nullptr;
 		}
-		if (m_submixVoice != nullptr) {
-			m_submixVoice->DestroyVoice();
-			m_submixVoice = nullptr;
+		if (m_masteringVoice != nullptr) {
+			m_masteringVoice->DestroyVoice();
+			m_masteringVoice = nullptr;
 		}
+		if (m_xAudio2 != nullptr) {
+			m_xAudio2->Release();
+			m_xAudio2 = nullptr;
+		}
+
+
 		CoUninitialize();
 	}
 	/*!

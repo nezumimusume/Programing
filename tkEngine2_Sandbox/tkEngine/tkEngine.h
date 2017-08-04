@@ -6,7 +6,8 @@
 #include "tkEngine/graphics/tkRenderTarget.h"
 #include "tkEngine/timer/tkStopwatch.h"
 #include "tkEngine/Sound/tkSoundEngine.h"
-
+#include "tkEngine/graphics/preRender/tkPreRender.h"
+#include "tkEngine/graphics/tkCamera.h"
 namespace tkEngine{
 	/*!
 	 *@brief	初期化用のパラメータ。
@@ -23,6 +24,7 @@ namespace tkEngine{
 		int frameBufferWidth;		//!<フレームバッファの高さ。これが内部解像度。
 		int nCmdShow;				//!<
 		unsigned char gameObjectPrioMax;		//!<ゲームオブジェクトの優先度の最大値(32まで)
+		SGraphicsConfig graphicsConfing;		//!<描画コンフィグ。
 	};
 	/*!
 	 *@brief	エンジン。
@@ -120,6 +122,21 @@ namespace tkEngine{
 		{
 			return m_soundEngine;
 		}
+		/*!
+		* @brief	ZPrepassの取得。
+		*/
+		CZPrepass& GetZPrepass()
+		{
+			return m_preRender.GetZPrepass();
+		}
+		
+		/*!
+		*@brief	メインカメラを取得。
+		*/
+		CCamera& GetMainCamera()
+		{
+			return m_mainCamera;
+		}
 	private:
 		/*!
 		 *@brief	ウィンドウ初期化。
@@ -158,6 +175,8 @@ namespace tkEngine{
 		int						m_frameBufferWidth = 0;						//!<フレームバッファの幅。これが内部解像度。
 		int						m_frameBufferHeight = 0;					//!<フレームバッファの高さ。これが内部解像度。
 		CPad					m_pad[CPad::CONNECT_PAD_MAX];				//!<ゲームパッド。
+		CPreRender				m_preRender;								//!<プリレンダリング。
+		CCamera					m_mainCamera;								//!<メインカメラ。
 	public:
 		CStopwatch				m_sw;
 	};
@@ -182,5 +201,16 @@ namespace tkEngine{
 	static inline CSoundEngine& SoundEngine()
 	{
 		return Engine().GetSoundEngine();
+	}
+	/*!
+	* @brief	メインカメラのインスタンスを取得。。
+	*/
+	static inline CCamera& MainCamera()
+	{
+		return Engine().GetMainCamera();
+	}
+	static inline CZPrepass& ZPrepass()
+	{
+		return Engine().GetZPrepass();
 	}
 }

@@ -44,7 +44,6 @@ class PBRSample : public IGameObject {
 	CConstantBuffer m_materialParamCB;			//マテリアルパラメータ用の定数バッファ。
 	CSkinModelData skinModelData;
 	CSkinModel bgModel;
-	CCamera camera;
 	std::unique_ptr<DirectX::SpriteFont>	m_font;
 	std::unique_ptr<DirectX::SpriteBatch>	m_bach;
 	int m_cursorPos = 0;
@@ -55,16 +54,17 @@ public:
 		skinModelData.Load(L"Assets/modelData/background.cmo");
 		bgModel.Init(skinModelData);
 		//カメラを初期化。
-		camera.SetPosition({ 0.0f, 40.0f, 50.0f });
-		camera.SetTarget({ 0.0f, 0.0f, 0.0f });
-		camera.SetUp({ 0.0f, 1.0f, 0.0f });
-		camera.Update();
+		CCamera& mainCamera = MainCamera();
+		mainCamera.SetPosition({ 0.0f, 40.0f, 50.0f });
+		mainCamera.SetTarget({ 0.0f, 0.0f, 0.0f });
+		mainCamera.SetUp({ 0.0f, 1.0f, 0.0f });
+		mainCamera.Update();
 		
 
 		//ライトの定数バッファを作成。
 		m_light.diffuseLightDir.Set({ 1.0f, 0.0f, 0.0f, 0.0f });
 		m_light.diffuseLightColor.Set({ 1.0f, 1.0f, 1.0f, 1.0f });
-		m_light.eyePos = camera.GetPosition();
+		m_light.eyePos = mainCamera.GetPosition();
 		m_lightCB.Create(&m_light, sizeof(m_light));
 		
 		//マテリアルパラメータを初期化。
@@ -114,7 +114,7 @@ public:
 		rc.UpdateSubresource(m_materialParamCB, m_materialParam);
 		rc.PSSetConstantBuffer(1, m_lightCB);
 		rc.PSSetConstantBuffer(2, m_materialParamCB);
-		bgModel.Draw(rc, camera.GetViewMatrix(), camera.GetProjectionMatrix());
+		bgModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
 	}
 	
 	/*!------------------------------------------------------------------
@@ -133,7 +133,10 @@ public:
 			cursor[1], m_materialParam.metallic,
 			cursor[2], m_materialParam.anisotropic
 		);
-		rc.OMSetRenderTargets(1, &Engine().GetMainRenderTarget());
+		CRenderTarget* rts[] = {
+			&Engine().GetMainRenderTarget()
+		};
+		rc.OMSetRenderTargets(1, rts);
 		m_bach->Begin();
 
 		m_font->DrawString(

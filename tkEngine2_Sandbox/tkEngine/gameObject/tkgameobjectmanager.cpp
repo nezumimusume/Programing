@@ -5,9 +5,10 @@
 #include "tkEngine/tkEngine.h"
 #include "tkEngine/gameObject/tkgameobjectmanager.h"
 #include <future>
+#include "tkEngine/graphics/preRender/tkPreRender.h"
 
 namespace tkEngine{
-	void CGameObjectManager::Execute(CRenderContext& renderContext)
+	void CGameObjectManager::Execute(CRenderContext& renderContext, CPreRender& preRender)
 	{
 		ExecuteDeleteGameObjects();
 
@@ -22,7 +23,7 @@ namespace tkEngine{
 			}
 		}
 		//プリレンダリング。
-		//@todo 未実装。 preRender.Update();
+		preRender.Update();
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
 				obj->UpdateWrapper();
@@ -38,10 +39,16 @@ namespace tkEngine{
 
 		//画面をクリア
 		float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f }; //red,green,blue,alpha
-		renderContext.OMSetRenderTargets(1, &Engine().GetMainRenderTarget());
+		CRenderTarget* renderTargets[] = {
+			&Engine().GetMainRenderTarget()
+		};
+		renderContext.OMSetRenderTargets(1, renderTargets);
 		renderContext.ClearRenderTargetView(0, ClearColor);
 		renderContext.RSSetViewport(0.0f, 0.0f, (float)Engine().GetFrameBufferWidth(), (float)Engine().GetFrameBufferHeight());
 		
+		//プリレンダリング。
+		preRender.Render(renderContext);
+
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
 				obj->PreRenderWrapper(renderContext);

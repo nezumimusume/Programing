@@ -271,6 +271,8 @@
     <ClInclude Include="graphics\GPUBuffer\tkVertexBuffer.h" />
     <ClInclude Include="graphics\GPUView\tkShaderResourceView.h" />
     <ClInclude Include="graphics\GPUView\tkUnorderedAccessView.h" />
+    <ClInclude Include="graphics\preRender\tkPreRender.h" />
+    <ClInclude Include="graphics\preRender\tkZPrepass.h" />
     <ClInclude Include="graphics\tkAnimationClip.h" />
     <ClInclude Include="graphics\tkCamera.h" />
     <ClInclude Include="graphics\tkMapper.h" />
@@ -312,6 +314,8 @@
     <ClCompile Include="graphics\GPUBuffer\tkVertexBuffer.cpp" />
     <ClCompile Include="graphics\GPUView\tkShaderResourceView.cpp" />
     <ClCompile Include="graphics\GPUView\tkUnorderedAccessView.cpp" />
+    <ClCompile Include="graphics\preRender\tkPreRender.cpp" />
+    <ClCompile Include="graphics\preRender\tkZPrepass.cpp" />
     <ClCompile Include="graphics\tkAnimationClip.cpp" />
     <ClCompile Include="graphics\tkCamera.cpp" />
     <ClCompile Include="graphics\tkRenderContext.cpp" />

@@ -12,19 +12,23 @@ namespace tkEngine{
 		TK_ASSERT(pD3DDeviceContext != nullptr, "pD3DDeviceContext‚ªNULL‚Å‚·Bì¬‚µ‚Ä‚©‚çŒÄ‚ñ‚Å‚ËB");
 		m_pD3DDeviceContext = pD3DDeviceContext;
 	}
-	void CRenderContext::OMSetRenderTargets(unsigned int NumViews, CRenderTarget* renderTarget)
+	void CRenderContext::OMSetRenderTargets(unsigned int NumViews, CRenderTarget* renderTarget[])
 	{
 		TK_ASSERT(NumViews <= MRT_MAX, "NumViews is invalid");
 		
 		ZeroMemory(m_renderTargetViews, sizeof(m_renderTargetViews));
-		m_depthStencilView = nullptr;
+		memcpy(m_renderTargetViews, renderTarget, sizeof(CRenderTarget*) * NumViews);
+
+		ID3D11RenderTargetView* renderTargetViews[MRT_MAX] = { nullptr };
+		ID3D11DepthStencilView*	depthStencilView = nullptr;
+
 		if (renderTarget != nullptr) {
-			m_depthStencilView = renderTarget[0].GetDepthStencilView();
+			depthStencilView = m_renderTargetViews[0]->GetDepthStencilView();
 			for (unsigned int i = 0; i < NumViews; i++) {
-				m_renderTargetViews[i] = renderTarget[i].GetRenderTargetView();
+				renderTargetViews[i] = m_renderTargetViews[i]->GetRenderTargetView();
 			}
 		}
-		m_pD3DDeviceContext->OMSetRenderTargets(NumViews, m_renderTargetViews, m_depthStencilView);
+		m_pD3DDeviceContext->OMSetRenderTargets(NumViews, renderTargetViews, depthStencilView);
 		m_numRenderTargetView = NumViews;
 	}
 }
