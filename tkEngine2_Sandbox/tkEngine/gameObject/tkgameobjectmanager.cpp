@@ -37,7 +37,8 @@ namespace tkEngine{
 		}
 		//シーングラフを更新。
 		UpdateSceneGraph();
-
+		//ライトを更新。
+		LightManager().Update();
 		//画面をクリア
 		float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f }; //red,green,blue,alpha
 		CRenderTarget* renderTargets[] = {

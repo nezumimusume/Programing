@@ -28,7 +28,7 @@ namespace tkEngine{
 		mTrans.MakeTranslation(trans);
 		m_worldMatrix.Mul(mScale, mRot);
 		m_worldMatrix.Mul(m_worldMatrix, mTrans);
-		ZPrepass().AddSkinModel(this);
+		GraphicsEngine().GetZPrepass().AddSkinModel(this);
 	}
 	void CSkinModel::Draw(
 		CRenderContext& renderContext, 

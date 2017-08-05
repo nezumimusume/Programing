@@ -8,6 +8,7 @@
 #include "tkEngine/Sound/tkSoundEngine.h"
 #include "tkEngine/graphics/tkGraphicsEngine.h"
 #include "tkEngine/tkEngineStruct.h"
+#include "tkengine/light/tkLightManager.h"
 
 namespace tkEngine{
 	/*!
@@ -87,6 +88,13 @@ namespace tkEngine{
 		{
 			return m_graphicsEngine.GetMainCamera();
 		}
+		/*!
+		*@brief	ライトの管理者を取得。
+		*/
+		CLightManager& GetLightManager()
+		{
+			return m_lightManager;
+		}
 	private:
 		/*!
 		 *@brief	ウィンドウ初期化。
@@ -106,6 +114,7 @@ namespace tkEngine{
 		HWND					m_hWnd = nullptr;	//!<ウィンドウハンドル。
 		CGraphicsEngine			m_graphicsEngine;							//!<グラフィックエンジン。
 		CSoundEngine			m_soundEngine;								//!<サウンドエンジン。
+		CLightManager			m_lightManager;								//!<ライトの管理者。
 		int						m_screenWidth = 0;							//!<スクリーンの幅。
 		int						m_screenHeight = 0;							//!<スクリーンの高さ。
 		CPad					m_pad[CPad::CONNECT_PAD_MAX];				//!<ゲームパッド。
@@ -114,39 +123,46 @@ namespace tkEngine{
 	};
 
 	/*!
-	* @brief	Engineのインスタンスを取得。。
+	* @brief	Engineのインスタンスを取得。
 	*/
 	static inline CEngine& Engine()
 	{
 		return CEngine::GetInstance();
 	}
 	/*!
-	* @brief	CPadのインスタンスを取得。。
+	* @brief	CPadのインスタンスを取得。
 	*/
 	static inline CPad& Pad(int padNo)
 	{
 		return Engine().GetPad(padNo);
 	}
 	/*!
-	* @brief	CSoundEngineのインスタンスを取得。。
+	* @brief	CSoundEngineのインスタンスを取得。
 	*/
 	static inline CSoundEngine& SoundEngine()
 	{
 		return Engine().GetSoundEngine();
 	}
+	/*!
+	* @brief	CGraphicsEngineのインスタンスを取得。
+	*/
 	static inline CGraphicsEngine& GraphicsEngine()
 	{
 		return Engine().GetGraphicsEngine();
 	}
 	/*!
-	* @brief	メインカメラのインスタンスを取得。。
+	* @brief	メインカメラのインスタンスを取得。
 	*/
 	static inline CCamera& MainCamera()
 	{
 		return GraphicsEngine().GetMainCamera();
 	}
-	static inline CZPrepass& ZPrepass()
+	/*!
+	* @brief	CLightManagerのインスタンスを取得。
+	*/
+	static inline CLightManager& LightManager()
 	{
-		return GraphicsEngine().GetZPrepass();
+		return Engine().GetLightManager();
 	}
+	
 }

@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <vector>
 #include <list>
+#include <algorithm>
 #include <map>
 #include <wincodec.h>
 #include <wincodecsdk.h>
