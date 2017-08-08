@@ -89,13 +89,10 @@ float4 PSMain( PSInput In ) : SV_Target0
 	//タイルインデックスを計算する。
 	uint tileIndex = floor( viewportPos.x / TILE_WIDTH ) + floor( viewportPos.y / TILE_WIDTH ) * numCellX;
 	
-	//ポイントライトの数を取得。
-	uint numLights, dummy;
-	pointLightList.GetDimensions(numLights, dummy);
 	//このピクセルが含まれるタイルのライトインデックスリストの開始位置を計算する。
-	uint lightStart = tileIndex * numLights;
+	uint lightStart = tileIndex * numPointLight;
 	//このピクセルが含まれるタイルのライトインデックスリストの終了位置を計算する。
-	uint lightEnd = lightStart + numLights;
+	uint lightEnd = lightStart + numPointLight;
 	
 	float3 lig = 0.0f;
 	for (uint lightListIndex = lightStart; lightListIndex < lightEnd; lightListIndex++){

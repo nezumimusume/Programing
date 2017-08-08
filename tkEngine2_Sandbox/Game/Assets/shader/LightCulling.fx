@@ -8,9 +8,8 @@
 #define TILE_WIDTH			16
 //タイルの総数。
 #define TILE_SIZE			(TILE_WIDTH * TILE_WIDTH)
-//ポイントライトの最大数。
-#define MAX_LIGHT 			512
 
+#define MAX_LIGHT			1024
 //ポイントライト。
 struct SPointLight {
 	float3	position;		//位置。
@@ -26,6 +25,7 @@ cbuffer cbCameraParam : register( b0 )
 	float4x4 	mtxProjInv			: packoffset( c4 );		// 投影行列の逆行列。
 	float4x4	mtxViewRot			: packoffset( c8 );
 	float4		screenParam			: packoffset( c12 );	// スクリーンパラメータ(near, far, screenWidth, screenHeight)
+	uint		numPointLight		: packoffset( c13 );	//ポイントライトの数。
 	
 };
 
@@ -105,9 +105,7 @@ void CSMain(
 {
 	// タイル内でのインデックスを求める
     uint groupIndex = groupThreadId.y * TILE_WIDTH + groupThreadId.x;
-    // ライトの数を取得する
-    uint numLights, dummy;
-    pointLightList.GetDimensions( numLights, dummy );
+
     //共有メモリを初期化する。
     if(groupIndex == 0)
     {
@@ -136,7 +134,7 @@ void CSMain(
 	GetTileFrustumPlane( frustumPlanes, groupId );
 	
 	// タイルとポイントライトの衝突判定
-	for (uint lightIndex = groupIndex; lightIndex < numLights; lightIndex += TILE_SIZE)
+	for (uint lightIndex = groupIndex; lightIndex < numPointLight; lightIndex += TILE_SIZE)
 	{
 		SPointLight light = pointLightList[lightIndex];
 
@@ -162,13 +160,13 @@ void CSMain(
     // ライトインデックスを出力バッファに出力
 	uint numCellX = (screenParam.z + TILE_WIDTH - 1) / TILE_WIDTH;
 	uint tileIndex = floor( frameUV.x / TILE_WIDTH ) + floor( frameUV.y / TILE_WIDTH ) * numCellX;
-	uint lightStart = numLights * tileIndex;
+	uint lightStart = numPointLight * tileIndex;
 	for (uint lightIndex = groupIndex; lightIndex < sTileNumLights; lightIndex += TILE_SIZE)
 	{
 		rwLightIndices[lightStart + lightIndex] = sTileLightIndices[lightIndex];
 	}
 	[branch]
-	if ((groupIndex == 0) && (sTileNumLights < numLights))
+	if ((groupIndex == 0) && (sTileNumLights < numPointLight))
 	{
 		//-1で番兵。
 		rwLightIndices[lightStart + sTileNumLights] = 0xffffffff;

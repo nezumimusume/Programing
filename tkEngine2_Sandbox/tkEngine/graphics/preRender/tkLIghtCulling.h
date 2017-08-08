@@ -36,7 +36,7 @@ namespace tkEngine{
 			CMatrix mProjInv;		//プロジェクション行列の逆行列。
 			CMatrix mViewRot;		//カメラの回転行列の逆行列。
 			CVector4 screenParam;	//スクリーンパラメータ。
-
+			int numPointLight;		//ポイントライトの数。
 		};
 		
 		SCameraParam	m_cameraParam;			//カメラパラメータ。

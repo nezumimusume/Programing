@@ -30,7 +30,7 @@ class PBRSample : public IGameObject {
 		float metallic;			//!<メタリック。
 		float anisotropic;		//!<異方性反射。
 	};
-	static const int NUM_POINT_LIGHT = 512;
+	static const int NUM_POINT_LIGHT = 1024;
 	MaterialParam m_materialParam;				//マテリアルパラメータ。
 	CConstantBuffer m_materialParamCB;			//マテリアルパラメータ用の定数バッファ。
 	CSkinModelData skinModelData;
@@ -73,7 +73,7 @@ public:
 		
 		{
 			static const int QuantizationSize = 1000;	//量子化サイズ。
-			for (int i = 0; i < 512; i++) {
+			for (int i = 0; i < 256; i++) {
 				m_pointLight[i] = NewGO<prefab::CPointLight>(0);
 				int ix = rand() % QuantizationSize;
 				int iy = rand() % QuantizationSize;
@@ -143,6 +143,9 @@ public:
 		CQuaternion qRot;
 		qRot.SetRotationDeg(CVector3::AxisY, 0.2f);
 		for (auto& ptLight : m_pointLight) {
+			if (ptLight == NULL) {
+				break;
+			}
 			CVector3 pointLightPos = ptLight->GetPosition();
 			qRot.Multiply(pointLightPos);
 			ptLight->SetPosition(pointLightPos);

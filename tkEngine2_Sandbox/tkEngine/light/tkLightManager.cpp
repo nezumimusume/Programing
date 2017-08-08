@@ -20,12 +20,8 @@ namespace tkEngine{
 	{
 		InitDirectionLightStructuredBuffer();
 		InitPointLightStructuredBuffer();
-		InitLightParamConstantBuffer();
 		InitPointLightInTileStructuredBuffer();
-	}
-	void CLightManager::InitLightParamConstantBuffer()
-	{
-		m_lightParamCB.Create(&m_lightParam, sizeof(m_lightParamCB));
+		m_lightParamCB.Create(&m_lightParam, sizeof(m_lightParam));
 	}
 	void CLightManager::InitPointLightInTileStructuredBuffer()
 	{
@@ -142,6 +138,7 @@ namespace tkEngine{
 		//ダーティフラグはここではおろさずに、Render関数で下す。
 		m_lightParam.eyePos = MainCamera().GetPosition();
 		m_lightParam.numDirectionLight = m_directionLights.size();
+		m_lightParam.numPointLight = m_pointLights.size();
 	}
 	void CLightManager::Render(CRenderContext& renderContext)
 	{

@@ -66,18 +66,25 @@ namespace tkEngine{
 		{
 			return m_pointLightsInTileSB.GetUAV();
 		}
+		/*!
+		*@brief　ポイントライトの数を取得。
+		*/
+		int GetNumPointLight() const
+		{
+			return m_pointLights.size();
+		}
 	private:
 		void InitDirectionLightStructuredBuffer();
 		void InitPointLightStructuredBuffer();
-		void InitLightParamConstantBuffer();
 		void InitPointLightInTileStructuredBuffer();
 	private:
 		static const int MAX_DIRECTION_LIGHT = 8;						//!<ディレクションライトの最大数。
-		static const int MAX_POINT_LIGHT = 512;							//!<ポイントライトの最大数。
+		static const int MAX_POINT_LIGHT = 1024;						//!<ポイントライトの最大数。
 		//GPUで使用するライト用のパラメータ。
 		struct SLightParam {
 			CVector3 eyePos;			//視線の位置。
 			int numDirectionLight;		//ディレクションライトの数。
+			int numPointLight;			//ポイントライトの数。
 		};
 		SLightParam							m_lightParam;
 		CConstantBuffer						m_lightParamCB;			//!<GPUで使用するライト用のパラメータの定数バッファ。

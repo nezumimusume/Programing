@@ -56,6 +56,7 @@ namespace tkEngine{
 		m_cameraParam.mViewRot.m[3][1] = 0.0f;
 		m_cameraParam.mViewRot.m[3][2] = 0.0f;
 		m_cameraParam.mViewRot.Transpose();
+		m_cameraParam.numPointLight = ge.GetLightManager().GetNumPointLight();
 
 		rc.UpdateSubresource(m_cameraParamCB, m_cameraParam);
 		rc.CSSetConstantBuffer(0, m_cameraParamCB);
