@@ -35,6 +35,8 @@ namespace tkEngine{
 		if (FAILED(hr)) {
 			return false;
 		}
+		m_srv.Create(*this);
+		m_uav.Create(*this);
 		return true;
 	}
 }

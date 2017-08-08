@@ -8,7 +8,7 @@
 #include "tkEngine/Sound/tkSoundEngine.h"
 #include "tkEngine/graphics/tkGraphicsEngine.h"
 #include "tkEngine/tkEngineStruct.h"
-#include "tkengine/light/tkLightManager.h"
+
 
 namespace tkEngine{
 	/*!
@@ -88,13 +88,7 @@ namespace tkEngine{
 		{
 			return m_graphicsEngine.GetMainCamera();
 		}
-		/*!
-		*@brief	ライトの管理者を取得。
-		*/
-		CLightManager& GetLightManager()
-		{
-			return m_lightManager;
-		}
+		
 	private:
 		/*!
 		 *@brief	ウィンドウ初期化。
@@ -114,7 +108,6 @@ namespace tkEngine{
 		HWND					m_hWnd = nullptr;	//!<ウィンドウハンドル。
 		CGraphicsEngine			m_graphicsEngine;							//!<グラフィックエンジン。
 		CSoundEngine			m_soundEngine;								//!<サウンドエンジン。
-		CLightManager			m_lightManager;								//!<ライトの管理者。
 		int						m_screenWidth = 0;							//!<スクリーンの幅。
 		int						m_screenHeight = 0;							//!<スクリーンの高さ。
 		CPad					m_pad[CPad::CONNECT_PAD_MAX];				//!<ゲームパッド。
@@ -162,7 +155,7 @@ namespace tkEngine{
 	*/
 	static inline CLightManager& LightManager()
 	{
-		return Engine().GetLightManager();
+		return GraphicsEngine().GetLightManager();
 	}
 	
 }

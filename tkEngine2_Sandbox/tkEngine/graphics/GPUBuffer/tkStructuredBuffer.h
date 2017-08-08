@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "tkEngine/graphics/GPUView/tkShaderResourceView.h"
+#include "tkEngine/graphics/GPUView/tkUnorderedAccessView.h"
 namespace tkEngine{
 	/*!
 	 * @brief	StructuredBuffer
@@ -32,7 +34,23 @@ namespace tkEngine{
 		* 明示的なタイミングで開放したい場合に呼び出してください。
 		*/
 		void Release();
+		/*!
+		* @brief	SRVを取得。
+		*/
+		CShaderResourceView& GetSRV()
+		{
+			return m_srv;
+		}
+		/*!
+		* @brief	UAVを取得。
+		*/
+		CUnorderedAccessView& GetUAV()
+		{
+			return m_uav;
+		}
 	private:
-		ID3D11Buffer*		m_structuredBuffer = nullptr;	//!<StructuredBuffer
+		ID3D11Buffer*			m_structuredBuffer = nullptr;	//!<StructuredBuffer
+		CShaderResourceView		m_srv;							//!<SRV
+		CUnorderedAccessView	m_uav;							//!<UAV
 	};
 }

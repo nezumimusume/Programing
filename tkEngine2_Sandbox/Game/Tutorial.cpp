@@ -7,6 +7,7 @@
 #include "tkEngine/graphics/tkCamera.h"
 #include "tkEngine/timer/tkStopwatch.h"
 #include <time.h>
+#include "tkEngine/light/tkDirectionLight.h"
 
 using namespace tkEngine;
 
@@ -20,15 +21,6 @@ class PBRSample : public IGameObject {
 		CVector4 pos;
 		CVector2 tex;
 	};
-
-	//ライト構造体。
-	struct SLight {
-		CVector4 diffuseLightDir;		//ディフューズライトの方向。
-		CVector4 diffuseLightColor;		//ディフューズライトの色。
-		CVector4 ambientLight;			//アンビエントライト。
-		CVector4 eyePos;				//視線の位置。
-	};
-	
 	/*!
 	 * @brief	マテリアルパラメータ。
 	 */
@@ -38,11 +30,10 @@ class PBRSample : public IGameObject {
 		float anisotropic;		//!<異方性反射。
 	};
 	
-	SLight m_light;								//ライト。
-	CConstantBuffer m_lightCB;					//ライト用の定数バッファ。
 	MaterialParam m_materialParam;				//マテリアルパラメータ。
 	CConstantBuffer m_materialParamCB;			//マテリアルパラメータ用の定数バッファ。
 	CSkinModelData skinModelData;
+	prefab::CDirectionLight* m_directionLight = nullptr;
 	CSkinModel bgModel;
 	std::unique_ptr<DirectX::SpriteFont>	m_font;
 	std::unique_ptr<DirectX::SpriteBatch>	m_bach;
@@ -60,12 +51,10 @@ public:
 		mainCamera.SetUp({ 0.0f, 1.0f, 0.0f });
 		mainCamera.Update();
 		
-
-		//ライトの定数バッファを作成。
-		m_light.diffuseLightDir.Set({ 1.0f, 0.0f, 0.0f, 0.0f });
-		m_light.diffuseLightColor.Set({ 1.0f, 1.0f, 1.0f, 1.0f });
-		m_light.eyePos = mainCamera.GetPosition();
-		m_lightCB.Create(&m_light, sizeof(m_light));
+		//ディレクションライトをシーンに追加。
+		m_directionLight = NewGO<prefab::CDirectionLight>(0);
+		m_directionLight->SetDirection({ 1.0f, 0.0f, 0.0f});
+		m_directionLight->SetColor({ 1.0f, 1.0f, 1.0f });
 		
 		//マテリアルパラメータを初期化。
 		m_materialParam.roughness = 0.5f;
@@ -112,7 +101,6 @@ public:
 	void RenderScene(CRenderContext& rc)
 	{	
 		rc.UpdateSubresource(m_materialParamCB, m_materialParam);
-		rc.PSSetConstantBuffer(1, m_lightCB);
 		rc.PSSetConstantBuffer(2, m_materialParamCB);
 		bgModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
 	}

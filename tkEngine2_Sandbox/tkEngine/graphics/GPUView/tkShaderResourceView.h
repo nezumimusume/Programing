@@ -39,7 +39,15 @@ namespace tkEngine{
 		{
 			return m_srv;
 		}
+		/*!
+		*@brief	有効なビューかどうか判定。
+		*/
+		bool IsValid() const
+		{
+			return m_isValid;
+		}
 	private:
 		ID3D11ShaderResourceView*		m_srv = nullptr;
+		bool							m_isValid = false;	//!<有効なデータ？
 	};
 }

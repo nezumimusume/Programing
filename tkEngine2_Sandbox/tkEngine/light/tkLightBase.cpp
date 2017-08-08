@@ -6,14 +6,16 @@
 #include "tkEngine/light/tkLightBase.h"
 #include "tkEngine/light/tkLightManager.h"
 namespace tkEngine{
-	bool CLightBase::Start() 
-	{
-		LightManager().AddLight(this);
-		return StartSub();
-	}
-	void CLightBase::OnDestroy()
-	{
-		LightManager().RemoveLight(this);
-		return OnDestorySub();
+	namespace prefab {
+		bool CLightBase::Start()
+		{
+			LightManager().AddLight(this);
+			return StartSub();
+		}
+		void CLightBase::OnDestroy()
+		{
+			LightManager().RemoveLight(this);
+			return OnDestorySub();
+		}
 	}
 }

@@ -115,20 +115,19 @@ namespace tkEngine{
 		if (!ret) {
 			return false;
 		}
-
 		//レンダリングコンテキストの初期化。
 		m_renderContext.Init(m_pImmediateContext);
-
 		CRenderTarget* renderTargets[] = {
 			&m_mainRenderTarget[0]
 		};
 		m_renderContext.OMSetRenderTargets(1, renderTargets);
-
 		//ビューポートを設定。
 		m_renderContext.RSSetViewport(0.0f, 0.0f, (FLOAT)m_frameBufferWidth, (FLOAT)m_frameBufferHeight);
-
 		//PreRenderの初期化。
 		m_preRender.Create(initParam.graphicsConfing);
+		//ライト管理者の初期化。
+		m_lightManager.Init();
+		return true;
 
 	}
 	void CGraphicsEngine::BeginRender()

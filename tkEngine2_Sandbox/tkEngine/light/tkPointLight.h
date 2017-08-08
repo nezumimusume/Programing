@@ -8,16 +8,25 @@
 #include "tkEngine/light/tkLightBase.h"
 
 namespace tkEngine{
-	/*!
-	 *@brief	ポイントライト。
-	 */
-	class CPointLight : public CLightBase{
-	public:
-		CPointLight();
-		~CPointLight();
-		bool StartSub() override;
-		void Update() override;
-	private:
-		SPointLight	light;		
-	};
+	namespace prefab {
+		/*!
+		 *@brief	ポイントライト。
+		 */
+		class CPointLight : public CLightBase {
+		public:
+			CPointLight();
+			~CPointLight();
+			bool StartSub() override final;
+			void Update() override final;
+			/*!
+			*@brief 生データの取得。
+			*/
+			SPointLight& GetRawData()
+			{
+				return light;
+			}
+		private:
+			SPointLight	light;
+		};
+	}
 }

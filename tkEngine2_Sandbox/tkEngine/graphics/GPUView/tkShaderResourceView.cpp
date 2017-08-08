@@ -21,6 +21,7 @@ namespace tkEngine{
 			m_srv->Release();
 			m_srv = nullptr;
 		}
+		m_isValid = false;
 	}
 	bool CShaderResourceView::Create(CStructuredBuffer& structuredBuffer)
 	{
@@ -44,6 +45,8 @@ namespace tkEngine{
 				return false;
 			}
 	    }
+		//—LŒø‚É‚È‚Á‚½ˆó
+		m_isValid = true;
 		return true;
 	}
 	/*!
@@ -67,6 +70,8 @@ namespace tkEngine{
 				return false;
 			}
 		}
+		//—LŒø‚É‚È‚Á‚½ˆóB
+		m_isValid = true;
 		return true;
 	}
 }

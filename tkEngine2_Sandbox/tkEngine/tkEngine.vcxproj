@@ -277,6 +277,7 @@
     <ClInclude Include="graphics\tkAnimationClip.h" />
     <ClInclude Include="graphics\tkCamera.h" />
     <ClInclude Include="graphics\tkGraphicsEngine.h" />
+    <ClInclude Include="graphics\tkLight.h" />
     <ClInclude Include="graphics\tkMapper.h" />
     <ClInclude Include="graphics\tkRenderContext.h" />
     <ClInclude Include="graphics\tkRenderState.h" />
@@ -306,6 +307,7 @@
     <ClInclude Include="timer\tkGameTime.h" />
     <ClInclude Include="timer\tkStopwatch.h" />
     <ClInclude Include="tkEngine.h" />
+    <ClInclude Include="tkEngineConst.h" />
     <ClInclude Include="tkEnginePreCompile.h" />
     <ClInclude Include="util\tkNameKey.h" />
     <ClInclude Include="util\tkUtil.h" />

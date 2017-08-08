@@ -8,7 +8,7 @@
 #include "tkEngine/graphics/preRender/tkPreRender.h"
 #include "tkEngine/graphics/tkCamera.h"
 #include "tkEngine/tkEngineStruct.h"
-
+#include "tkengine/light/tkLightManager.h"
 
 namespace tkEngine{
 	/*!
@@ -98,6 +98,13 @@ namespace tkEngine{
 		{
 			return m_renderContext;
 		}
+		/*!
+		*@brief	ライトの管理者を取得。
+		*/
+		CLightManager& GetLightManager()
+		{
+			return m_lightManager;
+		}
 	private:
 		ID3D11Device*			m_pd3dDevice = nullptr;						//!<D3D11デバイス。
 		CRenderContext			m_renderContext;							//!<レンダリングコンテキスト。
@@ -111,5 +118,6 @@ namespace tkEngine{
 		int						m_frameBufferHeight = 0;					//!<フレームバッファの高さ。これが内部解像度。
 		D3D_DRIVER_TYPE			m_driverType = D3D_DRIVER_TYPE_NULL;		//!<ドライバの種類のオプション。
 		D3D_FEATURE_LEVEL		m_featureLevel = D3D_FEATURE_LEVEL_11_0;	//!<Direct3D デバイスのターゲットとなる機能セット。
+		CLightManager			m_lightManager;								//!<ライトの管理者。
 	};
 }

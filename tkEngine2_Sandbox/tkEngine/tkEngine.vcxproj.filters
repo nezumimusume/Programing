@@ -209,6 +209,12 @@
     <ClInclude Include="light\tkLightManager.h">
       <Filter>Source Files\light</Filter>
     </ClInclude>
+    <ClInclude Include="tkEngineConst.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkLight.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">

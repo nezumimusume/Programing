@@ -17,10 +17,7 @@ cbuffer VSPSCb : register(b0){
  */
 cbuffer lightCb : register(b1)
 {
-	float4 diffuseLightDir;
-	float4 diffuseLightColor;
-	float4 ambientLight;
-	float3 eyeVec;
+	float3 eyePos;
 };
 
 cbuffer MaterialParamCb : register(b2){

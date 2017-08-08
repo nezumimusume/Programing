@@ -63,10 +63,11 @@ float4 PSMain( PSInput In ) : SV_Target0
 	}else{
 		tangentNormal = normalize(cross(In.Normal, float3( 0.0f, 1.0f, 0.0f)));
 	}
-	float3 toEye = normalize(eyeVec - In.Pos);
+	float3 toEye = normalize(eyePos - In.Pos);
 	biNormal = normalize(cross(In.Normal, tangentNormal));
-	color.xyz = BRDF(-diffuseLightDir, toEye, In.Normal, tangentNormal, biNormal, color.xyz);
-	color.xyz *= dot( In.Normal, -diffuseLightDir );
+	float3 lightDir = directionLight[0].direction;
+	color.xyz = BRDF(-lightDir, toEye, In.Normal, tangentNormal, biNormal, color.xyz);
+	color.xyz *= dot( In.Normal, -lightDir );
     return color; 
 }
 

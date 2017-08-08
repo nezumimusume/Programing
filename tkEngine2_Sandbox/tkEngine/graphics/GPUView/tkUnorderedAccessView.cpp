@@ -45,6 +45,8 @@ namespace tkEngine{
 				return false;
 			}
 		}
+		//有効な印。
+		m_isValid = true;
 		return true;
 	}
 	/*!
@@ -70,6 +72,8 @@ namespace tkEngine{
 				return false;
 			}
 		}
+		//有効な印。
+		m_isValid = true;
 		return true;
 	}
 }

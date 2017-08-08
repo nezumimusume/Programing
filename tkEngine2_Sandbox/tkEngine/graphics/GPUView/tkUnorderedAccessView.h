@@ -39,7 +39,15 @@ namespace tkEngine{
 		{
 			return m_uav;
 		}
+		/*!
+		*@brief	有効なデータかどうか判定。
+		*/
+		bool IsValid() const
+		{
+			return m_isValid;
+		}
 	private:
 		ID3D11UnorderedAccessView*	m_uav = nullptr;
+		bool						m_isValid = false;	//!<有効なデータ？
 	};
 }
