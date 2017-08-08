@@ -135,7 +135,7 @@ namespace tkEngine{
 			m_rawPointLights[ligNo] = lig->GetRawData();
 			ligNo++;
 		}
-		//ダーティフラグはここではおろさずに、Render関数で下す。
+		//ダーティフラグはここではおろさずに、Render関数でおろす。
 		m_lightParam.eyePos = MainCamera().GetPosition();
 		m_lightParam.numDirectionLight = m_directionLights.size();
 		m_lightParam.numPointLight = m_pointLights.size();
