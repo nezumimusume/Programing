@@ -35,8 +35,12 @@ namespace tkEngine{
 		if (FAILED(hr)) {
 			return false;
 		}
-		m_srv.Create(*this);
-		m_uav.Create(*this);
+		if (bufferDesc.BindFlags & D3D11_BIND_SHADER_RESOURCE) {
+			m_srv.Create(*this);
+		}
+		if (bufferDesc.BindFlags & D3D11_BIND_UNORDERED_ACCESS) {
+			m_uav.Create(*this);
+		}
 		return true;
 	}
 }

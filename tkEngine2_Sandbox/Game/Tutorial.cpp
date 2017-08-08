@@ -8,6 +8,7 @@
 #include "tkEngine/timer/tkStopwatch.h"
 #include <time.h>
 #include "tkEngine/light/tkDirectionLight.h"
+#include "tkEngine/light/tkPointLight.h"
 
 using namespace tkEngine;
 
@@ -29,11 +30,12 @@ class PBRSample : public IGameObject {
 		float metallic;			//!<メタリック。
 		float anisotropic;		//!<異方性反射。
 	};
-	
+	static const int NUM_POINT_LIGHT = 512;
 	MaterialParam m_materialParam;				//マテリアルパラメータ。
 	CConstantBuffer m_materialParamCB;			//マテリアルパラメータ用の定数バッファ。
 	CSkinModelData skinModelData;
-	prefab::CDirectionLight* m_directionLight = nullptr;
+	prefab::CDirectionLight* m_directionLight[3] = { nullptr };
+	prefab::CPointLight* m_pointLight[NUM_POINT_LIGHT] = {nullptr};
 	CSkinModel bgModel;
 	std::unique_ptr<DirectX::SpriteFont>	m_font;
 	std::unique_ptr<DirectX::SpriteBatch>	m_bach;
@@ -52,10 +54,10 @@ public:
 		mainCamera.Update();
 		
 		//ディレクションライトをシーンに追加。
-		m_directionLight = NewGO<prefab::CDirectionLight>(0);
-		m_directionLight->SetDirection({ 1.0f, 0.0f, 0.0f});
-		m_directionLight->SetColor({ 1.0f, 1.0f, 1.0f });
-		
+		m_directionLight[0] = NewGO<prefab::CDirectionLight>(0);
+		m_directionLight[0]->SetDirection({ 1.0f, 0.0f, 0.0f});
+		m_directionLight[0]->SetColor({ 1.0f, 1.0f, 1.0f });
+
 		//マテリアルパラメータを初期化。
 		m_materialParam.roughness = 0.5f;
 		m_materialParam.metallic = 0.5f;
@@ -65,6 +67,48 @@ public:
 		//フォントを初期化。
 		m_font.reset(new DirectX::SpriteFont(GraphicsEngine().GetD3DDevice(), L"Assets/font/myfile.spritefont"));
 		m_bach.reset(new DirectX::SpriteBatch(GraphicsEngine().GetD3DDeviceContext()));
+
+		// ポイントライトを初期化。
+		static const int QuantizationSize = 1000;	//量子化サイズ。
+		
+		{
+			static const int QuantizationSize = 1000;	//量子化サイズ。
+			for (int i = 0; i < 512; i++) {
+				m_pointLight[i] = NewGO<prefab::CPointLight>(0);
+				int ix = rand() % QuantizationSize;
+				int iy = rand() % QuantizationSize;
+				int iz = rand() % QuantizationSize;
+
+				//0～999までの数字を0.0～1.0の範囲に変換する。
+				float fnx = (float)ix / QuantizationSize;
+				float fny = (float)iy / QuantizationSize;
+				float fnz = (float)iz / QuantizationSize;
+				//xとyは-1.0～1.0の範囲に変換する。
+				fnx = (fnx - 0.5f) * 2.0f;
+				fnz = (fnz - 0.5f) * 2.0f;
+				//ポイントライトの位置をランダムに決定。
+				m_pointLight[i]->SetPosition({ 50.0f * fnx , 5.0f * fny,  50.0f * fnz });
+
+				int ir = rand() % QuantizationSize;
+				int ig = rand() % QuantizationSize;
+				int ib = rand() % QuantizationSize;
+
+				//0～999までの数字を0.0～1.0の範囲に正規化して、ポイントライトのカラーをランダムに決定。
+				m_pointLight[i]->SetColor({ 
+					(float)ir / QuantizationSize , 
+					(float)ig / QuantizationSize,
+					(float)ib / QuantizationSize
+				});
+				
+				m_pointLight[i]->SetAttn({
+					5.0f,
+					0.01f,
+					0.01f
+				});
+				
+			}
+			m_pointLight[0]->SetPosition({0.0f, 10.0f, 0.0f});
+		}
 		return true;
 	}
 	void Update() override
@@ -94,6 +138,16 @@ public:
 		}
 		*params[m_cursorPos] = max(*params[m_cursorPos], 0.0f);
 		*params[m_cursorPos] = min(*params[m_cursorPos], 1.0f);
+
+		//点光源を回してみる。
+		CQuaternion qRot;
+		qRot.SetRotationDeg(CVector3::AxisY, 0.2f);
+		for (auto& ptLight : m_pointLight) {
+			CVector3 pointLightPos = ptLight->GetPosition();
+			qRot.Multiply(pointLightPos);
+			ptLight->SetPosition(pointLightPos);
+		}
+
 	}
 	/*!------------------------------------------------------------------
 	* @brief	シーンの描画。

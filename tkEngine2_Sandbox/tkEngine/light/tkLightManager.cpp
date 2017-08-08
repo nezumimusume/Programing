@@ -6,6 +6,7 @@
 #include "tkEngine/light/tkLightManager.h"
 #include "tkEngine/light/tkPointLight.h"
 #include "tkEngine/light/tkDirectionLight.h"
+#include "tkEngine/graphics/prerender/tkLightCulling.h"
 
 namespace tkEngine{
 	using namespace prefab;
@@ -20,10 +21,24 @@ namespace tkEngine{
 		InitDirectionLightStructuredBuffer();
 		InitPointLightStructuredBuffer();
 		InitLightParamConstantBuffer();
+		InitPointLightInTileStructuredBuffer();
 	}
 	void CLightManager::InitLightParamConstantBuffer()
 	{
 		m_lightParamCB.Create(&m_lightParam, sizeof(m_lightParamCB));
+	}
+	void CLightManager::InitPointLightInTileStructuredBuffer()
+	{
+		D3D11_BUFFER_DESC desc;
+		ZeroMemory(&desc, sizeof(desc));
+		//タイルの数
+		int numTile = (GraphicsEngine().GetFrameBufferWidth() / CLightCulling::TILE_WIDTH)
+			* (GraphicsEngine().GetFrameBufferHeight() / CLightCulling::TILE_WIDTH);
+		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;	//SRVとUAVにバインド可能。
+		desc.ByteWidth = sizeof(unsigned int) * MAX_POINT_LIGHT * numTile;
+		desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+		desc.StructureByteStride = sizeof(unsigned int);
+		m_pointLightsInTileSB.Create(NULL, desc);
 	}
 	void CLightManager::InitDirectionLightStructuredBuffer()
 	{
@@ -126,6 +141,7 @@ namespace tkEngine{
 		}
 		//ダーティフラグはここではおろさずに、Render関数で下す。
 		m_lightParam.eyePos = MainCamera().GetPosition();
+		m_lightParam.numDirectionLight = m_directionLights.size();
 	}
 	void CLightManager::Render(CRenderContext& renderContext)
 	{
@@ -139,9 +155,20 @@ namespace tkEngine{
 		renderContext.UpdateSubresource(m_lightParamCB, m_lightParam);
 		//PSステージのtレジスタの100番目にディレクションライトのストラクチャーバッファを設定する。
 		renderContext.PSSetShaderResource(100, m_directionLightSB.GetSRV());
+		//PSステージのtレジスタの101番目にポイントライトのストラクチャーバッファを設定する。
+		renderContext.PSSetShaderResource(101, m_pointLightsSB.GetSRV());
+		//PSステージのtレジスタの102番目にタイルごとのポイントライトのインデックスリストのストラクチャーバッファを設定する。
+		renderContext.PSSetShaderResource(102, m_pointLightsInTileSB.GetSRV());
 		//PSステージのcレジスタの1番目にライト用の定数バッファを設定する。
 		renderContext.PSSetConstantBuffer(1, m_lightParamCB);
-		//ポイントライトはCLightCullingで行ったタイルごとのポイントライトのリストを送るよ。
-
+	}
+	/*!
+	*@brief　１フレームの描画終了時に呼ばれる処理。
+	*/
+	void CLightManager::EndRender(CRenderContext& renderContext)
+	{
+		renderContext.PSUnsetShaderResource(100);
+		renderContext.PSUnsetShaderResource(101);
+		renderContext.PSUnsetShaderResource(102);
 	}
 }

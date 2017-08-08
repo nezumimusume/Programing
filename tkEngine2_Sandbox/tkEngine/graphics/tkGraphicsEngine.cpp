@@ -135,6 +135,7 @@ namespace tkEngine{
 	}
 	void CGraphicsEngine::EndRender()
 	{
+		m_lightManager.EndRender(m_renderContext);
 		//バックバッファにメインレンダリングターゲットの内容をコピー。
 		ID3D11Texture2D* pBackBuffer = NULL;
 		m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);

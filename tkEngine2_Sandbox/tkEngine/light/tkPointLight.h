@@ -18,6 +18,16 @@ namespace tkEngine{
 			~CPointLight();
 			bool StartSub() override final;
 			void Update() override final;
+			const CVector3& GetPosition()
+			{
+				return light.position;
+			}
+			void SetPosition(const CVector3& pos);
+			
+			void SetColor(const CVector3& color);
+			
+			void SetAttn(const CVector3& attn);
+			
 			/*!
 			*@brief 生データの取得。
 			*/
@@ -27,6 +37,7 @@ namespace tkEngine{
 			}
 		private:
 			SPointLight	light;
+			bool m_isDirty = false;
 		};
 	}
 }

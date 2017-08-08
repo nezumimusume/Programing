@@ -19,6 +19,7 @@ namespace tkEngine{
 	void CPreRender::Create( const SGraphicsConfig& config )
 	{
 		m_zprepass.Init();
+		m_lightCulling.Init();
 	}
 	/*!
 	* @brief	ï`âÊÅB
@@ -26,6 +27,7 @@ namespace tkEngine{
 	void CPreRender::Render(CRenderContext& rc)
 	{
 		m_zprepass.Render(rc);
+		m_lightCulling.Render(rc);
 	}
 
 }

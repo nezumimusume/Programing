@@ -127,6 +127,18 @@ namespace tkEngine{
 			m_pD3DDeviceContext->PSSetShaderResources(slotNo, 1, &srv.GetBody());
 		}
 		/*!
+		* @brief	PSステージにSRVを外す。
+		*@param[in]	slotNo		スロット番号。
+		*@param[in]	srv			SRV。
+		*/
+		void PSUnsetShaderResource(int slotNo)
+		{
+			ID3D11ShaderResourceView* view[] = {
+				NULL
+			};
+			m_pD3DDeviceContext->PSSetShaderResources(slotNo, 1, view);
+		}
+		/*!
 		* @brief	PSステージにサンプラステートを設定。
 		*@param[in]	slotNo			スロット番号。
 		*@param[in]	samplerState	サンプラステート。

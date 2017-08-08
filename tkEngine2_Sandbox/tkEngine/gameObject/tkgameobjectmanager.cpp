@@ -48,11 +48,12 @@ namespace tkEngine{
 		renderContext.ClearRenderTargetView(0, ClearColor);
 		renderContext.RSSetViewport(0.0f, 0.0f, (float)GraphicsEngine().GetFrameBufferWidth(), (float)GraphicsEngine().GetFrameBufferHeight());
 		
-		//ライトの情報を転送転送。
-		LightManager().Render(renderContext);
 		//プリレンダリング。
 		GraphicsEngine().GetPreRender().Render(renderContext);
-		
+
+		//ライトの情報を転送転送。
+		LightManager().Render(renderContext);
+
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
 				obj->PreRenderWrapper(renderContext);

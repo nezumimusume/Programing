@@ -38,7 +38,6 @@ namespace tkEngine{
 		CRenderTarget* oldRenderTargets[MRT_MAX];
 		unsigned int numRenderTargetViews;
 		rc.OMGetRenderTargets(numRenderTargetViews, oldRenderTargets);
-		rc.OMSetRenderTargets(numRenderTargetViews, oldRenderTargets);
 		//レンダリングターゲットを変更する。
 		CRenderTarget* renderTargets[] = {
 			&m_depthBuffer

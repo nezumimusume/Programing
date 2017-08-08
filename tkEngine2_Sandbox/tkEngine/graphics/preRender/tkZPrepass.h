@@ -35,8 +35,15 @@ namespace tkEngine{
 		{
 			m_skinModels.push_back(skinModel);
 		}
+		/*!
+		*@brief	深度テクスチャのSRVを取得。
+		*/
+		CShaderResourceView& GetDepthTextureSRV()
+		{
+			return m_depthBuffer.GetRenderTargetSRV();
+		}
 	private:
 		std::vector<CSkinModel*>	m_skinModels;			//!<スキンモデルのリスト。
-		CRenderTarget				m_depthBuffer;			//!<深度バッファを書き込むためのレンダリングターゲット。
+		CRenderTarget				m_depthBuffer;			//!<深度値を書き込むためのレンダリングターゲット。
 	};
 }

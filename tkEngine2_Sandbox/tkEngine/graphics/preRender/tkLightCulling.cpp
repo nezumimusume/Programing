@@ -21,9 +21,49 @@ namespace tkEngine{
 	{
 	}
 	/*!
+	*@brief	初期化。
+	*/
+	void CLightCulling::Init()
+	{
+		m_csLightCulling.Load("Assets/shader/LightCulling.fx", "CSMain", CShader::EnType::CS);
+		//カメラ用の定数バッファを作成。
+		m_cameraParamCB.Create(NULL, sizeof(m_cameraParam));
+	}
+	/*!
 	 *@brief	ライトカリングの実行。
 	 */
 	void CLightCulling::Render(CRenderContext& rc)
 	{
+		CGraphicsEngine& ge = GraphicsEngine();
+		rc.CSSetShader(m_csLightCulling);
+		//深度テクスチャを設定。
+		rc.CSSetShaderResource(0, ge.GetZPrepass().GetDepthTextureSRV());
+		//ポイントライトのリストを設定。
+		rc.CSSetShaderResource(1, ge.GetLightManager().GetPointLightsSRV());
+		//@todo 未実装。出力先を設定。
+		rc.CSSetUnorderedAccessView(0, ge.GetLightManager().GetPointLightsInTileUAV());
+
+		//カメラ定数バッファの設定。
+		CCamera& cam = MainCamera();
+		m_cameraParam.screenParam.x = cam.GetNear();
+		m_cameraParam.screenParam.y = cam.GetFar();
+		m_cameraParam.screenParam.z = ge.GetFrameBufferWidth();
+		m_cameraParam.screenParam.w = ge.GetFrameBufferHeight();
+		m_cameraParam.mProj = cam.GetProjectionMatrix();
+		m_cameraParam.mProjInv.Inverse(m_cameraParam.mProj);
+		m_cameraParam.mViewRot.Inverse(cam.GetViewMatrix());
+		m_cameraParam.mViewRot.m[3][0] = 0.0f;
+		m_cameraParam.mViewRot.m[3][1] = 0.0f;
+		m_cameraParam.mViewRot.m[3][2] = 0.0f;
+		m_cameraParam.mViewRot.Transpose();
+
+		rc.UpdateSubresource(m_cameraParamCB, m_cameraParam);
+		rc.CSSetConstantBuffer(0, m_cameraParamCB);
+
+		rc.Dispatch(ge.GetFrameBufferWidth() / TILE_WIDTH, ge.GetFrameBufferHeight() / TILE_WIDTH, 1);
+		
+		rc.CSUnsetUnorderedAccessView(0);
+		rc.CSUnsetShaderResource(0);
+
 	}
 }
