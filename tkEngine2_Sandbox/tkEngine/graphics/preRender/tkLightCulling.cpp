@@ -40,7 +40,7 @@ namespace tkEngine{
 		rc.CSSetShaderResource(0, ge.GetZPrepass().GetDepthTextureSRV());
 		//ポイントライトのリストを設定。
 		rc.CSSetShaderResource(1, ge.GetLightManager().GetPointLightsSRV());
-		//@todo 未実装。出力先を設定。
+		//出力先を設定。
 		rc.CSSetUnorderedAccessView(0, ge.GetLightManager().GetPointLightsInTileUAV());
 
 		//カメラ定数バッファの設定。
