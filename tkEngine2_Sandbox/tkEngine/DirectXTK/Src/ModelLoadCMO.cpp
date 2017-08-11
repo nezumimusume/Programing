@@ -550,8 +550,8 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
                         ++sptr;
 
                         auto skinv = reinterpret_cast<VertexPositionNormalTangentColorTextureSkinning*>( ptr );
-                        skinv->SetBlendIndices( *reinterpret_cast<const XMUINT4*>( skinptr->boneIndex ) );
-                        skinv->SetBlendWeights( *reinterpret_cast<const XMFLOAT4*>( skinptr->boneWeight ) );
+                        skinv->SetBlendIndices( *reinterpret_cast<const XMUINT4*>( skinptr[v].boneIndex ) );
+                        skinv->SetBlendWeights( *reinterpret_cast<const XMFLOAT4*>( skinptr[v].boneWeight ) );
 
                         ptr += stride;
                     }

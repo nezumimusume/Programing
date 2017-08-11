@@ -8,6 +8,7 @@
 
 namespace tkEngine{
 	class CAnimationClip;
+	typedef std::unique_ptr<CAnimationClip>	CAnimationClipPtr;
 	class CModelEffect : public DirectX::IEffect {
 	public:
 		CShader m_vsShader;
@@ -65,6 +66,7 @@ namespace tkEngine{
 	 */
 	class CSkinModelData : Noncopyable{
 	public:
+		
 		/*!
 		 *@brief	コンストラクタ。
 		 */
@@ -83,8 +85,22 @@ namespace tkEngine{
 		{
 			return *m_modelDx;
 		}
+		/*!
+		 *@brief	スケルトンを取得。
+		 */
+		CSkeleton& GetSkeleton()
+		{
+			return m_skeleton;
+		}
+		/*!
+		 *@brief	アニメーションクリップのリストを取得。
+		 */
+		std::vector<CAnimationClipPtr>& GetAnimationClips()
+		{
+			return m_animationClips;
+		}
 	private:
-		typedef std::unique_ptr<CAnimationClip>	CAnimationClipPtr;
+		
 		std::unique_ptr<DirectX::Model> m_modelDx;
 		std::vector<CAnimationClipPtr>	m_animationClips;	//!<アニメーションクリップ
 		CSkeleton	m_skeleton;

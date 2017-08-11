@@ -34,8 +34,17 @@ PSInput VSMain( VSInputNmTxVcTangent In )
 PSInput VSMainSkin( VSInputNmTxWeights In ) 
 {
 	PSInput psInput = (PSInput)0;
-	float4 pos;
-	pos = mul(mWorld, In.Position);
+	float4x4 skinning = 0;
+	float4 pos = 0.0f;
+	
+	[unroll]
+    for (int i = 0; i < 4; i++)
+    {
+        skinning += boneMatrix[In.Indices[i]] * In.Weights[i];
+    }
+	pos.xyz = mul(skinning, In.Position);
+	
+	pos.w = 1.0f;
 	psInput.Pos = pos;
 	pos = mul(mView, pos);
 	psInput.posInView = pos;

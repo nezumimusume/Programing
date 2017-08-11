@@ -58,7 +58,12 @@ namespace tkEngine{
 			const wchar_t* boneName, 
 			const VSD3DStarter::Bone* bone
 		) {
-			m_skeleton.AddBone(boneName, CMatrix(bone->InvBindPos), CMatrix(bone->BindPos), CMatrix(bone->LocalTransform));
+			m_skeleton.AddBone(
+				boneName, 
+				CMatrix(bone->BindPos),
+				CMatrix(bone->InvBindPos), 
+				CMatrix(bone->LocalTransform),
+				bone->ParentIndex);
 		};
 		//アニメーションクリップを発見したときのコールバック。
 		auto onFindAnimationClip = [&](
@@ -69,6 +74,7 @@ namespace tkEngine{
 			CAnimationClipPtr animClip = std::make_unique<CAnimationClip>(clipName, clip, keyFrame);
 			m_animationClips.push_back(std::move(animClip));
 		};
+		
 		//モデルデータをロード。
 		m_modelDx = DirectX::Model::CreateFromCMO(
 			GraphicsEngine().GetD3DDevice(), 
@@ -79,6 +85,9 @@ namespace tkEngine{
 			onFindBone,
 			onFindAnimationClip
 		);
+		//スケルトンの階層構造を構築する。
+		m_skeleton.BuildHierarchy();
+
 		return true;
 	}
 }

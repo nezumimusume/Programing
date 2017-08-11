@@ -150,7 +150,7 @@ namespace tkEngine{
 			//ダーティフラグを下す。
 			m_isDirty = false;
 		}
-		renderContext.UpdateSubresource(m_lightParamCB, m_lightParam);
+		renderContext.UpdateSubresource(m_lightParamCB, &m_lightParam);
 		//PSステージのtレジスタの100番目にディレクションライトのストラクチャーバッファを設定する。
 		renderContext.PSSetShaderResource(100, m_directionLightSB.GetSRV());
 		//PSステージのtレジスタの101番目にポイントライトのストラクチャーバッファを設定する。

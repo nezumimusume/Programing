@@ -37,6 +37,7 @@ class PBRSample : public IGameObject {
 	CSkinModel nonSkinModel;
 	CSkinModelData skinModelData;
 	CSkinModel skinModel;
+	CAnimator animator;
 	prefab::CDirectionLight* m_directionLight[3] = { nullptr };
 	prefab::CPointLight* m_pointLight[NUM_POINT_LIGHT] = {nullptr};
 	
@@ -49,12 +50,14 @@ public:
 	{
 		skinModelData.Load(L"Assets/modelData/Thethief_H.cmo");
 		skinModel.Init(skinModelData);
+		animator.Init(skinModelData);
+		animator.Play(0);
 		nonSkinModelData.Load(L"Assets/modelData/background.cmo");
 		nonSkinModel.Init(nonSkinModelData);
 		//カメラを初期化。
 		CCamera& mainCamera = MainCamera();
-		mainCamera.SetPosition({ 0.0f, 40.0f, 50.0f });
-		mainCamera.SetTarget({ 0.0f, 0.0f, 0.0f });
+		mainCamera.SetPosition({ 0.0f, 100.0f, 100.0f });
+		mainCamera.SetTarget({ 0.0f, 50.0f, 0.0f });
 		mainCamera.SetUp({ 0.0f, 1.0f, 0.0f });
 		mainCamera.Update();
 		
@@ -119,6 +122,7 @@ public:
 	{
 		nonSkinModel.Update({0.5f, 0.0f, 0.0f}, CQuaternion::Identity, CVector3::One);
 		skinModel.Update({ 0.5f, 0.0f, 0.0f }, CQuaternion::Identity, CVector3::One);
+		animator.Progress(1.0f / 60.0f);
 		//マテリアルパラーメータを更新。
 		if (Pad(0).IsTrigger(enButtonUp)) {
 			m_cursorPos--;
@@ -162,9 +166,9 @@ public:
 	------------------------------------------------------------------*/
 	void RenderScene(CRenderContext& rc)
 	{	
-		rc.UpdateSubresource(m_materialParamCB, m_materialParam);
+		rc.UpdateSubresource(m_materialParamCB, &m_materialParam);
 		rc.PSSetConstantBuffer(2, m_materialParamCB);
-		nonSkinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
+		//nonSkinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
 		skinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
 	}
 	

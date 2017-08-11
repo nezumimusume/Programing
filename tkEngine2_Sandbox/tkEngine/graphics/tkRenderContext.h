@@ -106,6 +106,27 @@ namespace tkEngine{
 			m_pD3DDeviceContext->VSSetConstantBuffers(slotNo, 1, &cb.GetBody());
 		}
 		/*!
+		* @brief	VSステージにSRVを設定。
+		*@param[in]	slotNo		スロット番号。
+		*@param[in]	srv			SRV。
+		*/
+		void VSSetShaderResource(int slotNo, CShaderResourceView& srv)
+		{
+			m_pD3DDeviceContext->VSSetShaderResources(slotNo, 1, &srv.GetBody());
+		}
+		/*!
+		* @brief	VSステージにSRVを外す。
+		*@param[in]	slotNo		スロット番号。
+		*@param[in]	srv			SRV。
+		*/
+		void VSUnsetShaderResource(int slotNo)
+		{
+			ID3D11ShaderResourceView* view[] = {
+				NULL
+			};
+			m_pD3DDeviceContext->VSSetShaderResources(slotNo, 1, view);
+		}
+		/*!
 		* @brief	PSステージに定数バッファを設定。
 		*@param[in]	slotNo		スロット番号。
 		*@param[in]	cb			定数バッファ。
@@ -299,10 +320,10 @@ namespace tkEngine{
 		*@param[in]		srcRes		コピー元。
 		*/
 		template<class TBuffer, class SrcBuffer>
-		void UpdateSubresource( TBuffer& gpuBuffer, const SrcBuffer& buffer)
+		void UpdateSubresource( TBuffer& gpuBuffer, const SrcBuffer* buffer)
 		{
 			if (gpuBuffer.GetBody() != nullptr) {
-				m_pD3DDeviceContext->UpdateSubresource(gpuBuffer.GetBody(), 0, NULL, &buffer, 0, 0);
+				m_pD3DDeviceContext->UpdateSubresource(gpuBuffer.GetBody(), 0, NULL, buffer, 0, 0);
 			}
 		}
 	private:

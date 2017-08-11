@@ -72,4 +72,4 @@
 #include "tkEngine/Input/tkPad.h"
 #include "tkEngine/tkEngine.h"
 #include "tkEngine/sound/tkSoundSource.h"
-
+#include "tkEngine/graphics/tkAnimator.h"

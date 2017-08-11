@@ -275,6 +275,7 @@
     <ClInclude Include="graphics\preRender\tkPreRender.h" />
     <ClInclude Include="graphics\preRender\tkZPrepass.h" />
     <ClInclude Include="graphics\tkAnimationClip.h" />
+    <ClInclude Include="graphics\tkAnimator.h" />
     <ClInclude Include="graphics\tkCamera.h" />
     <ClInclude Include="graphics\tkGraphicsEngine.h" />
     <ClInclude Include="graphics\tkLight.h" />
@@ -326,6 +327,7 @@
     <ClCompile Include="graphics\preRender\tkPreRender.cpp" />
     <ClCompile Include="graphics\preRender\tkZPrepass.cpp" />
     <ClCompile Include="graphics\tkAnimationClip.cpp" />
+    <ClCompile Include="graphics\tkAnimator.cpp" />
     <ClCompile Include="graphics\tkCamera.cpp" />
     <ClCompile Include="graphics\tkGraphicsEngine.cpp" />
     <ClCompile Include="graphics\tkRenderContext.cpp" />

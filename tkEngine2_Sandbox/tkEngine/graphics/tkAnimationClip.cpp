@@ -18,6 +18,7 @@ namespace tkEngine {
 		const VSD3DStarter::Keyframe* keyFrames
 	)
 	{
+		m_name = clipName;
 		m_startTime = clip->StartTime;
 		m_endTime = clip->EndTime;
 		m_numKeys = clip->keys;

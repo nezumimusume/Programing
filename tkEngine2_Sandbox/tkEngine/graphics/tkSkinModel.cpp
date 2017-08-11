@@ -29,6 +29,8 @@ namespace tkEngine{
 		m_worldMatrix.Mul(mScale, mRot);
 		m_worldMatrix.Mul(m_worldMatrix, mTrans);
 		GraphicsEngine().GetZPrepass().AddSkinModel(this);
+		//スケルトン更新。
+		m_skinModelData->GetSkeleton().Update(m_worldMatrix);
 	}
 	void CSkinModel::Draw(
 		CRenderContext& renderContext, 
@@ -50,9 +52,11 @@ namespace tkEngine{
 			vsCb.screenParam.z = static_cast<float>(GraphicsEngine().GetFrameBufferWidth());
 			vsCb.screenParam.w = static_cast<float>(GraphicsEngine().GetFrameBufferHeight());
 			vsCb.isZPrepass = isZPrepass ? 1 : 0;
-			renderContext.UpdateSubresource(m_cb, vsCb);
+			renderContext.UpdateSubresource(m_cb, &vsCb);
 			renderContext.VSSetConstantBuffer(0, m_cb);
 			renderContext.PSSetConstantBuffer(0, m_cb);
+			m_skinModelData->GetSkeleton().Render(renderContext);
+
 			m_skinModelData->GetBody().Draw(
 				GraphicsEngine().GetD3DDeviceContext(),
 				state,
