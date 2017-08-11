@@ -32,134 +32,7 @@ using Microsoft::WRL::ComPtr;
 // http://code.msdn.microsoft.com/Visual-Studio-3D-Starter-455a15f1
 //--------------------------------------------------------------------------------------
 
-namespace VSD3DStarter
-{
-    // .CMO files
 
-    // UINT - Mesh count
-    // { [Mesh count]
-    //      UINT - Length of name
-    //      wchar_t[] - Name of mesh (if length > 0)
-    //      UINT - Material count
-    //      { [Material count]
-    //          UINT - Length of material name
-    //          wchar_t[] - Name of material (if length > 0)
-    //          Material structure
-    //          UINT - Length of pixel shader name
-    //          wchar_t[] - Name of pixel shader (if length > 0)
-    //          { [8]
-    //              UINT - Length of texture name
-    //              wchar_t[] - Name of texture (if length > 0)
-    //          }
-    //      }
-    //      BYTE - 1 if there is skeletal animation data present
-    //      UINT - SubMesh count
-    //      { [SubMesh count]
-    //          SubMesh structure
-    //      }
-    //      UINT - IB Count
-    //      { [IB Count]
-    //          UINT - Number of USHORTs in IB
-    //          USHORT[] - Array of indices
-    //      }
-    //      UINT - VB Count
-    //      { [VB Count]
-    //          UINT - Number of verts in VB
-    //          Vertex[] - Array of vertices
-    //      }
-    //      UINT - Skinning VB Count
-    //      { [Skinning VB Count]
-    //          UINT - Number of verts in Skinning VB
-    //          SkinningVertex[] - Array of skinning verts
-    //      }
-    //      MeshExtents structure
-    //      [If skeleton animation data is not present, file ends here]
-    //      UINT - Bone count
-    //      { [Bone count]
-    //          UINT - Length of bone name
-    //          wchar_t[] - Bone name (if length > 0)
-    //          Bone structure
-    //      }
-    //      UINT - Animation clip count
-    //      { [Animation clip count]
-    //          UINT - Length of clip name
-    //          wchar_t[] - Clip name (if length > 0)
-    //          float - Start time
-    //          float - End time
-    //          UINT - Keyframe count
-    //          { [Keyframe count]
-    //              Keyframe structure
-    //          }
-    //      }
-    // }
-
-    #pragma pack(push,1)
-
-    struct Material
-    {
-        DirectX::XMFLOAT4   Ambient;
-        DirectX::XMFLOAT4   Diffuse;
-        DirectX::XMFLOAT4   Specular;
-        float               SpecularPower;
-        DirectX::XMFLOAT4   Emissive;
-        DirectX::XMFLOAT4X4 UVTransform;
-    };
-
-    const uint32_t MAX_TEXTURE = 8;
-
-    struct SubMesh
-    {
-        UINT MaterialIndex;
-        UINT IndexBufferIndex;
-        UINT VertexBufferIndex;
-        UINT StartIndex;
-        UINT PrimCount;
-    };
-
-    const uint32_t NUM_BONE_INFLUENCES = 4;
-
-    static_assert( sizeof(VertexPositionNormalTangentColorTexture) == 52, "mismatch with CMO vertex type" );
-
-    struct SkinningVertex
-    {
-        UINT boneIndex[NUM_BONE_INFLUENCES];
-        float boneWeight[NUM_BONE_INFLUENCES];
-    };
-
-    struct MeshExtents
-    {
-        float CenterX, CenterY, CenterZ;
-        float Radius;
-
-        float MinX, MinY, MinZ;
-        float MaxX, MaxY, MaxZ;
-    };
-
-    struct Bone
-    {
-        INT ParentIndex;
-        DirectX::XMFLOAT4X4 InvBindPos;
-        DirectX::XMFLOAT4X4 BindPos;
-        DirectX::XMFLOAT4X4 LocalTransform;
-    };
-    
-    struct Clip
-    {
-        float StartTime;
-        float EndTime;
-        UINT  keys;
-    };
-
-    struct Keyframe
-    {
-        UINT BoneIndex;
-        float Time;
-        DirectX::XMFLOAT4X4 Transform;
-    };
-
-    #pragma pack(pop)
-
-}; // namespace
 
 static_assert( sizeof(VSD3DStarter::Material) == 132, "CMO Mesh structure size incorrect" );
 static_assert( sizeof(VSD3DStarter::SubMesh) == 20, "CMO Mesh structure size incorrect" );
@@ -237,7 +110,16 @@ static BOOL CALLBACK InitializeDecl( PINIT_ONCE initOnce, PVOID Parameter, PVOID
 //======================================================================================
 
 _Use_decl_annotations_
-std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, const uint8_t* meshData, size_t dataSize, IEffectFactory& fxFactory, bool ccw, bool pmalpha )
+std::unique_ptr<Model> DirectX::Model::CreateFromCMO( 
+	ID3D11Device* d3dDevice, 
+	const uint8_t* meshData, 
+	size_t dataSize, 
+	IEffectFactory& fxFactory, 
+	bool ccw, 
+	bool pmalpha ,
+	OnFindBoneData onFindBoneData,
+	OnFindAnimationClip onFindAnimationClip
+)
 {
     if ( !InitOnceExecuteOnce( &g_InitOnce, InitializeDecl, nullptr, nullptr ) )
         throw std::exception("One-time initialization failed");
@@ -559,6 +441,11 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
 
                 // TODO - What to do with bone data?
                 bones;
+
+				if (onFindBoneData != nullptr) {
+					//ボーンを見つけた時のコールバック関数が指定されている。
+					onFindBoneData(boneName, bones);
+				}
             }
 
             // Animation Clips
@@ -599,6 +486,9 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
 
                 // TODO - What to do with keys and clip->StartTime, clip->EndTime?
                 keys;
+				if (onFindAnimationClip != nullptr) {
+					onFindAnimationClip(clipName, clip, keys);
+				}
             }
         }
 #else
@@ -834,7 +724,15 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
 
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
-std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, const wchar_t* szFileName, IEffectFactory& fxFactory, bool ccw, bool pmalpha )
+std::unique_ptr<Model> DirectX::Model::CreateFromCMO( 
+	ID3D11Device* d3dDevice, 
+	const wchar_t* szFileName, 
+	IEffectFactory& fxFactory, 
+	bool ccw, 
+	bool pmalpha,
+	OnFindBoneData onFindBoneData,
+	OnFindAnimationClip onFindAnimationClip
+)
 {
     size_t dataSize = 0;
     std::unique_ptr<uint8_t[]> data;
@@ -845,7 +743,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
         throw std::exception( "CreateFromCMO" );
     }
 
-    auto model = CreateFromCMO( d3dDevice, data.get(), dataSize, fxFactory, ccw, pmalpha );
+    auto model = CreateFromCMO( d3dDevice, data.get(), dataSize, fxFactory, ccw, pmalpha, onFindBoneData, onFindAnimationClip);
 
     model->name = szFileName;
 

@@ -70,6 +70,7 @@ namespace tkEngine{
 		}
 		if (m_directionLights.size() >= MAX_DIRECTION_LIGHT) {
 			TK_LOG("warning : m_directionLights.size() is full!!");
+			return;
 		}
 		//ƒ‰ƒCƒg‚ÌU‚è•ª‚¯B
 		const std::type_info& typeInfo = typeid(*light);

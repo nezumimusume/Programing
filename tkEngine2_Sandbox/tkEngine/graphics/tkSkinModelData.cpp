@@ -5,6 +5,7 @@
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/graphics/tkSkinModelData.h"
 #include "tkEngine/tkEngine.h"
+#include "tkEngine/graphics/tkAnimationClip.h"
 
 namespace tkEngine{
 	
@@ -52,7 +53,32 @@ namespace tkEngine{
 	bool CSkinModelData::Load(const wchar_t* filePath)
 	{
 		CSkinModelEffectFactory effectFactory(GraphicsEngine().GetD3DDevice());
-		m_modelDx = DirectX::Model::CreateFromCMO(GraphicsEngine().GetD3DDevice(), filePath, effectFactory, false);
+		//ボーンを発見したときのコールバック。
+		auto onFindBone = [&](
+			const wchar_t* boneName, 
+			const VSD3DStarter::Bone* bone
+		) {
+			m_skeleton.AddBone(boneName, CMatrix(bone->InvBindPos), CMatrix(bone->BindPos), CMatrix(bone->LocalTransform));
+		};
+		//アニメーションクリップを発見したときのコールバック。
+		auto onFindAnimationClip = [&](
+			const wchar_t* clipName,
+			const VSD3DStarter::Clip* clip, 
+			const VSD3DStarter::Keyframe* keyFrame
+		) {
+			CAnimationClipPtr animClip = std::make_unique<CAnimationClip>(clipName, clip, keyFrame);
+			m_animationClips.push_back(std::move(animClip));
+		};
+		//モデルデータをロード。
+		m_modelDx = DirectX::Model::CreateFromCMO(
+			GraphicsEngine().GetD3DDevice(), 
+			filePath, 
+			effectFactory, 
+			false,
+			false,
+			onFindBone,
+			onFindAnimationClip
+		);
 		return true;
 	}
 }

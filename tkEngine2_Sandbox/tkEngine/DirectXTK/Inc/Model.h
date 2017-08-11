@@ -31,7 +31,136 @@
 #include <stdint.h>
 
 #include <wrl\client.h>
+#include "VertexTypes.h"
 
+namespace VSD3DStarter
+{
+	// .CMO files
+
+	// UINT - Mesh count
+	// { [Mesh count]
+	//      UINT - Length of name
+	//      wchar_t[] - Name of mesh (if length > 0)
+	//      UINT - Material count
+	//      { [Material count]
+	//          UINT - Length of material name
+	//          wchar_t[] - Name of material (if length > 0)
+	//          Material structure
+	//          UINT - Length of pixel shader name
+	//          wchar_t[] - Name of pixel shader (if length > 0)
+	//          { [8]
+	//              UINT - Length of texture name
+	//              wchar_t[] - Name of texture (if length > 0)
+	//          }
+	//      }
+	//      BYTE - 1 if there is skeletal animation data present
+	//      UINT - SubMesh count
+	//      { [SubMesh count]
+	//          SubMesh structure
+	//      }
+	//      UINT - IB Count
+	//      { [IB Count]
+	//          UINT - Number of USHORTs in IB
+	//          USHORT[] - Array of indices
+	//      }
+	//      UINT - VB Count
+	//      { [VB Count]
+	//          UINT - Number of verts in VB
+	//          Vertex[] - Array of vertices
+	//      }
+	//      UINT - Skinning VB Count
+	//      { [Skinning VB Count]
+	//          UINT - Number of verts in Skinning VB
+	//          SkinningVertex[] - Array of skinning verts
+	//      }
+	//      MeshExtents structure
+	//      [If skeleton animation data is not present, file ends here]
+	//      UINT - Bone count
+	//      { [Bone count]
+	//          UINT - Length of bone name
+	//          wchar_t[] - Bone name (if length > 0)
+	//          Bone structure
+	//      }
+	//      UINT - Animation clip count
+	//      { [Animation clip count]
+	//          UINT - Length of clip name
+	//          wchar_t[] - Clip name (if length > 0)
+	//          float - Start time
+	//          float - End time
+	//          UINT - Keyframe count
+	//          { [Keyframe count]
+	//              Keyframe structure
+	//          }
+	//      }
+	// }
+
+#pragma pack(push,1)
+
+	struct Material
+	{
+		DirectX::XMFLOAT4   Ambient;
+		DirectX::XMFLOAT4   Diffuse;
+		DirectX::XMFLOAT4   Specular;
+		float               SpecularPower;
+		DirectX::XMFLOAT4   Emissive;
+		DirectX::XMFLOAT4X4 UVTransform;
+	};
+
+	const uint32_t MAX_TEXTURE = 8;
+
+	struct SubMesh
+	{
+		UINT MaterialIndex;
+		UINT IndexBufferIndex;
+		UINT VertexBufferIndex;
+		UINT StartIndex;
+		UINT PrimCount;
+	};
+
+	const uint32_t NUM_BONE_INFLUENCES = 4;
+
+	static_assert(sizeof(DirectX::VertexPositionNormalTangentColorTexture) == 52, "mismatch with CMO vertex type");
+
+	struct SkinningVertex
+	{
+		UINT boneIndex[NUM_BONE_INFLUENCES];
+		float boneWeight[NUM_BONE_INFLUENCES];
+	};
+
+	struct MeshExtents
+	{
+		float CenterX, CenterY, CenterZ;
+		float Radius;
+
+		float MinX, MinY, MinZ;
+		float MaxX, MaxY, MaxZ;
+	};
+
+	struct Bone
+	{
+		INT ParentIndex;
+		DirectX::XMFLOAT4X4 InvBindPos;
+		DirectX::XMFLOAT4X4 BindPos;
+		DirectX::XMFLOAT4X4 LocalTransform;
+	};
+
+	struct Clip
+	{
+		float StartTime;
+		float EndTime;
+		UINT  keys;
+	};
+
+	struct Keyframe
+	{
+		UINT BoneIndex;
+		float Time;
+		DirectX::XMFLOAT4X4 Transform;
+	};
+
+#pragma pack(pop)
+
+}; // namespace
 
 namespace DirectX
 {
@@ -106,6 +235,8 @@ namespace DirectX
     class Model
     {
     public:
+		typedef std::function<void(	const wchar_t* boneName, const VSD3DStarter::Bone* bone)> OnFindBoneData;
+		typedef std::function<void(const wchar_t* clipName, const VSD3DStarter::Clip* clip, const VSD3DStarter::Keyframe* keyFrame)> OnFindAnimationClip;
         virtual ~Model();
 
         ModelMesh::Collection   meshes;
@@ -123,9 +254,11 @@ namespace DirectX
 
         // Loads a model from a Visual Studio Starter Kit .CMO file
         static std::unique_ptr<Model> __cdecl CreateFromCMO( _In_ ID3D11Device* d3dDevice, _In_reads_bytes_(dataSize) const uint8_t* meshData, size_t dataSize,
-                                                             _In_ IEffectFactory& fxFactory, bool ccw = true, bool pmalpha = false );
+                                                             _In_ IEffectFactory& fxFactory, bool ccw = true, bool pmalpha = false, 
+																  OnFindBoneData onFindBoneData = nullptr, OnFindAnimationClip onFindAnimationClip = nullptr);
         static std::unique_ptr<Model> __cdecl CreateFromCMO( _In_ ID3D11Device* d3dDevice, _In_z_ const wchar_t* szFileName,
-                                                             _In_ IEffectFactory& fxFactory, bool ccw = true, bool pmalpha = false );
+                                                             _In_ IEffectFactory& fxFactory, bool ccw = true, bool pmalpha = false, 
+			                                                      OnFindBoneData onFindBoneData = nullptr, OnFindAnimationClip onFindAnimationClip = nullptr);
 
         // Loads a model from a DirectX SDK .SDKMESH file
         static std::unique_ptr<Model> __cdecl CreateFromSDKMESH( _In_ ID3D11Device* d3dDevice, _In_reads_bytes_(dataSize) const uint8_t* meshData, _In_ size_t dataSize,

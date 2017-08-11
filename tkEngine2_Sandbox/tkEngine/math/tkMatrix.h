@@ -42,6 +42,10 @@ namespace tkEngine{
 		{
 
 		}
+		CMatrix(const DirectX::XMFLOAT4X4& m) 
+		{
+			mat = m;
+		}
 		/*!
 		*@brief	‘ã“ü‰‰ZqB
 		*/

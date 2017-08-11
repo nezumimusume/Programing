@@ -4,8 +4,10 @@
 
 #pragma once
 
-namespace tkEngine{
+#include "tkEngine/graphics/tkSkeleton.h"
 
+namespace tkEngine{
+	class CAnimationClip;
 	class CModelEffect : public DirectX::IEffect {
 	public:
 		CShader m_vsShader;
@@ -82,6 +84,9 @@ namespace tkEngine{
 			return *m_modelDx;
 		}
 	private:
+		typedef std::unique_ptr<CAnimationClip>	CAnimationClipPtr;
 		std::unique_ptr<DirectX::Model> m_modelDx;
+		std::vector<CAnimationClipPtr>	m_animationClips;	//!<アニメーションクリップ
+		CSkeleton	m_skeleton;
 	};
 }

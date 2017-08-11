@@ -33,10 +33,13 @@ class PBRSample : public IGameObject {
 	static const int NUM_POINT_LIGHT = 1024;
 	MaterialParam m_materialParam;				//マテリアルパラメータ。
 	CConstantBuffer m_materialParamCB;			//マテリアルパラメータ用の定数バッファ。
+	CSkinModelData nonSkinModelData;
+	CSkinModel nonSkinModel;
 	CSkinModelData skinModelData;
+	CSkinModel skinModel;
 	prefab::CDirectionLight* m_directionLight[3] = { nullptr };
 	prefab::CPointLight* m_pointLight[NUM_POINT_LIGHT] = {nullptr};
-	CSkinModel bgModel;
+	
 	std::unique_ptr<DirectX::SpriteFont>	m_font;
 	std::unique_ptr<DirectX::SpriteBatch>	m_bach;
 	int m_cursorPos = 0;
@@ -44,8 +47,10 @@ public:
 
 	bool Start() override
 	{
-		skinModelData.Load(L"Assets/modelData/background.cmo");
-		bgModel.Init(skinModelData);
+		skinModelData.Load(L"Assets/modelData/Thethief_H.cmo");
+		skinModel.Init(skinModelData);
+		nonSkinModelData.Load(L"Assets/modelData/background.cmo");
+		nonSkinModel.Init(nonSkinModelData);
 		//カメラを初期化。
 		CCamera& mainCamera = MainCamera();
 		mainCamera.SetPosition({ 0.0f, 40.0f, 50.0f });
@@ -72,7 +77,6 @@ public:
 		static const int QuantizationSize = 1000;	//量子化サイズ。
 		
 		{
-			static const int QuantizationSize = 1000;	//量子化サイズ。
 			for (int i = 0; i < 256; i++) {
 				m_pointLight[i] = NewGO<prefab::CPointLight>(0);
 				int ix = rand() % QuantizationSize;
@@ -113,7 +117,8 @@ public:
 	}
 	void Update() override
 	{
-		bgModel.Update({0.5f, 0.0f, 0.0f}, CQuaternion::Identity, CVector3::One);
+		nonSkinModel.Update({0.5f, 0.0f, 0.0f}, CQuaternion::Identity, CVector3::One);
+		skinModel.Update({ 0.5f, 0.0f, 0.0f }, CQuaternion::Identity, CVector3::One);
 		//マテリアルパラーメータを更新。
 		if (Pad(0).IsTrigger(enButtonUp)) {
 			m_cursorPos--;
@@ -159,7 +164,8 @@ public:
 	{	
 		rc.UpdateSubresource(m_materialParamCB, m_materialParam);
 		rc.PSSetConstantBuffer(2, m_materialParamCB);
-		bgModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
+		nonSkinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
+		skinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
 	}
 	
 	/*!------------------------------------------------------------------
