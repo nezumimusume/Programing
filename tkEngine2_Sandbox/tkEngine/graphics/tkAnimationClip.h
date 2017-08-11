@@ -34,9 +34,11 @@ namespace tkEngine{
 		 */
 		~CAnimationClip();
 	private:
+		typedef std::list<Keyframe*>		keyFramePtrList;
 		float m_startTime;		//!<開始時間。
 		float m_endTime;		//!<終了時間。
 		unsigned int m_numKeys;	//!<キーフレームの数。
 		std::vector<Keyframe>	m_keyframes;	//キーフレーム。
+		std::vector<keyFramePtrList>	m_keyFramePtrListArray;
 	};
 }
