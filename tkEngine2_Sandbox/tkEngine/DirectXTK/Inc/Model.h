@@ -235,8 +235,8 @@ namespace DirectX
     class Model
     {
     public:
-		typedef std::function<void(	const wchar_t* boneName, const VSD3DStarter::Bone* bone)> OnFindBoneData;
-		typedef std::function<void(const wchar_t* clipName, const VSD3DStarter::Clip* clip, const VSD3DStarter::Keyframe* keyFrame)> OnFindAnimationClip;
+		typedef std::function<void(	const wchar_t* boneName, const VSD3DStarter::Bone* bone, int offsetBoneNo)> OnFindBoneData;
+		typedef std::function<void(const wchar_t* clipName, const VSD3DStarter::Clip* clip, const VSD3DStarter::Keyframe* keyFrame, int baseBoneNo)> OnFindAnimationClip;
         virtual ~Model();
 
         ModelMesh::Collection   meshes;

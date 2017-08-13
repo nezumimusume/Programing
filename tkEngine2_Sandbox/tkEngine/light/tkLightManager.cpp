@@ -65,11 +65,11 @@ namespace tkEngine{
 	void CLightManager::AddLight(CLightBase* light)
 	{
 		if (m_pointLights.size() >= MAX_POINT_LIGHT) {
-			TK_LOG("warning : m_pointLights.size() is full!!");
+			TK_WARNING("m_pointLights.size() is full!!");
 			return;
 		}
 		if (m_directionLights.size() >= MAX_DIRECTION_LIGHT) {
-			TK_LOG("warning : m_directionLights.size() is full!!");
+			TK_WARNING("m_directionLights.size() is full!!");
 			return;
 		}
 		//ƒ‰ƒCƒg‚ÌU‚è•ª‚¯B

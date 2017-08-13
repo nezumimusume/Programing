@@ -43,7 +43,6 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
         skinning += boneMatrix[In.Indices[i]] * In.Weights[i];
     }
 	pos.xyz = mul(skinning, In.Position);
-	
 	pos.w = 1.0f;
 	psInput.Pos = pos;
 	pos = mul(mView, pos);
@@ -122,6 +121,8 @@ float4 PSMain( PSInput In ) : SV_Target0
 		lig += pointLightColor;
 	}
 	float4 color = float4(Texture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
+	//@todo for debug
+	return color;
 	color.xyz *= lig;
     return color; 
 #endif

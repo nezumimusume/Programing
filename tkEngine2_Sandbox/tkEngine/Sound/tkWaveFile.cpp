@@ -23,7 +23,7 @@ namespace tkEngine{
 		m_filePathHash = CUtil::MakeHash(fileName);
 		m_hmmio = mmioOpen(const_cast<char*>(fileName), NULL, MMIO_ALLOCBUF | MMIO_READ);
 		if (m_hmmio == NULL) {
-			TK_LOG("Failed mmioOpen");
+			TK_WARNING("Failed mmioOpen");
 			return;
 		}
 		MMCKINFO ckIn;           // chunk info. for general use.
@@ -33,13 +33,13 @@ namespace tkEngine{
 		m_pwfx = NULL;
 
 		if ((0 != mmioDescend(m_hmmio, &m_ckRiff, NULL, 0))) {
-			TK_LOG("Failed mmioDescend");
+			TK_WARNING("Failed mmioDescend");
 			Release();
 			return;
 		}
 		if ((m_ckRiff.ckid != FOURCC_RIFF) ||
 			(m_ckRiff.fccType != mmioFOURCC('W', 'A', 'V', 'E'))) {
-			TK_LOG("Failed mmioDescend");
+			TK_WARNING("Failed mmioDescend");
 			Release();
 			return;
 		}
@@ -47,7 +47,7 @@ namespace tkEngine{
 		// Search the input file for for the 'fmt ' chunk.
 		ckIn.ckid = mmioFOURCC('f', 'm', 't', ' ');
 		if (0 != mmioDescend(m_hmmio, &ckIn, &m_ckRiff, MMIO_FINDCHUNK)) {
-			TK_LOG("Failed mmioDescend");
+			TK_WARNING("Failed mmioDescend");
 			Release();
 			return;
 		}
@@ -55,7 +55,7 @@ namespace tkEngine{
 		// Expect the 'fmt' chunk to be at least as large as <PCMWAVEFORMAT>;
 		// if there are extra parameters at the end, we'll ignore them
 		if (ckIn.cksize < (LONG)sizeof(PCMWAVEFORMAT)) {
-			TK_LOG("Failed mmioDescend");
+			TK_WARNING("Failed mmioDescend");
 			Release();
 			return;
 		}
@@ -63,7 +63,7 @@ namespace tkEngine{
 		// Read the 'fmt ' chunk into <pcmWaveFormat>.
 		if (mmioRead(m_hmmio, (HPSTR)&pcmWaveFormat,
 			sizeof(pcmWaveFormat)) != sizeof(pcmWaveFormat)) {
-			TK_LOG("Failed mmioRead");
+			TK_WARNING("Failed mmioRead");
 			Release();
 			return;
 		}
@@ -83,7 +83,7 @@ namespace tkEngine{
 			// Read in length of extra bytes.
 			WORD cbExtraBytes = 0L;
 			if (mmioRead(m_hmmio, (CHAR*)&cbExtraBytes, sizeof(WORD)) != sizeof(WORD)) {
-				TK_LOG("Failed mmioRead");
+				TK_WARNING("Failed mmioRead");
 				Release();
 				return ;
 			}
@@ -98,7 +98,7 @@ namespace tkEngine{
 			if (mmioRead(m_hmmio, (CHAR*)(((BYTE*)&(m_pwfx->cbSize)) + sizeof(WORD)),
 				cbExtraBytes) != cbExtraBytes)
 			{
-				TK_LOG("Failed mmioRead");
+				TK_WARNING("Failed mmioRead");
 				Release();
 				return ;
 			}
@@ -107,7 +107,7 @@ namespace tkEngine{
 		// Ascend the input file out of the 'fmt ' chunk.
 		if (0 != mmioAscend(m_hmmio, &ckIn, 0))
 		{
-			TK_LOG("Failed mmioAscend");
+			TK_WARNING("Failed mmioAscend");
 			Release();			
 			return ;
 		}
@@ -123,14 +123,14 @@ namespace tkEngine{
 		// Seek to the data
 		if (-1 == mmioSeek(m_hmmio, m_ckRiff.dwDataOffset + sizeof(FOURCC),
 			SEEK_SET)) {
-			TK_LOG("Failed mmioSeek");
+			TK_WARNING("Failed mmioSeek");
 			return ;
 		}
 
 		// Search the input file for the 'data' chunk.
 		m_ck.ckid = mmioFOURCC('d', 'a', 't', 'a');
 		if (0 != mmioDescend(m_hmmio, &m_ck, &m_ckRiff, MMIO_FINDCHUNK)){
-			TK_LOG("Failed mmioDescend");
+			TK_WARNING("Failed mmioDescend");
 			return ;
 		}
 	}
@@ -148,7 +148,7 @@ namespace tkEngine{
 
 
 		if (0 != mmioGetInfo(m_hmmio, &mmioinfoIn, 0)) {
-			TK_LOG("mmioGetInfo");
+			TK_WARNING("mmioGetInfo");
 			return ;
 		}
 
@@ -165,12 +165,12 @@ namespace tkEngine{
 			if (mmioinfoIn.pchNext == mmioinfoIn.pchEndRead)
 			{
 				if (0 != mmioAdvance(m_hmmio, &mmioinfoIn, MMIO_READ)) {
-					TK_LOG("mmioAdvance");
+					TK_WARNING("mmioAdvance");
 					return ;
 				}
 
 				if (mmioinfoIn.pchNext == mmioinfoIn.pchEndRead) {
-					TK_LOG("mmioinfoIn.pchNext");
+					TK_WARNING("mmioinfoIn.pchNext");
 					return;
 				}
 			}

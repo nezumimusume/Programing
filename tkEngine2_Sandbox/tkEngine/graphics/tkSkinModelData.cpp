@@ -56,23 +56,41 @@ namespace tkEngine{
 		//ボーンを発見したときのコールバック。
 		auto onFindBone = [&](
 			const wchar_t* boneName, 
-			const VSD3DStarter::Bone* bone
+			const VSD3DStarter::Bone* bone,
+			int baseBoneNo
 		) {
+			int parentIndex = bone->ParentIndex;
+			if (parentIndex != -1) {
+				parentIndex += baseBoneNo;
+			}
 			m_skeleton.AddBone(
 				boneName, 
 				CMatrix(bone->BindPos),
 				CMatrix(bone->InvBindPos), 
 				CMatrix(bone->LocalTransform),
-				bone->ParentIndex);
+				parentIndex);
 		};
 		//アニメーションクリップを発見したときのコールバック。
 		auto onFindAnimationClip = [&](
 			const wchar_t* clipName,
 			const VSD3DStarter::Clip* clip, 
-			const VSD3DStarter::Keyframe* keyFrame
+			const VSD3DStarter::Keyframe* keyFrame,
+			int baseBoneNo
 		) {
-			CAnimationClipPtr animClip = std::make_unique<CAnimationClip>(clipName, clip, keyFrame);
-			m_animationClips.push_back(std::move(animClip));
+			auto it = std::find_if(
+				m_animationClips.begin(),
+				m_animationClips.end(),
+				[clipName](auto& clip) {return clip->GetName() == clipName;}
+			);
+			if (it == m_animationClips.end()) {
+				//新規
+				CAnimationClipPtr animClip = std::make_unique<CAnimationClip>(clipName, clip, keyFrame);
+				m_animationClips.push_back(std::move(animClip));
+			}
+			else {
+				//既存のクリップなのでキーフレームを追加する。
+				(*it)->AddKeyFrame(clip->keys, keyFrame, baseBoneNo);
+			}
 		};
 		
 		//モデルデータをロード。
@@ -85,8 +103,8 @@ namespace tkEngine{
 			onFindBone,
 			onFindAnimationClip
 		);
-		//スケルトンの階層構造を構築する。
-		m_skeleton.BuildHierarchy();
+		//ボーンの追加完了したときの処理を呼び出す。。
+		m_skeleton.OnCompleteAddedAllBones();
 
 		return true;
 	}

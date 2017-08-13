@@ -44,6 +44,16 @@ namespace tkEngine {
 			parentId
 		);
 		m_bones.push_back(std::move(bone));
+		
+	}
+	void CSkeleton::OnCompleteAddedAllBones()
+	{
+		for (auto& bone : m_bones) {
+			if (bone->GetParentId() != -1) {
+				m_bones.at(bone->GetParentId())->AddChild(bone.get());
+			}
+		}
+
 		//ボーン行列を確保
 		m_boneMatrixs = std::make_unique<CMatrix[]>(m_bones.size());
 		//StructuredBufferを作成。
@@ -57,14 +67,7 @@ namespace tkEngine {
 		desc.StructureByteStride = stride;
 
 		m_boneMatrixSB.Create(NULL, desc);
-	}
-	void CSkeleton::BuildHierarchy()
-	{
-		for (auto& bone : m_bones) {
-			if (bone->GetParentId() != -1) {
-				m_bones.at(bone->GetParentId())->AddChild(bone.get());
-			}
-		}
+
 	}
 	void CSkeleton::Update(const CMatrix& mWorld)
 	{

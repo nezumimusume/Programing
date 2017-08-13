@@ -139,7 +139,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
         throw std::exception("No meshes found");
 
     std::unique_ptr<Model> model(new Model());
-
+	int baseBoneNo = 0;
     for( UINT meshIndex = 0; meshIndex < *nMesh; ++meshIndex )
     {
         // Mesh name
@@ -444,7 +444,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
 
 				if (onFindBoneData != nullptr) {
 					//ボーンを見つけた時のコールバック関数が指定されている。
-					onFindBoneData(boneName, bones);
+					onFindBoneData(boneName, bones, baseBoneNo);
 				}
             }
 
@@ -487,9 +487,11 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
                 // TODO - What to do with keys and clip->StartTime, clip->EndTime?
                 keys;
 				if (onFindAnimationClip != nullptr) {
-					onFindAnimationClip(clipName, clip, keys);
+					onFindAnimationClip(clipName, clip, keys, baseBoneNo);
 				}
             }
+
+			baseBoneNo += *nBones;
         }
 #else
         UNREFERENCED_PARAMETER(bSkeleton);

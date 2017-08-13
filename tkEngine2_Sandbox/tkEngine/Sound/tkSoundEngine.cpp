@@ -187,7 +187,7 @@ namespace tkEngine{
 			//2Dサウンド。
 			if (FAILED(m_xAudio2->CreateSourceVoice(&pSourceVoice, waveFile->GetFormat())))
 			{
-				TK_LOG("Failed CreateSourceVoice");
+				TK_WARNING("Failed CreateSourceVoice");
 				return nullptr;
 			}
 		}
@@ -201,7 +201,7 @@ namespace tkEngine{
 			const XAUDIO2_VOICE_SENDS sendList = { 2, sendDescriptors };
 			if (FAILED(m_xAudio2->CreateSourceVoice(&pSourceVoice, waveFile->GetFormat(), 0, 2.0f, NULL, &sendList)))
 			{
-				TK_LOG("Failed CreateSourceVoice");
+				TK_WARNING("Failed CreateSourceVoice");
 				return nullptr;
 			}
 		}

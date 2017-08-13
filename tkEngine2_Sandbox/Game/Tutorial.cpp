@@ -37,7 +37,7 @@ class PBRSample : public IGameObject {
 	CSkinModel nonSkinModel;
 	CSkinModelData skinModelData;
 	CSkinModel skinModel;
-	CAnimator animator;
+	CAnimation animation;
 	prefab::CDirectionLight* m_directionLight[3] = { nullptr };
 	prefab::CPointLight* m_pointLight[NUM_POINT_LIGHT] = {nullptr};
 	
@@ -50,15 +50,17 @@ public:
 	{
 		skinModelData.Load(L"Assets/modelData/Thethief_H.cmo");
 		skinModel.Init(skinModelData);
-		animator.Init(skinModelData);
-		animator.Play(0);
+		animation.Init(skinModelData);
+		animation.SetAnimationClipLoopFlag(L"Take 001", true);
+		animation.Play(L"Take 001");
 		nonSkinModelData.Load(L"Assets/modelData/background.cmo");
 		nonSkinModel.Init(nonSkinModelData);
 		//カメラを初期化。
 		CCamera& mainCamera = MainCamera();
-		mainCamera.SetPosition({ 0.0f, 100.0f, 100.0f });
-		mainCamera.SetTarget({ 0.0f, 50.0f, 0.0f });
+		mainCamera.SetPosition({ 0.0f, 15.0f, 30.0f });
+		mainCamera.SetTarget({ 0.0f, 15.0f, 0.0f });
 		mainCamera.SetUp({ 0.0f, 1.0f, 0.0f });
+		mainCamera.SetNear(0.1f);
 		mainCamera.Update();
 		
 		//ディレクションライトをシーンに追加。
@@ -122,7 +124,7 @@ public:
 	{
 		nonSkinModel.Update({0.5f, 0.0f, 0.0f}, CQuaternion::Identity, CVector3::One);
 		skinModel.Update({ 0.5f, 0.0f, 0.0f }, CQuaternion::Identity, CVector3::One);
-		animator.Progress(1.0f / 60.0f);
+		animation.Update(1.0f / 60.0f);
 		//マテリアルパラーメータを更新。
 		if (Pad(0).IsTrigger(enButtonUp)) {
 			m_cursorPos--;

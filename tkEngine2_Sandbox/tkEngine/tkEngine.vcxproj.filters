@@ -215,7 +215,7 @@
     <ClInclude Include="graphics\tkLight.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\tkAnimator.h">
+    <ClInclude Include="graphics\tkAnimation.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -331,7 +331,7 @@
     <ClCompile Include="light\tkLightManager.cpp">
       <Filter>Source Files\light</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\tkAnimator.cpp">
+    <ClCompile Include="graphics\tkAnimation.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>

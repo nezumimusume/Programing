@@ -117,8 +117,8 @@ namespace tkEngine{
 	/*!
 	 *@brief	スケルトン。
 	 */
-	class CSkeleton : Noncopyable{
-	public:
+	class CSkeleton : Noncopyable {
+	public: //エンジン内部でのみ呼び出す必要のある関数
 		CSkeleton();
 		~CSkeleton();
 		/*!
@@ -130,16 +130,13 @@ namespace tkEngine{
 		*@param[in] parentId		親のボーン番号。
 		*/
 		void AddBone(
-			const wchar_t* boneName, 
+			const wchar_t* boneName,
 			const CMatrix& bindPose,
 			const CMatrix& invBindPose,
 			const CMatrix& localMatrix,
 			int parentId
 		);
-		/*!
-		*@brief	階層構造を構築。
-		*/
-		void BuildHierarchy();
+		
 		/*!
 		 *@brief	ボーンのローカル行列を設定。
 		 *@param[in]	boneNo		ボーン番号
@@ -148,7 +145,7 @@ namespace tkEngine{
 		void SetBoneLocalMatrix(int boneNo, const CMatrix& m)
 		{
 			if (boneNo > (int)m_bones.size() - 1) {
-				TK_LOG("warning : boneNo is over m_bones.size() ");
+				TK_WARNING("boneNo is over m_bones.size() ");
 				return;
 			}
 			m_bones[boneNo]->SetLocalMatrix(m);
@@ -160,6 +157,11 @@ namespace tkEngine{
 		{
 			return m_bones.size();
 		}
+	public:
+		/*!
+		*@brief	すべでのボーンの追加が完了したときに呼び出す必要がある処理。
+		*/
+		void OnCompleteAddedAllBones();
 		/*!
 		 *@brief	更新。
 		 */
