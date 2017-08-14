@@ -57,6 +57,9 @@
     <Filter Include="Source Files\light">
       <UniqueIdentifier>{ac8ad281-302c-4cba-bbfc-2f3334ddab60}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\physics">
+      <UniqueIdentifier>{2c2e5717-6da4-49b7-87fa-c21b3eb8af5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -218,6 +221,9 @@
     <ClInclude Include="graphics\tkAnimation.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="physics\tkPhysics.h">
+      <Filter>Source Files\physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -333,6 +339,9 @@
     </ClCompile>
     <ClCompile Include="graphics\tkAnimation.cpp">
       <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="physics\tkPhysics.cpp">
+      <Filter>Source Files\physics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
