@@ -15,14 +15,25 @@ namespace tkEngine{
 
 	CPhysicsWorld::~CPhysicsWorld()
 	{
+		Release();
+	}
+	void CPhysicsWorld::Release()
+	{
 		delete dynamicWorld;
 		delete constraintSolver;
 		delete overlappingPairCache;
 		delete collisionDispatcher;
 		delete collisionConfig;
+
+		dynamicWorld = nullptr;
+		constraintSolver = nullptr;
+		overlappingPairCache = nullptr;
+		collisionDispatcher = nullptr;
+		collisionConfig = nullptr;
 	}
 	void CPhysicsWorld::Init()
 	{
+		Release();
 		//•¨—ƒGƒ“ƒWƒ“‚ğ‰Šú‰»B
 		///collision configuration contains default setup for memory, collision setup. Advanced users can create their own configuration.
 		collisionConfig = new btDefaultCollisionConfiguration();

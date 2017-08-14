@@ -27,7 +27,7 @@ namespace tkEngine{
 	static inline void Warning(const char* format, ...)
 	{
 		static char newFormat[1024 * 10] = { "TK_WARNING : " };
-		strcat(newFormat, format);
+		strcat_s(newFormat, format);
 		Log(newFormat);
 	}
 }

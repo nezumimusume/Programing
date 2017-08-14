@@ -292,10 +292,10 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
             ibData.emplace_back( ib );
 
             D3D11_BUFFER_DESC desc = {};
-            desc.Usage = D3D11_USAGE_DEFAULT;
+            desc.Usage = D3D11_USAGE_DYNAMIC;
             desc.ByteWidth = static_cast<UINT>( ibBytes );
             desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-
+			desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
             D3D11_SUBRESOURCE_DATA initData = {};
             initData.pSysMem = indexes;
 
@@ -513,10 +513,10 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
             size_t bytes = stride * nVerts;
 
             D3D11_BUFFER_DESC desc = {};
-            desc.Usage = D3D11_USAGE_DEFAULT;
+            desc.Usage = D3D11_USAGE_DYNAMIC;
             desc.ByteWidth = static_cast<UINT>( bytes );
             desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-            
+            desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
             if ( fxFactoryDGSL && !enableSkinning )
             {
                 // Can use CMO vertex data directly

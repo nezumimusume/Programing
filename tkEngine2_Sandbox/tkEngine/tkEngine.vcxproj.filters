@@ -60,6 +60,12 @@
     <Filter Include="Source Files\physics">
       <UniqueIdentifier>{2c2e5717-6da4-49b7-87fa-c21b3eb8af5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\character">
+      <UniqueIdentifier>{94743b8a-eb4f-474c-b3dd-206970ff95e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\culling">
+      <UniqueIdentifier>{4fc964c7-08e2-40c3-82a3-c928f4c6c65e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -224,6 +230,36 @@
     <ClInclude Include="physics\tkPhysics.h">
       <Filter>Source Files\physics</Filter>
     </ClInclude>
+    <ClInclude Include="physics\tkCollisionAttr.h">
+      <Filter>Source Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\tkICollider.h">
+      <Filter>Source Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\tkRigidBody.h">
+      <Filter>Source Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\tkSphereCollider.h">
+      <Filter>Source Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\tkBoxCollider.h">
+      <Filter>Source Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\tkCapsuleCollider.h">
+      <Filter>Source Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\tkMeshCollider.h">
+      <Filter>Source Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="character\tkCharacterController.h">
+      <Filter>Source Files\character</Filter>
+    </ClInclude>
+    <ClInclude Include="culling\tkObjectFrustumCulling.h">
+      <Filter>Source Files\culling</Filter>
+    </ClInclude>
+    <ClInclude Include="culling\tkObjectCulling.h">
+      <Filter>Source Files\culling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -342,6 +378,27 @@
     </ClCompile>
     <ClCompile Include="physics\tkPhysics.cpp">
       <Filter>Source Files\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="physics\tkRigidBody.cpp">
+      <Filter>Source Files\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="physics\tkSphereCollider.cpp">
+      <Filter>Source Files\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="physics\tkBoxCollider.cpp">
+      <Filter>Source Files\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="physics\tkCapsuleCollider.cpp">
+      <Filter>Source Files\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="physics\tkMeshCollider.cpp">
+      <Filter>Source Files\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="character\tkCharacterController.cpp">
+      <Filter>Source Files\character</Filter>
+    </ClCompile>
+    <ClCompile Include="culling\tkObjectFrustumCulling.cpp">
+      <Filter>Source Files\culling</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

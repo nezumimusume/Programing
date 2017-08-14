@@ -99,6 +99,12 @@ namespace tkEngine{
 		{
 			return m_animationClips;
 		}
+		typedef std::function<void(const std::unique_ptr<DirectX::ModelMeshPart>&)>		OnFindMesh;
+		/*!
+		 *@brief	メッシュの検索。
+		 *@param[in]	findMesh		メッシュを見つけた時に呼ばれるコールバック関数
+		 */
+		void FindMesh(OnFindMesh findMesh);
 	private:
 		
 		std::unique_ptr<DirectX::Model> m_modelDx;

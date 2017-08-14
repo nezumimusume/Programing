@@ -7,16 +7,17 @@ namespace tkEngine{
 
 	class CPhysicsWorld
 	{
-		btDefaultCollisionConfiguration*		collisionConfig;
-		btCollisionDispatcher*					collisionDispatcher;	//!<衝突解決処理。
-		btBroadphaseInterface*					overlappingPairCache;	//!<ブロードフェーズ。衝突判定の枝切り。
-		btSequentialImpulseConstraintSolver*	constraintSolver;		//!<コンストレイントソルバー。拘束条件の解決処理。
-		btDiscreteDynamicsWorld*				dynamicWorld;			//!<ワールド。
+		btDefaultCollisionConfiguration*		collisionConfig = nullptr;
+		btCollisionDispatcher*					collisionDispatcher = nullptr;	//!<衝突解決処理。
+		btBroadphaseInterface*					overlappingPairCache = nullptr;	//!<ブロードフェーズ。衝突判定の枝切り。
+		btSequentialImpulseConstraintSolver*	constraintSolver = nullptr;		//!<コンストレイントソルバー。拘束条件の解決処理。
+		btDiscreteDynamicsWorld*				dynamicWorld = nullptr;			//!<ワールド。
 	public:
 		CPhysicsWorld();
 		~CPhysicsWorld();
 		void Init();
 		void Update() ;
+		void Release();
 		/*!
 		* @brief	ダイナミックワールドを取得。
 		*/

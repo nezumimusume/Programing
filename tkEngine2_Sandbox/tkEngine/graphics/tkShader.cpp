@@ -81,7 +81,12 @@ namespace tkEngine{
 			}
 
 			// 入力レイアウトを作成。
-			HRESULT hr = pD3DDevice->CreateInputLayout(&inputLayoutDesc[0], inputLayoutDesc.size(), pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), pInputLayout);
+			HRESULT hr = pD3DDevice->CreateInputLayout(
+				&inputLayoutDesc[0], 
+				static_cast<UINT>(inputLayoutDesc.size()), 
+				pShaderBlob->GetBufferPointer(), 
+				pShaderBlob->GetBufferSize(), 
+				pInputLayout);
 
 			//リフレクション用に確保したメモリを解放。
 			pVertexShaderReflection->Release();

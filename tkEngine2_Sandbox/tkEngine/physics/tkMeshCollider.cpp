@@ -3,113 +3,85 @@
 
 namespace tkEngine{
 
-	CMeshCollider::CMeshCollider() : 
-		stridingMeshInterface(NULL)
+	CMeshCollider::CMeshCollider() 
 	{
 	}
 
 
 	CMeshCollider::~CMeshCollider()
 	{
-		for (auto& vb : vertexBufferArray) {
-			delete vb;
-		}
-		for (auto& ib : indexBufferArray) {
-			delete ib;
-		}
-		delete stridingMeshInterface;
-		delete meshShape;
+	
 	}
 
 	/*!
 	 * @brief	CSkinModelからメッシュコライダーを生成。
 	 *@param[in]	model		スキンモデル。
 	 */
-	void CMeshCollider::CreateFromSkinModel( CSkinModel* model, const CMatrix* offsetMatrix )
+	void CMeshCollider::CreateFromSkinModel( const CSkinModel& model, const CMatrix* offsetMatrix )
 	{
-		stridingMeshInterface = new btTriangleIndexVertexArray;
-		//CSkinModelからコリジョンで使用する、頂点バッファとインデックスバッファを作成する。
-		LPD3DXMESH mesh = model->GetOrgMeshFirst();
-		if (mesh != NULL) {
-			{
-				//頂点ストライドを取得。
-				DWORD stride = D3DXGetFVFVertexSize(mesh->GetFVF());
-				//頂点バッファを取得。
-				LPDIRECT3DVERTEXBUFFER9 vb;
-				mesh->GetVertexBuffer(&vb);
-				//頂点バッファの定義を取得する。
-				D3DVERTEXBUFFER_DESC desc;
-				vb->GetDesc(&desc);
-				//頂点バッファをロックする。
-				CVector3* pos;
-				vb->Lock(0, 0, (void**)&pos, D3DLOCK_READONLY);
-				VertexBuffer* vertexBuffer = new VertexBuffer;
-				int numVertex = mesh->GetNumVertices();
-				//当たりデータで使用する頂点バッファを作成。
-				for (int v = 0; v < numVertex; v++) {
-					CVector3 posTmp = *pos;
-					if (offsetMatrix) {
-						offsetMatrix->Mul(posTmp);
+		m_stridingMeshInterface = std::make_unique<btTriangleIndexVertexArray>();
+		model.FindMesh(
+			[&](const auto& mesh){
+				ID3D11DeviceContext* deviceContext = GraphicsEngine().GetD3DDeviceContext();
+				//頂点バッファを作成。
+				{
+					D3D11_MAPPED_SUBRESOURCE subresource;
+					HRESULT hr = deviceContext->Map(mesh->vertexBuffer.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &subresource);
+					if (FAILED(hr)) {
+						TK_WARNING("Failed map vertexBuffer");
+						return;
 					}
-					vertexBuffer->push_back(posTmp);
-					char* p = (char*)pos;
-					p += stride;
-					pos = (CVector3*)p;
+					int vbSize = subresource.DepthPitch;
+					int vertexCount = vbSize / mesh->vertexStride;
+					char* pData = reinterpret_cast<char*>(subresource.pData);
+					VertexBufferPtr vertexBuffer = std::make_unique<VertexBuffer>();
+					CVector3* pos;
+					for (int i = 0; i < vertexCount; i++) {
+						pos = reinterpret_cast<CVector3*>(pData);
+						vertexBuffer->push_back(*pos);
+						//次の頂点へ。
+						pData += mesh->vertexStride;
+					}
+					//頂点バッファをアンロック
+					deviceContext->Unmap(mesh->vertexBuffer.Get(), 0);
+					m_vertexBufferArray.push_back(std::move(vertexBuffer));
 				}
-				vb->Unlock();
-				vb->Release();
-				vertexBufferArray.push_back(vertexBuffer);
+				//インデックスバッファを作成。
+				{
+					D3D11_MAPPED_SUBRESOURCE subresource;
+					//インデックスバッファをロック。
+					HRESULT hr = deviceContext->Map(mesh->indexBuffer.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &subresource);
+					if (FAILED(hr)) {
+						TK_WARNING("Failed map indexBuffer");
+						return;
+					}
+					//@todo cmoファイルはインデックスバッファのサイズは2byte固定。
+					IndexBufferPtr indexBuffer = std::make_unique<IndexBuffer>();
+					int stride = 2;
+					int ibSize = subresource.DepthPitch;
+					int indexCount = ibSize / stride;
+					unsigned short* pIndex = reinterpret_cast<unsigned short*>(subresource.pData);
+					for (int i = 0; i < indexCount; i++) {
+						indexBuffer->push_back(pIndex[i]);
+					}
+					//インデックスバッファをアンロック。
+					deviceContext->Unmap(mesh->indexBuffer.Get(), 0);
+					m_indexBufferArray.push_back(std::move(indexBuffer));
+				}
+
+				//インデックスメッシュを作成。
+				btIndexedMesh indexedMesh;
+				IndexBuffer* ib = m_indexBufferArray.back().get();
+				VertexBuffer* vb = m_vertexBufferArray.back().get();
+				indexedMesh.m_numTriangles = (int)ib->size() / 3;
+				indexedMesh.m_triangleIndexBase = (unsigned char*)(&ib->front());
+				indexedMesh.m_triangleIndexStride = 12;
+				indexedMesh.m_numVertices = (int)vb->size();
+				indexedMesh.m_vertexBase = (unsigned char*)(&vb->front());
+				indexedMesh.m_vertexStride = sizeof(CVector3);
+				m_stridingMeshInterface->addIndexedMesh(indexedMesh);
 			}
-			{
-				//続いてインデックスバッファを作成。
-				LPDIRECT3DINDEXBUFFER9 ib;
-				mesh->GetIndexBuffer(&ib);
-				D3DINDEXBUFFER_DESC desc;
-				ib->GetDesc(&desc);
-				int stride = 0;
-				if (desc.Format == D3DFMT_INDEX16) {
-					//インデックスが16bit
-					stride = 2;
-				}
-				else if(desc.Format == D3DFMT_INDEX32){
-					//インデックスが32bit
-					stride = 4;
-				}
-				//インデックスバッファをロック。
-				char* p;
-				HRESULT hr = ib->Lock(0, 0, (void**)&p, D3DLOCK_READONLY);
-				IndexBuffer* indexBuffer = new IndexBuffer;
-				for (int i = 0; i < (int)desc.Size / stride; i++) {
-					unsigned int index;
-					if (desc.Format == D3DFMT_INDEX16) {
-						unsigned short* pIndex = (unsigned short*)p;
-						index = (unsigned int)*pIndex;
-					}
-					else {
-						unsigned int* pIndex = (unsigned int*)p;
-						index = *pIndex;
-					}
-					
-					indexBuffer->push_back(index);
-					p += stride;
-				}
-				ib->Unlock();
-				ib->Release();
-				indexBufferArray.push_back(indexBuffer);
-			}
-			//インデックスメッシュを作成。
-			btIndexedMesh indexedMesh;
-			IndexBuffer* ib = indexBufferArray.back();
-			VertexBuffer* vb = vertexBufferArray.back();
-			indexedMesh.m_numTriangles = (int)ib->size() / 3;
-			indexedMesh.m_triangleIndexBase = (unsigned char*)(&ib->front());
-			indexedMesh.m_triangleIndexStride = 12;
-			indexedMesh.m_numVertices = (int)vb->size();
-			indexedMesh.m_vertexBase = (unsigned char*)(&vb->front());
-			indexedMesh.m_vertexStride = sizeof(CVector3);
-			stridingMeshInterface->addIndexedMesh(indexedMesh);
-			
-		}
-		meshShape = new btBvhTriangleMeshShape(stridingMeshInterface, true);	
+		);
+		m_meshShape = std::make_unique<btBvhTriangleMeshShape>(m_stridingMeshInterface.get(), true);
 	}
 }

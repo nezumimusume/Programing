@@ -9,6 +9,7 @@
 #include <time.h>
 #include "tkEngine/light/tkDirectionLight.h"
 #include "tkEngine/light/tkPointLight.h"
+#include "tkEngine/physics/tkMeshCollider.h"
 
 using namespace tkEngine;
 
@@ -34,6 +35,7 @@ class PBRSample : public IGameObject {
 	MaterialParam m_materialParam;				//マテリアルパラメータ。
 	CConstantBuffer m_materialParamCB;			//マテリアルパラメータ用の定数バッファ。
 	CSkinModelData nonSkinModelData;
+	CMeshCollider meshCollider;
 	CSkinModel nonSkinModel;
 	CSkinModelData skinModelData;
 	CSkinModel skinModel;
@@ -55,6 +57,8 @@ public:
 		animation.Play(L"Take 001");
 		nonSkinModelData.Load(L"Assets/modelData/background.cmo");
 		nonSkinModel.Init(nonSkinModelData);
+		meshCollider.CreateFromSkinModel(nonSkinModel, NULL);
+
 		//カメラを初期化。
 		CCamera& mainCamera = MainCamera();
 		mainCamera.SetPosition({ 0.0f, 15.0f, 30.0f });

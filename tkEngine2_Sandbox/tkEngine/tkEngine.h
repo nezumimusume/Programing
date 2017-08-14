@@ -74,6 +74,13 @@ namespace tkEngine{
 			return m_graphicsEngine;
 		}
 		/*!
+		 *@brief	物理ワールドの取得。
+		 */
+		CPhysicsWorld& GetPhysicsWorld()
+		{
+			return m_physicsWorld;
+		}
+		/*!
 		* @brief	ZPrepassの取得。
 		*/
 		CZPrepass& GetZPrepass()
@@ -143,6 +150,13 @@ namespace tkEngine{
 	static inline CGraphicsEngine& GraphicsEngine()
 	{
 		return Engine().GetGraphicsEngine();
+	}
+	/*!
+	 *@brief	CPhysicsWorldのインスタンスを取得。
+	 */
+	static inline CPhysicsWorld& PhysicsWorld()
+	{
+		return Engine().GetPhysicsWorld();
 	}
 	/*!
 	* @brief	メインカメラのインスタンスを取得。

@@ -260,6 +260,9 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="character\tkCharacterController.h" />
+    <ClInclude Include="culling\tkObjectCulling.h" />
+    <ClInclude Include="culling\tkObjectFrustumCulling.h" />
     <ClInclude Include="debug\tkAssert.h" />
     <ClInclude Include="debug\tkLog.h" />
     <ClInclude Include="gameObject\tkgameobject.h" />
@@ -297,7 +300,14 @@
     <ClInclude Include="math\tkMath.h" />
     <ClInclude Include="math\tkMatrix.h" />
     <ClInclude Include="math\tkvector.h" />
+    <ClInclude Include="physics\tkBoxCollider.h" />
+    <ClInclude Include="physics\tkCapsuleCollider.h" />
+    <ClInclude Include="physics\tkCollisionAttr.h" />
+    <ClInclude Include="physics\tkICollider.h" />
+    <ClInclude Include="physics\tkMeshCollider.h" />
     <ClInclude Include="physics\tkPhysics.h" />
+    <ClInclude Include="physics\tkRigidBody.h" />
+    <ClInclude Include="physics\tkSphereCollider.h" />
     <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="policy\tkScopedResource.h" />
     <ClInclude Include="Resource\tkResourceManager.h" />
@@ -315,6 +325,8 @@
     <ClInclude Include="util\tkUtil.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="character\tkCharacterController.cpp" />
+    <ClCompile Include="culling\tkObjectFrustumCulling.cpp" />
     <ClCompile Include="gameObject\tkGameObject.cpp" />
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
     <ClCompile Include="gameObject\tkTransform.cpp" />
@@ -347,7 +359,12 @@
     <ClCompile Include="math\tkMath.cpp" />
     <ClCompile Include="math\tkMatrix.cpp" />
     <ClCompile Include="math\tkVector.cpp" />
+    <ClCompile Include="physics\tkBoxCollider.cpp" />
+    <ClCompile Include="physics\tkCapsuleCollider.cpp" />
+    <ClCompile Include="physics\tkMeshCollider.cpp" />
     <ClCompile Include="physics\tkPhysics.cpp" />
+    <ClCompile Include="physics\tkRigidBody.cpp" />
+    <ClCompile Include="physics\tkSphereCollider.cpp" />
     <ClCompile Include="Sound\tkSoundEngine.cpp" />
     <ClCompile Include="Sound\tkSoundSource.cpp" />
     <ClCompile Include="Sound\tkWaveFile.cpp" />
