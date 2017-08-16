@@ -113,13 +113,13 @@ namespace tkEngine{
 		{
 			Set(v.x, v.y, v.z);
 		}
-		/*void Set(btVector3& v)
+		void Set(btVector3& v)
 		{
 			this->x = v.x();
 			this->y = v.y();
 			this->z = v.z();
 		}
-		*/
+		
 		/*!
 		 * @brief	ベクトルを加算。
 		 */

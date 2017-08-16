@@ -29,6 +29,8 @@ namespace tkEngine {
 		}
 		//SoundEngineの初期化
 		m_soundEngine.Init();
+		//物理エンジンの初期化。
+		m_physicsWorld.Init();
 		return true;
 	}
 	bool CEngine::InitWindow( const SInitParam& initParam )
@@ -57,6 +59,7 @@ namespace tkEngine {
 	
 	void CEngine::Final()
 	{
+		m_physicsWorld.Release();
 		m_soundEngine.Release();
 		m_graphicsEngine.Release();
 		
@@ -89,7 +92,8 @@ namespace tkEngine {
 		m_soundEngine.Update();
 		//GameObjectManager更新
 		GameObjectManager().Execute();
-
+		//物理エンジンの更新。
+		m_physicsWorld.Update();
 		m_graphicsEngine.EndRender();
 		
 		m_sw.Stop();

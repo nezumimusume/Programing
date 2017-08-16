@@ -155,7 +155,7 @@ namespace tkEngine{
 		 */
 		int GetNumBones() const
 		{
-			return m_bones.size();
+			return static_cast<int>(m_bones.size());
 		}
 	public:
 		/*!

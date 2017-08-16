@@ -44,6 +44,16 @@ namespace tkEngine{
 			const CMatrix& projMatrix,
 			bool isZPrepass = false
 		);
+		/*!
+		*@brief	メッシュの検索。
+		*@param[in]	findMesh		メッシュを見つけた時に呼ばれるコールバック関数
+		*/
+		void FindMesh(CSkinModelData::OnFindMesh findMesh) const
+		{
+			if (m_skinModelData != nullptr) {
+				m_skinModelData->FindMesh(findMesh);
+			}
+		}
 	private:
 		struct SVSConstantBuffer {
 			CMatrix mWorld;

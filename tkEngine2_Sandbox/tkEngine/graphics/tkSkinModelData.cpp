@@ -108,5 +108,13 @@ namespace tkEngine{
 
 		return true;
 	}
+	void CSkinModelData::FindMesh(OnFindMesh findMesh)
+	{
+		for (const auto& modelMeshs : m_modelDx->meshes) {
+			for (const std::unique_ptr<DirectX::ModelMeshPart>& mesh : modelMeshs->meshParts) {
+				findMesh(mesh);
+			}
+		}
+	}
 }
 

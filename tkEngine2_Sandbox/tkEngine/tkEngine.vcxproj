@@ -99,7 +99,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(ProjectDir)../;$(IncludePath);$(ProjectDir)/bulletPhysics/src</IncludePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath);</LibraryPath>
     <IntDir>$(Configuration)Objects\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -109,7 +109,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">
     <IncludePath>$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/bulletPhysics/src</IncludePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath);$(SolutionDir)/bulletPhysics/lib/Preview;</LibraryPath>
     <IntDir>$(Configuration)Objects\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -129,7 +129,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;BT_NO_SIMD_OPERATOR_OVERLOADS</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>tkEngine/tkEnginePrecompile.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>
@@ -148,7 +148,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;BT_NO_SIMD_OPERATOR_OVERLOADS</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>tkEngine/tkEnginePrecompile.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -167,7 +167,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;TK_MASTER</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;TK_MASTER;BT_NO_SIMD_OPERATOR_OVERLOADS</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>tkEngine/tkEnginePrecompile.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -191,7 +191,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;BT_NO_SIMD_OPERATOR_OVERLOADS</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>tkEngine/tkEnginePrecompile.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -205,7 +205,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>XInput.lib;XAudio2.lib;</AdditionalDependencies>
+      <AdditionalDependencies>XInput.lib;XAudio2.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -215,7 +215,7 @@
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;TK_MASTER</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;TK_MASTER;BT_NO_SIMD_OPERATOR_OVERLOADS</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>tkEngine/tkEnginePrecompile.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -239,7 +239,7 @@
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;BT_NO_SIMD_OPERATOR_OVERLOADS</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeaderFile>tkEngine/tkEnginePrecompile.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -260,6 +260,9 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="character\tkCharacterController.h" />
+    <ClInclude Include="culling\tkObjectCulling.h" />
+    <ClInclude Include="culling\tkObjectFrustumCulling.h" />
     <ClInclude Include="debug\tkAssert.h" />
     <ClInclude Include="debug\tkLog.h" />
     <ClInclude Include="gameObject\tkgameobject.h" />
@@ -297,6 +300,14 @@
     <ClInclude Include="math\tkMath.h" />
     <ClInclude Include="math\tkMatrix.h" />
     <ClInclude Include="math\tkvector.h" />
+    <ClInclude Include="physics\tkBoxCollider.h" />
+    <ClInclude Include="physics\tkCapsuleCollider.h" />
+    <ClInclude Include="physics\tkCollisionAttr.h" />
+    <ClInclude Include="physics\tkICollider.h" />
+    <ClInclude Include="physics\tkMeshCollider.h" />
+    <ClInclude Include="physics\tkPhysics.h" />
+    <ClInclude Include="physics\tkRigidBody.h" />
+    <ClInclude Include="physics\tkSphereCollider.h" />
     <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="policy\tkScopedResource.h" />
     <ClInclude Include="Resource\tkResourceManager.h" />
@@ -314,6 +325,8 @@
     <ClInclude Include="util\tkUtil.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="character\tkCharacterController.cpp" />
+    <ClCompile Include="culling\tkObjectFrustumCulling.cpp" />
     <ClCompile Include="gameObject\tkGameObject.cpp" />
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
     <ClCompile Include="gameObject\tkTransform.cpp" />
@@ -346,6 +359,12 @@
     <ClCompile Include="math\tkMath.cpp" />
     <ClCompile Include="math\tkMatrix.cpp" />
     <ClCompile Include="math\tkVector.cpp" />
+    <ClCompile Include="physics\tkBoxCollider.cpp" />
+    <ClCompile Include="physics\tkCapsuleCollider.cpp" />
+    <ClCompile Include="physics\tkMeshCollider.cpp" />
+    <ClCompile Include="physics\tkPhysics.cpp" />
+    <ClCompile Include="physics\tkRigidBody.cpp" />
+    <ClCompile Include="physics\tkSphereCollider.cpp" />
     <ClCompile Include="Sound\tkSoundEngine.cpp" />
     <ClCompile Include="Sound\tkSoundSource.cpp" />
     <ClCompile Include="Sound\tkWaveFile.cpp" />

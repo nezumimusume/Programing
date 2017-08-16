@@ -8,7 +8,7 @@
 #include "tkEngine/Sound/tkSoundEngine.h"
 #include "tkEngine/graphics/tkGraphicsEngine.h"
 #include "tkEngine/tkEngineStruct.h"
-
+#include "tkEngine/physics/tkPhysics.h"
 
 namespace tkEngine{
 	/*!
@@ -74,6 +74,13 @@ namespace tkEngine{
 			return m_graphicsEngine;
 		}
 		/*!
+		 *@brief	物理ワールドの取得。
+		 */
+		CPhysicsWorld& GetPhysicsWorld()
+		{
+			return m_physicsWorld;
+		}
+		/*!
 		* @brief	ZPrepassの取得。
 		*/
 		CZPrepass& GetZPrepass()
@@ -108,6 +115,7 @@ namespace tkEngine{
 		HWND					m_hWnd = nullptr;	//!<ウィンドウハンドル。
 		CGraphicsEngine			m_graphicsEngine;							//!<グラフィックエンジン。
 		CSoundEngine			m_soundEngine;								//!<サウンドエンジン。
+		CPhysicsWorld			m_physicsWorld;								//!<物理ワールド。
 		int						m_screenWidth = 0;							//!<スクリーンの幅。
 		int						m_screenHeight = 0;							//!<スクリーンの高さ。
 		CPad					m_pad[CPad::CONNECT_PAD_MAX];				//!<ゲームパッド。
@@ -142,6 +150,13 @@ namespace tkEngine{
 	static inline CGraphicsEngine& GraphicsEngine()
 	{
 		return Engine().GetGraphicsEngine();
+	}
+	/*!
+	 *@brief	CPhysicsWorldのインスタンスを取得。
+	 */
+	static inline CPhysicsWorld& PhysicsWorld()
+	{
+		return Engine().GetPhysicsWorld();
 	}
 	/*!
 	* @brief	メインカメラのインスタンスを取得。

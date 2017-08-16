@@ -71,7 +71,7 @@ namespace tkEngine{
 		*/
 		int GetNumPointLight() const
 		{
-			return m_pointLights.size();
+			return static_cast<int>(m_pointLights.size());
 		}
 	private:
 		void InitDirectionLightStructuredBuffer();
