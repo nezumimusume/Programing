@@ -46,13 +46,7 @@ namespace tkEngine{
 			int baseBoneNo,
 			const std::vector<int>& localBoneIDtoGlobalBoneIDTbl
 		);
-		/*!
-		 *@brief
-		 */
-		const std::vector<keyFramePtrList>& GetKeyFramePtrListArray() const
-		{
-			return m_keyFramePtrListArray;
-		}
+		
 		/*!
 		*@brief	ñºëOÇéÊìæÅB
 		*/
@@ -73,6 +67,13 @@ namespace tkEngine{
 		void SetLoopFlag(bool flag)
 		{
 			m_isLoop = flag;
+		}
+		/*!
+		*@brief
+		*/
+		const std::vector<keyFramePtrList>& GetKeyFramePtrListArray() const
+		{
+			return m_keyFramePtrListArray;
 		}
 		const keyFramePtrList& GetTopBoneKeyFrameList() const
 		{

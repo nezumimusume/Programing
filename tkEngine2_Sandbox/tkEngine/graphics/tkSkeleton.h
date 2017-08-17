@@ -15,20 +15,17 @@ namespace tkEngine{
 		*@param[in]	boneName		ボーンの名前。
 		*@param[in]	bindPose		バインドポーズの行列。
 		*@param[in] invBindPose		バインドポーズの逆行列。
-		*@param[in] localMatrix		ローカル行列。
 		*@param[in]	parentId		親のボーン番号。
 		*/
 		CBone(
 			const wchar_t* boneName,
 			const CMatrix& bindPose,
 			const CMatrix& invBindPose,
-			const CMatrix& localMatrix,
 			int parentId
 		) :
 			m_boneName(boneName),
 			m_bindPose(bindPose),
 			m_invBindPose(invBindPose),
-			m_localMatrix(localMatrix),
 			m_parentId(parentId)
 		{
 		}
@@ -111,7 +108,7 @@ namespace tkEngine{
 		int				m_parentId = -1;	//!<親のボーン番号。
 		CMatrix			m_bindPose;		//!<バインドポーズ。
 		CMatrix			m_invBindPose;	//!<バインドポーズの逆行列。
-		CMatrix			m_localMatrix;	//!<ローカル行列。
+		CMatrix			m_localMatrix = CMatrix::Identity;	//!<ローカル行列。
 		CMatrix			m_worldMatrix = CMatrix::Identity;	//!<ワールド行列。
 		CMatrix			m_offsetLocalMatrix;
 		std::list<CBone*>	m_children;		//!<子供。

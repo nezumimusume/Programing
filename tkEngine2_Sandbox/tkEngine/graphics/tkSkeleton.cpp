@@ -84,7 +84,6 @@ namespace tkEngine {
 				boneName,
 				bindPoseMatrix,
 				invBindPoseMatrix,
-				CMatrix::Identity,
 				parentId
 			);
 
