@@ -16,25 +16,31 @@ namespace tkEngine {
 	CAnimationClip::CAnimationClip(
 		const wchar_t* clipName,
 		const VSD3DStarter::Clip* clip,
-		const VSD3DStarter::Keyframe* keyFrames
+		const VSD3DStarter::Keyframe* keyFrames,
+		int baseBoneNo,
+		std::vector<int> localBoneIDtoGlobalBoneIDTbl
 	)
 	{
 		m_name = clipName;
 		m_startTime = clip->StartTime;
 		m_endTime = clip->EndTime;
-		m_numKeys = clip->keys;
 		//m_keyframes.resize(m_numKeys);
-		for (int i = 0; i < m_numKeys; i++) {
+		for (int i = 0; i < clip->keys; i++) {
 			KeyframePtr keyframe = std::make_unique<Keyframe>();
-			keyframe->boneIndex = keyFrames[i].BoneIndex;
+			int localBoneIndex = keyFrames[i].BoneIndex + baseBoneNo;
+			keyframe->boneIndex = localBoneIDtoGlobalBoneIDTbl[localBoneIndex];
 			keyframe->time = keyFrames[i].Time;
 			keyframe->transform = keyFrames[i].Transform;
 			m_keyframes.push_back(std::move(keyframe));
+			
 		}
 		//ボーンインデックスごとのキーフレームの連結リストを作成する。
 		m_keyFramePtrListArray.resize(MAX_BONE);
 		for (auto& keyframe : m_keyframes) {
 			m_keyFramePtrListArray[keyframe->boneIndex].push_back(keyframe.get());
+			if (m_topBoneKeyFramList == nullptr) {
+				m_topBoneKeyFramList = &m_keyFramePtrListArray[keyframe->boneIndex];
+			}
 		}
 	}
 	/*!
@@ -46,14 +52,22 @@ namespace tkEngine {
 	/*!
 	*@brief	キーフレームを追加。
 	*/
-	void CAnimationClip::AddKeyFrame(int numKey, const VSD3DStarter::Keyframe* keyFrames, int baseBoneNo)
+	void CAnimationClip::AddKeyFrame(
+		int numKey, 
+		const VSD3DStarter::Keyframe* 
+		keyFrames, 
+		int baseBoneNo,
+		const std::vector<int>& localBoneIDtoGlobalBoneIDTbl
+	)
 	{
 		for (int i = 0; i < numKey; i++) {
 			KeyframePtr keyframe = std::make_unique<Keyframe>();
-			keyframe->boneIndex = keyFrames[i].BoneIndex + baseBoneNo;
+			int localBoneID = keyFrames[i].BoneIndex + baseBoneNo;
+			keyframe->boneIndex = localBoneIDtoGlobalBoneIDTbl[localBoneID];
 			keyframe->time = keyFrames[i].Time;
 			keyframe->transform = keyFrames[i].Transform;
 			m_keyFramePtrListArray[keyframe->boneIndex].push_back(keyframe.get());
+			m_numKeys = m_keyFramePtrListArray[keyframe->boneIndex].size();
 			m_keyframes.push_back(std::move(keyframe));
 			
 		}

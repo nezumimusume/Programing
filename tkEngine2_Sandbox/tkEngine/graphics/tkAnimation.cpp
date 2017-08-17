@@ -34,8 +34,7 @@ namespace tkEngine{
 		}
 		//とりあえず適当に進めていく。
 		int numBones = m_skeleton->GetNumBones();
-		const auto& keyFramePtrListArray = m_currentAnimationClip->GetKeyFramePtrListArray();
-		const auto& topBoneKeyFrameList = keyFramePtrListArray.at(0);
+		const auto& topBoneKeyFrameList = m_currentAnimationClip->GetTopBoneKeyFrameList();
 		m_globalTime += deltaTime;
 		while (true) {
 			if (m_currentKeyframeNo >= topBoneKeyFrameList.size()) {
@@ -60,9 +59,10 @@ namespace tkEngine{
 		}
 		//スケルトンに反映させていく。
 		//とりあえずテストデータはフルキーなので何も考えなくてよさげ。
+		const auto& keyFramePtrListArray = m_currentAnimationClip->GetKeyFramePtrListArray();
 		for (const auto& keyFrameList : keyFramePtrListArray) {
 			if (keyFrameList.size() == 0) {
-				break;
+				continue;
 			}
 			//現在再生中のキーフレームを取ってくる。
 			Keyframe* keyframe = keyFrameList.at(m_currentKeyframeNo);

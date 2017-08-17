@@ -32,5 +32,8 @@
     <MeshContentTask Include="Assets\modelData\background.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\skintest.fbx">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
   </ItemGroup>
 </Project>

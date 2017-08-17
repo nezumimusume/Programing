@@ -31,11 +31,6 @@ namespace tkEngine{
 			m_localMatrix(localMatrix),
 			m_parentId(parentId)
 		{
-			if (m_parentId == -1) {
-				m_offsetLocalMatrix.Inverse(m_localMatrix);
-				m_offsetLocalMatrix.Mul(m_offsetLocalMatrix, m_bindPose);
-			}
-			
 		}
 		/*!
 		 *@brief	ローカル行列を設定
@@ -104,6 +99,13 @@ namespace tkEngine{
 		{
 			return m_offsetLocalMatrix;
 		}
+		/*!
+		 *@brief	名前の取得。
+		 */
+		const std::wstring& GetName() const
+		{
+			return m_boneName;
+		}
 	private:
 		std::wstring	m_boneName;
 		int				m_parentId = -1;	//!<親のボーン番号。
@@ -118,24 +120,9 @@ namespace tkEngine{
 	 *@brief	スケルトン。
 	 */
 	class CSkeleton : Noncopyable {
-	public: //エンジン内部でのみ呼び出す必要のある関数
+	public:
 		CSkeleton();
 		~CSkeleton();
-		/*!
-		*@brief	ボーンを追加。
-		*@param[in]	boneName		ボーンの名前。
-		*@param[in]	bindPose		バインドポーズの行列。
-		*@param[in] invBindPose		バインドポーズの逆行列。
-		*@param[in] localMatrix		ローカル行列。
-		*@param[in] parentId		親のボーン番号。
-		*/
-		void AddBone(
-			const wchar_t* boneName,
-			const CMatrix& bindPose,
-			const CMatrix& invBindPose,
-			const CMatrix& localMatrix,
-			int parentId
-		);
 		
 		/*!
 		 *@brief	ボーンのローカル行列を設定。
@@ -157,11 +144,26 @@ namespace tkEngine{
 		{
 			return static_cast<int>(m_bones.size());
 		}
-	public:
 		/*!
-		*@brief	すべでのボーンの追加が完了したときに呼び出す必要がある処理。
+		*@brief	ロード。
+		*@param[in]	filePath	ファイルパス。
 		*/
-		void OnCompleteAddedAllBones();
+		bool Load(const wchar_t* filePath);
+		/*!
+		 *@brief	ボーンの名前からボーンIDを検索。
+		 */
+		int FindBoneID(const wchar_t* boneName) const
+		{
+			for (int i = 0; i < m_bones.size(); i++) {
+				if (m_bones[i]->GetName() == boneName) {
+					return i;
+				}
+			}
+			//見つからなかった。
+			return -1;
+		}
+	public:
+		
 		/*!
 		 *@brief	更新。
 		 */
@@ -170,6 +172,11 @@ namespace tkEngine{
 		 *@brief	描画処理から呼ばれる処理。
 		 */
 		void Render(CRenderContext& rc);
+	private:
+		/*!
+		*@brief	すべでのボーンの追加が完了したときに呼び出す必要がある処理。
+		*/
+		void OnCompleteAddedAllBones();
 	private:
 		static const int BONE_MAX = 512;	//!<ボーンの最大数。
 		typedef std::unique_ptr<CBone>	CBonePtr;

@@ -550,6 +550,14 @@
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\skintest.fbx">
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
+    </MeshContentTask>
     <MeshContentTask Include="Assets\modelData\Thethief_H.FBX">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>

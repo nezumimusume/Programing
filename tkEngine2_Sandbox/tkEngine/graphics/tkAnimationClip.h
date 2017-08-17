@@ -16,7 +16,7 @@ namespace tkEngine{
 	/*!
 	 *@brief	アニメーションクリップ。
 	 */
-	class CAnimationClip : Noncopyable{
+	class CAnimationClip : Noncopyable {
 	public:
 		typedef std::vector<Keyframe*>		keyFramePtrList;
 		/*!
@@ -29,7 +29,9 @@ namespace tkEngine{
 		CAnimationClip(
 			const wchar_t* clipName,
 			const VSD3DStarter::Clip* clip,
-			const VSD3DStarter::Keyframe* keyFrames
+			const VSD3DStarter::Keyframe* keyFrames,
+			int baseBoneNo,
+			std::vector<int> localBoneIDtoGlobalBoneIDTbl
 		);
 		/*!
 		 *@brief	デストラクタ。
@@ -38,7 +40,12 @@ namespace tkEngine{
 		/*!
 		*@brief	キーフレームを追加。
 		*/
-		void AddKeyFrame(int numKeyframes, const VSD3DStarter::Keyframe* keyFrames, int baseBoneNo);
+		void AddKeyFrame(
+			int numKeyframes,
+			const VSD3DStarter::Keyframe* keyFrames,
+			int baseBoneNo,
+			const std::vector<int>& localBoneIDtoGlobalBoneIDTbl
+		);
 		/*!
 		 *@brief
 		 */
@@ -67,6 +74,10 @@ namespace tkEngine{
 		{
 			m_isLoop = flag;
 		}
+		const keyFramePtrList& GetTopBoneKeyFrameList() const
+		{
+			return *m_topBoneKeyFramList;
+		}
 	private:
 		
 		std::wstring m_name;	//!<クリップの名前。
@@ -77,6 +88,7 @@ namespace tkEngine{
 		typedef std::unique_ptr<Keyframe> KeyframePtr;
 		std::vector<KeyframePtr>	m_keyframes;	//キーフレーム。
 		std::vector<keyFramePtrList>	m_keyFramePtrListArray;	//ボーンごとのキーフレームのリストを管理するための配列。
+		keyFramePtrList*				m_topBoneKeyFramList = nullptr;
 	};
 	typedef std::unique_ptr<CAnimationClip>	CAnimationClipPtr;
 }

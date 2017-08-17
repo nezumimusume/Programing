@@ -10,9 +10,6 @@ namespace tkEngine {
 		{
 			CMatrix mBoneWorld;
 			CMatrix localMatrix = bone.GetLocalMatrix();
-			if (bone.GetParentId() == -1) {
-				localMatrix.Mul(localMatrix, bone.GetOffsetLocalMatrix());
-			}
 			mBoneWorld.Mul(localMatrix, parentMatrix);
 			bone.SetWorldMatrix(mBoneWorld);
 			for (auto childBone : bone.GetChildren()) {
@@ -28,31 +25,92 @@ namespace tkEngine {
 	CSkeleton::~CSkeleton()
 	{
 	}
-	void CSkeleton::AddBone(
-		const wchar_t* boneName,
-		const CMatrix& bindPose,
-		const CMatrix& invBindPose,
-		const CMatrix& localMatrix,
-		int parentId
-	)
+	bool CSkeleton::Load(const wchar_t* filePath)
 	{
-		CBonePtr bone = std::make_unique<CBone>(
-			boneName, 
-			bindPose,
-			invBindPose,
-			localMatrix,
-			parentId
-		);
-		m_bones.push_back(std::move(bone));
-		
+		//@todo テスト
+#if 0
+		FILE* fp = _wfopen(filePath, L"rb");
+#else
+		FILE* fp = _wfopen(L"Assets/modelData/Thethief_H.tsk", L"rb");
+#endif
+		if (fp == nullptr) {
+			TK_WARNING("ファイルを開くことに失敗しました。");
+			return false;
+		}
+		//骨の数を取得。
+		int numBone = 0;
+		fread(&numBone, sizeof(numBone), 1, fp);
+		for (int i = 0; i < numBone; i++) {
+			int nameCount = 0;
+			//骨の名前を取得。
+			fread(&nameCount, 1, 1, fp);
+			std::unique_ptr<char[]> name = std::make_unique<char[]>(nameCount+1);
+			fread(name.get(), nameCount+1, 1, fp);
+			//親のIDを取得。
+			int parentId;
+			fread(&parentId, sizeof(parentId),  1, fp);
+			//バインドポーズを取得。
+			CVector3 bindPose[4];
+			fread(&bindPose, sizeof(bindPose), 1, fp);
+			//バインドポーズの逆数を取得。
+			CVector3 invBindPose[4];
+			fread(&invBindPose, sizeof(invBindPose), 1, fp);
+			
+			//バインドポーズ。
+			CMatrix bindPoseMatrix;
+			memcpy(bindPoseMatrix.m[0], &bindPose[0], sizeof(bindPose[0]));
+			memcpy(bindPoseMatrix.m[1], &bindPose[1], sizeof(bindPose[1]));
+			memcpy(bindPoseMatrix.m[2], &bindPose[2], sizeof(bindPose[2]));
+			memcpy(bindPoseMatrix.m[3], &bindPose[3], sizeof(bindPose[3]));
+			bindPoseMatrix.m[0][3] = 0.0f;
+			bindPoseMatrix.m[1][3] = 0.0f;
+			bindPoseMatrix.m[2][3] = 0.0f;
+			bindPoseMatrix.m[3][3] = 1.0f;
+
+			//バインドポーズの逆行列。
+			CMatrix invBindPoseMatrix;
+			memcpy(invBindPoseMatrix.m[0], &invBindPose[0], sizeof(invBindPose[0]));
+			memcpy(invBindPoseMatrix.m[1], &invBindPose[1], sizeof(invBindPose[1]));
+			memcpy(invBindPoseMatrix.m[2], &invBindPose[2], sizeof(invBindPose[2]));
+			memcpy(invBindPoseMatrix.m[3], &invBindPose[3], sizeof(invBindPose[3]));
+			invBindPoseMatrix.m[0][3] = 0.0f;
+			invBindPoseMatrix.m[1][3] = 0.0f;
+			invBindPoseMatrix.m[2][3] = 0.0f;
+			invBindPoseMatrix.m[3][3] = 1.0f;
+
+			wchar_t boneName[256];
+			mbstowcs(boneName, name.get(), 256);
+			CBonePtr bone = std::make_unique<CBone>(
+				boneName,
+				bindPoseMatrix,
+				invBindPoseMatrix,
+				CMatrix::Identity,
+				parentId
+			);
+
+			m_bones.push_back(std::move(bone));
+		}
+		fclose(fp);
+
+		OnCompleteAddedAllBones();
 	}
+
 	void CSkeleton::OnCompleteAddedAllBones()
 	{
 		for (auto& bone : m_bones) {
 			if (bone->GetParentId() != -1) {
 				m_bones.at(bone->GetParentId())->AddChild(bone.get());
+				//ローカルマトリクスを計算。
+				const CMatrix& parentMatrix = m_bones.at(bone->GetParentId())->GetInvBindPoseMatrix();
+				CMatrix localMatrix;
+				localMatrix.Mul(bone->GetBindPoseMatrix(), parentMatrix);
+				bone->SetLocalMatrix(localMatrix);
+			}
+			else {
+				bone->SetLocalMatrix(bone->GetBindPoseMatrix());
 			}
 		}
+		
 
 		//ボーン行列を確保
 		m_boneMatrixs = std::make_unique<CMatrix[]>(m_bones.size());

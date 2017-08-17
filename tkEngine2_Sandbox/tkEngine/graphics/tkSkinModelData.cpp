@@ -54,21 +54,19 @@ namespace tkEngine{
 	{
 		CSkinModelEffectFactory effectFactory(GraphicsEngine().GetD3DDevice());
 		//ボーンを発見したときのコールバック。
+		std::vector<int> localBoneIDtoGlobalBoneIDTbl; //メッシュにウェイトが設定されているボーンだけのボーン配列のIDから、すべてのボーン配列のIDに変換するテーブル。
+		localBoneIDtoGlobalBoneIDTbl.reserve(512);
 		auto onFindBone = [&](
 			const wchar_t* boneName, 
 			const VSD3DStarter::Bone* bone,
 			int baseBoneNo
 		) {
-			int parentIndex = bone->ParentIndex;
-			if (parentIndex != -1) {
-				parentIndex += baseBoneNo;
+			int globalBoneID = m_skeleton.FindBoneID(boneName);
+			if (globalBoneID == -1) {
+				TK_WARNING("BoneID wasn't found!!!!");
+				return;
 			}
-			m_skeleton.AddBone(
-				boneName, 
-				CMatrix(bone->BindPos),
-				CMatrix(bone->InvBindPos), 
-				CMatrix(bone->LocalTransform),
-				parentIndex);
+			localBoneIDtoGlobalBoneIDTbl.push_back(globalBoneID);
 		};
 		//アニメーションクリップを発見したときのコールバック。
 		auto onFindAnimationClip = [&](
@@ -84,15 +82,24 @@ namespace tkEngine{
 			);
 			if (it == m_animationClips.end()) {
 				//新規
-				CAnimationClipPtr animClip = std::make_unique<CAnimationClip>(clipName, clip, keyFrame);
+				CAnimationClipPtr animClip = std::make_unique<CAnimationClip>(
+					clipName, clip, keyFrame, baseBoneNo, localBoneIDtoGlobalBoneIDTbl);
 				m_animationClips.push_back(std::move(animClip));
 			}
 			else {
 				//既存のクリップなのでキーフレームを追加する。
-				(*it)->AddKeyFrame(clip->keys, keyFrame, baseBoneNo);
+				(*it)->AddKeyFrame(clip->keys, keyFrame, baseBoneNo, localBoneIDtoGlobalBoneIDTbl);
 			}
 		};
-		
+		//ボーンインデックスが見つかったときのコールバック関数。
+		auto onFindBlendIndex = [&](auto& index){
+			index.x = localBoneIDtoGlobalBoneIDTbl[index.x];
+			index.y = localBoneIDtoGlobalBoneIDTbl[index.y];
+			index.z = localBoneIDtoGlobalBoneIDTbl[index.z];
+			index.w = localBoneIDtoGlobalBoneIDTbl[index.w];
+		};
+		//スケルトンのデータを読み込み。
+		m_skeleton.Load(filePath);
 		//モデルデータをロード。
 		m_modelDx = DirectX::Model::CreateFromCMO(
 			GraphicsEngine().GetD3DDevice(), 
@@ -101,10 +108,10 @@ namespace tkEngine{
 			false,
 			false,
 			onFindBone,
-			onFindAnimationClip
+			onFindAnimationClip,
+			onFindBlendIndex
 		);
-		//ボーンの追加完了したときの処理を呼び出す。。
-		m_skeleton.OnCompleteAddedAllBones();
+		
 
 		return true;
 	}

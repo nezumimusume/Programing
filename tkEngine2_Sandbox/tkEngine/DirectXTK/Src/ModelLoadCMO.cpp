@@ -118,7 +118,8 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
 	bool ccw, 
 	bool pmalpha ,
 	OnFindBoneData onFindBoneData,
-	OnFindAnimationClip onFindAnimationClip
+	OnFindAnimationClip onFindAnimationClip,
+	OnFindBlendIndex onFindBlendIndex
 )
 {
     if ( !InitOnceExecuteOnce( &g_InitOnce, InitializeDecl, nullptr, nullptr ) )
@@ -140,8 +141,10 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
 
     std::unique_ptr<Model> model(new Model());
 	int baseBoneNo = 0;
+	int totalBoneNo = 0;
     for( UINT meshIndex = 0; meshIndex < *nMesh; ++meshIndex )
     {
+		baseBoneNo = totalBoneNo;
         // Mesh name
         auto nName = reinterpret_cast<const UINT*>( meshData + usedSize );
         usedSize += sizeof(UINT);
@@ -491,7 +494,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
 				}
             }
 
-			baseBoneNo += *nBones;
+			totalBoneNo += *nBones;
         }
 #else
         UNREFERENCED_PARAMETER(bSkeleton);
@@ -552,7 +555,15 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
                         ++sptr;
 
                         auto skinv = reinterpret_cast<VertexPositionNormalTangentColorTextureSkinning*>( ptr );
-                        skinv->SetBlendIndices( *reinterpret_cast<const XMUINT4*>( skinptr[v].boneIndex ) );
+						XMUINT4 index = *reinterpret_cast<const XMUINT4*>(skinptr[v].boneIndex);
+						index.x += baseBoneNo;
+						index.y += baseBoneNo;
+						index.z += baseBoneNo;
+						index.w += baseBoneNo;
+						if (onFindBlendIndex != nullptr) {
+							onFindBlendIndex(index);
+						}
+                        skinv->SetBlendIndices( index );
                         skinv->SetBlendWeights( *reinterpret_cast<const XMFLOAT4*>( skinptr[v].boneWeight ) );
 
                         ptr += stride;
@@ -733,7 +744,8 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
 	bool ccw, 
 	bool pmalpha,
 	OnFindBoneData onFindBoneData,
-	OnFindAnimationClip onFindAnimationClip
+	OnFindAnimationClip onFindAnimationClip,
+	OnFindBlendIndex onFindBlendIndex
 )
 {
     size_t dataSize = 0;
@@ -745,7 +757,10 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
         throw std::exception( "CreateFromCMO" );
     }
 
-    auto model = CreateFromCMO( d3dDevice, data.get(), dataSize, fxFactory, ccw, pmalpha, onFindBoneData, onFindAnimationClip);
+    auto model = CreateFromCMO( 
+		d3dDevice, data.get(), dataSize, 
+		fxFactory, ccw, pmalpha, 
+		onFindBoneData, onFindAnimationClip, onFindBlendIndex);
 
     model->name = szFileName;
 
