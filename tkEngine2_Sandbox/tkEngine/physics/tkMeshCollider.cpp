@@ -31,7 +31,7 @@ namespace tkEngine{
 						TK_WARNING("Failed map vertexBuffer");
 						return;
 					}
-					int vbSize = subresource.DepthPitch;
+					int vbSize = subresource.RowPitch;
 					int vertexCount = vbSize / mesh->vertexStride;
 					char* pData = reinterpret_cast<char*>(subresource.pData);
 					VertexBufferPtr vertexBuffer = std::make_unique<VertexBuffer>();
@@ -58,7 +58,7 @@ namespace tkEngine{
 					//@todo cmoファイルはインデックスバッファのサイズは2byte固定。
 					IndexBufferPtr indexBuffer = std::make_unique<IndexBuffer>();
 					int stride = 2;
-					int ibSize = subresource.DepthPitch;
+					int ibSize = subresource.RowPitch;
 					int indexCount = ibSize / stride;
 					unsigned short* pIndex = reinterpret_cast<unsigned short*>(subresource.pData);
 					for (int i = 0; i < indexCount; i++) {
