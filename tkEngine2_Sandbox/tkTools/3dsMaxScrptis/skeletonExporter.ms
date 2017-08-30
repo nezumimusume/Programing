@@ -136,10 +136,24 @@ rollout SkeletonExporter "SkeletonExporter"
 	(
 		--取り合えず適当に50フレーム分のキーフレームを出力してみよう。
 		AnimationClip animClip string #()
-		for i =1 to 50 do(
-			sliderTime = i-1
+		for i =1 to 2 do(
 			for o in g_objectParams do (
+				n = o.n
+				transCtr = n.pos.track
+				rotCtr = n.rotation.track
 				
+				matTrans = matrix3 1
+				pos = Point3 0.0 0.0 0.0
+				pos.x = transCtr.x_position.keys[i].value
+				pos.y = transCtr.y_position.keys[i].value 
+				pos.z = transCtr.z_position.keys[i].value 
+				translate matTrans pos
+				xRot = rotCtr.x_rotation.keys[i].value
+				yRot = rotCtr.y_rotation.keys[i].value
+				zRot = rotCtr.z_rotation.keys[i].value
+				matRot = rotateXMatrix (xRot) * rotateYMatrix (yRot) * rotateZMatrix (zRot)
+				
+				transformMatrix = matRot * matTrans
 			)
 		)
 	)
