@@ -50,6 +50,8 @@ public:
 
 	bool Start() override
 	{
+		CAnimationClip animClip;
+		animClip.Load(L"Assets/animData/test.tka");
 		skinModelData.Load(L"Assets/modelData/Thethief_H.cmo");
 		skinModel.Init(skinModelData);
 		animation.Init(skinModelData);
@@ -240,6 +242,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	initParam.screenHeight = 720;
 	initParam.frameBufferWidth = 1280;
 	initParam.frameBufferHeight = 720;
+	
 	//エンジンを初期化。
 	if (Engine().Init(initParam) == true) {
 		//初期化に成功。

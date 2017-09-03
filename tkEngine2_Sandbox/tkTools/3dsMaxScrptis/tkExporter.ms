@@ -26,10 +26,16 @@ struct AnimationClip(
 --オブジェクトパラメータの配列。
 g_objectParams = #()
 
-rollout SkeletonExporter "SkeletonExporter"
+rollout tkExporter "tkExporter" width:194 height:248
 (
-	button btn_saveSkeleton "Save skeleton" width:100 height:20 pos:[13,415] 
-	button btn_saveAnimationClip "Save animation" with:100 height:20 pos:[13, 440]
+	editText animClipStartFrame "" pos:[88,116] width:62 height:21
+	label lbl1 "start frame" pos:[29,119] width:60 height:16
+	groupBox grp1 "Animation clip" pos:[10,97] width:171 height:135
+	groupBox grp2 "Skeleton" pos:[10,8] width:167 height:74
+	button btn_saveAnimationClip "Save" pos:[31,187] width:120 height:28
+	label lbl2 "end frame" pos:[29,146] width:60 height:16
+	editText animClipEndFrame "" pos:[88,145] width:62 height:21
+	button btn_saveSkeleton "Save" pos:[31,35] width:120 height:28
 	/*
 	 *  出力するノードの情報を構築。
 	 */
@@ -136,26 +142,48 @@ rollout SkeletonExporter "SkeletonExporter"
 	(
 		--取り合えず適当に50フレーム分のキーフレームを出力してみよう。
 		AnimationClip animClip string #()
-		for i =1 to 2 do(
-			for o in g_objectParams do (
-				n = o.n
-				transCtr = n.pos.track
-				rotCtr = n.rotation.track
-				
-				matTrans = matrix3 1
-				pos = Point3 0.0 0.0 0.0
-				pos.x = transCtr.x_position.keys[i].value
-				pos.y = transCtr.y_position.keys[i].value 
-				pos.z = transCtr.z_position.keys[i].value 
-				translate matTrans pos
-				xRot = rotCtr.x_rotation.keys[i].value
-				yRot = rotCtr.y_rotation.keys[i].value
-				zRot = rotCtr.z_rotation.keys[i].value
-				matRot = rotateXMatrix (xRot) * rotateYMatrix (yRot) * rotateZMatrix (zRot)
-				
-				transformMatrix = matRot * matTrans
+		filepath = getSaveFileName caption:"" types: "animation clip (*tka)|*.tka|All Files (*.*)|*.*|"
+		numKey = 2 * g_objectParams.Count
+		if filepath != undefined then
+		(
+			file = fopen filepath "wb"
+			--ヘッダーを出力
+			WriteLong file numKey
+			
+			for i =1 to numKey do(
+				boneId = 0
+				for o in g_objectParams do (
+					
+					n = o.n
+					transCtr = n.pos.track
+					rotCtr = n.rotation.track
+					
+					matTrans = matrix3 1
+					pos = Point3 0.0 0.0 0.0
+					pos.x = transCtr.x_position.keys[i].value
+					pos.y = transCtr.y_position.keys[i].value 
+					pos.z = transCtr.z_position.keys[i].value 
+					translate matTrans pos
+					xRot = rotCtr.x_rotation.keys[i].value
+					yRot = rotCtr.y_rotation.keys[i].value
+					zRot = rotCtr.z_rotation.keys[i].value
+					matRot = rotateXMatrix (xRot) * rotateYMatrix (yRot) * rotateZMatrix (zRot)
+					
+					transformMatrix = matRot * matTrans
+					--出力
+					WriteLong file boneId
+					for i = 1 to 4 do(
+						WriteFloat file transformMatrix[i].x
+						WriteFloat file transformMatrix[i].y
+						WriteFloat file transformMatrix[i].z
+					)
+					boneId +=1
+
+				)
 			)
 		)
+
+		FClose file
 	)
 	/*
 	 *  スケルトンの出力のボタンが押されたときの処理。
@@ -186,4 +214,4 @@ rollout SkeletonExporter "SkeletonExporter"
 	)
 )
 
-createDialog SkeletonExporter 200 530 style:#(#style_titlebar, #style_sysmenu)
+createDialog tkExporter style:#(#style_titlebar, #style_sysmenu)

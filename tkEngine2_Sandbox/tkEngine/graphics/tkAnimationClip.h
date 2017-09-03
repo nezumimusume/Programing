@@ -14,6 +14,13 @@ namespace tkEngine{
 		CMatrix transform;			//!<トランスフォーム。
 	};
 	/*!
+	*@brief	キーフレーム。
+	*/
+	struct KeyframeRow {
+		unsigned int boneIndex;		//!<ボーンインデックス。
+		CVector3 transform[4];		//!<トランスフォーム。
+	};
+	/*!
 	 *@brief	アニメーションクリップ。
 	 */
 	class CAnimationClip : Noncopyable {
@@ -21,6 +28,8 @@ namespace tkEngine{
 		typedef std::vector<Keyframe*>		keyFramePtrList;
 		/*!
 		 * @brief	コンストラクタ
+		 *@details
+		 * 削除予定。
 		 *@param[in]	clipName	クリップ名。
 		 *@param[in]	clip		アニメーションクリップ。
 		 *@param[in]	keyFrames	キーフレーム。
@@ -34,9 +43,18 @@ namespace tkEngine{
 			std::vector<int> localBoneIDtoGlobalBoneIDTbl
 		);
 		/*!
+		* @brief	コンストラクタ
+		*/
+		CAnimationClip() {}
+		/*!
 		 *@brief	デストラクタ。
 		 */
 		~CAnimationClip();
+		/*!
+		 *@brief	アニメーションクリップをロード。
+		 *@param[in]	filePath	ファイルパス。
+		 */
+		void Load(const wchar_t* filePath);
 		/*!
 		*@brief	キーフレームを追加。
 		*/

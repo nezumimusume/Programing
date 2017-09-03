@@ -50,12 +50,32 @@ namespace tkEngine {
 	{
 	}
 	/*!
+	*@brief	アニメーションクリップをロード。
+	*@param[in]	filePath	ファイルパス。
+	*/
+	void CAnimationClip::Load(const wchar_t* filePath)
+	{
+		FILE* fp = _wfopen(filePath, L"rb");
+		if (fp == nullptr) {
+			TK_WARNING("ファイルのオープンに失敗しました。: CAnimationClip::Load");
+			return;
+		}
+		//キーの数を取得する。
+		int numKey;
+		fread(&numKey, sizeof(numKey), 1, fp);
+		//中身をごそっとロード。
+		std::unique_ptr<KeyframeRow[]> keyframes;
+		keyframes = std::make_unique<KeyframeRow[]>(numKey);
+		fread(keyframes.get(), sizeof(KeyframeRow), numKey, fp);
+		fclose(fp);
+	}
+	
+	/*!
 	*@brief	キーフレームを追加。
 	*/
 	void CAnimationClip::AddKeyFrame(
 		int numKey, 
-		const VSD3DStarter::Keyframe* 
-		keyFrames, 
+		const VSD3DStarter::Keyframe* keyFrames, 
 		int baseBoneNo,
 		const std::vector<int>& localBoneIDtoGlobalBoneIDTbl
 	)
