@@ -68,29 +68,6 @@ namespace tkEngine{
 			}
 			localBoneIDtoGlobalBoneIDTbl.push_back(globalBoneID);
 		};
-		//アニメーションクリップを発見したときのコールバック。
-		auto onFindAnimationClip = [&](
-			const wchar_t* clipName,
-			const VSD3DStarter::Clip* clip, 
-			const VSD3DStarter::Keyframe* keyFrame,
-			int baseBoneNo
-		) {
-			auto it = std::find_if(
-				m_animationClips.begin(),
-				m_animationClips.end(),
-				[clipName](auto& clip) {return clip->GetName() == clipName;}
-			);
-			if (it == m_animationClips.end()) {
-				//新規
-				CAnimationClipPtr animClip = std::make_unique<CAnimationClip>(
-					clipName, clip, keyFrame, baseBoneNo, localBoneIDtoGlobalBoneIDTbl);
-				m_animationClips.push_back(std::move(animClip));
-			}
-			else {
-				//既存のクリップなのでキーフレームを追加する。
-				(*it)->AddKeyFrame(clip->keys, keyFrame, baseBoneNo, localBoneIDtoGlobalBoneIDTbl);
-			}
-		};
 		//ボーンインデックスが見つかったときのコールバック関数。
 		auto onFindBlendIndex = [&](auto& index){
 			index.x = localBoneIDtoGlobalBoneIDTbl[index.x];
@@ -99,16 +76,20 @@ namespace tkEngine{
 			index.w = localBoneIDtoGlobalBoneIDTbl[index.w];
 		};
 		//スケルトンのデータを読み込み。
-		m_skeleton.Load(filePath);
+		std::wstring skeletonFilePath = filePath;
+		skeletonFilePath += L".tks";
+		m_skeleton.Load(skeletonFilePath.c_str());
+
 		//モデルデータをロード。
+		std::wstring modelDataPath = filePath;
+		modelDataPath += L".cmo";
 		m_modelDx = DirectX::Model::CreateFromCMO(
 			GraphicsEngine().GetD3DDevice(), 
-			filePath, 
+			modelDataPath.c_str(),
 			effectFactory, 
 			false,
 			false,
 			onFindBone,
-			onFindAnimationClip,
 			onFindBlendIndex
 		);
 		

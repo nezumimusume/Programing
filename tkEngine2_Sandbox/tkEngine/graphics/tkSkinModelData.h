@@ -92,13 +92,6 @@ namespace tkEngine{
 		{
 			return m_skeleton;
 		}
-		/*!
-		 *@brief	アニメーションクリップのリストを取得。
-		 */
-		std::vector<CAnimationClipPtr>& GetAnimationClips()
-		{
-			return m_animationClips;
-		}
 		typedef std::function<void(const std::unique_ptr<DirectX::ModelMeshPart>&)>		OnFindMesh;
 		/*!
 		 *@brief	メッシュの検索。
@@ -108,7 +101,6 @@ namespace tkEngine{
 	private:
 		
 		std::unique_ptr<DirectX::Model> m_modelDx;
-		std::vector<CAnimationClipPtr>	m_animationClips;	//!<アニメーションクリップ
 		CSkeleton	m_skeleton;
 	};
 }

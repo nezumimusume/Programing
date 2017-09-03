@@ -28,11 +28,11 @@ g_objectParams = #()
 
 rollout tkExporter "tkExporter" width:194 height:248
 (
-	editText animClipStartFrame "" pos:[88,116] width:62 height:21
-	label lbl1 "start frame" pos:[29,119] width:60 height:16
 	groupBox grp1 "Animation clip" pos:[10,97] width:171 height:135
 	groupBox grp2 "Skeleton" pos:[10,8] width:167 height:74
 	button btn_saveAnimationClip "Save" pos:[31,187] width:120 height:28
+	label lbl1 "start frame" pos:[29,119] width:60 height:16
+	editText animClipStartFrame "" pos:[88,116] width:62 height:21
 	label lbl2 "end frame" pos:[29,146] width:60 height:16
 	editText animClipEndFrame "" pos:[88,145] width:62 height:21
 	button btn_saveSkeleton "Save" pos:[31,35] width:120 height:28
@@ -71,7 +71,7 @@ rollout tkExporter "tkExporter" width:194 height:248
 	 */
 	fn SaveSkeleton = 
 	(
-		filepath = getSaveFileName caption:"" types: "skeleton (*tsk)|*.tsk|All Files (*.*)|*.*|"
+		filepath = getSaveFileName caption:"" types: "skeleton (*tks)|*.tks|All Files (*.*)|*.*|"
 		
 		if filepath != undefined then
 		(
@@ -143,20 +143,38 @@ rollout tkExporter "tkExporter" width:194 height:248
 		--取り合えず適当に50フレーム分のキーフレームを出力してみよう。
 		AnimationClip animClip string #()
 		filepath = getSaveFileName caption:"" types: "animation clip (*tka)|*.tka|All Files (*.*)|*.*|"
-		numKey = 2 * g_objectParams.Count
+		
+		startFrame = animClipStartFrame.text as integer + 1
+		endFrame = animClipEndFrame.text as integer + 1
+		numKey = endFrame - startFrame + 1
+		if numKey <= 0 then(
+			--1フレームだけ出す。
+			endFrame = startFrame
+			numKey = 1
+		)
+		deltaTime = 1.0/60
+		keyTime = 0.0
+		
+		numKey *= g_objectParams.Count
 		if filepath != undefined then
 		(
 			file = fopen filepath "wb"
 			--ヘッダーを出力
 			WriteLong file numKey
 			
-			for i =1 to numKey do(
+			for i=startFrame to endFrame do(
 				boneId = 0
+				keyTime = (i - startFrame) * deltaTime
 				for o in g_objectParams do (
 					
 					n = o.n
 					transCtr = n.pos.track
 					rotCtr = n.rotation.track
+					
+					if transCtr.x_position.keys.count < i then(
+						messagebox "error : endframeが不正です"
+						exit
+					)
 					
 					matTrans = matrix3 1
 					pos = Point3 0.0 0.0 0.0
@@ -171,7 +189,8 @@ rollout tkExporter "tkExporter" width:194 height:248
 					
 					transformMatrix = matRot * matTrans
 					--出力
-					WriteLong file boneId
+					WriteLong file boneId -- 骨ID
+					WriteFloat file keyTime -- 時間
 					for i = 1 to 4 do(
 						WriteFloat file transformMatrix[i].x
 						WriteFloat file transformMatrix[i].y
@@ -180,6 +199,7 @@ rollout tkExporter "tkExporter" width:194 height:248
 					boneId +=1
 
 				)
+				
 			)
 		)
 

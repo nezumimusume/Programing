@@ -34,11 +34,12 @@ class PBRSample : public IGameObject {
 	static const int NUM_POINT_LIGHT = 1024;
 	MaterialParam m_materialParam;				//マテリアルパラメータ。
 	CConstantBuffer m_materialParamCB;			//マテリアルパラメータ用の定数バッファ。
-	CSkinModelData nonSkinModelData;
-	CMeshCollider meshCollider;
-	CSkinModel nonSkinModel;
+	
+	
+	
 	CSkinModelData skinModelData;
 	CSkinModel skinModel;
+	CAnimationClip animClip;
 	CAnimation animation;
 	prefab::CDirectionLight* m_directionLight[3] = { nullptr };
 	prefab::CPointLight* m_pointLight[NUM_POINT_LIGHT] = {nullptr};
@@ -50,16 +51,16 @@ public:
 
 	bool Start() override
 	{
-		CAnimationClip animClip;
-		animClip.Load(L"Assets/animData/test.tka");
-		skinModelData.Load(L"Assets/modelData/Thethief_H.cmo");
+		
+		
+		skinModelData.Load(L"Assets/modelData/skinTest");
 		skinModel.Init(skinModelData);
-		animation.Init(skinModelData);
-		animation.SetAnimationClipLoopFlag(L"Take 001", true);
-		animation.Play(L"Take 001");
-		nonSkinModelData.Load(L"Assets/modelData/background.cmo");
-		nonSkinModel.Init(nonSkinModelData);
-		meshCollider.CreateFromSkinModel(nonSkinModel, NULL);
+		//アニメーションクリップのロード。
+		animClip.Load(L"Assets/animData/test.tka", L"Test");
+		CAnimationClip* animClipList[] = {
+			&animClip
+		};
+		animation.Init(skinModelData, animClipList, 1);
 
 		//カメラを初期化。
 		CCamera& mainCamera = MainCamera();

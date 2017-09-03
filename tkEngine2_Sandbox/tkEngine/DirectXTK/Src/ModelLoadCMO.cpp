@@ -118,7 +118,6 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
 	bool ccw, 
 	bool pmalpha ,
 	OnFindBoneData onFindBoneData,
-	OnFindAnimationClip onFindAnimationClip,
 	OnFindBlendIndex onFindBlendIndex
 )
 {
@@ -489,9 +488,6 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
 
                 // TODO - What to do with keys and clip->StartTime, clip->EndTime?
                 keys;
-				if (onFindAnimationClip != nullptr) {
-					onFindAnimationClip(clipName, clip, keys, baseBoneNo);
-				}
             }
 
 			totalBoneNo += *nBones;
@@ -744,7 +740,6 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
 	bool ccw, 
 	bool pmalpha,
 	OnFindBoneData onFindBoneData,
-	OnFindAnimationClip onFindAnimationClip,
 	OnFindBlendIndex onFindBlendIndex
 )
 {
@@ -760,7 +755,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
     auto model = CreateFromCMO( 
 		d3dDevice, data.get(), dataSize, 
 		fxFactory, ccw, pmalpha, 
-		onFindBoneData, onFindAnimationClip, onFindBlendIndex);
+		onFindBoneData, onFindBlendIndex);
 
     model->name = szFileName;
 

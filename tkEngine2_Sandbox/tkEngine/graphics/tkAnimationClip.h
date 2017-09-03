@@ -18,6 +18,7 @@ namespace tkEngine{
 	*/
 	struct KeyframeRow {
 		unsigned int boneIndex;		//!<ボーンインデックス。
+		float time;					//!<時間。
 		CVector3 transform[4];		//!<トランスフォーム。
 	};
 	/*!
@@ -26,22 +27,6 @@ namespace tkEngine{
 	class CAnimationClip : Noncopyable {
 	public:
 		typedef std::vector<Keyframe*>		keyFramePtrList;
-		/*!
-		 * @brief	コンストラクタ
-		 *@details
-		 * 削除予定。
-		 *@param[in]	clipName	クリップ名。
-		 *@param[in]	clip		アニメーションクリップ。
-		 *@param[in]	keyFrames	キーフレーム。
-		 *@param[in]	baseBoneNo	基本ボーン番号。
-		 */
-		CAnimationClip(
-			const wchar_t* clipName,
-			const VSD3DStarter::Clip* clip,
-			const VSD3DStarter::Keyframe* keyFrames,
-			int baseBoneNo,
-			std::vector<int> localBoneIDtoGlobalBoneIDTbl
-		);
 		/*!
 		* @brief	コンストラクタ
 		*/
@@ -53,25 +38,9 @@ namespace tkEngine{
 		/*!
 		 *@brief	アニメーションクリップをロード。
 		 *@param[in]	filePath	ファイルパス。
+		 *@param[in]	clipName	クリップ名。
 		 */
-		void Load(const wchar_t* filePath);
-		/*!
-		*@brief	キーフレームを追加。
-		*/
-		void AddKeyFrame(
-			int numKeyframes,
-			const VSD3DStarter::Keyframe* keyFrames,
-			int baseBoneNo,
-			const std::vector<int>& localBoneIDtoGlobalBoneIDTbl
-		);
-		
-		/*!
-		*@brief	名前を取得。
-		*/
-		const std::wstring& GetName() const
-		{
-			return m_name;
-		}
+		void Load(const wchar_t* filePath, const wchar_t* cliipName);
 		/*!
 		*@brief	ループする？
 		*/
@@ -97,12 +66,15 @@ namespace tkEngine{
 		{
 			return *m_topBoneKeyFramList;
 		}
+		/*!
+		 *@brief	クリップ名を取得。
+		 */
+		const wchar_t* GetName() const
+		{
+			return m_clipName.c_str();
+		}
 	private:
-		
-		std::wstring m_name;	//!<クリップの名前。
-		float m_startTime;		//!<開始時間。
-		float m_endTime;		//!<終了時間。
-		unsigned int m_numKeys;	//!<キーフレームの数。
+		std::wstring m_clipName;	//!<アニメーションクリップの名前。
 		bool m_isLoop = false;	//!<ループフラグ。
 		typedef std::unique_ptr<Keyframe> KeyframePtr;
 		std::vector<KeyframePtr>	m_keyframes;	//キーフレーム。

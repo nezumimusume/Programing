@@ -12,15 +12,17 @@ namespace tkEngine{
 	/*!
 	 * @brief	アニメーションクラス。
 	 */
-	class CAnimation{
+	class CAnimation {
 	public:
 		CAnimation();
 		~CAnimation();
 		/*!
-		 * @brief	初期化。
-		 *@param[in]	skinModelData	スキンモデルデータ。
+		 *@brief	初期化。
+		 *@param[in]	skinModelData	スキンモデルデータ、
+		 *@param[in]	animeClipList	アニメーションクリップのリスト。
+		 *@param[in]	numAnimClip		アニメーションクリップの数。
 		 */
-		void Init(CSkinModelData& skinModelData);
+		void Init(CSkinModelData& skinModelData, CAnimationClip* animClipList[], int numAnimClip);
 		/*!
 		* @brief	アニメーションを進める。
 		*@param[in]	deltaTime		アニメーションを進める時間(単位：秒)。

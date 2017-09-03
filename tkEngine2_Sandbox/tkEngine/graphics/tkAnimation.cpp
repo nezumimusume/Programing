@@ -13,13 +13,14 @@ namespace tkEngine{
 	CAnimation::~CAnimation()
 	{
 	}
-	void CAnimation::Init(CSkinModelData& skinModelData)
+	void CAnimation::Init(CSkinModelData& skinModelData, CAnimationClip* animClipList[], int numAnimClip)
 	{
-		std::vector<CAnimationClipPtr>& animClips = skinModelData.GetAnimationClips();
-		for(auto& clip : animClips){
-			m_animationClips.push_back(clip.get());
-		}
+		TK_ASSERT(animClipList != nullptr, "animClipListがNULLです。");
 		m_skeleton = &skinModelData.GetSkeleton();
+		for (int i = 0; i < numAnimClip; i++) {
+			m_animationClips.push_back(animClipList[i]);
+		}
+		m_currentAnimationClip = m_animationClips[0];
 	}
 	/*!
 	* @brief	アニメーションを進める。
