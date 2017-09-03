@@ -26,7 +26,7 @@ struct AnimationClip(
 --オブジェクトパラメータの配列。
 g_objectParams = #()
 
-rollout tkExporter "tkExporter"(
+rollout tkExporter "tkExporter" width:194 height:248
 	groupBox grp1 "Animation clip" pos:[10,97] width:171 height:135
 	groupBox grp2 "Skeleton" pos:[10,8] width:167 height:74
 	button btn_saveAnimationClip "Save" pos:[31,187] width:120 height:28
