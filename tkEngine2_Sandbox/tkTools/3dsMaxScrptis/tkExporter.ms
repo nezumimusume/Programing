@@ -80,18 +80,12 @@ rollout tkExporter "tkExporter" width:194 height:248
 			try(
 				--ヘッダーを出力
 				WriteLong file g_objectParams.count
+				
 				for o in g_objectParams do (
 					
 					WriteByte file o.objName.count
 					WriteString file o.objName
 					WriteLong file o.parentId
-					WriteFloat file o.localPos.x
-					WriteFloat file o.localPos.y
-					WriteFloat file o.localPos.z
-					WriteFloat file o.localRot.x
-					WriteFloat file -o.localRot.z
-					WriteFloat file -o.localRot.y
-					WriteFloat file o.localRot.w
 					--バインドポーズを出力。
 					for i = 1 to 4 do(
 						WriteFloat file o.bindPose[i].x

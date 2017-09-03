@@ -27,12 +27,9 @@ namespace tkEngine {
 	}
 	bool CSkeleton::Load(const wchar_t* filePath)
 	{
-		//@todo テスト
-#if 0
+		
 		FILE* fp = _wfopen(filePath, L"rb");
-#else
-		FILE* fp = _wfopen(L"Assets/modelData/Thethief_H.tsk", L"rb");
-#endif
+
 		if (fp == nullptr) {
 			TK_WARNING("ファイルを開くことに失敗しました。");
 			return false;

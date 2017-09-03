@@ -57,6 +57,7 @@ public:
 		skinModel.Init(skinModelData);
 		//アニメーションクリップのロード。
 		animClip.Load(L"Assets/animData/test.tka", L"Test");
+		animClip.SetLoopFlag(true);
 		CAnimationClip* animClipList[] = {
 			&animClip
 		};
@@ -64,7 +65,7 @@ public:
 
 		//カメラを初期化。
 		CCamera& mainCamera = MainCamera();
-		mainCamera.SetPosition({ 0.0f, 15.0f, 60.0f });
+		mainCamera.SetPosition({ 0.0f, 15.0f, -200.0f });
 		mainCamera.SetTarget({ 0.0f, 15.0f, 0.0f });
 		mainCamera.SetUp({ 0.0f, 1.0f, 0.0f });
 		mainCamera.SetNear(0.1f);
