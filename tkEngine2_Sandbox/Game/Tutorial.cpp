@@ -53,7 +53,7 @@ public:
 	{
 		
 		
-		skinModelData.Load(L"Assets/modelData/skinTest");
+		skinModelData.Load(L"Assets/modelData/Thethief_H");
 		skinModel.Init(skinModelData);
 		//アニメーションクリップのロード。
 		animClip.Load(L"Assets/animData/test.tka", L"Test");
@@ -65,8 +65,8 @@ public:
 
 		//カメラを初期化。
 		CCamera& mainCamera = MainCamera();
-		mainCamera.SetPosition({ 0.0f, 15.0f, -200.0f });
-		mainCamera.SetTarget({ 0.0f, 15.0f, 0.0f });
+		mainCamera.SetPosition({ 0.0f, 40.0f, 100.0f });
+		mainCamera.SetTarget({ 0.0f, 40.0f, 0.0f });
 		mainCamera.SetUp({ 0.0f, 1.0f, 0.0f });
 		mainCamera.SetNear(0.1f);
 		mainCamera.Update();
@@ -132,7 +132,7 @@ public:
 	{
 		//nonSkinModel.Update({0.0f, 0.0f, 0.0f}, CQuaternion::Identity, CVector3::One);
 		CQuaternion qRot;
-		qRot.SetRotation(CVector3::AxisX,CMath::PI * -0.5f);
+		qRot.SetRotationDeg(CVector3::AxisX, -90.0f);
 		skinModel.Update({ 0.0f, 0.0f, 0.0f }, qRot, CVector3::One);
 		animation.Update(1.0f / 60.0f);
 		//マテリアルパラーメータを更新。
@@ -161,7 +161,6 @@ public:
 		*params[m_cursorPos] = min(*params[m_cursorPos], 1.0f);
 
 		//点光源を回してみる。
-		qRot.SetRotationDeg(CVector3::AxisY, 0.2f);
 		for (auto& ptLight : m_pointLight) {
 			if (ptLight == NULL) {
 				break;

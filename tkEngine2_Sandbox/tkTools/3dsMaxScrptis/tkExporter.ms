@@ -129,12 +129,12 @@ rollout tkExporter "tkExporter" width:194 height:248
 			close file*/
 		)
 	)
+	
 	/*
 	 *  アニメーションクリップの保存。
 	 */
 	fn SaveAnimationClip=
 	(
-		--取り合えず適当に50フレーム分のキーフレームを出力してみよう。
 		AnimationClip animClip string #()
 		filepath = getSaveFileName caption:"" types: "animation clip (*tka)|*.tka|All Files (*.*)|*.*|"
 		
@@ -150,6 +150,8 @@ rollout tkExporter "tkExporter" width:194 height:248
 		keyTime = 0.0
 		
 		numKey *= g_objectParams.Count
+		matTransList = #()
+		matRotList = #()
 		if filepath != undefined then
 		(
 			file = fopen filepath "wb"
@@ -165,23 +167,34 @@ rollout tkExporter "tkExporter" width:194 height:248
 					transCtr = n.pos.track
 					rotCtr = n.rotation.track
 					
-					if transCtr.x_position.keys.count < i then(
-						messagebox "error : endframeが不正です"
-						exit
-					)
-					
 					matTrans = matrix3 1
 					pos = Point3 0.0 0.0 0.0
-					pos.x = transCtr.x_position.keys[i].value
-					pos.y = transCtr.y_position.keys[i].value 
-					pos.z = transCtr.z_position.keys[i].value 
-					translate matTrans pos
-					xRot = rotCtr.x_rotation.keys[i].value
-					yRot = rotCtr.y_rotation.keys[i].value
-					zRot = rotCtr.z_rotation.keys[i].value
-					matRot = rotateXMatrix (xRot) * rotateYMatrix (yRot) * rotateZMatrix (zRot)
+					if matTransList.count <= boneId then(
+						pos.x = o.localPos.x
+						pos.y = o.localPos.y
+						pos.z = o.localPos.z
+						translate matTrans pos
+						append matTransList matTrans
+					)
+					if matRotList.count <= boneId then(
+						matRot = o.localRot as matrix3
+						append matRotList matRot
+					)
+					if transCtr.x_position.keys.count >= i  then(
+						pos.x = transCtr.x_position.keys[i].value
+						pos.y = transCtr.y_position.keys[i].value 
+						pos.z = transCtr.z_position.keys[i].value 
+						 matTransList[boneId+1] = transMatrix(pos)
+					)
 					
-					transformMatrix = matRot * matTrans
+					if rotCtr.x_rotation.keys.count >= i then(
+						xRot = rotCtr.x_rotation.keys[i].value
+						yRot = rotCtr.y_rotation.keys[i].value
+						zRot = rotCtr.z_rotation.keys[i].value
+						matRotList[boneId+1] = rotateXMatrix (xRot) * rotateYMatrix (yRot) * rotateZMatrix (zRot)
+					)
+
+					transformMatrix = matRotList[boneId+1] * matTransList[boneId+1]
 					--出力
 					WriteLong file boneId -- 骨ID
 					WriteFloat file keyTime -- 時間
