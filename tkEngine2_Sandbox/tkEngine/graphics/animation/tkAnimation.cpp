@@ -4,21 +4,10 @@
 
 
 #include "tkEngine/tkEnginePrecompile.h"
-#include "tkEngine/graphics/tkAnimation.h"
+#include "tkEngine/graphics/animation/tkAnimation.h"
 
 namespace tkEngine{
-	/*!
-	 *@brief	アニメーション再生コントローラー。
-	 */
-	class CAnimationPlayController {
-	public:
-		CAnimationPlayController()
-		{
-		}
-		~CAnimationPlayController()
-		{
-		}
-	};
+
 	CAnimation::CAnimation()
 	{
 	}
@@ -32,7 +21,81 @@ namespace tkEngine{
 		for (int i = 0; i < numAnimClip; i++) {
 			m_animationClips.push_back(animClipList[i]);
 		}
-		m_currentAnimationClip = m_animationClips[0];
+		for (auto& ctr : m_animationPlayController) {
+			ctr.Init(m_skeleton);
+		}
+		
+		Play(0);
+	}
+	/*!
+	 * @brief	ローカルポーズの更新。
+	 */
+	void CAnimation::UpdateLocalPose(float deltaTime)
+	{
+		m_interpolateTime += deltaTime;
+		if (m_interpolateTime >= 1.0f) {
+			//補間完了。
+			//現在の最終アニメーションコントローラへのインデックスが開始インデックスになる。
+			m_startAnimationPlayController = GetLastAnimationControllerIndex();
+			m_numAnimationPlayController = 1;
+			m_interpolateTime = 1.0f;
+		}
+		for (int i = 0; i < m_numAnimationPlayController-1; i++) {
+			int index = GetAnimationControllerIndex(m_startAnimationPlayController, i );
+			m_animationPlayController[index].Update(deltaTime);
+		}
+		//最後のポーズだけ進めていく。
+		int lastIndex = GetLastAnimationControllerIndex();
+		m_animationPlayController[lastIndex].Update(deltaTime);
+		
+	}
+	/*!
+	 * @brief	グローバルポーズの更新。
+	 */
+	void CAnimation::UpdateGlobalPose()
+	{
+		//グローバルポーズ計算用のメモリをスタックから確保。
+		int numBone = m_skeleton->GetNumBones();
+		CMatrix* globalPose = (CMatrix*)alloca(sizeof(CMatrix) * numBone);
+		for (int i = 0; i < numBone; i++) {
+			globalPose[i] = CMatrix::Identity;
+		}
+		//グローバルポーズを計算していく。
+		int startIndex = m_startAnimationPlayController;
+		for (int i = 0; i < m_numAnimationPlayController; i++) {
+			int index = GetAnimationControllerIndex(startIndex, i);
+			float intepolateRate = m_animationPlayController[index].GetInterpolateRate();
+			const auto& localBoneMatrix = m_animationPlayController[index].GetBoneLocalMatrix();
+			for (int boneNo = 0; boneNo < numBone; boneNo++) {
+				for (int x = 0; x < 4; x++) {
+					for (int y = 0; y < 4; y++) {
+						globalPose[boneNo].m[x][y] = 
+							globalPose[boneNo].m[x][y] * (1.0f - intepolateRate) 
+							+ localBoneMatrix[boneNo].m[x][y] * intepolateRate;
+					}
+				}
+				
+			}
+		}
+		//グローバルポーズをスケルトンに反映させていく。
+		for (int boneNo = 0; boneNo < numBone; boneNo++) {
+			m_skeleton->SetBoneLocalMatrix(
+				boneNo,
+				globalPose[boneNo]
+			);
+		}
+		
+		//最終アニメーション以外は補間完了していたら除去していく。
+		int numAnimationPlayController = m_numAnimationPlayController;
+		for (int i = 1; i < m_numAnimationPlayController; i++) {
+			int index = GetAnimationControllerIndex(startIndex, i);
+			if (m_animationPlayController[index].GetInterpolateRate() > 0.99999f) {
+				//補間が終わっているのでアニメーションの開始位置を前にする。
+				m_startAnimationPlayController = index;
+				numAnimationPlayController = m_numAnimationPlayController - i;
+			}
+		}
+		m_numAnimationPlayController = numAnimationPlayController;
 	}
 	/*!
 	* @brief	アニメーションを進める。
@@ -40,49 +103,13 @@ namespace tkEngine{
 	*/
 	void CAnimation::Update(float deltaTime)
 	{
-		if (m_currentAnimationClip == nullptr 
-			|| m_skeleton == nullptr 
-		) {
+		if (m_numAnimationPlayController == 0) {
 			return;
 		}
-		//とりあえず適当に進めていく。
-		int numBones = m_skeleton->GetNumBones();
-		const auto& topBoneKeyFrameList = m_currentAnimationClip->GetTopBoneKeyFrameList();
-		m_globalTime += deltaTime;
-		while (true) {
-			if (m_currentKeyframeNo >= topBoneKeyFrameList.size()) {
-				//終端まで行った。
-				if (m_currentAnimationClip->IsLoop()) {
-					//ループ。
-					m_currentKeyframeNo = 0;
-					m_globalTime = 0.0f;
-				}
-				else {
-					//ワンショット再生。
-					m_currentKeyframeNo--;
-				}
-				break;
-			}
-			if (topBoneKeyFrameList.at(m_currentKeyframeNo)->time >= m_globalTime) {
-				//終わり。
-				break;
-			}
-			//次へ。
-			m_currentKeyframeNo++;
-		}
-		//スケルトンに反映させていく。
-		//とりあえずテストデータはフルキーなので何も考えなくてよさげ。
-		const auto& keyFramePtrListArray = m_currentAnimationClip->GetKeyFramePtrListArray();
-		for (const auto& keyFrameList : keyFramePtrListArray) {
-			if (keyFrameList.size() == 0) {
-				continue;
-			}
-			//現在再生中のキーフレームを取ってくる。
-			Keyframe* keyframe = keyFrameList.at(m_currentKeyframeNo);
-			m_skeleton->SetBoneLocalMatrix(
-				keyframe->boneIndex, 
-				keyframe->transform
-			);
-		}
+		//ローカルポーズの更新をやっていく。
+		UpdateLocalPose(deltaTime);
+		
+		//グローバルポーズを計算していく。
+		UpdateGlobalPose();
 	}
 }

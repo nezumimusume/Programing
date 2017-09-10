@@ -5,7 +5,7 @@
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/graphics/tkSkinModelData.h"
 #include "tkEngine/tkEngine.h"
-#include "tkEngine/graphics/tkAnimationClip.h"
+#include "tkEngine/graphics/animation/tkAnimationClip.h"
 
 namespace tkEngine{
 	

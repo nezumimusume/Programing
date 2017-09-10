@@ -66,6 +66,9 @@
     <Filter Include="Source Files\culling">
       <UniqueIdentifier>{4fc964c7-08e2-40c3-82a3-c928f4c6c65e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphics\animation">
+      <UniqueIdentifier>{951eb993-5b6c-4e0c-94a6-e7898edcdfe2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -103,9 +106,6 @@
     </ClInclude>
     <ClInclude Include="graphics\GPUView\tkShaderResourceView.h">
       <Filter>Source Files\graphics\GPUView</Filter>
-    </ClInclude>
-    <ClInclude Include="graphics\tkAnimationClip.h">
-      <Filter>Source Files\graphics</Filter>
     </ClInclude>
     <ClInclude Include="graphics\tkCamera.h">
       <Filter>Source Files\graphics</Filter>
@@ -224,9 +224,6 @@
     <ClInclude Include="graphics\tkLight.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\tkAnimation.h">
-      <Filter>Source Files\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="physics\tkPhysics.h">
       <Filter>Source Files\physics</Filter>
     </ClInclude>
@@ -260,6 +257,15 @@
     <ClInclude Include="culling\tkObjectCulling.h">
       <Filter>Source Files\culling</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\animation\tkAnimationClip.h">
+      <Filter>Source Files\graphics\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\animation\tkAnimation.h">
+      <Filter>Source Files\graphics\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\animation\tkAnimationPlayController.h">
+      <Filter>Source Files\graphics\animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -288,9 +294,6 @@
     </ClCompile>
     <ClCompile Include="graphics\GPUView\tkUnorderedAccessView.cpp">
       <Filter>Source Files\graphics\GPUView</Filter>
-    </ClCompile>
-    <ClCompile Include="graphics\tkAnimationClip.cpp">
-      <Filter>Source Files\graphics</Filter>
     </ClCompile>
     <ClCompile Include="graphics\tkCamera.cpp">
       <Filter>Source Files\graphics</Filter>
@@ -373,9 +376,6 @@
     <ClCompile Include="light\tkLightManager.cpp">
       <Filter>Source Files\light</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\tkAnimation.cpp">
-      <Filter>Source Files\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="physics\tkPhysics.cpp">
       <Filter>Source Files\physics</Filter>
     </ClCompile>
@@ -399,6 +399,15 @@
     </ClCompile>
     <ClCompile Include="culling\tkObjectFrustumCulling.cpp">
       <Filter>Source Files\culling</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\animation\tkAnimation.cpp">
+      <Filter>Source Files\graphics\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\animation\tkAnimationClip.cpp">
+      <Filter>Source Files\graphics\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\animation\tkAnimationPlayController.cpp">
+      <Filter>Source Files\graphics\animation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

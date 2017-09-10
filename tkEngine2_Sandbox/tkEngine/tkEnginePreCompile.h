@@ -76,4 +76,4 @@
 #include "tkEngine/Input/tkPad.h"
 #include "tkEngine/tkEngine.h"
 #include "tkEngine/sound/tkSoundSource.h"
-#include "tkEngine/graphics/tkAnimation.h"
+#include "tkEngine/graphics/animation/tkAnimation.h"

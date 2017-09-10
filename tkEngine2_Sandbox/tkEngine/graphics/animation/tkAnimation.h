@@ -4,7 +4,8 @@
 
 #pragma once
 
-#include "tkEngine/graphics/tkAnimationClip.h"
+#include "tkEngine/graphics/animation/tkAnimationClip.h"
+#include "tkEngine/graphics/animation/tkAnimationPlayController.h"
 
 namespace tkEngine{
 	
@@ -83,40 +84,54 @@ namespace tkEngine{
 	private:
 		void PlayCommon(CAnimationClip* nextClip, float interpolateTime)
 		{
-			if (interpolateTime != 0.0f) {
+			if (interpolateTime == 0.0f) {
 				//補完なし。
-				m_currentAnimationClip = nextClip;
-				m_globalTime = 0.0f;
-				m_currentKeyframeNo = 0;
-				//補完コントローラーをクリア。
-				m_interpolateAnimationCtr.clear();
-				
+				m_numAnimationPlayController = 1;
 			}
 			else {
-				//新しい補完コントローラーを作成。
-				SInterpolateAnimationControl ctr;
-				ctr.clip = nextClip;
-				ctr.interpolateTime = interpolateTime;
-				ctr.interpolateRate = 0.0f;
-				m_interpolateAnimationCtr.push_back(ctr);
+				//補完あり。
+				m_numAnimationPlayController++;
 			}
+			int index = GetLastAnimationControllerIndex();
+			m_animationPlayController[index].ChangeAnimationClip(nextClip);
+			m_animationPlayController[index].SetInterpolateTime(interpolateTime);
+			m_interpolateTime = 0.0f;
+			m_interpolateTimeEnd = interpolateTime;
 		}
+		/*!
+		 * @brief	ローカルポーズの更新。
+		 */
+		void UpdateLocalPose(float deltaTime);
+		/*!
+		 * @brief	グローバルポーズの更新。
+		 */
+		void UpdateGlobalPose();
 	private:
 		/*!
-		 *@brief	アニメーション再生のリクエスト。
+		 *@brief	最終ポーズになるアニメーションのリングバッファ上でのインデックスを取得。
 		 */
-		struct SInterpolateAnimationControl {
-			CAnimationClip*		clip;
-			float				interpolateTime;		//!<補完時間。
-			int					keyFrameNo;				//!<ローカルキーフレーム番号。
-			float				interpolateRate;		//!<補完率。
-		};
+		int GetLastAnimationControllerIndex() const
+		{
+			return GetAnimationControllerIndex(m_startAnimationPlayController, m_numAnimationPlayController - 1);
+		}
+		/*!
+		*@brief	アニメーションコントローラのリングバッファ上でのインデックスを取得。
+		*@param[in]	startIndex		開始インデックス。
+		*@param[in]	localIndex		ローカルインデックス。
+		*/
+		int GetAnimationControllerIndex(int startIndex, int localIndex) const
+		{
+			return (startIndex + localIndex) % ANIMATION_PLAY_CONTROLLER_NUM;
+		}
+	private:
+		static const int ANIMATION_PLAY_CONTROLLER_NUM = 32;	//!<アニメーションコントローラの数。
 		std::vector<CAnimationClip*>	m_animationClips;	//!<アニメーションクリップの配列。
 		CSkeleton* m_skeleton = nullptr;	//!<アニメーションを適用するスケルトン。
-		CAnimationClip* m_currentAnimationClip = nullptr;	//!<現在再生中のアニメーションクリップ。
-		std::vector<SInterpolateAnimationControl>	m_interpolateAnimationCtr;	//!<アニメーション補完のコントローラのキュー。
-		float m_globalTime = 0.0f;
-		int m_currentKeyframeNo = 0;		//!<現在再生中のアニメーションキーフレーム番号。
-		
+		CAnimationPlayController	m_animationPlayController[ANIMATION_PLAY_CONTROLLER_NUM];	//!<アニメーションコントローラ。リングバッファ。
+		int m_numAnimationPlayController = 0;		//!<現在使用中のアニメーション再生コントローラの数。
+		int m_startAnimationPlayController = 0;		//!<アニメーションコントローラの開始インデックス。
+		float m_interpolateTime = 0.0f;
+		float m_interpolateTimeEnd = 0.0f;
+		bool m_isInterpolate = false;				//!<補間中？
 	};
 }
