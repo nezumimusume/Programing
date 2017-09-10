@@ -11,7 +11,7 @@
 #include "tkEngine/light/tkPointLight.h"
 #include "tkEngine/physics/tkMeshCollider.h"
 #include "Player.h"
-
+#include "Background.h"
 
 
 class PBRSample : public IGameObject {
@@ -50,7 +50,7 @@ public:
 		
 		//ƒJƒƒ‰‚ð‰Šú‰»B
 		CCamera& mainCamera = MainCamera();
-		mainCamera.SetPosition({ 0.0f, 40.0f, 100.0f });
+		mainCamera.SetPosition({ 0.0f, 40.0f, 200.0f });
 		mainCamera.SetTarget({ 0.0f, 40.0f, 0.0f });
 		mainCamera.SetUp({ 0.0f, 1.0f, 0.0f });
 		mainCamera.SetNear(0.1f);
@@ -112,6 +112,7 @@ public:
 			m_pointLight[0]->SetPosition({0.0f, 10.0f, 0.0f});
 		}
 		m_player = NewGO<Player>(0);
+		NewGO<Background>(0);
 		return true;
 	}
 	void Update() override

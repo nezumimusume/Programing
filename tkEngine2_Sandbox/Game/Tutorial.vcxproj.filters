@@ -15,12 +15,14 @@
   <ItemGroup>
     <ClCompile Include="Tutorial.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Background.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
       <Filter>Resource Files</Filter>
     </CLInclude>
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Background.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tutorial.rc">
