@@ -56,9 +56,11 @@ namespace tkEngine{
 	{
 		//グローバルポーズ計算用のメモリをスタックから確保。
 		int numBone = m_skeleton->GetNumBones();
-		CMatrix* globalPose = (CMatrix*)alloca(sizeof(CMatrix) * numBone);
+		CQuaternion* qGlobalPose = (CQuaternion*)alloca(sizeof(CQuaternion) * numBone);
+		CVector3* vGlobalPose = (CVector3*)alloca(sizeof(CVector3) * numBone);
 		for (int i = 0; i < numBone; i++) {
-			globalPose[i] = CMatrix::Identity;
+			qGlobalPose[i] = CQuaternion::Identity;
+			vGlobalPose[i] = CVector3::Zero;
 		}
 		//グローバルポーズを計算していく。
 		int startIndex = m_startAnimationPlayController;
@@ -67,21 +69,33 @@ namespace tkEngine{
 			float intepolateRate = m_animationPlayController[index].GetInterpolateRate();
 			const auto& localBoneMatrix = m_animationPlayController[index].GetBoneLocalMatrix();
 			for (int boneNo = 0; boneNo < numBone; boneNo++) {
-				for (int x = 0; x < 4; x++) {
-					for (int y = 0; y < 4; y++) {
-						globalPose[boneNo].m[x][y] = 
-							globalPose[boneNo].m[x][y] * (1.0f - intepolateRate) 
-							+ localBoneMatrix[boneNo].m[x][y] * intepolateRate;
-					}
-				}
+				CMatrix m = localBoneMatrix[boneNo];
+				vGlobalPose[boneNo].Lerp(
+					intepolateRate, 
+					vGlobalPose[boneNo], 
+					*(CVector3*)m.m[3]
+				);
+				//平行移動成分を削除。
+				m.m[3][0] = 0.0f;
+				m.m[3][1] = 0.0f;
+				m.m[3][2] = 0.0f;
 				
+				CQuaternion qBone;
+				qBone.SetRotation(m);
+				qGlobalPose[boneNo].Slerp(intepolateRate, qGlobalPose[boneNo], qBone);
 			}
 		}
 		//グローバルポーズをスケルトンに反映させていく。
 		for (int boneNo = 0; boneNo < numBone; boneNo++) {
+			CMatrix boneMatrix;
+			boneMatrix.MakeRotationFromQuaternion(qGlobalPose[boneNo]);
+			CMatrix transMat;
+			transMat.MakeTranslation(vGlobalPose[boneNo]);
+			boneMatrix.Mul(boneMatrix, transMat);
+
 			m_skeleton->SetBoneLocalMatrix(
 				boneNo,
-				globalPose[boneNo]
+				boneMatrix
 			);
 		}
 		
