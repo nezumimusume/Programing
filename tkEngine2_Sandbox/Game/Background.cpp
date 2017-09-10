@@ -13,7 +13,7 @@ Background::~Background()
 }
 bool Background::Start()
 {
-	m_skinModelData.Load(L"Assets/modelData/background");
+	m_skinModelData.Load(L"Assets/modelData/background.cmo");
 	m_skinModel.Init(m_skinModelData);
 	return true;
 }

@@ -16,7 +16,7 @@ Player::~Player()
 */
 bool Player::Start()
 {
-	m_skinModelData.Load(L"Assets/modelData/Thethief_H");
+	m_skinModelData.Load(L"Assets/modelData/Thethief_H.cmo");
 	m_skinModel.Init(m_skinModelData);
 
 	//アニメーションクリップのロード。

@@ -77,15 +77,14 @@ namespace tkEngine{
 		};
 		//スケルトンのデータを読み込み。
 		std::wstring skeletonFilePath = filePath;
-		skeletonFilePath += L".tks";
+		int pos = skeletonFilePath.find(L".cmo");
+		skeletonFilePath.replace(pos, 4, L".tks");
 		m_skeleton.Load(skeletonFilePath.c_str());
 
 		//モデルデータをロード。
-		std::wstring modelDataPath = filePath;
-		modelDataPath += L".cmo";
 		m_modelDx = DirectX::Model::CreateFromCMO(
 			GraphicsEngine().GetD3DDevice(), 
-			modelDataPath.c_str(),
+			filePath,
 			effectFactory, 
 			false,
 			false,
