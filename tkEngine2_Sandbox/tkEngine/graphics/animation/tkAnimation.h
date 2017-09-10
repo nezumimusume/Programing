@@ -84,6 +84,10 @@ namespace tkEngine{
 	private:
 		void PlayCommon(CAnimationClip* nextClip, float interpolateTime)
 		{
+			int index = GetLastAnimationControllerIndex();
+			if (m_animationPlayController[index].GetAnimClip() == nextClip) {
+				return;
+			}
 			if (interpolateTime == 0.0f) {
 				//ï‚äÆÇ»ÇµÅB
 				m_numAnimationPlayController = 1;
@@ -92,7 +96,7 @@ namespace tkEngine{
 				//ï‚äÆÇ†ÇËÅB
 				m_numAnimationPlayController++;
 			}
-			int index = GetLastAnimationControllerIndex();
+			index = GetLastAnimationControllerIndex();
 			m_animationPlayController[index].ChangeAnimationClip(nextClip);
 			m_animationPlayController[index].SetInterpolateTime(interpolateTime);
 			m_interpolateTime = 0.0f;

@@ -11,6 +11,7 @@ private:
 	enum EnAnimationClip {
 		enAnimationClip_idle,
 		enAnimationClip_run,
+		enAnimationClip_walk,
 		enAnimationClip_Num,
 	};
 	CSkinModelData	m_skinModelData;		//!<スキンモデルデータ。

@@ -24,22 +24,30 @@ bool Player::Start()
 	m_animationClip[enAnimationClip_idle].SetLoopFlag(true);
 	m_animationClip[enAnimationClip_run].Load(L"Assets/animData/player/run.tka", L"Run");
 	m_animationClip[enAnimationClip_run].SetLoopFlag(true);
+	m_animationClip[enAnimationClip_walk].Load(L"Assets/animData/player/walk.tka", L"Walk");
+	m_animationClip[enAnimationClip_walk].SetLoopFlag(true);
 	CAnimationClip* animClip[] = {
 		&m_animationClip[enAnimationClip_idle],
 		&m_animationClip[enAnimationClip_run],
+		&m_animationClip[enAnimationClip_walk],
 	};
-	m_animation.Init(m_skinModelData, animClip, 2);
+	m_animation.Init(m_skinModelData, animClip, 3);
 	m_animation.Play(L"Idle");
 
 	return true;
 }
 void Player::Update() 
 {
-	if (Pad(0).IsTrigger(enButtonRight)) {
-		m_animation.Play(0, 0.2f);
-	}
-	if (Pad(0).IsTrigger(enButtonLeft)) {
-		m_animation.Play(L"Run", 0.2f);
+	CVector3 inputPad;
+	inputPad.x = Pad(0).GetRStickXF();
+	inputPad.y = Pad(0).GetRStickYF();
+	inputPad.z = 0.0f;
+	if (inputPad.Length() > 0.8f) {
+		m_animation.Play(L"Run", 0.2);
+	}else if (inputPad.Length() > 0.0f) {
+		m_animation.Play(L"Walk", 0.2);
+	}else{
+		m_animation.Play(L"Idle", 0.2f);
 	}
 	CQuaternion qRot;
 	qRot.SetRotationDeg(CVector3::AxisX, 90.0f);

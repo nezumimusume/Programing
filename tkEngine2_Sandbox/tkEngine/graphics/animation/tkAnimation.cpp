@@ -69,6 +69,7 @@ namespace tkEngine{
 			float intepolateRate = m_animationPlayController[index].GetInterpolateRate();
 			const auto& localBoneMatrix = m_animationPlayController[index].GetBoneLocalMatrix();
 			for (int boneNo = 0; boneNo < numBone; boneNo++) {
+				//•½sˆÚ“®‚Ì•âŠ®
 				CMatrix m = localBoneMatrix[boneNo];
 				vGlobalPose[boneNo].Lerp(
 					intepolateRate, 
@@ -80,6 +81,7 @@ namespace tkEngine{
 				m.m[3][1] = 0.0f;
 				m.m[3][2] = 0.0f;
 				
+				//‰ñ“]‚Ì•âŠ®
 				CQuaternion qBone;
 				qBone.SetRotation(m);
 				qGlobalPose[boneNo].Slerp(intepolateRate, qGlobalPose[boneNo], qBone);

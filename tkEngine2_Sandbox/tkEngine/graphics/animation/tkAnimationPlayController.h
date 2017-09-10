@@ -65,7 +65,7 @@ namespace tkEngine{
 		{
 			return m_boneMatrix;
 		}
-		CAnimationClip* getanimclip()
+		CAnimationClip* GetAnimClip() const
 		{
 			return m_animationClip;
 		}
