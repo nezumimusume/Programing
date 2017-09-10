@@ -535,9 +535,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Player.h" />
     <CLInclude Include="resource.h" />
     <ResourceCompile Include="Tutorial.rc" />
   </ItemGroup>

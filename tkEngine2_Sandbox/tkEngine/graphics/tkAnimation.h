@@ -41,15 +41,24 @@ namespace tkEngine{
 			auto it = std::find_if(
 				m_animationClips.begin(),
 				m_animationClips.end(), 
-				[clipName](auto& clip) {return clip->GetName() == clipName; }
+				[clipName](auto& clip) {
+					return wcscmp(clip->GetName(), clipName ) == 0;
+				}
 			);
 			if (it == m_animationClips.end()) {
 				TK_WARNING("not found clip");
 				return;
 			}
-			m_currentAnimationClip = *it;
-			m_globalTime = 0.0f;
-			m_currentKeyframeNo = 0;
+			
+			PlayCommon(*it);
+		}
+		/*!
+		*@brief	アニメーションの再生。
+		*@param[in]	clipNo	アニメーションクリップの番号。Init関数に渡したanimClipListの並びとなる。
+		*/
+		void Play(int clipNo)
+		{
+			PlayCommon(m_animationClips[clipNo]);
 		}
 		/*!
 		*@brief	アニメーションクリップのループフラグを設定します。
@@ -68,7 +77,14 @@ namespace tkEngine{
 				return ;
 			}
 			(*it)->SetLoopFlag(flag);
-		}\
+		}
+	private:
+		void PlayCommon(CAnimationClip* nextClip)
+		{
+			m_currentAnimationClip = nextClip;
+			m_globalTime = 0.0f;
+			m_currentKeyframeNo = 0;
+		}
 	private:
 		std::vector<CAnimationClip*>	m_animationClips;	//!<アニメーションクリップの配列。
 		CSkeleton* m_skeleton = nullptr;	//!<アニメーションを適用するスケルトン。
