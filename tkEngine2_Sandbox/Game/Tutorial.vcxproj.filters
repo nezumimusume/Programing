@@ -30,13 +30,10 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\Thethief_H.FBX">
-      <Filter>Assets\modelData</Filter>
-    </MeshContentTask>
     <MeshContentTask Include="Assets\modelData\background.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\skintest.fbx">
+    <MeshContentTask Include="Assets\modelData\Thethief_H.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
   </ItemGroup>
