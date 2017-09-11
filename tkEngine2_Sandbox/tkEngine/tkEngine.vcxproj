@@ -268,6 +268,9 @@
     <ClInclude Include="gameObject\tkgameobject.h" />
     <ClInclude Include="gameObject\tkGameObjectManager.h" />
     <ClInclude Include="gameObject\tkTransform.h" />
+    <ClInclude Include="graphics\animation\tkAnimation.h" />
+    <ClInclude Include="graphics\animation\tkAnimationClip.h" />
+    <ClInclude Include="graphics\animation\tkAnimationPlayController.h" />
     <ClInclude Include="graphics\GPUBuffer\tkConstantBuffer.h" />
     <ClInclude Include="graphics\GPUBuffer\tkGPUBuffer.h" />
     <ClInclude Include="graphics\GPUBuffer\tkStructuredBuffer.h" />
@@ -277,8 +280,6 @@
     <ClInclude Include="graphics\preRender\tkLIghtCulling.h" />
     <ClInclude Include="graphics\preRender\tkPreRender.h" />
     <ClInclude Include="graphics\preRender\tkZPrepass.h" />
-    <ClInclude Include="graphics\tkAnimationClip.h" />
-    <ClInclude Include="graphics\tkAnimation.h" />
     <ClInclude Include="graphics\tkCamera.h" />
     <ClInclude Include="graphics\tkGraphicsEngine.h" />
     <ClInclude Include="graphics\tkLight.h" />
@@ -330,6 +331,9 @@
     <ClCompile Include="gameObject\tkGameObject.cpp" />
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
     <ClCompile Include="gameObject\tkTransform.cpp" />
+    <ClCompile Include="graphics\animation\tkAnimation.cpp" />
+    <ClCompile Include="graphics\animation\tkAnimationClip.cpp" />
+    <ClCompile Include="graphics\animation\tkAnimationPlayController.cpp" />
     <ClCompile Include="graphics\GPUBuffer\tkConstantBuffer.cpp" />
     <ClCompile Include="graphics\GPUBuffer\tkGPUBuffer.cpp" />
     <ClCompile Include="graphics\GPUBuffer\tkStructuredBuffer.cpp" />
@@ -339,8 +343,6 @@
     <ClCompile Include="graphics\preRender\tkLightCulling.cpp" />
     <ClCompile Include="graphics\preRender\tkPreRender.cpp" />
     <ClCompile Include="graphics\preRender\tkZPrepass.cpp" />
-    <ClCompile Include="graphics\tkAnimationClip.cpp" />
-    <ClCompile Include="graphics\tkAnimation.cpp" />
     <ClCompile Include="graphics\tkCamera.cpp" />
     <ClCompile Include="graphics\tkGraphicsEngine.cpp" />
     <ClCompile Include="graphics\tkRenderContext.cpp" />

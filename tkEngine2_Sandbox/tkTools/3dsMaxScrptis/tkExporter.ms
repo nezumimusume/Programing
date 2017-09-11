@@ -26,21 +26,16 @@ struct AnimationClip(
 --オブジェクトパラメータの配列。
 g_objectParams = #()
 
-rollout tkExporter "tkExporter" width:465 height:328
+rollout tkExporter "tkExporter" width:194 height:248
 (
-	editText 'animClipStartFrame' "" pos:[91,202] width:60 height:21 align:#left
-	label 'lbl1' "start frame" pos:[23,205] width:60 height:16 align:#left
-	groupBox 'grp1' "Animation clip" pos:[13,145] width:372 height:167 align:#left
-	groupBox 'grp2' "Skeleton" pos:[12,8] width:373 height:119 align:#left
-	button 'btn_saveAnimationClip' "Save" pos:[245,271] width:120 height:28 align:#left
-	label 'lbl2' "end frame" pos:[23,236] width:60 height:16 align:#left
-	editText 'animClipEndFrame' "" pos:[91,234] width:58 height:21 align:#left
-	button 'btn_saveSkeleton' "Save" pos:[245,79] width:120 height:28 align:#left
-	label 'lbl3' "Label" pos:[34,127] width:0 height:0 align:#left
-	label 'lbl4' "base folder" pos:[23,173] width:60 height:14 align:#left
-	editText 'animClipBaseFolder' "" pos:[91,168] width:274 height:21 align:#left
-	label 'lbl5' "base folder" pos:[23,34] width:60 height:14 align:#left
-	editText 'skeletonBaseFolder' "" pos:[91,31] width:274 height:21 align:#left
+	groupBox grp1 "Animation clip" pos:[10,97] width:171 height:135
+	groupBox grp2 "Skeleton" pos:[10,8] width:167 height:74
+	button btn_saveAnimationClip "Save" pos:[31,187] width:120 height:28
+	label lbl1 "start frame" pos:[29,119] width:60 height:16
+	editText animClipStartFrame "" pos:[88,116] width:62 height:21
+	label lbl2 "end frame" pos:[29,146] width:60 height:16
+	editText animClipEndFrame "" pos:[88,145] width:62 height:21
+	button btn_saveSkeleton "Save" pos:[31,35] width:120 height:28
 	/*
 	 *  出力するノードの情報を構築。
 	 */
@@ -76,13 +71,8 @@ rollout tkExporter "tkExporter" width:465 height:328
 	 */
 	fn SaveSkeleton = 
 	(
-		filepath = ""
-		if skeletonBaseFolder.text != "" then(
-			baseFilePath = skeletonBaseFolder.text + "/"
-			filepath = getSaveFileName caption:"" types: "skeleton (*tks)|*.tks|All Files (*.*)|*.*|" filename:baseFilePath
-		)else(
-			filepath = getSaveFileName caption:"" types: "skeleton (*tks)|*.tks|All Files (*.*)|*.*|"
-		)
+		filepath = getSaveFileName caption:"" types: "skeleton (*tks)|*.tks|All Files (*.*)|*.*|"
+		
 		if filepath != undefined then
 		(
 			file = fopen filepath "wb"
@@ -113,6 +103,30 @@ rollout tkExporter "tkExporter" width:465 height:328
 				Messagebox "ファイルの保存に失敗しました"
 			)
 			FClose file
+			
+			--テキストファイル版
+			/*file = createfile "C:/GitHub/Programing/tkEngine2_Sandbox/Game/Assets/modelData/hoge.txt"
+			try(
+				for o in g_objectParams do (
+					
+					format "objName : %\n" o.objName to:file
+					format "localPos : %\n" o.localPos to:file
+					format "localRot : %\n" o.localRot to:file
+				--	format "parentName : %\n" o.parentName to:file
+					
+					--バインドポーズを出力。
+					for i = 1 to 4 do(
+						format "bindPose :%\n" o.bindPose[i] to:file
+					)
+					--バインドポーズの逆数を出力。
+					for i = 1 to 4 do(
+						format "invBindPose : %\n" o.invBindPose[i] to:file
+					)
+				)
+			)catch(
+				Messagebox "ファイルの保存に失敗しました"
+			)
+			close file*/
 		)
 	)
 	
@@ -122,15 +136,8 @@ rollout tkExporter "tkExporter" width:465 height:328
 	fn SaveAnimationClip=
 	(
 		AnimationClip animClip string #()
-		filepath = ""
-		if animClipBaseFolder.text != "" then(
-			baseFilePath = animClipBaseFolder.text + "/"
-			filepath = getSaveFileName caption:"" types: "animation clip (*tka)|*.tka|All Files (*.*)|*.*|" filename:baseFilePath
-
-		)else(
-			filepath = getSaveFileName caption:"" types: "animation clip (*tka)|*.tka|All Files (*.*)|*.*|"
-		)
-	
+		filepath = getSaveFileName caption:"" types: "animation clip (*tka)|*.tka|All Files (*.*)|*.*|"
+		
 		startFrame = animClipStartFrame.text as integer + 1
 		endFrame = animClipEndFrame.text as integer + 1
 		numKey = endFrame - startFrame + 1
@@ -205,7 +212,6 @@ rollout tkExporter "tkExporter" width:465 height:328
 
 		FClose file
 	)
-
 	/*
 	 *  スケルトンの出力のボタンが押されたときの処理。
 	 */

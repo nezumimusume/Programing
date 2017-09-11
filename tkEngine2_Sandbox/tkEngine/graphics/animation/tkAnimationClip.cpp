@@ -3,7 +3,7 @@
  */
 
 #include "tkEngine/tkEnginePrecompile.h"
-#include "tkEngine/graphics/tkAnimationClip.h"
+#include "tkEngine/graphics/animation/tkAnimationClip.h"
 
 namespace tkEngine {
 	/*!

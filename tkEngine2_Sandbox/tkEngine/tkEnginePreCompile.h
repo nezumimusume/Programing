@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <vector>
 #include <list>
+#include <queue>
 #include <algorithm>
 #include <map>
 #include <wincodec.h>
@@ -75,4 +76,4 @@
 #include "tkEngine/Input/tkPad.h"
 #include "tkEngine/tkEngine.h"
 #include "tkEngine/sound/tkSoundSource.h"
-#include "tkEngine/graphics/tkAnimation.h"
+#include "tkEngine/graphics/animation/tkAnimation.h"

@@ -426,7 +426,18 @@ namespace tkEngine{
 		*@brief	行列からクォータニオンを作成。
 		*/
 		void SetRotation(const CMatrix& m);
-		
+		/*!
+		 *@brief	球面線形補完。
+		 */
+		void Slerp(float t, CQuaternion q1, CQuaternion q2)
+		{
+			DirectX::XMVECTOR xmv = DirectX::XMQuaternionSlerp(
+				DirectX::XMLoadFloat4(&q1.vec),
+				DirectX::XMLoadFloat4(&q2.vec),
+				t
+			);
+			DirectX::XMStoreFloat4(&vec, xmv);
+		}
 		/*!
 		*@brief	クォータニオン同士の積。
 		*/

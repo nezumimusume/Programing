@@ -2,17 +2,16 @@
  *@brief	PBRサンプル。
  */
 #include "stdafx.h"
-#include "tkEngine/tkEnginePreCompile.h"
-#include "tkEngine/tkEngine.h"
+
+
 #include "tkEngine/graphics/tkCamera.h"
 #include "tkEngine/timer/tkStopwatch.h"
 #include <time.h>
 #include "tkEngine/light/tkDirectionLight.h"
 #include "tkEngine/light/tkPointLight.h"
 #include "tkEngine/physics/tkMeshCollider.h"
-
-using namespace tkEngine;
-
+#include "Player.h"
+#include "Background.h"
 
 
 class PBRSample : public IGameObject {
@@ -37,35 +36,21 @@ class PBRSample : public IGameObject {
 	
 	
 	
-	CSkinModelData skinModelData;
-	CSkinModel skinModel;
-	CAnimationClip animClip;
-	CAnimation animation;
 	prefab::CDirectionLight* m_directionLight[3] = { nullptr };
 	prefab::CPointLight* m_pointLight[NUM_POINT_LIGHT] = {nullptr};
 	
 	std::unique_ptr<DirectX::SpriteFont>	m_font;
 	std::unique_ptr<DirectX::SpriteBatch>	m_bach;
 	int m_cursorPos = 0;
+	Player*		m_player;
 public:
 
 	bool Start() override
 	{
 		
-		
-		skinModelData.Load(L"Assets/modelData/Thethief_H");
-		skinModel.Init(skinModelData);
-		//アニメーションクリップのロード。
-		animClip.Load(L"Assets/animData/test.tka", L"Test");
-		animClip.SetLoopFlag(true);
-		CAnimationClip* animClipList[] = {
-			&animClip
-		};
-		animation.Init(skinModelData, animClipList, 1);
-
 		//カメラを初期化。
 		CCamera& mainCamera = MainCamera();
-		mainCamera.SetPosition({ 0.0f, 40.0f, 100.0f });
+		mainCamera.SetPosition({ 0.0f, 40.0f, 200.0f });
 		mainCamera.SetTarget({ 0.0f, 40.0f, 0.0f });
 		mainCamera.SetUp({ 0.0f, 1.0f, 0.0f });
 		mainCamera.SetNear(0.1f);
@@ -126,15 +111,12 @@ public:
 			}
 			m_pointLight[0]->SetPosition({0.0f, 10.0f, 0.0f});
 		}
+		m_player = NewGO<Player>(0);
+		NewGO<Background>(0);
 		return true;
 	}
 	void Update() override
 	{
-		//nonSkinModel.Update({0.0f, 0.0f, 0.0f}, CQuaternion::Identity, CVector3::One);
-		CQuaternion qRot;
-		qRot.SetRotationDeg(CVector3::AxisX, -90.0f);
-		skinModel.Update({ 0.0f, 0.0f, 0.0f }, qRot, CVector3::One);
-		animation.Update(1.0f / 60.0f);
 		//マテリアルパラーメータを更新。
 		if (Pad(0).IsTrigger(enButtonUp)) {
 			m_cursorPos--;
@@ -160,16 +142,6 @@ public:
 		*params[m_cursorPos] = max(*params[m_cursorPos], 0.0f);
 		*params[m_cursorPos] = min(*params[m_cursorPos], 1.0f);
 
-		//点光源を回してみる。
-		for (auto& ptLight : m_pointLight) {
-			if (ptLight == NULL) {
-				break;
-			}
-			CVector3 pointLightPos = ptLight->GetPosition();
-			qRot.Multiply(pointLightPos);
-			ptLight->SetPosition(pointLightPos);
-		}
-
 	}
 	/*!------------------------------------------------------------------
 	* @brief	シーンの描画。
@@ -178,8 +150,6 @@ public:
 	{	
 		rc.UpdateSubresource(m_materialParamCB, &m_materialParam);
 		rc.PSSetConstantBuffer(2, m_materialParamCB);
-		//nonSkinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
-		skinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
 	}
 	
 	/*!------------------------------------------------------------------
