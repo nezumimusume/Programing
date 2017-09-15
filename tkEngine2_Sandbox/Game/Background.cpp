@@ -21,7 +21,7 @@ void Background::Update()
 {
 	CQuaternion qRot;
 	qRot.SetRotationDeg(CVector3::AxisX, -90.0f);
-	m_skinModel.Update({ 0.0f, 0.0f, 0.0f }, qRot, CVector3::One);
+	m_skinModel.Update({ 0.0f, 20.0f, 0.0f }, qRot, CVector3::One);
 }
 void Background::Render(CRenderContext& rc)
 {

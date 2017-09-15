@@ -47,7 +47,10 @@ public:
 
 	bool Start() override
 	{
-		
+		CMatrix mRot;
+		mRot.MakeRotationY(0.785f);
+		CVector3 right = CVector3::Right;
+		mRot.Mul(right);
 		//カメラを初期化。
 		CCamera& mainCamera = MainCamera();
 		mainCamera.SetPosition({ 0.0f, 40.0f, 200.0f });
@@ -75,7 +78,7 @@ public:
 		static const int QuantizationSize = 1000;	//量子化サイズ。
 		
 		{
-			for (int i = 0; i < 256; i++) {
+			for (int i = 0; i < 16; i++) {
 				m_pointLight[i] = NewGO<prefab::CPointLight>(0);
 				int ix = rand() % QuantizationSize;
 				int iy = rand() % QuantizationSize;
@@ -89,7 +92,7 @@ public:
 				fnx = (fnx - 0.5f) * 2.0f;
 				fnz = (fnz - 0.5f) * 2.0f;
 				//ポイントライトの位置をランダムに決定。
-				m_pointLight[i]->SetPosition({ 50.0f * fnx , 5.0f * fny,  50.0f * fnz });
+				m_pointLight[i]->SetPosition({ 200.0f * fnx , 100.0f,  200.0f * fnz });
 
 				int ir = rand() % QuantizationSize;
 				int ig = rand() % QuantizationSize;
@@ -103,13 +106,13 @@ public:
 				});
 				
 				m_pointLight[i]->SetAttn({
-					5.0f,
-					0.01f,
-					0.01f
+					150.0f,
+					0.1f,
+					0.1f
 				});
 				
 			}
-			m_pointLight[0]->SetPosition({0.0f, 10.0f, 0.0f});
+			//m_pointLight[0]->SetPosition({0.0f, 10.0f, 0.0f});
 		}
 		m_player = NewGO<Player>(0);
 		NewGO<Background>(0);
@@ -141,6 +144,18 @@ public:
 		}
 		*params[m_cursorPos] = max(*params[m_cursorPos], 0.0f);
 		*params[m_cursorPos] = min(*params[m_cursorPos], 1.0f);
+
+		//点光源を回してみる。
+		CQuaternion qRot;
+		qRot.SetRotationDeg(CVector3::AxisY, 0.6f);
+		
+		for (auto& ptLight : m_pointLight) {
+			if (ptLight) {
+				CVector3 pos = ptLight->GetPosition();
+				qRot.Multiply(pos);
+				ptLight->SetPosition(pos);
+			}
+		}
 
 	}
 	/*!------------------------------------------------------------------

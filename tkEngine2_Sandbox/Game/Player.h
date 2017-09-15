@@ -18,5 +18,6 @@ private:
 	CSkinModel		m_skinModel;			//!<スキンモデル。
 	CAnimationClip	m_animationClip[enAnimationClip_Num];	//!<アニメーションクリップ
 	CAnimation		m_animation;				//!<アニメーション。
+	CVector3		m_position = CVector3::Zero;
 };
 

@@ -49,9 +49,11 @@ void Player::Update()
 	}else{
 		m_animation.Play(L"Idle", 0.2f);
 	}
+	CVector3 addPos = { inputPad.x * -3.0f, 0.0f, inputPad.y * -3.0f };
+	m_position.Add(addPos);
 	CQuaternion qRot;
 	qRot.SetRotationDeg(CVector3::AxisX, 90.0f);
-	m_skinModel.Update({ 0.0f, 0.0f, 0.0f }, qRot, CVector3::One);
+	m_skinModel.Update(m_position, qRot, CVector3::One);
 	m_animation.Update(GameTime().GetFrameDeltaTime());
 }
 void Player::Render(CRenderContext& rc) 
