@@ -24,8 +24,6 @@ namespace tkEngine{
 		struct MaterialParam {
 			int hasNormalMap;		//!<法線マップある？
 			int hasSpecularMap;		//!<スペキュラマップある？
-			float roughness;		//!<粗さ
-			float metallic;			//!<メタリック。
 			float anisotropic;		//!<異方性反射。
 		};
 		static const int NUM_POINT_LIGHT = 1024;
@@ -34,6 +32,7 @@ namespace tkEngine{
 	public:
 		CModelEffect()
 		{
+			m_materialParam.anisotropic = 0.5f;
 			m_materialParamCB.Create(&m_materialParam, sizeof(m_materialParam));
 		}
 		void __cdecl Apply(ID3D11DeviceContext* deviceContext) override

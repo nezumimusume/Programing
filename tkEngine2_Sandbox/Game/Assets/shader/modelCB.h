@@ -27,7 +27,5 @@ cbuffer lightCb : register(b1)
 cbuffer MaterialParamCb : register(b2){
 	int hasNormalMap;	//!<法線マップある？
 	int hasSpecularMap;	//!<スペキュラマップある？
-	float roughness;	//粗さ。
-	float metallic ;	//メタリック。
 	float anisotropic;	//異方性反射
 };

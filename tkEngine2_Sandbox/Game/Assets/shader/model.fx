@@ -25,8 +25,8 @@ PSInput VSMain( VSInputNmTxVcTangent In )
 	psInput.posInProj = pos;
 	psInput.Position = pos;
 	psInput.TexCoord = In.TexCoord;
-	psInput.Normal = mul(mWorld, In.Normal);
-	psInput.Tangent = mul(mWorld, In.Tangent);
+	psInput.Normal = normalize(mul(mWorld, In.Normal));
+	psInput.Tangent = normalize(mul(mWorld, In.Tangent));
     return psInput;
 }
 /*!--------------------------------------------------------------------------------------
@@ -38,14 +38,19 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
 	float4x4 skinning = 0;
 	float4 pos = 0.0f;
 	
-	[unroll]
+/*	[unroll]
     for (int i = 0; i < 4; i++)
     {
         skinning += boneMatrix[In.Indices[i]] * In.Weights[i];
-    }
+    }*/
+    skinning += boneMatrix[In.Indices[0]] * In.Weights[0];
+    skinning += boneMatrix[In.Indices[1]] * In.Weights[1];
+    skinning += boneMatrix[In.Indices[2]] * In.Weights[2];
+    skinning += boneMatrix[In.Indices[3]] * In.Weights[3];
+    
 	pos.xyz = mul(skinning, In.Position);
-	psInput.Normal = mul(skinning, In.Normal);
-	psInput.Tangent = mul(skinning, In.Tangent);
+	psInput.Normal = normalize( mul(skinning, In.Normal) );
+	psInput.Tangent = normalize( mul(skinning, In.Tangent) );
 	pos.w = 1.0f;
 	psInput.Pos = pos;
 	pos = mul(mView, pos);
@@ -98,7 +103,8 @@ float4 PSMain( PSInput In ) : SV_Target0
 	float3 toEye = normalize(eyePos - In.Pos);
 	//従ベクトルを計算する。
 	float3 biNormal = normalize(cross(In.Normal, In.Tangent));
-	
+	//アルベド。
+	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
 	float3 normal = In.Normal;
 	
 	if(hasNormalMap){
@@ -109,34 +115,46 @@ float4 PSMain( PSInput In ) : SV_Target0
 	}
 	
 	float specPow = 0.0f;
+	float roughness = 1.0f;
 	if(hasSpecularMap){
-		specPow = normalMap.Sample(Sampler, In.TexCoord).xyz;
+		float4 t = specularMap.Sample(Sampler, In.TexCoord);
+		specPow = t.x;
+		roughness = 1.0f - t.w;
 	}
 	
 	float3 toEyeDir = normalize( toEye - In.Pos );
 	float3 toEyeReflection = -toEyeDir + 2.0f * dot(normal, toEyeDir) * normal;
 	
 	//ディレクションライト
-	lig += CalcDirectionLight(In.Pos, normal, toEyeReflection, specPow);
+	float3 finalColor = CalcDirectionLight(
+		albedo,
+		In.Pos, 
+		normal, 
+		In.Tangent,
+		biNormal,
+		toEyeDir,
+		toEyeReflection, 
+		roughness,
+		specPow
+	);
 	
 	//ポイントライトを計算。
-	lig += CalcPointLight(
+	finalColor += CalcPointLight(
+		albedo,
 		In.Pos, 
 		In.posInProj, 
 		normal,
 		In.Tangent,
 		biNormal,
-		toEye,
+		toEyeDir,
 		toEyeReflection, 
+		roughness,
 		specPow
 	);
 	
 	//アンビエントライト。
-	lig += ambientLight;
-	//アルベド。
-	float4 color = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
-	color.xyz *= lig;
-    return color; 
+	finalColor += albedo * ambientLight;
+    return float4(finalColor, 1.0f); 
 #endif
 }
 

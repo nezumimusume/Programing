@@ -11,21 +11,34 @@ float3 CalcSpecular(float3 lightDir, float4 lightColor, float3 toEyeReflection, 
 }
 /*!
  * @brief	ディレクションライトの影響を計算。
+ *@param[in]	albedo			アルベド。
  *@param[in]	posInWorld		ワールド空間での座標。
  *@param[in]	normal			法線。
  *@param[in]	toEye			視点までのベクトル。
  *@param[in]	specPow			スペキュラ強度。
  */
-float3 CalcDirectionLight(float3 posInWorld, float3 normal, float3 toEyeReflection, float specPow)
+float3 CalcDirectionLight(
+	float4 albedo,
+	float3 posInWorld, 
+	float3 normal,
+	 float3 tangent,
+	float3 biNormal, 
+	float3 toEyeDir, 
+	float3 toEyeReflection, 
+	float roughness,
+	float specPow
+)
 {
 	float3 spec = 0.0f;
-	//拡散反射光を計算する。
+	
 	float3 lig = 0.0f;
 	for( int i = 0; i < numDirectionLight; i++){
+		
 		float3 lightDir = directionLight[i].direction;
-		lig += max( 0.0f, dot( normal, -lightDir ) ) * directionLight[i].color;
-//		lig += directionLight[i].color * pow(max(0.0f, dot(-lightDir,toEyeReflection)), 2 ) * directionLight[i].color.w * specPow;	//スペキュラ強度。
-		lig += CalcSpecular(lightDir, directionLight[i].color, toEyeReflection, specPow);
+		//拡散反射光を計算する。
+		lig += albedo * max( 0.0f, dot( normal, -lightDir ) ) * directionLight[i].color;
+		//スペキュラ。
+		lig += BRDF(-lightDir, toEyeDir, normal, tangent, biNormal, albedo, roughness, specPow) * directionLight[i].color;
 	}
 	
 	return lig;
@@ -40,13 +53,15 @@ float3 CalcDirectionLight(float3 posInWorld, float3 normal, float3 toEyeReflecti
  *@param[in]	toEye			視点までのベクトル。
  */
 float3 CalcPointLight(
+	float4 albedo,
 	float3 posInWorld, 
 	float4 posInProj, 
 	float3 normal,
 	float3 tangent,
 	float3 biNormal,
-	float3 toEye,
+	float3 toEyeDir,
 	float3 toEyeReflection, 
+	float roughness,
 	float specPow
 )
 {
@@ -76,14 +91,12 @@ float3 CalcPointLight(
 		float3 lightDir = posInWorld - light.position;
 		float len = length(lightDir);
 		lightDir = normalize(lightDir);	//正規化。
-//		float3 pointLightColor = BRDF(-lightDir, toEye, normal, tangent, biNormal, light.color.xyz);
-		float3 pointLightColor = saturate(-dot(normal, lightDir)) * light.color.xyz;
-		pointLightColor += CalcSpecular(lightDir, light.color, toEyeReflection, specPow);
+		float3 pointLightColor = albedo * saturate(-dot(normal, lightDir)) * light.color.xyz;
+		pointLightColor += BRDF(-lightDir, toEyeDir, normal, tangent, biNormal, albedo, roughness, specPow) * light.color.xyz;
 		//減衰を計算する。
 		float	litRate = len / light.attn.x;
 		float	attn = max(1.0 - litRate * litRate, 0.0);
 		pointLightColor *= attn;
-
 		lig += pointLightColor;
 	}
 	

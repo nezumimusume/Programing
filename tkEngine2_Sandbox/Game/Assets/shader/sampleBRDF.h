@@ -58,7 +58,16 @@ float3 mon2lin(float3 x)
  *@param[in]	tangentNormal	Ú–@ü
  *@param[in]	biNormal		]–@üB
  */
-float3 BRDF( float3 L, float3 V, float3 normal, float3 tangentNormal, float3 biNormal, float3 baseColor )
+float3 BRDF( 
+	float3 L, 
+	float3 V, 
+	float3 normal, 
+	float3 tangentNormal, 
+	float3 biNormal, 
+	float3 baseColor, 
+	float roughness,
+	float metallic 
+)
 {
     float NdotL = dot(normal,L);
 

@@ -22,18 +22,8 @@ class PBRSample : public IGameObject {
 		CVector4 pos;
 		CVector2 tex;
 	};
-	/*!
-	 * @brief	マテリアルパラメータ。
-	 */
-	struct MaterialParam{
-		float roughness;		//!<粗さ
-		float metallic;			//!<メタリック。
-		float anisotropic;		//!<異方性反射。
-	};
-	static const int NUM_POINT_LIGHT = 1024;
-	MaterialParam m_materialParam;				//マテリアルパラメータ。
-	CConstantBuffer m_materialParamCB;			//マテリアルパラメータ用の定数バッファ。
 	
+	static const int NUM_POINT_LIGHT = 1024;	
 	
 	
 	prefab::CDirectionLight* m_directionLight[3] = { nullptr };
@@ -66,17 +56,12 @@ public:
 
 		m_directionLight[1] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[1]->SetDirection({ 0.0f, -0.707f, -0.707f });
-		m_directionLight[1]->SetColor({ 0.2f, 0.2f, 0.2f, 0.2f });
-
+		m_directionLight[1]->SetColor({ 0.2f, 0.2f, 0.2f, 1.0f });
+		
 		m_directionLight[2] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[2]->SetDirection({ 1.0f, 0.0f, 0.0f });
-		m_directionLight[2]->SetColor({ 0.2f, 0.2f, 0.2f, 0.2f });
+		m_directionLight[2]->SetColor({ 0.2f, 0.2f, 0.2f, 1.0f });
 
-		//マテリアルパラメータを初期化。
-		m_materialParam.roughness = 0.5f;
-		m_materialParam.metallic = 0.5f;
-		m_materialParam.anisotropic = 0.5f;
-		m_materialParamCB.Create(&m_materialParam, sizeof(m_materialParam));
 			
 		//フォントを初期化。
 		m_font.reset(new DirectX::SpriteFont(GraphicsEngine().GetD3DDevice(), L"Assets/font/myfile.spritefont"));
@@ -108,10 +93,10 @@ public:
 
 				//0～999までの数字を0.0～1.0の範囲に正規化して、ポイントライトのカラーをランダムに決定。
 				m_pointLight[i]->SetColor({ 
-					(float)ir / QuantizationSize , 
-					(float)ig / QuantizationSize,
-					(float)ib / QuantizationSize,
-					0.2f
+					(float)ir / QuantizationSize * 1.0f, 
+					(float)ig / QuantizationSize * 1.0f,
+					(float)ib / QuantizationSize * 1.0f,
+					1.0f
 				});
 				
 				m_pointLight[i]->SetAttn({
@@ -123,7 +108,7 @@ public:
 			}
 			//m_pointLight[0]->SetPosition({0.0f, 10.0f, 0.0f});
 		}
-		LightManager().SetAmbientLight({0.1f, 0.1f, 0.1f});
+		LightManager().SetAmbientLight({0.05f, 0.05f, 0.05f});
 		m_player = NewGO<Player>(0);
 		NewGO<Background>(0);
 		return true;
@@ -141,19 +126,6 @@ public:
 		m_cursorPos = min(NUM_MATERIAL_PARAM-1, m_cursorPos);
 		m_cursorPos = max(0, m_cursorPos);
 
-		float* params[] = {
-			&m_materialParam.roughness,
-			&m_materialParam.metallic,
-			&m_materialParam.anisotropic
-		};
-		if (Pad(0).IsPress(enButtonLeft)) {
-			*params[m_cursorPos] += 0.001f;
-		}
-		else if (Pad(0).IsPress(enButtonRight)) {
-			*params[m_cursorPos] -= 0.001f;
-		}
-		*params[m_cursorPos] = max(*params[m_cursorPos], 0.0f);
-		*params[m_cursorPos] = min(*params[m_cursorPos], 1.0f);
 
 		//点光源を回してみる。
 		CQuaternion qRot;
@@ -173,43 +145,10 @@ public:
 	------------------------------------------------------------------*/
 	void RenderScene(CRenderContext& rc)
 	{	
-		rc.UpdateSubresource(m_materialParamCB, &m_materialParam);
-		rc.PSSetConstantBuffer(2, m_materialParamCB);
+
 	}
 	
-	/*!------------------------------------------------------------------
-	* @brief	マテリアルパラメータを表示。
-	------------------------------------------------------------------*/
-	void RenderMaterialParam(CRenderContext& rc)
-	{
-		wchar_t fps[256];
-		wchar_t cursor[NUM_MATERIAL_PARAM] = { L' ', L' ', L' ' };
-		cursor[m_cursorPos] = L'>';
-		wchar_t* fomat = L"%croughness %f\n"
-						  "%cmetallic %f\n"
-						  "%canisotropic %f\n";
-		swprintf_s(fps, fomat, 
-			cursor[0], m_materialParam.roughness, 
-			cursor[1], m_materialParam.metallic,
-			cursor[2], m_materialParam.anisotropic
-		);
-		CRenderTarget* rts[] = {
-			&GraphicsEngine().GetMainRenderTarget()
-		};
-		rc.OMSetRenderTargets(1, rts);
-		m_bach->Begin();
-
-		m_font->DrawString(
-			m_bach.get(),
-			fps,
-			DirectX::XMFLOAT2(0, 0),
-			DirectX::Colors::White,
-			0,
-			DirectX::XMFLOAT2(0, 0),
-			3.0f
-		);
-		m_bach->End();
-	}
+	
 	/*!------------------------------------------------------------------
 	* @brief	描画。
 	------------------------------------------------------------------*/
@@ -217,8 +156,6 @@ public:
 	{
 		//シーンの描画。
 		RenderScene(rc);
-		//マテリアルパラーメータを表示。
-		RenderMaterialParam(rc);
 	}
 };
 
