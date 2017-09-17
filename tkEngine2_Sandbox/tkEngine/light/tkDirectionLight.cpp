@@ -28,7 +28,7 @@ namespace tkEngine{
 			light.direction = direction;
 			LightManager().SetDirty();
 		}
-		void CDirectionLight::SetColor(const CVector3& color)
+		void CDirectionLight::SetColor(const CVector4& color)
 		{
 			light.color = color;
 			LightManager().SetDirty();

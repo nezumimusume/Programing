@@ -37,4 +37,15 @@
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="phong.dgsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\modelData\Thethief_wuqi_S.tga">
+      <Filter>Assets\modelData</Filter>
+    </Image>
+    <Image Include="Assets\modelData\Thethief_wuqi_N.tga">
+      <Filter>Assets\modelData</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

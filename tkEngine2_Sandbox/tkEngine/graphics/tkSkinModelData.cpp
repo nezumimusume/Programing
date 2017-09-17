@@ -28,7 +28,7 @@ namespace tkEngine{
 				//スキニングなし。
 				effect = std::make_shared<CNonSkinModelEffect>();
 			}
-			
+			effect->SetMatrialName(info.name);
 			if (info.diffuseTexture && *info.diffuseTexture)
 			{
 				ID3D11ShaderResourceView* texSRV;
@@ -77,7 +77,7 @@ namespace tkEngine{
 		};
 		//スケルトンのデータを読み込み。
 		std::wstring skeletonFilePath = filePath;
-		int pos = skeletonFilePath.find(L".cmo");
+		int pos = (int)skeletonFilePath.find(L".cmo");
 		skeletonFilePath.replace(pos, 4, L".tks");
 		m_skeleton.Load(skeletonFilePath.c_str());
 
@@ -97,8 +97,8 @@ namespace tkEngine{
 	}
 	void CSkinModelData::FindMesh(OnFindMesh findMesh)
 	{
-		for (const auto& modelMeshs : m_modelDx->meshes) {
-			for (const std::unique_ptr<DirectX::ModelMeshPart>& mesh : modelMeshs->meshParts) {
+		for (auto& modelMeshs : m_modelDx->meshes) {
+			for (std::unique_ptr<DirectX::ModelMeshPart>& mesh : modelMeshs->meshParts) {
 				findMesh(mesh);
 			}
 		}

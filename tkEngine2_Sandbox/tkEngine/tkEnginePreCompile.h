@@ -48,6 +48,7 @@
 #include "DirectXTK/Inc/Effects.h"	
 #include "DirectXTK/Inc/CommonStates.h"
 #include "DirectXTK/Inc/SpriteFont.h"
+#include "DirectXTK/Inc/DDSTextureLoader.h"
 
 #include "tkEngine/tkEngineConst.h"
 #include "tkEngine/policy/tkNoncopyable.h"

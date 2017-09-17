@@ -19,6 +19,26 @@ bool Player::Start()
 	m_skinModelData.Load(L"Assets/modelData/Thethief_H.cmo");
 	m_skinModel.Init(m_skinModelData);
 
+	//法線マップをロード。
+	m_normalMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/Thethief_N.dds");
+	m_specularMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/Thethief_S.dds");
+	m_wnormalMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/Thethief_wuqi_N.dds");
+	m_wspecularMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/Thethief_wuqi_S.dds");
+
+	m_skinModel.FindMesh([&](auto& mesh) {
+		CModelEffect* effect = reinterpret_cast<CModelEffect*>(mesh->effect.get());
+		if (effect->EqualMaterialName(L"bodyMat")) {
+			//体のマテリアル。
+			effect->SetNormalMap(m_normalMapSRV.GetBody());
+			effect->SetSpecularMap(m_specularMapSRV.GetBody());
+		}
+		else if (effect->EqualMaterialName(L"weapon")) {
+			//武器。
+			effect->SetNormalMap(m_wnormalMapSRV.GetBody());
+			effect->SetSpecularMap(m_wspecularMapSRV.GetBody());
+		}
+
+	});
 	//アニメーションクリップのロード。
 	m_animationClip[enAnimationClip_idle].Load(L"Assets/animData/player/idle.tka", L"Idle");
 	m_animationClip[enAnimationClip_idle].SetLoopFlag(true);

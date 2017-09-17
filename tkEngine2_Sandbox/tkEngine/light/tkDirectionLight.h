@@ -27,7 +27,7 @@ namespace tkEngine{
 			*@brief ライトのカラーを設定。
 			*@param[in]	color	ライトのカラー。
 			*/
-			void SetColor(const CVector3& color);
+			void SetColor(const CVector4& color);
 			/*!
 			*@brief 生データの取得。
 			*/

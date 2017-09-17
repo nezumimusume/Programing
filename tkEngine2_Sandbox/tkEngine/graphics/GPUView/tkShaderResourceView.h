@@ -27,6 +27,11 @@ namespace tkEngine{
 		*/
 		bool Create(ID3D11Texture2D* texture);
 		/*!
+		*@brief	DDSファイルからテクスチャ用のSRVを作成。
+		*@param[in]	fileName		ファイル名。
+		*/
+		bool CreateFromDDSTextureFromFile(const wchar_t* fileName);
+		/*!
 		 *@brief	明示的な開放。
 		 *@details
 		 * 明示的に開放する必要があるときに使用してください。

@@ -53,7 +53,7 @@ public:
 		mRot.Mul(right);
 		//カメラを初期化。
 		CCamera& mainCamera = MainCamera();
-		mainCamera.SetPosition({ 0.0f, 40.0f, 200.0f });
+		mainCamera.SetPosition({ 0.0f, 40.0f, 100.0f });
 		mainCamera.SetTarget({ 0.0f, 40.0f, 0.0f });
 		mainCamera.SetUp({ 0.0f, 1.0f, 0.0f });
 		mainCamera.SetNear(0.1f);
@@ -61,8 +61,16 @@ public:
 		
 		//ディレクションライトをシーンに追加。
 		m_directionLight[0] = NewGO<prefab::CDirectionLight>(0);
-		m_directionLight[0]->SetDirection({ 1.0f, 0.0f, 0.0f});
-		m_directionLight[0]->SetColor({ 1.0f, 1.0f, 1.0f });
+		m_directionLight[0]->SetDirection({ 0.707f, -0.707f, 0.0f});
+		m_directionLight[0]->SetColor({ 0.2f, 0.2f, 0.2f, 0.0f });
+
+		m_directionLight[1] = NewGO<prefab::CDirectionLight>(0);
+		m_directionLight[1]->SetDirection({ 0.0f, -0.707f, -0.707f });
+		m_directionLight[1]->SetColor({ 0.2f, 0.2f, 0.2f, 0.2f });
+
+		m_directionLight[2] = NewGO<prefab::CDirectionLight>(0);
+		m_directionLight[2]->SetDirection({ 1.0f, 0.0f, 0.0f });
+		m_directionLight[2]->SetColor({ 0.2f, 0.2f, 0.2f, 0.2f });
 
 		//マテリアルパラメータを初期化。
 		m_materialParam.roughness = 0.5f;
@@ -78,7 +86,7 @@ public:
 		static const int QuantizationSize = 1000;	//量子化サイズ。
 		
 		{
-			for (int i = 0; i < 16; i++) {
+			for (int i = 0; i < 32; i++) {
 				m_pointLight[i] = NewGO<prefab::CPointLight>(0);
 				int ix = rand() % QuantizationSize;
 				int iy = rand() % QuantizationSize;
@@ -102,7 +110,8 @@ public:
 				m_pointLight[i]->SetColor({ 
 					(float)ir / QuantizationSize , 
 					(float)ig / QuantizationSize,
-					(float)ib / QuantizationSize
+					(float)ib / QuantizationSize,
+					0.2f
 				});
 				
 				m_pointLight[i]->SetAttn({

@@ -10,17 +10,51 @@ namespace tkEngine{
 	class CAnimationClip;
 	typedef std::unique_ptr<CAnimationClip>	CAnimationClipPtr;
 	class CModelEffect : public DirectX::IEffect {
-	public:
+	protected:
+		std::wstring m_materialName;	//!<マテリアル名。
 		CShader m_vsShader;
 		CShader m_psShader;
-		ID3D11ShaderResourceView* diffuseTex = nullptr;
+		ID3D11ShaderResourceView* m_diffuseTex = nullptr;
+		ID3D11ShaderResourceView* m_normalMap = nullptr;
+		ID3D11ShaderResourceView* m_specularMap = nullptr;
 		bool isSkining;
+		/*!
+		* @brief	マテリアルパラメータ。
+		*/
+		struct MaterialParam {
+			int hasNormalMap;		//!<法線マップある？
+			int hasSpecularMap;		//!<スペキュラマップある？
+			float roughness;		//!<粗さ
+			float metallic;			//!<メタリック。
+			float anisotropic;		//!<異方性反射。
+		};
+		static const int NUM_POINT_LIGHT = 1024;
+		MaterialParam m_materialParam;				//マテリアルパラメータ。
+		CConstantBuffer m_materialParamCB;			//マテリアルパラメータ用の定数バッファ。
 	public:
+		CModelEffect()
+		{
+			m_materialParamCB.Create(&m_materialParam, sizeof(m_materialParam));
+		}
 		void __cdecl Apply(ID3D11DeviceContext* deviceContext) override
 		{
+			
 			deviceContext->VSSetShader((ID3D11VertexShader*)m_vsShader.GetBody(), NULL, 0);
 			deviceContext->PSSetShader((ID3D11PixelShader*)m_psShader.GetBody(), NULL, 0);
-			deviceContext->PSSetShaderResources(0, 1, &diffuseTex);
+			deviceContext->PSSetShaderResources(0, 1, &m_diffuseTex);
+			m_materialParam.hasNormalMap = 0;
+			static int hoge = 1 ;
+			if (m_normalMap != nullptr) {
+				deviceContext->PSSetShaderResources(1, 1, &m_normalMap);
+				m_materialParam.hasNormalMap = hoge;
+			}
+			m_materialParam.hasSpecularMap = 0;
+			if (m_specularMap != nullptr) {
+				deviceContext->PSSetShaderResources(2, 1, &m_specularMap);
+				m_materialParam.hasSpecularMap = 1;
+			}
+			deviceContext->UpdateSubresource(m_materialParamCB.GetBody(), 0, NULL, &m_materialParam, 0, 0);
+			deviceContext->PSSetConstantBuffers(2, 1, &m_materialParamCB.GetBody());
 
 		}
 
@@ -31,7 +65,23 @@ namespace tkEngine{
 		}
 		void SetDiffuseTexture(ID3D11ShaderResourceView* tex)
 		{
-			diffuseTex = tex;
+			m_diffuseTex = tex;
+		}
+		void SetNormalMap(ID3D11ShaderResourceView* tex)
+		{
+			m_normalMap = tex;
+		}
+		void SetSpecularMap(ID3D11ShaderResourceView* tex)
+		{
+			m_specularMap = tex;
+		}
+		void SetMatrialName(const wchar_t* matName)
+		{
+			m_materialName = matName;
+		}
+		bool EqualMaterialName(const wchar_t* name) const
+		{
+			return wcscmp(name, m_materialName.c_str()) == 0;
 		}
 	};
 	/*!
@@ -92,7 +142,7 @@ namespace tkEngine{
 		{
 			return m_skeleton;
 		}
-		typedef std::function<void(const std::unique_ptr<DirectX::ModelMeshPart>&)>		OnFindMesh;
+		typedef std::function<void(std::unique_ptr<DirectX::ModelMeshPart>&)>		OnFindMesh;
 		/*!
 		 *@brief	メッシュの検索。
 		 *@param[in]	findMesh		メッシュを見つけた時に呼ばれるコールバック関数

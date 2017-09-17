@@ -89,6 +89,8 @@ namespace tkEngine {
 		fclose(fp);
 
 		OnCompleteAddedAllBones();
+
+		return true;
 	}
 
 	void CSkeleton::OnCompleteAddedAllBones()

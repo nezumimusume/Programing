@@ -5,6 +5,31 @@
 
 #define TILE_WIDTH	16		//タイルの幅。
 
+float3 CalcSpecular(float3 lightDir, float4 lightColor, float3 toEyeReflection, float specPow)
+{
+	return lightColor.xyz * pow(max(0.0f, dot(-lightDir,toEyeReflection)), 2 ) * lightColor.w * specPow;
+}
+/*!
+ * @brief	ディレクションライトの影響を計算。
+ *@param[in]	posInWorld		ワールド空間での座標。
+ *@param[in]	normal			法線。
+ *@param[in]	toEye			視点までのベクトル。
+ *@param[in]	specPow			スペキュラ強度。
+ */
+float3 CalcDirectionLight(float3 posInWorld, float3 normal, float3 toEyeReflection, float specPow)
+{
+	float3 spec = 0.0f;
+	//拡散反射光を計算する。
+	float3 lig = 0.0f;
+	for( int i = 0; i < numDirectionLight; i++){
+		float3 lightDir = directionLight[i].direction;
+		lig += max( 0.0f, dot( normal, -lightDir ) ) * directionLight[i].color;
+//		lig += directionLight[i].color * pow(max(0.0f, dot(-lightDir,toEyeReflection)), 2 ) * directionLight[i].color.w * specPow;	//スペキュラ強度。
+		lig += CalcSpecular(lightDir, directionLight[i].color, toEyeReflection, specPow);
+	}
+	
+	return lig;
+}
 /*!
  * @brief	ポイントライトを計算。
  *@param[in]	posInWorld		ワールド座標系での座標。
@@ -20,7 +45,9 @@ float3 CalcPointLight(
 	float3 normal,
 	float3 tangent,
 	float3 biNormal,
-	float3 toEye
+	float3 toEye,
+	float3 toEyeReflection, 
+	float specPow
 )
 {
 	
@@ -51,7 +78,7 @@ float3 CalcPointLight(
 		lightDir = normalize(lightDir);	//正規化。
 //		float3 pointLightColor = BRDF(-lightDir, toEye, normal, tangent, biNormal, light.color.xyz);
 		float3 pointLightColor = saturate(-dot(normal, lightDir)) * light.color.xyz;
-
+		pointLightColor += CalcSpecular(lightDir, light.color, toEyeReflection, specPow);
 		//減衰を計算する。
 		float	litRate = len / light.attn.x;
 		float	attn = max(1.0 - litRate * litRate, 0.0);

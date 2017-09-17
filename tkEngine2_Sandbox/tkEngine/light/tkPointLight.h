@@ -24,7 +24,7 @@ namespace tkEngine{
 			}
 			void SetPosition(const CVector3& pos);
 			
-			void SetColor(const CVector3& color);
+			void SetColor(const CVector4& color);
 			
 			void SetAttn(const CVector3& attn);
 			

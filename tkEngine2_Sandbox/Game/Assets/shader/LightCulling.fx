@@ -14,7 +14,7 @@
 struct SPointLight {
 	float3	position;		//位置。
 	float3	positionInView;	//カメラ座標系でのポイントライトの位置。
-	float3	color;			//カラー。
+	float4	color;			//カラー。
 	float4  attn;			//減衰定数。(xを小さくするとライトの明るさが増す、yとzが大きくなるとライトが遠くまで届くようになる。)
 };
 

@@ -47,8 +47,8 @@ namespace tkEngine{
 		CCamera& cam = MainCamera();
 		m_cameraParam.screenParam.x = cam.GetNear();
 		m_cameraParam.screenParam.y = cam.GetFar();
-		m_cameraParam.screenParam.z = ge.GetFrameBufferWidth();
-		m_cameraParam.screenParam.w = ge.GetFrameBufferHeight();
+		m_cameraParam.screenParam.z = (float)ge.GetFrameBufferWidth();
+		m_cameraParam.screenParam.w = (float)ge.GetFrameBufferHeight();
 		m_cameraParam.mProj = cam.GetProjectionMatrix();
 		m_cameraParam.mProjInv.Inverse(m_cameraParam.mProj);
 		m_cameraParam.mViewRot.Inverse(cam.GetViewMatrix());

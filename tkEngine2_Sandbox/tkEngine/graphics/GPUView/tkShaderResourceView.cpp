@@ -7,6 +7,7 @@
 #include "tkEngine/graphics/GPUBuffer/tkStructuredBuffer.h"
 #include "tkEngine/tkEngine.h"
 
+
 namespace tkEngine{
 	CShaderResourceView::CShaderResourceView()
 	{
@@ -72,6 +73,23 @@ namespace tkEngine{
 		}
 		//有効になった印。
 		m_isValid = true;
+		return true;
+	}
+	/*!
+	*@brief	DDSファイルからテクスチャ用のSRVを作成。
+	*@param[in]	fileName		ファイル名。
+	*/
+	bool CShaderResourceView::CreateFromDDSTextureFromFile(const wchar_t* fileName)
+	{
+		Release();
+		HRESULT hr = DirectX::CreateDDSTextureFromFileEx(
+			Engine().GetGraphicsEngine().GetD3DDevice(), fileName, 0,
+			D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, 0,
+			false, nullptr, &m_srv);
+		if (FAILED(hr)) {
+			TK_WARNING("Failed create texture");
+			return false;
+		}
 		return true;
 	}
 }

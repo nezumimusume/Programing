@@ -91,27 +91,50 @@ float4 PSMain( PSInput In ) : SV_Target0
 	color += diffuseColor * float3(0.1f, 0.1f, 0.1f);
     return float4( color, 1.0f ); 
 #else	//not pbr
-
+	
+	
 	float3 lig = 0.0f;
 	//視点までのベクトルを求める。
 	float3 toEye = normalize(eyePos - In.Pos);
 	//従ベクトルを計算する。
 	float3 biNormal = normalize(cross(In.Normal, In.Tangent));
 	
+	float3 normal = In.Normal;
+	
+	if(hasNormalMap){
+		//法線マップがある。
+		float3 binSpaceNormal = normalMap.Sample(Sampler, In.TexCoord).xyz;
+		binSpaceNormal = (binSpaceNormal * 2.0f)- 1.0f;
+		normal = In.Tangent * binSpaceNormal.x + biNormal * binSpaceNormal.y + In.Normal * binSpaceNormal.z; 
+	}
+	
+	float specPow = 0.0f;
+	if(hasSpecularMap){
+		specPow = normalMap.Sample(Sampler, In.TexCoord).xyz;
+	}
+	
+	float3 toEyeDir = normalize( toEye - In.Pos );
+	float3 toEyeReflection = -toEyeDir + 2.0f * dot(normal, toEyeDir) * normal;
+	
+	//ディレクションライト
+	lig += CalcDirectionLight(In.Pos, normal, toEyeReflection, specPow);
+	
 	//ポイントライトを計算。
 	lig += CalcPointLight(
 		In.Pos, 
 		In.posInProj, 
-		In.Normal,
+		normal,
 		In.Tangent,
 		biNormal,
-		toEye
+		toEye,
+		toEyeReflection, 
+		specPow
 	);
 	
 	//アンビエントライト。
 	lig += ambientLight;
-
-	float4 color = float4(Texture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
+	//アルベド。
+	float4 color = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
 	color.xyz *= lig;
     return color; 
 #endif

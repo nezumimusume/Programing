@@ -23,7 +23,7 @@ namespace tkEngine{
 			LightManager().SetDirty();
 			m_isDirty = true;
 		}
-		void CPointLight::SetColor(const CVector3& color)
+		void CPointLight::SetColor(const CVector4& color)
 		{
 			light.color = color;
 			LightManager().SetDirty();

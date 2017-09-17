@@ -19,9 +19,9 @@ namespace tkEngine{
 			va_start( va, flag );
 			vprintf( format, va );
 			char fileLineInfo[256];
-			sprintf(fileLineInfo, "%s, %d行目", file, line );
+			sprintf_s(fileLineInfo, "%s, %d行目", file, line );
 			char assertMessage[256];
-			vsprintf(assertMessage, format, va);
+			vsprintf_s(assertMessage, format, va);
 			strcat(assertMessage, fileLineInfo);
 			MessageBox(nullptr, assertMessage, "アサート", MB_OK);
 			va_end( va );
