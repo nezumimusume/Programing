@@ -73,6 +73,21 @@ namespace tkEngine{
 		{
 			return static_cast<int>(m_pointLights.size());
 		}
+
+		/*!
+		 *@brief	アンビエントライトを取得。
+		 */
+		const CVector3& GetAmbientLight() const
+		{
+			return m_lightParam.ambientLight;
+		}
+		/*!
+		 *@brief	アンビエントライトを設定。
+		 */
+		void SetAmbientLight(const CVector3& ambient)
+		{
+			m_lightParam.ambientLight = ambient;
+		}
 	private:
 		void InitDirectionLightStructuredBuffer();
 		void InitPointLightStructuredBuffer();
@@ -80,10 +95,16 @@ namespace tkEngine{
 	private:
 		static const int MAX_DIRECTION_LIGHT = 8;						//!<ディレクションライトの最大数。
 		static const int MAX_POINT_LIGHT = 1024;						//!<ポイントライトの最大数。
-		//GPUで使用するライト用のパラメータ。
+		/*!
+		 *@brief	GPUで使用するライト用のパラメータ。
+		 *@details
+		 * メンバ変数を追加したり、並びを変えたりしたら
+		 * Assets/shader/modelCB.hのlightCbも変える必要あり。
+		 */
 		struct SLightParam {
 			CVector3 eyePos;			//視線の位置。
 			int numDirectionLight;		//ディレクションライトの数。
+			CVector3 ambientLight;		//アンビエントライト。
 			int numPointLight;			//ポイントライトの数。
 		};
 		SLightParam							m_lightParam;

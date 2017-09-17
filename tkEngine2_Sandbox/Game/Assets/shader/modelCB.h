@@ -17,9 +17,11 @@ cbuffer VSPSCb : register(b0){
  */
 cbuffer lightCb : register(b1)
 {
-	float3 eyePos;			//カメラの位置。
-	int numDirectionLight;	//ディレクションライトの数。
-	int numPointLight;		//ポイントライトの数。
+	float3 eyePos 			: packoffset(c0);		//カメラの位置。
+	int numDirectionLight 	: packoffset(c0.w);		//ディレクションライトの数。
+	float3 ambientLight		: packoffset(c1);		//アンビエントライト。
+	int numPointLight		: packoffset(c1.w);		//ポイントライトの数。
+	
 };
 
 cbuffer MaterialParamCb : register(b2){

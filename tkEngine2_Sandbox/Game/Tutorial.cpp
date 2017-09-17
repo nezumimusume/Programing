@@ -114,6 +114,7 @@ public:
 			}
 			//m_pointLight[0]->SetPosition({0.0f, 10.0f, 0.0f});
 		}
+		LightManager().SetAmbientLight({0.1f, 0.1f, 0.1f});
 		m_player = NewGO<Player>(0);
 		NewGO<Background>(0);
 		return true;

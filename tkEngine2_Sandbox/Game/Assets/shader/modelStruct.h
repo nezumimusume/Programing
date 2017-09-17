@@ -9,7 +9,7 @@ struct VSInputNmTxVcTangent
 {
     float4 Position : SV_Position;
     float3 Normal   : NORMAL;
-    float4 Tangent  : TANGENT;
+    float3 Tangent  : TANGENT;
     float2 TexCoord : TEXCOORD0;
     float4 Color    : COLOR;
 };
@@ -21,6 +21,7 @@ struct VSInputNmTxWeights
     float4 Position : SV_Position;
     float3 Normal   : NORMAL;
     float2 TexCoord	: TEXCOORD0;
+    float3 Tangent	: TANGENT;
     uint4  Indices  : BLENDINDICES0;
     float4 Weights  : BLENDWEIGHT0;
 };
@@ -31,6 +32,7 @@ struct VSInputNmTxWeights
 struct PSInput{
 	float4 Position 	: SV_POSITION;
 	float3 Normal		: NORMAL;
+	float3 Tangent		: TANGENT;
 	float2 TexCoord 	: TEXCOORD0;
 	float3 Pos			: TEXCOORD1;		//ワールド座標系での頂点座標。
 	float3 posInView	: TEXCOORD2;		//カメラ空間での座標。

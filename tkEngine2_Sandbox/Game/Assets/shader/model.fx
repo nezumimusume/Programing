@@ -7,7 +7,8 @@
 #include "modelSRV.h"
 #include "sampleBRDF.h"
 
-#define TILE_WIDTH	16		//タイルの幅。
+#include "LightingFunction.h"
+
 
 /*!--------------------------------------------------------------------------------------
  * @brief	スキンなしモデル用の頂点シェーダー。
@@ -25,7 +26,7 @@ PSInput VSMain( VSInputNmTxVcTangent In )
 	psInput.Position = pos;
 	psInput.TexCoord = In.TexCoord;
 	psInput.Normal = mul(mWorld, In.Normal);
-	
+	psInput.Tangent = mul(mWorld, In.Tangent);
     return psInput;
 }
 /*!--------------------------------------------------------------------------------------
@@ -44,6 +45,7 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
     }
 	pos.xyz = mul(skinning, In.Position);
 	psInput.Normal = mul(skinning, In.Normal);
+	psInput.Tangent = mul(skinning, In.Tangent);
 	pos.w = 1.0f;
 	psInput.Pos = pos;
 	pos = mul(mView, pos);
@@ -89,39 +91,26 @@ float4 PSMain( PSInput In ) : SV_Target0
 	color += diffuseColor * float3(0.1f, 0.1f, 0.1f);
     return float4( color, 1.0f ); 
 #else	//not pbr
-		//スクリーンの左上を(0,0)、右下を(1,1)とする座標系に変換する。
-	float2 screenPos = (In.posInProj.xy / In.posInProj.w) * float2(0.5f, -0.5f) + 0.5f;
-	//ビューポート座標系に変換する。
-	float2 viewportPos = screenParam.zw * screenPos;
-	//スクリーンをタイルで分割したときのセルのX座標を求める。
-	uint numCellX = (screenParam.z + TILE_WIDTH - 1) / TILE_WIDTH;
-	//タイルインデックスを計算する。
-	uint tileIndex = floor( viewportPos.x / TILE_WIDTH ) + floor( viewportPos.y / TILE_WIDTH ) * numCellX;
-	
-	//このピクセルが含まれるタイルのライトインデックスリストの開始位置を計算する。
-	uint lightStart = tileIndex * numPointLight;
-	//このピクセルが含まれるタイルのライトインデックスリストの終了位置を計算する。
-	uint lightEnd = lightStart + numPointLight;
-	
+
 	float3 lig = 0.0f;
-	for (uint lightListIndex = lightStart; lightListIndex < lightEnd; lightListIndex++){
-		uint lightIndex = pointLightListInTile[lightListIndex];
-		if(lightIndex == 0xffffffff){
-			//このタイルに含まれるポイントライトはもうない。
-			break;
-		}
-		SPointLight light = pointLightList[lightIndex];
-		float3 lightDir = In.Pos - light.position;
-		float len = length(lightDir);
-		lightDir = normalize(lightDir);	//正規化。
-		float3 pointLightColor = saturate(-dot(In.Normal, lightDir)) * light.color.xyz;
-		//減衰を計算する。
-		float	litRate = len / light.attn.x;
-		float	attn = max(1.0 - litRate * litRate, 0.0);
-		pointLightColor *= attn;
-		lig += pointLightColor;
-	}
-	lig += 0.2f;
+	//視点までのベクトルを求める。
+	float3 toEye = normalize(eyePos - In.Pos);
+	//従ベクトルを計算する。
+	float3 biNormal = normalize(cross(In.Normal, In.Tangent));
+	
+	//ポイントライトを計算。
+	lig += CalcPointLight(
+		In.Pos, 
+		In.posInProj, 
+		In.Normal,
+		In.Tangent,
+		biNormal,
+		toEye
+	);
+	
+	//アンビエントライト。
+	lig += ambientLight;
+
 	float4 color = float4(Texture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
 	color.xyz *= lig;
     return color; 

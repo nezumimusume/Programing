@@ -21,7 +21,9 @@ namespace tkEngine{
 		InitDirectionLightStructuredBuffer();
 		InitPointLightStructuredBuffer();
 		InitPointLightInTileStructuredBuffer();
+		SetAmbientLight({ 0.5f, 0.5f, 0.5f });
 		m_lightParamCB.Create(&m_lightParam, sizeof(m_lightParam));
+		
 	}
 	void CLightManager::InitPointLightInTileStructuredBuffer()
 	{
