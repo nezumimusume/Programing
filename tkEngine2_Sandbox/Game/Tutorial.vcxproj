@@ -582,22 +582,17 @@
     <ResourceCompile Include="Tutorial.rc" />
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\background.FBX">
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\Thethief_H.FBX" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="phong.dgsl" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Assets\modelData\Thethief_wuqi_N.tga" />
-    <ImageContentTask Include="Assets\modelData\Thethief_wuqi_S.tga" />
+    <MeshContentTask Include="Resource\modelData\background.FBX" />
+    <MeshContentTask Include="Resource\modelData\Thethief_H.FBX" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Resource\modelData\Thethief_N.tga" />
+    <ImageContentTask Include="Resource\modelData\Thethief_S.tga" />
+    <ImageContentTask Include="Resource\modelData\Thethief_wuqi_N.tga" />
+    <ImageContentTask Include="Resource\modelData\Thethief_wuqi_S.tga" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
