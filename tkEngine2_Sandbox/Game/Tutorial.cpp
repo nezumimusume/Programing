@@ -176,6 +176,13 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	initParam.frameBufferWidth = 1280;
 	initParam.frameBufferHeight = 720;
 	
+	//影の設定。
+	initParam.graphicsConfing.shadowRenderConfig.isEnable = true;
+	initParam.graphicsConfing.shadowRenderConfig.shadowMapWidth = 1024;
+	initParam.graphicsConfing.shadowRenderConfig.shadowMapHeight = 1024;
+	initParam.graphicsConfing.shadowRenderConfig.isEnableSoftShadow = true;
+	initParam.graphicsConfing.shadowRenderConfig.numShadowMap = 3;
+
 	//エンジンを初期化。
 	if (Engine().Init(initParam) == true) {
 		//初期化に成功。

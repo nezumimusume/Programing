@@ -594,6 +594,9 @@
     <ImageContentTask Include="Resource\modelData\Thethief_wuqi_N.tga" />
     <ImageContentTask Include="Resource\modelData\Thethief_wuqi_S.tga" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Resource\modelData\BB_Map_1A Normal.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

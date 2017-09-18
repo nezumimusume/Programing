@@ -266,6 +266,12 @@
     <ClInclude Include="graphics\animation\tkAnimationPlayController.h">
       <Filter>Source Files\graphics\animation</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\preRender\tkShadowMap.h">
+      <Filter>Source Files\graphics\preRender</Filter>
+    </ClInclude>
+    <ClInclude Include="tkEngineStruct.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -408,6 +414,9 @@
     </ClCompile>
     <ClCompile Include="graphics\animation\tkAnimationPlayController.cpp">
       <Filter>Source Files\graphics\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\preRender\tkShadowMap.cpp">
+      <Filter>Source Files\graphics\preRender</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

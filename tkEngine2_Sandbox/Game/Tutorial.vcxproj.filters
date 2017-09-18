@@ -50,5 +50,8 @@
     <Image Include="Resource\modelData\Thethief_N.tga">
       <Filter>Resource Files\modelData</Filter>
     </Image>
+    <Image Include="Resource\modelData\BB_Map_1A Normal.png">
+      <Filter>Resource Files\modelData</Filter>
+    </Image>
   </ItemGroup>
 </Project>

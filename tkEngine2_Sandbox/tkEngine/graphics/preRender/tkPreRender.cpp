@@ -20,6 +20,7 @@ namespace tkEngine{
 	{
 		m_zprepass.Init();
 		m_lightCulling.Init();
+		m_shadowMap.Init(config.shadowRenderConfig);
 	}
 	/*!
 	* @brief	ï`âÊÅB

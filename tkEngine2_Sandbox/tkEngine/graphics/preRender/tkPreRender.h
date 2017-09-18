@@ -8,6 +8,7 @@
 #include "tkEngine/graphics/tkGraphicsConfig.h"
 #include "tkEngine/graphics/preRender/tkZPrepass.h"
 #include "tkEngine/graphics/preRender/tkLightCulling.h"
+#include "tkEngine/graphics/preRender/tkShadowMap.h"
 
 namespace tkEngine{
 	/*!
@@ -51,6 +52,7 @@ namespace tkEngine{
 		SGraphicsConfig	m_config;			//!<コンフィグ。
 		CZPrepass		m_zprepass;			//!<ZPrepass。
 		CLightCulling	m_lightCulling;		//!<ライトカリング。
+		CShadowMap		m_shadowMap;		//!<シャドウマップ。
 	};
 }
 #endif //_TKPRERENDER_H_

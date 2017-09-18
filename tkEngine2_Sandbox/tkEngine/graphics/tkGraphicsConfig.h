@@ -23,13 +23,13 @@ namespace tkEngine{
 			isEnable = false;
 			shadowMapWidth = 512;
 			shadowMapHeight = 512;
-			isDisableSoftShadow = false;
+			isEnableSoftShadow = false;
 			numShadowMap = 1;
 		}
 		bool 	isEnable;				//!<影を落とす処理が有効かどうかのフラグ。
 		int		shadowMapWidth;			//!<シャドウマップの幅。
 		int		shadowMapHeight;		//!<シャドウマップの高さ。
-		bool	isDisableSoftShadow;	//!<ソフトシャドウが無効かどうかのフラグ。
+		bool	isEnableSoftShadow;		//!<ソフトシャドウが有効かどうかのフラグ。
 		int		numShadowMap;			//!<シャドウマップの枚数。(最大4枚)
 	};
 	/*!
