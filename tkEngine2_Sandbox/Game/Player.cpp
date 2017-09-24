@@ -19,6 +19,7 @@ bool Player::Start()
 	m_skinModelData.Load(L"Assets/modelData/Thethief_H.cmo");
 	m_skinModel.Init(m_skinModelData);
 	m_skinModel.SetShadowCasterFlag(true);
+	m_skinModel.SetShadowReceiverFlag(true);
 	//法線マップをロード。
 	m_normalMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/Thethief_N.dds");
 	m_specularMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/Thethief_S.dds");
@@ -74,6 +75,7 @@ void Player::Update()
 	CQuaternion qRot;
 	qRot.SetRotationDeg(CVector3::AxisX, 90.0f);
 	m_skinModel.Update(m_position, qRot, CVector3::One);
+	
 	m_animation.Update(GameTime().GetFrameDeltaTime());
 }
 void Player::Render(CRenderContext& rc) 

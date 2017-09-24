@@ -103,35 +103,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 	float3 toEyeDir = normalize( toEye - In.Pos );
 	float3 toEyeReflection = -toEyeDir + 2.0f * dot(normal, toEyeDir) * normal;
 	
-	//ディレクションライト
-	float3 finalColor = CalcDirectionLight(
-		albedo,
-		In.Pos, 
-		normal, 
-		In.Tangent,
-		biNormal,
-		toEyeDir,
-		toEyeReflection, 
-		roughness,
-		specPow
-	);
-	
-	//ポイントライトを計算。
-	finalColor += CalcPointLight(
-		albedo,
-		In.Pos, 
-		In.posInProj, 
-		normal,
-		In.Tangent,
-		biNormal,
-		toEyeDir,
-		toEyeReflection, 
-		roughness,
-		specPow
-	);
-	
-	//アンビエントライト。
-	finalColor += albedo * ambientLight;
+	int shadow = 0;
 	//ちょっと適当。
 	if(isShadowReceiver){
 		//影を落とす。
@@ -155,11 +127,44 @@ float4 PSMain( PSInput In ) : SV_Target0
 					shadow_val = shadowMap_2.Sample(Sampler, shadowMapUV ).r;
 				}
 				if( depth > shadow_val.r + 0.006f ){
-					finalColor = albedo * ambientLight;
+					shadow = 1;
 				}
 			}
 		}
 	}
+	
+	//ディレクションライト
+	float3 finalColor = 0.0f;
+	if(shadow == 0){
+		finalColor = CalcDirectionLight(
+			albedo,
+			In.Pos, 
+			normal, 
+			In.Tangent,
+			biNormal,
+			toEyeDir,
+			toEyeReflection, 
+			roughness,
+			specPow
+		);
+	}
+	//ポイントライトを計算。
+	finalColor += CalcPointLight(
+		albedo,
+		In.Pos, 
+		In.posInProj, 
+		normal,
+		In.Tangent,
+		biNormal,
+		toEyeDir,
+		toEyeReflection, 
+		roughness,
+		specPow
+	);
+	
+	//アンビエントライト。
+	finalColor += albedo * ambientLight;
+	
     return float4(finalColor, 1.0f); 
 
 }
