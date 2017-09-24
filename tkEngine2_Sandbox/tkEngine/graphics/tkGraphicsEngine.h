@@ -47,6 +47,13 @@ namespace tkEngine{
 			return m_preRender.GetZPrepass();
 		}
 		/*!
+		* @brief	シャドウマップを取得。
+		*/
+		CShadowMap& GetShadowMap()
+		{
+			return m_preRender.GetShadowMap();
+		}
+		/*!
 		*@brief	メインカメラを取得。
 		*/
 		CCamera& GetMainCamera()

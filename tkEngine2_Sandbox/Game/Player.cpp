@@ -18,7 +18,7 @@ bool Player::Start()
 {
 	m_skinModelData.Load(L"Assets/modelData/Thethief_H.cmo");
 	m_skinModel.Init(m_skinModelData);
-
+	m_skinModel.SetShadowCasterFlag(true);
 	//法線マップをロード。
 	m_normalMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/Thethief_N.dds");
 	m_specularMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/Thethief_S.dds");

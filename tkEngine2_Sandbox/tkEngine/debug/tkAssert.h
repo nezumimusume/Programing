@@ -22,7 +22,7 @@ namespace tkEngine{
 			sprintf_s(fileLineInfo, "%s, %d行目", file, line );
 			char assertMessage[256];
 			vsprintf_s(assertMessage, format, va);
-			strcat(assertMessage, fileLineInfo);
+			strcat_s(assertMessage, fileLineInfo);
 			MessageBox(nullptr, assertMessage, "アサート", MB_OK);
 			va_end( va );
 			std::abort();

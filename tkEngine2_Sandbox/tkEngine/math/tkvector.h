@@ -109,15 +109,15 @@ namespace tkEngine{
 			vec.z = _z;
 		}
 		template<class TVector>
-		void Set(TVector& v)
+		void Set(TVector& _v)
 		{
-			Set(v.x, v.y, v.z);
+			Set(_v.x, _v.y, _v.z);
 		}
-		void Set(btVector3& v)
+		void Set(btVector3& _v)
 		{
-			this->x = v.x();
-			this->y = v.y();
-			this->z = v.z();
+			this->x = _v.x();
+			this->y = _v.y();
+			this->z = _v.z();
 		}
 		
 		/*!

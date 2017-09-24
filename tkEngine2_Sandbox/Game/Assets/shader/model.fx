@@ -71,33 +71,11 @@ float4 PSMain( PSInput In ) : SV_Target0
 		//ZPrepass?
 		return In.posInProj.z / In.posInProj.w;
 	}
-#if 0 //PBR
-	float4 diffuseColor = float4(Texture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
-	//従ベクトルと接ベクトルを求める。<-多くの場合で事前計算済みのデータとして、頂点データに埋め込まれているから計算しなくてよい。
-//	float3 lig = max(0.0f, -dot( In.Normal, diffuseLightDir )) * diffuseLightColor;
-	float3 biNormal;
-	float3 tangentNormal;
-	if(In.Normal.x < 0.001f && In.Normal.z < 0.001f){
-		//法線がほぼ真上
-		tangentNormal = normalize(cross(In.Normal, float3( 1.0f, 0.0f, 0.0f)));
-	}else{
-		tangentNormal = normalize(cross(In.Normal, float3( 0.0f, 1.0f, 0.0f)));
+	if(isDrawShadowMap){
+		//ShadowMap?
+		//たぶんVSMはやらないので、普通にZ値を返しておこう。
+		return In.posInProj.z / In.posInProj.w;
 	}
-	float3 toEye = normalize(eyePos - In.Pos);
-	biNormal = normalize(cross(In.Normal, tangentNormal));
-	float3 color = 0.0f;
-	for( int i = 0; i < numDirectionLight; i++){
-		float3 diffuseLightColor = 0.0f;
-		float3 lightDir = directionLight[i].direction;
-		diffuseLightColor += BRDF(-lightDir, toEye, In.Normal, tangentNormal, biNormal, diffuseColor.xyz);
-		diffuseLightColor *= dot( In.Normal, -lightDir );
-		color += diffuseLightColor;
-	}
-	color += diffuseColor * float3(0.1f, 0.1f, 0.1f);
-    return float4( color, 1.0f ); 
-#else	//not pbr
-	
-	
 	float3 lig = 0.0f;
 	//視点までのベクトルを求める。
 	float3 toEye = normalize(eyePos - In.Pos);
@@ -155,6 +133,6 @@ float4 PSMain( PSInput In ) : SV_Target0
 	//アンビエントライト。
 	finalColor += albedo * ambientLight;
     return float4(finalColor, 1.0f); 
-#endif
+
 }
 

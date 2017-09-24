@@ -87,7 +87,6 @@ namespace tkEngine{
 		{
 			return m_graphicsEngine.GetZPrepass();
 		}
-		
 		/*!
 		*@brief	ƒƒCƒ“ƒJƒƒ‰‚ğæ“¾B
 		*/

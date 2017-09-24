@@ -40,13 +40,20 @@ namespace tkEngine{
 		/*!
 		* @brief	更新。
 		*/
-		void Update() {}
+		void Update();
 		/*!
 		* @brief	ZPrepassの取得。
 		*/
 		CZPrepass& GetZPrepass()
 		{
 			return m_zprepass;
+		}
+		/*!
+		 *@brief	シャドウマップを取得。
+		 */
+		CShadowMap& GetShadowMap()
+		{
+			return m_shadowMap;
 		}
 	private:
 		SGraphicsConfig	m_config;			//!<コンフィグ。

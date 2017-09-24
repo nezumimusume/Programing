@@ -279,6 +279,7 @@
     <ClInclude Include="graphics\GPUView\tkUnorderedAccessView.h" />
     <ClInclude Include="graphics\preRender\tkLIghtCulling.h" />
     <ClInclude Include="graphics\preRender\tkPreRender.h" />
+    <ClInclude Include="graphics\preRender\tkShadowCaster.h" />
     <ClInclude Include="graphics\preRender\tkShadowMap.h" />
     <ClInclude Include="graphics\preRender\tkZPrepass.h" />
     <ClInclude Include="graphics\tkCamera.h" />
@@ -344,6 +345,7 @@
     <ClCompile Include="graphics\GPUView\tkUnorderedAccessView.cpp" />
     <ClCompile Include="graphics\preRender\tkLightCulling.cpp" />
     <ClCompile Include="graphics\preRender\tkPreRender.cpp" />
+    <ClCompile Include="graphics\preRender\tkShadowCaster.cpp" />
     <ClCompile Include="graphics\preRender\tkShadowMap.cpp" />
     <ClCompile Include="graphics\preRender\tkZPrepass.cpp" />
     <ClCompile Include="graphics\tkCamera.cpp" />

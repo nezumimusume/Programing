@@ -22,13 +22,17 @@ namespace tkEngine{
 		m_lightCulling.Init();
 		m_shadowMap.Init(config.shadowRenderConfig);
 	}
-	/*!
-	* @brief	ï`âÊÅB
-	*/
+	
+	void CPreRender::Update() 
+	{
+		m_shadowMap.Update();
+	}
+	
 	void CPreRender::Render(CRenderContext& rc)
 	{
 		m_zprepass.Render(rc);
 		m_lightCulling.Render(rc);
+		m_shadowMap.RenderToShadowMap(rc);
 	}
 
 }

@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "tkEngine/graphics/preRender/tkShadowCaster.h"
+
 namespace tkEngine{
 	class CSkinModelData;
 	/*!
@@ -37,12 +39,14 @@ namespace tkEngine{
 		*@param[in]	viewMatrix		ビュー行列。
 		*@param[in]	projMatrix		プロジェクション行列。
 		*@param[in]	isZPrepass		ZPrepass?
+		*@param[in]	isDrawShadowMap	シャドウマップに描画中？
 		*/
 		void Draw(
 			CRenderContext& renderContext, 
 			const CMatrix& viewMatrix, 
 			const CMatrix& projMatrix,
-			bool isZPrepass = false
+			bool isZPrepass = false,
+			bool isDrawShadowMap = false
 		);
 		/*!
 		*@brief	メッシュの検索。
@@ -54,6 +58,22 @@ namespace tkEngine{
 				m_skinModelData->FindMesh(findMesh);
 			}
 		}
+		/*!
+		* @brief	シャドウキャスターのフラグを設定。
+		*@param[in]	flag	シャドウキャスターのフラグ。
+		*/
+		void SetShadowCasterFlag(bool flag)
+		{
+			m_isShadowCaster = flag;
+		}
+		/*!
+		* @brief	シャドウレシーバーのフラグを設定。
+		*@param[in]	flag	シャドウレシーバーのフラグ。
+		*/
+		void SetShadowReceiverFlag(bool flag)
+		{
+			m_isShadowReceiver = flag;
+		}
 	private:
 		struct SVSConstantBuffer {
 			CMatrix mWorld;
@@ -61,9 +81,14 @@ namespace tkEngine{
 			CMatrix mProj;
 			CVector4 screenParam;
 			int isZPrepass;
+			int isDrawShadowMap;
+			int isShadowReceiver;
 		};
 		CSkinModelData*	m_skinModelData = nullptr;
 		CMatrix m_worldMatrix = CMatrix::Identity;
 		CConstantBuffer m_cb;			//定数バッファ。
+		CShadowCaster_SkinModel m_shadowCaster;	//!<シャドウキャスター。
+		bool m_isShadowCaster = false;		//!<シャドウキャスター？
+		bool m_isShadowReceiver = false;	//!<シャドウレシーバー？
 	};
 }
