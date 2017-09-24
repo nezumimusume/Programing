@@ -31,6 +31,10 @@ namespace tkEngine{
 		*/
 		void Update();
 		/*!
+		 *@brief	影を落とすためのパラメータをGPUに転送する。
+		 */
+		void SendShadowReceiveParamToGPU(CRenderContext& rc);
+		/*!
 		 *@brief	シャドウマップへ書き込み。
 		 */
 		void RenderToShadowMap(CRenderContext& rc);
@@ -71,6 +75,13 @@ namespace tkEngine{
 			m_near = Near;
 		}
 	private:
+		/*!
+		 *@brief	この中身を変更したら、modelCB.hのShadowCbも変更するように。
+		 */
+		struct SShadowCb {
+			CMatrix mLVP[MAX_SHADOW_MAP];
+			int numShadowMap;
+		};
 		bool m_isEnable = false;							//!<影の処理が有効？
 		CVector3 m_lightPosition = CVector3::Zero;			//!<ライトの位置。
 		CVector3 m_lightTarget = CVector3::Zero;			//!<注視点
@@ -83,5 +94,7 @@ namespace tkEngine{
 		std::vector<IShadowCaster*> m_shadowCaster;			//!<シャドウキャスター。
 		CMatrix	m_LVPMatrix[MAX_SHADOW_MAP] = { CMatrix::Identity };				//!<ライトビュープロジェクション行列。
 		int m_numShadowMap = 0;								//!<シャドウマップの枚数。
+		SShadowCb m_shadowCbEntity;
+		CConstantBuffer m_shadowCb;							//!<影を落とす時に使用する定数バッファ。
 	};
 }

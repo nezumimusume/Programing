@@ -49,11 +49,13 @@ namespace tkEngine{
 				multiSampleDesc
 			);
 		}
+		m_shadowCb.Create(&m_shadowCbEntity, sizeof(m_shadowCbEntity));
 		return true;
 	}
 	
 	void CShadowMap::Release()
 	{
+		m_shadowCb.Release();
 		for (auto& rt : m_shadowMapRT) {
 			rt.Release();
 		}
@@ -121,6 +123,7 @@ namespace tkEngine{
 		CVector3 lightOffset = cameraDir;
 		lightOffset.Scale(shadowAreaTbl[0] * 0.2f);
 		lightPos.Add(lightOffset);
+		SShadowCb shadowCB;
 		for (int i = 0; i < m_numShadowMap; i++) {
 
 			CMatrix mLightView;
@@ -144,14 +147,13 @@ namespace tkEngine{
 				m_far
 			);
 			m_LVPMatrix[i].Mul(mLightView, proj);
-			//@todo GPUに転送するパラメータは未実装。　m_shadowRecieverParam.mLVP[i] = m_LVPMatrix[i];
+			m_shadowCbEntity.mLVP[i] = m_LVPMatrix[i];
+			
 			lightOffset = cameraDir;
 			lightOffset.Scale(shadowAreaTbl[i] * 0.9f);
 			lightPos.Add(lightOffset);
 		}
-
-		//@todo GPUに転送するパラメータは未実装。　m_shadowRecieverParam.vsmFlag_numShadowMap[0] = m_isDisableVSM ? 0 : 1;
-		//@todo GPUに転送するパラメータは未実装。　m_shadowRecieverParam.vsmFlag_numShadowMap[1] = m_numShadowMap;
+		m_shadowCbEntity.numShadowMap = m_numShadowMap;
 	}
 	/*!
 	*@brief	シャドウマップへ書き込み。
@@ -170,7 +172,12 @@ namespace tkEngine{
 			};
 
 			rc.OMSetRenderTargets(1, renderTargets);
-			float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; //red,green,blue,alpha
+			rc.RSSetViewport(
+				0.0f, 0.0f, 
+				(float)m_shadowMapRT[i].GetWidth(),
+				(float)m_shadowMapRT[i].GetHeight()
+			);
+			float ClearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; //red,green,blue,alpha
 			rc.ClearRenderTargetView(0, ClearColor);
 
 			for (auto& caster : m_shadowCaster) {
@@ -181,6 +188,19 @@ namespace tkEngine{
 		m_shadowCaster.clear();
 		//レンダリングターゲットを差し戻す。
 		rc.OMSetRenderTargets(numRenderTargetViews, oldRenderTargets);
-
+		//@todo レンダリングステートはリストアする方法に変更する。
+		rc.RSSetViewport(0.0f, 0.0f, (float)GraphicsEngine().GetFrameBufferWidth(), (float)GraphicsEngine().GetFrameBufferHeight());
+	}
+	/*!
+	*@brief	影を落とすためのパラメータをGPUに転送する。
+	*/
+	void CShadowMap::SendShadowReceiveParamToGPU(CRenderContext& rc)
+	{
+		rc.UpdateSubresource(m_shadowCb, &m_shadowCbEntity);
+		rc.PSSetConstantBuffer(3, m_shadowCb);
+		//テクスチャを転送。
+		for (int i = 0; i < m_numShadowMap; i++) {
+			rc.PSSetShaderResource(3 + i, m_shadowMapRT[i].GetRenderTargetSRV());
+		}
 	}
 }

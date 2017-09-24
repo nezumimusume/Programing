@@ -73,7 +73,17 @@ namespace tkEngine{
 		{
 			return m_depthStencilView;
 		}
-		
+		/*!
+		 *@brief	レンダリングターゲットの幅を取得。
+		 */
+		int GetWidth() const
+		{
+			return m_width;
+		}
+		int GetHeight() const
+		{
+			return m_height;
+		}
 	private:
 		ID3D11Texture2D*			m_renderTarget = nullptr;			//!<レンダリングターゲットとなるテクスチャ。
 		ID3D11RenderTargetView*		m_renderTargetView = nullptr;		//!<レンダーターゲットビュー。
@@ -81,5 +91,7 @@ namespace tkEngine{
 		ID3D11DepthStencilView*		m_depthStencilView = nullptr;		//!<デプスステンシルビュー。
 		CShaderResourceView			m_renderTargetSRV;					//!<レンダリングターゲットのSRV。
 		CUnorderedAccessView		m_renderTargetUAV;					//!<レンダリングターゲットのUAV。
+		int m_width = 0;
+		int m_height = 0;
 	};
 }

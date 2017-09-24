@@ -178,8 +178,8 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	
 	//âeÇÃê›íËÅB
 	initParam.graphicsConfing.shadowRenderConfig.isEnable = true;
-	initParam.graphicsConfing.shadowRenderConfig.shadowMapWidth = 1024;
-	initParam.graphicsConfing.shadowRenderConfig.shadowMapHeight = 1024;
+	initParam.graphicsConfing.shadowRenderConfig.shadowMapWidth = 2048;
+	initParam.graphicsConfing.shadowRenderConfig.shadowMapHeight = 2048;
 	initParam.graphicsConfing.shadowRenderConfig.isEnableSoftShadow = true;
 	initParam.graphicsConfing.shadowRenderConfig.numShadowMap = 3;
 

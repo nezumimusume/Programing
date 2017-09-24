@@ -53,6 +53,8 @@ namespace tkEngine{
 
 		//ƒ‰ƒCƒg‚Ìî•ñ‚ğ“]‘—“]‘—B
 		LightManager().Render(renderContext);
+		//‰e‚ğ—‚Æ‚·‚½‚ß‚Ìî•ñ‚ğ“]‘—B
+		GraphicsEngine().GetShadowMap().SendShadowReceiveParamToGPU(renderContext);
 
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {

@@ -22,6 +22,7 @@ bool Background::Start()
 			effect->SetNormalMap(m_normalMapSRV.GetBody());
 		}
 	});
+	m_skinModel.SetShadowReceiverFlag(true);
 	return true;
 }
 void Background::Update()

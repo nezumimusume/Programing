@@ -27,6 +27,8 @@ namespace tkEngine{
 	)
 	{
 		Release();
+		m_width = w;
+		m_height = h;
 		//レンダリングターゲットの作成。
 		D3D11_TEXTURE2D_DESC texDesc;
 		ZeroMemory(&texDesc, sizeof(texDesc));

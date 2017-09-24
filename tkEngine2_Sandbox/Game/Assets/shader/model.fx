@@ -132,6 +132,34 @@ float4 PSMain( PSInput In ) : SV_Target0
 	
 	//アンビエントライト。
 	finalColor += albedo * ambientLight;
+	//ちょっと適当。
+	if(isShadowReceiver){
+		//影を落とす。
+		for(int i = 0; i < numShadowMap; i++ ){
+			float4 posInLVP = mul(mLVP[i], float4(In.Pos, 1.0f) );
+			posInLVP.xyz /= posInLVP.w;
+			
+			float depth = min(posInLVP.z, 1.0f);
+			
+			//uv座標に変換。
+			float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
+			float2 shadow_val = 1.0f;
+			if(shadowMapUV.x < 0.99f && shadowMapUV.y < 0.99f && shadowMapUV.x > 0.01f && shadowMapUV.y > 0.01f){
+				
+				//@todo テクスチャ配列に変更する。
+				if(i == 0){
+					shadow_val = shadowMap_0.Sample(Sampler, shadowMapUV ).r;
+				}else if(i == 1){
+					shadow_val = shadowMap_1.Sample(Sampler, shadowMapUV ).r;
+				}else if(i == 2){
+					shadow_val = shadowMap_2.Sample(Sampler, shadowMapUV ).r;
+				}
+				if( depth > shadow_val.r + 0.006f ){
+					finalColor = albedo * ambientLight;
+				}
+			}
+		}
+	}
     return float4(finalColor, 1.0f); 
 
 }
