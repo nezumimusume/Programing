@@ -38,7 +38,7 @@ namespace tkEngine{
 				wh[i][1], 
 				1, 
 				1,
-				DXGI_FORMAT_R16G16_FLOAT,
+				DXGI_FORMAT_R32_FLOAT,
 				DXGI_FORMAT_D24_UNORM_S8_UINT, 
 				multiSampleDesc
 			);
@@ -77,10 +77,7 @@ namespace tkEngine{
 		}
 		cameraDir.y = 0.0f;
 		cameraDir.Normalize();
-		CVector3 lightViewForward;
-		lightViewForward.Subtract(m_lightTarget, m_lightPosition);
-		lightViewForward.Normalize();
-
+		CVector3 lightViewForward = m_lightDirection;
 		CVector3 lightViewUp;
 		lightViewUp.Cross(lightViewForward, cameraDir);
 		lightViewUp.Normalize();
@@ -112,7 +109,11 @@ namespace tkEngine{
 			800
 		};
 
-		CVector3 lightPos = m_lightPosition;
+		
+		CVector3 toLightPos = m_lightDirection;
+		toLightPos.Scale(-MainCamera().GetTargetToPositionLength());
+		CVector3 lightPos;
+		lightPos.Add(MainCamera().GetTarget(), toLightPos);
 		CVector3 lightOffset;
 		SShadowCb shadowCB;
 		for (int i = 0; i < NUM_SHADOW_MAP; i++) {

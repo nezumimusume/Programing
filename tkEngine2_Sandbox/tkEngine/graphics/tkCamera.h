@@ -138,6 +138,13 @@ namespace tkEngine{
 			return m_viewAngle;
 		}
 		/*!
+		* @brief	注視点と視点の距離を取得。
+		*/
+		float GetTargetToPositionLength() const
+		{
+			return m_targetToPositionLen;
+		}
+		/*!
 		* @brief	ワールド座標からスクリーン座標を計算する。
 		*@details
 		* 計算されるスクリーン座標は画面の中心を{0,0}、左上を{画面の幅*-0.5,画面の高さ*-0.5}</br>
@@ -147,6 +154,7 @@ namespace tkEngine{
 		*/
 		void CalcScreenPositionFromWorldPosition(CVector2& screenPos, const CVector3& worldPos) const;
 	protected:
+		float		m_targetToPositionLen = 1.0f;		//!<注視点と視点まで距離。
 		CVector3	m_position;							//!<カメラ位置。
 		CVector3	m_up;								//!<カメラの上方向。
 		CVector3	m_target;							//!<カメラの中止点。
@@ -155,10 +163,10 @@ namespace tkEngine{
 		CMatrix		m_viewProjectionMatrix;				//!<ビュープロジェクション行列。
 		CMatrix		m_viewMatrixInv;					//!<ビュー行列の逆行列。
 		CMatrix		m_cameraRotation;					//!<カメラの回転行列。
-		float			m_near;								//!<近平面。
-		float			m_far;								//!<遠平面。
-		float			m_viewAngle;						//!<画角(ラジアン)。
-		float			m_aspect;							//!<アスペクト比。
+		float		m_near;								//!<近平面。
+		float		m_far;								//!<遠平面。
+		float		m_viewAngle;						//!<画角(ラジアン)。
+		float		m_aspect;							//!<アスペクト比。
 		bool		m_isNeedUpdateProjectionMatrix;
 	};
 }

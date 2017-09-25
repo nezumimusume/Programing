@@ -47,19 +47,13 @@ namespace tkEngine{
 		*/
 		void Entry(IShadowCaster* caster);
 		/*!
-		* @brief	ライトビューの注視点を設定。
-		*/
-		void SetLightTarget(const CVector3& lightTarget)
+		 *@brief	ライトの方向を設定。
+		 */
+		void SetLightDirection(const CVector3 lightDir)
 		{
-			m_lightTarget = lightTarget;
+			m_lightDirection = lightDir;
 		}
-		/*!
-		* @brief	ライトの位置を設定。
-		*/
-		void SetLightPosition(const CVector3& lightPosition)
-		{
-			m_lightPosition = lightPosition;
-		}
+		
 		/*!
 		* @brief	遠平面を設定。
 		*/
@@ -82,8 +76,7 @@ namespace tkEngine{
 			CMatrix mLVP[NUM_SHADOW_MAP];
 		};
 		bool m_isEnable = false;							//!<影の処理が有効？
-		CVector3 m_lightPosition = CVector3::Zero;			//!<ライトの位置。
-		CVector3 m_lightTarget = CVector3::Zero;			//!<注視点
+		CVector3 m_lightDirection = CVector3::Down;			//!<ライトの方向。
 		float m_near = 0.1f;								//!<近平面。
 		float m_far = 100.0f;								//!<遠平面。
 		float m_accpect = 1.0f;								//!<アスペクト。不要？

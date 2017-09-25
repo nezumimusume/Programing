@@ -87,10 +87,8 @@ void Player::Update()
 	m_skinModel.Update(m_position, qRot, CVector3::One);
 	
 	m_animation.Update(GameTime().GetFrameDeltaTime());
-	CVector3 lightPos = m_position;
-	lightPos.Add({ 0.0f, 100.0f, 100.0f });
-	GraphicsEngine().GetShadowMap().SetLightPosition(lightPos);
-	GraphicsEngine().GetShadowMap().SetLightTarget(m_position);
+	
+	GraphicsEngine().GetShadowMap().SetLightDirection({0.0f, -0.707, -0.707});
 
 }
 void Player::Render(CRenderContext& rc) 

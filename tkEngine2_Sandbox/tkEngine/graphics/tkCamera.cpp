@@ -51,6 +51,10 @@ namespace tkEngine{
 		m_cameraRotation.m[3][1] = 0.0f;
 		m_cameraRotation.m[3][2] = 0.0f;
 		m_cameraRotation.m[3][3] = 1.0f;
+
+		CVector3 toPos;
+		toPos.Subtract(m_position, m_target);
+		m_targetToPositionLen = toPos.Length();
 	}
 	void CCamera::CalcScreenPositionFromWorldPosition(CVector2& screenPos, const CVector3& worldPos) const
 	{
