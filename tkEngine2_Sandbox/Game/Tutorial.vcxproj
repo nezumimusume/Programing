@@ -572,17 +572,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.h" />
+    <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Player.h" />
     <CLInclude Include="resource.h" />
     <ResourceCompile Include="Tutorial.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="phong.dgsl" />
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Resource\modelData\background.FBX" />

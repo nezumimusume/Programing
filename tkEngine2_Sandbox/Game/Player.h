@@ -10,6 +10,10 @@ public:
 	bool Start() override;
 	void Update() override;
 	void Render(CRenderContext& rc) override;
+	const CVector3& GetPosition() const
+	{
+		return m_position;
+	}
 private:
 	enum EnAnimationClip {
 		enAnimationClip_idle,

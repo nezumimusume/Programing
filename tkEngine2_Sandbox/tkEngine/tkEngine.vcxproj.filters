@@ -69,6 +69,9 @@
     <Filter Include="Source Files\graphics\animation">
       <UniqueIdentifier>{951eb993-5b6c-4e0c-94a6-e7898edcdfe2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\camera">
+      <UniqueIdentifier>{ee265cd4-6955-4e1d-8ddd-6ed3d6d15169}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameObject\tkGameObjectManager.h">
@@ -275,6 +278,12 @@
     <ClInclude Include="graphics\tkSkinModelData.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\tkEngine\camera\tkCameraCollisionSolver.h">
+      <Filter>Source Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tkEngine\camera\tkSpringCamera.h">
+      <Filter>Source Files\camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -423,6 +432,12 @@
     </ClCompile>
     <ClCompile Include="graphics\preRender\tkShadowCaster.cpp">
       <Filter>Source Files\graphics\preRender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tkEngine\camera\tkSpringCamera.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tkEngine\camera\tkCameraCollisionSolver.cpp">
+      <Filter>Source Files\camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

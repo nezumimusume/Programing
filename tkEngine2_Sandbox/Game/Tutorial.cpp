@@ -12,7 +12,7 @@
 #include "tkEngine/physics/tkMeshCollider.h"
 #include "Player.h"
 #include "Background.h"
-
+#include "GameCamera.h"
 
 class PBRSample : public IGameObject {
 	//マテリアルパラメータの数。
@@ -41,13 +41,7 @@ public:
 		mRot.MakeRotationY(0.785f);
 		CVector3 right = CVector3::Right;
 		mRot.Mul(right);
-		//カメラを初期化。
-		CCamera& mainCamera = MainCamera();
-		mainCamera.SetPosition({ 0.0f, 40.0f, 100.0f });
-		mainCamera.SetTarget({ 0.0f, 40.0f, 0.0f });
-		mainCamera.SetUp({ 0.0f, 1.0f, 0.0f });
-		mainCamera.SetNear(0.1f);
-		mainCamera.Update();
+		
 		
 		//ディレクションライトをシーンに追加。
 		m_directionLight[0] = NewGO<prefab::CDirectionLight>(0);
@@ -109,8 +103,9 @@ public:
 			//m_pointLight[0]->SetPosition({0.0f, 10.0f, 0.0f});
 		}
 		LightManager().SetAmbientLight({0.05f, 0.05f, 0.05f});
-		m_player = NewGO<Player>(0);
+		m_player = NewGO<Player>(0, "Player");
 		NewGO<Background>(0);
+		NewGO<GameCamera>(0, "GameCamera");
 		return true;
 	}
 	void Update() override

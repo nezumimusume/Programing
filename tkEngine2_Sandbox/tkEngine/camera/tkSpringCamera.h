@@ -53,7 +53,7 @@ namespace tkEngine{
 		/*!
 		* @brief	初期化。
 		*/
-		void Init( const CVector3& target, const CVector3& position, float maxMoveSpeed);
+		void Init( CCamera* camera,float maxMoveSpeed);
 		/*!
 		 * @brief	目標となる注視点を設定。
 		 */
@@ -73,35 +73,50 @@ namespace tkEngine{
 		*/
 		void SetTarget(const CVector3& target)
 		{
-			m_camera.SetTarget(target);
+			if (m_camera == nullptr) {
+				return;
+			}
+			m_camera->SetTarget(target);
 		}
 		/*!
 		* @brief	視点を設定。
 		*/
 		void SetPosition(const CVector3 position)
 		{
-			m_camera.SetPosition(position);
+			if (m_camera == nullptr) {
+				return;
+			}
+			m_camera->SetPosition(position);
 		}
 		/*!
 		* @brief	遠平面を設定。
 		*/
 		void SetFar(float _far)
 		{
-			m_camera.SetFar(_far);
+			if (m_camera == nullptr) {
+				return ;
+			}
+			m_camera->SetFar(_far);
 		}
 		/*!
 		* @brief	カメラの回転行列を取得。
 		*/
 		const CMatrix& GetCameraRotation() const
 		{
-			return m_camera.GetCameraRotation();
+			if (m_camera == nullptr) {
+				return CMatrix::Identity;
+			}
+			return m_camera->GetCameraRotation();
 		}
 		/*!
 		* @brief	注視点を取得。
 		*/
 		const CVector3& GetTarget() const
 		{
-			return m_camera.GetTarget();
+			if (m_camera == nullptr) {
+				return CVector3::Zero;
+			}
+			return m_camera->GetTarget();
 
 		}
 		/*!
@@ -109,7 +124,10 @@ namespace tkEngine{
 		*/
 		const CVector3& GetPosition() const
 		{
-			return m_camera.GetPosition();
+			if (m_camera == nullptr) {
+				return CVector3::Zero;
+			}
+			return m_camera->GetPosition();
 		}
 		
 		/*!
@@ -121,7 +139,7 @@ namespace tkEngine{
 		 */
 		const CCamera* GetCamera() const
 		{
-			return &m_camera;
+			return m_camera;
 		}
 		/*!
 		* @brief	バネの減衰率を設定。
@@ -137,15 +155,21 @@ namespace tkEngine{
 		*/
 		CCamera* GetCamera() 
 		{
-			return &m_camera;
+			return m_camera;
 		}
 		void SetViewAngle(float angle)
 		{
-			m_camera.SetViewAngle(angle);
+			if (m_camera == nullptr) {
+				return;
+			}
+			m_camera->SetViewAngle(angle);
 		}
 		float GetViewAngle() const
 		{
-			return m_camera.GetViewAngle();
+			if (m_camera == nullptr) {
+				return 0.0f;
+			}
+			return m_camera->GetViewAngle();
 		}
 
 		/*!
@@ -186,10 +210,12 @@ namespace tkEngine{
 		*/
 		void UpdateCamera()
 		{
-			m_camera.Update();
+			if (m_camera) {
+				m_camera->Update();
+			}
 		}
 	private:
-		CCamera		m_camera;						//!<カメラ。
+		CCamera*	m_camera = nullptr;				//!<カメラ。
 		CVector3	m_target = CVector3::Zero;		//!<目標となる注視点。
 		CVector3	m_position = CVector3::Zero;	//!<目標となる視点。
 		CVector3	m_targetMoveSpeed = CVector3::Zero;		//!<注視点の移動速度。

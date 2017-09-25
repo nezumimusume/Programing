@@ -8,11 +8,15 @@
     <Filter Include="Resource Files\modelData">
       <UniqueIdentifier>{d98d7a64-a986-4c93-8840-fde85e2edc37}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{a9dc9dbd-8634-47fe-a52b-d0b613deeeb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tutorial.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -20,14 +24,12 @@
     </CLInclude>
     <ClInclude Include="Player.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="GameCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tutorial.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="phong.dgsl" />
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Resource\modelData\Thethief_H.FBX">
@@ -38,20 +40,20 @@
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resource\modelData\Thethief_S.tga">
-      <Filter>Resource Files\modelData</Filter>
-    </Image>
-    <Image Include="Resource\modelData\Thethief_wuqi_N.tga">
-      <Filter>Resource Files\modelData</Filter>
-    </Image>
-    <Image Include="Resource\modelData\Thethief_wuqi_S.tga">
-      <Filter>Resource Files\modelData</Filter>
-    </Image>
-    <Image Include="Resource\modelData\Thethief_N.tga">
-      <Filter>Resource Files\modelData</Filter>
-    </Image>
-    <Image Include="Resource\modelData\BB_Map_1A Normal.png">
-      <Filter>Resource Files\modelData</Filter>
-    </Image>
+    <ImageContentTask Include="Resource\modelData\Thethief_wuqi_S.tga">
+      <Filter>Resource</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\modelData\Thethief_wuqi_N.tga">
+      <Filter>Resource</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\modelData\Thethief_S.tga">
+      <Filter>Resource</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\modelData\Thethief_N.tga">
+      <Filter>Resource</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\modelData\BB_Map_1A Normal.png">
+      <Filter>Resource</Filter>
+    </ImageContentTask>
   </ItemGroup>
 </Project>
