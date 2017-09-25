@@ -87,12 +87,15 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
 	float4x4 skinning = 0;
 	float4 pos = 0.0f;
 	
+	float w = 0.0f;
 	[unroll]
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 3; i++)
     {
         skinning += boneMatrix[In.Indices[i]] * In.Weights[i];
+        w += In.Weights[i];
     }
     
+    skinning += boneMatrix[In.Indices[3]] * (1.0f - w);
 	pos.xyz = mul(skinning, In.Position);
 	psInput.Normal = normalize( mul(skinning, In.Normal) );
 	psInput.Tangent = normalize( mul(skinning, In.Tangent) );

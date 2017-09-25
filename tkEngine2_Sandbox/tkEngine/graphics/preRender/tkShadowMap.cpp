@@ -107,29 +107,21 @@ namespace tkEngine{
 
 		float toFarPlane = m_far - m_near;
 		float shadowAreaTbl[NUM_SHADOW_MAP] = {
-			toFarPlane,
-			toFarPlane * 2.0f,
-			toFarPlane * 4.0f
+			200,
+			400,
+			800
 		};
-		//ライトの位置を決めて、カメラ行列を確定させていく。
 
-		const CVector3& cameraPos = MainCamera().GetPosition();
-		CVector3 lightPos = cameraPos;
-		CVector3 lightOffset = cameraDir;
-		lightOffset.Scale(shadowAreaTbl[0] * 0.4f);
-		lightPos.Add(lightOffset);
+		CVector3 lightPos = m_lightPosition;
+		CVector3 lightOffset;
 		SShadowCb shadowCB;
 		for (int i = 0; i < NUM_SHADOW_MAP; i++) {
 
 			CMatrix mLightView;
-			CVector3 vTmp;
-			vTmp = lightViewForward;
-			vTmp.Scale(-toFarPlane * 0.5f);
-
 			mLightView = lightViewRot;
-			mLightView.m[3][0] = lightPos.x + vTmp.x;
-			mLightView.m[3][1] = lightPos.y + vTmp.y;
-			mLightView.m[3][2] = lightPos.z + vTmp.z;
+			mLightView.m[3][0] = lightPos.x;
+			mLightView.m[3][1] = lightPos.y;
+			mLightView.m[3][2] = lightPos.z;
 			mLightView.m[3][3] = 1.0f;
 			mLightView.Inverse(mLightView);	//カメラビュー完成。
 											//続いてプロジェクション行列。
