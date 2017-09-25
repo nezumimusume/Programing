@@ -90,5 +90,6 @@ namespace tkEngine{
 		CShadowCaster_SkinModel m_shadowCaster;	//!<シャドウキャスター。
 		bool m_isShadowCaster = false;		//!<シャドウキャスター？
 		bool m_isShadowReceiver = false;	//!<シャドウレシーバー？
+		CSamplerState m_samplerState;		//!<サンプラステート。@todo ひとまとめにした方がいい。
 	};
 }

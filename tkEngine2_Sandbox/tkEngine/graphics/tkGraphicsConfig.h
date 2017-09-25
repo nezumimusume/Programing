@@ -24,13 +24,11 @@ namespace tkEngine{
 			shadowMapWidth = 512;
 			shadowMapHeight = 512;
 			isEnableSoftShadow = false;
-			numShadowMap = 1;
 		}
 		bool 	isEnable;				//!<影を落とす処理が有効かどうかのフラグ。
 		int		shadowMapWidth;			//!<シャドウマップの幅。
 		int		shadowMapHeight;		//!<シャドウマップの高さ。
 		bool	isEnableSoftShadow;		//!<ソフトシャドウが有効かどうかのフラグ。
-		int		numShadowMap;			//!<シャドウマップの枚数。(最大4枚)
 	};
 	/*!
 	* @brief	Bloomのコンフィグ

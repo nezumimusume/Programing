@@ -20,6 +20,14 @@ namespace tkEngine{
 		m_skinModelData = &modelData;
 		m_cb.Create(NULL, sizeof(SVSConstantBuffer));
 		m_shadowCaster.Create(this);
+
+		D3D11_SAMPLER_DESC desc;
+		ZeroMemory(&desc, sizeof(desc));
+		desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		m_samplerState.Create(desc);
 	}
 	
 	void CSkinModel::Update(const CVector3& trans, const CQuaternion& rot, const CVector3& scale)
@@ -67,6 +75,7 @@ namespace tkEngine{
 		renderContext.UpdateSubresource(m_cb, &vsCb);
 		renderContext.VSSetConstantBuffer(enSkinModelCBReg_VSPS, m_cb);
 		renderContext.PSSetConstantBuffer(enSkinModelCBReg_VSPS, m_cb);
+		renderContext.PSSetSampler(0, m_samplerState);
 		m_skinModelData->GetSkeleton().Render(renderContext);
 
 		m_skinModelData->GetBody().Draw(

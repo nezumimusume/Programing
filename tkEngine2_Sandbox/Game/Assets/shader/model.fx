@@ -9,6 +9,7 @@
 
 #include "LightingFunction.h"
 
+
 /*!
  *@brief	影を計算。
  */
@@ -18,7 +19,8 @@ int CalcShadow( float3 worldPos )
 	//ちょっと適当。
 	if(isShadowReceiver){
 		//影を落とす。
-		for(int i = 0; i < numShadowMap; i++ ){
+		[unroll]
+		for(int i = 0; i < NUM_SHADOW_MAP; i++ ){
 			float4 posInLVP = mul(mLVP[i], float4(worldPos, 1.0f) );
 			posInLVP.xyz /= posInLVP.w;
 			
@@ -87,15 +89,11 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
 	float4x4 skinning = 0;
 	float4 pos = 0.0f;
 	
-/*	[unroll]
+	[unroll]
     for (int i = 0; i < 4; i++)
     {
         skinning += boneMatrix[In.Indices[i]] * In.Weights[i];
-    }*/
-    skinning += boneMatrix[In.Indices[0]] * In.Weights[0];
-    skinning += boneMatrix[In.Indices[1]] * In.Weights[1];
-    skinning += boneMatrix[In.Indices[2]] * In.Weights[2];
-    skinning += boneMatrix[In.Indices[3]] * In.Weights[3];
+    }
     
 	pos.xyz = mul(skinning, In.Position);
 	psInput.Normal = normalize( mul(skinning, In.Normal) );

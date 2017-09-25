@@ -24,15 +24,7 @@ namespace tkEngine{
 		if (m_isEnable == false) {
 			return true;
 		}
-		if(config.numShadowMap > MAX_SHADOW_MAP){
-			TK_WARNING("numShadowMap is invalid");
-			m_numShadowMap = MAX_SHADOW_MAP;
-		}
-		else {
-			m_numShadowMap = config.numShadowMap;
-		}
-		
-		int wh[MAX_SHADOW_MAP][2] = {
+		int wh[NUM_SHADOW_MAP][2] = {
 			{ config.shadowMapWidth, config.shadowMapHeight},
 			{ config.shadowMapWidth >> 1, config.shadowMapHeight >> 1},
 			{ config.shadowMapWidth >> 1, config.shadowMapHeight >> 1},
@@ -40,7 +32,7 @@ namespace tkEngine{
 		DXGI_SAMPLE_DESC multiSampleDesc;
 		multiSampleDesc.Count = 1;
 		multiSampleDesc.Quality = 0;
-		for(int i = 0; i < m_numShadowMap; i++ ){
+		for(int i = 0; i < NUM_SHADOW_MAP; i++ ){
 			m_shadowMapRT[i].Create(
 				wh[i][0], 
 				wh[i][1], 
@@ -113,25 +105,26 @@ namespace tkEngine{
 		lightViewRot.m[2][2] = lightViewForward.z;
 		lightViewRot.m[2][3] = 0.0f;
 
-		static float shadowAreaTbl[MAX_SHADOW_MAP] = {
-			200.0f,
-			400.0f,
-			800.0f
+		float toFarPlane = m_far - m_near;
+		float shadowAreaTbl[NUM_SHADOW_MAP] = {
+			toFarPlane,
+			toFarPlane * 2.0f,
+			toFarPlane * 4.0f
 		};
 		//ライトの位置を決めて、カメラ行列を確定させていく。
 
 		const CVector3& cameraPos = MainCamera().GetPosition();
 		CVector3 lightPos = cameraPos;
 		CVector3 lightOffset = cameraDir;
-		lightOffset.Scale(shadowAreaTbl[0] * 0.2f);
+		lightOffset.Scale(shadowAreaTbl[0] * 0.4f);
 		lightPos.Add(lightOffset);
 		SShadowCb shadowCB;
-		for (int i = 0; i < m_numShadowMap; i++) {
+		for (int i = 0; i < NUM_SHADOW_MAP; i++) {
 
 			CMatrix mLightView;
 			CVector3 vTmp;
 			vTmp = lightViewForward;
-			vTmp.Scale(-100.0f);
+			vTmp.Scale(-toFarPlane * 0.5f);
 
 			mLightView = lightViewRot;
 			mLightView.m[3][0] = lightPos.x + vTmp.x;
@@ -155,7 +148,6 @@ namespace tkEngine{
 			lightOffset.Scale(shadowAreaTbl[i] * 0.9f);
 			lightPos.Add(lightOffset);
 		}
-		m_shadowCbEntity.numShadowMap = m_numShadowMap;
 	}
 	/*!
 	*@brief	シャドウマップへ書き込み。
@@ -168,7 +160,7 @@ namespace tkEngine{
 		CRenderTarget* oldRenderTargets[MRT_MAX];
 		unsigned int numRenderTargetViews;
 		rc.OMGetRenderTargets(numRenderTargetViews, oldRenderTargets);
-		for (int i = 0; i < m_numShadowMap; i++) {
+		for (int i = 0; i < NUM_SHADOW_MAP; i++) {
 			CRenderTarget* renderTargets[] = {
 				&m_shadowMapRT[i]
 			};
@@ -201,8 +193,8 @@ namespace tkEngine{
 		rc.UpdateSubresource(m_shadowCb, &m_shadowCbEntity);
 		rc.PSSetConstantBuffer(enSkinModelCBReg_Shadow, m_shadowCb);
 		//テクスチャを転送。
-		for (int i = 0; i < m_numShadowMap; i++) {
-			rc.PSSetShaderResource(3 + i, m_shadowMapRT[i].GetRenderTargetSRV());
+		for (int i = 0; i < NUM_SHADOW_MAP; i++) {
+			rc.PSSetShaderResource(enSkinModelSRVReg_ShadowMap_0 + i, m_shadowMapRT[i].GetRenderTargetSRV());
 		}
 	}
 }

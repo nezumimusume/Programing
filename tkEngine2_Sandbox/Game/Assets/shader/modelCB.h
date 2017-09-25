@@ -32,10 +32,10 @@ cbuffer MaterialParamCb : register(b2){
 	float anisotropic;	//異方性反射
 };
 
+#define NUM_SHADOW_MAP 3
 /*!
  * @brief	シャドウマップ用の定数バッファ。
  */
 cbuffer ShadowCb : register( b3 ){
-	float4x4 mLVP[3];		//!<ライトビュープロジェクション行列。
-	int numShadowMap;		//!<シャドウマップの枚数。
+	float4x4 mLVP[NUM_SHADOW_MAP];		//!<ライトビュープロジェクション行列。
 };

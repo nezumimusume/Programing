@@ -54,10 +54,9 @@ namespace tkEngine{
 		deviceContext->PSSetShader((ID3D11PixelShader*)m_psShader.GetBody(), NULL, 0);
 		deviceContext->PSSetShaderResources(enSkinModelSRVReg_AlbedoTexture, 1, &m_diffuseTex);
 		m_materialParam.hasNormalMap = 0;
-		static int hoge = 1;
 		if (m_normalMap != nullptr) {
 			deviceContext->PSSetShaderResources(enSkinModelSRVReg_NormalMap, 1, &m_normalMap);
-			m_materialParam.hasNormalMap = hoge;
+			m_materialParam.hasNormalMap = 1;
 		}
 		m_materialParam.hasSpecularMap = 0;
 		if (m_specularMap != nullptr) {

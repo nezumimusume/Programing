@@ -11,7 +11,7 @@ namespace tkEngine{
 	 */
 	class CShadowMap : Noncopyable{
 	public:
-		static const int MAX_SHADOW_MAP = 3;
+		static const int NUM_SHADOW_MAP = 3;	//シャドウマップの枚数。
 		/*!
 		 * @brief	コンストラクタ。
 		 */
@@ -79,8 +79,7 @@ namespace tkEngine{
 		 *@brief	この中身を変更したら、modelCB.hのShadowCbも変更するように。
 		 */
 		struct SShadowCb {
-			CMatrix mLVP[MAX_SHADOW_MAP];
-			int numShadowMap;
+			CMatrix mLVP[NUM_SHADOW_MAP];
 		};
 		bool m_isEnable = false;							//!<影の処理が有効？
 		CVector3 m_lightPosition = CVector3::Zero;			//!<ライトの位置。
@@ -88,12 +87,11 @@ namespace tkEngine{
 		float m_near = 0.1f;								//!<近平面。
 		float m_far = 100.0f;								//!<遠平面。
 		float m_accpect = 1.0f;								//!<アスペクト。不要？
-		float m_shadowAreaW[MAX_SHADOW_MAP] = {0};			//!<影を落とす範囲の幅。
-		float m_shadowAreaH[MAX_SHADOW_MAP] = {0};			//!<影を落とす範囲の高さ。
-		CRenderTarget	m_shadowMapRT[MAX_SHADOW_MAP];		//!<シャドウマップを書き込むレンダリングターゲット。
+		float m_shadowAreaW[NUM_SHADOW_MAP] = {0};			//!<影を落とす範囲の幅。
+		float m_shadowAreaH[NUM_SHADOW_MAP] = {0};			//!<影を落とす範囲の高さ。
+		CRenderTarget	m_shadowMapRT[NUM_SHADOW_MAP];		//!<シャドウマップを書き込むレンダリングターゲット。
 		std::vector<IShadowCaster*> m_shadowCaster;			//!<シャドウキャスター。
-		CMatrix	m_LVPMatrix[MAX_SHADOW_MAP] = { CMatrix::Identity };				//!<ライトビュープロジェクション行列。
-		int m_numShadowMap = 0;								//!<シャドウマップの枚数。
+		CMatrix	m_LVPMatrix[NUM_SHADOW_MAP] = { CMatrix::Identity };				//!<ライトビュープロジェクション行列。
 		SShadowCb m_shadowCbEntity;
 		CConstantBuffer m_shadowCb;							//!<影を落とす時に使用する定数バッファ。
 	};
