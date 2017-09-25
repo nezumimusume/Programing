@@ -17,6 +17,8 @@ namespace tkEngine{
 		std::wstring m_materialName;	//!<マテリアル名。
 		CShader m_vsShader;
 		CShader m_psShader;
+		CShader m_psZPrepassShader;		//ZPrepass用のピクセルシェーダー。
+		CShader m_psShadowMapShader;	//シャドウマップ書き込み用のピクセルシェーダー。
 		ID3D11ShaderResourceView* m_diffuseTex = nullptr;
 		ID3D11ShaderResourceView* m_normalMap = nullptr;
 		ID3D11ShaderResourceView* m_specularMap = nullptr;
@@ -39,6 +41,9 @@ namespace tkEngine{
 		{
 			m_materialParam.anisotropic = 0.5f;
 			m_materialParamCB.Create(&m_materialParam, sizeof(m_materialParam));
+			m_psShader.Load("Assets/shader/model.fx", "PSMain", CShader::EnType::PS);
+			m_psZPrepassShader.Load("Assets/shader/model.fx", "PSMain_ZPrepass", CShader::EnType::PS);
+			m_psShadowMapShader.Load("Assets/shader/model.fx", "PSMain_RenderToShadow", CShader::EnType::PS);
 		}
 		void __cdecl Apply(ID3D11DeviceContext* deviceContext) override;
 		
@@ -77,7 +82,6 @@ namespace tkEngine{
 		CNonSkinModelEffect()
 		{
 			m_vsShader.Load("Assets/shader/model.fx", "VSMain", CShader::EnType::VS);
-			m_psShader.Load("Assets/shader/model.fx", "PSMain", CShader::EnType::PS);
 			isSkining = false;
 		}
 	};
@@ -90,7 +94,6 @@ namespace tkEngine{
 		CSkinModelEffect()
 		{
 			m_vsShader.Load("Assets/shader/model.fx", "VSMainSkin", CShader::EnType::VS);
-			m_psShader.Load("Assets/shader/model.fx", "PSMain", CShader::EnType::PS);
 			isSkining = true;
 		}
 	};

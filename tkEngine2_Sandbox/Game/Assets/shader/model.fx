@@ -30,8 +30,6 @@ int CalcShadow( float3 worldPos )
 			float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
 			float2 shadow_val = 1.0f;
 			if(shadowMapUV.x < 0.99f && shadowMapUV.y < 0.99f && shadowMapUV.x > 0.01f && shadowMapUV.y > 0.01f){
-				
-				//@todo テクスチャ配列に変更する。
 				if(i == 0){
 					shadow_val = shadowMap_0.Sample(Sampler, shadowMapUV ).r;
 				}else if(i == 1){
@@ -184,3 +182,18 @@ float4 PSMain( PSInput In ) : SV_Target0
 
 }
 
+/*!
+ *@brief	ZPrepass用のピクセルシェーダー。
+ */
+float4 PSMain_ZPrepass( PSInput In ) : SV_Target0
+{
+	return In.posInProj.z / In.posInProj.w;
+}
+/*!
+ *@brief	影書き込み用のピクセルシェーダー。
+ */
+float4 PSMain_RenderToShadow( PSInput In ) : SV_Target0
+{
+	//たぶんVSMはやらないので、普通にZ値を返しておこう。
+	return In.posInProj.z / In.posInProj.w;
+}

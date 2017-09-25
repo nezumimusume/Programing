@@ -28,7 +28,7 @@ namespace tkEngine{
 		/*!
 		 * @brief	実行。
 		 */
-		void Execute(float deltaTime);
+		void Execute(float deltaTime, CVector3& moveSpeed);
 		/*!
 		 * @brief	座標を取得。
 		 */
@@ -43,20 +43,7 @@ namespace tkEngine{
 		{
 			m_position = pos;
 		}
-		/*!
-		 * @brief	移動速度を設定。
-		 */
-		void SetMoveSpeed(const CVector3& speed )
-		{
-			m_moveSpeed = speed;
-		}
-		/*!
-		 * @brief	移動速度を取得。
-		 */
-		const CVector3& GetMoveSpeed() const
-		{
-			return m_moveSpeed;
-		}
+		
 		/*!
 		 * @brief	ジャンプさせる。
 		 */
@@ -106,7 +93,6 @@ namespace tkEngine{
 		void RemoveRigidBoby();
 	private:
 		CVector3 			m_position = CVector3::Zero;	//座標。
-		CVector3 			m_moveSpeed = CVector3::Zero;	//移動速度。 
 		bool 				m_isJump = false;				//ジャンプ中？
 		bool				m_isOnGround = true;			//地面の上にいる？
 		CCapsuleCollider	m_collider;						//コライダー。

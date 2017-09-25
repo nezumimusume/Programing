@@ -69,6 +69,11 @@ int WINAPI wWinMain(
 	int nCmdShow
 	)
 {
+	CMatrix m, mRot;
+	mRot.MakeRotationY(0.5f);
+	m.MakeTranslation({ 10.0f, 0.0f, 0.0f });
+	m.Mul(mRot, m);
+	m.Inverse(m);
 	//tkEngine‚Ì‰Šú‰»B
 	InitTkEngine( hInst );
 	g_nowLoading = NewGO<NowLoading>(1);

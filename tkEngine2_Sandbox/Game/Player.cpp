@@ -55,13 +55,15 @@ bool Player::Start()
 	m_animation.Init(m_skinModelData, animClip, 3);
 	m_animation.Play(L"Idle");
 
+	m_characterCtr.Init(20.0f, 100.0f, m_position);
+	m_characterCtr.SetGravity(-980.0f);
 	return true;
 }
 void Player::Update() 
 {
 	CVector3 inputPad;
-	inputPad.x = Pad(0).GetRStickXF();
-	inputPad.y = Pad(0).GetRStickYF();
+	inputPad.x = Pad(0).GetLStickXF();
+	inputPad.y = Pad(0).GetLStickYF();
 	inputPad.z = 0.0f;
 	if (inputPad.Length() > 0.8f) {
 		m_animation.Play(L"Run", 0.2);
@@ -70,8 +72,16 @@ void Player::Update()
 	}else{
 		m_animation.Play(L"Idle", 0.2f);
 	}
-	CVector3 addPos = { inputPad.x * -3.0f, 0.0f, inputPad.y * -3.0f };
-	m_position.Add(addPos);
+	if (Pad(0).IsTrigger(enButtonA) && m_characterCtr.IsOnGround()) {
+		m_moveSpeed.y = 300.0f;
+		m_characterCtr.Jump();	//ジャンプしたことを通知する。
+
+	}
+	m_moveSpeed.x = inputPad.x * -100.0f;
+	m_moveSpeed.z = inputPad.y * -100.0f;
+
+	m_characterCtr.Execute(GameTime().GetFrameDeltaTime(), m_moveSpeed);
+	m_position = m_characterCtr.GetPosition();
 	CQuaternion qRot;
 	qRot.SetRotationDeg(CVector3::AxisX, 90.0f);
 	m_skinModel.Update(m_position, qRot, CVector3::One);

@@ -437,7 +437,7 @@ PSOutput PSMain( VS_OUTPUT In )
 	}
 	if(g_flags.w){
 		//スペキュラライト。
-		lig.xyz += SpecLight(normal, In.worldPos_depth.xyz, In.Tex0);
+	//	lig.xyz += SpecLight(normal, In.worldPos_depth.xyz, In.Tex0);
 	}
 	
 	if(g_flags.y){

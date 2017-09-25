@@ -257,9 +257,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="character\tkCharacterController.h" />
     <ClInclude Include="culling\tkObjectCulling.h" />
     <ClInclude Include="culling\tkObjectFrustumCulling.h" />

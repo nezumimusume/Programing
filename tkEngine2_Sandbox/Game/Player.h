@@ -1,4 +1,7 @@
 #pragma once
+
+#include "tkEngine/character/tkCharacterController.h"
+
 class Player : public IGameObject
 {
 public:
@@ -19,9 +22,11 @@ private:
 	CAnimationClip	m_animationClip[enAnimationClip_Num];	//!<アニメーションクリップ
 	CAnimation		m_animation;				//!<アニメーション。
 	CVector3		m_position = CVector3::Zero;
+	CVector3		m_moveSpeed = CVector3::Zero;
 	CShaderResourceView	m_normalMapSRV;			//!<法線マップのSRV。
 	CShaderResourceView m_specularMapSRV;		//!<スペキュラマップのSRV。
 	CShaderResourceView	m_wnormalMapSRV;		//!<武器の法線マップのSRV。
 	CShaderResourceView m_wspecularMapSRV;		//!<武器のスペキュラマップのSRV。
+	CCharacterController m_characterCtr;		//!<キャラクターコントローラー。
 };
 

@@ -120,14 +120,14 @@ namespace tkEngine {
 		PhysicsWorld().AddRigidBody(&m_rigidBody);
 
 	}
-	void CCharacterController::Execute(float deltaTime)
+	void CCharacterController::Execute(float deltaTime, CVector3& moveSpeed)
 	{
 		//速度に重力加速度を加える。
-		m_moveSpeed.y += m_gravity * deltaTime;
+		moveSpeed.y += m_gravity * deltaTime;
 		//次の移動先となる座標を計算する。
 		CVector3 nextPosition = m_position;
 		//速度からこのフレームでの移動量を求める。オイラー積分。
-		CVector3 addPos = m_moveSpeed;
+		CVector3 addPos = moveSpeed;
 		addPos.Scale(deltaTime);
 		nextPosition.Add(addPos);
 		CVector3 originalXZDir = addPos;
@@ -253,7 +253,7 @@ namespace tkEngine {
 			PhysicsWorld().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
 			if (callback.isHit) {
 				//当たった。
-				m_moveSpeed.y = 0.0f;
+				moveSpeed.y = 0.0f;
 				m_isJump = false;
 				m_isOnGround = true;
 				nextPosition.y = callback.hitPos.y;
