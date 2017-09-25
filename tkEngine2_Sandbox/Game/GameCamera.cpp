@@ -50,7 +50,7 @@ bool GameCamera::Start()
 	m_player = FindGO<Player>("Player");
 	CCamera& camera = MainCamera();
 	
-	m_springCamera.Init(&camera, 1000.0f);
+	m_springCamera.Init(&camera, 1000.0f, true, 5.0f);
 
 	CVector3 target = m_player->GetPosition();
 	target.y += 40.0f;

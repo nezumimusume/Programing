@@ -1,11 +1,11 @@
 /*!
- * @brief	バネカメラ。
- */
+* @brief	バネカメラ。
+*/
 
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/camera/tkSpringCamera.h"
 
-namespace tkEngine{
+namespace tkEngine {
 	namespace {
 		float dampingK = 35.0f;
 		float CalcSpringScalar(
@@ -13,8 +13,8 @@ namespace tkEngine{
 			float positionTarget,
 			float& moveSpeed)
 		{
-			float deltaTime = min(1.0f/30.0f,GameTime().GetFrameDeltaTime());
-			
+			float deltaTime = min(1.0f / 30.0f, GameTime().GetFrameDeltaTime());
+
 			float dampingRate = 0.2f;
 			float distance;
 			distance = positionTarget - positionNow;
@@ -36,7 +36,7 @@ namespace tkEngine{
 			springAccel -= vt;
 			springAccel *= deltaTime;
 			moveSpeed += springAccel;
-			
+
 			float newPos = positionNow;
 			float addPos = moveSpeed;
 			addPos *= deltaTime;
@@ -60,10 +60,10 @@ namespace tkEngine{
 		/*!
 		* @brief	バネ減衰を使用して、現在の位置、目標となる位置、速度、加速度から新しい位置を計算する。
 		*/
-		CVector3 CalcSpringVector( 
-			const CVector3& positionNow, 
-			const CVector3& positionTarget, 
-			CVector3& moveSpeed ,
+		CVector3 CalcSpringVector(
+			const CVector3& positionNow,
+			const CVector3& positionTarget,
+			CVector3& moveSpeed,
 			float maxMoveSpeed,
 			float dampingRate
 		)
@@ -71,12 +71,12 @@ namespace tkEngine{
 			float deltaTime = min(1.0f / 30.0f, GameTime().GetFrameDeltaTime());
 			//現在の位置と目標の位置との差分を求める。
 			CVector3 distance;
-			distance.Subtract( positionTarget, positionNow );
+			distance.Subtract(positionTarget, positionNow);
 			CVector3 originalDir = distance;
 			originalDir.Normalize();
 			CVector3 springAccel;
 			springAccel = distance;
-			
+
 			float t = dampingK / (2.0f * dampingRate);
 			float springK = t * t;
 			springAccel.Scale(springK);
@@ -84,7 +84,7 @@ namespace tkEngine{
 			CVector3 vt = moveSpeed;
 			vt.Scale(dampingK);
 			springAccel.Subtract(vt);
-			
+
 			springAccel.Scale(deltaTime);
 			moveSpeed.Add(springAccel);
 			if (moveSpeed.LengthSq() > maxMoveSpeed*maxMoveSpeed) {
@@ -107,44 +107,63 @@ namespace tkEngine{
 		}
 	}
 	/*!
-	 * @brief	コンストラクタ。
-	 */
+	* @brief	コンストラクタ。
+	*/
 	CSpringCamera::CSpringCamera()
 	{
 	}
 	/*!
-	 * @brief	デストラクタ
-	 */
+	* @brief	デストラクタ
+	*/
 	CSpringCamera::~CSpringCamera()
 	{
 	}
 	/*!
 	* @brief	初期化。
 	*/
-	void CSpringCamera::Init(const CVector3& target, const CVector3& position, float maxMoveSpeed)
+	void CSpringCamera::Init(
+		CCamera* camera,
+		float maxMoveSpeed,
+		bool isEnableCollisionSolver,
+		float sphereCollisionRadius
+	)
 	{
-		m_camera.SetTarget(target);
-		m_camera.SetPosition(position);
-		m_target = target;
-		m_position = position;
+		if (camera == nullptr) {
+			return;
+		}
+		m_camera = camera;
+		m_isEnableCollisionSolver = isEnableCollisionSolver;
+		m_cameraCollisionSolver.Init(sphereCollisionRadius);
 		m_targetMoveSpeed = CVector3::Zero;
 		m_positionMoveSpeed = CVector3::Zero;
 		m_maxMoveSpeed = maxMoveSpeed;
 	}
 	void CSpringCamera::UpdateSpringCamera()
 	{
-		m_dampingRate = CalcSpringScalar(m_targetDampingRate, m_dampingRate, m_dampingRateVel);
-		CVector3 target = CalcSpringVector(m_camera.GetTarget(), m_target, m_targetMoveSpeed, m_maxMoveSpeed, m_dampingRate);
-		CVector3 position = CalcSpringVector(m_camera.GetPosition(), m_position, m_positionMoveSpeed, m_maxMoveSpeed, m_dampingRate);
-		m_camera.SetTarget(target);
-		m_camera.SetPosition(position);
+		if (m_camera == nullptr) {
+			return;
+		}
+		m_dampingRate = CalcSpringScalar(m_dampingRate, m_targetDampingRate, m_dampingRateVel);
+		CVector3 target = CalcSpringVector(m_camera->GetTarget(), m_target, m_targetMoveSpeed, m_maxMoveSpeed, m_dampingRate);
+		CVector3 position = CalcSpringVector(m_camera->GetPosition(), m_position, m_positionMoveSpeed, m_maxMoveSpeed, m_dampingRate);
+		m_camera->SetTarget(target);
+		m_camera->SetPosition(position);
 	}
 	/*!
-	 * @brief	更新。
-	 */
+	* @brief	更新。
+	*/
 	void CSpringCamera::Update()
 	{
 		UpdateSpringCamera();
+		if (m_isEnableCollisionSolver) {
+			CVector3 result;
+			m_cameraCollisionSolver.Execute(
+				result,
+				m_camera->GetPosition(),
+				m_camera->GetTarget()
+			);
+			m_camera->SetPosition(result);
+		}
 		UpdateCamera();
 	}
 }

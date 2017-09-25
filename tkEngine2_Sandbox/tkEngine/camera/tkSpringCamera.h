@@ -5,6 +5,7 @@
 #pragma once
 
 #include "tkEngine/graphics/tkCamera.h"
+#include "tkEngine/camera/tkCameraCollisionSolver.h"
 
 namespace tkEngine{
 	/*!
@@ -52,8 +53,17 @@ namespace tkEngine{
 		~CSpringCamera();
 		/*!
 		* @brief	初期化。
+		*@param[in]	camera			カメラ。
+		*@param[in]	maxMoveSpeed	カメラの最大移動速度。
+		*@param[in] isEnableCollisionSolver	コリジョン処理を有効にする？
+		*@param[in]	sphereCollisionRadius	球体コリジョンの半径。isEnableCollisionSoloverがtrueの時に有効になります。
 		*/
-		void Init( CCamera* camera,float maxMoveSpeed);
+		void Init(
+			CCamera* camera,
+			float maxMoveSpeed,
+			bool isEnableCollisionSolver,
+			float sphereCollisionRadius
+		);
 		/*!
 		 * @brief	目標となる注視点を設定。
 		 */
@@ -234,5 +244,7 @@ namespace tkEngine{
 		float		m_targetDampingRate = 1.0f;				//!<減衰率。値が大きいほどカメラが遅れ付いてくる。
 		float		m_dampingRate = 1.0f;					//!<減衰率。
 		float		m_dampingRateVel = 0.0f;
+		bool		m_isEnableCollisionSolver = false;		//!<コリジョン処理が有効？
+		CCameraCollisionSolver m_cameraCollisionSolver;
 	};
 }

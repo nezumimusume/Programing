@@ -258,7 +258,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\tkEngine\camera\tkCameraCollisionSolver.h" />
-    <ClInclude Include="..\..\tkEngine\camera\tkSpringCamera.h" />
+    <ClInclude Include="camera\tkSpringCamera.h" />
     <ClInclude Include="character\tkCharacterController.h" />
     <ClInclude Include="culling\tkObjectCulling.h" />
     <ClInclude Include="culling\tkObjectFrustumCulling.h" />
@@ -330,7 +330,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\tkEngine\camera\tkCameraCollisionSolver.cpp" />
-    <ClCompile Include="..\..\tkEngine\camera\tkSpringCamera.cpp" />
+    <ClCompile Include="camera\tkSpringCamera.cpp" />
     <ClCompile Include="character\tkCharacterController.cpp" />
     <ClCompile Include="culling\tkObjectFrustumCulling.cpp" />
     <ClCompile Include="gameObject\tkGameObject.cpp" />

@@ -281,7 +281,7 @@
     <ClInclude Include="..\..\tkEngine\camera\tkCameraCollisionSolver.h">
       <Filter>Source Files\camera</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\tkEngine\camera\tkSpringCamera.h">
+    <ClInclude Include="camera\tkSpringCamera.h">
       <Filter>Source Files\camera</Filter>
     </ClInclude>
   </ItemGroup>
@@ -433,10 +433,10 @@
     <ClCompile Include="graphics\preRender\tkShadowCaster.cpp">
       <Filter>Source Files\graphics\preRender</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tkEngine\camera\tkSpringCamera.cpp">
+    <ClCompile Include="..\..\tkEngine\camera\tkCameraCollisionSolver.cpp">
       <Filter>Source Files\camera</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tkEngine\camera\tkCameraCollisionSolver.cpp">
+    <ClCompile Include="camera\tkSpringCamera.cpp">
       <Filter>Source Files\camera</Filter>
     </ClCompile>
   </ItemGroup>
