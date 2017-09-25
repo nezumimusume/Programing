@@ -121,23 +121,26 @@ namespace tkEngine{
 	/*!
 	* @brief	初期化。
 	*/
-	void CSpringCamera::Init(const CVector3& target, const CVector3& position, float maxMoveSpeed)
+	void CSpringCamera::Init(CCamera* camera, float maxMoveSpeed)
 	{
-		m_camera.SetTarget(target);
-		m_camera.SetPosition(position);
-		m_target = target;
-		m_position = position;
+		if (camera == nullptr) {
+			return;
+		}
+		m_camera = camera;
+		
 		m_targetMoveSpeed = CVector3::Zero;
 		m_positionMoveSpeed = CVector3::Zero;
 		m_maxMoveSpeed = maxMoveSpeed;
 	}
 	void CSpringCamera::UpdateSpringCamera()
 	{
-		m_dampingRate = CalcSpringScalar(m_targetDampingRate, m_dampingRate, m_dampingRateVel);
-		CVector3 target = CalcSpringVector(m_camera.GetTarget(), m_target, m_targetMoveSpeed, m_maxMoveSpeed, m_dampingRate);
-		CVector3 position = CalcSpringVector(m_camera.GetPosition(), m_position, m_positionMoveSpeed, m_maxMoveSpeed, m_dampingRate);
-		m_camera.SetTarget(target);
-		m_camera.SetPosition(position);
+		if (m_camera == nullptr) {
+		}
+		m_dampingRate = CalcSpringScalar(m_dampingRate, m_targetDampingRate, m_dampingRateVel);
+		CVector3 target = CalcSpringVector(m_camera->GetTarget(), m_target, m_targetMoveSpeed, m_maxMoveSpeed, m_dampingRate);
+		CVector3 position = CalcSpringVector(m_camera->GetPosition(), m_position, m_positionMoveSpeed, m_maxMoveSpeed, m_dampingRate);
+		m_camera->SetTarget(target);
+		m_camera->SetPosition(position);
 	}
 	/*!
 	 * @brief	更新。

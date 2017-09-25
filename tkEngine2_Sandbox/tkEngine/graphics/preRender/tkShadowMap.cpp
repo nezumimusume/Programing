@@ -157,6 +157,10 @@ namespace tkEngine{
 		if (!m_isEnable) {
 			return;
 		}
+		for (int i = 0; i < NUM_SHADOW_MAP; i++) {
+			rc.PSUnsetShaderResource(enSkinModelSRVReg_ShadowMap_0 + i);
+		}
+
 		CRenderTarget* oldRenderTargets[MRT_MAX];
 		unsigned int numRenderTargetViews;
 		rc.OMGetRenderTargets(numRenderTargetViews, oldRenderTargets);

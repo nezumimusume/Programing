@@ -99,6 +99,16 @@ namespace tkEngine{
 			m_camera->SetFar(_far);
 		}
 		/*!
+		* @brief	近平面を設定。
+		*/
+		void SetNear(float _near)
+		{
+			if (m_camera == nullptr) {
+				return;
+			}
+			m_camera->SetNear(_near);
+		}
+		/*!
 		* @brief	カメラの回転行列を取得。
 		*/
 		const CMatrix& GetCameraRotation() const
