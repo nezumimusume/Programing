@@ -5,6 +5,7 @@
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/graphics/preRender/tkShadowMap.h"
 #include "tkEngine/graphics/preRender/tkShadowCaster.h"
+#include "tkEngine/graphics/tkSkinModelShaderConst.h"
 
 namespace tkEngine{
 	
@@ -44,6 +45,7 @@ namespace tkEngine{
 				wh[i][0], 
 				wh[i][1], 
 				1, 
+				1,
 				DXGI_FORMAT_R16G16_FLOAT,
 				DXGI_FORMAT_D24_UNORM_S8_UINT, 
 				multiSampleDesc
@@ -197,7 +199,7 @@ namespace tkEngine{
 	void CShadowMap::SendShadowReceiveParamToGPU(CRenderContext& rc)
 	{
 		rc.UpdateSubresource(m_shadowCb, &m_shadowCbEntity);
-		rc.PSSetConstantBuffer(3, m_shadowCb);
+		rc.PSSetConstantBuffer(enSkinModelCBReg_Shadow, m_shadowCb);
 		//テクスチャを転送。
 		for (int i = 0; i < m_numShadowMap; i++) {
 			rc.PSSetShaderResource(3 + i, m_shadowMapRT[i].GetRenderTargetSRV());

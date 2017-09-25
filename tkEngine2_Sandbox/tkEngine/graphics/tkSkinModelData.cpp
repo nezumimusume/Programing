@@ -6,6 +6,7 @@
 #include "tkEngine/graphics/tkSkinModelData.h"
 #include "tkEngine/tkEngine.h"
 #include "tkEngine/graphics/animation/tkAnimationClip.h"
+#include "tkEngine/graphics/tkSkinModelShaderConst.h"
 
 namespace tkEngine{
 	
@@ -43,6 +44,30 @@ namespace tkEngine{
 			return DirectX::EffectFactory::CreateTexture(name, deviceContext, textureView);
 		}
 	};
+///////////////////////////////////////////////////////////////////////////
+// モデルエフェクト。
+///////////////////////////////////////////////////////////////////////////
+	void __cdecl CModelEffect::Apply(ID3D11DeviceContext* deviceContext) 
+	{
+
+		deviceContext->VSSetShader((ID3D11VertexShader*)m_vsShader.GetBody(), NULL, 0);
+		deviceContext->PSSetShader((ID3D11PixelShader*)m_psShader.GetBody(), NULL, 0);
+		deviceContext->PSSetShaderResources(enSkinModelSRVReg_AlbedoTexture, 1, &m_diffuseTex);
+		m_materialParam.hasNormalMap = 0;
+		static int hoge = 1;
+		if (m_normalMap != nullptr) {
+			deviceContext->PSSetShaderResources(enSkinModelSRVReg_NormalMap, 1, &m_normalMap);
+			m_materialParam.hasNormalMap = hoge;
+		}
+		m_materialParam.hasSpecularMap = 0;
+		if (m_specularMap != nullptr) {
+			deviceContext->PSSetShaderResources(enSKinModelSRVReg_Specularmap, 1, &m_specularMap);
+			m_materialParam.hasSpecularMap = 1;
+		}
+		deviceContext->UpdateSubresource(m_materialParamCB.GetBody(), 0, NULL, &m_materialParam, 0, 0);
+		deviceContext->PSSetConstantBuffers(enSkinModelCBReg_Material, 1, &m_materialParamCB.GetBody());
+
+	}
 	CSkinModelData::CSkinModelData()
 	{
 	}

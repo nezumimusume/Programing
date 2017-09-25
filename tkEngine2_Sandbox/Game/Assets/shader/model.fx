@@ -9,7 +9,56 @@
 
 #include "LightingFunction.h"
 
-
+/*!
+ *@brief	影を計算。
+ */
+int CalcShadow( float3 worldPos )
+{
+	int shadow = 0;
+	//ちょっと適当。
+	if(isShadowReceiver){
+		//影を落とす。
+		for(int i = 0; i < numShadowMap; i++ ){
+			float4 posInLVP = mul(mLVP[i], float4(worldPos, 1.0f) );
+			posInLVP.xyz /= posInLVP.w;
+			
+			float depth = min(posInLVP.z, 1.0f);
+			
+			//uv座標に変換。
+			float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
+			float2 shadow_val = 1.0f;
+			if(shadowMapUV.x < 0.99f && shadowMapUV.y < 0.99f && shadowMapUV.x > 0.01f && shadowMapUV.y > 0.01f){
+				
+				//@todo テクスチャ配列に変更する。
+				if(i == 0){
+					shadow_val = shadowMap_0.Sample(Sampler, shadowMapUV ).r;
+				}else if(i == 1){
+					shadow_val = shadowMap_1.Sample(Sampler, shadowMapUV ).r;
+				}else if(i == 2){
+					shadow_val = shadowMap_2.Sample(Sampler, shadowMapUV ).r;
+				}
+				if( depth > shadow_val.r + 0.006f ){
+					shadow = 1;
+					break;
+				}
+			}
+		}
+	}
+	return shadow;
+}
+/*!
+ *@brief	法線を計算。
+ */
+float3 CalcNormal( float3 normal, float3 biNormal, float3 tangent, float2 uv )
+{
+	if(hasNormalMap){
+		//法線マップがある。
+		float3 binSpaceNormal = normalMap.Sample(Sampler, uv).xyz;
+		binSpaceNormal = (binSpaceNormal * 2.0f)- 1.0f;
+		normal = tangent * binSpaceNormal.x + biNormal * binSpaceNormal.y + normal * binSpaceNormal.z; 
+	}
+	return normal;
+}
 /*!--------------------------------------------------------------------------------------
  * @brief	スキンなしモデル用の頂点シェーダー。
 -------------------------------------------------------------------------------------- */
@@ -83,15 +132,9 @@ float4 PSMain( PSInput In ) : SV_Target0
 	float3 biNormal = normalize(cross(In.Normal, In.Tangent));
 	//アルベド。
 	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
-	float3 normal = In.Normal;
-	
-	if(hasNormalMap){
-		//法線マップがある。
-		float3 binSpaceNormal = normalMap.Sample(Sampler, In.TexCoord).xyz;
-		binSpaceNormal = (binSpaceNormal * 2.0f)- 1.0f;
-		normal = In.Tangent * binSpaceNormal.x + biNormal * binSpaceNormal.y + In.Normal * binSpaceNormal.z; 
-	}
-	
+	//法線を計算。
+	float3 normal = CalcNormal( In.Normal, biNormal, In.Tangent, In.TexCoord);
+		
 	float specPow = 0.0f;
 	float roughness = 1.0f;
 	if(hasSpecularMap){
@@ -103,39 +146,13 @@ float4 PSMain( PSInput In ) : SV_Target0
 	float3 toEyeDir = normalize( toEye - In.Pos );
 	float3 toEyeReflection = -toEyeDir + 2.0f * dot(normal, toEyeDir) * normal;
 	
-	int shadow = 0;
-	//ちょっと適当。
-	if(isShadowReceiver){
-		//影を落とす。
-		for(int i = 0; i < numShadowMap; i++ ){
-			float4 posInLVP = mul(mLVP[i], float4(In.Pos, 1.0f) );
-			posInLVP.xyz /= posInLVP.w;
-			
-			float depth = min(posInLVP.z, 1.0f);
-			
-			//uv座標に変換。
-			float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
-			float2 shadow_val = 1.0f;
-			if(shadowMapUV.x < 0.99f && shadowMapUV.y < 0.99f && shadowMapUV.x > 0.01f && shadowMapUV.y > 0.01f){
-				
-				//@todo テクスチャ配列に変更する。
-				if(i == 0){
-					shadow_val = shadowMap_0.Sample(Sampler, shadowMapUV ).r;
-				}else if(i == 1){
-					shadow_val = shadowMap_1.Sample(Sampler, shadowMapUV ).r;
-				}else if(i == 2){
-					shadow_val = shadowMap_2.Sample(Sampler, shadowMapUV ).r;
-				}
-				if( depth > shadow_val.r + 0.006f ){
-					shadow = 1;
-				}
-			}
-		}
-	}
-	
+	//影を計算。
+	int shadow = CalcShadow(In.Pos);	
+
 	//ディレクションライト
 	float3 finalColor = 0.0f;
 	if(shadow == 0){
+		//影が落ちている場合はディレクションライトはカットする。
 		finalColor = CalcDirectionLight(
 			albedo,
 			In.Pos, 

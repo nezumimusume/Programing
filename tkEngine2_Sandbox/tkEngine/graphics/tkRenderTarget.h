@@ -17,6 +17,7 @@ namespace tkEngine{
 		 *@param[in]	w					レンダリングターゲットの幅。
 		 *@param[in]	h					レンダリングターゲットの高さ。
 		 *@param[in]	mipLevel			ミップマップレベル。0を指定した場合はミップマップがサポートされているGPUでは1*1ピクセルまでのミップマップが作成される。
+		 *@param[in]	arraySize			テクスチャ配列のサイズ。
 		 *@param[in]	colorFormat			カラーバッファのフォーマット。
 		 *@param[in]	depthStencilFormat	深度ステンシルバッファのフォーマット。
 		 *@param[in]	multiSampleDesc		マルチサンプリングの定義。
@@ -28,6 +29,7 @@ namespace tkEngine{
 			int w,
 			int h,
 			int mipLevel,
+			int arraySize,
 			DXGI_FORMAT colorFormat,
 			DXGI_FORMAT depthStencilFormat,
 			DXGI_SAMPLE_DESC multiSampleDesc,

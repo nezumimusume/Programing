@@ -7,6 +7,7 @@
 #include "tkEngine/light/tkPointLight.h"
 #include "tkEngine/light/tkDirectionLight.h"
 #include "tkEngine/graphics/prerender/tkLightCulling.h"
+#include "tkEngine/graphics/tkSkinModelShaderConst.h"
 
 namespace tkEngine{
 	using namespace prefab;
@@ -154,13 +155,13 @@ namespace tkEngine{
 		}
 		renderContext.UpdateSubresource(m_lightParamCB, &m_lightParam);
 		//PSステージのtレジスタの100番目にディレクションライトのストラクチャーバッファを設定する。
-		renderContext.PSSetShaderResource(100, m_directionLightSB.GetSRV());
+		renderContext.PSSetShaderResource(enSkinModelSRVReg_DirectionLight, m_directionLightSB.GetSRV());
 		//PSステージのtレジスタの101番目にポイントライトのストラクチャーバッファを設定する。
-		renderContext.PSSetShaderResource(101, m_pointLightsSB.GetSRV());
+		renderContext.PSSetShaderResource(enSkinModelSRVReg_PointLight, m_pointLightsSB.GetSRV());
 		//PSステージのtレジスタの102番目にタイルごとのポイントライトのインデックスリストのストラクチャーバッファを設定する。
-		renderContext.PSSetShaderResource(102, m_pointLightsInTileSB.GetSRV());
+		renderContext.PSSetShaderResource(enSkinModelSRVReg_PointLightListInTile, m_pointLightsInTileSB.GetSRV());
 		//PSステージのcレジスタの1番目にライト用の定数バッファを設定する。
-		renderContext.PSSetConstantBuffer(1, m_lightParamCB);
+		renderContext.PSSetConstantBuffer(enSkinModelCBReg_Light, m_lightParamCB);
 	}
 	/*!
 	*@brief　１フレームの描画終了時に呼ばれる処理。

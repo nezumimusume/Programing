@@ -294,6 +294,7 @@
     <ClInclude Include="graphics\tkSkeleton.h" />
     <ClInclude Include="graphics\tkSkinModel.h" />
     <ClInclude Include="graphics\tkSkinModelData.h" />
+    <ClInclude Include="graphics\tkSkinModelShaderConst.h" />
     <ClInclude Include="Input\tkPad.h" />
     <ClInclude Include="light\tkDirectionLight.h" />
     <ClInclude Include="light\tkLightBase.h" />

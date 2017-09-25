@@ -6,6 +6,7 @@
 #include "tkEngine/graphics/tkSkinModel.h"
 #include "tkEngine/graphics/tkSkinModelData.h"
 #include "tkEngine/tkEngine.h"
+#include "tkEngine/graphics/tkSkinModelShaderConst.h"
 
 namespace tkEngine{
 	CSkinModel::CSkinModel()
@@ -64,8 +65,8 @@ namespace tkEngine{
 		vsCb.isShadowReceiver = m_isShadowReceiver ? 1 : 0;
 
 		renderContext.UpdateSubresource(m_cb, &vsCb);
-		renderContext.VSSetConstantBuffer(0, m_cb);
-		renderContext.PSSetConstantBuffer(0, m_cb);
+		renderContext.VSSetConstantBuffer(enSkinModelCBReg_VSPS, m_cb);
+		renderContext.PSSetConstantBuffer(enSkinModelCBReg_VSPS, m_cb);
 		m_skinModelData->GetSkeleton().Render(renderContext);
 
 		m_skinModelData->GetBody().Draw(

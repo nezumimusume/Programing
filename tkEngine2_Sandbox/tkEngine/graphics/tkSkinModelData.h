@@ -9,6 +9,9 @@
 namespace tkEngine{
 	class CAnimationClip;
 	typedef std::unique_ptr<CAnimationClip>	CAnimationClipPtr;
+	/*!
+	*@brief	モデルエフェクト。
+	*/
 	class CModelEffect : public DirectX::IEffect {
 	protected:
 		std::wstring m_materialName;	//!<マテリアル名。
@@ -20,6 +23,8 @@ namespace tkEngine{
 		bool isSkining;
 		/*!
 		* @brief	マテリアルパラメータ。
+		* @details 
+		* こいつを変更する場合は、modelCB.hのMaterialParamCbも変更するように。
 		*/
 		struct MaterialParam {
 			int hasNormalMap;		//!<法線マップある？
@@ -35,28 +40,8 @@ namespace tkEngine{
 			m_materialParam.anisotropic = 0.5f;
 			m_materialParamCB.Create(&m_materialParam, sizeof(m_materialParam));
 		}
-		void __cdecl Apply(ID3D11DeviceContext* deviceContext) override
-		{
-			
-			deviceContext->VSSetShader((ID3D11VertexShader*)m_vsShader.GetBody(), NULL, 0);
-			deviceContext->PSSetShader((ID3D11PixelShader*)m_psShader.GetBody(), NULL, 0);
-			deviceContext->PSSetShaderResources(0, 1, &m_diffuseTex);
-			m_materialParam.hasNormalMap = 0;
-			static int hoge = 1 ;
-			if (m_normalMap != nullptr) {
-				deviceContext->PSSetShaderResources(1, 1, &m_normalMap);
-				m_materialParam.hasNormalMap = hoge;
-			}
-			m_materialParam.hasSpecularMap = 0;
-			if (m_specularMap != nullptr) {
-				deviceContext->PSSetShaderResources(2, 1, &m_specularMap);
-				m_materialParam.hasSpecularMap = 1;
-			}
-			deviceContext->UpdateSubresource(m_materialParamCB.GetBody(), 0, NULL, &m_materialParam, 0, 0);
-			deviceContext->PSSetConstantBuffers(2, 1, &m_materialParamCB.GetBody());
-
-		}
-
+		void __cdecl Apply(ID3D11DeviceContext* deviceContext) override;
+		
 		void __cdecl GetVertexShaderBytecode(void const** pShaderByteCode, size_t* pByteCodeLength) override
 		{
 			*pShaderByteCode = m_vsShader.GetByteCode();

@@ -275,6 +275,9 @@
     <ClInclude Include="graphics\preRender\tkShadowCaster.h">
       <Filter>Source Files\graphics\preRender</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\tkSkinModelShaderConst.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">

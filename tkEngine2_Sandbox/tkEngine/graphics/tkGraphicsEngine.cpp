@@ -100,6 +100,7 @@ namespace tkEngine{
 			m_frameBufferWidth,
 			m_frameBufferHeight,
 			1,
+			1,
 			DXGI_FORMAT_R8G8B8A8_UNORM,
 			DXGI_FORMAT_D24_UNORM_S8_UINT,
 			multiSampleDesc
@@ -107,6 +108,7 @@ namespace tkEngine{
 		ret = m_mainRenderTarget[1].Create(
 			m_frameBufferWidth,
 			m_frameBufferHeight,
+			1,
 			1,
 			DXGI_FORMAT_R8G8B8A8_UNORM,
 			DXGI_FORMAT_D24_UNORM_S8_UINT,

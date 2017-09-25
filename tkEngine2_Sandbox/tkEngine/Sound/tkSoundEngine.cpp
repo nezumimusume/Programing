@@ -101,10 +101,7 @@ namespace tkEngine{
 			TK_ASSERT(false, "Faild CreateMasteringVoice");
 			return;
 		}
-#if BUILD_LEVEL != BUILD_LEVEL_MASTER
-		//@todo for debug
-//		m_masteringVoice->SetVolume(0.0f);
-#endif
+
 		XAUDIO2_VOICE_DETAILS voiceDetails;
 		m_masteringVoice->GetVoiceDetails(&voiceDetails);
 		m_masteringVoice->GetChannelMask(&m_channelMask);

@@ -19,6 +19,7 @@ namespace tkEngine{
 		int w,
 		int h,
 		int mipLevel,
+		int arraySize,
 		DXGI_FORMAT colorFormat,
 		DXGI_FORMAT depthStencilFormat,
 		DXGI_SAMPLE_DESC multiSampleDesc,
@@ -35,13 +36,14 @@ namespace tkEngine{
 		texDesc.Width = w;
 		texDesc.Height = h;
 		texDesc.MipLevels = mipLevel;
-		texDesc.ArraySize = 1;
+		texDesc.ArraySize = arraySize;
 		texDesc.Format = colorFormat;
 		texDesc.SampleDesc = multiSampleDesc;
 		texDesc.Usage = D3D11_USAGE_DEFAULT;
 		texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
 		texDesc.CPUAccessFlags = 0;
 		texDesc.MiscFlags = 0;
+	
 		ID3D11Device* pD3DDevice = GraphicsEngine().GetD3DDevice();
 		HRESULT hr;
 		if (renderTarget == nullptr) {

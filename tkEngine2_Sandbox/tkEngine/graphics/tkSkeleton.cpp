@@ -3,6 +3,7 @@
  */
 #include "tkEngine/tkEnginePrecompile.h"
 #include "tkEngine/graphics/tkSkeleton.h"
+#include "tkEngine/graphics/tkSkinModelShaderConst.h"
 
 namespace tkEngine {
 	namespace {
@@ -149,7 +150,7 @@ namespace tkEngine {
 	{
 		rc.UpdateSubresource(m_boneMatrixSB, m_boneMatrixs.get());
 		//ボーン行列をSRVに設定。
-		rc.VSSetShaderResource(103, m_boneMatrixSB.GetSRV());
+		rc.VSSetShaderResource(enSkinModelSRVReg_BoneMatrix, m_boneMatrixSB.GetSRV());
 	}
 	
 }
