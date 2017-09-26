@@ -14,8 +14,6 @@
 #include "Background.h"
 #include "GameCamera.h"
 
-hoge
-
 class PBRSample : public IGameObject {
 	//マテリアルパラメータの数。
 	static const int NUM_MATERIAL_PARAM = 3;
