@@ -240,6 +240,11 @@ namespace tkEngine{
 			DirectX::XMVECTOR xmv1 = DirectX::XMLoadFloat3(&vMin.vec);
 			DirectX::XMStoreFloat3(&vec, DirectX::XMVectorMin(xmv0, xmv1));
 		}
+		const CVector3& operator+=(const CVector3& _v)
+		{
+			Add(_v);
+			return *this;
+		}
 	};
 	/*!
 	 *@brief	4要素のベクトルクラス。
@@ -496,6 +501,27 @@ namespace tkEngine{
 			int v[4];
 		};
 	};
+	/*!
+	*@brief	ベクトル同士の加算。
+	*/
+	template<class TVector>
+	static inline TVector operator+(const TVector& v0, const TVector& v1)
+	{
+		TVector result;
+		result.Add(v0, v1);
+		return result;
+	}
+	/*!
+	*@brief	ベクトルのスケール倍。
+	*/
+	template<class TVector>
+	static inline TVector operator*(const TVector& v, float s)
+	{
+		TVector result;
+		result = v;
+		result.Scale(s);
+		return result;
+	}
 }
 
 

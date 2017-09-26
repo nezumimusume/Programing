@@ -178,7 +178,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	initParam.graphicsConfing.shadowRenderConfig.isEnableSoftShadow = true;
 
 	GraphicsEngine().GetShadowMap().SetFar(1000.0f);
-	GraphicsEngine().GetShadowMap().SetNear(1.0f);
+	GraphicsEngine().GetShadowMap().SetNear(10.0f);
 	//エンジンを初期化。
 	if (Engine().Init(initParam) == true) {
 		//初期化に成功。
