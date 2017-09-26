@@ -31,6 +31,7 @@ bool Background::Start()
 	m_skinModel2.SetShadowCasterFlag(true);
 
 	m_meshCollider.CreateFromSkinModel(m_skinModel, nullptr);
+	m_meshCollider2.CreateFromSkinModel(m_skinModel2, nullptr);
 	RigidBodyInfo rbInfo;
 	rbInfo.collider = &m_meshCollider;
 	rbInfo.mass = 0.0f;
@@ -38,6 +39,11 @@ bool Background::Start()
 	rbInfo.rot.SetRotationDeg(CVector3::AxisX, -90.0f);
 	m_rigidBody.Create(rbInfo);
 	PhysicsWorld().AddRigidBody(&m_rigidBody);
+
+	rbInfo.collider = &m_meshCollider2;
+	m_rigidBody2.Create(rbInfo);
+	PhysicsWorld().AddRigidBody(&m_rigidBody2);
+
 	return true;
 }
 void Background::Update()

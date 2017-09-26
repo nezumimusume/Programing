@@ -68,61 +68,73 @@ namespace tkEngine{
 		if (!m_isEnable) {
 			return;
 		}
-		//シーンをレンダリング使用としているカメラを使って、ライトカメラの回転を求める。
-		CVector3 cameraDir;
-		cameraDir.Subtract(MainCamera().GetTarget(), MainCamera().GetPosition());
-		if (fabs(cameraDir.x) < FLT_EPSILON && fabsf(cameraDir.z) < FLT_EPSILON) {
-			//ほぼ真上をむいている。
-			return;
+		//ライトビュープロジェクション行列を作成。
+		{
+			CMatrix lightCamera;
+			CVector3 lightTarget = MainCamera().GetTarget();
+			CVector3 lightPos = lightTarget + m_lightDirection * -500.0f;	//@todo 500は適当。
+			if (m_lightDirection.y > 0.998f) {
+				//ほぼ真上を向いている。
+				lightCamera.MakeLookAt(lightPos, lightTarget, CVector3::Right);
+			}
+			else {
+				lightCamera.MakeLookAt(lightPos, lightTarget, CVector3::Up);
+			}
+			CMatrix proj;
+			proj.MakeOrthoProjectionMatrix(
+				4000.0f,	//@todo 適当。
+				4000.0f,	//@todo 適当。
+				m_near,
+				m_far
+			);
+			m_lvp.Mul(lightCamera, proj);
 		}
-		cameraDir.y = 0.0f;
-		cameraDir.Normalize();
-		CVector3 lightViewForward = m_lightDirection;
-		CVector3 lightViewUp;
-		lightViewUp.Cross(lightViewForward, cameraDir);
-		lightViewUp.Normalize();
-		CVector3 lgihtViewRight;
-		lgihtViewRight.Cross(lightViewUp, lightViewForward);
-		lgihtViewRight.Normalize();
+		//シーンをレンダリング使用としているカメラを使って、ライトカメラの回転を求める。
+		CVector3 cameraForwardXZ = MainCamera().GetForward();
+		cameraForwardXZ.y = 0.0f;
+		cameraForwardXZ.Normalize();
+		CVector3 cameraRightXZ = MainCamera().GetRight();
+		cameraRightXZ.y = 0.0f;
+		cameraRightXZ.Normalize();
 		//ライトビューはカメラの横方向を上、カメラの下方向を前、カメラの前方向を横とするといい感じになるよ。
 		CMatrix lightViewRot;
 		//ライトビューの横を設定する。
-		lightViewRot.m[0][0] = lgihtViewRight.x;
-		lightViewRot.m[0][1] = lgihtViewRight.y;
-		lightViewRot.m[0][2] = lgihtViewRight.z;
+		lightViewRot.m[0][0] = cameraRightXZ.x;
+		lightViewRot.m[0][1] = cameraRightXZ.y;
+		lightViewRot.m[0][2] = cameraRightXZ.z;
 		lightViewRot.m[0][3] = 0.0f;
 		//ライトビューの上を設定する。
-		lightViewRot.m[1][0] = lightViewUp.x;
-		lightViewRot.m[1][1] = lightViewUp.y;
-		lightViewRot.m[1][2] = lightViewUp.z;
+		lightViewRot.m[1][0] = cameraForwardXZ.x;
+		lightViewRot.m[1][1] = cameraForwardXZ.y;
+		lightViewRot.m[1][2] = cameraForwardXZ.z;
 		lightViewRot.m[1][3] = 0.0f;
 		//ライトビューの前を設定する。
-		lightViewRot.m[2][0] = lightViewForward.x;
-		lightViewRot.m[2][1] = lightViewForward.y;
-		lightViewRot.m[2][2] = lightViewForward.z;
+		lightViewRot.m[2][0] = 0.0f;
+		lightViewRot.m[2][1] = -1.0f;
+		lightViewRot.m[2][2] = 0.0f;
 		lightViewRot.m[2][3] = 0.0f;
 
 		float toFarPlane = m_far - m_near;
 		float shadowAreaTbl[NUM_SHADOW_MAP] = {
-			200,
 			400,
-			800
+			800,
+			1600
 		};
 
 		
-		CVector3 toLightPos = m_lightDirection;
-		toLightPos.Scale(-MainCamera().GetTargetToPositionLength());
-		CVector3 lightPos;
-		lightPos.Add(MainCamera().GetTarget(), toLightPos);
-		CVector3 lightOffset;
+		CVector3 lightViewPos = MainCamera().GetPosition();
+		CVector3 lightViewOffset = cameraForwardXZ;
+		lightViewOffset.Scale(shadowAreaTbl[0] * 0.4f);
+		lightViewPos.Add(lightViewOffset);
+		
 		SShadowCb shadowCB;
 		for (int i = 0; i < NUM_SHADOW_MAP; i++) {
 
 			CMatrix mLightView;
 			mLightView = lightViewRot;
-			mLightView.m[3][0] = lightPos.x;
-			mLightView.m[3][1] = lightPos.y;
-			mLightView.m[3][2] = lightPos.z;
+			mLightView.m[3][0] = lightViewPos.x;
+			mLightView.m[3][1] = lightViewPos.y;
+			mLightView.m[3][2] = lightViewPos.z;
 			mLightView.m[3][3] = 1.0f;
 			mLightView.Inverse(mLightView);	//カメラビュー完成。
 											//続いてプロジェクション行列。
@@ -137,10 +149,11 @@ namespace tkEngine{
 			m_LVPMatrix[i].Mul(mLightView, proj);
 			m_shadowCbEntity.mLVP[i] = m_LVPMatrix[i];
 			
-			lightOffset = cameraDir;
-			lightOffset.Scale(shadowAreaTbl[i] * 0.9f);
-			lightPos.Add(lightOffset);
+			lightViewOffset = cameraForwardXZ;
+			lightViewOffset.Scale(shadowAreaTbl[i] * 0.9f);
+			lightViewPos.Add(lightViewOffset);
 		}
+		m_shadowCbEntity.mLVP[NUM_SHADOW_MAP] = m_lvp;
 	}
 	/*!
 	*@brief	シャドウマップへ書き込み。

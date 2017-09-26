@@ -496,6 +496,22 @@ namespace tkEngine{
 			int v[4];
 		};
 	};
+	static inline CVector3 operator*(const CVector3& v, float s)
+	{
+		CVector3 r;
+		r.x = v.x * s;
+		r.y = v.y * s;
+		r.z = v.z * s;
+		return r;
+	}
+	static inline CVector3 operator+(const CVector3& v0, const CVector3& v1)
+	{
+		CVector3 r;
+		r.x = v0.x + v1.x;
+		r.y = v0.y + v1.y;
+		r.z = v0.z + v1.z;
+		return r;
+	}
 }
 
 
