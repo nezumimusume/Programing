@@ -127,7 +127,8 @@ namespace tkEngine{
 			return;
 		}
 		m_camera = camera;
-		
+		m_target = m_camera->GetTarget();
+		m_position = m_camera->GetPosition();
 		m_targetMoveSpeed = CVector3::Zero;
 		m_positionMoveSpeed = CVector3::Zero;
 		m_maxMoveSpeed = maxMoveSpeed;
@@ -135,6 +136,7 @@ namespace tkEngine{
 	void CSpringCamera::UpdateSpringCamera()
 	{
 		if (m_camera == nullptr) {
+			return;
 		}
 		m_dampingRate = CalcSpringScalar(m_dampingRate, m_targetDampingRate, m_dampingRateVel);
 		CVector3 target = CalcSpringVector(m_camera->GetTarget(), m_target, m_targetMoveSpeed, m_maxMoveSpeed, m_dampingRate);
