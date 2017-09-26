@@ -8,7 +8,6 @@ cbuffer VSPSCb : register(b0){
 	float4x4 mWorld;
 	float4x4 mView;
 	float4x4 mProj;
-	float4x4 mLVP2;			//@todo 後で変更する。
 	float4 screenParam;		// スクリーンパラメータ(near, far, screenWidth, screenHeight)
 	int isZPrepass;			//Zプリパス？
 	int isDrawShadowMap;	//シャドウマップに描画中？

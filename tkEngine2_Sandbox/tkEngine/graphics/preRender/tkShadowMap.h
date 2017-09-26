@@ -68,21 +68,13 @@ namespace tkEngine{
 		{
 			m_near = Near;
 		}
-		/*!
-		* @brief	ライトビュープロジェクション行列を取得。
-		*/
-		const CMatrix& GetLVPMatrix() const
-		{
-			return m_lvp;
-		}
 	private:
 		/*!
 		 *@brief	この中身を変更したら、modelCB.hのShadowCbも変更するように。
 		 */
 		struct SShadowCb {
-			CMatrix mLVP[NUM_SHADOW_MAP+1];
+			CMatrix mLVP[NUM_SHADOW_MAP];
 		};
-		CMatrix m_lvp;										//!<ライトビュープロジェクション行列。
 		bool m_isEnable = false;							//!<影の処理が有効？
 		CVector3 m_lightDirection = CVector3::Down;			//!<ライトの方向。
 		float m_near = 0.1f;								//!<近平面。

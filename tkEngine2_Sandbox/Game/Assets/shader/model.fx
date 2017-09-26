@@ -19,13 +19,12 @@ int CalcShadow( float3 worldPos )
 	//ちょっと適当。
 	if(isShadowReceiver){
 		//影を落とす。
-		float4 posInLVP2 = mul(mLVP2, float4(worldPos, 1.0f) );
 		[unroll]
 		for(int i = 0; i < NUM_SHADOW_MAP; i++ ){
 			float4 posInLVP = mul(mLVP[i], float4(worldPos, 1.0f) );
 			posInLVP.xyz /= posInLVP.w;
 			
-			float depth = min(posInLVP2.z / posInLVP2.w, 1.0f);
+			float depth = min(posInLVP.z / posInLVP.w, 1.0f);
 			
 			//uv座標に変換。
 			float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
@@ -72,11 +71,7 @@ PSInput VSMain( VSInputNmTxVcTangent In )
 	pos = mul(mView, pos);
 	psInput.posInView = pos;
 	pos = mul(mProj, pos);
-	if(isDrawShadowMap){
-		psInput.posInProj = mul(mLVP2, float4(psInput.Pos, 1.0f));
-	}else{
-		psInput.posInProj = pos;
-	}
+	psInput.posInProj = pos;
 	psInput.Position = pos;
 	psInput.TexCoord = In.TexCoord;
 	psInput.Normal = normalize(mul(mWorld, In.Normal));
@@ -109,11 +104,8 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
 	pos = mul(mView, pos);
 	psInput.posInView = pos;
 	pos = mul(mProj, pos);
-	if(isDrawShadowMap){
-		psInput.posInProj = mul(mLVP2, float4(psInput.Pos, 1.0f));
-	}else{
-		psInput.posInProj = pos;
-	}
+	psInput.posInProj = pos;
+
 	psInput.Position = pos;
 	psInput.TexCoord = In.TexCoord;
 	

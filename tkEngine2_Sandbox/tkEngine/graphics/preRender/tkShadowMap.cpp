@@ -68,92 +68,121 @@ namespace tkEngine{
 		if (!m_isEnable) {
 			return;
 		}
-		//ライトビュープロジェクション行列を作成。
-		{
-			CMatrix lightCamera;
-			CVector3 lightTarget = MainCamera().GetTarget();
-			CVector3 lightPos = lightTarget + m_lightDirection * -500.0f;	//@todo 500は適当。
-			if (m_lightDirection.y > 0.998f) {
-				//ほぼ真上を向いている。
-				lightCamera.MakeLookAt(lightPos, lightTarget, CVector3::Right);
-			}
-			else {
-				lightCamera.MakeLookAt(lightPos, lightTarget, CVector3::Up);
-			}
-			CMatrix proj;
-			proj.MakeOrthoProjectionMatrix(
-				4000.0f,	//@todo 適当。
-				4000.0f,	//@todo 適当。
-				m_near,
-				m_far
-			);
-			m_lvp.Mul(lightCamera, proj);
-		}
 		//シーンをレンダリング使用としているカメラを使って、ライトカメラの回転を求める。
-		CVector3 cameraForwardXZ = MainCamera().GetForward();
-		cameraForwardXZ.y = 0.0f;
-		cameraForwardXZ.Normalize();
-		CVector3 cameraRightXZ = MainCamera().GetRight();
-		cameraRightXZ.y = 0.0f;
-		cameraRightXZ.Normalize();
+		CVector3 cameraDirXZ = MainCamera().GetForward();
+		if (fabs(cameraDirXZ.x) < FLT_EPSILON && fabsf(cameraDirXZ.z) < FLT_EPSILON) {
+			//ほぼ真上をむいている。
+			return;
+		}
+		cameraDirXZ.y = 0.0f;
+		cameraDirXZ.Normalize();
+		CVector3 lightViewForward = m_lightDirection;
+		CVector3 lightViewUp;
+		if (lightViewForward.y > 0.999f) {
+			//ほぼ真上。
+			lightViewUp.Cross(lightViewForward, CVector3::Right);
+		}
+		else {
+			lightViewUp.Cross(lightViewForward, CVector3::Up);
+		}
+		lightViewUp.Normalize();
+		CVector3 lgihtViewRight;
+		lgihtViewRight.Cross(lightViewUp, lightViewForward);
+		lgihtViewRight.Normalize();
 		//ライトビューはカメラの横方向を上、カメラの下方向を前、カメラの前方向を横とするといい感じになるよ。
 		CMatrix lightViewRot;
 		//ライトビューの横を設定する。
-		lightViewRot.m[0][0] = cameraRightXZ.x;
-		lightViewRot.m[0][1] = cameraRightXZ.y;
-		lightViewRot.m[0][2] = cameraRightXZ.z;
+		lightViewRot.m[0][0] = lgihtViewRight.x;
+		lightViewRot.m[0][1] = lgihtViewRight.y;
+		lightViewRot.m[0][2] = lgihtViewRight.z;
 		lightViewRot.m[0][3] = 0.0f;
 		//ライトビューの上を設定する。
-		lightViewRot.m[1][0] = cameraForwardXZ.x;
-		lightViewRot.m[1][1] = cameraForwardXZ.y;
-		lightViewRot.m[1][2] = cameraForwardXZ.z;
+		lightViewRot.m[1][0] = lightViewUp.x;
+		lightViewRot.m[1][1] = lightViewUp.y;
+		lightViewRot.m[1][2] = lightViewUp.z;
 		lightViewRot.m[1][3] = 0.0f;
 		//ライトビューの前を設定する。
-		lightViewRot.m[2][0] = 0.0f;
-		lightViewRot.m[2][1] = -1.0f;
-		lightViewRot.m[2][2] = 0.0f;
+		lightViewRot.m[2][0] = lightViewForward.x;
+		lightViewRot.m[2][1] = lightViewForward.y;
+		lightViewRot.m[2][2] = lightViewForward.z;
 		lightViewRot.m[2][3] = 0.0f;
 
-		float toFarPlane = m_far - m_near;
 		float shadowAreaTbl[NUM_SHADOW_MAP] = {
 			400,
 			800,
 			1600
 		};
 
-		
-		CVector3 lightViewPos = MainCamera().GetPosition();
-		CVector3 lightViewOffset = cameraForwardXZ;
-		lightViewOffset.Scale(shadowAreaTbl[0] * 0.4f);
-		lightViewPos.Add(lightViewOffset);
-		
+		//ライトビューのターゲットを計算。
+		float toFarplane = m_far - m_near;
+		CVector3 lightTarget;
+		lightTarget = MainCamera().GetPosition();
+		lightTarget.y = MainCamera().GetTarget().y;
+		lightTarget += cameraDirXZ * shadowAreaTbl[0] * 0.5f;
+		CVector3 lightPos = lightTarget + m_lightDirection * toFarplane * -0.5f;
+		CVector3 lightOffset;
 		SShadowCb shadowCB;
+		float nearPlaneZ = 0.0f;
+		float farPlaneZ ;
 		for (int i = 0; i < NUM_SHADOW_MAP; i++) {
-
+			farPlaneZ = nearPlaneZ + shadowAreaTbl[i];
 			CMatrix mLightView;
 			mLightView = lightViewRot;
-			mLightView.m[3][0] = lightViewPos.x;
-			mLightView.m[3][1] = lightViewPos.y;
-			mLightView.m[3][2] = lightViewPos.z;
+			mLightView.m[3][0] = lightPos.x;
+			mLightView.m[3][1] = lightPos.y;
+			mLightView.m[3][2] = lightPos.z;
 			mLightView.m[3][3] = 1.0f;
 			mLightView.Inverse(mLightView);	//カメラビュー完成。
 											//続いてプロジェクション行列。
-			float viewAngle = MainCamera().GetViewAngle();
+			float halfViewAngle = MainCamera().GetViewAngle() * 0.5f;
+			//視推台の4頂点をライト空間に変換してAABBを求めめて、正射影の幅と高さを求める。
+			float w, h;
+			CVector3 v[4];
+			{
+				float t = tan(halfViewAngle);
+				//近平面の中央座標を計算。
+				
+				CVector3 vWk = MainCamera().GetPosition() + cameraDirXZ * nearPlaneZ;
+				v[0] = vWk + MainCamera().GetRight() * t * nearPlaneZ;
+				v[1] = vWk + MainCamera().GetRight() * -t * nearPlaneZ;
+				//遠平面の中央座標を計算。
+				vWk = MainCamera().GetPosition() + cameraDirXZ * farPlaneZ;
+				v[2] = vWk + MainCamera().GetRight() * t * farPlaneZ;
+				v[3] = vWk + MainCamera().GetRight() * -t * farPlaneZ;
+
+				//視推台を構成する4頂点が計算できたので、ライト空間に座標変換して、AABBを求める。
+				float fMax[2] = { -FLT_MAX, -FLT_MAX };
+				float fMin[2] = { FLT_MAX, FLT_MAX };
+				for (auto& vInLight : v) {
+					mLightView.Mul(vInLight);
+					fMax[0] = max(fMax[0], vInLight.x);
+					fMax[1] = max(fMax[1], vInLight.y);
+					fMin[0] = min(fMin[0], vInLight.x);
+					fMin[1] = min(fMin[1], vInLight.y);
+				}
+#if 1
+				w = fMax[0] - fMin[0];
+				h = fMax[1] - fMin[1];
+#else
+				w = fMax[1] - fMin[1];
+				h = fMax[0] - fMin[0];
+#endif
+			}
 			CMatrix proj;
 			proj.MakeOrthoProjectionMatrix(
-				shadowAreaTbl[i] * m_accpect,
-				tan(viewAngle * 0.5f) * (shadowAreaTbl[i] * (i + 1))* 2.0f,
+				w * 1.5f,	//ちょい太らせる。
+				h * 1.5f,
 				m_near,
 				m_far
 			);
 			m_LVPMatrix[i].Mul(mLightView, proj);
 			m_shadowCbEntity.mLVP[i] = m_LVPMatrix[i];
 			
-			lightViewOffset = cameraForwardXZ;
-			lightViewOffset.Scale(shadowAreaTbl[i] * 0.9f);
-			lightViewPos.Add(lightViewOffset);
+			lightOffset = cameraDirXZ;
+			lightOffset.Scale(shadowAreaTbl[i]);
+			lightPos.Add(lightOffset);
+			nearPlaneZ = farPlaneZ;
 		}
-		m_shadowCbEntity.mLVP[NUM_SHADOW_MAP] = m_lvp;
 	}
 	/*!
 	*@brief	シャドウマップへ書き込み。

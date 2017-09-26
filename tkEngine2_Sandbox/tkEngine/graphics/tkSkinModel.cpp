@@ -71,7 +71,7 @@ namespace tkEngine{
 		vsCb.isZPrepass = isZPrepass ? 1 : 0;
 		vsCb.isDrawShadowMap = isDrawShadowMap ? 1 : 0;
 		vsCb.isShadowReceiver = m_isShadowReceiver ? 1 : 0;
-		vsCb.mLVP = GraphicsEngine().GetShadowMap().GetLVPMatrix();
+		
 		renderContext.UpdateSubresource(m_cb, &vsCb);
 		renderContext.VSSetConstantBuffer(enSkinModelCBReg_VSPS, m_cb);
 		renderContext.PSSetConstantBuffer(enSkinModelCBReg_VSPS, m_cb);
