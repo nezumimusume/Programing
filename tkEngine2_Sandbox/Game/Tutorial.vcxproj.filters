@@ -38,6 +38,9 @@
     <MeshContentTask Include="Resource\modelData\background.FBX">
       <Filter>Resource Files\modelData</Filter>
     </MeshContentTask>
+    <MeshContentTask Include="Resource\modelData\background2.FBX">
+      <Filter>Resource Files\modelData</Filter>
+    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Resource\modelData\Thethief_wuqi_S.tga">

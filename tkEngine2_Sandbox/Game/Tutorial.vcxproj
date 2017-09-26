@@ -585,6 +585,7 @@
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Resource\modelData\background.FBX" />
+    <MeshContentTask Include="Resource\modelData\background2.FBX" />
     <MeshContentTask Include="Resource\modelData\Thethief_H.FBX" />
   </ItemGroup>
   <ItemGroup>

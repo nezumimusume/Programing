@@ -77,9 +77,17 @@ void Player::Update()
 		m_characterCtr.Jump();	//ジャンプしたことを通知する。
 
 	}
-	m_moveSpeed.x = inputPad.x * -100.0f;
-	m_moveSpeed.z = inputPad.y * -100.0f;
-
+	CVector3 camForward = MainCamera().GetForward();
+	CVector3 camRight = MainCamera().GetRight();
+	camForward.y = 0.0f;
+	camForward.Normalize();
+	camRight.y = 0.0f;
+	camRight.Normalize();
+	camForward.Scale(inputPad.y * 100.0f);
+	camRight.Scale(inputPad.x * 100.0f);
+	m_moveSpeed.x = camForward.x + camRight.x;
+	m_moveSpeed.z = camForward.z + camRight.z;
+	//カメラ座標系の移動速度をワールド座標系に変換する。
 	m_characterCtr.Execute(GameTime().GetFrameDeltaTime(), m_moveSpeed);
 	m_position = m_characterCtr.GetPosition();
 	CQuaternion qRot;

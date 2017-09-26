@@ -177,7 +177,6 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapHeight = 2048;
 	initParam.graphicsConfing.shadowRenderConfig.isEnableSoftShadow = true;
 
-	
 	GraphicsEngine().GetShadowMap().SetFar(1000.0f);
 	GraphicsEngine().GetShadowMap().SetNear(1.0f);
 	//ƒGƒ“ƒWƒ“‚ğ‰Šú‰»B

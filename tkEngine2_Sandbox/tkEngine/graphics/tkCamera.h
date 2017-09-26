@@ -145,6 +145,20 @@ namespace tkEngine{
 			return m_targetToPositionLen;
 		}
 		/*!
+		* @brief	カメラの前方方向を取得。
+		*/
+		const CVector3& GetForward() const
+		{
+			return m_forward;
+		}
+		/*!
+		* @brief	カメラの右方向を取得。
+		*/
+		const CVector3& GetRight() const
+		{
+			return m_right;
+		}
+		/*!
 		* @brief	ワールド座標からスクリーン座標を計算する。
 		*@details
 		* 計算されるスクリーン座標は画面の中心を{0,0}、左上を{画面の幅*-0.5,画面の高さ*-0.5}</br>
@@ -163,6 +177,8 @@ namespace tkEngine{
 		CMatrix		m_viewProjectionMatrix;				//!<ビュープロジェクション行列。
 		CMatrix		m_viewMatrixInv;					//!<ビュー行列の逆行列。
 		CMatrix		m_cameraRotation;					//!<カメラの回転行列。
+		CVector3	m_forward = CVector3::Front;		//!<カメラの前方。
+		CVector3	m_right = CVector3::Right;			//!<カメラの右。
 		float		m_near;								//!<近平面。
 		float		m_far;								//!<遠平面。
 		float		m_viewAngle;						//!<画角(ラジアン)。

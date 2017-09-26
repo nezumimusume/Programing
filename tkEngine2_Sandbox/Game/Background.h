@@ -14,6 +14,8 @@ public:
 private:
 	CSkinModelData		m_skinModelData;	//!<スキンモデルデータ。
 	CSkinModel			m_skinModel;		//!<スキンモデル。
+	CSkinModelData		m_skinModelData2;
+	CSkinModel			m_skinModel2;
 	CShaderResourceView	m_normalMapSRV;		//!<法線マップのSRV。
 	CMeshCollider		m_meshCollider;		//!<メッシュコライダー。
 	CRigidBody			m_rigidBody;		//!<剛体。

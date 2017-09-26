@@ -16,6 +16,9 @@ bool Background::Start()
 {
 	m_skinModelData.Load(L"Assets/modelData/background.cmo");
 	m_skinModel.Init(m_skinModelData);
+	m_skinModelData2.Load(L"Assets/modelData/background2.cmo");
+	m_skinModel2.Init(m_skinModelData2);
+
 	m_normalMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/BB_Map_1A Normal.dds");
 	m_skinModel.FindMesh([&](auto& mesh) {
 		CModelEffect* effect = reinterpret_cast<CModelEffect*>(mesh->effect.get());
@@ -24,6 +27,8 @@ bool Background::Start()
 		}
 	});
 	m_skinModel.SetShadowReceiverFlag(true);
+	m_skinModel2.SetShadowReceiverFlag(true);
+	m_skinModel2.SetShadowCasterFlag(true);
 
 	m_meshCollider.CreateFromSkinModel(m_skinModel, nullptr);
 	RigidBodyInfo rbInfo;
@@ -40,8 +45,10 @@ void Background::Update()
 	CQuaternion qRot;
 	qRot.SetRotationDeg(CVector3::AxisX, -90.0f);
 	m_skinModel.Update({ 0.0f, 20.0f, 0.0f }, qRot, CVector3::One);
+	m_skinModel2.Update({ 0.0f, 20.0f, 0.0f }, qRot, CVector3::One);
 }
 void Background::Render(CRenderContext& rc)
 {
 	m_skinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
+	m_skinModel2.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
 }

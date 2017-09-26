@@ -62,7 +62,7 @@ bool GameCamera::Start()
 	m_springCamera.SetPosition(pos);
 	m_springCamera.SetTarget(target);
 	m_springCamera.SetTarTarget(target);
-	m_springCamera.SetFar(1000.0f);
+	m_springCamera.SetFar(10000.0f);
 	m_springCamera.SetNear(1.0f);
 	m_springCamera.SetDampingRate(1.2f);
 
