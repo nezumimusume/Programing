@@ -79,6 +79,7 @@ namespace tkEngine{
 			CMatrix mWorld;
 			CMatrix mView;
 			CMatrix mProj;
+			CMatrix mLVP; //@todo å„Ç≈é°Ç∑ÅB
 			CVector4 screenParam;
 			int isZPrepass;
 			int isDrawShadowMap;

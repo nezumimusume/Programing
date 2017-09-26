@@ -19,5 +19,7 @@ private:
 	CShaderResourceView	m_normalMapSRV;		//!<法線マップのSRV。
 	CMeshCollider		m_meshCollider;		//!<メッシュコライダー。
 	CRigidBody			m_rigidBody;		//!<剛体。
+	CMeshCollider		m_meshCollider2;	//!<メッシュコライダー２。
+	CRigidBody			m_rigidBody2;		//!<剛体２。
 };
 
