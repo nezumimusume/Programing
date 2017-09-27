@@ -293,6 +293,12 @@
     <ClInclude Include="graphics\tkGPUEventMarker.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\tkPrimitive.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\GPUBuffer\tkIndexBuffer.h">
+      <Filter>Source Files\graphics\GPUBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -456,6 +462,12 @@
     </ClCompile>
     <ClCompile Include="graphics\tkGPUEventMarker.cpp">
       <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkPrimitive.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\GPUBuffer\tkIndexBuffer.cpp">
+      <Filter>Source Files\graphics\GPUBuffer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

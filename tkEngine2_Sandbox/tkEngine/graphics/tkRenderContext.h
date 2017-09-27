@@ -7,6 +7,7 @@
 
 #include "tkEngine/graphics/tkShader.h"
 #include "tkEngine/graphics/GPUBuffer/tkVertexBuffer.h"
+#include "tkEngine/graphics/GPUBuffer/tkIndexBuffer.h"
 #include "tkEngine/graphics/GPUBuffer/tkConstantBuffer.h"
 #include "tkEngine/graphics/GPUBuffer/tkStructuredBuffer.h"
 #include "tkEngine/graphics/GPUView/tkShaderResourceView.h"
@@ -88,14 +89,24 @@ namespace tkEngine{
 		}
 		/*!
 		* @brief	頂点バッファを設定。
-		*@param[in]	rtNo	レンダリングターゲットの番号。
-		*@param[in]	clearColor	クリアカラー。
 		*/
 		void IASetVertexBuffer(CVertexBuffer& vertexBuffer)
 		{
 			UINT offset = 0;
 			UINT stride = vertexBuffer.GetStride();
 			m_pD3DDeviceContext->IASetVertexBuffers(0, 1, &vertexBuffer.GetBody(), &stride, &offset);
+		}
+		/*!
+		* @brief	インデックスバッファを設定
+		*/
+		void IASetIndexBuffer(CIndexBuffer& indexBuffer)
+		{
+			CIndexBuffer::EnIndexType type = indexBuffer.GetIndexType();
+			m_pD3DDeviceContext->IASetIndexBuffer(
+				indexBuffer.GetBody(),
+				type == CIndexBuffer::enIndexType_16 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT,
+				0
+			);
 		}
 		/*!
 		* @brief	プリミティブのトポロジーを設定。
@@ -264,6 +275,20 @@ namespace tkEngine{
 		)
 		{
 			m_pD3DDeviceContext->Draw(vertexCount, startVertexLocation);
+		}
+		/*!
+		* @brief	インデックス付き描画。
+		* @param[in]	indexCount			インデックスの数。
+		* @param[in]	StartIndexLocation	描画を開始するインデックスの位置。大抵0で大丈夫。
+		* @param[in]	BaseVertexLocation	ベース頂点インデックス。大抵0で大丈夫。
+		*/
+		void DrawIndexed(
+			_In_  UINT IndexCount,
+			_In_  UINT StartIndexLocation,
+			_In_  INT BaseVertexLocation)
+		{
+			m_pD3DDeviceContext->DrawIndexed(IndexCount, StartIndexLocation, BaseVertexLocation);
+
 		}
 		/*!
 		* @brief	ディスパッチ。

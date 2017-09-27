@@ -5,6 +5,7 @@
 #pragma once
 
 #include "tkEngine/graphics/postEffect/tkFxaa.h"
+#include "tkEngine/graphics/tkPrimitive.h"
 
 namespace tkEngine{
 	/*!
@@ -34,7 +35,18 @@ namespace tkEngine{
 		*@param[in]		rc		レンダリングコンテキスト。
 		*/
 		void Render(CRenderContext& rc);
+		/*!
+		*@brief	フルスクリーン描画。
+		*@param[in]		rc		レンダリングコンテキスト。
+		*/
+		void DrawFullScreenQuad(CRenderContext& rc);
 	private:
-		CFxaa	m_fxaa;		//!<FXAA。
+		/*!
+		*@brief	フルスクリーン描画用の矩形プリミティブの初期化。。
+		*/
+		void InitFullScreenQuadPrimitive();
+	private:
+		CFxaa		m_fxaa;				//!<FXAA。
+		CPrimitive	m_fullscreenQuad;	//!<フルスクリーン描画用の矩形プリミティブ。
 	};
 }

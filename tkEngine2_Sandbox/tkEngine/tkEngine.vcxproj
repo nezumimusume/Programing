@@ -272,6 +272,7 @@
     <ClInclude Include="graphics\animation\tkAnimationPlayController.h" />
     <ClInclude Include="graphics\GPUBuffer\tkConstantBuffer.h" />
     <ClInclude Include="graphics\GPUBuffer\tkGPUBuffer.h" />
+    <ClInclude Include="graphics\GPUBuffer\tkIndexBuffer.h" />
     <ClInclude Include="graphics\GPUBuffer\tkStructuredBuffer.h" />
     <ClInclude Include="graphics\GPUBuffer\tkVertexBuffer.h" />
     <ClInclude Include="graphics\GPUView\tkShaderResourceView.h" />
@@ -288,6 +289,7 @@
     <ClInclude Include="graphics\tkGraphicsEngine.h" />
     <ClInclude Include="graphics\tkLight.h" />
     <ClInclude Include="graphics\tkMapper.h" />
+    <ClInclude Include="graphics\tkPrimitive.h" />
     <ClInclude Include="graphics\tkRenderContext.h" />
     <ClInclude Include="graphics\tkRenderState.h" />
     <ClInclude Include="graphics\tkRenderTarget.h" />
@@ -344,6 +346,7 @@
     <ClCompile Include="graphics\animation\tkAnimationPlayController.cpp" />
     <ClCompile Include="graphics\GPUBuffer\tkConstantBuffer.cpp" />
     <ClCompile Include="graphics\GPUBuffer\tkGPUBuffer.cpp" />
+    <ClCompile Include="graphics\GPUBuffer\tkIndexBuffer.cpp" />
     <ClCompile Include="graphics\GPUBuffer\tkStructuredBuffer.cpp" />
     <ClCompile Include="graphics\GPUBuffer\tkVertexBuffer.cpp" />
     <ClCompile Include="graphics\GPUView\tkShaderResourceView.cpp" />
@@ -358,6 +361,7 @@
     <ClCompile Include="graphics\tkCamera.cpp" />
     <ClCompile Include="graphics\tkGPUEventMarker.cpp" />
     <ClCompile Include="graphics\tkGraphicsEngine.cpp" />
+    <ClCompile Include="graphics\tkPrimitive.cpp" />
     <ClCompile Include="graphics\tkRenderContext.cpp" />
     <ClCompile Include="graphics\tkRenderTarget.cpp" />
     <ClCompile Include="graphics\tkSamplerState.cpp" />
