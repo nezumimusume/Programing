@@ -7,5 +7,5 @@
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/graphics/tkGPUEventMarker.h"
 
-namesapce tkEngine{
+namespace tkEngine{
 }

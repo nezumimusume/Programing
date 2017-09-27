@@ -50,7 +50,7 @@ namespace tkEngine{
 		
 		//プリレンダリング。
 		GraphicsEngine().GetPreRender().Render(renderContext);
-
+		BeginGPUEvent(L"enRenderStep_Render3DModelToScene");
 		//レンダリングステップを3Dモデルの描画に。
 		renderContext.SetRenderStep(enRenderStep_Render3DModelToScene);
 
@@ -70,6 +70,8 @@ namespace tkEngine{
 				obj->RenderWrapper(renderContext);
 			}
 		}
+
+		EndGPUEvent();
 
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {

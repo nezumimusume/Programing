@@ -35,6 +35,7 @@ namespace tkEngine{
 	}
 	void CZPrepass::Render(CRenderContext& rc) 
 	{
+		BeginGPUEvent(L"enRenderStep_ZPrepass");
 		rc.SetRenderStep(enRenderStep_ZPrepass);
 		//現在のレンダリングターゲットをバックアップする。
 		CRenderTarget* oldRenderTargets[MRT_MAX];
@@ -54,5 +55,6 @@ namespace tkEngine{
 		m_skinModels.clear();
 		//レンダリングターゲットを差し戻す。
 		rc.OMSetRenderTargets(numRenderTargetViews, oldRenderTargets);
+		EndGPUEvent();
 	}
 }

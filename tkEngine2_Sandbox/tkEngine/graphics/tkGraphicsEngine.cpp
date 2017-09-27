@@ -14,6 +14,13 @@ namespace tkEngine{
 	}
 	void CGraphicsEngine::Release()
 	{
+
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+		if (m_userAnnoation) {
+			m_userAnnoation->Release();
+			m_userAnnoation = nullptr;
+		}
+#endif
 		if (m_pImmediateContext) {
 			m_pImmediateContext->ClearState();
 			m_pImmediateContext = nullptr;
@@ -129,6 +136,10 @@ namespace tkEngine{
 		m_preRender.Create(initParam.graphicsConfing);
 		//ƒ‰ƒCƒgŠÇ—ŽÒ‚Ì‰Šú‰»B
 		m_lightManager.Init();
+
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+		m_pImmediateContext->QueryInterface(__uuidof(ID3DUserDefinedAnnotation), (void**)&m_userAnnoation);
+#endif
 		return true;
 
 	}

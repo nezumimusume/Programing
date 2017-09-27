@@ -127,6 +127,29 @@ namespace tkEngine{
 		{
 			return m_lightManager;
 		}
+		/*!
+		*@brief	GPUイベント開始。
+		*@param[in]		eventName		イベントの名前。
+		*/
+		void BeginGPUEvent(const wchar_t* eventName)
+		{
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+			if (m_userAnnoation) {
+				m_userAnnoation->BeginEvent(eventName);
+			}
+#endif
+		}
+		/*!
+		*@brief	GPUイベント終了。
+		*/
+		void EndGPUEvent()
+		{
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+			if (m_userAnnoation) {
+				m_userAnnoation->EndEvent();
+			}
+#endif
+		}
 	private:
 		ID3D11Device*			m_pd3dDevice = nullptr;						//!<D3D11デバイス。
 		CRenderContext			m_renderContext;							//!<レンダリングコンテキスト。
@@ -141,5 +164,7 @@ namespace tkEngine{
 		D3D_DRIVER_TYPE			m_driverType = D3D_DRIVER_TYPE_NULL;		//!<ドライバの種類のオプション。
 		D3D_FEATURE_LEVEL		m_featureLevel = D3D_FEATURE_LEVEL_11_0;	//!<Direct3D デバイスのターゲットとなる機能セット。
 		CLightManager			m_lightManager;								//!<ライトの管理者。
+
+		ID3DUserDefinedAnnotation* m_userAnnoation = nullptr;
 	};
 }

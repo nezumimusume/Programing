@@ -34,6 +34,7 @@ namespace tkEngine{
 	 */
 	void CLightCulling::Render(CRenderContext& rc)
 	{
+		BeginGPUEvent(L"enRenderStep_LightCulling");
 		rc.SetRenderStep(enRenderStep_LightCulling);
 		CGraphicsEngine& ge = GraphicsEngine();
 		rc.CSSetShader(m_csLightCulling);
@@ -66,6 +67,6 @@ namespace tkEngine{
 		
 		rc.CSUnsetUnorderedAccessView(0);
 		rc.CSUnsetShaderResource(0);
-
+		EndGPUEvent();
 	}
 }

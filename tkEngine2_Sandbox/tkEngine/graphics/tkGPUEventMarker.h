@@ -6,7 +6,7 @@
 
 #pragma once
 
-namesapce tkEngine{
+namespace tkEngine{
 	/*!
 	 *@brief	GPUイベントマーカー。
 	 */
@@ -21,6 +21,8 @@ namesapce tkEngine{
 		~CGPUEventMarker()
 		{
 		}
+	private:
 
-	}
+
+	};
 }

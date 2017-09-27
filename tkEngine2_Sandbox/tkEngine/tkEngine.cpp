@@ -31,6 +31,7 @@ namespace tkEngine {
 		m_soundEngine.Init();
 		//•¨—ƒGƒ“ƒWƒ“‚Ì‰Šú‰»B
 		m_physicsWorld.Init();
+
 		return true;
 	}
 	bool CEngine::InitWindow( const SInitParam& initParam )

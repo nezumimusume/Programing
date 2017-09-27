@@ -290,6 +290,9 @@
     <ClInclude Include="graphics\postEffect\tkFxaa.h">
       <Filter>Source Files\graphics\postEffect</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\tkGPUEventMarker.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -450,6 +453,9 @@
     </ClCompile>
     <ClCompile Include="graphics\postEffect\tkFxaa.cpp">
       <Filter>Source Files\graphics\postEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkGPUEventMarker.cpp">
+      <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

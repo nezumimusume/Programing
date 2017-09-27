@@ -171,5 +171,19 @@ namespace tkEngine{
 	{
 		return GraphicsEngine().GetLightManager();
 	}
+	/*!
+	* @brief	GPUイベントの開始。
+	*/
+	static inline void BeginGPUEvent(const wchar_t* name)
+	{
+		GraphicsEngine().BeginGPUEvent(name);
+	}
+	/*!
+	* @brief	GPUイベントの終了。
+	*/
+	static inline void EndGPUEvent()
+	{
+		GraphicsEngine().EndGPUEvent();
+	}
 	
 }

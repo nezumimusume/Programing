@@ -126,15 +126,15 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
  *@details
  * 現在はシャドウマップ作成とZPrepassで使用されています。
  */
-PSInput_RenderToDepth VSMain_RenderDepth(VSInputNmTxWeights In)
+PSInput_RenderToDepth VSMain_RenderDepth(VSInputNmTxVcTangent In)
 {
 	PSInput_RenderToDepth psInput = (PSInput_RenderToDepth)0;
 	float4 pos;
 	pos = mul(mWorld, In.Position);
 	pos = mul(mView, pos);
 	pos = mul(mProj, pos);
-	psInput.posInProj = pos;
 	psInput.Position = pos;
+	psInput.posInProj = pos;
 	return psInput;
 }
 
@@ -153,8 +153,9 @@ PSInput_RenderToDepth VSMainSkin_RenderDepth(VSInputNmTxWeights In)
 	float4 pos = mul(skinning, In.Position);
 	pos = mul(mView, pos);
 	pos = mul(mProj, pos);
-	psInput.posInProj = pos;
+	
 	psInput.Position = pos;
+	psInput.posInProj = pos;
 	return psInput;
 	
 }

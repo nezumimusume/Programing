@@ -193,6 +193,7 @@ namespace tkEngine{
 		if (!m_isEnable) {
 			return;
 		}
+		BeginGPUEvent(L"enRenderStep_RenderToShadowMap");
 		for (int i = 0; i < NUM_SHADOW_MAP; i++) {
 			rc.PSUnsetShaderResource(enSkinModelSRVReg_ShadowMap_0 + i);
 		}
@@ -224,6 +225,7 @@ namespace tkEngine{
 		rc.OMSetRenderTargets(numRenderTargetViews, oldRenderTargets);
 		//@todo レンダリングステートはリストアする方法に変更する。
 		rc.RSSetViewport(0.0f, 0.0f, (float)GraphicsEngine().GetFrameBufferWidth(), (float)GraphicsEngine().GetFrameBufferHeight());
+		EndGPUEvent();
 	}
 	/*!
 	*@brief	影を落とすためのパラメータをGPUに転送する。
