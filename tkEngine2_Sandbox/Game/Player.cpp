@@ -96,7 +96,7 @@ void Player::Update()
 	
 	m_animation.Update(GameTime().GetFrameDeltaTime());
 	
-	GraphicsEngine().GetShadowMap().SetLightDirection({0.0f, -0.707, -0.707});
+	
 
 }
 void Player::Render(CRenderContext& rc) 

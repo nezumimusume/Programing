@@ -25,6 +25,7 @@ namespace tkEngine{
 		enRenderStep_ZPrepass,					//!<ZPrepass。
 		enRenderStep_RenderToShadowMap,			//!<シャドウマップへの書き込みステップ。
 		enRenderStep_Render3DModelToScene,		//!<3Dモデルをシーンに描画。
+		enRenderStep_AntiAlias,					//!<アンチエイリアス。
 	};
 	class CRenderContext : Noncopyable{
 	public:

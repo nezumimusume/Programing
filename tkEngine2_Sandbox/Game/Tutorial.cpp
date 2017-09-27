@@ -131,6 +131,11 @@ public:
 				ptLight->SetPosition(pos);
 			}
 		}
+		//ƒ‰ƒCƒg‚ğ‰ñ‚·B
+		static CVector3 lightDir = {0.707, -0.707, 0.0f};
+		qRot.SetRotationDeg(CVector3::AxisY, 1.0f);
+		qRot.Multiply(lightDir);
+		GraphicsEngine().GetShadowMap().SetLightDirection(lightDir);
 
 	}
 	/*!------------------------------------------------------------------
