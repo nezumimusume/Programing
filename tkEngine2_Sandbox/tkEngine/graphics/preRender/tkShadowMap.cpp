@@ -124,6 +124,7 @@ namespace tkEngine{
 		SShadowCb shadowCB;
 		float nearPlaneZ = 0.0f;
 		float farPlaneZ ;
+		//視推台を分割するようにライトビュープロジェクション行列を計算する。
 		for (int i = 0; i < NUM_SHADOW_MAP; i++) {
 			farPlaneZ = nearPlaneZ + shadowAreaTbl[i];
 			CMatrix mLightView;
@@ -132,7 +133,7 @@ namespace tkEngine{
 			mLightView.m[3][1] = lightPos.y;
 			mLightView.m[3][2] = lightPos.z;
 			mLightView.m[3][3] = 1.0f;
-			mLightView.Inverse(mLightView);	//カメラビュー完成。
+			mLightView.Inverse(mLightView);	//ライトビュー完成。
 											//続いてプロジェクション行列。
 			float halfViewAngle = MainCamera().GetViewAngle() * 0.5f;
 			//視推台の4頂点をライト空間に変換してAABBを求めめて、正射影の幅と高さを求める。
@@ -141,7 +142,6 @@ namespace tkEngine{
 			{
 				float t = tan(halfViewAngle);
 				//近平面の中央座標を計算。
-				
 				CVector3 vWk = MainCamera().GetPosition() + cameraDirXZ * nearPlaneZ;
 				v[0] = vWk + MainCamera().GetRight() * t * nearPlaneZ;
 				v[1] = vWk + MainCamera().GetRight() * -t * nearPlaneZ;

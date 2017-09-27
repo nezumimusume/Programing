@@ -287,6 +287,9 @@
     <ClInclude Include="graphics\postEffect\tkPostEffect.h">
       <Filter>Source Files\graphics\postEffect</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\postEffect\tkFxaa.h">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -443,6 +446,9 @@
       <Filter>Source Files\camera</Filter>
     </ClCompile>
     <ClCompile Include="graphics\postEffect\tkPostEffect.cpp">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\postEffect\tkFxaa.cpp">
       <Filter>Source Files\graphics\postEffect</Filter>
     </ClCompile>
   </ItemGroup>
