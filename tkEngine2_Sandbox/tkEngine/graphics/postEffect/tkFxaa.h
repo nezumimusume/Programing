@@ -37,5 +37,6 @@ namespace tkEngine{
 		bool m_isEnable = false;	//!<有効？
 		CShader m_vsShader;			//!<頂点シェーダー
 		CShader m_psShader;			//!<FXAA用のピクセルシェーダー。
+		CSamplerState m_samplerState;	//!<FXAA用のサンプラステート。
 	};
 }

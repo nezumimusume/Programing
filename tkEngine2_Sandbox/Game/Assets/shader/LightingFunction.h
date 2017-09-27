@@ -90,7 +90,7 @@ float3 CalcPointLight(
 		SPointLight light = pointLightList[lightIndex];
 		float3 lightDir = posInWorld - light.position;
 		float len = length(lightDir);
-		lightDir = normalize(lightDir);	//ê≥ãKâªÅB
+		lightDir /= max( 0.01f, len );	//ê≥ãKâªÅB
 		float3 pointLightColor = albedo * saturate(-dot(normal, lightDir)) * light.color.xyz;
 		pointLightColor += BRDF(-lightDir, toEyeDir, normal, tangent, biNormal, albedo, roughness, specPow) * light.color.xyz;
 		//å∏êäÇåvéZÇ∑ÇÈÅB

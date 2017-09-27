@@ -14,6 +14,7 @@ namespace tkEngine{
 	}
 	void CFxaa::Release()
 	{
+		m_samplerState.Release();
 	}
 	void CFxaa::Init(const SGraphicsConfig& config)
 	{
@@ -21,6 +22,14 @@ namespace tkEngine{
 		m_isEnable = config.aaConfig.isEnable;
 		m_vsShader.Load("Assets/shader/fxaa.fx", "VSMain", CShader::EnType::VS);
 		m_psShader.Load("Assets/shader/fxaa.fx", "PSMain", CShader::EnType::PS);
+		//ÉTÉìÉvÉâÇçÏê¨ÅB
+		D3D11_SAMPLER_DESC desc;
+		ZeroMemory(&desc, sizeof(desc));
+		desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+		desc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+		m_samplerState.Create(desc);
 	}
 	void CFxaa::Render(CRenderContext& rc)
 	{
@@ -37,6 +46,7 @@ namespace tkEngine{
 		CRenderTarget* renderTargets[] = {
 			&Engine().GetGraphicsEngine().GetMainRenderTarget()
 		};
+		rc.PSSetSampler(0, m_samplerState);
 		rc.OMSetRenderTargets(1, renderTargets);
 		rc.PSSetShaderResource(0, rt.GetRenderTargetSRV());
 		rc.PSSetShader(m_psShader);

@@ -54,7 +54,7 @@ bool GameCamera::Start()
 
 	CVector3 target = m_player->GetPosition();
 	target.y += 40.0f;
-	m_toCameraPos.Set(0.0f, 20.0f, 70.0f);
+	m_toCameraPos.Set(0.0f, 20.0f, 150.0f);
 	CVector3 pos;
 	pos.Add(target, m_toCameraPos);
 

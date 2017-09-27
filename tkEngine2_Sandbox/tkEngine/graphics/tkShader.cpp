@@ -136,6 +136,8 @@ namespace tkEngine{
 	    // the shaders to be optimized and to run exactly the way they will run in 
 	    // the release configuration of this program.
 	    dwShaderFlags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
+	#else
+		dwShaderFlags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
 	#endif
 		
 		TScopedResource<ID3DBlob> errorBlob;
