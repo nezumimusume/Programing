@@ -38,6 +38,16 @@ struct PSInput{
 	float3 posInView	: TEXCOORD2;		//カメラ空間での座標。
 	float4 posInProj	: TEXCOORD3;		//正規化座標系での座標。
 };
+/*!
+ *@brief	Z値の書き込みのみを行うピクセルシェーダーへの入力。
+ *@details
+ * 現在はシャドウマップ作成とZPrepassで使用されています。
+ */
+struct PSInput_RenderToDepth{
+	float4 Position 	: SV_POSITION;
+	float4 posInProj	: TEXCOORD0;		//正規化座標系での座標。
+};
+
 
 /*!
  * @brief	ディレクションライト。

@@ -51,6 +51,9 @@ namespace tkEngine{
 		//プリレンダリング。
 		GraphicsEngine().GetPreRender().Render(renderContext);
 
+		//レンダリングステップを3Dモデルの描画に。
+		renderContext.SetRenderStep(enRenderStep_Render3DModelToScene);
+
 		//ライトの情報を転送転送。
 		LightManager().Render(renderContext);
 		//影を落とすための情報を転送。

@@ -35,7 +35,7 @@ bool Background::Start()
 	RigidBodyInfo rbInfo;
 	rbInfo.collider = &m_meshCollider;
 	rbInfo.mass = 0.0f;
-	rbInfo.pos.Set(CVector3( 0.0f, 20.0f, 0.0f ));
+	rbInfo.pos.Set( 0.0f, 20.0f, 0.0f );
 	rbInfo.rot.SetRotationDeg(CVector3::AxisX, -90.0f);
 	m_rigidBody.Create(rbInfo);
 	PhysicsWorld().AddRigidBody(&m_rigidBody);

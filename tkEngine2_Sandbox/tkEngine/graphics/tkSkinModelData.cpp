@@ -49,9 +49,29 @@ namespace tkEngine{
 ///////////////////////////////////////////////////////////////////////////
 	void __cdecl CModelEffect::Apply(ID3D11DeviceContext* deviceContext) 
 	{
-
-		deviceContext->VSSetShader((ID3D11VertexShader*)m_vsShader.GetBody(), NULL, 0);
-		deviceContext->PSSetShader((ID3D11PixelShader*)m_psShader.GetBody(), NULL, 0);
+		if (m_renderContext == nullptr) {
+			TK_WARNING("m_renderContext is nullptr");
+			deviceContext->VSSetShader((ID3D11VertexShader*)m_vsShader.GetBody(), NULL, 0);
+			deviceContext->PSSetShader((ID3D11PixelShader*)m_psShader.GetBody(), NULL, 0);
+		}
+		else {
+			EnRenderStep renderStep = m_renderContext->GetRenderStep();
+			switch (renderStep)
+			{
+			case enRenderStep_Render3DModelToScene:
+				deviceContext->VSSetShader((ID3D11VertexShader*)m_vsShader.GetBody(), NULL, 0);
+				deviceContext->PSSetShader((ID3D11PixelShader*)m_psShader.GetBody(), NULL, 0);
+				break;
+			case enRenderStep_RenderToShadowMap:
+			case enRenderStep_ZPrepass:
+				deviceContext->VSSetShader((ID3D11VertexShader*)m_vsRenderToDepthShader.GetBody(), NULL, 0);
+				deviceContext->PSSetShader((ID3D11PixelShader*)m_psRenderToDepthShader.GetBody(), NULL, 0);
+				break;
+			default:
+				break;
+			}
+		}
+		
 		deviceContext->PSSetShaderResources(enSkinModelSRVReg_AlbedoTexture, 1, &m_diffuseTex);
 		m_materialParam.hasNormalMap = 0;
 		if (m_normalMap != nullptr) {

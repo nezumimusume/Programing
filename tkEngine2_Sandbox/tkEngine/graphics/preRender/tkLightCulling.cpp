@@ -34,6 +34,7 @@ namespace tkEngine{
 	 */
 	void CLightCulling::Render(CRenderContext& rc)
 	{
+		rc.SetRenderStep(enRenderStep_LightCulling);
 		CGraphicsEngine& ge = GraphicsEngine();
 		rc.CSSetShader(m_csLightCulling);
 		//深度テクスチャを設定。

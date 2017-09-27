@@ -119,7 +119,7 @@ namespace tkEngine {
 		int stride = sizeof(CMatrix);
 
 		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;	//SRVとしてバインド可能。
-		desc.ByteWidth = stride * m_bones.size();
+		desc.ByteWidth = static_cast<UINT>(stride * m_bones.size());
 		desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 		desc.StructureByteStride = stride;
 

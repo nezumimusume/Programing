@@ -189,6 +189,7 @@ namespace tkEngine{
 	*/
 	void CShadowMap::RenderToShadowMap(CRenderContext& rc)
 	{
+		rc.SetRenderStep(enRenderStep_RenderToShadowMap);
 		if (!m_isEnable) {
 			return;
 		}

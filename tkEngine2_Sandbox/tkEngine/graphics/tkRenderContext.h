@@ -17,8 +17,18 @@
 namespace tkEngine{
 	class CVertexBuffer;
 	class CRenderTarget;
+	/*!
+	* @brief	レンダリングステップ。
+	*/
+	enum EnRenderStep {
+		enRenderStep_LightCulling,				//!<ライトカリング。
+		enRenderStep_ZPrepass,					//!<ZPrepass。
+		enRenderStep_RenderToShadowMap,			//!<シャドウマップへの書き込みステップ。
+		enRenderStep_Render3DModelToScene,		//!<3Dモデルをシーンに描画。
+	};
 	class CRenderContext : Noncopyable{
 	public:
+		
 		CRenderContext(){}
 		~CRenderContext(){}
 		/*!
@@ -326,11 +336,29 @@ namespace tkEngine{
 				m_pD3DDeviceContext->UpdateSubresource(gpuBuffer.GetBody(), 0, NULL, buffer, 0, 0);
 			}
 		}
+		/*!
+		* @brief	現在のレンダリングステップを取得。
+		*@return レンダリングステップ。
+		*/
+		EnRenderStep GetRenderStep() const
+		{
+			return m_renderStep;
+		}
+		/*!
+		* @brief	現在のレンダリングステップを設定。
+		*@details
+		* エンジン内部でのみ使用されます。ユーザーは使用しないように。
+		*/
+		void SetRenderStep(EnRenderStep step)
+		{
+			m_renderStep = step;
+		}
 	private:
 		
 		ID3D11DeviceContext*			m_pD3DDeviceContext = nullptr;	//!<D3Dデバイスコンテキスト。
 		D3D11_VIEWPORT 					m_viewport;						//!<ビューポート。
 		CRenderTarget*					m_renderTargetViews[MRT_MAX] = { nullptr };
 		unsigned int 					m_numRenderTargetView = 0;		//!<レンダリングターゲットビューの数。
+		EnRenderStep					m_renderStep = enRenderStep_LightCulling;	//!<レンダリングステップ。
 	};
 }

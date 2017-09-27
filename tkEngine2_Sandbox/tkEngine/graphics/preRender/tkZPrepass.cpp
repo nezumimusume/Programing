@@ -35,6 +35,7 @@ namespace tkEngine{
 	}
 	void CZPrepass::Render(CRenderContext& rc) 
 	{
+		rc.SetRenderStep(enRenderStep_ZPrepass);
 		//現在のレンダリングターゲットをバックアップする。
 		CRenderTarget* oldRenderTargets[MRT_MAX];
 		unsigned int numRenderTargetViews;
@@ -48,7 +49,7 @@ namespace tkEngine{
 		rc.ClearRenderTargetView(0, ClearColor);
 
 		for (auto skinModel : m_skinModels) {
-			skinModel->Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix(), true);
+			skinModel->Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
 		}
 		m_skinModels.clear();
 		//レンダリングターゲットを差し戻す。

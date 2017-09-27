@@ -38,15 +38,11 @@ namespace tkEngine{
 		*@brief	描画
 		*@param[in]	viewMatrix		ビュー行列。
 		*@param[in]	projMatrix		プロジェクション行列。
-		*@param[in]	isZPrepass		ZPrepass?
-		*@param[in]	isDrawShadowMap	シャドウマップに描画中？
 		*/
 		void Draw(
 			CRenderContext& renderContext, 
 			const CMatrix& viewMatrix, 
-			const CMatrix& projMatrix,
-			bool isZPrepass = false,
-			bool isDrawShadowMap = false
+			const CMatrix& projMatrix
 		);
 		/*!
 		*@brief	メッシュの検索。
@@ -80,8 +76,6 @@ namespace tkEngine{
 			CMatrix mView;
 			CMatrix mProj;
 			CVector4 screenParam;
-			int isZPrepass;
-			int isDrawShadowMap;
 			int isShadowReceiver;
 		};
 		CSkinModelData*	m_skinModelData = nullptr;

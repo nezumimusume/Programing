@@ -141,8 +141,8 @@ namespace tkEngine{
 		}
 		//ダーティフラグはここではおろさずに、Render関数でおろす。
 		m_lightParam.eyePos = MainCamera().GetPosition();
-		m_lightParam.numDirectionLight = m_directionLights.size();
-		m_lightParam.numPointLight = m_pointLights.size();
+		m_lightParam.numDirectionLight = static_cast<int>(m_directionLights.size());
+		m_lightParam.numPointLight = static_cast<int>(m_pointLights.size());
 	}
 	void CLightManager::Render(CRenderContext& renderContext)
 	{

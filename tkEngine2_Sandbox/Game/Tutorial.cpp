@@ -68,12 +68,10 @@ public:
 			for (int i = 0; i < 32; i++) {
 				m_pointLight[i] = NewGO<prefab::CPointLight>(0);
 				int ix = rand() % QuantizationSize;
-				int iy = rand() % QuantizationSize;
 				int iz = rand() % QuantizationSize;
 
 				//0`999‚Ü‚Å‚Ì”š‚ğ0.0`1.0‚Ì”ÍˆÍ‚É•ÏŠ·‚·‚éB
 				float fnx = (float)ix / QuantizationSize;
-				float fny = (float)iy / QuantizationSize;
 				float fnz = (float)iz / QuantizationSize;
 				//x‚Æy‚Í-1.0`1.0‚Ì”ÍˆÍ‚É•ÏŠ·‚·‚éB
 				fnx = (fnx - 0.5f) * 2.0f;
@@ -140,7 +138,7 @@ public:
 	------------------------------------------------------------------*/
 	void RenderScene(CRenderContext& rc)
 	{	
-
+		(void)rc;
 	}
 	
 	

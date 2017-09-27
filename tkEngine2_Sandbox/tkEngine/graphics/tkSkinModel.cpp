@@ -46,9 +46,7 @@ namespace tkEngine{
 	void CSkinModel::Draw(
 		CRenderContext& renderContext, 
 		const CMatrix& viewMatrix, 
-		const CMatrix& projMatrix,
-		bool isZPrepass,
-		bool isDrawShadowMap
+		const CMatrix& projMatrix
 	)
 	{
 		(void)renderContext;
@@ -68,8 +66,6 @@ namespace tkEngine{
 		vsCb.screenParam.y = 0.0f;
 		vsCb.screenParam.z = static_cast<float>(GraphicsEngine().GetFrameBufferWidth());
 		vsCb.screenParam.w = static_cast<float>(GraphicsEngine().GetFrameBufferHeight());
-		vsCb.isZPrepass = isZPrepass ? 1 : 0;
-		vsCb.isDrawShadowMap = isDrawShadowMap ? 1 : 0;
 		vsCb.isShadowReceiver = m_isShadowReceiver ? 1 : 0;
 		
 		renderContext.UpdateSubresource(m_cb, &vsCb);
@@ -78,6 +74,11 @@ namespace tkEngine{
 		renderContext.PSSetSampler(0, m_samplerState);
 		m_skinModelData->GetSkeleton().Render(renderContext);
 
+		//レンダリング子テキストをエフェクトに設定する。
+		m_skinModelData->FindMesh([&](auto& mesh) {
+			CModelEffect* effect = reinterpret_cast<CModelEffect*>(mesh->effect.get());
+			effect->SetRenderContext(renderContext);
+		});
 		m_skinModelData->GetBody().Draw(
 			GraphicsEngine().GetD3DDeviceContext(),
 			state,

@@ -17,8 +17,8 @@ namespace tkEngine{
 		std::wstring m_materialName;	//!<マテリアル名。
 		CShader m_vsShader;
 		CShader m_psShader;
-		CShader m_psZPrepassShader;		//ZPrepass用のピクセルシェーダー。
-		CShader m_psShadowMapShader;	//シャドウマップ書き込み用のピクセルシェーダー。
+		CShader m_vsRenderToDepthShader;	//!<Z値書き込み用の頂点シェーダー。
+		CShader m_psRenderToDepthShader;	//!<Z値書き込み用のピクセルシェーダー。
 		ID3D11ShaderResourceView* m_diffuseTex = nullptr;
 		ID3D11ShaderResourceView* m_normalMap = nullptr;
 		ID3D11ShaderResourceView* m_specularMap = nullptr;
@@ -36,14 +36,14 @@ namespace tkEngine{
 		static const int NUM_POINT_LIGHT = 1024;
 		MaterialParam m_materialParam;				//マテリアルパラメータ。
 		CConstantBuffer m_materialParamCB;			//マテリアルパラメータ用の定数バッファ。
+		CRenderContext* m_renderContext = nullptr;	//レンダリングコンテキスト。
 	public:
 		CModelEffect()
 		{
 			m_materialParam.anisotropic = 0.5f;
 			m_materialParamCB.Create(&m_materialParam, sizeof(m_materialParam));
 			m_psShader.Load("Assets/shader/model.fx", "PSMain", CShader::EnType::PS);
-			m_psZPrepassShader.Load("Assets/shader/model.fx", "PSMain_ZPrepass", CShader::EnType::PS);
-			m_psShadowMapShader.Load("Assets/shader/model.fx", "PSMain_RenderToShadow", CShader::EnType::PS);
+			m_psRenderToDepthShader.Load("Assets/shader/model.fx", "PSMain_RenderDepth", CShader::EnType::PS);
 		}
 		void __cdecl Apply(ID3D11DeviceContext* deviceContext) override;
 		
@@ -68,6 +68,10 @@ namespace tkEngine{
 		{
 			m_materialName = matName;
 		}
+		void SetRenderContext(CRenderContext& rc)
+		{
+			m_renderContext = &rc;
+		}
 		bool EqualMaterialName(const wchar_t* name) const
 		{
 			return wcscmp(name, m_materialName.c_str()) == 0;
@@ -82,6 +86,7 @@ namespace tkEngine{
 		CNonSkinModelEffect()
 		{
 			m_vsShader.Load("Assets/shader/model.fx", "VSMain", CShader::EnType::VS);
+			m_vsRenderToDepthShader.Load("Assets/shader/model.fx", "VSMain_RenderDepth", CShader::EnType::VS);
 			isSkining = false;
 		}
 	};
@@ -94,6 +99,7 @@ namespace tkEngine{
 		CSkinModelEffect()
 		{
 			m_vsShader.Load("Assets/shader/model.fx", "VSMainSkin", CShader::EnType::VS);
+			m_vsRenderToDepthShader.Load("Assets/shader/model.fx", "VSMainSkin_RenderDepth", CShader::EnType::VS);
 			isSkining = true;
 		}
 	};

@@ -59,6 +59,23 @@ float3 CalcNormal( float3 normal, float3 biNormal, float3 tangent, float2 uv )
 	}
 	return normal;
 }
+/*!
+ *@brief	スキン行列を計算。
+ */
+float4x4 CalcSkinMatrix(VSInputNmTxWeights In)
+{
+	float4x4 skinning = 0;	
+	float w = 0.0f;
+	[unroll]
+    for (int i = 0; i < 3; i++)
+    {
+        skinning += boneMatrix[In.Indices[i]] * In.Weights[i];
+        w += In.Weights[i];
+    }
+    
+    skinning += boneMatrix[In.Indices[3]] * (1.0f - w);
+    return skinning;
+}
 /*!--------------------------------------------------------------------------------------
  * @brief	スキンなしモデル用の頂点シェーダー。
 -------------------------------------------------------------------------------------- */
@@ -84,22 +101,13 @@ PSInput VSMain( VSInputNmTxVcTangent In )
 PSInput VSMainSkin( VSInputNmTxWeights In ) 
 {
 	PSInput psInput = (PSInput)0;
-	float4x4 skinning = 0;
-	float4 pos = 0.0f;
-	
-	float w = 0.0f;
-	[unroll]
-    for (int i = 0; i < 3; i++)
-    {
-        skinning += boneMatrix[In.Indices[i]] * In.Weights[i];
-        w += In.Weights[i];
-    }
-    
-    skinning += boneMatrix[In.Indices[3]] * (1.0f - w);
-	pos.xyz = mul(skinning, In.Position);
+	//スキン行列を計算。
+	float4x4 skinning = CalcSkinMatrix(In);
+	//ワールド座標、法線、接ベクトルを計算。
+	float4 pos = mul(skinning, In.Position);
 	psInput.Normal = normalize( mul(skinning, In.Normal) );
 	psInput.Tangent = normalize( mul(skinning, In.Tangent) );
-	pos.w = 1.0f;
+	
 	psInput.Pos = pos;
 	pos = mul(mView, pos);
 	psInput.posInView = pos;
@@ -111,20 +119,50 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
 	
     return psInput;
 }
+
+/*!
+ *@brief	Z値を書き込むためだけの描画パスで使用される頂点シェーダー。
+ *			スキンなしモデル用
+ *@details
+ * 現在はシャドウマップ作成とZPrepassで使用されています。
+ */
+PSInput_RenderToDepth VSMain_RenderDepth(VSInputNmTxWeights In)
+{
+	PSInput_RenderToDepth psInput = (PSInput_RenderToDepth)0;
+	float4 pos;
+	pos = mul(mWorld, In.Position);
+	pos = mul(mView, pos);
+	pos = mul(mProj, pos);
+	psInput.posInProj = pos;
+	psInput.Position = pos;
+	return psInput;
+}
+
+/*!
+ *@brief	Z値を書き込むためだけの描画パスで使用される頂点シェーダー。
+ *			スキンありモデル用。
+ *@details
+ * 現在はシャドウマップ作成とZPrepassで使用されています。
+ */
+PSInput_RenderToDepth VSMainSkin_RenderDepth(VSInputNmTxWeights In)
+{
+	PSInput_RenderToDepth psInput = (PSInput_RenderToDepth)0;
+	//スキン行列を計算。
+	float4x4 skinning = CalcSkinMatrix(In);
+	//ワールド座標、法線、接ベクトルを計算。
+	float4 pos = mul(skinning, In.Position);
+	pos = mul(mView, pos);
+	pos = mul(mProj, pos);
+	psInput.posInProj = pos;
+	psInput.Position = pos;
+	return psInput;
+	
+}
 //--------------------------------------------------------------------------------------
 // ピクセルシェーダーのエントリ関数。
 //--------------------------------------------------------------------------------------
 float4 PSMain( PSInput In ) : SV_Target0
 {
-	if(isZPrepass){
-		//ZPrepass?
-		return In.posInProj.z / In.posInProj.w;
-	}
-	if(isDrawShadowMap){
-		//ShadowMap?
-		//たぶんVSMはやらないので、普通にZ値を返しておこう。
-		return In.posInProj.z / In.posInProj.w;
-	}
 	float3 lig = 0.0f;
 	//視点までのベクトルを求める。
 	float3 toEye = normalize(eyePos - In.Pos);
@@ -187,17 +225,11 @@ float4 PSMain( PSInput In ) : SV_Target0
 }
 
 /*!
- *@brief	ZPrepass用のピクセルシェーダー。
+ *@brief	Z値を書き込むためだけの描画パスで使用されるピクセルシェーダー。
+ *@details
+ * 現在はシャドウマップ作成とZPrepassで使用されています。
  */
-float4 PSMain_ZPrepass( PSInput In ) : SV_Target0
+float4 PSMain_RenderDepth( PSInput_RenderToDepth In ) : SV_Target0
 {
-	return In.posInProj.z / In.posInProj.w;
-}
-/*!
- *@brief	影書き込み用のピクセルシェーダー。
- */
-float4 PSMain_RenderToShadow( PSInput In ) : SV_Target0
-{
-	//たぶんVSMはやらないので、普通にZ値を返しておこう。
 	return In.posInProj.z / In.posInProj.w;
 }
