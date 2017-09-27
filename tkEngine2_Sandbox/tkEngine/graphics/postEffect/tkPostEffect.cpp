@@ -19,4 +19,8 @@ namespace tkEngine{
 	{
 		Release();
 	}
+	void CPostEffect::Render(CRenderContext& rc)
+	{
+		m_fxaa.Render(rc);
+	}
 }

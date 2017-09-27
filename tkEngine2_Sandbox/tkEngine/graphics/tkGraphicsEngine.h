@@ -9,6 +9,7 @@
 #include "tkEngine/graphics/tkCamera.h"
 #include "tkEngine/tkEngineStruct.h"
 #include "tkengine/light/tkLightManager.h"
+#include "tkEngine/graphics/postEffect/tkPostEffect.h"
 
 namespace tkEngine{
 	
@@ -112,9 +113,19 @@ namespace tkEngine{
 		* @brief	描画終了。
 		*/
 		void EndRender();
+		/*!
+		* @brief	プリレンダリング取得。。
+		*/
 		CPreRender& GetPreRender()
 		{
 			return m_preRender;
+		}
+		/*!
+		* @brief	ポストエフェクトを取得。
+		*/
+		CPostEffect& GetPostEffect()
+		{
+			return m_postEffect;
 		}
 		CRenderContext& GetRenderContext()
 		{
@@ -158,6 +169,7 @@ namespace tkEngine{
 		int						m_currentMainRenderTarget = 0;				//!<現在のメインレンダリングターゲット。
 		CRenderTarget			m_mainRenderTarget[2];						//!<メインレンダリングターゲット。
 		CPreRender				m_preRender;								//!<プリレンダリング。
+		CPostEffect				m_postEffect;								//!<ポストエフェクト。
 		CCamera					m_mainCamera;								//!<メインカメラ。
 		int						m_frameBufferWidth = 0;						//!<フレームバッファの幅。これが内部解像度。
 		int						m_frameBufferHeight = 0;					//!<フレームバッファの高さ。これが内部解像度。

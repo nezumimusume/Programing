@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "tkEngine/graphics/postEffect/tkFxaa.h"
+
 namespace tkEngine{
 	/*!
 	 *@brief	ポストエフェクト。
@@ -27,5 +29,12 @@ namespace tkEngine{
 		 *@param[in]	config		コンフィグ。
 		 */
 		void Create( const SGraphicsConfig& config );
+		/*!
+		*@brief	描画。
+		*@param[in]		rc		レンダリングコンテキスト。
+		*/
+		void Render(CRenderContext& rc);
+	private:
+		CFxaa	m_fxaa;		//!<FXAA。
 	};
 }

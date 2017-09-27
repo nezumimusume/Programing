@@ -134,6 +134,8 @@ namespace tkEngine{
 		m_renderContext.RSSetViewport(0.0f, 0.0f, (FLOAT)m_frameBufferWidth, (FLOAT)m_frameBufferHeight);
 		//PreRenderの初期化。
 		m_preRender.Create(initParam.graphicsConfing);
+		//PostEffectの初期化。
+		m_postEffect.Create(initParam.graphicsConfing);
 		//ライト管理者の初期化。
 		m_lightManager.Init();
 
