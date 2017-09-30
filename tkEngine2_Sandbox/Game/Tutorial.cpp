@@ -44,7 +44,7 @@ public:
 		
 		
 		//ディレクションライトをシーンに追加。
-	/*	m_directionLight[0] = NewGO<prefab::CDirectionLight>(0);
+		m_directionLight[0] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[0]->SetDirection({ 0.707f, -0.707f, 0.0f});
 		m_directionLight[0]->SetColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 
@@ -56,7 +56,7 @@ public:
 		m_directionLight[2]->SetDirection({ 1.0f, 0.0f, 0.0f });
 		m_directionLight[2]->SetColor({ 0.02f, 0.02f, 0.02f, 1.0f });
 		
-			*/
+		
 		//フォントを初期化。
 		m_font.reset(new DirectX::SpriteFont(GraphicsEngine().GetD3DDevice(), L"Assets/font/myfile.spritefont"));
 		m_bach.reset(new DirectX::SpriteBatch(GraphicsEngine().GetD3DDeviceContext()));
