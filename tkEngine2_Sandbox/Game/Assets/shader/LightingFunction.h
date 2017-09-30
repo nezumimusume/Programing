@@ -100,3 +100,19 @@ float3 CalcPointLight(
 	
 	return lig;
 }
+
+/*!
+ * @brief	ŠÂ‹«Œõ
+ */
+float3 CalcAmbientLight(
+	float4 albedo,
+	float3 normal,
+	float3 tangent,
+	float3 biNormal, 
+	float3 toEyeDir, 
+	float roughness,
+	float specPow
+)
+{
+	return BRDF(normal, toEyeDir, normal, tangent, biNormal, albedo, roughness, specPow) * ambientLight;
+}

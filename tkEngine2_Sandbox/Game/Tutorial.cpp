@@ -44,9 +44,9 @@ public:
 		
 		
 		//ディレクションライトをシーンに追加。
-		m_directionLight[0] = NewGO<prefab::CDirectionLight>(0);
+	/*	m_directionLight[0] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[0]->SetDirection({ 0.707f, -0.707f, 0.0f});
-		m_directionLight[0]->SetColor({ 1.02f, 1.02f, 1.02f, 1.0f });
+		m_directionLight[0]->SetColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 
 		m_directionLight[1] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[1]->SetDirection({ 0.0f, -0.707f, -0.707f });
@@ -56,7 +56,7 @@ public:
 		m_directionLight[2]->SetDirection({ 1.0f, 0.0f, 0.0f });
 		m_directionLight[2]->SetColor({ 0.02f, 0.02f, 0.02f, 1.0f });
 		
-			
+			*/
 		//フォントを初期化。
 		m_font.reset(new DirectX::SpriteFont(GraphicsEngine().GetD3DDevice(), L"Assets/font/myfile.spritefont"));
 		m_bach.reset(new DirectX::SpriteBatch(GraphicsEngine().GetD3DDeviceContext()));
@@ -85,9 +85,9 @@ public:
 
 				//0～999までの数字を0.0～1.0の範囲に正規化して、ポイントライトのカラーをランダムに決定。
 				m_pointLight[i]->SetColor({ 
-					(float)ir / QuantizationSize * 2.0f, 
-					(float)ig / QuantizationSize * 2.0f,
-					(float)ib / QuantizationSize * 2.0f,
+					(float)ir / QuantizationSize * 5.0f, 
+					(float)ig / QuantizationSize * 5.0f,
+					(float)ib / QuantizationSize * 5.0f,
 					1.0f
 				});
 				
@@ -100,7 +100,7 @@ public:
 			}
 			//m_pointLight[0]->SetPosition({0.0f, 10.0f, 0.0f});
 		}
-		LightManager().SetAmbientLight({0.005f, 0.005f, 0.005f});
+		LightManager().SetAmbientLight({0.02f, 0.02f, 0.02f});
 		m_player = NewGO<Player>(0, "Player");
 		NewGO<Background>(0);
 		NewGO<GameCamera>(0, "GameCamera");
