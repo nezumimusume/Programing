@@ -21,6 +21,10 @@ namespace tkEngine{
 			m_userAnnoation = nullptr;
 		}
 #endif
+		if (m_backBufferRT) {
+			m_backBufferRT->Release();
+			m_backBufferRT = nullptr;
+		}
 		if (m_pImmediateContext) {
 			m_pImmediateContext->ClearState();
 			m_pImmediateContext = nullptr;
@@ -100,7 +104,12 @@ namespace tkEngine{
 		if (FAILED(hr)) {
 			return false;
 		}
+		hr = m_pd3dDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_backBufferRT);
+		if (FAILED(hr)) {
+			return false;
+		}
 		DXGI_SAMPLE_DESC multiSampleDesc;
+		ZeroMemory(&multiSampleDesc, sizeof(multiSampleDesc));
 		multiSampleDesc.Count = 1;
 		multiSampleDesc.Quality = 0;
 		bool ret = m_mainRenderTarget[0].Create(
@@ -108,7 +117,7 @@ namespace tkEngine{
 			m_frameBufferHeight,
 			1,
 			1,
-			DXGI_FORMAT_R8G8B8A8_UNORM,
+			DXGI_FORMAT_R16G16B16A16_FLOAT,
 			DXGI_FORMAT_D24_UNORM_S8_UINT,
 			multiSampleDesc
 		);
@@ -117,7 +126,7 @@ namespace tkEngine{
 			m_frameBufferHeight,
 			1,
 			1,
-			DXGI_FORMAT_R8G8B8A8_UNORM,
+			DXGI_FORMAT_R16G16B16A16_FLOAT,
 			DXGI_FORMAT_D24_UNORM_S8_UINT,
 			multiSampleDesc
 		);
@@ -139,6 +148,11 @@ namespace tkEngine{
 		//ライト管理者の初期化。
 		m_lightManager.Init();
 
+		//コピー用のシェーダーをロード。
+		m_copyVS.Load("Assets/shader/copy.fx", "VSMain", CShader::EnType::VS);
+		m_copyPS.Load("Assets/shader/copy.fx", "PSMain", CShader::EnType::PS);
+
+		
 #if BUILD_LEVEL != BUILD_LEVEL_MASTER
 		m_pImmediateContext->QueryInterface(__uuidof(ID3DUserDefinedAnnotation), (void**)&m_userAnnoation);
 #endif
@@ -154,11 +168,15 @@ namespace tkEngine{
 		//バックバッファにメインレンダリングターゲットの内容をコピー。
 		ID3D11Texture2D* pBackBuffer = NULL;
 		m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-
-		m_pImmediateContext->CopyResource(
-			pBackBuffer,
-			m_mainRenderTarget[m_currentMainRenderTarget].GetRenderTarget()
-		);
+		ID3D11RenderTargetView* rts[] = {
+			m_backBufferRT 
+		};
+		m_pImmediateContext->OMSetRenderTargets(1, rts, nullptr);
+		m_renderContext.VSSetShader(m_copyVS);
+		m_renderContext.PSSetShader(m_copyPS);
+		m_renderContext.PSSetShaderResource(0, m_mainRenderTarget[m_currentMainRenderTarget].GetRenderTargetSRV());
+		//ポストエフェクトのフルスクリーン描画の機能を使う。
+		m_postEffect.DrawFullScreenQuad(m_renderContext);
 		pBackBuffer->Release();
 
 		//フラーッシュ

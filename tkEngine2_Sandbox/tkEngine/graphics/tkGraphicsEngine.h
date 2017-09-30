@@ -176,7 +176,9 @@ namespace tkEngine{
 		D3D_DRIVER_TYPE			m_driverType = D3D_DRIVER_TYPE_NULL;		//!<ドライバの種類のオプション。
 		D3D_FEATURE_LEVEL		m_featureLevel = D3D_FEATURE_LEVEL_11_0;	//!<Direct3D デバイスのターゲットとなる機能セット。
 		CLightManager			m_lightManager;								//!<ライトの管理者。
-
+		CShader					m_copyVS;									//!<コピー用の頂点シェーダー。
+		CShader					m_copyPS;									//!<コピー用のピクセルシェーダー。
+		ID3D11RenderTargetView*	m_backBufferRT = nullptr;					//!<バックバッファのレンダリングターゲットビュー。
 		ID3DUserDefinedAnnotation* m_userAnnoation = nullptr;
 	};
 }

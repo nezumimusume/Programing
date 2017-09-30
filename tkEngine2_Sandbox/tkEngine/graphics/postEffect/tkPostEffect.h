@@ -5,7 +5,9 @@
 #pragma once
 
 #include "tkEngine/graphics/postEffect/tkFxaa.h"
+#include "tkEngine/graphics/postEffect/tkBloom.h"
 #include "tkEngine/graphics/tkPrimitive.h"
+
 
 namespace tkEngine{
 	/*!
@@ -47,6 +49,7 @@ namespace tkEngine{
 		void InitFullScreenQuadPrimitive();
 	private:
 		CFxaa		m_fxaa;				//!<FXAA。
+		CBloom		m_bloom;			//!<BLOOM。
 		CPrimitive	m_fullscreenQuad;	//!<フルスクリーン描画用の矩形プリミティブ。
 	};
 }

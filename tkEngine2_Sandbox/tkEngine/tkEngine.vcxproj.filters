@@ -299,6 +299,9 @@
     <ClInclude Include="graphics\GPUBuffer\tkIndexBuffer.h">
       <Filter>Source Files\graphics\GPUBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\postEffect\tkBloom.h">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -468,6 +471,9 @@
     </ClCompile>
     <ClCompile Include="graphics\GPUBuffer\tkIndexBuffer.cpp">
       <Filter>Source Files\graphics\GPUBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\postEffect\tkBloom.cpp">
+      <Filter>Source Files\graphics\postEffect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

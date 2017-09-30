@@ -29,11 +29,35 @@ namespace tkEngine{
 	 */
 	void CBloom::Init( const SGraphicsConfig& config )
 	{
+		Release();
+		
+		if(!config.bloomConfig.isEnable){
+			return ;
+		}
+		m_isEnable = config.bloomConfig.isEnable;
+		int w = Engine().GetGraphicsEngine().GetFrameBufferWidth();
+		int h = Engine().GetGraphicsEngine().GetFrameBufferHeight();
+
+		//輝度抽出用のレンダリングターゲットを作成。
+		DXGI_SAMPLE_DESC multiSampleDesc;
+		ZeroMemory(&multiSampleDesc, sizeof(multiSampleDesc));
+		multiSampleDesc.Count = 1;
+		multiSampleDesc.Quality = 0;
+		m_luminanceRT.Create(
+			w, 
+			h, 
+			1, 
+			1, 
+			DXGI_FORMAT_R16G16B16A16_FLOAT, 
+			DXGI_FORMAT_UNKNOWN,
+			multiSampleDesc
+		);
+
 	}
 	/*!
 	 * @brief	描画
 	 */
-	void CBloom::Render(CRenderContext& rc)
+	void CBloom::Render(CRenderContext& rc, CPostEffect* postEffect)
 	{
 	}
 }
