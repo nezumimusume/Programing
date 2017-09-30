@@ -66,7 +66,7 @@ float3 BRDF(
 	float3 biNormal, 
 	float3 baseColor, 
 	float roughness,
-	float metallic 
+	float metallic
 )
 {
     float NdotL = dot(normal,L);
@@ -120,5 +120,5 @@ float3 BRDF(
 
     return ((1.0f/PI) * lerp(Fd, ss, subsurface)*Cdlin + Fsheen)	//ディフューズ。
         * (1.0f-metallic)											//ディフューズ。
-        + Gs*Fs*Ds + 0.25f*clearcoat*Gr*Fr*Dr;						//スペキュラ。
+        + (Gs*Fs*Ds + 0.25f*clearcoat*Gr*Fr*Dr) * metallic;						//スペキュラ。
 }

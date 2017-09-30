@@ -26,6 +26,7 @@ namespace tkEngine{
 		enRenderStep_ZPrepass,					//!<ZPrepass。
 		enRenderStep_RenderToShadowMap,			//!<シャドウマップへの書き込みステップ。
 		enRenderStep_Render3DModelToScene,		//!<3Dモデルをシーンに描画。
+		enRenderStep_Bloom,						//!<ブルーム。
 		enRenderStep_AntiAlias,					//!<アンチエイリアス。
 		enRenderStep_Render2DToScene,			//!<2Dをシーンに描画。
 	};
@@ -84,7 +85,9 @@ namespace tkEngine{
 			if (rtNo < m_numRenderTargetView
 				&& m_renderTargetViews != nullptr) {
 				m_pD3DDeviceContext->ClearRenderTargetView(m_renderTargetViews[rtNo]->GetRenderTargetView(), clearColor);
-				m_pD3DDeviceContext->ClearDepthStencilView(m_renderTargetViews[0]->GetDepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+				if (m_renderTargetViews[0]->GetDepthStencilView() != nullptr) {
+					m_pD3DDeviceContext->ClearDepthStencilView(m_renderTargetViews[0]->GetDepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+				}
 			}
 		}
 		/*!

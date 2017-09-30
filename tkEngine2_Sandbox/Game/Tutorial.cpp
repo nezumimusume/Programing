@@ -85,9 +85,9 @@ public:
 
 				//0～999までの数字を0.0～1.0の範囲に正規化して、ポイントライトのカラーをランダムに決定。
 				m_pointLight[i]->SetColor({ 
-					(float)ir / QuantizationSize * 5.0f, 
-					(float)ig / QuantizationSize * 5.0f,
-					(float)ib / QuantizationSize * 5.0f,
+					(float)ir / QuantizationSize * 10.0f, 
+					(float)ig / QuantizationSize * 10.0f,
+					(float)ib / QuantizationSize * 10.0f,
 					1.0f
 				});
 				
@@ -182,6 +182,9 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
 	//アンチ
 	initParam.graphicsConfing.aaConfig.isEnable = true;
+
+	//Bloom
+	initParam.graphicsConfing.bloomConfig.isEnable = true;
 
 	GraphicsEngine().GetShadowMap().SetFar(1000.0f);
 	GraphicsEngine().GetShadowMap().SetNear(50.0f);

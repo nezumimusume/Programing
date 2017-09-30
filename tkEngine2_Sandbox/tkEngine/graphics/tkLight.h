@@ -9,8 +9,8 @@ namespace tkEngine{
 	 *@brief	ディレクションライト。
 	 */
 	struct SDirectionLight{
-		CVector3	direction;		//!<ライトの方向。
 		CVector4	color;			//!<ライトのカラー。
+		CVector3	direction;		//!<ライトの方向。
 	};
 	/*!
 	 *@brief	アンビエントライト。

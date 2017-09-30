@@ -174,11 +174,13 @@ namespace tkEngine{
 		m_pImmediateContext->OMSetRenderTargets(1, rts, nullptr);
 		m_renderContext.VSSetShader(m_copyVS);
 		m_renderContext.PSSetShader(m_copyPS);
+		//入力レイアウトを設定。
+		m_renderContext.IASetInputLayout(m_copyVS.GetInputLayout());
 		m_renderContext.PSSetShaderResource(0, m_mainRenderTarget[m_currentMainRenderTarget].GetRenderTargetSRV());
 		//ポストエフェクトのフルスクリーン描画の機能を使う。
 		m_postEffect.DrawFullScreenQuad(m_renderContext);
 		pBackBuffer->Release();
-
+		m_renderContext.PSUnsetShaderResource(0);
 		//フラーッシュ
 		m_pSwapChain->Present(0, 0);
 	}

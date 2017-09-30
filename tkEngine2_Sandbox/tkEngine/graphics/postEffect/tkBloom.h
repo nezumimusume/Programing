@@ -31,12 +31,39 @@ namespace tkEngine{
 		 */
 		void Render(CRenderContext& rc, CPostEffect* postEffect);
 	private:
+		/*!
+		* @brief	ガウスフィルタの重みを更新。
+		*/
+		void UpdateWeight(float dispersion);
+	private:
+		
 		static const int NUM_WEIGHTS = 8;
 		static const int NUM_DOWN_SAMPLING_RT = 10;
+		/*!
+		* @brief	ブラー用のパラメータバッファ。
+		*@details
+		* これを変更したら、Assets/shader/bloom.fxのCBBlurの中身も変更するように。
+		*/
+		struct SBlurParam {
+			CVector4 offset;
+			float weights[NUM_WEIGHTS];
+		};
 		bool m_isEnable = false;		//!<有効。
 		CRenderTarget m_luminanceRT;	//!<輝度を抽出するレンダリングターゲット。
 		CRenderTarget m_combineRT;		//!<ぼかし合成用のレンダリングターゲット。
 		CRenderTarget m_downSamplingRT[NUM_DOWN_SAMPLING_RT];	//!<ダウンサンプリング用のレンダリングターゲット。
-		float m_weights[NUM_WEIGHTS];	//!<重みテーブル。
+		CShader m_vsShader;	
+		CShader m_psLuminance;			//!<輝度抽出用のピクセルシェーダー。
+		CShader m_vsXBlur;				//!<XBlur用の頂点シェーダー。
+		CShader m_vsYBlur;				//!<YBlur用の頂点シェーダー。
+		CShader m_psBlur;				//!<XBlur用のピクセルシェーダー。
+		CShader m_psCombine;			//!<合成用のピクセルシェーダー。
+		CShader	m_copyVS;				//!<コピー用の頂点シェーダー。
+		CShader	m_copyPS;				//!<コピー用のピクセルシェーダー。
+		SBlurParam m_blurParam;			//!<ブラー用のパラメータ。
+		CConstantBuffer m_cbBlur;
+		CSamplerState m_samplerState;		//!<サンプラステート。@todo ひとまとめにした方がいい?。
+		ID3D11BlendState* m_alphaBlendAdd = nullptr;	//!<加算合成用のブレンドステート。@todo ステートは後でまとめる。
+		ID3D11BlendState* m_alphaBlendTrans = nullptr;	//!<半透明合成用のブレンドステート。@todo ステートは後でまとめる。
 	};
 }

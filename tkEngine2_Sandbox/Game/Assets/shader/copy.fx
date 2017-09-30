@@ -24,5 +24,9 @@ PSInput VSMain(VSInput In)
 }
 float4 PSMain( PSInput In ) : SV_Target0
 {
-	return sceneTexture.Sample(Sampler, In.uv);
+	float2 texSize;
+	float level;
+	sceneTexture.GetDimensions( 0, texSize.x, texSize.y, level );
+	float2 uv = In.uv + float2( -0.5/texSize.x, -0.5/texSize.y);
+	return sceneTexture.Sample(Sampler, uv);
 }

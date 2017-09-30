@@ -53,8 +53,8 @@ struct PSInput_RenderToDepth{
  * @brief	ディレクションライト。
  */
 struct SDirectionLight{
-	float3	direction;		//!<ライトの方向。
 	float4	color;			//!<ライトのカラー。
+	float3	direction;		//!<ライトの方向。
 };
 
 //ポイントライト。

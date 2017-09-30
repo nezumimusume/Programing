@@ -180,6 +180,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 		float4 t = specularMap.Sample(Sampler, In.TexCoord);
 		specPow = t.x;
 		roughness = 1.0f - t.w;
+		roughness *= 0.8f;	//@todo マテリアルパラメータにすべきだな。
 	}
 	
 	float3 toEyeDir = normalize( toEye );
@@ -227,11 +228,10 @@ float4 PSMain( PSInput In ) : SV_Target0
 		roughness,
 		specPow
 	);
-	
-/*	// brightness
-	float brightness = 1.0f;
-    finalColor *= brightness;
-
+	// brightness
+/*	float brightness = 20.0f;
+    finalColor *= brightness;*/
+/*
     // exposure
     float exposure = 1.0f;
     finalColor *= pow( 2.0, exposure );
