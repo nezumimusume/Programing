@@ -16,6 +16,8 @@ cbuffer VSPSCb : register(b0){
 
 /*!
  * @brief	ライト用の定数バッファ。
+ *@details
+ * これを変更したらtkLightManager.hのSLightParamも変更するように。
  */
 cbuffer lightCb : register(b1)
 {

@@ -118,7 +118,7 @@ float3 BRDF(
     float Fr = lerp(0.04, 1.0f, FH);
     float Gr = smithG_GGX(NdotL, 0.25f) * smithG_GGX(NdotV, 0.25f);
 
-    return ((1.0f/PI) * lerp(Fd, ss, subsurface)*Cdlin + Fsheen)
-        * (1.0f-metallic)
-        + Gs*Fs*Ds + 0.25f*clearcoat*Gr*Fr*Dr;
+    return ((1.0f/PI) * lerp(Fd, ss, subsurface)*Cdlin + Fsheen)	//ディフューズ。
+        * (1.0f-metallic)											//ディフューズ。
+        + Gs*Fs*Ds + 0.25f*clearcoat*Gr*Fr*Dr;						//スペキュラ。
 }

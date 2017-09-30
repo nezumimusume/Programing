@@ -176,21 +176,20 @@ float4 PSMain( PSInput In ) : SV_Target0
 		
 	float specPow = 0.0f;
 	float roughness = 1.0f;
-	if(hasSpecularMap){
+/*	if(hasSpecularMap){
 		float4 t = specularMap.Sample(Sampler, In.TexCoord);
 		specPow = t.x;
 		roughness = 1.0f - t.w;
-	}
+	}*/
 	
-	float3 toEyeDir = normalize( toEye - In.Pos );
+	float3 toEyeDir = normalize( toEye );
 	float3 toEyeReflection = -toEyeDir + 2.0f * dot(normal, toEyeDir) * normal;
 	
 	//影を計算。
 	int shadow = CalcShadow(In.Pos);	
-
 	//ディレクションライト
 	float3 finalColor = 0.0f;
-	if(shadow == 0){
+//	if(shadow == 0){
 		//影が落ちている場合はディレクションライトはカットする。
 		finalColor = CalcDirectionLight(
 			albedo,
@@ -203,7 +202,8 @@ float4 PSMain( PSInput In ) : SV_Target0
 			roughness,
 			specPow
 		);
-	}
+//	}
+	return float4(finalColor, 1.0f);
 	//ポイントライトを計算。
 	finalColor += CalcPointLight(
 		albedo,
@@ -217,10 +217,22 @@ float4 PSMain( PSInput In ) : SV_Target0
 		roughness,
 		specPow
 	);
-	
+    
 	//アンビエントライト。
 	finalColor += albedo * ambientLight;
 	
+/*	// brightness
+	float brightness = 1.0f;
+    finalColor *= brightness;
+
+    // exposure
+    float exposure = 1.0f;
+    finalColor *= pow( 2.0, exposure );
+  */  
+    //ガンマ補正
+    float gamma = 2.2f;
+    finalColor = pow( finalColor, 1.0 / gamma );
+    
     return float4(finalColor, 1.0f); 
 
 }

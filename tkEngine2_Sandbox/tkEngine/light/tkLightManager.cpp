@@ -124,6 +124,7 @@ namespace tkEngine{
 	}
 	void CLightManager::Update()
 	{
+		m_lightParam.eyePos = MainCamera().GetPosition();
 		if (!m_isDirty) {
 			//更新の必要なし。
 			return;
@@ -139,10 +140,10 @@ namespace tkEngine{
 			m_rawPointLights[ligNo] = lig->GetRawData();
 			ligNo++;
 		}
-		//ダーティフラグはここではおろさずに、Render関数でおろす。
-		m_lightParam.eyePos = MainCamera().GetPosition();
+		
 		m_lightParam.numDirectionLight = static_cast<int>(m_directionLights.size());
 		m_lightParam.numPointLight = static_cast<int>(m_pointLights.size());
+		//ダーティフラグはここではおろさずに、Render関数でおろす。
 	}
 	void CLightManager::Render(CRenderContext& renderContext)
 	{
