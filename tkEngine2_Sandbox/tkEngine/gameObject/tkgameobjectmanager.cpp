@@ -40,7 +40,7 @@ namespace tkEngine{
 		//ライトを更新。
 		LightManager().Update();
 		//画面をクリア
-		float ClearColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f }; //red,green,blue,alpha
+		float ClearColor[4] = { 0.2f, 0.2f, 0.2f, 1.0f }; //red,green,blue,alpha
 		CRenderTarget* renderTargets[] = {
 			&GraphicsEngine().GetMainRenderTarget()
 		};

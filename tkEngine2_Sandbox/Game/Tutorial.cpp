@@ -46,15 +46,15 @@ public:
 		//ディレクションライトをシーンに追加。
 		m_directionLight[0] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[0]->SetDirection({ 0.707f, -0.707f, 0.0f});
-		m_directionLight[0]->SetColor({ 1.2f, 1.2f, 1.2f, 1.0f });
+		m_directionLight[0]->SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
 
-		m_directionLight[1] = NewGO<prefab::CDirectionLight>(0);
+		/*m_directionLight[1] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[1]->SetDirection({ 0.0f, -0.707f, -0.707f });
-		m_directionLight[1]->SetColor({ 1.2f, 1.2f, 1.2f, 1.0f });
+		m_directionLight[1]->SetColor({ 5.2f, 5.2f, 5.2f, 1.0f });
 		
 		m_directionLight[2] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[2]->SetDirection({ 1.0f, 0.0f, 0.0f });
-		m_directionLight[2]->SetColor({ 1.2f, 1.2f, 1.2f, 1.0f });
+		m_directionLight[2]->SetColor({ 5.2f, 5.2f, 5.2f, 1.0f });*/
 		
 		
 		//フォントを初期化。
@@ -65,7 +65,7 @@ public:
 		static const int QuantizationSize = 1000;	//量子化サイズ。
 		
 		{
-			for (int i = 0; i < 32; i++) {
+			for (int i = 0; i < 4; i++) {
 				m_pointLight[i] = NewGO<prefab::CPointLight>(0);
 				int ix = rand() % QuantizationSize;
 				int iz = rand() % QuantizationSize;
@@ -85,9 +85,9 @@ public:
 
 				//0～999までの数字を0.0～1.0の範囲に正規化して、ポイントライトのカラーをランダムに決定。
 				m_pointLight[i]->SetColor({ 
-					(float)ir / QuantizationSize * 100.0f, 
-					(float)ig / QuantizationSize * 100.0f,
-					(float)ib / QuantizationSize * 100.0f,
+					(float)ir / QuantizationSize * 200.0f, 
+					(float)ig / QuantizationSize * 200.0f,
+					(float)ib / QuantizationSize * 200.0f,
 					1.0f
 				});
 				
@@ -100,7 +100,7 @@ public:
 			}
 			//m_pointLight[0]->SetPosition({0.0f, 10.0f, 0.0f});
 		}
-		LightManager().SetAmbientLight({0.2f, 0.2f, 0.2f});
+		LightManager().SetAmbientLight({0.1f, 0.1f, 0.1f});
 		m_player = NewGO<Player>(0, "Player");
 		NewGO<Background>(0);
 		NewGO<GameCamera>(0, "GameCamera");
