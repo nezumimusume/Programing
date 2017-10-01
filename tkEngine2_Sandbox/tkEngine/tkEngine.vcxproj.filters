@@ -302,6 +302,9 @@
     <ClInclude Include="graphics\postEffect\tkBloom.h">
       <Filter>Source Files\graphics\postEffect</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\postEffect\tkTonemap.h">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -473,6 +476,9 @@
       <Filter>Source Files\graphics\GPUBuffer</Filter>
     </ClCompile>
     <ClCompile Include="graphics\postEffect\tkBloom.cpp">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\postEffect\tkTonemap.cpp">
       <Filter>Source Files\graphics\postEffect</Filter>
     </ClCompile>
   </ItemGroup>
