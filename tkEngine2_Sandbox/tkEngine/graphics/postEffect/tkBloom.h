@@ -63,7 +63,5 @@ namespace tkEngine{
 		SBlurParam m_blurParam;			//!<ブラー用のパラメータ。
 		CConstantBuffer m_cbBlur;
 		CSamplerState m_samplerState;		//!<サンプラステート。@todo ひとまとめにした方がいい?。
-		ID3D11BlendState* m_alphaBlendAdd = nullptr;	//!<加算合成用のブレンドステート。@todo ステートは後でまとめる。
-		ID3D11BlendState* m_alphaBlendTrans = nullptr;	//!<半透明合成用のブレンドステート。@todo ステートは後でまとめる。
 	};
 }

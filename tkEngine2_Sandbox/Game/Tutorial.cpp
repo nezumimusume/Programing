@@ -46,15 +46,15 @@ public:
 		//ディレクションライトをシーンに追加。
 		m_directionLight[0] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[0]->SetDirection({ 0.707f, -0.707f, 0.0f});
-		m_directionLight[0]->SetColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+		m_directionLight[0]->SetColor({ 1.2f, 1.2f, 1.2f, 1.0f });
 
 		m_directionLight[1] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[1]->SetDirection({ 0.0f, -0.707f, -0.707f });
-		m_directionLight[1]->SetColor({ 0.02f, 0.02f, 0.02f, 1.0f });
+		m_directionLight[1]->SetColor({ 1.2f, 1.2f, 1.2f, 1.0f });
 		
 		m_directionLight[2] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[2]->SetDirection({ 1.0f, 0.0f, 0.0f });
-		m_directionLight[2]->SetColor({ 0.02f, 0.02f, 0.02f, 1.0f });
+		m_directionLight[2]->SetColor({ 1.2f, 1.2f, 1.2f, 1.0f });
 		
 		
 		//フォントを初期化。
@@ -85,9 +85,9 @@ public:
 
 				//0～999までの数字を0.0～1.0の範囲に正規化して、ポイントライトのカラーをランダムに決定。
 				m_pointLight[i]->SetColor({ 
-					(float)ir / QuantizationSize * 10.0f, 
-					(float)ig / QuantizationSize * 10.0f,
-					(float)ib / QuantizationSize * 10.0f,
+					(float)ir / QuantizationSize * 100.0f, 
+					(float)ig / QuantizationSize * 100.0f,
+					(float)ib / QuantizationSize * 100.0f,
 					1.0f
 				});
 				
@@ -100,7 +100,7 @@ public:
 			}
 			//m_pointLight[0]->SetPosition({0.0f, 10.0f, 0.0f});
 		}
-		LightManager().SetAmbientLight({0.02f, 0.02f, 0.02f});
+		LightManager().SetAmbientLight({0.2f, 0.2f, 0.2f});
 		m_player = NewGO<Player>(0, "Player");
 		NewGO<Background>(0);
 		NewGO<GameCamera>(0, "GameCamera");
@@ -173,18 +173,17 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	initParam.screenHeight = 720;
 	initParam.frameBufferWidth = 1280;
 	initParam.frameBufferHeight = 720;
-	
 	//影の設定。
 	initParam.graphicsConfing.shadowRenderConfig.isEnable = true;
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapWidth = 2048;
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapHeight = 2048;
 	initParam.graphicsConfing.shadowRenderConfig.isEnableSoftShadow = true;
-
 	//アンチ
 	initParam.graphicsConfing.aaConfig.isEnable = true;
-
 	//Bloom
 	initParam.graphicsConfing.bloomConfig.isEnable = true;
+	//tonemap
+	initParam.graphicsConfing.tonemapConfig.isEnable = true;
 
 	GraphicsEngine().GetShadowMap().SetFar(1000.0f);
 	GraphicsEngine().GetShadowMap().SetNear(50.0f);

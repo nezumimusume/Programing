@@ -6,6 +6,7 @@
 
 #include "tkEngine/graphics/postEffect/tkFxaa.h"
 #include "tkEngine/graphics/postEffect/tkBloom.h"
+#include "tkEngine/graphics/postEffect/tkTonemap.h"
 #include "tkEngine/graphics/tkPrimitive.h"
 
 
@@ -50,6 +51,7 @@ namespace tkEngine{
 	private:
 		CFxaa		m_fxaa;				//!<FXAA。
 		CBloom		m_bloom;			//!<BLOOM。
+		CTonemap	m_tonemap;			//!<トーンマップ。
 		CPrimitive	m_fullscreenQuad;	//!<フルスクリーン描画用の矩形プリミティブ。
 	};
 }

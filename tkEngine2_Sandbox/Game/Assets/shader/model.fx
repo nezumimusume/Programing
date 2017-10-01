@@ -182,8 +182,12 @@ float4 PSMain( PSInput In ) : SV_Target0
 		roughness = 1.0f - t.w;
 		roughness *= 0.8f;	//@todo マテリアルパラメータにすべきだな。
 	}
-	
-	float3 toEyeDir = normalize( toEye );
+	float toEyeLen = length(toEye);
+	float3 toEyeDir = float3(1.0f, 0.0f, 0.0f);
+	if(toEyeLen > 0.001f){
+		toEyeDir = toEye / toEyeLen;
+	}
+
 	float3 toEyeReflection = -toEyeDir + 2.0f * dot(normal, toEyeDir) * normal;
 	
 	//影を計算。
@@ -204,6 +208,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 			specPow
 		);
 	}
+	
 	//ポイントライトを計算。
 	finalColor += CalcPointLight(
 		albedo,
@@ -228,18 +233,20 @@ float4 PSMain( PSInput In ) : SV_Target0
 		roughness,
 		specPow
 	);
+	
 	// brightness
-/*	float brightness = 20.0f;
-    finalColor *= brightness;*/
+	float brightness = 1.0f;
+    finalColor *= brightness;
 /*
     // exposure
     float exposure = 1.0f;
     finalColor *= pow( 2.0, exposure );
   */  
-    //ガンマ補正
     float gamma = 2.2f;
-    finalColor = pow( finalColor, 1.0 / gamma );
-    
+    finalColor = max( 0.0f, pow( finalColor, 1.0 / gamma ) );
+    if(isnan(finalColor.x) || isnan(finalColor.y) || isnan(finalColor.z)){
+		return float4(1.0f, 0.0f, 0.0f, 1.0f);
+	}
     return float4(finalColor, 1.0f); 
 
 }

@@ -42,6 +42,25 @@ namespace tkEngine{
 		 */
 		void Init(ID3D11DeviceContext* pD3DDeviceContext);
 		/*!
+		* @brief	Blendステートを設定する。
+		* @details
+		*  ID3D11DeviceContext::OMSetBlendStateと同じ。
+		*/
+		void OMSetBlendState(ID3D11BlendState *pBlendState, const FLOAT BlendFactor[4], UINT SampleMask)
+		{
+			m_pD3DDeviceContext->OMSetBlendState(pBlendState, BlendFactor, SampleMask);
+			
+		}
+		/*!
+		* @brief	DepthStencilステートを設定する。
+		* @details
+		*  ID3D11DeviceContext::OMSetDepthStencilStateと同じ。
+		*/
+		void OMSetDepthStencilState(ID3D11DepthStencilState *pDepthStencilState, UINT StencilRef)
+		{
+			m_pD3DDeviceContext->OMSetDepthStencilState(pDepthStencilState, StencilRef);
+		}
+		/*!
 		 * @brief	レンダリングターゲットビューを設定。
 		 * @details
 		 *  ID3D11DeviceContext::OMSetRenderTargetsと同じ。

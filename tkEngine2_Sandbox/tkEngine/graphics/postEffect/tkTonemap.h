@@ -15,7 +15,7 @@ namespace tkEngine{
 		*@brief	作成。
 		*@param[in]		config		グラフィック設定。
 		*/
-		void Create(const SGraphicsConfig& config);
+		void Init(const SGraphicsConfig& config);
 		/*!
 		 *@brief	平均輝度の計算。
 		 *@param[in]	renderContext		レンダリングコンテキスト
@@ -39,14 +39,31 @@ namespace tkEngine{
 		{
 			m_isFirstWhenChangeScene = true;
 		}
+	public:
+		static const int MAX_SAMPLES = 16;
 	private:
+		struct STonemapParam {
+			float deltaTime;
+			float midddleGray;
+		};
 		static const int NUM_CALC_AVG_RT = 5;				//!<平均輝度計算用のレンダリングターゲットの枚数。
 //		CEffect*		m_effect = nullptr;					//!<エフェクト。
 		bool			m_isEnable = false;					//!<トーンマップ有効？
 		CRenderTarget	m_calcAvgRT[NUM_CALC_AVG_RT];		//!<平均輝度計算用のレンダリングターゲット。
 		CRenderTarget   m_avgRT[2];							//!<平均輝度が格納されるレンダリングターゲット。
 		int				m_currentAvgRT = 0;					//!<
-		float			m_fMiddleGray = 0.22f;				//!<この値を大きくすると明るくなる。
+		float			m_fMiddleGray = 0.2f;				//!<この値を大きくすると明るくなる。
+		CShader			m_vsShader;							//!<頂点シェーダー。
+		CShader			m_psCalcLuminanceLogAvarageShader;	//!<輝度の対数平均を求めるピクセルシェーダー。
+		CShader			m_psCalcLuminanceAvarageShader;		//!<輝度の平均を求めるピクセルシェーダー。
+		CShader			m_psCalcLuminanceExpAvarageShader;	//!<輝度の指数平均を求めるピクセルシェーダー。
+		CShader			m_psCalcAdaptedLuminanceShader;		//!<明暗順応のピクセルシェーダー。
+		CShader			m_psCalcAdaptedLuminanceFirstShader;	//!<明暗順応のピクセルシェーダー。(シーンが切り替わったときに使用される。)
+		CShader			m_psFinal;							//!<最終合成シェーダー。
 		bool			m_isFirstWhenChangeScene = true;	//!<シーンが切り替わって初回の描画かどうかのフラグ。
+		CVector4		m_avSampleOffsets[MAX_SAMPLES];
+		CConstantBuffer	m_cbCalcLuminanceLog;
+		CConstantBuffer m_cbTonemapCommon;
+		STonemapParam	m_tonemapParam;
 	};
 }

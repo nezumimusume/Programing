@@ -27,12 +27,14 @@ namespace tkEngine{
 	{
 		Release();
 		m_fxaa.Init(config);
+		m_tonemap.Init(config);
 		m_bloom.Init(config);
 		InitFullScreenQuadPrimitive();
 	}
 	void CPostEffect::Render(CRenderContext& rc)
 	{
 		m_bloom.Render(rc, this);
+		m_tonemap.Render(rc, this);
 		m_fxaa.Render(rc);
 	}
 	void CPostEffect::InitFullScreenQuadPrimitive()

@@ -4,6 +4,7 @@
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/tkEngine.h"
 #include "tkEngine/graphics/postEffect/tkBloom.h"
+#include "tkEngine/graphics/tkPresetRenderState.h"
 
 namespace tkEngine{
 	/*!
@@ -24,9 +25,6 @@ namespace tkEngine{
 	 */
 	void CBloom::Release()
 	{
-		if (m_alphaBlendAdd) {
-			m_alphaBlendAdd->Release();
-		}
 	}
 	/*!
 	 * @brief	初期化。
@@ -120,25 +118,7 @@ namespace tkEngine{
 		desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
 		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		m_samplerState.Create(desc);
-		//@todo 後でまとめる。
-		{
-			ID3D11Device* pd3d = Engine().GetGraphicsEngine().GetD3DDevice();
-			D3D11_BLEND_DESC blendDesc;
-			ZeroMemory(&blendDesc, sizeof(blendDesc));
-			blendDesc.RenderTarget[0].BlendEnable = true;
-			blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-			blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
-			blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-			blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-			blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-			blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-			pd3d->CreateBlendState(&blendDesc, &m_alphaBlendAdd);
 
-			blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-			blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-			pd3d->CreateBlendState(&blendDesc, &m_alphaBlendTrans);
-		}
 	}
 	void CBloom::UpdateWeight(float dispersion)
 	{
@@ -236,10 +216,13 @@ namespace tkEngine{
 		}
 		//ボケ画像の作成。
 		{
-			//@todo αブレンディングを無効にする。
+			
 			CRenderTarget* rts[] = {
 				&m_combineRT
 			};
+			//
+			rc.OMSetBlendState(AlphaBlendState::disable, 0, 0xFFFFFFFF);
+
 			rc.RSSetViewport(0.0f, 0.0f, m_combineRT.GetWidth(), m_combineRT.GetHeight());
 			rc.OMSetRenderTargets(1, rts);
 			rc.ClearRenderTargetView(0, clearColor);
@@ -259,21 +242,18 @@ namespace tkEngine{
 			};
 			rc.RSSetViewport(0.0f, 0.0f, ge.GetFrameBufferWidth(), ge.GetFrameBufferHeight());
 			rc.OMSetRenderTargets(1, rts);
-			//@todo アルファブレンディングを加算合成にする。
-			{
-				//適当。
-				ge.GetD3DDeviceContext()->OMSetBlendState(m_alphaBlendAdd, 0, 0xFFFFFFFF);
-			}
-			//@todo 定数バッファを設定する。
+			// アルファブレンディングを加算合成にする。
+			rc.OMSetBlendState(AlphaBlendState::add, 0, 0xFFFFFFFF);
+			
+			//定数バッファを設定する。
 			rc.VSSetShader(m_copyVS);
 			rc.PSSetShader(m_copyPS);
 			rc.PSSetShaderResource(0, m_combineRT.GetRenderTargetSRV());
 			postEffect->DrawFullScreenQuad(rc);
-			//@todo アルファブレンディングをもとに戻す。
-			{
-				//適当。
-				ge.GetD3DDeviceContext()->OMSetBlendState(m_alphaBlendTrans, 0, 0xFFFFFFFF);
-			}
+
+			//アルファブレンディングをもとに戻す。
+			rc.OMSetBlendState(AlphaBlendState::trans, 0, 0xFFFFFFFF);
+			
 		}
 
 		Engine().GetGraphicsEngine().EndGPUEvent();

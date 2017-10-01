@@ -291,9 +291,9 @@
     <ClInclude Include="graphics\tkGraphicsEngine.h" />
     <ClInclude Include="graphics\tkLight.h" />
     <ClInclude Include="graphics\tkMapper.h" />
+    <ClInclude Include="graphics\tkPresetRenderState.h" />
     <ClInclude Include="graphics\tkPrimitive.h" />
     <ClInclude Include="graphics\tkRenderContext.h" />
-    <ClInclude Include="graphics\tkRenderState.h" />
     <ClInclude Include="graphics\tkRenderTarget.h" />
     <ClInclude Include="graphics\tkSamplerState.h" />
     <ClInclude Include="graphics\tkShader.h" />
@@ -365,6 +365,7 @@
     <ClCompile Include="graphics\tkCamera.cpp" />
     <ClCompile Include="graphics\tkGPUEventMarker.cpp" />
     <ClCompile Include="graphics\tkGraphicsEngine.cpp" />
+    <ClCompile Include="graphics\tkPresetRenderState.cpp" />
     <ClCompile Include="graphics\tkPrimitive.cpp" />
     <ClCompile Include="graphics\tkRenderContext.cpp" />
     <ClCompile Include="graphics\tkRenderTarget.cpp" />

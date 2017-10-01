@@ -4,6 +4,7 @@
 
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/graphics/tkGraphicsEngine.h"
+#include "tkEngine/graphics/tkPresetRenderState.h"
 
 namespace tkEngine{
 	CGraphicsEngine::CGraphicsEngine()
@@ -152,6 +153,9 @@ namespace tkEngine{
 		m_copyVS.Load("Assets/shader/copy.fx", "VSMain", CShader::EnType::VS);
 		m_copyPS.Load("Assets/shader/copy.fx", "PSMain", CShader::EnType::PS);
 
+		//各種レンダリングステートを初期化する。
+		AlphaBlendState::Init(*this);
+		DepthStencilState::Init(*this);
 		
 #if BUILD_LEVEL != BUILD_LEVEL_MASTER
 		m_pImmediateContext->QueryInterface(__uuidof(ID3DUserDefinedAnnotation), (void**)&m_userAnnoation);

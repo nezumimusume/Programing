@@ -35,14 +35,17 @@ float GTR2(float NdotH, float a)
 
 float GTR2_aniso(float NdotH, float HdotX, float HdotY, float ax, float ay)
 {
-    return 1 / ( PI * ax*ay * sqr( sqr(HdotX/ax) + sqr(HdotY/ay) + NdotH*NdotH ));
+	float t = sqr(HdotX/ax);
+    return 1 / ( PI * ax*ay * sqr( t + sqr(HdotY/ay) + NdotH*NdotH ));
 }
 
 float smithG_GGX(float Ndotv, float alphaG)
 {
     float a = alphaG*alphaG;
     float b = Ndotv*Ndotv;
-    return 1.0f/(Ndotv + sqrt(a + b - a*b));
+    float t = Ndotv + sqrt(a + b - a*b);
+
+    return 1.0f/t;
 }
 
 float3 mon2lin(float3 x)
@@ -91,7 +94,7 @@ float3 BRDF(
     // and lerp in diffuse retro-reflection based on roughness
     float FL = SchlickFresnel(NdotL), FV = SchlickFresnel(NdotV);
     float Fd90 = 0.5f + 2.0f * LdotH*LdotH * roughness;
-    float Fd = lerp(1.0f, Fd90, FL) * lerp(1.0f, Fd90, FV);
+    float Fd = lerp(1.0f, Fd90, FL) * lerp(1.0f, Fd90, FV) ;
 
     // Based on Hanrahan-Krueger brdf approximation of isotropic bssrdf
     // 1.25 scale is used to (roughly) preserve albedo
@@ -117,8 +120,10 @@ float3 BRDF(
     float Dr = GTR1(NdotH, lerp(0.1f,0.001f,clearcoatGloss));
     float Fr = lerp(0.04, 1.0f, FH);
     float Gr = smithG_GGX(NdotL, 0.25f) * smithG_GGX(NdotV, 0.25f);
-
-    return ((1.0f/PI) * lerp(Fd, ss, subsurface)*Cdlin + Fsheen)	//ディフューズ。
+    
+    float3 lig = ((1.0f/PI) * lerp(Fd, ss, subsurface)*Cdlin + Fsheen)	//ディフューズ。
         * (1.0f-metallic)											//ディフューズ。
-        + (Gs*Fs*Ds + 0.25f*clearcoat*Gr*Fr*Dr) * metallic;						//スペキュラ。
+        + (Gs*Fs*Ds + 0.25f*clearcoat*Gr*Fr*Dr) * metallic;			//スペキュラ。
+    lig = max(0.0f, lig);
+    return lig;
 }

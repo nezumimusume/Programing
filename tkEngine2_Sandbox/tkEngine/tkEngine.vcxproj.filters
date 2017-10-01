@@ -116,9 +116,6 @@
     <ClInclude Include="graphics\tkRenderContext.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\tkRenderState.h">
-      <Filter>Source Files\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="graphics\tkRenderTarget.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
@@ -305,6 +302,9 @@
     <ClInclude Include="graphics\postEffect\tkTonemap.h">
       <Filter>Source Files\graphics\postEffect</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\tkPresetRenderState.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -480,6 +480,9 @@
     </ClCompile>
     <ClCompile Include="graphics\postEffect\tkTonemap.cpp">
       <Filter>Source Files\graphics\postEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkPresetRenderState.cpp">
+      <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

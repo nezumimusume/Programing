@@ -3,7 +3,7 @@
  */
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/graphics/postEffect/tkFxaa.h"
-
+#include "tkEngine/graphics/tkPresetRenderState.h"
 namespace tkEngine{
 	CFxaa::CFxaa()
 	{
@@ -38,7 +38,7 @@ namespace tkEngine{
 		}
 		BeginGPUEvent(L"enRenderStep_AntiAlias");
 		//@todo レンダリングステートをFXAA用に設定するようにする。
-		
+		rc.OMSetDepthStencilState(DepthStencilState::disable, 0);
 		//現在のレンダリングターゲットを取得。
 		CRenderTarget& rt = Engine().GetGraphicsEngine().GetMainRenderTarget();
 		//レンダリングターゲットを切り替える。
@@ -55,7 +55,7 @@ namespace tkEngine{
 		rc.IASetInputLayout(m_vsShader.GetInputLayout());
 
 		GraphicsEngine().GetPostEffect().DrawFullScreenQuad(rc);
-		
+		rc.OMSetDepthStencilState(DepthStencilState::SceneRender, 0);
 		EndGPUEvent();
 	}
 }
