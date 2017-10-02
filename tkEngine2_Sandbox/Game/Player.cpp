@@ -55,7 +55,7 @@ bool Player::Start()
 	m_animation.Init(m_skinModelData, animClip, 3);
 	m_animation.Play(L"Idle");
 
-	m_characterCtr.Init(20.0f, 100.0f, m_position);
+	m_characterCtr.Init(15.0f, 50.0f, m_position);
 	m_characterCtr.SetGravity(-980.0f);
 	return true;
 }
@@ -83,8 +83,8 @@ void Player::Update()
 	camForward.Normalize();
 	camRight.y = 0.0f;
 	camRight.Normalize();
-	camForward.Scale(inputPad.y * 100.0f);
-	camRight.Scale(inputPad.x * 100.0f);
+	camForward.Scale(inputPad.y * 200.0f);
+	camRight.Scale(inputPad.x * 200.0f);
 	m_moveSpeed.x = camForward.x + camRight.x;
 	m_moveSpeed.z = camForward.z + camRight.z;
 	//カメラ座標系の移動速度をワールド座標系に変換する。
@@ -92,6 +92,7 @@ void Player::Update()
 	m_position = m_characterCtr.GetPosition();
 	CQuaternion qRot;
 	qRot.SetRotationDeg(CVector3::AxisX, 90.0f);
+	
 	m_skinModel.Update(m_position, qRot, CVector3::One);
 	
 	m_animation.Update(GameTime().GetFrameDeltaTime());

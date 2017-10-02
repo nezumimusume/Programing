@@ -46,16 +46,16 @@ public:
 		//ディレクションライトをシーンに追加。
 		m_directionLight[0] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[0]->SetDirection({ 0.707f, -0.707f, 0.0f});
-		m_directionLight[0]->SetColor({ 1.2f, 1.2f, 1.2f, 1.0f });
+		m_directionLight[0]->SetColor({ 10.0f, 10.0f, 10.0f, 1.0f });
 
-		m_directionLight[1] = NewGO<prefab::CDirectionLight>(0);
+	/*	m_directionLight[1] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[1]->SetDirection({ 0.0f, -0.707f, -0.707f });
 		m_directionLight[1]->SetColor({ 1.2f, 1.2f, 1.2f, 1.0f });
 		
 		m_directionLight[2] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[2]->SetDirection({ 1.0f, 0.0f, 0.0f });
 		m_directionLight[2]->SetColor({ 1.2f, 1.2f, 1.2f, 1.0f });
-		
+		*/
 		
 		//フォントを初期化。
 		m_font.reset(new DirectX::SpriteFont(GraphicsEngine().GetD3DDevice(), L"Assets/font/myfile.spritefont"));
@@ -65,7 +65,7 @@ public:
 		static const int QuantizationSize = 1000;	//量子化サイズ。
 		
 		{
-			for (int i = 0; i < 32; i++) {
+			for (int i = 0; i < 0; i++) {
 				m_pointLight[i] = NewGO<prefab::CPointLight>(0);
 				int ix = rand() % QuantizationSize;
 				int iz = rand() % QuantizationSize;
@@ -133,8 +133,8 @@ public:
 		}
 		//ライトを回す。
 		static CVector3 lightDir = {0.707, -0.707, 0.0f};
-		qRot.SetRotationDeg(CVector3::AxisY, 1.0f);
-		qRot.Multiply(lightDir);
+		/*qRot.SetRotationDeg(CVector3::AxisY, 1.0f);
+		qRot.Multiply(lightDir);*/
 		GraphicsEngine().GetShadowMap().SetLightDirection(lightDir);
 
 	}

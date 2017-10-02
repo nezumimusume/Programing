@@ -36,7 +36,7 @@ bool Background::Start()
 	rbInfo.collider = &m_meshCollider;
 	rbInfo.mass = 0.0f;
 	rbInfo.pos.Set( 0.0f, 20.0f, 0.0f );
-	rbInfo.rot.SetRotationDeg(CVector3::AxisX, -90.0f);
+	//rbInfo.rot.SetRotationDeg(CVector3::AxisX, -90.0f);
 	m_rigidBody.Create(rbInfo);
 	PhysicsWorld().AddRigidBody(&m_rigidBody);
 
@@ -50,11 +50,11 @@ void Background::Update()
 {
 	CQuaternion qRot;
 	qRot.SetRotationDeg(CVector3::AxisX, -90.0f);
-	m_skinModel.Update({ 0.0f, 20.0f, 0.0f }, qRot, CVector3::One);
-	m_skinModel2.Update({ 0.0f, 20.0f, 0.0f }, qRot, CVector3::One);
+	m_skinModel.Update({ 0.0f, 20.0f, 0.0f }, CQuaternion::Identity, CVector3::One);
+	//m_skinModel2.Update({ 0.0f, 20.0f, 0.0f }, qRot, CVector3::One);
 }
 void Background::Render(CRenderContext& rc)
 {
 	m_skinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
-	m_skinModel2.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
+//	m_skinModel2.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
 }
