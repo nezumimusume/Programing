@@ -10,6 +10,7 @@
 #include "tkEngine/tkEngineStruct.h"
 #include "tkengine/light/tkLightManager.h"
 #include "tkEngine/graphics/postEffect/tkPostEffect.h"
+#include "tkEngine/resource/tkShaderResources.h"
 
 namespace tkEngine{
 	
@@ -161,6 +162,13 @@ namespace tkEngine{
 			}
 #endif
 		}
+		/*!
+		*@brief	シェーダーリソースを取得。
+		*/
+		CShaderResources& GetShaderResources()
+		{
+			return m_shaderResources;
+		}
 	private:
 		ID3D11Device*			m_pd3dDevice = nullptr;						//!<D3D11デバイス。
 		CRenderContext			m_renderContext;							//!<レンダリングコンテキスト。
@@ -180,5 +188,6 @@ namespace tkEngine{
 		CShader					m_copyPS;									//!<コピー用のピクセルシェーダー。
 		ID3D11RenderTargetView*	m_backBufferRT = nullptr;					//!<バックバッファのレンダリングターゲットビュー。
 		ID3DUserDefinedAnnotation* m_userAnnoation = nullptr;
+		CShaderResources		m_shaderResources;							//!<シェーダーリソース。
 	};
 }

@@ -50,16 +50,15 @@ namespace tkEngine{
 		}
 		void* GetByteCode()
 		{
-			return blobOut.res->GetBufferPointer();
+			return m_blobOut->GetBufferPointer();
 		}
 		size_t GetByteCodeSize()
 		{
-			return blobOut.res->GetBufferSize();
+			return m_blobOut->GetBufferSize();
 		}
 	private:
-		EnType				m_shaderType = EnType::VS;	//!<シェーダーの種類。
 		void*				m_shader = nullptr;					//!<シェーダー。
 		ID3D11InputLayout*	m_inputLayout = nullptr;			//!<入力レイアウト。
-		TScopedResource<ID3DBlob> blobOut;
+		ID3DBlob*			m_blobOut = nullptr;
 	};
 }

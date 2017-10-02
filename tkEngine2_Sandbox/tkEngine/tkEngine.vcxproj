@@ -321,6 +321,7 @@
     <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="policy\tkScopedResource.h" />
     <ClInclude Include="Resource\tkResourceManager.h" />
+    <ClInclude Include="Resource\tkShaderResources.h" />
     <ClInclude Include="Sound\tkSoundEngine.h" />
     <ClInclude Include="Sound\tkSoundSource.h" />
     <ClInclude Include="Sound\tkWaveFile.h" />
@@ -389,6 +390,7 @@
     <ClCompile Include="physics\tkPhysics.cpp" />
     <ClCompile Include="physics\tkRigidBody.cpp" />
     <ClCompile Include="physics\tkSphereCollider.cpp" />
+    <ClCompile Include="Resource\tkShaderResources.cpp" />
     <ClCompile Include="Sound\tkSoundEngine.cpp" />
     <ClCompile Include="Sound\tkSoundSource.cpp" />
     <ClCompile Include="Sound\tkWaveFile.cpp" />

@@ -305,6 +305,9 @@
     <ClInclude Include="graphics\tkPresetRenderState.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\tkShaderResources.h">
+      <Filter>Source Files\resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -483,6 +486,9 @@
     </ClCompile>
     <ClCompile Include="graphics\tkPresetRenderState.cpp">
       <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\tkShaderResources.cpp">
+      <Filter>Source Files\resource</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
