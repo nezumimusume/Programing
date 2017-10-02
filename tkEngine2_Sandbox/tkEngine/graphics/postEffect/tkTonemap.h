@@ -39,6 +39,14 @@ namespace tkEngine{
 		{
 			m_isFirstWhenChangeScene = true;
 		}
+		/*!
+		*@brief	 明るさを設定。
+		*@@param[in]	lum		明るさ。この値を大きくすると明るくなる。
+		*/
+		void SetLuminance(float lum)
+		{
+			m_tonemapParam.midddleGray = lum;
+		}
 	public:
 		static const int MAX_SAMPLES = 16;
 	private:
@@ -52,7 +60,6 @@ namespace tkEngine{
 		CRenderTarget	m_calcAvgRT[NUM_CALC_AVG_RT];		//!<平均輝度計算用のレンダリングターゲット。
 		CRenderTarget   m_avgRT[2];							//!<平均輝度が格納されるレンダリングターゲット。
 		int				m_currentAvgRT = 0;					//!<
-		float			m_fMiddleGray = 0.2f;				//!<この値を大きくすると明るくなる。
 		CShader			m_vsShader;							//!<頂点シェーダー。
 		CShader			m_psCalcLuminanceLogAvarageShader;	//!<輝度の対数平均を求めるピクセルシェーダー。
 		CShader			m_psCalcLuminanceAvarageShader;		//!<輝度の平均を求めるピクセルシェーダー。

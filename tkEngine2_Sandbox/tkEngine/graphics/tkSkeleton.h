@@ -159,6 +159,13 @@ namespace tkEngine{
 			//見つからなかった。
 			return -1;
 		}
+		/*!
+		*@brief	ボーンを取得。
+		*/
+		CBone* GetBone(int boneNo)
+		{
+			return m_bones[boneNo].get();
+		}
 	public:
 		
 		/*!

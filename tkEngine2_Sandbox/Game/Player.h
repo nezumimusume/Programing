@@ -32,5 +32,6 @@ private:
 	CShaderResourceView	m_wnormalMapSRV;		//!<武器の法線マップのSRV。
 	CShaderResourceView m_wspecularMapSRV;		//!<武器のスペキュラマップのSRV。
 	CCharacterController m_characterCtr;		//!<キャラクターコントローラー。
+	prefab::CPointLight* m_pointLight;			//!<ポイントライト。
 };
 

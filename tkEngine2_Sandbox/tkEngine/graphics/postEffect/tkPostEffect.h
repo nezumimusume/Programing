@@ -43,6 +43,13 @@ namespace tkEngine{
 		*@param[in]		rc		レンダリングコンテキスト。
 		*/
 		void DrawFullScreenQuad(CRenderContext& rc);
+		/*!
+		*@brief	トーンマップの取得。。
+		*/
+		CTonemap& GetTonemap() 
+		{
+			return m_tonemap;
+		}
 	private:
 		/*!
 		*@brief	フルスクリーン描画用の矩形プリミティブの初期化。。

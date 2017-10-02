@@ -58,6 +58,13 @@ namespace tkEngine{
 			return m_preRender.GetShadowMap();
 		}
 		/*!
+		* @brief	トーンマップを取得。
+		*/
+		CTonemap& GetTonemap()
+		{
+			return m_postEffect.GetTonemap();
+		}
+		/*!
 		*@brief	メインカメラを取得。
 		*/
 		CCamera& GetMainCamera()

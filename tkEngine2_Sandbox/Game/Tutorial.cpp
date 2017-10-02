@@ -27,12 +27,13 @@ class PBRSample : public IGameObject {
 	
 	
 	prefab::CDirectionLight* m_directionLight[3] = { nullptr };
-	prefab::CPointLight* m_pointLight[NUM_POINT_LIGHT] = {nullptr};
+	std::vector<prefab::CPointLight*> m_pointLight;
 	
 	std::unique_ptr<DirectX::SpriteFont>	m_font;
 	std::unique_ptr<DirectX::SpriteBatch>	m_bach;
 	int m_cursorPos = 0;
 	Player*		m_player;
+	CSkeleton	m_ligLoc;
 public:
 
 	bool Start() override
@@ -46,7 +47,7 @@ public:
 		//ディレクションライトをシーンに追加。
 		m_directionLight[0] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[0]->SetDirection({ 0.707f, -0.707f, 0.0f});
-		m_directionLight[0]->SetColor({ 10.0f, 10.0f, 10.0f, 1.0f });
+		m_directionLight[0]->SetColor({0.1f, 0.1f, 0.1f, 1.0f });
 
 	/*	m_directionLight[1] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[1]->SetDirection({ 0.0f, -0.707f, -0.707f });
@@ -63,47 +64,34 @@ public:
 
 		// ポイントライトを初期化。
 		static const int QuantizationSize = 1000;	//量子化サイズ。
-		
-		{
-			for (int i = 0; i < 0; i++) {
-				m_pointLight[i] = NewGO<prefab::CPointLight>(0);
-				int ix = rand() % QuantizationSize;
-				int iz = rand() % QuantizationSize;
-
-				//0～999までの数字を0.0～1.0の範囲に変換する。
-				float fnx = (float)ix / QuantizationSize;
-				float fnz = (float)iz / QuantizationSize;
-				//xとyは-1.0～1.0の範囲に変換する。
-				fnx = (fnx - 0.5f) * 2.0f;
-				fnz = (fnz - 0.5f) * 2.0f;
-				//ポイントライトの位置をランダムに決定。
-				m_pointLight[i]->SetPosition({ 200.0f * fnx , 100.0f,  200.0f * fnz });
-
-				int ir = rand() % QuantizationSize;
-				int ig = rand() % QuantizationSize;
-				int ib = rand() % QuantizationSize;
-
-				//0～999までの数字を0.0～1.0の範囲に正規化して、ポイントライトのカラーをランダムに決定。
-				m_pointLight[i]->SetColor({ 
-					(float)ir / QuantizationSize * 100.0f, 
-					(float)ig / QuantizationSize * 100.0f,
-					(float)ib / QuantizationSize * 100.0f,
-					1.0f
-				});
-				
-				m_pointLight[i]->SetAttn({
-					150.0f,
-					0.1f,
-					0.1f
-				});
-				
-			}
-			//m_pointLight[0]->SetPosition({0.0f, 10.0f, 0.0f});
+		m_ligLoc.Load(L"Assets/lig/pointLightLoc.tks");
+		for (int i = 1; i < m_ligLoc.GetNumBones(); i++) {
+			CBone* bone = m_ligLoc.GetBone(i);
+			prefab::CPointLight* ptLig = NewGO<prefab::CPointLight>(0);
+			const CMatrix& mat = bone->GetBindPoseMatrix();
+			CVector3 pos;
+			pos.x = mat.m[3][0];
+			pos.y = mat.m[3][2] * 0.354;
+			pos.z = mat.m[3][1];
+			ptLig->SetPosition(pos);
+			ptLig->SetColor({
+				100.0f,
+				50.0f,
+				30.0f,
+				1.0f
+			});
+			ptLig->SetAttn({
+				200.0f,
+				3.0f,
+				0.1f
+			});
+			m_pointLight.push_back(ptLig);
 		}
-		LightManager().SetAmbientLight({0.2f, 0.2f, 0.2f});
+		LightManager().SetAmbientLight({0.5f, 0.5f, 0.5f});
 		m_player = NewGO<Player>(0, "Player");
 		NewGO<Background>(0);
 		NewGO<GameCamera>(0, "GameCamera");
+		GraphicsEngine().GetPostEffect().GetTonemap().SetLuminance(0.1f);
 		return true;
 	}
 	void Update() override
@@ -120,17 +108,6 @@ public:
 		m_cursorPos = max(0, m_cursorPos);
 
 
-		//点光源を回してみる。
-		CQuaternion qRot;
-		qRot.SetRotationDeg(CVector3::AxisY, 0.6f);
-		
-		for (auto& ptLight : m_pointLight) {
-			if (ptLight) {
-				CVector3 pos = ptLight->GetPosition();
-				qRot.Multiply(pos);
-				ptLight->SetPosition(pos);
-			}
-		}
 		//ライトを回す。
 		static CVector3 lightDir = {0.707, -0.707, 0.0f};
 		/*qRot.SetRotationDeg(CVector3::AxisY, 1.0f);
@@ -187,6 +164,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
 	GraphicsEngine().GetShadowMap().SetFar(1000.0f);
 	GraphicsEngine().GetShadowMap().SetNear(50.0f);
+	
 	//エンジンを初期化。
 	if (Engine().Init(initParam) == true) {
 		//初期化に成功。

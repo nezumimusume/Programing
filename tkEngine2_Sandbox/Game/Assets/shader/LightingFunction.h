@@ -92,7 +92,7 @@ float3 CalcPointLight(
 		//Œ¸Š‚ğŒvZ‚·‚éB
 		float	litRate = len / light.attn.x;
 		float	attn = max(1.0 - litRate * litRate, 0.0);
-		pointLightColor *= attn;
+		pointLightColor *= pow(attn, light.attn.y);
 		lig += pointLightColor;
 	}
 	

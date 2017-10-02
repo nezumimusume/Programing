@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
-
+#include "tkEngine/light/tkPointLight.h"
 
 
 Player::Player()
@@ -57,6 +57,19 @@ bool Player::Start()
 
 	m_characterCtr.Init(15.0f, 50.0f, m_position);
 	m_characterCtr.SetGravity(-980.0f);
+	m_pointLight = NewGO<prefab::CPointLight>(0);
+	m_pointLight->SetColor({
+		30.0f,
+		20.0f,
+		12.0f,
+		1.0f
+	});
+
+	m_pointLight->SetAttn({
+		500.0f,
+		4.0f,
+		0.1f
+	});
 	return true;
 }
 void Player::Update() 
@@ -96,7 +109,9 @@ void Player::Update()
 	m_skinModel.Update(m_position, qRot, CVector3::One);
 	
 	m_animation.Update(GameTime().GetFrameDeltaTime());
-	
+	CVector3 pos = m_position;
+	pos.y += 70.0f;
+	m_pointLight->SetPosition(pos);
 	
 
 }
