@@ -70,6 +70,8 @@ bool Player::Start()
 		4.0f,
 		0.1f
 	});
+	
+	m_rotation.SetRotationDeg(CVector3::AxisX, 90.0f);
 	return true;
 }
 void Player::Update() 
@@ -103,17 +105,25 @@ void Player::Update()
 	//カメラ座標系の移動速度をワールド座標系に変換する。
 	m_characterCtr.Execute(GameTime().GetFrameDeltaTime(), m_moveSpeed);
 	m_position = m_characterCtr.GetPosition();
-	CQuaternion qRot;
-	qRot.SetRotationDeg(CVector3::AxisX, 90.0f);
 	
-	m_skinModel.Update(m_position, qRot, CVector3::One);
+	CVector3 moveSpeed = m_moveSpeed;
+	moveSpeed.y = 0.0f;
+	if (moveSpeed.LengthSq() > 0.001f) {
+		CQuaternion qRot;
+		qRot.SetRotationDeg(CVector3::AxisX, 90.0f);
+		CQuaternion q;
+		q.SetRotation(CVector3::Up, atan2f(moveSpeed.x, moveSpeed.z));
+		q.Multiply(qRot);
+		m_rotation = q;
+	}
+	m_skinModel.Update(m_position, m_rotation, CVector3::One);
 	
 	m_animation.Update(GameTime().GetFrameDeltaTime());
 	CVector3 pos = m_position;
 	pos.y += 70.0f;
 	m_pointLight->SetPosition(pos);
-	
 
+	
 }
 void Player::Render(CRenderContext& rc) 
 {

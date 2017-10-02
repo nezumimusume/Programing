@@ -72,22 +72,22 @@ public:
 			CVector3 pos;
 			pos.x = mat.m[3][0];
 			pos.y = mat.m[3][2] * 0.354;
-			pos.z = mat.m[3][1];
+			pos.z = -mat.m[3][1];
 			ptLig->SetPosition(pos);
 			ptLig->SetColor({
-				100.0f,
-				50.0f,
-				30.0f,
+				2000.0f,
+				1000.0f,
+				200.0f,
 				1.0f
 			});
 			ptLig->SetAttn({
-				200.0f,
+				150.0f,
 				3.0f,
 				0.1f
 			});
 			m_pointLight.push_back(ptLig);
 		}
-		LightManager().SetAmbientLight({0.5f, 0.5f, 0.5f});
+		LightManager().SetAmbientLight({0.1f, 0.1f, 0.1f});
 		m_player = NewGO<Player>(0, "Player");
 		NewGO<Background>(0);
 		NewGO<GameCamera>(0, "GameCamera");

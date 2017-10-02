@@ -33,8 +33,8 @@ namespace tkEngine{
 	}
 	void CPostEffect::Render(CRenderContext& rc)
 	{
-		m_bloom.Render(rc, this);
 		m_tonemap.Render(rc, this);
+		m_bloom.Render(rc, this);
 		m_fxaa.Render(rc);
 	}
 	void CPostEffect::InitFullScreenQuadPrimitive()

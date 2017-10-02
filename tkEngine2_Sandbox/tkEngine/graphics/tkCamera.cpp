@@ -7,8 +7,8 @@
 
 namespace tkEngine{
 	CCamera::CCamera() :
-		m_near(30.1f),
-		m_far(500.0f),
+		m_near(1.1f),
+		m_far(1000.0f),
 		m_viewAngle(CMath::DegToRad(60.0f)),
 		m_aspect(0.0f),
 		m_isNeedUpdateProjectionMatrix(true),

@@ -37,7 +37,6 @@ namespace tkEngine{
 			}
 		private:
 			SPointLight	light;
-			bool m_isDirty = false;
 		};
 	}
 }

@@ -103,7 +103,6 @@ namespace tkEngine{
 				return;
 			}
 		}
-		SetDirty();
 	}
 	void CLightManager::RemoveLight(CLightBase* light)
 	{
@@ -120,15 +119,10 @@ namespace tkEngine{
 				m_directionLights.end()
 			);
 		}
-		SetDirty();
 	}
 	void CLightManager::Update()
 	{
 		m_lightParam.eyePos = MainCamera().GetPosition();
-		if (!m_isDirty) {
-			//更新の必要なし。
-			return;
-		}
 		//ディレクションライトのストラクチャーバッファを更新。
 		int ligNo = 0;
 		for (auto lig : m_directionLights) {
@@ -147,13 +141,11 @@ namespace tkEngine{
 	}
 	void CLightManager::Render(CRenderContext& renderContext)
 	{
-		if (m_isDirty) {
-			//StructuredBufferを更新する。
-			renderContext.UpdateSubresource(m_directionLightSB, m_rawDirectionLights);
-			renderContext.UpdateSubresource(m_pointLightsSB, m_rawPointLights);
-			//ダーティフラグを下す。
-			m_isDirty = false;
-		}
+		
+		//StructuredBufferを更新する。
+		renderContext.UpdateSubresource(m_directionLightSB, m_rawDirectionLights);
+		renderContext.UpdateSubresource(m_pointLightsSB, m_rawPointLights);
+		
 		renderContext.UpdateSubresource(m_lightParamCB, &m_lightParam);
 		//PSステージのtレジスタの100番目にディレクションライトのストラクチャーバッファを設定する。
 		renderContext.PSSetShaderResource(enSkinModelSRVReg_DirectionLight, m_directionLightSB.GetSRV());

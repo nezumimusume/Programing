@@ -46,13 +46,6 @@ namespace tkEngine{
 		*/
 		void EndRender(CRenderContext& renderContext);
 		/*!
-		*@brief　ダーティフラグを立てる。
-		*/
-		void SetDirty()
-		{
-			m_isDirty = true;
-		}
-		/*!
 		*@brief　ポイントライトのSRVを取得。
 		*/
 		CShaderResourceView& GetPointLightsSRV()
@@ -116,6 +109,6 @@ namespace tkEngine{
 		std::list<prefab::CPointLight*>		m_pointLights;			//!<ポイントライトのリスト。
 		CStructuredBuffer					m_pointLightsSB;		//!<ポイントライトのリストのストラクチャーバッファ。
 		CStructuredBuffer					m_pointLightsInTileSB;	//!<各タイルに含まれるポイントライトのリストのストラクチャーバッファ。
-		bool								m_isDirty = false;		//!<ダーティフラグ。
+
 	};
 }

@@ -27,6 +27,7 @@ private:
 	CAnimation		m_animation;				//!<アニメーション。
 	CVector3		m_position = CVector3::Zero;
 	CVector3		m_moveSpeed = CVector3::Zero;
+	CQuaternion		m_rotation = CQuaternion::Identity;
 	CShaderResourceView	m_normalMapSRV;			//!<法線マップのSRV。
 	CShaderResourceView m_specularMapSRV;		//!<スペキュラマップのSRV。
 	CShaderResourceView	m_wnormalMapSRV;		//!<武器の法線マップのSRV。
