@@ -11,12 +11,18 @@
     <Filter Include="Resource">
       <UniqueIdentifier>{a9dc9dbd-8634-47fe-a52b-d0b613deeeb4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{ea751c3a-3a8b-49f2-8bc9-cf06785b9355}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tutorial.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="enemy\Enemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -25,6 +31,9 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="enemy\Enemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tutorial.rc">
@@ -39,6 +48,9 @@
       <Filter>Resource Files\modelData</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Resource\modelData\background2.FBX">
+      <Filter>Resource Files\modelData</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Resource\modelData\enemy_00.FBX">
       <Filter>Resource Files\modelData</Filter>
     </MeshContentTask>
   </ItemGroup>

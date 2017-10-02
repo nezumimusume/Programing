@@ -13,7 +13,7 @@
 #include "Player.h"
 #include "Background.h"
 #include "GameCamera.h"
-
+#include "enemy\Enemy.h"
 class PBRSample : public IGameObject {
 	//マテリアルパラメータの数。
 	static const int NUM_MATERIAL_PARAM = 3;
@@ -33,7 +33,6 @@ class PBRSample : public IGameObject {
 	std::unique_ptr<DirectX::SpriteBatch>	m_bach;
 	int m_cursorPos = 0;
 	Player*		m_player;
-	CSkeleton	m_ligLoc;
 public:
 
 	bool Start() override
@@ -47,37 +46,29 @@ public:
 		//ディレクションライトをシーンに追加。
 		m_directionLight[0] = NewGO<prefab::CDirectionLight>(0);
 		m_directionLight[0]->SetDirection({ 0.707f, -0.707f, 0.0f});
-		m_directionLight[0]->SetColor({0.1f, 0.1f, 0.1f, 1.0f });
+		m_directionLight[0]->SetColor({100.5f, 100.5f, 100.5f, 1.0f });
 
-	/*	m_directionLight[1] = NewGO<prefab::CDirectionLight>(0);
-		m_directionLight[1]->SetDirection({ 0.0f, -0.707f, -0.707f });
-		m_directionLight[1]->SetColor({ 1.2f, 1.2f, 1.2f, 1.0f });
-		
-		m_directionLight[2] = NewGO<prefab::CDirectionLight>(0);
-		m_directionLight[2]->SetDirection({ 1.0f, 0.0f, 0.0f });
-		m_directionLight[2]->SetColor({ 1.2f, 1.2f, 1.2f, 1.0f });
-		*/
 		
 		//フォントを初期化。
 		m_font.reset(new DirectX::SpriteFont(GraphicsEngine().GetD3DDevice(), L"Assets/font/myfile.spritefont"));
 		m_bach.reset(new DirectX::SpriteBatch(GraphicsEngine().GetD3DDeviceContext()));
 
-		// ポイントライトを初期化。
-		static const int QuantizationSize = 1000;	//量子化サイズ。
-		m_ligLoc.Load(L"Assets/lig/pointLightLoc.tks");
-		for (int i = 1; i < m_ligLoc.GetNumBones(); i++) {
-			CBone* bone = m_ligLoc.GetBone(i);
+		// ポイントライトの配置情報をロード。
+		CSkeleton ligLoc;
+		ligLoc.Load(L"Assets/lig/pointLightLoc.tks");
+		for (int i = 1; i < ligLoc.GetNumBones(); i++) {
+			CBone* bone = ligLoc.GetBone(i);
 			prefab::CPointLight* ptLig = NewGO<prefab::CPointLight>(0);
 			const CMatrix& mat = bone->GetBindPoseMatrix();
 			CVector3 pos;
 			pos.x = mat.m[3][0];
-			pos.y = mat.m[3][2] * 0.354;
+			pos.y = mat.m[3][2];
 			pos.z = -mat.m[3][1];
 			ptLig->SetPosition(pos);
 			ptLig->SetColor({
+				3000.0f,
 				2000.0f,
-				1000.0f,
-				200.0f,
+				1200.0f,
 				1.0f
 			});
 			ptLig->SetAttn({
@@ -87,11 +78,25 @@ public:
 			});
 			m_pointLight.push_back(ptLig);
 		}
-		LightManager().SetAmbientLight({0.1f, 0.1f, 0.1f});
+		//敵の配置情報をロード。
+		CSkeleton enemyLoc;
+		enemyLoc.Load(L"Assets/lig/enemyLoc.tks");
+		for (int i = 1; i < enemyLoc.GetNumBones(); i++) {
+			//先頭はダミー。
+			CBone* bone = enemyLoc.GetBone(i);
+			Enemy* enemy = NewGO<Enemy>(0, "Enemey");
+			const CMatrix& mat = bone->GetBindPoseMatrix();
+			CVector3 pos;
+			pos.x = mat.m[3][0];
+			pos.y = mat.m[3][2];
+			pos.z = -mat.m[3][1];
+			enemy->SetPosition(pos);
+		}
+		LightManager().SetAmbientLight({5.5f, 5.5f, 5.5f});
 		m_player = NewGO<Player>(0, "Player");
 		NewGO<Background>(0);
 		NewGO<GameCamera>(0, "GameCamera");
-		GraphicsEngine().GetPostEffect().GetTonemap().SetLuminance(0.1f);
+		GraphicsEngine().GetPostEffect().GetTonemap().SetLuminance(0.22f);
 		return true;
 	}
 	void Update() override
