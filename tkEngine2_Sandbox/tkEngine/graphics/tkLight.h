@@ -27,6 +27,7 @@ namespace tkEngine{
 		CVector3	position;		//!<位置。
 		CVector3	positionInView;	//!<ビュー空間での座標。
 		CVector4	color;			//!<ライトのカラー。
-		CVector4	attn;			//!<減衰定数。
+		CVector4	attn;			//!<減衰定数。xはポイントライトの影響が届く範囲。yはポイントライトの減衰率に影響を与えます。
+									//!<yが大きくなると、減衰が強くなります。1.0で線形の減衰率になります。z,wは未使用。
 	};
 }

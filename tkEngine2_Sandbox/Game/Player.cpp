@@ -57,8 +57,6 @@ bool Player::Start()
 
 	m_characterCtr.Init(15.0f, 50.0f, m_position);
 	m_characterCtr.SetGravity(-980.0f);
-	m_pointLight = NewGO<prefab::CPointLight>(0);
-	
 	
 	m_rotation.SetRotationDeg(CVector3::AxisX, 90.0f);
 	return true;
