@@ -153,6 +153,13 @@ namespace tkEngine{
 		m_copyVS.Load("Assets/shader/copy.fx", "VSMain", CShader::EnType::VS);
 		m_copyPS.Load("Assets/shader/copy.fx", "PSMain", CShader::EnType::PS);
 
+		//2Dカメラの初期化。
+		m_2dCamera.SetTarget(CVector3::Zero);
+		m_2dCamera.SetPosition({0.0f, 0.0f, -10.0f});
+		m_2dCamera.SetUpdateProjMatrixFunc(CCamera::enUpdateProjMatrixFunc_Ortho);
+		m_2dCamera.SetNear(0.1f);
+		m_2dCamera.SetFar(1000.0f);
+		m_2dCamera.Update();
 		//各種レンダリングステートを初期化する。
 		AlphaBlendState::Init(*this);
 		DepthStencilState::Init(*this);

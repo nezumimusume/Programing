@@ -213,10 +213,12 @@ namespace tkEngine{
 		 */
 		void Mul( const CMatrix& m0, const CMatrix& m1 )
 		{
+			DirectX::XMFLOAT4X4 lm;
 			DirectX::XMStoreFloat4x4(
-				&mat,
+				&lm,
 				DirectX::XMMatrixMultiply(m0, m1)
 			);
+			mat = lm;
 		}
 		/*!
 		 *@brief	ãtçsóÒÇåvéZÅB

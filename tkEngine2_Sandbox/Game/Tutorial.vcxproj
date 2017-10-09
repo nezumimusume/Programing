@@ -212,7 +212,7 @@
       <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -261,7 +261,7 @@
       <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">
@@ -310,7 +310,7 @@
       <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|X64'">
@@ -354,7 +354,7 @@
       <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|X64'">
@@ -478,7 +478,7 @@
       <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Preview|X64'">
@@ -526,7 +526,7 @@
       <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|X64'">
@@ -598,6 +598,16 @@
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Resource\modelData\BB_Map_1A Normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Resource\sprite\mikyan.jpg">
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
+    </ImageContentTask>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

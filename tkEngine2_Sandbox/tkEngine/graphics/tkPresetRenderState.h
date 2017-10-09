@@ -26,7 +26,8 @@ namespace tkEngine{
 		static ID3D11DepthStencilState* disable;			//!<すべて無効。
 		static ID3D11DepthStencilState* SceneRender;		//!<3Dモデルを描画する時の基本的な深度ステンシルステート。
 															//!<深度テスト、深度書き込みともに有効なステートです。
-
+		static ID3D11DepthStencilState* spriteRender;		//!<2D描画する時の基本的な深度ステンシルステート。
+															//!<深度テスト、深度書き込みともに無効なステートです。
 		/*!
 		* @brief	初期化。
 		*@param[in]	ge		グラフィックエンジン

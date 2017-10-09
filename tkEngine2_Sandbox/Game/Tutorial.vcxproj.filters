@@ -14,6 +14,9 @@
     <Filter Include="Enemy">
       <UniqueIdentifier>{ea751c3a-3a8b-49f2-8bc9-cf06785b9355}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\sprite">
+      <UniqueIdentifier>{3ef9125e-9653-4e7a-91db-18660bbc765b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tutorial.cpp" />
@@ -67,5 +70,10 @@
     <ImageContentTask Include="Resource\modelData\BB_Map_1A Normal.png">
       <Filter>Resource</Filter>
     </ImageContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resource\sprite\mikyan.jpg">
+      <Filter>Resource Files\sprite</Filter>
+    </Image>
   </ItemGroup>
 </Project>

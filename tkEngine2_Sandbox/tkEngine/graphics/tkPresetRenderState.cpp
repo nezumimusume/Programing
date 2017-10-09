@@ -38,6 +38,7 @@ namespace tkEngine{
 
 	ID3D11DepthStencilState* DepthStencilState::disable = nullptr;			//!<すべて無効。
 	ID3D11DepthStencilState* DepthStencilState::SceneRender = nullptr;		//!<3Dモデルを描画する時の基本的な深度ステンシルステート。
+	ID3D11DepthStencilState* DepthStencilState::spriteRender = nullptr;		//!<2D描画する時の基本的な深度ステンシルステート。
 	void DepthStencilState::Init(CGraphicsEngine& ge)
 	{
 		D3D11_DEPTH_STENCIL_DESC desc;
@@ -61,6 +62,6 @@ namespace tkEngine{
 
 		desc.DepthEnable = false;
 		pd3d->CreateDepthStencilState(&desc, &disable);
-
+		pd3d->CreateDepthStencilState(&desc, &spriteRender);
 	}
 }
