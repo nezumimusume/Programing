@@ -168,7 +168,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 	//視点までのベクトルを求める。
 	float3 toEye = normalize(eyePos - In.Pos);
 	//従ベクトルを計算する。
-	float3 biNormal = normalize(cross(In.Normal, In.Tangent));
+	float3 biNormal = normalize(cross(In.Tangent, In.Normal));
 	//アルベド。
 	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
 	//法線を計算。

@@ -74,8 +74,8 @@ float3 BRDF(
 {
     float NdotL = dot(normal,L);
 
-    float NdotV = dot(normal,V);
-    if (NdotL < 0 || NdotV < 0) return 0.0f;
+    float NdotV = max(0.5f, dot(normal,V));
+    if (NdotL < 0 ) return 0.0f;
 
     float3 H = normalize(L+V);
 
