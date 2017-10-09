@@ -8,9 +8,6 @@
     <Filter Include="Resource Files\modelData">
       <UniqueIdentifier>{d98d7a64-a986-4c93-8840-fde85e2edc37}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource">
-      <UniqueIdentifier>{a9dc9dbd-8634-47fe-a52b-d0b613deeeb4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Enemy">
       <UniqueIdentifier>{ea751c3a-3a8b-49f2-8bc9-cf06785b9355}</UniqueIdentifier>
     </Filter>
@@ -55,25 +52,20 @@
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Resource\modelData\Thethief_wuqi_S.tga">
-      <Filter>Resource</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\modelData\Thethief_wuqi_N.tga">
-      <Filter>Resource</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\modelData\Thethief_S.tga">
-      <Filter>Resource</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\modelData\Thethief_N.tga">
-      <Filter>Resource</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\modelData\BB_Map_1A Normal.png">
-      <Filter>Resource</Filter>
-    </ImageContentTask>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="Resource\sprite\mikyan.jpg">
       <Filter>Resource Files\sprite</Filter>
+    </Image>
+    <Image Include="Resource\modelData\Thethief_wuqi_N.tga">
+      <Filter>Resource Files\modelData</Filter>
+    </Image>
+    <Image Include="Resource\modelData\Thethief_wuqi_S.tga">
+      <Filter>Resource Files\modelData</Filter>
+    </Image>
+    <Image Include="Resource\modelData\Thethief_N.tga">
+      <Filter>Resource Files\modelData</Filter>
+    </Image>
+    <Image Include="Resource\modelData\Thethief_S.tga">
+      <Filter>Resource Files\modelData</Filter>
     </Image>
   </ItemGroup>
 </Project>

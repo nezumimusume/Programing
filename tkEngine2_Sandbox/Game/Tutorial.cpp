@@ -154,7 +154,7 @@ public:
 	------------------------------------------------------------------*/
 	void PostRender(CRenderContext& rc)override
 	{
-		m_sprite.Draw(rc, MainCamera2D().GetViewMatrix(), MainCamera2D().GetProjectionMatrix());
+		//m_sprite.Draw(rc, MainCamera2D().GetViewMatrix(), MainCamera2D().GetProjectionMatrix());
 	}
 };
 
