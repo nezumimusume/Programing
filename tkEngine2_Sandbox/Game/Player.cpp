@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "tkEngine/light/tkPointLight.h"
 #include "HPBar.h"
-
+#include "MPBar.h"
 Player::Player()
 {
 	
@@ -61,6 +61,7 @@ bool Player::Start()
 	m_rotation.SetRotationDeg(CVector3::AxisX, 90.0f);
 
 	m_hpBar = NewGO<HPBar>(0);
+	m_mpBar = NewGO<MPBar>(0);
 	return true;
 }
 void Player::Update() 

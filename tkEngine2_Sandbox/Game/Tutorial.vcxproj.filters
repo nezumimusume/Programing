@@ -24,6 +24,7 @@
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="HPBar.cpp" />
+    <ClCompile Include="MPBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -36,6 +37,7 @@
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="HPBar.h" />
+    <ClInclude Include="MPBar.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tutorial.rc">
@@ -79,6 +81,24 @@
       <Filter>Resource Files\sprite</Filter>
     </Image>
     <Image Include="Resource\sprite\hpsp_bar.png">
+      <Filter>Resource Files\sprite</Filter>
+    </Image>
+    <Image Include="Resource\sprite\skill00.png">
+      <Filter>Resource Files\sprite</Filter>
+    </Image>
+    <Image Include="Resource\sprite\skill01.png">
+      <Filter>Resource Files\sprite</Filter>
+    </Image>
+    <Image Include="Resource\sprite\skill02.png">
+      <Filter>Resource Files\sprite</Filter>
+    </Image>
+    <Image Include="Resource\sprite\skill03.png">
+      <Filter>Resource Files\sprite</Filter>
+    </Image>
+    <Image Include="Resource\sprite\skill04.png">
+      <Filter>Resource Files\sprite</Filter>
+    </Image>
+    <Image Include="Resource\sprite\SkillBG.png">
       <Filter>Resource Files\sprite</Filter>
     </Image>
   </ItemGroup>

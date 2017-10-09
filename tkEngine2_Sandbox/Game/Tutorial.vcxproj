@@ -575,6 +575,7 @@
     <ClCompile Include="enemy\Enemy.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="HPBar.cpp" />
+    <ClCompile Include="MPBar.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Tutorial.cpp" />
   </ItemGroup>
@@ -583,6 +584,7 @@
     <ClInclude Include="enemy\Enemy.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="HPBar.h" />
+    <ClInclude Include="MPBar.h" />
     <ClInclude Include="Player.h" />
     <CLInclude Include="resource.h" />
     <ResourceCompile Include="Tutorial.rc" />
@@ -641,6 +643,14 @@
     <ImageContentTask Include="Resource\sprite\hpsp_bar.png" />
     <ImageContentTask Include="Resource\sprite\hp_back.png" />
     <ImageContentTask Include="Resource\sprite\mp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Resource\sprite\skill00.png" />
+    <ImageContentTask Include="Resource\sprite\skill01.png" />
+    <ImageContentTask Include="Resource\sprite\skill02.png" />
+    <ImageContentTask Include="Resource\sprite\skill03.png" />
+    <ImageContentTask Include="Resource\sprite\skill04.png" />
+    <ImageContentTask Include="Resource\sprite\SkillBG.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
