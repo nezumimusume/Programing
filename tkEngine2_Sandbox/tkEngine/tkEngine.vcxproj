@@ -267,6 +267,7 @@
     <ClInclude Include="gameObject\tkgameobject.h" />
     <ClInclude Include="gameObject\tkGameObjectManager.h" />
     <ClInclude Include="gameObject\tkTransform.h" />
+    <ClInclude Include="graphics\2D\tkSprite.h" />
     <ClInclude Include="graphics\animation\tkAnimation.h" />
     <ClInclude Include="graphics\animation\tkAnimationClip.h" />
     <ClInclude Include="graphics\animation\tkAnimationPlayController.h" />
@@ -344,6 +345,7 @@
     <ClCompile Include="gameObject\tkGameObject.cpp" />
     <ClCompile Include="gameObject\tkgameobjectmanager.cpp" />
     <ClCompile Include="gameObject\tkTransform.cpp" />
+    <ClCompile Include="graphics\2D\tkSprite.cpp" />
     <ClCompile Include="graphics\animation\tkAnimation.cpp" />
     <ClCompile Include="graphics\animation\tkAnimationClip.cpp" />
     <ClCompile Include="graphics\animation\tkAnimationPlayController.cpp" />

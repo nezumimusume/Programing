@@ -47,9 +47,6 @@
     <MeshContentTask Include="Resource\modelData\background.FBX">
       <Filter>Resource Files\modelData</Filter>
     </MeshContentTask>
-    <MeshContentTask Include="Resource\modelData\background2.FBX">
-      <Filter>Resource Files\modelData</Filter>
-    </MeshContentTask>
     <MeshContentTask Include="Resource\modelData\enemy_00.FBX">
       <Filter>Resource Files\modelData</Filter>
     </MeshContentTask>
