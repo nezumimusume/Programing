@@ -35,8 +35,6 @@ class PBRSample : public IGameObject {
 	std::unique_ptr<DirectX::SpriteBatch>	m_bach;
 	int m_cursorPos = 0;
 	Player*		m_player;
-	CSprite		m_sprite;
-	CShaderResourceView m_spriteTex;
 public:
 
 	bool Start() override
@@ -101,8 +99,7 @@ public:
 		NewGO<Background>(0);
 		NewGO<GameCamera>(0, "GameCamera");
 		GraphicsEngine().GetPostEffect().GetTonemap().SetLuminance(0.22f);
-		m_spriteTex.CreateFromDDSTextureFromFile(L"Assets/sprite/mikyan.dds");
-		m_sprite.Init(m_spriteTex, 400, 300);
+		
 		return true;
 	}
 	void Update() override
@@ -124,12 +121,6 @@ public:
 		/*qRot.SetRotationDeg(CVector3::AxisY, 1.0f);
 		qRot.Multiply(lightDir);*/
 		GraphicsEngine().GetShadowMap().SetLightDirection(lightDir);
-		CQuaternion rot = m_sprite.GetRotation();
-		CQuaternion addRot;
-		addRot.SetRotation(CVector3::AxisZ, 0.02f);
-		rot.Multiply(addRot);
-		m_sprite.SetRotation(rot);
-		m_sprite.SetPosition({ 200.0f, -150.0f, 0.0f });
 
 	}
 	/*!------------------------------------------------------------------
@@ -148,13 +139,6 @@ public:
 	{
 		//シーンの描画。
 		RenderScene(rc);
-	}
-	/*!------------------------------------------------------------------
-	* @brief	2D描画。
-	------------------------------------------------------------------*/
-	void PostRender(CRenderContext& rc)override
-	{
-		//m_sprite.Draw(rc, MainCamera2D().GetViewMatrix(), MainCamera2D().GetProjectionMatrix());
 	}
 };
 

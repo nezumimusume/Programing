@@ -6,6 +6,7 @@
 #include "tkEngine/math/tkVector.h"
 
 namespace tkEngine{
+	const CVector2 CVector2::Zero   = { 0.0f,  0.0f };
 	const CVector3 CVector3::Zero	= {  0.0f,  0.0f,  0.0f };
 	const CVector3 CVector3::Right	= {  1.0f,  0.0f,  0.0f };
 	const CVector3 CVector3::Left	= { -1.0f,  0.0f,  0.0f };

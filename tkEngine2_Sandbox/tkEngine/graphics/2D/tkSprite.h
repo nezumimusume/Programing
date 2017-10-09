@@ -24,7 +24,7 @@ namespace tkEngine{
 		 *@param[in]	w		幅。
 		 *@param[in]	h		高さ。
 		 */
-		void Init(CShaderResourceView& tex, int w, int h);
+		void Init(CShaderResourceView& tex, float w, float h);
 		/*!
 		 * @brief	テクスチャを設定。
 		 *@param[in]	tex		テクスチャ。
@@ -46,6 +46,7 @@ namespace tkEngine{
 		{
 			m_position = pos;
 		}
+		
 		/*!
 		*@brief	座標を取得。
 		*/
@@ -81,6 +82,19 @@ namespace tkEngine{
 		{
 			return m_scale;
 		}
+		/*!
+		*@brief	ピボットを設定。
+		*@details
+		* 0.5, 0.5で画像の中心が基点。
+		* 0.0, 0.0で画像の左下。
+		* 1.0, 1.0で画像の右上。
+		* UnityのuGUIに準拠。
+		*@param[in]	pivot		サイズ。
+		*/
+		void SetPivot(const CVector2& pivot)
+		{
+			m_pivot = pivot;
+		}
 	private:
 		struct SSpriteCB {
 			CMatrix WVP;		//ワールドビュープロジェクション行列。
@@ -94,5 +108,7 @@ namespace tkEngine{
 		CPrimitive				m_primitive;					//!<プリミティブ。
 		CShaderResourceView*	m_textureSRV = nullptr;			//!<テクスチャ。
 		CConstantBuffer			m_cb;
+		CVector2				m_pivot = {0.5f, 0.5f};		//!<ピボット。
+		CVector2				m_size = CVector2::Zero;		//!<サイズ。
 	};
 }

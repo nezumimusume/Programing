@@ -55,6 +55,17 @@ namespace tkEngine{
 			}
 		}
 		/*!
+		*@brief	モデルエフェクトの検索。
+		*@param[in]	findEffect		メッシュを見つけた時に呼ばれるコールバック関数
+		*/
+		void FindModelEffect(CSkinModelData::OnFindModelEffect findEffect) const
+		{
+			FindMesh([&](auto& mesh) {
+				CModelEffect* effect = reinterpret_cast<CModelEffect*>(mesh->effect.get());
+				findEffect(effect);
+			});
+		}
+		/*!
 		* @brief	シャドウキャスターのフラグを設定。
 		*@param[in]	flag	シャドウキャスターのフラグ。
 		*/

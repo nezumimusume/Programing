@@ -11,6 +11,7 @@ namespace tkEngine{
 	
 	class CVector2 {
 	public:
+		static const CVector2 Zero;
 		CVector2()
 		{
 

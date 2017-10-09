@@ -18,14 +18,15 @@ namespace tkEngine{
 	CSprite::~CSprite()
 	{
 	}
-	void CSprite::Init(CShaderResourceView& tex, int w, int h)
+	void CSprite::Init(CShaderResourceView& tex, float w, float h)
 	{
 		//シェーダーロード。
 		m_ps.Load("Assets/shader/sprite.fx", "PSMain", CShader::EnType::PS);
 		m_vs.Load("Assets/shader/sprite.fx", "VSMain", CShader::EnType::VS);
-		
-		float halfW = w >> 1;
-		float halfH = h >> 1;
+		m_size.x = w;
+		m_size.y = h;
+		float halfW = w * 0.5f;
+		float halfH = h * 0.5f;
 		//頂点バッファのソースデータ。
 		SSimpleVertex vertices[] =
 		{
@@ -68,11 +69,28 @@ namespace tkEngine{
 			return;
 		}
 		SSpriteCB cb;
+		//ピボットを考慮に入れた平行移動行列を作成。
+		//ピボットは真ん中が0.0, 0.0、左上が-1.0f, -1.0、右下が1.0、1.0になるようにする。
+		CVector2 localPivot = m_pivot;
+		localPivot.x -= 0.5f;
+		localPivot.y -= 0.5f;
+		localPivot.x *= -2.0f;
+		localPivot.y *= -2.0f;
+		//画像のハーフサイズを求める。
+		CVector2 halfSize = m_size;
+		halfSize.x *= 0.5f;
+		halfSize.y *= 0.5f;
+		CMatrix mPivotTrans;
+
+		mPivotTrans.MakeTranslation(
+			{ halfSize.x * localPivot.x, halfSize.y * localPivot.y, 0.0f }
+		);
 		CMatrix mTrans, mRot, mScale;
 		mTrans.MakeTranslation(m_position);
 		mRot.MakeRotationFromQuaternion(m_rotation);
 		mScale.MakeScaling(m_scale);
-		cb.WVP.Mul(mScale, mRot);
+		cb.WVP.Mul(mPivotTrans, mScale);
+		cb.WVP.Mul(cb.WVP, mRot);
 		cb.WVP.Mul(cb.WVP, mTrans);
 		cb.WVP.Mul(cb.WVP, viewMatrix);
 		cb.WVP.Mul(cb.WVP, projMatrix);

@@ -16,15 +16,6 @@ bool Background::Start()
 {
 	m_skinModelData.Load(L"Assets/modelData/background.cmo");
 	m_skinModel.Init(m_skinModelData);
-	
-
-	m_normalMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/BB_Map_1A Normal.dds");
-	m_skinModel.FindMesh([&](auto& mesh) {
-		CModelEffect* effect = reinterpret_cast<CModelEffect*>(mesh->effect.get());
-		if (effect->EqualMaterialName(L"Material #25")) {
-			effect->SetNormalMap(m_normalMapSRV.GetBody());
-		}
-	});
 	m_skinModel.SetShadowReceiverFlag(true);
 
 	m_meshCollider.CreateFromSkinModel(m_skinModel, nullptr);

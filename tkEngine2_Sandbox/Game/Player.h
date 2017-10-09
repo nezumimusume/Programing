@@ -2,6 +2,7 @@
 
 #include "tkEngine/character/tkCharacterController.h"
 
+class HPBar;
 class Player : public IGameObject
 {
 public:
@@ -34,5 +35,6 @@ private:
 	CShaderResourceView m_wspecularMapSRV;		//!<武器のスペキュラマップのSRV。
 	CCharacterController m_characterCtr;		//!<キャラクターコントローラー。
 	prefab::CPointLight* m_pointLight;			//!<ポイントライト。
+	HPBar* m_hpBar = nullptr;
 };
 
