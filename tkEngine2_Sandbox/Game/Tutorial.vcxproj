@@ -574,8 +574,8 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="enemy\Enemy.cpp" />
     <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="HPBar.cpp" />
-    <ClCompile Include="MPBar.cpp" />
+    <ClCompile Include="hud\HPBar.cpp" />
+    <ClCompile Include="hud\MPBar.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Tutorial.cpp" />
   </ItemGroup>
@@ -583,8 +583,8 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="enemy\Enemy.h" />
     <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="HPBar.h" />
-    <ClInclude Include="MPBar.h" />
+    <ClInclude Include="hud\HPBar.h" />
+    <ClInclude Include="hud\MPBar.h" />
     <ClInclude Include="Player.h" />
     <CLInclude Include="resource.h" />
     <ResourceCompile Include="Tutorial.rc" />

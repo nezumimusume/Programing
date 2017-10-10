@@ -14,6 +14,9 @@
     <Filter Include="Resource Files\sprite">
       <UniqueIdentifier>{3ef9125e-9653-4e7a-91db-18660bbc765b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HUD">
+      <UniqueIdentifier>{3b0a0312-db03-4a7d-96ac-a3dbe2cbd7f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tutorial.cpp" />
@@ -23,8 +26,12 @@
     <ClCompile Include="enemy\Enemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="HPBar.cpp" />
-    <ClCompile Include="MPBar.cpp" />
+    <ClCompile Include="hud\HPBar.cpp">
+      <Filter>HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="hud\MPBar.cpp">
+      <Filter>HUD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -36,8 +43,12 @@
     <ClInclude Include="enemy\Enemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="HPBar.h" />
-    <ClInclude Include="MPBar.h" />
+    <ClInclude Include="hud\HPBar.h">
+      <Filter>HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="hud\MPBar.h">
+      <Filter>HUD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tutorial.rc">
@@ -56,50 +67,50 @@
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resource\sprite\mikyan.jpg">
+    <ImageContentTask Include="Resource\sprite\hp_back.png">
       <Filter>Resource Files\sprite</Filter>
-    </Image>
-    <Image Include="Resource\modelData\Thethief_wuqi_N.tga">
-      <Filter>Resource Files\modelData</Filter>
-    </Image>
-    <Image Include="Resource\modelData\Thethief_wuqi_S.tga">
-      <Filter>Resource Files\modelData</Filter>
-    </Image>
-    <Image Include="Resource\modelData\Thethief_N.tga">
-      <Filter>Resource Files\modelData</Filter>
-    </Image>
-    <Image Include="Resource\modelData\Thethief_S.tga">
-      <Filter>Resource Files\modelData</Filter>
-    </Image>
-    <Image Include="Resource\sprite\mp.png">
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\hp.png">
       <Filter>Resource Files\sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\hp.png">
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\mp.png">
       <Filter>Resource Files\sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\hp_back.png">
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\hpsp_bar.png">
       <Filter>Resource Files\sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\hpsp_bar.png">
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\skill00.png">
       <Filter>Resource Files\sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\skill00.png">
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\skill01.png">
       <Filter>Resource Files\sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\skill01.png">
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\SkillBG.png">
       <Filter>Resource Files\sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\skill02.png">
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\skill04.png">
       <Filter>Resource Files\sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\skill03.png">
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\skill03.png">
       <Filter>Resource Files\sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\skill04.png">
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\skill02.png">
       <Filter>Resource Files\sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\SkillBG.png">
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\modelData\Thethief_N.tga">
       <Filter>Resource Files\sprite</Filter>
-    </Image>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\modelData\Thethief_S.tga">
+      <Filter>Resource Files\sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\modelData\Thethief_wuqi_N.tga">
+      <Filter>Resource Files\sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\modelData\Thethief_wuqi_S.tga">
+      <Filter>Resource Files\sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\mikyan.jpg">
+      <Filter>Resource Files\sprite</Filter>
+    </ImageContentTask>
   </ItemGroup>
 </Project>

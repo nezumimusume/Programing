@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "tkEngine/light/tkPointLight.h"
-#include "HPBar.h"
-#include "MPBar.h"
+#include "hud/HPBar.h"
+#include "hud/MPBar.h"
 Player::Player()
 {
 	
