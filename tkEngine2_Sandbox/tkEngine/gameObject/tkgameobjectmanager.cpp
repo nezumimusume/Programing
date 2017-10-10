@@ -6,7 +6,7 @@
 #include "tkEngine/gameObject/tkgameobjectmanager.h"
 #include <future>
 #include "tkEngine/graphics/preRender/tkPreRender.h"
-
+#include "tkEngine/graphics/tkPresetRenderState.h"
 namespace tkEngine{
 	void CGameObjectManager::Execute()
 	{
@@ -77,6 +77,7 @@ namespace tkEngine{
 		GraphicsEngine().GetPostEffect().Render(renderContext);
 
 		//2DìIÇ»Ç‡ÇÃÇÃï`âÊÅB
+		renderContext.OMSetDepthStencilState(DepthStencilState::spriteRender, 0);
 		renderContext.SetRenderStep(enRenderStep_Render2DToScene);
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {

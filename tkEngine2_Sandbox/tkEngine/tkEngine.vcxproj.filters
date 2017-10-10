@@ -72,6 +72,9 @@
     <Filter Include="Source Files\camera">
       <UniqueIdentifier>{ee265cd4-6955-4e1d-8ddd-6ed3d6d15169}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphics\2D">
+      <UniqueIdentifier>{bc63bb32-d4bc-45af-a50d-1a6780b5d1e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameObject\tkGameObjectManager.h">
@@ -308,6 +311,9 @@
     <ClInclude Include="Resource\tkShaderResources.h">
       <Filter>Source Files\resource</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\2D\tkSprite.h">
+      <Filter>Source Files\graphics\2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -489,6 +495,9 @@
     </ClCompile>
     <ClCompile Include="Resource\tkShaderResources.cpp">
       <Filter>Source Files\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\2D\tkSprite.cpp">
+      <Filter>Source Files\graphics\2D</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -72,6 +72,13 @@ namespace tkEngine{
 			return m_mainCamera;
 		}
 		/*!
+		*@brief	2Dカメラを取得。
+		*/
+		CCamera& Get2DCamera()
+		{
+			return m_2dCamera;
+		}
+		/*!
 		*@brief	Direct3DDeviceの取得。
 		*/
 		ID3D11Device* GetD3DDevice() const
@@ -186,6 +193,7 @@ namespace tkEngine{
 		CPreRender				m_preRender;								//!<プリレンダリング。
 		CPostEffect				m_postEffect;								//!<ポストエフェクト。
 		CCamera					m_mainCamera;								//!<メインカメラ。
+		CCamera					m_2dCamera;									//!<2Dカメラ。
 		int						m_frameBufferWidth = 0;						//!<フレームバッファの幅。これが内部解像度。
 		int						m_frameBufferHeight = 0;					//!<フレームバッファの高さ。これが内部解像度。
 		D3D_DRIVER_TYPE			m_driverType = D3D_DRIVER_TYPE_NULL;		//!<ドライバの種類のオプション。

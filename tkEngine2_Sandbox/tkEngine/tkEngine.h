@@ -94,7 +94,13 @@ namespace tkEngine{
 		{
 			return m_graphicsEngine.GetMainCamera();
 		}
-		
+		/*!
+		*@brief	2Dカメラを取得。
+		*/
+		CCamera& GetMainCamera2D()
+		{
+			return m_graphicsEngine.Get2DCamera();
+		}
 	private:
 		/*!
 		 *@brief	ウィンドウ初期化。
@@ -163,6 +169,13 @@ namespace tkEngine{
 	static inline CCamera& MainCamera()
 	{
 		return GraphicsEngine().GetMainCamera();
+	}
+	/*!
+	* @brief	メインカメラ(2D)のインスタンスを取得。
+	*/
+	static inline CCamera& MainCamera2D()
+	{
+		return GraphicsEngine().Get2DCamera();
 	}
 	/*!
 	* @brief	CLightManagerのインスタンスを取得。

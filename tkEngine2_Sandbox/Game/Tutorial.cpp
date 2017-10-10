@@ -14,6 +14,8 @@
 #include "Background.h"
 #include "GameCamera.h"
 #include "enemy\Enemy.h"
+#include "tkEngine/graphics/2D/tkSprite.h"
+
 class PBRSample : public IGameObject {
 	//マテリアルパラメータの数。
 	static const int NUM_MATERIAL_PARAM = 3;
@@ -97,6 +99,7 @@ public:
 		NewGO<Background>(0);
 		NewGO<GameCamera>(0, "GameCamera");
 		GraphicsEngine().GetPostEffect().GetTonemap().SetLuminance(0.22f);
+		
 		return true;
 	}
 	void Update() override

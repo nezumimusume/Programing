@@ -95,6 +95,14 @@ namespace tkEngine{
 		m_psCalcAdaptedLuminanceFirstShader.Load("Assets/shader/tonemap.fx", "PSCalcAdaptedLuminanceFirst", CShader::EnType::PS);
 		m_psFinal.Load("Assets/shader/tonemap.fx", "PSFinal", CShader::EnType::PS);
 		m_cbCalcLuminanceLog.Create(m_avSampleOffsets, sizeof(m_avSampleOffsets));
+
+		D3D11_SAMPLER_DESC desc;
+		ZeroMemory(&desc, sizeof(desc));
+		desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		m_samplerState.Create(desc);
 	}
 	void CTonemap::CalcLuminanceAvarage(CRenderContext& rc, CPostEffect* postEffect)
 	{
@@ -223,6 +231,7 @@ namespace tkEngine{
 		m_tonemapParam.deltaTime = GameTime().GetFrameDeltaTime();
 		rc.UpdateSubresource(m_cbTonemapCommon, &m_tonemapParam);
 		rc.PSSetConstantBuffer(1, m_cbTonemapCommon);
+		rc.PSSetSampler(0, m_samplerState);
 		CalcLuminanceAvarage(rc, postEffect);
 
 		

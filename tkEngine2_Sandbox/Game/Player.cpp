@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "tkEngine/light/tkPointLight.h"
-
-
+#include "HPBar.h"
+#include "MPBar.h"
 Player::Player()
 {
 	
@@ -26,8 +26,8 @@ bool Player::Start()
 	m_wnormalMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/Thethief_wuqi_N.dds");
 	m_wspecularMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/Thethief_wuqi_S.dds");
 
-	m_skinModel.FindMesh([&](auto& mesh) {
-		CModelEffect* effect = reinterpret_cast<CModelEffect*>(mesh->effect.get());
+	//CSkinModelEffectを検索。<-マテリアルの検索と同義。
+	m_skinModel.FindModelEffect([&](CModelEffect* effect) {
 		if (effect->EqualMaterialName(L"bodyMat")) {
 			//体のマテリアル。
 			effect->SetNormalMap(m_normalMapSRV.GetBody());
@@ -59,6 +59,9 @@ bool Player::Start()
 	m_characterCtr.SetGravity(-980.0f);
 	
 	m_rotation.SetRotationDeg(CVector3::AxisX, 90.0f);
+
+	m_hpBar = NewGO<HPBar>(0);
+	m_mpBar = NewGO<MPBar>(0);
 	return true;
 }
 void Player::Update() 

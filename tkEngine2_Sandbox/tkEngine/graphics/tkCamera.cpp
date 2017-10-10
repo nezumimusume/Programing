@@ -30,14 +30,20 @@ namespace tkEngine{
 	void CCamera::Update()
 	{
 		if(m_isNeedUpdateProjectionMatrix){
-			float aspect = (float)GraphicsEngine().GetFrameBufferWidth() / (float)GraphicsEngine().GetFrameBufferHeight();
-			//プロジェクション行列を計算。
-			m_projectionMatrix.MakeProjectionMatrix(
-				m_viewAngle,
-				aspect,
-				m_near,
-				m_far
-			);
+			if (m_updateProjMatrixFunc == enUpdateProjMatrixFunc_Perspective) {
+				float aspect = (float)GraphicsEngine().GetFrameBufferWidth() / (float)GraphicsEngine().GetFrameBufferHeight();
+				//透視変換行列を計算。
+				m_projectionMatrix.MakeProjectionMatrix(
+					m_viewAngle,
+					aspect,
+					m_near,
+					m_far
+				);
+			}
+			else {
+				//平行投影行列を計算。
+				m_projectionMatrix.MakeOrthoProjectionMatrix(m_width, m_height, m_near, m_far);
+			}
 		}
 		//ビュー行列の算出
 		m_viewMatrix.MakeLookAt( m_position, m_target, m_up );

@@ -8,6 +8,13 @@
 namespace tkEngine{
 	class CCamera : Noncopyable{
 	public:
+		/*!
+		* @brief	射影行列の更新方法。
+		*/
+		enum EnUpdateProjMatrixFunc {
+			enUpdateProjMatrixFunc_Perspective,		//!<透視射影行列。遠近法が効いた絵を作りたいならこっち。
+			enUpdateProjMatrixFunc_Ortho,			//!<平行投影。２Ｄ的な表現がしたいならこっち。
+		};
 		CCamera();
 		~CCamera();
 		/*!
@@ -124,7 +131,36 @@ namespace tkEngine{
 			return m_near;
 		}
 		/*!
+		* @brief	平行投影の幅を設定。
+		*@details
+		* m_updateProjMatrixFuncがenUpdateProjMatrixFunc_Orthoの時に使用される。
+		*/
+		void SetWidth(float w)
+		{
+			m_width = w;
+		}
+		/*!
+		* @brief	平行投影の高さを設定。
+		*@details
+		* m_updateProjMatrixFuncがenUpdateProjMatrixFunc_Orthoの時に使用される。
+		*/
+		void SetHeight(float h)
+		{
+			m_height = h;
+		}
+		/*!
+		* @brief	平行投影の高さを設定。
+		*@details
+		* m_updateProjMatrixFuncがenUpdateProjMatrixFunc_Orthoの時に使用される。
+		*/
+		void SetUpdateProjMatrixFunc(EnUpdateProjMatrixFunc func)
+		{
+			m_updateProjMatrixFunc = func;
+		}
+		/*!
 		* @brief	画角を設定。
+		* @details
+		*  m_updateProjMatrixFuncがenUpdateProjMatrixFunc_Perspectiveの時に使用される。
 		*/
 		void SetViewAngle(float viewAngle)
 		{
@@ -183,6 +219,9 @@ namespace tkEngine{
 		float		m_far;								//!<遠平面。
 		float		m_viewAngle;						//!<画角(ラジアン)。
 		float		m_aspect;							//!<アスペクト比。
+		float		m_width = 1280.0f;
+		float		m_height = 720.0f;
+		EnUpdateProjMatrixFunc m_updateProjMatrixFunc = enUpdateProjMatrixFunc_Perspective;	//!<プロジェクション行列の更新の仕方。
 		bool		m_isNeedUpdateProjectionMatrix;
 	};
 }
