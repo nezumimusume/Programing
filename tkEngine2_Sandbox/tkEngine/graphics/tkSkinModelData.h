@@ -42,8 +42,8 @@ namespace tkEngine{
 		{
 			m_materialParam.anisotropic = 0.5f;
 			m_materialParamCB.Create(&m_materialParam, sizeof(m_materialParam));
-			m_psShader.Load("Assets/shader/model.fx", "PSMain", CShader::EnType::PS);
-			m_psRenderToDepthShader.Load("Assets/shader/model.fx", "PSMain_RenderDepth", CShader::EnType::PS);
+			m_psShader.Load("shader/model.fx", "PSMain", CShader::EnType::PS);
+			m_psRenderToDepthShader.Load("shader/model.fx", "PSMain_RenderDepth", CShader::EnType::PS);
 		}
 		void __cdecl Apply(ID3D11DeviceContext* deviceContext) override;
 		
@@ -85,8 +85,8 @@ namespace tkEngine{
 	public:
 		CNonSkinModelEffect()
 		{
-			m_vsShader.Load("Assets/shader/model.fx", "VSMain", CShader::EnType::VS);
-			m_vsRenderToDepthShader.Load("Assets/shader/model.fx", "VSMain_RenderDepth", CShader::EnType::VS);
+			m_vsShader.Load("shader/model.fx", "VSMain", CShader::EnType::VS);
+			m_vsRenderToDepthShader.Load("shader/model.fx", "VSMain_RenderDepth", CShader::EnType::VS);
 			isSkining = false;
 		}
 	};
@@ -98,8 +98,8 @@ namespace tkEngine{
 	public:
 		CSkinModelEffect()
 		{
-			m_vsShader.Load("Assets/shader/model.fx", "VSMainSkin", CShader::EnType::VS);
-			m_vsRenderToDepthShader.Load("Assets/shader/model.fx", "VSMainSkin_RenderDepth", CShader::EnType::VS);
+			m_vsShader.Load("shader/model.fx", "VSMainSkin", CShader::EnType::VS);
+			m_vsRenderToDepthShader.Load("shader/model.fx", "VSMainSkin_RenderDepth", CShader::EnType::VS);
 			isSkining = true;
 		}
 	};

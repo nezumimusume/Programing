@@ -150,8 +150,8 @@ namespace tkEngine{
 		m_lightManager.Init();
 
 		//コピー用のシェーダーをロード。
-		m_copyVS.Load("Assets/shader/copy.fx", "VSMain", CShader::EnType::VS);
-		m_copyPS.Load("Assets/shader/copy.fx", "PSMain", CShader::EnType::PS);
+		m_copyVS.Load("shader/copy.fx", "VSMain", CShader::EnType::VS);
+		m_copyPS.Load("shader/copy.fx", "PSMain", CShader::EnType::PS);
 
 		//2Dカメラの初期化。
 		m_2dCamera.SetTarget(CVector3::Zero);

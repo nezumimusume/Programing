@@ -14,7 +14,7 @@ Background::~Background()
 }
 bool Background::Start()
 {
-	m_skinModelData.Load(L"Assets/modelData/background.cmo");
+	m_skinModelData.Load(L"modelData/background.cmo");
 	m_skinModel.Init(m_skinModelData);
 	m_skinModel.SetShadowReceiverFlag(true);
 

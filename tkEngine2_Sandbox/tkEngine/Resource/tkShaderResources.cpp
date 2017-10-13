@@ -192,10 +192,10 @@ namespace tkEngine{
 			TScopedResource<ID3DBlob> blobOut;
 			TScopedResource<ID3DBlob> errorBlob;
 
-			SetCurrentDirectory("Assets/shader");
+			SetCurrentDirectory("shader");
 			hr = D3DCompile(shaderProgram->program.get(), shaderProgram->programSize, filePath, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, entryFuncName,
 				shaderModelNames[(int)shaderType], dwShaderFlags, 0, &blobOut.res, &errorBlob.res);
-			SetCurrentDirectory("../../");
+			SetCurrentDirectory("../");
 			if (FAILED(hr))
 			{
 				if (errorBlob.res != nullptr) {

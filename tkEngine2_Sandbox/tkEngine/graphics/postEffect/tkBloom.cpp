@@ -36,14 +36,14 @@ namespace tkEngine{
 		if(!config.bloomConfig.isEnable){
 			return ;
 		}
-		m_vsShader.Load("Assets/shader/bloom.fx", "VSMain", CShader::EnType::VS);
-		m_psLuminance.Load("Assets/shader/bloom.fx", "PSSamplingLuminance", CShader::EnType::PS);
-		m_vsXBlur.Load("Assets/shader/bloom.fx", "VSXBlur", CShader::EnType::VS);
-		m_vsYBlur.Load("Assets/shader/bloom.fx", "VSYBlur", CShader::EnType::VS);
-		m_psBlur.Load("Assets/shader/bloom.fx", "PSBlur", CShader::EnType::PS);
-		m_psCombine.Load("Assets/shader/bloom.fx", "PSCombine", CShader::EnType::PS);
-		m_copyVS.Load("Assets/shader/copy.fx", "VSMain", CShader::EnType::VS);
-		m_copyPS.Load("Assets/shader/copy.fx", "PSMain", CShader::EnType::PS);
+		m_vsShader.Load("shader/bloom.fx", "VSMain", CShader::EnType::VS);
+		m_psLuminance.Load("shader/bloom.fx", "PSSamplingLuminance", CShader::EnType::PS);
+		m_vsXBlur.Load("shader/bloom.fx", "VSXBlur", CShader::EnType::VS);
+		m_vsYBlur.Load("shader/bloom.fx", "VSYBlur", CShader::EnType::VS);
+		m_psBlur.Load("shader/bloom.fx", "PSBlur", CShader::EnType::PS);
+		m_psCombine.Load("shader/bloom.fx", "PSCombine", CShader::EnType::PS);
+		m_copyVS.Load("shader/copy.fx", "VSMain", CShader::EnType::VS);
+		m_copyPS.Load("shader/copy.fx", "PSMain", CShader::EnType::PS);
 		int w = Engine().GetGraphicsEngine().GetFrameBufferWidth();
 		int h = Engine().GetGraphicsEngine().GetFrameBufferHeight();
 

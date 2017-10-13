@@ -20,8 +20,8 @@ namespace tkEngine{
 	{
 		Release();
 		m_isEnable = config.aaConfig.isEnable;
-		m_vsShader.Load("Assets/shader/fxaa.fx", "VSMain", CShader::EnType::VS);
-		m_psShader.Load("Assets/shader/fxaa.fx", "PSMain", CShader::EnType::PS);
+		m_vsShader.Load("shader/fxaa.fx", "VSMain", CShader::EnType::VS);
+		m_psShader.Load("shader/fxaa.fx", "PSMain", CShader::EnType::PS);
 		//ƒTƒ“ƒvƒ‰‚ğì¬B
 		D3D11_SAMPLER_DESC desc;
 		ZeroMemory(&desc, sizeof(desc));

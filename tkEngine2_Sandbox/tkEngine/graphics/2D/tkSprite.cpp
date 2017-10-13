@@ -21,8 +21,8 @@ namespace tkEngine{
 	void CSprite::Init(CShaderResourceView& tex, float w, float h)
 	{
 		//シェーダーロード。
-		m_ps.Load("Assets/shader/sprite.fx", "PSMain", CShader::EnType::PS);
-		m_vs.Load("Assets/shader/sprite.fx", "VSMain", CShader::EnType::VS);
+		m_ps.Load("shader/sprite.fx", "PSMain", CShader::EnType::PS);
+		m_vs.Load("shader/sprite.fx", "VSMain", CShader::EnType::VS);
 		m_size.x = w;
 		m_size.y = h;
 		float halfW = w * 0.5f;

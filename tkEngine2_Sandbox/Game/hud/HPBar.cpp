@@ -20,9 +20,9 @@ HPBar::~HPBar()
 
 bool HPBar::Start()
 {
-	m_hpBarTex.CreateFromDDSTextureFromFile(L"Assets/sprite/hp.dds");
-	m_hpGaugeTex.CreateFromDDSTextureFromFile(L"Assets/sprite/hpsp_bar.dds");
-	m_hpBarBackTex.CreateFromDDSTextureFromFile(L"Assets/sprite/hp_back.dds");
+	m_hpBarTex.CreateFromDDSTextureFromFile(L"sprite/hp.dds");
+	m_hpGaugeTex.CreateFromDDSTextureFromFile(L"sprite/hpsp_bar.dds");
+	m_hpBarBackTex.CreateFromDDSTextureFromFile(L"sprite/hp_back.dds");
 
 	m_hpBar.Init(m_hpBarTex, hpBarMaxSize.x, hpBarMaxSize.y);
 	m_hpGauge.Init(m_hpGaugeTex, hpGaugeMaxSize.x, hpGaugeMaxSize.y);

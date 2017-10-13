@@ -15,12 +15,12 @@ Enemy::~Enemy()
 bool Enemy::Start()
 {
 	
-	m_skinModelData.Load(L"Assets/modelData/enemy_00.cmo");
+	m_skinModelData.Load(L"modelData/enemy_00.cmo");
 	m_skinModel.Init(m_skinModelData);
 	m_skinModel.SetShadowCasterFlag(true);
 	m_skinModel.SetShadowReceiverFlag(true);
 	//アニメーションクリップのロード。
-	m_animationClip[enAnimationClip_idle].Load(L"Assets/animData/enemy_00/idle.tka", L"Idle");
+	m_animationClip[enAnimationClip_idle].Load(L"animData/enemy_00/idle.tka", L"Idle");
 	m_animationClip[enAnimationClip_idle].SetLoopFlag(true);
 	CAnimationClip* animClip[] = {
 		&m_animationClip[enAnimationClip_idle],

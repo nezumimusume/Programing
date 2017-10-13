@@ -87,13 +87,13 @@ namespace tkEngine{
 		}
 		m_tonemapParam.midddleGray = 0.22f;
 		m_cbTonemapCommon.Create(&m_tonemapParam, sizeof(m_tonemapParam));
-		m_vsShader.Load("Assets/shader/tonemap.fx", "VSMain", CShader::EnType::VS);
-		m_psCalcLuminanceLogAvarageShader.Load("Assets/shader/tonemap.fx", "PSCalcLuminanceLogAvarage", CShader::EnType::PS);
-		m_psCalcLuminanceAvarageShader.Load("Assets/shader/tonemap.fx", "PSCalcLuminanceAvarage", CShader::EnType::PS);
-		m_psCalcLuminanceExpAvarageShader.Load("Assets/shader/tonemap.fx", "PSCalcLuminanceExpAvarage", CShader::EnType::PS);
-		m_psCalcAdaptedLuminanceShader.Load("Assets/shader/tonemap.fx", "PSCalcAdaptedLuminance", CShader::EnType::PS);
-		m_psCalcAdaptedLuminanceFirstShader.Load("Assets/shader/tonemap.fx", "PSCalcAdaptedLuminanceFirst", CShader::EnType::PS);
-		m_psFinal.Load("Assets/shader/tonemap.fx", "PSFinal", CShader::EnType::PS);
+		m_vsShader.Load("shader/tonemap.fx", "VSMain", CShader::EnType::VS);
+		m_psCalcLuminanceLogAvarageShader.Load("shader/tonemap.fx", "PSCalcLuminanceLogAvarage", CShader::EnType::PS);
+		m_psCalcLuminanceAvarageShader.Load("shader/tonemap.fx", "PSCalcLuminanceAvarage", CShader::EnType::PS);
+		m_psCalcLuminanceExpAvarageShader.Load("shader/tonemap.fx", "PSCalcLuminanceExpAvarage", CShader::EnType::PS);
+		m_psCalcAdaptedLuminanceShader.Load("shader/tonemap.fx", "PSCalcAdaptedLuminance", CShader::EnType::PS);
+		m_psCalcAdaptedLuminanceFirstShader.Load("shader/tonemap.fx", "PSCalcAdaptedLuminanceFirst", CShader::EnType::PS);
+		m_psFinal.Load("shader/tonemap.fx", "PSFinal", CShader::EnType::PS);
 		m_cbCalcLuminanceLog.Create(m_avSampleOffsets, sizeof(m_avSampleOffsets));
 
 		D3D11_SAMPLER_DESC desc;

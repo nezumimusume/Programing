@@ -25,7 +25,7 @@ namespace tkEngine{
 	*/
 	void CLightCulling::Init()
 	{
-		m_csLightCulling.Load("Assets/shader/LightCulling.fx", "CSMain", CShader::EnType::CS);
+		m_csLightCulling.Load("shader/LightCulling.fx", "CSMain", CShader::EnType::CS);
 		//カメラ用の定数バッファを作成。
 		m_cameraParamCB.Create(NULL, sizeof(m_cameraParam));
 	}

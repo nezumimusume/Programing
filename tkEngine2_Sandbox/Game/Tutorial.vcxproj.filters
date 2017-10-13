@@ -78,6 +78,27 @@
     <ImageContentTask Include="Assets\modelData\Thethief_wuqi_S.tga">
       <Filter>Assets\modelData</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Assets\sprite\mikyan.jpg">
+      <Filter>Resource Files</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\sprite\hp.png">
+      <Filter>Assets\sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\sprite\hp_back.png">
+      <Filter>Assets\sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\sprite\hpsp_bar.png">
+      <Filter>Assets\sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\sprite\mp.png">
+      <Filter>Assets\sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\sprite\skill00.png">
+      <Filter>Assets\sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\sprite\skill01.png">
+      <Filter>Assets\sprite</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\background.FBX">
@@ -91,18 +112,6 @@
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\sprite\mikyan.jpg">
-      <Filter>Assets\sprite</Filter>
-    </Image>
-    <Image Include="Assets\sprite\mp.png">
-      <Filter>Assets\sprite</Filter>
-    </Image>
-    <Image Include="Assets\sprite\skill00.png">
-      <Filter>Assets\sprite</Filter>
-    </Image>
-    <Image Include="Assets\sprite\skill01.png">
-      <Filter>Assets\sprite</Filter>
-    </Image>
     <Image Include="Assets\sprite\skill02.png">
       <Filter>Assets\sprite</Filter>
     </Image>
@@ -113,15 +122,6 @@
       <Filter>Assets\sprite</Filter>
     </Image>
     <Image Include="Assets\sprite\SkillBG.png">
-      <Filter>Assets\sprite</Filter>
-    </Image>
-    <Image Include="Assets\sprite\hp.png">
-      <Filter>Assets\sprite</Filter>
-    </Image>
-    <Image Include="Assets\sprite\hp_back.png">
-      <Filter>Assets\sprite</Filter>
-    </Image>
-    <Image Include="Assets\sprite\hpsp_bar.png">
       <Filter>Assets\sprite</Filter>
     </Image>
   </ItemGroup>

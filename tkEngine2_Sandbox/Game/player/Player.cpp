@@ -16,15 +16,15 @@ Player::~Player()
 */
 bool Player::Start()
 {
-	m_skinModelData.Load(L"Assets/modelData/Thethief_H.cmo");
+	m_skinModelData.Load(L"modelData/Thethief_H.cmo");
 	m_skinModel.Init(m_skinModelData);
 	m_skinModel.SetShadowCasterFlag(true);
 	m_skinModel.SetShadowReceiverFlag(true);
 	//法線マップをロード。
-	m_normalMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/Thethief_N.dds");
-	m_specularMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/Thethief_S.dds");
-	m_wnormalMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/Thethief_wuqi_N.dds");
-	m_wspecularMapSRV.CreateFromDDSTextureFromFile(L"Assets/modelData/Thethief_wuqi_S.dds");
+	m_normalMapSRV.CreateFromDDSTextureFromFile(L"modelData/Thethief_N.dds");
+	m_specularMapSRV.CreateFromDDSTextureFromFile(L"modelData/Thethief_S.dds");
+	m_wnormalMapSRV.CreateFromDDSTextureFromFile(L"modelData/Thethief_wuqi_N.dds");
+	m_wspecularMapSRV.CreateFromDDSTextureFromFile(L"modelData/Thethief_wuqi_S.dds");
 
 	//CSkinModelEffectを検索。<-マテリアルの検索と同義。
 	m_skinModel.FindModelEffect([&](CModelEffect* effect) {
@@ -41,11 +41,11 @@ bool Player::Start()
 
 	});
 	//アニメーションクリップのロード。
-	m_animationClip[enAnimationClip_idle].Load(L"Assets/animData/player/idle.tka", L"Idle");
+	m_animationClip[enAnimationClip_idle].Load(L"animData/player/idle.tka", L"Idle");
 	m_animationClip[enAnimationClip_idle].SetLoopFlag(true);
-	m_animationClip[enAnimationClip_run].Load(L"Assets/animData/player/run.tka", L"Run");
+	m_animationClip[enAnimationClip_run].Load(L"animData/player/run.tka", L"Run");
 	m_animationClip[enAnimationClip_run].SetLoopFlag(true);
-	m_animationClip[enAnimationClip_walk].Load(L"Assets/animData/player/walk.tka", L"Walk");
+	m_animationClip[enAnimationClip_walk].Load(L"animData/player/walk.tka", L"Walk");
 	m_animationClip[enAnimationClip_walk].SetLoopFlag(true);
 	CAnimationClip* animClip[] = {
 		&m_animationClip[enAnimationClip_idle],
