@@ -20,8 +20,8 @@ MPBar::~MPBar()
 
 bool MPBar::Start()
 {
-	m_mpBarTex.CreateFromDDSTextureFromFile(L"Assets/sprite/mp.dds");
-	m_mpGaugeTex.CreateFromDDSTextureFromFile(L"Assets/sprite/hpsp_bar.dds");
+	m_mpBarTex.CreateFromDDSTextureFromFile(L"sprite/mp.dds");
+	m_mpGaugeTex.CreateFromDDSTextureFromFile(L"sprite/hpsp_bar.dds");
 
 	m_mpBar.Init(m_mpBarTex, mpBarMaxSize.x, mpBarMaxSize.y);
 	m_mpGauge.Init(m_mpGaugeTex, mpGaugeMaxSize.x, mpGaugeMaxSize.y);

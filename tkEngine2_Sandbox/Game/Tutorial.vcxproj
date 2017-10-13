@@ -565,11 +565,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="enemy\Enemy.cpp" />
-    <ClCompile Include="hud\HPBar.cpp" />
-    <ClCompile Include="hud\MPBar.cpp" />
     <ClCompile Include="Src\Background.cpp" />
+    <ClCompile Include="Src\enemy\Enemy.cpp" />
     <ClCompile Include="Src\GameCamera.cpp" />
+    <ClCompile Include="Src\hud\HPBar.cpp" />
+    <ClCompile Include="Src\hud\MPBar.cpp" />
     <ClCompile Include="Src\player\Player.cpp" />
     <ClCompile Include="Src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -582,12 +582,12 @@
     <ClCompile Include="Src\Tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="enemy\Enemy.h" />
-    <ClInclude Include="hud\HPBar.h" />
-    <ClInclude Include="hud\MPBar.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="Src\Background.h" />
+    <ClInclude Include="Src\enemy\Enemy.h" />
     <ClInclude Include="Src\GameCamera.h" />
+    <ClInclude Include="Src\hud\HPBar.h" />
+    <ClInclude Include="Src\hud\MPBar.h" />
     <ClInclude Include="Src\player\Player.h" />
     <ClInclude Include="Src\stdafx.h" />
     <ResourceCompile Include="Tutorial.rc" />
