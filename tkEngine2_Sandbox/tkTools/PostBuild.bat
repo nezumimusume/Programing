@@ -7,4 +7,3 @@ rem AssetsフォルダからResourceフォルダにごそっとコピー。
 rem 画像ファイルとfbxはコピーされないよ！！！
 xcopy /Y /D /I /S .\Assets .\Resource /EXCLUDE:..\tkTools\exlcude.txt
 popd
-pause
