@@ -635,7 +635,6 @@
     <ImageContentTask Include="Assets\sprite\hp.png" />
     <ImageContentTask Include="Assets\sprite\hpsp_bar.png" />
     <ImageContentTask Include="Assets\sprite\hp_back.png" />
-    <ImageContentTask Include="Assets\sprite\mikyan.jpg" />
     <ImageContentTask Include="Assets\sprite\mp.png" />
     <ImageContentTask Include="Assets\sprite\skill00.png" />
     <ImageContentTask Include="Assets\sprite\skill01.png" />

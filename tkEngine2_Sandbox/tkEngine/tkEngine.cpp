@@ -17,6 +17,8 @@ namespace tkEngine {
 	}
 	bool CEngine::Init( const SInitParam& initParam )
 	{
+		//カレントディレクトリをResourceに。
+		SetCurrentDirectory("Resource");
 		//ウィンドウ初期化。
 		if(!InitWindow(initParam)){
 			return false;

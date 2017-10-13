@@ -80,9 +80,6 @@
     <ImageContentTask Include="Assets\modelData\Thethief_wuqi_S.tga">
       <Filter>Assets\modelData</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Assets\sprite\mikyan.jpg">
-      <Filter>Resource Files</Filter>
-    </ImageContentTask>
     <ImageContentTask Include="Assets\sprite\hp.png">
       <Filter>Assets\sprite</Filter>
     </ImageContentTask>
