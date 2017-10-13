@@ -5,22 +5,27 @@
       <UniqueIdentifier>{8e114980-c1a3-4ada-ad7c-83caadf5daeb}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
-    <Filter Include="Resource Files\modelData">
-      <UniqueIdentifier>{d98d7a64-a986-4c93-8840-fde85e2edc37}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Enemy">
       <UniqueIdentifier>{ea751c3a-3a8b-49f2-8bc9-cf06785b9355}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\sprite">
-      <UniqueIdentifier>{3ef9125e-9653-4e7a-91db-18660bbc765b}</UniqueIdentifier>
     </Filter>
     <Filter Include="HUD">
       <UniqueIdentifier>{3b0a0312-db03-4a7d-96ac-a3dbe2cbd7f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{3783ac2e-675b-4cc6-9106-b79ec8823d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{ed0b04a6-fecd-4a2c-a462-59a8f4639f36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\modelData">
+      <UniqueIdentifier>{ad5a41b5-c9ff-48b8-ad23-a6bd5fe516bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\sprite">
+      <UniqueIdentifier>{b383fe16-5e4a-4ed6-bc84-c5cc97c6b454}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tutorial.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="enemy\Enemy.cpp">
@@ -32,12 +37,14 @@
     <ClCompile Include="hud\MPBar.cpp">
       <Filter>HUD</Filter>
     </ClCompile>
+    <ClCompile Include="player\Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
       <Filter>Resource Files</Filter>
     </CLInclude>
-    <ClInclude Include="Player.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="enemy\Enemy.h">
@@ -49,6 +56,9 @@
     <ClInclude Include="hud\MPBar.h">
       <Filter>HUD</Filter>
     </ClInclude>
+    <ClInclude Include="player\Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tutorial.rc">
@@ -56,61 +66,63 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Resource\modelData\Thethief_H.FBX">
-      <Filter>Resource Files\modelData</Filter>
+    <ImageContentTask Include="Assets\modelData\Thethief_N.tga">
+      <Filter>Assets\modelData</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\modelData\Thethief_S.tga">
+      <Filter>Assets\modelData</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\modelData\Thethief_wuqi_N.tga">
+      <Filter>Assets\modelData</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\modelData\Thethief_wuqi_S.tga">
+      <Filter>Assets\modelData</Filter>
+    </ImageContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\background.FBX">
+      <Filter>Assets\modelData</Filter>
     </MeshContentTask>
-    <MeshContentTask Include="Resource\modelData\background.FBX">
-      <Filter>Resource Files\modelData</Filter>
+    <MeshContentTask Include="Assets\modelData\enemy_00.FBX">
+      <Filter>Assets\modelData</Filter>
     </MeshContentTask>
-    <MeshContentTask Include="Resource\modelData\enemy_00.FBX">
-      <Filter>Resource Files\modelData</Filter>
+    <MeshContentTask Include="Assets\modelData\Thethief_H.FBX">
+      <Filter>Assets\modelData</Filter>
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Resource\sprite\hp_back.png">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\hp.png">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\mp.png">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\hpsp_bar.png">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\skill00.png">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\skill01.png">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\SkillBG.png">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\skill04.png">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\skill03.png">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\skill02.png">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\modelData\Thethief_N.tga">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\modelData\Thethief_S.tga">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\modelData\Thethief_wuqi_N.tga">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\modelData\Thethief_wuqi_S.tga">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\mikyan.jpg">
-      <Filter>Resource Files\sprite</Filter>
-    </ImageContentTask>
+    <Image Include="Assets\sprite\mikyan.jpg">
+      <Filter>Assets\sprite</Filter>
+    </Image>
+    <Image Include="Assets\sprite\mp.png">
+      <Filter>Assets\sprite</Filter>
+    </Image>
+    <Image Include="Assets\sprite\skill00.png">
+      <Filter>Assets\sprite</Filter>
+    </Image>
+    <Image Include="Assets\sprite\skill01.png">
+      <Filter>Assets\sprite</Filter>
+    </Image>
+    <Image Include="Assets\sprite\skill02.png">
+      <Filter>Assets\sprite</Filter>
+    </Image>
+    <Image Include="Assets\sprite\skill03.png">
+      <Filter>Assets\sprite</Filter>
+    </Image>
+    <Image Include="Assets\sprite\skill04.png">
+      <Filter>Assets\sprite</Filter>
+    </Image>
+    <Image Include="Assets\sprite\SkillBG.png">
+      <Filter>Assets\sprite</Filter>
+    </Image>
+    <Image Include="Assets\sprite\hp.png">
+      <Filter>Assets\sprite</Filter>
+    </Image>
+    <Image Include="Assets\sprite\hp_back.png">
+      <Filter>Assets\sprite</Filter>
+    </Image>
+    <Image Include="Assets\sprite\hpsp_bar.png">
+      <Filter>Assets\sprite</Filter>
+    </Image>
   </ItemGroup>
 </Project>

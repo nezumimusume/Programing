@@ -10,7 +10,7 @@
 #include "tkEngine/light/tkDirectionLight.h"
 #include "tkEngine/light/tkPointLight.h"
 #include "tkEngine/physics/tkMeshCollider.h"
-#include "Player.h"
+#include "Player/Player.h"
 #include "Background.h"
 #include "GameCamera.h"
 #include "enemy\Enemy.h"

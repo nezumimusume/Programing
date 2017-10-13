@@ -201,15 +201,13 @@
       <EnableDPIAwareness>true</EnableDPIAwareness>
     </Manifest>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(ProjectDir)../tkTools/preBuild.bat</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(ProjectDir)../tkTools/PostBuild.bat</Command>
     </PostBuildEvent>
     <MeshContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Resource/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
       <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
@@ -250,15 +248,13 @@
       <EnableDPIAwareness>true</EnableDPIAwareness>
     </Manifest>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(ProjectDir)../tkTools/preBuild.bat</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(ProjectDir)../tkTools/PostBuild.bat</Command>
     </PostBuildEvent>
     <MeshContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Resource/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
       <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
@@ -299,15 +295,13 @@
       <EnableDPIAwareness>true</EnableDPIAwareness>
     </Manifest>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(ProjectDir)../tkTools/preBuild.bat</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(ProjectDir)../tkTools/PostBuild.bat</Command>
     </PostBuildEvent>
     <MeshContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Resource/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
       <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
@@ -343,15 +337,13 @@
       <EnableDPIAwareness>true</EnableDPIAwareness>
     </Manifest>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(ProjectDir)../tkTools/preBuild.bat</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(ProjectDir)../tkTools/PostBuild.bat</Command>
     </PostBuildEvent>
     <MeshContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Resource/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
       <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
@@ -467,15 +459,13 @@
       <EnableDPIAwareness>true</EnableDPIAwareness>
     </Manifest>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(ProjectDir)../tkTools/preBuild.bat</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(ProjectDir)../tkTools/PostBuild.bat</Command>
     </PostBuildEvent>
     <MeshContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Resource/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
       <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
@@ -515,15 +505,13 @@
       <EnableDPIAwareness>true</EnableDPIAwareness>
     </Manifest>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(ProjectDir)../tkTools/preBuild.bat</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(ProjectDir)../tkTools/PostBuild.bat</Command>
     </PostBuildEvent>
     <MeshContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/modelData/%(Filename).cmo</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Resource/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
       <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
@@ -576,7 +564,7 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="hud\HPBar.cpp" />
     <ClCompile Include="hud\MPBar.cpp" />
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="player\Player.cpp" />
     <ClCompile Include="Tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -585,72 +573,61 @@
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="hud\HPBar.h" />
     <ClInclude Include="hud\MPBar.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="player\Player.h" />
     <CLInclude Include="resource.h" />
     <ResourceCompile Include="Tutorial.rc" />
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Resource\modelData\background.FBX" />
-    <MeshContentTask Include="Resource\modelData\enemy_00.FBX" />
-    <MeshContentTask Include="Resource\modelData\Thethief_H.FBX" />
+    <MeshContentTask Include="Assets\modelData\background.FBX" />
+    <MeshContentTask Include="Assets\modelData\enemy_00.FBX" />
+    <MeshContentTask Include="Assets\modelData\Thethief_H.FBX" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Resource\sprite\mikyan.jpg">
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
+    <ImageContentTask Include="Assets\modelData\Thethief_N.tga">
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
     </ImageContentTask>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageContentTask Include="Resource\modelData\Thethief_N.tga">
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
+    <ImageContentTask Include="Assets\modelData\Thethief_S.tga">
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
     </ImageContentTask>
-    <ImageContentTask Include="Resource\modelData\Thethief_S.tga">
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
+    <ImageContentTask Include="Assets\modelData\Thethief_wuqi_N.tga">
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
     </ImageContentTask>
-    <ImageContentTask Include="Resource\modelData\Thethief_wuqi_N.tga">
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\modelData\Thethief_wuqi_S.tga">
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Assets/modelData/%(Filename).dds</ContentOutput>
+    <ImageContentTask Include="Assets\modelData\Thethief_wuqi_S.tga">
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
     </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Resource\sprite\hp.png" />
-    <ImageContentTask Include="Resource\sprite\hpsp_bar.png" />
-    <ImageContentTask Include="Resource\sprite\hp_back.png" />
-    <ImageContentTask Include="Resource\sprite\mp.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ImageContentTask Include="Resource\sprite\skill00.png" />
-    <ImageContentTask Include="Resource\sprite\skill01.png" />
-    <ImageContentTask Include="Resource\sprite\skill02.png" />
-    <ImageContentTask Include="Resource\sprite\skill03.png" />
-    <ImageContentTask Include="Resource\sprite\skill04.png" />
-    <ImageContentTask Include="Resource\sprite\SkillBG.png" />
+    <ImageContentTask Include="Assets\sprite\hp.png" />
+    <ImageContentTask Include="Assets\sprite\hpsp_bar.png" />
+    <ImageContentTask Include="Assets\sprite\hp_back.png" />
+    <ImageContentTask Include="Assets\sprite\mikyan.jpg" />
+    <ImageContentTask Include="Assets\sprite\mp.png" />
+    <ImageContentTask Include="Assets\sprite\skill00.png" />
+    <ImageContentTask Include="Assets\sprite\skill01.png" />
+    <Image Include="Assets\sprite\skill02.png" />
+    <Image Include="Assets\sprite\skill03.png" />
+    <Image Include="Assets\sprite\skill04.png" />
+    <Image Include="Assets\sprite\SkillBG.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
