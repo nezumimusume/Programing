@@ -1,19 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns:atg="http://atg.xbox.com" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{8e114980-c1a3-4ada-ad7c-83caadf5daeb}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
-    </Filter>
-    <Filter Include="Enemy">
-      <UniqueIdentifier>{ea751c3a-3a8b-49f2-8bc9-cf06785b9355}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="HUD">
-      <UniqueIdentifier>{3b0a0312-db03-4a7d-96ac-a3dbe2cbd7f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Player">
-      <UniqueIdentifier>{3783ac2e-675b-4cc6-9106-b79ec8823d8c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Assets">
       <UniqueIdentifier>{ed0b04a6-fecd-4a2c-a462-59a8f4639f36}</UniqueIdentifier>
     </Filter>
@@ -23,44 +10,74 @@
     <Filter Include="Assets\sprite">
       <UniqueIdentifier>{b383fe16-5e4a-4ed6-bc84-c5cc97c6b454}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src">
+      <UniqueIdentifier>{14798937-4a4b-4ca5-90ce-f42a4ea339f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Player">
+      <UniqueIdentifier>{3783ac2e-675b-4cc6-9106-b79ec8823d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\HUD">
+      <UniqueIdentifier>{3b0a0312-db03-4a7d-96ac-a3dbe2cbd7f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Enemy">
+      <UniqueIdentifier>{ea751c3a-3a8b-49f2-8bc9-cf06785b9355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{8e114980-c1a3-4ada-ad7c-83caadf5daeb}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="enemy\Enemy.cpp">
-      <Filter>Enemy</Filter>
+      <Filter>Src\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="hud\HPBar.cpp">
-      <Filter>HUD</Filter>
+      <Filter>Src\HUD</Filter>
     </ClCompile>
     <ClCompile Include="hud\MPBar.cpp">
-      <Filter>HUD</Filter>
+      <Filter>Src\HUD</Filter>
     </ClCompile>
     <ClCompile Include="Src\player\Player.cpp">
-      <Filter>Player</Filter>
+      <Filter>Src\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Background.cpp" />
-    <ClCompile Include="Src\GameCamera.cpp" />
-    <ClCompile Include="Src\stdafx.cpp" />
-    <ClCompile Include="Src\Tutorial.cpp" />
+    <ClCompile Include="Src\Background.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\GameCamera.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\stdafx.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Tutorial.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
       <Filter>Resource Files</Filter>
     </CLInclude>
     <ClInclude Include="enemy\Enemy.h">
-      <Filter>Enemy</Filter>
+      <Filter>Src\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="hud\HPBar.h">
-      <Filter>HUD</Filter>
+      <Filter>Src\HUD</Filter>
     </ClInclude>
     <ClInclude Include="hud\MPBar.h">
-      <Filter>HUD</Filter>
+      <Filter>Src\HUD</Filter>
     </ClInclude>
     <ClInclude Include="Src\player\Player.h">
-      <Filter>Player</Filter>
+      <Filter>Src\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Background.h" />
-    <ClInclude Include="Src\GameCamera.h" />
-    <ClInclude Include="Src\stdafx.h" />
+    <ClInclude Include="Src\Background.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\GameCamera.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\stdafx.h">
+      <Filter>Src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tutorial.rc">
