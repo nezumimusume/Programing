@@ -52,12 +52,12 @@ public:
 
 		
 		//フォントを初期化。
-		m_font.reset(new DirectX::SpriteFont(GraphicsEngine().GetD3DDevice(), L"Assets/font/myfile.spritefont"));
+		m_font.reset(new DirectX::SpriteFont(GraphicsEngine().GetD3DDevice(), L"font/myfile.spritefont"));
 		m_bach.reset(new DirectX::SpriteBatch(GraphicsEngine().GetD3DDeviceContext()));
 
 		// ポイントライトの配置情報をロード。
 		CSkeleton ligLoc;
-		ligLoc.Load(L"Assets/lig/pointLightLoc.tks");
+		ligLoc.Load(L"lig/pointLightLoc.tks");
 		for (int i = 1; i < ligLoc.GetNumBones(); i++) {
 			CBone* bone = ligLoc.GetBone(i);
 			prefab::CPointLight* ptLig = NewGO<prefab::CPointLight>(0);
@@ -82,7 +82,7 @@ public:
 		}
 		//敵の配置情報をロード。
 		CSkeleton enemyLoc;
-		enemyLoc.Load(L"Assets/lig/enemyLoc.tks");
+		enemyLoc.Load(L"lig/enemyLoc.tks");
 		for (int i = 1; i < enemyLoc.GetNumBones(); i++) {
 			//先頭はダミー。
 			CBone* bone = enemyLoc.GetBone(i);
@@ -154,10 +154,10 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	SInitParam initParam;
 	initParam.nCmdShow = nCmdShow;
 	initParam.hInstance = hInstance;
-	initParam.screenWidth = 1920;
-	initParam.screenHeight = 1080;
-	initParam.frameBufferWidth = 1920;
-	initParam.frameBufferHeight = 1080;
+	initParam.screenWidth = 1280;
+	initParam.screenHeight = 720;
+	initParam.frameBufferWidth = 1280;
+	initParam.frameBufferHeight = 720;
 	//影の設定。
 	initParam.graphicsConfing.shadowRenderConfig.isEnable = true;
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapWidth = 1024;
