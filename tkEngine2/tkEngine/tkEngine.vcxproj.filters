@@ -278,9 +278,6 @@
     <ClInclude Include="graphics\tkSkinModelData.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\tkEngine\camera\tkCameraCollisionSolver.h">
-      <Filter>Source Files\camera</Filter>
-    </ClInclude>
     <ClInclude Include="camera\tkSpringCamera.h">
       <Filter>Source Files\camera</Filter>
     </ClInclude>
@@ -313,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="graphics\2D\tkSprite.h">
       <Filter>Source Files\graphics\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="camera\tkCameraCollisionSolver.h">
+      <Filter>Source Files\camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -463,9 +463,6 @@
     <ClCompile Include="graphics\preRender\tkShadowCaster.cpp">
       <Filter>Source Files\graphics\preRender</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tkEngine\camera\tkCameraCollisionSolver.cpp">
-      <Filter>Source Files\camera</Filter>
-    </ClCompile>
     <ClCompile Include="camera\tkSpringCamera.cpp">
       <Filter>Source Files\camera</Filter>
     </ClCompile>
@@ -498,6 +495,9 @@
     </ClCompile>
     <ClCompile Include="graphics\2D\tkSprite.cpp">
       <Filter>Source Files\graphics\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="camera\tkCameraCollisionSolver.cpp">
+      <Filter>Source Files\camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

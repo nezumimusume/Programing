@@ -4,8 +4,8 @@ echo on
 
 pushd %CURRENT_DIR%
 @rem GameTemplateにシンボリックリンクを作成する。
-mklink /D .\GameTemplate\tkEngine .\tkEngine
-mklink /D .\GameTemplate\tkTools .\tkTools
+mklink /D %CURRENT_DIR%\GameTemplate\tkEngine %CURRENT_DIR%\tkEngine
+mklink /D %CURRENT_DIR%\GameTemplate\tkTools %CURRENT_DIR%\tkTools
 
 @call .\Sample\setup.bat
 
