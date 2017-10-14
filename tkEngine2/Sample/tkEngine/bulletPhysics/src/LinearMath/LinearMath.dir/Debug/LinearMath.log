@@ -1,0 +1,10 @@
+﻿  btAlignedAllocator.cpp
+  btConvexHull.cpp
+  btConvexHullComputer.cpp
+  btGeometryUtil.cpp
+  btPolarDecomposition.cpp
+  btQuickprof.cpp
+  btSerializer.cpp
+  btVector3.cpp
+  Generating Code...
+  LinearMath.vcxproj -> C:\GitHub\Programing\GameTemplate2\Game\Debug\LinearMath_Debug.lib

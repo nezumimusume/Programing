@@ -1,0 +1,84 @@
+﻿  tkEnginePreCompile.cpp
+c:\github\programing\gametemplate2\tkengine\graphics\tkskeleton.h(154): warning C4018: '<': signed/unsigned mismatch
+  tkEngine.cpp
+  tkWaveFileBank.cpp
+  tkWaveFile.cpp
+  tkSoundSource.cpp
+  tkSoundEngine.cpp
+  tkShaderResources.cpp
+  tkSphereCollider.cpp
+  tkRigidBody.cpp
+  tkPhysics.cpp
+  tkMeshCollider.cpp
+  tkCapsuleCollider.cpp
+  tkBoxCollider.cpp
+  tkVector.cpp
+  tkMatrix.cpp
+  tkMath.cpp
+  tkAabb.cpp
+  tkPointLight.cpp
+  tkLightManager.cpp
+c:\github\programing\gametemplate2\tkengine\light\tklightmanager.cpp(135): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  tkLightBase.cpp
+  tkDirectionLight.cpp
+  Generating Code...
+  Compiling...
+  tkPad.cpp
+  tkSkinModelData.cpp
+  tkSkinModel.cpp
+  tkSkeleton.cpp
+  tkShader.cpp
+  tkSamplerState.cpp
+  tkRenderTarget.cpp
+  tkRenderContext.cpp
+  tkPrimitive.cpp
+  tkPresetRenderState.cpp
+  tkGraphicsEngine.cpp
+  tkGPUEventMarker.cpp
+  tkCamera.cpp
+  tkZPrepass.cpp
+  tkShadowMap.cpp
+  tkShadowCaster.cpp
+  tkPreRender.cpp
+  tkLightCulling.cpp
+  tkTonemap.cpp
+c:\github\programing\gametemplate2\tkengine\graphics\posteffect\tktonemap.cpp(140): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\github\programing\gametemplate2\tkengine\graphics\posteffect\tktonemap.cpp(159): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\github\programing\gametemplate2\tkengine\graphics\posteffect\tktonemap.cpp(178): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\github\programing\gametemplate2\tkengine\graphics\posteffect\tktonemap.cpp(195): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\github\programing\gametemplate2\tkengine\graphics\posteffect\tktonemap.cpp(210): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\github\programing\gametemplate2\tkengine\graphics\posteffect\tktonemap.cpp(243): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  tkPostEffect.cpp
+  Generating Code...
+  Compiling...
+  tkFxaa.cpp
+  tkBloom.cpp
+c:\github\programing\gametemplate2\tkengine\graphics\posteffect\tkbloom.cpp(186): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\github\programing\gametemplate2\tkengine\graphics\posteffect\tkbloom.cpp(207): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\github\programing\gametemplate2\tkengine\graphics\posteffect\tkbloom.cpp(226): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\github\programing\gametemplate2\tkengine\graphics\posteffect\tkbloom.cpp(243): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  tkUnorderedAccessView.cpp
+  tkShaderResourceView.cpp
+  tkVertexBuffer.cpp
+  tkStructuredBuffer.cpp
+  tkIndexBuffer.cpp
+  tkGPUBuffer.cpp
+  tkConstantBuffer.cpp
+  tkAnimationPlayController.cpp
+c:\github\programing\gametemplate2\tkengine\graphics\animation\tkanimationplaycontroller.cpp(35): warning C4018: '>=': signed/unsigned mismatch
+  tkAnimationClip.cpp
+  tkAnimation.cpp
+  tkSprite.cpp
+  tkTransform.cpp
+  tkgameobjectmanager.cpp
+  tkGameObject.cpp
+  tkObjectFrustumCulling.cpp
+  tkCharacterController.cpp
+  tkSpringCamera.cpp
+  tkCameraCollisionSolver.cpp
+  Generating Code...
+XAudio2.lib(XAudio2_9.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in XInput.lib(XINPUT1_4.dll); second definition ignored
+XAudio2.lib(XAudio2_9.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+tkGPUEventMarker.obj : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+tkGameObject.obj : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+  tkEngine.vcxproj -> C:\GitHub\Programing\GameTemplate2\Game\Debug\tkEngine.lib
