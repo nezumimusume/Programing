@@ -24,9 +24,11 @@ bool Game::Start()
 }
 void Game::Update()
 {
+	//ワールド行列の更新。
 	skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
 }
 void Game::Render(CRenderContext& rc)
 {
+	//描画。
 	skinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
 }

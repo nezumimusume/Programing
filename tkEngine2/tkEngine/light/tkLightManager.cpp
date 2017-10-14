@@ -22,7 +22,7 @@ namespace tkEngine{
 		InitDirectionLightStructuredBuffer();
 		InitPointLightStructuredBuffer();
 		InitPointLightInTileStructuredBuffer();
-		SetAmbientLight({ 0.5f, 0.5f, 0.5f });
+		SetAmbientLight({ 5.0f, 5.0f, 5.0f });
 		m_lightParamCB.Create(&m_lightParam, sizeof(m_lightParam));
 		
 	}
