@@ -156,7 +156,7 @@ namespace tkEngine{
 					&m_calcAvgRT[curRtNo]
 				};
 				rc.OMSetRenderTargets(1, rts);
-				rc.RSSetViewport(0.0f, 0.0f, m_calcAvgRT[curRtNo].GetWidth(), m_calcAvgRT[curRtNo].GetHeight());
+				rc.RSSetViewport(0.0f, 0.0f, (float)m_calcAvgRT[curRtNo].GetWidth(), (float)m_calcAvgRT[curRtNo].GetHeight());
 				GetSampleOffsets_DownScale4x4(m_calcAvgRT[curRtNo].GetWidth(), m_calcAvgRT[curRtNo].GetHeight(), m_avSampleOffsets);
 				rc.UpdateSubresource(m_cbCalcLuminanceLog, m_avSampleOffsets);
 				rc.PSSetConstantBuffer(0, m_cbCalcLuminanceLog);

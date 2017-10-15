@@ -9,7 +9,7 @@
 #include "tkEngine/graphics/tkGraphicsEngine.h"
 #include "tkEngine/tkEngineStruct.h"
 #include "tkEngine/physics/tkPhysics.h"
-
+#include "tkEngine/random/tkRandom.h"
 namespace tkEngine{
 	/*!
 	 *@brief	エンジン。
@@ -101,6 +101,13 @@ namespace tkEngine{
 		{
 			return m_graphicsEngine.Get2DCamera();
 		}
+		/*!
+		 *@brief	乱数取得。
+		 */
+		CRandom& GetRandom()
+		{
+			return m_random;
+		}
 	private:
 		/*!
 		 *@brief	ウィンドウ初期化。
@@ -124,6 +131,7 @@ namespace tkEngine{
 		int						m_screenWidth = 0;							//!<スクリーンの幅。
 		int						m_screenHeight = 0;							//!<スクリーンの高さ。
 		CPad					m_pad[CPad::CONNECT_PAD_MAX];				//!<ゲームパッド。
+		CRandom					m_random;									//!<乱数。
 	public:
 		CStopwatch				m_sw;
 	};
@@ -197,6 +205,13 @@ namespace tkEngine{
 	static inline void EndGPUEvent()
 	{
 		GraphicsEngine().EndGPUEvent();
+	}
+	/*!
+	 *@brief	乱数を取得。
+	 */
+	static inline CRandom& Random()
+	{
+		return Engine().GetRandom();
 	}
 	
 }

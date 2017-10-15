@@ -75,6 +75,9 @@
     <Filter Include="Source Files\graphics\2D">
       <UniqueIdentifier>{bc63bb32-d4bc-45af-a50d-1a6780b5d1e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\random">
+      <UniqueIdentifier>{d8a78ab4-52cd-40ff-ac95-f7b0cee31efa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameObject\tkGameObjectManager.h">
@@ -314,6 +317,9 @@
     <ClInclude Include="camera\tkCameraCollisionSolver.h">
       <Filter>Source Files\camera</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\GameTemplate\tkEngine\random\tkRandom.h">
+      <Filter>Source Files\random</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -498,6 +504,9 @@
     </ClCompile>
     <ClCompile Include="camera\tkCameraCollisionSolver.cpp">
       <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\GameTemplate\tkEngine\random\tkRandom.cpp">
+      <Filter>Source Files\random</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

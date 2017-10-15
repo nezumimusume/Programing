@@ -33,7 +33,8 @@ namespace tkEngine {
 		m_soundEngine.Init();
 		//物理エンジンの初期化。
 		m_physicsWorld.Init();
-
+		//乱数を初期化。
+		m_random.Init((unsigned long)time(NULL));
 		return true;
 	}
 	bool CEngine::InitWindow( const SInitParam& initParam )

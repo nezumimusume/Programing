@@ -23,6 +23,16 @@ namespace tkEngine{
 		{
 			return rad / (PI/180.0f);
 		}
+		/*!
+		 *@brief	t0‚Æt1ŠÔ‚ğüŒ`•âŠ®B
+		 *@details
+		 *  ret = t0 + (t1-t0) + rate;
+		 *@param[in]	t		•âŠÔ—¦	0.0`1.0
+		 */
+		static inline float Lerp(float rate, float t0, float t1)
+		{
+			return t0 + (t1 - t0)*rate;
+		}
 	};
 }
 
