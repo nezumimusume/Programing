@@ -137,7 +137,7 @@ namespace tkEngine{
 				&m_calcAvgRT[curRtNo]
 			};
 			rc.OMSetRenderTargets(1, rts);
-			rc.RSSetViewport(0.0f, 0.0f, m_calcAvgRT[curRtNo].GetWidth(), m_calcAvgRT[curRtNo].GetHeight());
+			rc.RSSetViewport(0.0f, 0.0f, (float)m_calcAvgRT[curRtNo].GetWidth(), (float)m_calcAvgRT[curRtNo].GetHeight());
 			rc.IASetInputLayout(m_vsShader.GetInputLayout());
 			rc.UpdateSubresource(m_cbCalcLuminanceLog, m_avSampleOffsets);
 			rc.PSSetConstantBuffer(0, m_cbCalcLuminanceLog);
@@ -175,7 +175,7 @@ namespace tkEngine{
 		GetSampleOffsets_DownScale4x4(m_calcAvgRT[curRtNo].GetWidth(), m_calcAvgRT[curRtNo].GetHeight(), m_avSampleOffsets);
 		{
 			ge.BeginGPUEvent(L"CTonemap::CalcLuminanceExpAvarage");
-			rc.RSSetViewport(0.0f, 0.0f, m_calcAvgRT[curRtNo].GetWidth(), m_calcAvgRT[curRtNo].GetHeight());
+			rc.RSSetViewport(0.0f, 0.0f, (float)m_calcAvgRT[curRtNo].GetWidth(), (float)m_calcAvgRT[curRtNo].GetHeight());
 			rc.UpdateSubresource(m_cbCalcLuminanceLog, m_avSampleOffsets);
 			rc.PSSetConstantBuffer(0, m_cbCalcLuminanceLog);
 			rc.PSSetShaderResource(0, m_calcAvgRT[curRtNo + 1].GetRenderTargetSRV());	
@@ -192,7 +192,7 @@ namespace tkEngine{
 				CRenderTarget* rts[] = {
 					&m_avgRT[m_currentAvgRT]
 				};
-				rc.RSSetViewport(0.0f, 0.0f, m_avgRT[m_currentAvgRT].GetWidth(), m_avgRT[m_currentAvgRT].GetHeight());
+				rc.RSSetViewport(0.0f, 0.0f, (float)m_avgRT[m_currentAvgRT].GetWidth(), (float)m_avgRT[m_currentAvgRT].GetHeight());
 				rc.OMSetRenderTargets(1, rts);
 				rc.PSSetShaderResource(1, m_calcAvgRT[0].GetRenderTargetSRV());
 				rc.PSSetShader(m_psCalcAdaptedLuminanceFirstShader);
@@ -207,7 +207,7 @@ namespace tkEngine{
 					&m_avgRT[m_currentAvgRT]
 				};
 				rc.OMSetRenderTargets(1, rts);
-				rc.RSSetViewport(0.0f, 0.0f, m_avgRT[m_currentAvgRT].GetWidth(), m_avgRT[m_currentAvgRT].GetHeight());
+				rc.RSSetViewport(0.0f, 0.0f, (float)m_avgRT[m_currentAvgRT].GetWidth(), (float)m_avgRT[m_currentAvgRT].GetHeight());
 				float deltaTime = GameTime().GetFrameDeltaTime();
 				rc.PSSetShaderResource(1, m_calcAvgRT[0].GetRenderTargetSRV());
 				rc.PSSetShaderResource(2, lastRT.GetRenderTargetSRV());

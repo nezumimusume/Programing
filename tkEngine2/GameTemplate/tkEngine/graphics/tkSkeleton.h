@@ -151,7 +151,7 @@ namespace tkEngine{
 		 */
 		int FindBoneID(const wchar_t* boneName) const
 		{
-			for (int i = 0; i < m_bones.size(); i++) {
+			for (int i = 0; i < (int)m_bones.size(); i++) {
 				if (m_bones[i]->GetName() == boneName) {
 					return i;
 				}

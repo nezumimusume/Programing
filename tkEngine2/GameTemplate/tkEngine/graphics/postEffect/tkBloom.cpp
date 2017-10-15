@@ -183,7 +183,7 @@ namespace tkEngine{
 					rc.VSSetShaderResource(0, prevRt->GetRenderTargetSRV());
 					rc.PSSetShaderResource(0, prevRt->GetRenderTargetSRV());
 					rc.PSSetConstantBuffer(0, m_cbBlur);
-					rc.RSSetViewport(0.0f, 0.0f, m_downSamplingRT[rtIndex].GetWidth(), m_downSamplingRT[rtIndex].GetHeight());
+					rc.RSSetViewport(0.0f, 0.0f, (float)m_downSamplingRT[rtIndex].GetWidth(), (float)m_downSamplingRT[rtIndex].GetHeight());
 					rc.VSSetShader(m_vsXBlur);
 					rc.PSSetShader(m_psBlur);
 					postEffect->DrawFullScreenQuad(rc);
@@ -204,7 +204,7 @@ namespace tkEngine{
 					rc.ClearRenderTargetView(0, clearColor);
 					rc.VSSetShaderResource(0, prevRt->GetRenderTargetSRV());
 					rc.PSSetShaderResource(0, prevRt->GetRenderTargetSRV());
-					rc.RSSetViewport(0.0f, 0.0f, m_downSamplingRT[rtIndex].GetWidth(), m_downSamplingRT[rtIndex].GetHeight());
+					rc.RSSetViewport(0.0f, 0.0f, (float)m_downSamplingRT[rtIndex].GetWidth(), (float)m_downSamplingRT[rtIndex].GetHeight());
 					rc.VSSetShader(m_vsYBlur);
 					rc.PSSetShader(m_psBlur);
 					postEffect->DrawFullScreenQuad(rc);
@@ -223,7 +223,7 @@ namespace tkEngine{
 			//
 			rc.OMSetBlendState(AlphaBlendState::disable, 0, 0xFFFFFFFF);
 
-			rc.RSSetViewport(0.0f, 0.0f, m_combineRT.GetWidth(), m_combineRT.GetHeight());
+			rc.RSSetViewport(0.0f, 0.0f, (float)m_combineRT.GetWidth(), (float)m_combineRT.GetHeight());
 			rc.OMSetRenderTargets(1, rts);
 			rc.ClearRenderTargetView(0, clearColor);
 

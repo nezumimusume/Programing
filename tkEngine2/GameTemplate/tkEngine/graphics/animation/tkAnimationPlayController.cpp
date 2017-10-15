@@ -32,7 +32,7 @@ namespace tkEngine{
 		//補完時間も進めていく。
 		m_interpolateTime = min(1.0f, m_interpolateTime + deltaTime);
 		while (true) {
-			if (m_currentKeyFrameNo >= topBoneKeyFrameList.size()) {
+			if (m_currentKeyFrameNo >= (int)topBoneKeyFrameList.size()) {
 				//終端まで行った。
 				if (m_animationClip->IsLoop()) {
 					//ループ。

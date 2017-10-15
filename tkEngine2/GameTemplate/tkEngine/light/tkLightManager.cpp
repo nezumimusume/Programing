@@ -132,7 +132,7 @@ namespace tkEngine{
 		ligNo = 0;
 		for (auto lig : m_pointLights) {
 			m_rawPointLights[ligNo] = lig->GetRawData();
-#ifdef BUILD_LEVEL != BUILD_LEVEL_MASTER
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
 			//ポイントライトのデータのエラーチェック。
 			if (m_rawPointLights[ligNo].attn.y <= 0.0f) {
 				TK_WARNING("m_rawPointLights[ligNo].attn.yの値が不正です。この値は必ず0より大きな値が入るようにしてください。");
