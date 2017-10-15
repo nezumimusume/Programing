@@ -3,8 +3,6 @@
 @setlocal
 @set CURRENT_DIR=%~dp0
 pushd %CURRENT_DIR%
-@rmdir /s /q GameTemplate\tkEngine
-@rmdir /s /q GameTemplate\tkTools
 
 call .\Sample\cleanup.bat
 
