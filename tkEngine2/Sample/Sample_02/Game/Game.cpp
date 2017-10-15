@@ -13,12 +13,12 @@ Game::~Game()
 bool Game::Start()
 {
 	//カメラを設定。
-	MainCamera().SetTarget({ 0.0f, 70.0f, 0.0f });
-	MainCamera().SetPosition({ 0.0f, 70.0f, 200.0f });
+	MainCamera().SetTarget({ 0.0f, 15.0f, 0.0f });
+	MainCamera().SetPosition({ 0.0f, 15.0f, 40.0f });
 	MainCamera().Update();
 
 	//モデルデータをロード。
-	m_skinModelData.Load(L"modelData/unityChan.cmo");
+	m_skinModelData.Load(L"modelData/Thethief_H.cmo");
 	m_skinModel.Init(m_skinModelData);
 	return true;
 }
