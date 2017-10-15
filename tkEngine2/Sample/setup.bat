@@ -9,8 +9,8 @@
 @set SAMPLE_FOLDER=%~1
 @pushd %~1
 
-@mklink /D %CURRENT_DIR%\%SAMPLE_FOLDER%\tkEngine %CURRENT_DIR%\..\tkEngine
-@mklink /D %CURRENT_DIR%\%SAMPLE_FOLDER%\tkTools %CURRENT_DIR%\..\tkTools
+@mklink /D %CURRENT_DIR%\%SAMPLE_FOLDER%\tkEngine %CURRENT_DIR%\..\GameTemplate\tkEngine
+@mklink /D %CURRENT_DIR%\%SAMPLE_FOLDER%\tkTools %CURRENT_DIR%\..\GameTemplate\tkTools
 
 @exit /b
 
