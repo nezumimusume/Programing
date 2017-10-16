@@ -235,8 +235,7 @@ namespace DirectX
     class Model
     {
     public:
-		typedef std::function<void(	const wchar_t* boneName, const VSD3DStarter::Bone* bone, int offsetBoneNo)> OnFindBoneData;
-		typedef std::function<void(XMUINT4& index)>	OnFindBlendIndex;
+		typedef std::function<void(	const wchar_t* boneName, const VSD3DStarter::Bone* bone, std::vector<int>& localBoneIDtoGlobalBoneIDTbl)> OnFindBoneData;
         virtual ~Model();
 
         ModelMesh::Collection   meshes;
@@ -255,10 +254,10 @@ namespace DirectX
         // Loads a model from a Visual Studio Starter Kit .CMO file
         static std::unique_ptr<Model> __cdecl CreateFromCMO( _In_ ID3D11Device* d3dDevice, _In_reads_bytes_(dataSize) const uint8_t* meshData, size_t dataSize,
                                                              _In_ IEffectFactory& fxFactory, bool ccw = true, bool pmalpha = false, 
-																  OnFindBoneData onFindBoneData = nullptr, OnFindBlendIndex onFindBlendIndex = nullptr);
+																  OnFindBoneData onFindBoneData = nullptr);
         static std::unique_ptr<Model> __cdecl CreateFromCMO( _In_ ID3D11Device* d3dDevice, _In_z_ const wchar_t* szFileName,
                                                              _In_ IEffectFactory& fxFactory, bool ccw = true, bool pmalpha = false, 
-			                                                      OnFindBoneData onFindBoneData = nullptr, OnFindBlendIndex onFindBlendIndex = nullptr);
+			                                                      OnFindBoneData onFindBoneData = nullptr);
 
         // Loads a model from a DirectX SDK .SDKMESH file
         static std::unique_ptr<Model> __cdecl CreateFromSDKMESH( _In_ ID3D11Device* d3dDevice, _In_reads_bytes_(dataSize) const uint8_t* meshData, _In_ size_t dataSize,

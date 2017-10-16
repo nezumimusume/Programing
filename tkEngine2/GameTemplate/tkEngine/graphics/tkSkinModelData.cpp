@@ -98,12 +98,11 @@ namespace tkEngine{
 	{
 		CSkinModelEffectFactory effectFactory(GraphicsEngine().GetD3DDevice());
 		//ボーンを発見したときのコールバック。
-		std::vector<int> localBoneIDtoGlobalBoneIDTbl; //メッシュにウェイトが設定されているボーンだけのボーン配列のIDから、すべてのボーン配列のIDに変換するテーブル。
-		localBoneIDtoGlobalBoneIDTbl.reserve(512);
+		
 		auto onFindBone = [&](
 			const wchar_t* boneName, 
 			const VSD3DStarter::Bone* bone,
-			int baseBoneNo
+			std::vector<int>& localBoneIDtoGlobalBoneIDTbl
 		) {
 			int globalBoneID = m_skeleton.FindBoneID(boneName);
 			if (globalBoneID == -1) {
@@ -112,13 +111,7 @@ namespace tkEngine{
 			}
 			localBoneIDtoGlobalBoneIDTbl.push_back(globalBoneID);
 		};
-		//ボーンインデックスが見つかったときのコールバック関数。
-		auto onFindBlendIndex = [&](auto& index){
-			index.x = localBoneIDtoGlobalBoneIDTbl[index.x];
-			index.y = localBoneIDtoGlobalBoneIDTbl[index.y];
-			index.z = localBoneIDtoGlobalBoneIDTbl[index.z];
-			index.w = localBoneIDtoGlobalBoneIDTbl[index.w];
-		};
+	
 		//スケルトンのデータを読み込み。
 		std::wstring skeletonFilePath = filePath;
 		int pos = (int)skeletonFilePath.find(L".cmo");
@@ -132,8 +125,7 @@ namespace tkEngine{
 			effectFactory, 
 			false,
 			false,
-			onFindBone,
-			onFindBlendIndex
+			onFindBone
 		);
 		
 
