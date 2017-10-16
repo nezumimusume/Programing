@@ -30,12 +30,19 @@ public:
 	* デストラクタより前に実行されます。
 	*/
 	virtual void OnDestroy() {}
+
 	////////////////////////////////////////////
-	//メンバ変数。
+	//メンバ変数や列挙とか。
 	////////////////////////////////////////////
+	enum EnAnimationClip {
+		enAnimationClip_idle,	//待機アニメーション。
+		enAnimationClip_run,	//走りアニメーション。
+		enAnimationClip_walk,	//歩きアニメーション。
+		enAnimationClip_Num,	//アニメーションクリップの数。
+	};
 	CSkinModel m_skinModel;					//スキンモデル。
 	CSkinModelData m_skinModelData;			//スキンモデルデータ。
-	prefab::CDirectionLight* m_lig;			//ライト。
-	CVector3 m_lightDir;					//ライトの方向。
+	CAnimationClip m_animClips[enAnimationClip_Num];	//アニメーションクリップ。
+	CAnimation m_animation;								//アニメーション。
 };
 

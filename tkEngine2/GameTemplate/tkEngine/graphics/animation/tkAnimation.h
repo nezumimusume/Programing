@@ -20,10 +20,10 @@ namespace tkEngine{
 		/*!
 		 *@brief	初期化。
 		 *@param[in]	skinModelData	スキンモデルデータ、
-		 *@param[in]	animeClipList	アニメーションクリップのリスト。
+		 *@param[in]	animeClipList	アニメーションクリップの配列。
 		 *@param[in]	numAnimClip		アニメーションクリップの数。
 		 */
-		void Init(CSkinModelData& skinModelData, CAnimationClip* animClipList[], int numAnimClip);
+		void Init(CSkinModelData& skinModelData, CAnimationClip animClipList[], int numAnimClip);
 		/*!
 		* @brief	アニメーションを進める。
 		*@param[in]	deltaTime		アニメーションを進める時間(単位：秒)。

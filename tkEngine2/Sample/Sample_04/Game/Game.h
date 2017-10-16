@@ -29,20 +29,13 @@ public:
 	*@details	CGameManager::DeleteGameObjectを呼んだときに実行されます。
 	* デストラクタより前に実行されます。
 	*/
-	virtual void OnDestroy();
-	/*!
-	*@brief	ポイントライトの初期化。
-	*/
-	void InitPointLight();
+	virtual void OnDestroy() {}
 	////////////////////////////////////////////
 	//メンバ変数。
 	////////////////////////////////////////////
-	CSkinModel m_charaSkinModel;			//キャラクタ用のスキンモデル。
-	CSkinModelData m_charaSkinModelData;	//キャラクタ用のスキンモデルデータ。
-	CSkinModel m_bgSkinModel;				//背景用のキャラクタスキンモデル。
-	CSkinModelData m_bgSkinModelData;		//背景用のスキンモデルデータ。
-
-	prefab::CDirectionLight* m_directionLig = nullptr;		//ディレクションライト。
-	std::vector<prefab::CPointLight*>	m_pointLightList;	//ポイントライトのリスト。
+	CSkinModel m_skinModel;					//スキンモデル。
+	CSkinModelData m_skinModelData;			//スキンモデルデータ。
+	prefab::CDirectionLight* m_lig;			//ライト。
+	CVector3 m_lightDir;					//ライトの方向。
 };
 

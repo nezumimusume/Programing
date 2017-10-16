@@ -32,9 +32,13 @@ namespace tkEngine{
 	
 	void CSkinModel::Update(const CVector3& trans, const CQuaternion& rot, const CVector3& scale)
 	{
+		//3dsMaxと軸を合わせるためのバイアス。
+		CMatrix mBias;
+		mBias.MakeRotationX(CMath::PI * -0.5f);
 		CMatrix mScale, mTrans, mRot;
 		mScale.MakeScaling(scale);
 		mRot.MakeRotationFromQuaternion(rot);
+		mRot.Mul(mBias, mRot);
 		mTrans.MakeTranslation(trans);
 		m_worldMatrix.Mul(mScale, mRot);
 		m_worldMatrix.Mul(m_worldMatrix, mTrans);

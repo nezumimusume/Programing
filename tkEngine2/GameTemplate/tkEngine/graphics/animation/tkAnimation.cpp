@@ -14,12 +14,12 @@ namespace tkEngine{
 	CAnimation::~CAnimation()
 	{
 	}
-	void CAnimation::Init(CSkinModelData& skinModelData, CAnimationClip* animClipList[], int numAnimClip)
+	void CAnimation::Init(CSkinModelData& skinModelData, CAnimationClip animClipList[], int numAnimClip)
 	{
 		TK_ASSERT(animClipList != nullptr, "animClipListÇ™NULLÇ≈Ç∑ÅB");
 		m_skeleton = &skinModelData.GetSkeleton();
 		for (int i = 0; i < numAnimClip; i++) {
-			m_animationClips.push_back(animClipList[i]);
+			m_animationClips.push_back(&animClipList[i]);
 		}
 		for (auto& ctr : m_animationPlayController) {
 			ctr.Init(m_skeleton);
