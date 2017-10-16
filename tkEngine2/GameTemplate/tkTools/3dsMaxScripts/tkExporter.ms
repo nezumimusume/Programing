@@ -137,23 +137,24 @@ rollout tkExporter "tkExporter" width:194 height:248
 	(
 		AnimationClip animClip string #()
 		filepath = getSaveFileName caption:"" types: "animation clip (*tka)|*.tka|All Files (*.*)|*.*|"
-		
-		startFrame = animClipStartFrame.text as integer + 1
-		endFrame = animClipEndFrame.text as integer + 1
-		numKey = endFrame - startFrame + 1
-		if numKey <= 0 then(
-			--1フレームだけ出す。
-			endFrame = startFrame
-			numKey = 1
-		)
-		deltaTime = 1.0/60
-		keyTime = 0.0
-		
-		numKey *= g_objectParams.Count
-		matTransList = #()
-		matRotList = #()
+
 		if filepath != undefined then
 		(
+			startFrame = animClipStartFrame.text as integer + 1
+			endFrame = animClipEndFrame.text as integer + 1
+			numKey = endFrame - startFrame + 1
+			if numKey <= 0 then(
+				--1フレームだけ出す。
+				endFrame = startFrame
+				numKey = 1
+			)
+			deltaTime = 1.0/60
+			keyTime = 0.0
+			
+			numKey *= g_objectParams.Count
+			matTransList = #()
+			matRotList = #()
+
 			file = fopen filepath "wb"
 			--ヘッダーを出力
 			WriteLong file numKey
@@ -208,9 +209,8 @@ rollout tkExporter "tkExporter" width:194 height:248
 				)
 				
 			)
+			FClose file
 		)
-
-		FClose file
 	)
 	/*
 	 *  スケルトンの出力のボタンが押されたときの処理。
@@ -221,6 +221,7 @@ rollout tkExporter "tkExporter" width:194 height:248
 			Messagebox "出力するスケルトンのルートのオブジェクトを選択して下さい。。。"
 		)else(
 			g_objectParams = #()
+			break
 			BuildOutputNodeInfo selection[1] -1
 			SaveSkeleton()
 		)

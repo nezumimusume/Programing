@@ -24,7 +24,9 @@ namespace tkEngine {
 			TK_WARNING("ファイルのオープンに失敗しました。: CAnimationClip::Load");
 			return;
 		}
-		m_clipName = clipName;
+		if (clipName != nullptr) {
+			m_clipName = clipName;
+		}
 		//キーの数を取得する。
 		int numKey;
 		fread(&numKey, sizeof(numKey), 1, fp);

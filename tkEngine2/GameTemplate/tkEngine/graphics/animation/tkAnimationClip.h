@@ -40,7 +40,7 @@ namespace tkEngine{
 		 *@param[in]	filePath	ファイルパス。
 		 *@param[in]	clipName	クリップ名。
 		 */
-		void Load(const wchar_t* filePath, const wchar_t* cliipName);
+		void Load(const wchar_t* filePath, const wchar_t* cliipName = nullptr);
 		/*!
 		*@brief	ループする？
 		*/
