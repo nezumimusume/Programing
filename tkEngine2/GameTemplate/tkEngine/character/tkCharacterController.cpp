@@ -117,7 +117,7 @@ namespace tkEngine {
 		//@todo –¢‘Î‰žBtrans.setRotation(btQuaternion(rotation.x, rotation.y, rotation.z));
 		m_rigidBody.GetBody()->setUserIndex(enCollisionAttr_Character);
 		m_rigidBody.GetBody()->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
-		PhysicsWorld().AddRigidBody(&m_rigidBody);
+		PhysicsWorld().AddRigidBody(m_rigidBody);
 
 	}
 	void CCharacterController::Execute(float deltaTime, CVector3& moveSpeed)
@@ -278,6 +278,6 @@ namespace tkEngine {
 	*/
 	void CCharacterController::RemoveRigidBoby()
 	{
-		PhysicsWorld().RemoveRigidBody(&m_rigidBody);
+		PhysicsWorld().RemoveRigidBody(m_rigidBody);
 	}
 }

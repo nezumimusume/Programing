@@ -259,7 +259,7 @@ void XM_CALLCONV Model::Draw(
 
         mesh->PrepareForRendering(deviceContext, states, false, wireframe);
 
-        //mesh->Draw(deviceContext, world, view, projection, false, setCustomState);
+        mesh->Draw(deviceContext, world, view, projection, false, setCustomState);
     }
 
     // Draw alpha parts

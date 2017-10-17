@@ -25,8 +25,8 @@ namespace tkEngine{
 		{
 			return dynamicWorld;
 		}
-		void AddRigidBody(CRigidBody* rb);
-		void RemoveRigidBody(CRigidBody* rb);
+		void AddRigidBody(CRigidBody& rb);
+		void RemoveRigidBody(CRigidBody& rb);
 		void ConvexSweepTest(
 			const btConvexShape* castShape,
 			const btTransform& convexFromWorld,

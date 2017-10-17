@@ -60,12 +60,12 @@ namespace tkEngine{
 	{
 		dynamicWorld->stepSimulation(GameTime().GetFrameDeltaTime());
 	}
-	void CPhysicsWorld::AddRigidBody(CRigidBody* rb)
+	void CPhysicsWorld::AddRigidBody(CRigidBody& rb)
 	{
-		dynamicWorld->addRigidBody(rb->GetBody());
+		dynamicWorld->addRigidBody(rb.GetBody());
 	}
-	void CPhysicsWorld::RemoveRigidBody(CRigidBody* rb)
+	void CPhysicsWorld::RemoveRigidBody(CRigidBody& rb)
 	{
-		dynamicWorld->removeRigidBody(rb->GetBody());
+		dynamicWorld->removeRigidBody(rb.GetBody());
 	}
 }

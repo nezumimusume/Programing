@@ -19,6 +19,8 @@ namespace tkEngine{
 	 */
 	void CMeshCollider::CreateFromSkinModel( const CSkinModel& model, const CMatrix* offsetMatrix )
 	{
+		CMatrix mBias;
+		mBias.MakeRotationX(CMath::PI * -0.5f);
 		m_stridingMeshInterface = std::make_unique<btTriangleIndexVertexArray>();
 		model.FindMesh(
 			[&](const auto& mesh){
@@ -35,10 +37,12 @@ namespace tkEngine{
 					int vertexCount = vbSize / mesh->vertexStride;
 					char* pData = reinterpret_cast<char*>(subresource.pData);
 					VertexBufferPtr vertexBuffer = std::make_unique<VertexBuffer>();
-					CVector3* pos;
+					CVector3 pos;
 					for (int i = 0; i < vertexCount; i++) {
-						pos = reinterpret_cast<CVector3*>(pData);
-						vertexBuffer->push_back(*pos);
+						pos = *reinterpret_cast<CVector3*>(pData);
+						//バイアスをかける。
+						mBias.Mul(pos);
+						vertexBuffer->push_back(pos);
 						//次の頂点へ。
 						pData += mesh->vertexStride;
 					}
