@@ -14,6 +14,9 @@
     <Filter Include="Assets\sprite">
       <UniqueIdentifier>{a6ce300a-b532-440d-b914-b4661d3015ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\shader">
+      <UniqueIdentifier>{a961ab0f-689c-4adf-940a-ffea33655653}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -26,6 +29,21 @@
     </CLInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Assets\shader\LightingFunction.h">
+      <Filter>Assets\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\shader\modelCB.h">
+      <Filter>Assets\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\shader\modelSRV.h">
+      <Filter>Assets\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\shader\modelStruct.h">
+      <Filter>Assets\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\shader\sampleBRDF.h">
+      <Filter>Assets\shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc">
@@ -36,5 +54,35 @@
     <MeshContentTask Include="Assets\modelData\unityChan.fbx">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\modelData\unityChan.tks">
+      <Filter>Assets\modelData</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Assets\shader\bloom.fx">
+      <Filter>Assets\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\shader\copy.fx">
+      <Filter>Assets\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\shader\fxaa.fx">
+      <Filter>Assets\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\shader\LightCulling.fx">
+      <Filter>Assets\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\shader\model.fx">
+      <Filter>Assets\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\shader\sprite.fx">
+      <Filter>Assets\shader</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\shader\tonemap.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

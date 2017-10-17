@@ -257,7 +257,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\GameTemplate\tkEngine\random\tkRandom.h" />
     <ClInclude Include="camera\tkCameraCollisionSolver.h" />
     <ClInclude Include="camera\tkSpringCamera.h" />
     <ClInclude Include="character\tkCharacterController.h" />
@@ -322,6 +321,7 @@
     <ClInclude Include="physics\tkSphereCollider.h" />
     <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="policy\tkScopedResource.h" />
+    <ClInclude Include="random\tkRandom.h" />
     <ClInclude Include="Resource\tkResourceManager.h" />
     <ClInclude Include="Resource\tkShaderResources.h" />
     <ClInclude Include="Sound\tkSoundEngine.h" />
@@ -339,7 +339,6 @@
     <ClInclude Include="util\tkUtil.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\GameTemplate\tkEngine\random\tkRandom.cpp" />
     <ClCompile Include="camera\tkCameraCollisionSolver.cpp" />
     <ClCompile Include="camera\tkSpringCamera.cpp" />
     <ClCompile Include="character\tkCharacterController.cpp" />
@@ -394,6 +393,7 @@
     <ClCompile Include="physics\tkPhysics.cpp" />
     <ClCompile Include="physics\tkRigidBody.cpp" />
     <ClCompile Include="physics\tkSphereCollider.cpp" />
+    <ClCompile Include="random\tkRandom.cpp" />
     <ClCompile Include="Resource\tkShaderResources.cpp" />
     <ClCompile Include="Sound\tkSoundEngine.cpp" />
     <ClCompile Include="Sound\tkSoundSource.cpp" />

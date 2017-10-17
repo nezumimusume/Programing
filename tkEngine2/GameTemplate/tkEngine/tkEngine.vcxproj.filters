@@ -317,7 +317,7 @@
     <ClInclude Include="camera\tkCameraCollisionSolver.h">
       <Filter>Source Files\camera</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\GameTemplate\tkEngine\random\tkRandom.h">
+    <ClInclude Include="random\tkRandom.h">
       <Filter>Source Files\random</Filter>
     </ClInclude>
   </ItemGroup>
@@ -505,7 +505,7 @@
     <ClCompile Include="camera\tkCameraCollisionSolver.cpp">
       <Filter>Source Files\camera</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\GameTemplate\tkEngine\random\tkRandom.cpp">
+    <ClCompile Include="random\tkRandom.cpp">
       <Filter>Source Files\random</Filter>
     </ClCompile>
   </ItemGroup>
