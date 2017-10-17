@@ -47,7 +47,7 @@ namespace tkEngine{
 		renderContext.OMSetRenderTargets(1, renderTargets);
 		renderContext.ClearRenderTargetView(0, ClearColor);
 		renderContext.RSSetViewport(0.0f, 0.0f, (float)GraphicsEngine().GetFrameBufferWidth(), (float)GraphicsEngine().GetFrameBufferHeight());
-		
+		renderContext.RSSetState(RasterizerState::sceneRender);
 		//プリレンダリング。
 		GraphicsEngine().GetPreRender().Render(renderContext);
 		BeginGPUEvent(L"enRenderStep_Render3DModelToScene");
@@ -77,6 +77,8 @@ namespace tkEngine{
 		GraphicsEngine().GetPostEffect().Render(renderContext);
 
 		//2D的なものの描画。
+		BeginGPUEvent(L"enRenderStep_Render2DToScene");
+		renderContext.RSSetState(RasterizerState::spriteRender);
 		renderContext.OMSetDepthStencilState(DepthStencilState::spriteRender, 0);
 		renderContext.SetRenderStep(enRenderStep_Render2DToScene);
 		for (GameObjectList objList : m_gameObjectListArray) {
@@ -84,6 +86,7 @@ namespace tkEngine{
 				obj->PostRenderWrapper(renderContext);
 			}
 		}
+		EndGPUEvent();
 	}
 	void CGameObjectManager::UpdateSceneGraph()
 	{

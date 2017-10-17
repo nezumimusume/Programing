@@ -12,14 +12,6 @@ Game::~Game()
 }
 bool Game::Start()
 {
-	//カメラを設定。
-	MainCamera().SetTarget({ 0.0f, 70.0f, 0.0f });
-	MainCamera().SetPosition({ 0.0f, 70.0f, 200.0f });
-	MainCamera().Update();
-
-	//モデルデータをロード。
-	m_skinModelData.Load(L"modelData/unityChan.cmo");
-	m_skinModel.Init(m_skinModelData);
 	//テクスチャをロード。
 	m_texture.CreateFromDDSTextureFromFile(L"sprite/mikyan.dds");
 	m_sprite.Init(m_texture, 400, 300);
@@ -27,17 +19,21 @@ bool Game::Start()
 }
 void Game::Update()
 {
+	//回転
+	CQuaternion qAdd;
+	qAdd.SetRotationDeg(CVector3::AxisZ, 1.0f);
+	m_rotation.Multiply(m_rotation, qAdd);
+	//移動。スティックの入力で移動させる。
+	m_position.x += Pad(0).GetLStickXF() * 10.0f;
+	m_position.y += Pad(0).GetLStickYF() * 10.0f;
+	m_position.z = 0.0f;	//2D空間で描画するならzは0でいい。
+
 	//ワールド行列の更新。
-	m_skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
-	m_sprite.Update({-200.0f, 200.0f, 1.0f}, CQuaternion::Identity, CVector3::One);
+	m_sprite.Update(m_position, m_rotation, CVector3::One);
 }
+
 void Game::PostRender(CRenderContext& rc)
 {
 	//スプライトを描画。
 	m_sprite.Draw(rc, MainCamera2D().GetViewMatrix(), MainCamera2D().GetProjectionMatrix());
-}
-void Game::Render(CRenderContext& rc)
-{
-	//モデルを描画。
-	m_skinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
 }

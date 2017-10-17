@@ -60,7 +60,7 @@ namespace tkEngine{
 		//スケルトン更新。
 		m_skinModelData->GetSkeleton().Update(m_worldMatrix);
 
-		DirectX::CommonStates state(GraphicsEngine().GetD3DDevice());
+		static DirectX::CommonStates state(GraphicsEngine().GetD3DDevice());
 		//定数バッファを更新。
 		SVSConstantBuffer vsCb;
 		vsCb.mWorld = m_worldMatrix;

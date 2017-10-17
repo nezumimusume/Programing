@@ -96,6 +96,13 @@ namespace tkEngine{
 			m_pD3DDeviceContext->RSSetViewports(1, &m_viewport);
 		}
 		/*!
+		* @brief	ラスタライザのステートを設定。
+		*/
+		void RSSetState(ID3D11RasterizerState *pRasterizerState)
+		{
+			m_pD3DDeviceContext->RSSetState(pRasterizerState);
+		}
+		/*!
 		 * @brief	レンダリングターゲットをクリア。
 		 *@param[in]	rtNo	レンダリングターゲットの番号。
 		 *@param[in]	clearColor	クリアカラー。

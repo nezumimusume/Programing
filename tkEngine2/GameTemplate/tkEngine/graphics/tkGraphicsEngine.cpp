@@ -163,6 +163,7 @@ namespace tkEngine{
 		//各種レンダリングステートを初期化する。
 		AlphaBlendState::Init(*this);
 		DepthStencilState::Init(*this);
+		RasterizerState::Init(*this);
 		
 #if BUILD_LEVEL != BUILD_LEVEL_MASTER
 		m_pImmediateContext->QueryInterface(__uuidof(ID3DUserDefinedAnnotation), (void**)&m_userAnnoation);
