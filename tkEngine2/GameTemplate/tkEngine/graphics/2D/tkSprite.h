@@ -34,67 +34,24 @@ namespace tkEngine{
 			m_textureSRV = &tex;
 		}
 		/*!
+		*@brief	更新
+		*@param[in]	trans		平行移動。
+		*@param[in]	rot			回転。
+		*@param[in]	scale		拡大。
+		*@param[in] pivot		基点。
+		*						0.5, 0.5で画像の中心が基点。
+		*						0.0, 0.0で画像の左下。
+		*						1.0, 1.0で画像の右上。
+		*						UnityのuGUIに準拠。
+		*/
+		void Update(const CVector3& trans, const CQuaternion& rot, const CVector3& scale, const CVector2& pivot = DEFAULT_PIVOT);
+		/*!
 		*@brief	描画
 		*@param[in]	viewMatrix		ビュー行列。
 		*@param[in]	projMatrix		プロジェクション行列。
 		*/
 		void Draw(CRenderContext& renderContext, const CMatrix& viewMatrix, const CMatrix& projMatrix);
-		/*!
-		*@brief	座標を設定。
-		*/
-		void SetPosition(const CVector3& pos)
-		{
-			m_position = pos;
-		}
 		
-		/*!
-		*@brief	座標を取得。
-		*/
-		const CVector3& GetPosition() const
-		{
-			return m_position;
-		}
-		/*!
-		*@brief	回転を設定。
-		*/
-		void SetRotation(const CQuaternion& rot)
-		{
-			m_rotation = rot;
-		}
-		/*!
-		*@brief	回転を取得。
-		*/
-		const CQuaternion& GetRotation() const
-		{
-			return m_rotation;
-		}
-		/*!
-		*@brief	拡大率を設定。
-		*/
-		void SetScale(const CVector3& scale)
-		{
-			m_scale = scale;
-		}
-		/*!
-		*@brief	拡大率を取得。
-		*/
-		const CVector3& GetScale() const
-		{
-			return m_scale;
-		}
-		/*!
-		*@brief	ピボットを設定。
-		*@details
-		* 0.5, 0.5で画像の中心が基点。
-		* 0.0, 0.0で画像の左下。
-		* 1.0, 1.0で画像の右上。
-		* UnityのuGUIに準拠。
-		*@param[in]	pivot		サイズ。
-		*/
-		void SetPivot(const CVector2& pivot)
-		{
-			m_pivot = pivot;
-		}
 	private:
 		struct SSpriteCB {
 			CMatrix WVP;		//ワールドビュープロジェクション行列。
@@ -108,7 +65,7 @@ namespace tkEngine{
 		CPrimitive				m_primitive;					//!<プリミティブ。
 		CShaderResourceView*	m_textureSRV = nullptr;			//!<テクスチャ。
 		CConstantBuffer			m_cb;
-		CVector2				m_pivot = {0.5f, 0.5f};		//!<ピボット。
+		static const CVector2	DEFAULT_PIVOT;					//!<ピボット。
 		CVector2				m_size = CVector2::Zero;		//!<サイズ。
 	};
 }

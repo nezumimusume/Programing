@@ -12,6 +12,7 @@ namespace tkEngine{
 			CVector2 tex;
 		};
 	}
+	const CVector2	CSprite::DEFAULT_PIVOT = { 0.5f, 0.5f };
 	CSprite::CSprite()
 	{
 	}
@@ -62,16 +63,17 @@ namespace tkEngine{
 		m_textureSRV = &tex;
 		m_cb.Create(nullptr, sizeof(SSpriteCB));
 	}
-	void CSprite::Draw(CRenderContext& rc, const CMatrix& viewMatrix, const CMatrix& projMatrix)
+	/*!
+	*@brief	更新
+	*@param[in]	trans		平行移動。
+	*@param[in]	rot			回転。
+	*@param[in]	scale		拡大。
+	*/
+	void CSprite::Update(const CVector3& trans, const CQuaternion& rot, const CVector3& scale, const CVector2& pivot)
 	{
-		if (m_textureSRV == nullptr) {
-			TK_WARNING("m_textureSRV is nullptr");
-			return;
-		}
-		SSpriteCB cb;
 		//ピボットを考慮に入れた平行移動行列を作成。
 		//ピボットは真ん中が0.0, 0.0、左上が-1.0f, -1.0、右下が1.0、1.0になるようにする。
-		CVector2 localPivot = m_pivot;
+		CVector2 localPivot = pivot;
 		localPivot.x -= 0.5f;
 		localPivot.y -= 0.5f;
 		localPivot.x *= -2.0f;
@@ -83,15 +85,25 @@ namespace tkEngine{
 		CMatrix mPivotTrans;
 
 		mPivotTrans.MakeTranslation(
-			{ halfSize.x * localPivot.x, halfSize.y * localPivot.y, 0.0f }
+		{ halfSize.x * localPivot.x, halfSize.y * localPivot.y, 0.0f }
 		);
 		CMatrix mTrans, mRot, mScale;
-		mTrans.MakeTranslation(m_position);
-		mRot.MakeRotationFromQuaternion(m_rotation);
-		mScale.MakeScaling(m_scale);
-		cb.WVP.Mul(mPivotTrans, mScale);
-		cb.WVP.Mul(cb.WVP, mRot);
-		cb.WVP.Mul(cb.WVP, mTrans);
+		mTrans.MakeTranslation(trans);
+		mRot.MakeRotationFromQuaternion(rot);
+		mScale.MakeScaling(scale);
+		m_world.Mul(mPivotTrans, mScale);
+		m_world.Mul(m_world, mRot);
+		m_world.Mul(m_world, mTrans);
+
+	}
+	void CSprite::Draw(CRenderContext& rc, const CMatrix& viewMatrix, const CMatrix& projMatrix)
+	{
+		if (m_textureSRV == nullptr) {
+			TK_WARNING("m_textureSRV is nullptr");
+			return;
+		}
+		SSpriteCB cb;
+		cb.WVP = m_world;
 		cb.WVP.Mul(cb.WVP, viewMatrix);
 		cb.WVP.Mul(cb.WVP, projMatrix);
 
