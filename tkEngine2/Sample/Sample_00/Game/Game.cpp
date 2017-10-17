@@ -18,17 +18,17 @@ bool Game::Start()
 	MainCamera().Update();
 
 	//モデルデータをロード。
-	skinModelData.Load(L"modelData/unityChan.cmo");
-	skinModel.Init(skinModelData);
+	m_skinModelData.Load(L"modelData/unityChan.cmo");
+	m_skinModel.Init(m_skinModelData);
 	return true;
 }
 void Game::Update()
 {
 	//ワールド行列の更新。
-	skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
+	m_skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
 }
 void Game::Render(CRenderContext& rc)
 {
 	//描画。
-	skinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
+	m_skinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
 }

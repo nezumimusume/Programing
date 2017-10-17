@@ -29,21 +29,6 @@
     </CLInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Assets\shader\LightingFunction.h">
-      <Filter>Assets\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\shader\modelCB.h">
-      <Filter>Assets\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\shader\modelSRV.h">
-      <Filter>Assets\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\shader\modelStruct.h">
-      <Filter>Assets\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\shader\sampleBRDF.h">
-      <Filter>Assets\shader</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc">
@@ -59,33 +44,44 @@
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\modelData\Thethief_H.tks">
-      <Filter>Assets\modelData</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Assets\shader\bloom.fx">
-      <Filter>Assets\shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Assets\shader\copy.fx">
-      <Filter>Assets\shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Assets\shader\fxaa.fx">
-      <Filter>Assets\shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Assets\shader\LightCulling.fx">
-      <Filter>Assets\shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Assets\shader\model.fx">
-      <Filter>Assets\shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Assets\shader\sprite.fx">
-      <Filter>Assets\shader</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="Assets\shader\tonemap.fx">
       <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\bloom.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\fxaa.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\copy.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\LightCulling.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\LightingFunction.h">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\model.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\modelCB.h">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\modelSRV.h">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\modelStruct.h">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\sampleBRDF.h">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\sprite.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\modelData\Thethief_H.tks">
+      <Filter>Assets\modelData</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
