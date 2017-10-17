@@ -213,6 +213,15 @@
     <ImageContentTask>
       <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
+    <CustomBuild>
+      <Command>call $(ProjectDir)..\tkTools\tkContentTools.bat %(Identity) $(OutDir)</Command>
+    </CustomBuild>
+    <CustomBuild>
+      <Message>tkContentTools</Message>
+    </CustomBuild>
+    <CustomBuild>
+      <Outputs>$(OutDir)\%(Identity)</Outputs>
+    </CustomBuild>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -261,6 +270,15 @@
     <ImageContentTask>
       <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
+    <CustomBuild>
+      <Command>call $(ProjectDir)..\tkTools\tkContentTools.bat %(Identity) $(OutDir)</Command>
+    </CustomBuild>
+    <CustomBuild>
+      <Message>tkContentTools</Message>
+    </CustomBuild>
+    <CustomBuild>
+      <Outputs>$(OutDir)\%(Identity)</Outputs>
+    </CustomBuild>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">
     <ClCompile>
@@ -309,6 +327,15 @@
     <ImageContentTask>
       <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
+    <CustomBuild>
+      <Command>call $(ProjectDir)..\tkTools\tkContentTools.bat %(Identity) $(OutDir)</Command>
+    </CustomBuild>
+    <CustomBuild>
+      <Message>tkContentTools</Message>
+    </CustomBuild>
+    <CustomBuild>
+      <Outputs>$(OutDir)\%(Identity)</Outputs>
+    </CustomBuild>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|X64'">
     <ClCompile>
@@ -352,6 +379,15 @@
     <ImageContentTask>
       <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
+    <CustomBuild>
+      <Command>call $(ProjectDir)..\tkTools\tkContentTools.bat %(Identity) $(OutDir)</Command>
+    </CustomBuild>
+    <CustomBuild>
+      <Message>tkContentTools</Message>
+    </CustomBuild>
+    <CustomBuild>
+      <Outputs>$(OutDir)\%(Identity)</Outputs>
+    </CustomBuild>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|X64'">
     <ClCompile>
@@ -475,6 +511,15 @@
     <ImageContentTask>
       <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
+    <CustomBuild>
+      <Command>call $(ProjectDir)..\tkTools\tkContentTools.bat %(Identity) $(OutDir)</Command>
+    </CustomBuild>
+    <CustomBuild>
+      <Message>tkContentTools</Message>
+    </CustomBuild>
+    <CustomBuild>
+      <Outputs>$(OutDir)\%(Identity)</Outputs>
+    </CustomBuild>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Preview|X64'">
     <ClCompile>
@@ -522,6 +567,15 @@
     <ImageContentTask>
       <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
+    <CustomBuild>
+      <Command>call $(ProjectDir)..\tkTools\tkContentTools.bat %(Identity) $(OutDir)</Command>
+    </CustomBuild>
+    <CustomBuild>
+      <Message>tkContentTools</Message>
+    </CustomBuild>
+    <CustomBuild>
+      <Outputs>$(OutDir)\%(Identity)</Outputs>
+    </CustomBuild>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|X64'">
     <ClCompile>
@@ -577,6 +631,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="Assets\shader\LightingFunction.h" />
+    <CustomBuild Include="Assets\shader\modelCB.h" />
+    <CustomBuild Include="Assets\shader\modelSRV.h" />
+    <CustomBuild Include="Assets\shader\modelStruct.h" />
+    <CustomBuild Include="Assets\shader\sampleBRDF.h" />
     <ClInclude Include="Game.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -585,6 +644,34 @@
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\background.FBX" />
     <MeshContentTask Include="Assets\modelData\Thethief_H.FBX" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\modelData\Thethief_H.tks">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\shader\bloom.fx">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\copy.fx">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\fxaa.fx">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\LightCulling.fx">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\model.fx">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\sprite.fx">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\tonemap.fx">
+      <FileType>Document</FileType>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
