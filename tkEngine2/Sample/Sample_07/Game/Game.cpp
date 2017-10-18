@@ -25,7 +25,7 @@ bool Game::Start()
 
 	//カメラを設定。
 	MainCamera().SetTarget({ 0.0f, 15.0f, 0.0f });
-	MainCamera().SetPosition({ 0.0f, 15.0f, 30.0f });
+	MainCamera().SetPosition({ 0.0f, 15.0f, 100.0f });
 	MainCamera().Update();
 	//プレイヤーのインスタンスを生成する。
 	m_player = NewGO<Player>(0);

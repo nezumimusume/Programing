@@ -17,6 +17,9 @@
     <Filter Include="Assets\shader">
       <UniqueIdentifier>{ec15e408-a953-4672-a93b-f7d36b81a954}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\animData">
+      <UniqueIdentifier>{8aa7c920-4557-4ad5-9a6f-a9f3408f7603}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -87,5 +90,16 @@
     <CustomBuild Include="Assets\modelData\Thethief_H.tks">
       <Filter>Assets\modelData</Filter>
     </CustomBuild>
+    <CustomBuild Include="Assets\animData\walk.tka">
+      <Filter>Assets\animData</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\animData\idle.tka">
+      <Filter>Assets\animData</Filter>
+    </None>
+    <None Include="Assets\animData\run.tka">
+      <Filter>Assets\animData</Filter>
+    </None>
   </ItemGroup>
 </Project>

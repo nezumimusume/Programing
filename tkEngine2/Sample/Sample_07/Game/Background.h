@@ -1,5 +1,6 @@
 #pragma once
 
+//CMeshColliderとCRigidBodyを使用したい場合は下記のヘッダーファイルをインクルードする必要がある。
 #include "tkEngine/physics/tkMeshCollider.h"
 #include "tkEngine/physics/tkRigidBody.h"
 
