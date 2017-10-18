@@ -29,7 +29,10 @@
 　　　　Player.cpp,hにサンプルが記述されている。
 ・Sample_08
 　　キャラクター追従カメラのサンプル
-　　GameCamera.cpp,hにサンプルが記述されている。7
+　　GameCamera.cpp,hにサンプルが記述されている。
 ・Sample_09
 　　TPSカメラのサンプル
+　　GameCamera.cpp,hにサンプルが記述されている。
+・Sample_10
+　　バネカメラのサンプル。
 　　GameCamera.cpp,hにサンプルが記述されている。

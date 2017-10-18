@@ -122,32 +122,39 @@ namespace tkEngine {
 	* @brief	初期化。
 	*/
 	void CSpringCamera::Init(
-		CCamera* camera,
+		CCamera& camera,
 		float maxMoveSpeed,
 		bool isEnableCollisionSolver,
 		float sphereCollisionRadius
 	)
 	{
-		if (camera == nullptr) {
-			return;
-		}
-		m_camera = camera;
+		m_camera = &camera;
 		m_isEnableCollisionSolver = isEnableCollisionSolver;
 		m_cameraCollisionSolver.Init(sphereCollisionRadius);
 		m_targetMoveSpeed = CVector3::Zero;
 		m_positionMoveSpeed = CVector3::Zero;
 		m_maxMoveSpeed = maxMoveSpeed;
+		m_isRefresh = true;
 	}
 	void CSpringCamera::UpdateSpringCamera()
 	{
 		if (m_camera == nullptr) {
 			return;
 		}
-		m_dampingRate = CalcSpringScalar(m_dampingRate, m_targetDampingRate, m_dampingRateVel);
-		CVector3 target = CalcSpringVector(m_camera->GetTarget(), m_target, m_targetMoveSpeed, m_maxMoveSpeed, m_dampingRate);
-		CVector3 position = CalcSpringVector(m_camera->GetPosition(), m_position, m_positionMoveSpeed, m_maxMoveSpeed, m_dampingRate);
-		m_camera->SetTarget(target);
-		m_camera->SetPosition(position);
+		if (m_isRefresh) {
+			//リフレッシュが必要なら、カメラの座標を一気に目標座標にする。
+			//シーンの切り替わり時など、一気にカメラを変更する必要があるときに使用してください。
+			m_camera->SetTarget(m_target);
+			m_camera->SetPosition(m_position);
+			m_isRefresh = false;
+		}
+		else {
+			m_dampingRate = CalcSpringScalar(m_dampingRate, m_targetDampingRate, m_dampingRateVel);
+			CVector3 target = CalcSpringVector(m_camera->GetTarget(), m_target, m_targetMoveSpeed, m_maxMoveSpeed, m_dampingRate);
+			CVector3 position = CalcSpringVector(m_camera->GetPosition(), m_position, m_positionMoveSpeed, m_maxMoveSpeed, m_dampingRate);
+			m_camera->SetTarget(target);
+			m_camera->SetPosition(position);
+		}
 	}
 	/*!
 	* @brief	更新。
