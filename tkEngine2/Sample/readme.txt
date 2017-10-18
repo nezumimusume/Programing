@@ -24,7 +24,9 @@
 ・Sample_07
 　　衝突判定のサンプル。
 　　　①メッシュコライダーの作成方法。
-　　　　Background.cppとBackground.hにサンプルが記述されている。
+　　　　Background.cpp,hにサンプルが記述されている。
 　　　②キャラクターコントローラーの使い方
-　　　　Player.cppにサンプルが記述されている。
-　　　
+　　　　Player.cpp,hにサンプルが記述されている。
+・Sample_08
+　　キャラクター追従カメラのサンプル
+　　GameCamera.cpp,hにサンプルが記述されている。
