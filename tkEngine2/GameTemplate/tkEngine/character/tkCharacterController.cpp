@@ -98,12 +98,13 @@ namespace tkEngine {
 	}
 
 
-	void CCharacterController::Init(float radius, float height, const CVector3& position)
+	void CCharacterController::Init(float radius, float height, float gravity, const CVector3& position)
 	{
 		m_position = position;
 		//コリジョン作成。
 		m_radius = radius;
 		m_height = height;
+		m_gravity = gravity;
 		m_collider.Create(radius, height);
 
 		//剛体を初期化。
@@ -120,7 +121,7 @@ namespace tkEngine {
 		PhysicsWorld().AddRigidBody(m_rigidBody);
 
 	}
-	void CCharacterController::Execute(float deltaTime, CVector3& moveSpeed)
+	const CVector3& CCharacterController::Execute(float deltaTime, CVector3& moveSpeed)
 	{
 		//速度に重力加速度を加える。
 		moveSpeed.y += m_gravity * deltaTime;
@@ -272,6 +273,7 @@ namespace tkEngine {
 		//剛体の位置を更新。
 		trans.setOrigin(btVector3(m_position.x, m_position.y, m_position.z));
 		//@todo 未対応。 trans.setRotation(btQuaternion(rotation.x, rotation.y, rotation.z));
+		return m_position;
 	}
 	/*!
 	* @brief	死亡したことを通知。
