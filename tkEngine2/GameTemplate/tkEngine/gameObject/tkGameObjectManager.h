@@ -116,7 +116,9 @@ namespace tkEngine{
 				gameObject->OnDestroy();
 				gameObject->m_isRegist = false;
 				gameObject->m_isRegistDeadList = true;
+		
 				m_deleteObjectArray[m_currentDeleteObjectBufferNo].at(gameObject->GetPriority()).push_back(gameObject);
+				gameObject = nullptr;
 			}
 		}
 		/*!
@@ -204,11 +206,6 @@ namespace tkEngine{
 	 * NewGOを使用して作成したオブジェクトは必ずDeleteGOを実行するように。
 	 *@param[in]	go		削除するゲームオブジェクト。
 	 */
-	static inline void DeleteGO(IGameObject*& go )
-	{
-		GameObjectManager().DeleteGameObject(go);
-		go = nullptr;
-	}
 	static inline void DeleteGO(IGameObject* go)
 	{
 		GameObjectManager().DeleteGameObject(go);

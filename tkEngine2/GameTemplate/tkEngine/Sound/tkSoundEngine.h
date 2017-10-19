@@ -9,7 +9,9 @@
 #define OUTPUTCHANNELS 8	//最大出力チャンネル数。
 namespace tkEngine{
 	class CWaveFile;
-	class CSoundSource;
+	namespace prefab {
+		class CSoundSource;
+	}
 	/*!
 	 * @brief	サウンドエンジン。
 	 */
@@ -38,14 +40,14 @@ namespace tkEngine{
 		/*!
 		* @brief	3Dサウンドソースを追加。
 		*/
-		void Add3DSoundSource(CSoundSource* s)
+		void Add3DSoundSource(prefab::CSoundSource* s)
 		{
 			m_3dSoundSource.push_back(s);
 		}
 		/*!
 		* @brief	3Dサウンドソースを削除。
 		*/
-		void Remove3DSoundSource(CSoundSource* s)
+		void Remove3DSoundSource(prefab::CSoundSource* s)
 		{
 			auto it = std::find(m_3dSoundSource.begin(), m_3dSoundSource.end(), s);
 			if (it != m_3dSoundSource.end()) {
@@ -124,7 +126,7 @@ namespace tkEngine{
 		bool m_useRedirectToLFE = false;
 		bool m_isInited = false;
 		X3DAUDIO_LISTENER m_listener;					//!<サウンドリスナー。
-		std::list<CSoundSource*>	m_3dSoundSource;	//!<3Dサウンドのサウンドソース。
+		std::list<prefab::CSoundSource*>	m_3dSoundSource;	//!<3Dサウンドのサウンドソース。
 		X3DAUDIO_CONE	m_emitterCone;
 		CWaveFileBank m_waveFileBank;					//!<波形データのバンク。
 	};
