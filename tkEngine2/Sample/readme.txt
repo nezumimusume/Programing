@@ -38,4 +38,7 @@
 　　GameCamera.cpp,hにサンプルが記述されている。
 ・Sample_11
 　　カメラを考慮してキャラクタを動かすサンプル。
-　　Player.cpp,hにサンプルが記述されている。
+　　Player.cpp,hのMove関数にサンプルが記述されている。
+・Sample_12
+　　キャラクタを進行方向に向けるサンプル。
+　　Player.cpp,hのTurn関数にサンプルが記述されている。
