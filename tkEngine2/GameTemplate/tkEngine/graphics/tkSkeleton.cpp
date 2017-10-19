@@ -18,6 +18,25 @@ namespace tkEngine {
 			}
 		}
 	}
+	void CBone::CalcWorldTRS(CVector3& trans, CQuaternion& rot, CVector3& scale)
+	{
+		CMatrix mWorld = m_worldMatrix;
+		//行列から拡大率を取得する。
+		scale.x = mWorld.v[0].Length();
+		scale.y = mWorld.v[1].Length();
+		scale.z = mWorld.v[2].Length();
+		m_scale = scale;
+		//行列から平行移動量を取得する。
+		trans.Set(mWorld.v[3]);
+		m_positoin = trans;
+		//行列から拡大率と平行移動量を除去して回転量を取得する。
+		mWorld.v[0].Normalize();
+		mWorld.v[1].Normalize();
+		mWorld.v[2].Normalize();
+		mWorld.v[3].Set(0.0f, 0.0f, 0.0f, 1.0f);
+		rot.SetRotation(mWorld);
+		m_rotation = rot;
+	}
 	CSkeleton::CSkeleton()
 	{
 		//リザーブ。
@@ -86,6 +105,7 @@ namespace tkEngine {
 			);
 
 			m_bones.push_back(std::move(bone));
+
 		}
 		fclose(fp);
 

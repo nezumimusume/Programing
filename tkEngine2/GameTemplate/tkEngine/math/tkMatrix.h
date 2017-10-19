@@ -22,6 +22,7 @@ namespace tkEngine{
 				float _31, _32, _33, _34;
 				float _41, _42, _43, _44;
 			};
+			CVector4 v[4];
 			float m[4][4];
 		};
 		static const CMatrix Identity;	//!<’PˆÊs—ñB

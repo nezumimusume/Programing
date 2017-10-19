@@ -26,7 +26,8 @@ namespace tkEngine{
 			m_boneName(boneName),
 			m_bindPose(bindPose),
 			m_invBindPose(invBindPose),
-			m_parentId(parentId)
+			m_parentId(parentId),
+			m_worldMatrix(bindPose)
 		{
 		}
 		/*!
@@ -99,10 +100,17 @@ namespace tkEngine{
 		/*!
 		 *@brief	名前の取得。
 		 */
-		const std::wstring& GetName() const
+		const wchar_t* GetName() const
 		{
-			return m_boneName;
+			return m_boneName.c_str();
 		}
+		/*!
+		*@brief	このボーンのワールド空間での位置と回転とスケールを計算する。
+		*@param[out]	trans		平行移動量の格納先。
+		*@param[out]	rot			回転量の格納先。
+		*@param[out]	scale		拡大率の格納先。
+		*/
+		void CalcWorldTRS(CVector3& trans, CQuaternion& rot, CVector3& scale);
 	private:
 		std::wstring	m_boneName;
 		int				m_parentId = -1;	//!<親のボーン番号。
@@ -111,6 +119,9 @@ namespace tkEngine{
 		CMatrix			m_localMatrix = CMatrix::Identity;	//!<ローカル行列。
 		CMatrix			m_worldMatrix = CMatrix::Identity;	//!<ワールド行列。
 		CMatrix			m_offsetLocalMatrix;
+		CVector3		m_positoin = CVector3::Zero;		//!<このボーンのワールド空間での位置。最後にCalcWorldTRSを実行したときの結果が格納されている。
+		CVector3		m_scale = CVector3::One;			//!<このボーンの拡大率。最後にCalcWorldTRSを実行したときの結果が格納されている。
+		CQuaternion		m_rotation = CQuaternion::Identity;	//!<このボーンの回転。最後にCalcWorldTRSを実行したときの結果が格納されている。
 		std::list<CBone*>	m_children;		//!<子供。
 	};
 	/*!
@@ -152,7 +163,7 @@ namespace tkEngine{
 		int FindBoneID(const wchar_t* boneName) const
 		{
 			for (int i = 0; i < (int)m_bones.size(); i++) {
-				if (m_bones[i]->GetName() == boneName) {
+				if (wcscmp(m_bones[i]->GetName(), boneName) == 0) {
 					return i;
 				}
 			}
