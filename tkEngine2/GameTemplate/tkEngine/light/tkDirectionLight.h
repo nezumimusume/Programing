@@ -33,10 +33,12 @@ namespace tkEngine{
 			*/
 			SDirectionLight& GetRawData()
 			{
-				return light;
+				return m_light;
 			}
+			
 		private:
-			SDirectionLight		light;		//!<ライト。
+			SDirectionLight		m_light;		//!<ライト。
+			
 		};
 	}
 }
