@@ -32,6 +32,8 @@ cbuffer MaterialParamCb : register(b2){
 	int hasNormalMap;	//!<法線マップある？
 	int hasSpecularMap;	//!<スペキュラマップある？
 	float anisotropic;	//異方性反射
+	unsigned int materialID;	//!<マテリアルID。
+
 };
 
 #define NUM_SHADOW_MAP 3

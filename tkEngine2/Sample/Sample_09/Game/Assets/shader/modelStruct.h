@@ -55,6 +55,7 @@ struct PSInput_RenderToDepth{
 struct SDirectionLight{
 	float4	color;			//!<ライトのカラー。
 	float3	direction;		//!<ライトの方向。
+	unsigned int lightingMaterialIDGroup;	//!<ライトの影響を与える相手を識別するマテリアルIDグループ。0xFFFFFFFFですべてのオブジェクトにライトを当てる。
 };
 
 //ポイントライト。
@@ -63,4 +64,5 @@ struct SPointLight {
 	float3	positionInView;	//カメラ座標系でのポイントライトの位置。
 	float4	color;			//カラー。
 	float4  attn;			//減衰定数。(xを小さくするとライトの明るさが増す、yとzが大きくなるとライトが遠くまで届くようになる。)
+	unsigned int lightingMaterialIDGroup;	//!<ライトの影響を与える相手を識別するマテリアルIDグループ。0xFFFFFFFFですべてのオブジェクトにライトを当てる。
 };

@@ -31,10 +31,11 @@ float3 CalcDirectionLight(
 {
 	float3 lig = 0.0f;
 	for( int i = 0; i < numDirectionLight; i++){
-		
-		float3 lightDir = directionLight[i].direction;
-		float t = saturate( dot( normal, -lightDir ) );
-		lig += BRDF(-lightDir, toEyeDir, normal, tangent, biNormal, albedo, roughness, specPow ) * directionLight[i].color * t;
+		if( 1 << materialID & directionLight[i].lightingMaterialIDGroup ){
+			float3 lightDir = directionLight[i].direction;
+			float t = saturate( dot( normal, -lightDir ) );
+			lig += BRDF(-lightDir, toEyeDir, normal, tangent, biNormal, albedo, roughness, specPow ) * directionLight[i].color * t;
+		}
 	}
 	
 	return lig;
@@ -84,16 +85,19 @@ float3 CalcPointLight(
 			break;
 		}
 		SPointLight light = pointLightList[lightIndex];
-		float3 lightDir = posInWorld - light.position;
-		float len = length(lightDir);
-		lightDir /= max( 0.01f, len );	//³‹K‰»B
-		float t = saturate(-dot(normal, lightDir));
-		float3 pointLightColor = BRDF(-lightDir, toEyeDir, normal, tangent, biNormal, albedo, roughness, specPow) * light.color.xyz * t;
-		//Œ¸Š‚ðŒvŽZ‚·‚éB
-		float	litRate = len / light.attn.x;
-		float	attn = max(1.0 - litRate * litRate, 0.0);
-		pointLightColor *= pow(attn, light.attn.y);
-		lig += pointLightColor;
+		if( 1 << materialID & light.lightingMaterialIDGroup ){
+			float3 lightDir = posInWorld - light.position;
+			float len = length(lightDir);
+			lightDir /= max( 0.01f, len );	//³‹K‰»B
+			float t = saturate(-dot(normal, lightDir));
+			float3 pointLightColor = BRDF(-lightDir, toEyeDir, normal, tangent, biNormal, albedo, roughness, specPow) * light.color.xyz * t;
+			//Œ¸Š‚ðŒvŽZ‚·‚éB
+			float	litRate = len / light.attn.x;
+			float	attn = max(1.0 - litRate * litRate, 0.0);
+			pointLightColor *= pow(attn, light.attn.y);
+			lig += pointLightColor;
+		}
+		
 	}
 	
 	return lig;
