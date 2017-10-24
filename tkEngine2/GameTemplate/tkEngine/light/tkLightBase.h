@@ -14,26 +14,24 @@ namespace tkEngine{
 			bool Start() override final;
 			void OnDestroy() override final;
 			/*!
-			*@brief ライトの影響を与えるオブジェクトを識別するためのマスクを設定。
-			*@details
-			* 0xFFFFFFFFを指定すると、すべてのオブジェクトにライトを当てます。
+			*@brief ライトの影響を与えるマテリアルIDグループを設定する。
 			*/
-			void SetMask(unsigned int mask)
+			void SetLightingMaterialIDGroup(unsigned int group)
 			{
-				m_mask = mask;
+				m_lightingMaterialIDGroup = group;
 			}
 			/*!
-			*@brief ライトの影響を与えるオブジェクトを識別するためのマスクを取得。
+			*@brief ライトの影響を与えるマテリアルIDグループを取得。
 			*/
-			unsigned int GetMask() const
+			unsigned int GetLightingMaterialIDGroup() const
 			{
-				return m_mask;
+				return m_lightingMaterialIDGroup;
 			}
 		private:
 			virtual bool StartSub() = 0;
 			virtual void OnDestorySub() {}
 		private:
-			unsigned int m_mask;	//!<ライトの影響を与える相手を識別するためのマスク。0xFFFFFFFFですべてのオブジェクトにライトを当てる。
+			unsigned int m_lightingMaterialIDGroup = 0xFFFFFFFF;	//!<ライトの影響を与える相手を識別するマテリアルIDグループ。0xFFFFFFFFですべてのオブジェクトにライトを当てる。
 		};
 	}
 }

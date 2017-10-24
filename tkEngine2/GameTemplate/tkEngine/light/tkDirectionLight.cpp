@@ -22,6 +22,7 @@ namespace tkEngine{
 		}
 		void CDirectionLight::Update()
 		{
+			m_light.lightingMaterialIDGroup = GetLightingMaterialIDGroup();
 		}
 		void CDirectionLight::SetDirection(const CVector3& direction)
 		{

@@ -29,9 +29,10 @@ namespace tkEngine{
 		* こいつを変更する場合は、modelCB.hのMaterialParamCbも変更するように。
 		*/
 		struct MaterialParam {
-			int hasNormalMap;		//!<法線マップある？
-			int hasSpecularMap;		//!<スペキュラマップある？
-			float anisotropic;		//!<異方性反射。
+			int hasNormalMap;			//!<法線マップある？
+			int hasSpecularMap;			//!<スペキュラマップある？
+			float anisotropic;			//!<異方性反射。
+			unsigned int materialID;	//!<マテリアルID。
 		};
 		static const int NUM_POINT_LIGHT = 1024;
 		MaterialParam m_materialParam;				//マテリアルパラメータ。
@@ -71,6 +72,10 @@ namespace tkEngine{
 		void SetRenderContext(CRenderContext& rc)
 		{
 			m_renderContext = &rc;
+		}
+		void SetMaterialID(unsigned int materialID)
+		{
+			m_materialParam.materialID = materialID;
 		}
 		bool EqualMaterialName(const wchar_t* name) const
 		{
@@ -136,7 +141,7 @@ namespace tkEngine{
 			return m_skeleton;
 		}
 		typedef std::function<void(std::unique_ptr<DirectX::ModelMeshPart>&)>		OnFindMesh;
-		typedef std::function<void(CModelEffect*)>	OnFindModelEffect;
+		typedef std::function<void(CModelEffect*)>	OnFindMaterial;
 		/*!
 		 *@brief	メッシュの検索。
 		 *@param[in]	findMesh		メッシュを見つけた時に呼ばれるコールバック関数

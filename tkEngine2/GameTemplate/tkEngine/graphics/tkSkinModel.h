@@ -55,14 +55,14 @@ namespace tkEngine{
 			}
 		}
 		/*!
-		*@brief	モデルエフェクトの検索。
-		*@param[in]	findEffect		メッシュを見つけた時に呼ばれるコールバック関数
+		*@brief	モデルマテリアルの検索。
+		*@param[in]	findEffect		マテリアルを見つけた時に呼ばれるコールバック関数
 		*/
-		void FindModelEffect(CSkinModelData::OnFindModelEffect findEffect) const
+		void FindMaterial(CSkinModelData::OnFindMaterial findMaterial) const
 		{
 			FindMesh([&](auto& mesh) {
 				CModelEffect* effect = reinterpret_cast<CModelEffect*>(mesh->effect.get());
-				findEffect(effect);
+				findMaterial(effect);
 			});
 		}
 		/*!

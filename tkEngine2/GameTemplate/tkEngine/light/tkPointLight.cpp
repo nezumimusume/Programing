@@ -44,6 +44,7 @@ namespace tkEngine{
 			const CMatrix& mView = MainCamera().GetViewMatrix();
 			light.positionInView = light.position;
 			mView.Mul(light.positionInView);
+			light.lightingMaterialIDGroup = GetLightingMaterialIDGroup();
 		}
 	}
 }

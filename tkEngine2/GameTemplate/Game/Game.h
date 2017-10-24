@@ -7,7 +7,9 @@ public:
 	bool Start();
 	void Update();
 	void Render(CRenderContext& rc);
-	CSkinModel skinModel;			//スキンモデル。
-	CSkinModelData skinModelData;	//スキンモデルデータ。
+	CSkinModel skinModel;							//スキンモデル。
+	CSkinModelData skinModelData;					//スキンモデルデータ。
+	prefab::CDirectionLight* m_lig = nullptr;		//ライト。
+
 };
 
