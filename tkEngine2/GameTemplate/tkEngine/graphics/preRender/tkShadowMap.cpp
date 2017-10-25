@@ -78,7 +78,7 @@ namespace tkEngine{
 		cameraDirXZ.Normalize();
 		CVector3 lightViewForward = m_lightDirection;
 		CVector3 lightViewUp;
-		if (lightViewForward.y > 0.999f) {
+		if (fabsf(lightViewForward.y) > 0.999f) {
 			//ÇŸÇ⁄ê^è„ÅB
 			lightViewUp.Cross(lightViewForward, CVector3::Right);
 		}
