@@ -48,6 +48,7 @@ namespace tkEngine{
 		CRenderTarget* renderTargets[] = {
 			&Engine().GetGraphicsEngine().GetMainRenderTarget()
 		};
+		
 		rc.PSSetSampler(0, m_samplerState);
 		rc.OMSetRenderTargets(1, renderTargets);
 		rc.PSSetShaderResource(0, rt.GetRenderTargetSRV());
@@ -58,8 +59,7 @@ namespace tkEngine{
 
 		GraphicsEngine().GetPostEffect().DrawFullScreenQuad(rc);
 		rc.OMSetDepthStencilState(DepthStencilState::SceneRender, 0);
-		EndGPUEvent();
-
+		rc.PSUnsetShaderResource(0);
 		EndGPUEvent();
 	}
 }

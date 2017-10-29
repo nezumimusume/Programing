@@ -246,6 +246,11 @@ namespace tkEngine{
 			Add(_v);
 			return *this;
 		}
+		const CVector3& operator*=(float s) 
+		{
+			Scale(s);
+			return *this;
+		}
 	};
 	/*!
 	 *@brief	4要素のベクトルクラス。

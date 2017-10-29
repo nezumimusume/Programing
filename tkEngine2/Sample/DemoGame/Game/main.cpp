@@ -32,8 +32,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//ディザリング。
 	initParam.graphicsConfing.ditheringConfig.isEnable = true;
 
-	GraphicsEngine().GetShadowMap().SetFar(1000.0f);
-	GraphicsEngine().GetShadowMap().SetNear(50.0f);
+	GraphicsEngine().GetShadowMap().SetFar(10000.0f);
+	GraphicsEngine().GetShadowMap().SetNear(10.0f);
 
 	//エンジンを初期化。
 	if (Engine().Init(initParam) == true) {

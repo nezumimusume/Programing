@@ -148,7 +148,7 @@ rollout tkExporter "tkExporter" width:194 height:248
 				endFrame = startFrame
 				numKey = 1
 			)
-			deltaTime = 1.0/60
+			deltaTime = 1.0/30
 			keyTime = 0.0
 			
 			numKey *= g_objectParams.Count

@@ -235,7 +235,7 @@
       <ContentOutput>$(ProjectDir)/Resource/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Resource/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
     <CustomBuildStep>
       <Command>
@@ -302,7 +302,7 @@
       <ContentOutput>$(ProjectDir)/Resource/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Resource/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
     <CustomBuildStep>
       <Command>
@@ -369,7 +369,7 @@
       <ContentOutput>$(ProjectDir)/Resource/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Resource/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
     <CustomBuildStep>
       <Command>
@@ -431,7 +431,7 @@
       <ContentOutput>$(ProjectDir)/Resource/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Resource/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
     <CustomBuildStep>
       <Command>
@@ -573,7 +573,7 @@
       <ContentOutput>$(ProjectDir)/Resource/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Resource/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
     <CustomBuildStep>
       <Command>
@@ -639,7 +639,7 @@
       <ContentOutput>$(ProjectDir)/Resource/modelData/%(Filename).cmo</ContentOutput>
     </MeshContentTask>
     <ImageContentTask>
-      <ContentOutput>$(ProjectDir)/Assets/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput>$(ProjectDir)/Resource/sprite/%(Filename).dds</ContentOutput>
     </ImageContentTask>
     <CustomBuildStep>
       <Command>
@@ -703,8 +703,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Background.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -755,12 +758,16 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">false</ExcludedFromBuild>
     </CustomBuild>
+    <ClInclude Include="Background.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Player.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ResourceCompile Include="Game.rc" />
   </ItemGroup>
   <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\background.FBX" />
     <MeshContentTask Include="Assets\modelData\unityChan.fbx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
@@ -1012,6 +1019,22 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Assets\shader\dithering.fx">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Assets\modelData\utc_nomal.tga">
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Resource/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Resource/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|Win32'">$(ProjectDir)/Resource/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resource/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resource/sprite/%(Filename).dds</ContentOutput>
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Resource/sprite/%(Filename).dds</ContentOutput>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\modelData\utc_spec.tga" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\animData\KneelDown.tka">
       <FileType>Document</FileType>
     </CustomBuild>
   </ItemGroup>

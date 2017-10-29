@@ -73,6 +73,7 @@ namespace tkEngine{
 		{
 			return m_clipName.c_str();
 		}
+		
 	private:
 		std::wstring m_clipName;	//!<アニメーションクリップの名前。
 		bool m_isLoop = false;	//!<ループフラグ。

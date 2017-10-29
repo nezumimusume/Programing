@@ -42,6 +42,7 @@ namespace tkEngine{
 				else {
 					//ワンショット再生。
 					m_currentKeyFrameNo--;
+					m_isPlaying = false;	//再生終わり。
 				}
 				break;
 			}

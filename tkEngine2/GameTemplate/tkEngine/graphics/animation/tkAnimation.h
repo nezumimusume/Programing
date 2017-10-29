@@ -81,6 +81,15 @@ namespace tkEngine{
 			}
 			(*it)->SetLoopFlag(flag);
 		}
+		/*!
+		* @brief	アニメーションの再生中？
+		*/
+		bool IsPlaying() const
+		{
+			int lastIndex = GetLastAnimationControllerIndex();
+			return m_animationPlayController[lastIndex].IsPlaying();
+		}
+
 	private:
 		void PlayCommon(CAnimationClip* nextClip, float interpolateTime)
 		{
@@ -110,6 +119,7 @@ namespace tkEngine{
 		 * @brief	グローバルポーズの更新。
 		 */
 		void UpdateGlobalPose();
+		
 	private:
 		/*!
 		 *@brief	最終ポーズになるアニメーションのリングバッファ上でのインデックスを取得。

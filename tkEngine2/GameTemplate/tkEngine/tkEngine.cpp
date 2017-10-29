@@ -87,6 +87,7 @@ namespace tkEngine {
 	}
 	void CEngine::Update()
 	{
+		
 		m_sw.Start();
 		//パッドの更新。
 		for (auto& pad : m_pad) {
@@ -101,17 +102,17 @@ namespace tkEngine {
 		m_graphicsEngine.EndRender();
 		
 		m_sw.Stop();
-
-		if (m_sw.GetElapsed() < 1.0f / 30.0f) {
+		TK_LOG("%f", m_sw.GetElapsedMillisecond());
+		/*if (m_sw.GetElapsed() < 1.0f / 30.0f) {
 			//30fpsに間に合っているなら眠る。
 			DWORD sleepTime = static_cast<DWORD>(max(0.0, (1.0 / 30.0)*1000.0 - (DWORD)m_sw.GetElapsedMillisecond()));
 			Sleep(sleepTime);
 			GameTime().SetFrameDeltaTime(1.0f / 30.0f);
 		}
 		else {
-			//間に合っていない。
+			//間に合っていない。*/
 			GameTime().SetFrameDeltaTime((float)m_sw.GetElapsed());
-		}
+		//}
 	}
 	LRESULT CALLBACK CEngine::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{

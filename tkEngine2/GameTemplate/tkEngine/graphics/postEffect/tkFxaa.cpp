@@ -56,6 +56,7 @@ namespace tkEngine{
 
 		GraphicsEngine().GetPostEffect().DrawFullScreenQuad(rc);
 		rc.OMSetDepthStencilState(DepthStencilState::SceneRender, 0);
+		rc.PSUnsetShaderResource(0);
 		EndGPUEvent();
 	}
 }

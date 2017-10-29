@@ -37,6 +37,7 @@ namespace tkEngine{
 			m_animationClip = clip;
 			m_currentKeyFrameNo = 0;
 			m_time = 0.0f;
+			m_isPlaying = true;
 		}
 		void SetInterpolateTime(float interpolateTime)
 		{
@@ -72,6 +73,13 @@ namespace tkEngine{
 		{
 			return m_animationClip;
 		}
+		/*!
+		* @brief	再生中？
+		*/
+		bool IsPlaying() const
+		{
+			return m_isPlaying;
+		}
 	private:
 		CAnimationClip*			m_animationClip = nullptr;		//!<アニメーションクリップ。
 		int						m_currentKeyFrameNo = 0;	//!<現在再生中のキーフレーム番号。
@@ -79,5 +87,6 @@ namespace tkEngine{
 		std::vector<CMatrix>	m_boneMatrix;			//!<このコントローラで再生中のアニメーションのボーン行列。
 		float					m_interpolateTime;		//!<補完時間
 		float					m_interpolateEndTime;	//!<補完終了時間
+		bool					m_isPlaying = false;	//!<再生中？
 	};
 }

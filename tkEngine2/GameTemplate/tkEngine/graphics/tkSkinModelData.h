@@ -29,10 +29,10 @@ namespace tkEngine{
 		* こいつを変更する場合は、modelCB.hのMaterialParamCbも変更するように。
 		*/
 		struct MaterialParam {
-			int hasNormalMap;			//!<法線マップある？
-			int hasSpecularMap;			//!<スペキュラマップある？
-			float anisotropic;			//!<異方性反射。
-			unsigned int materialID;	//!<マテリアルID。
+			int hasNormalMap;				//!<法線マップある？
+			int hasSpecularMap;				//!<スペキュラマップある？
+			float anisotropic;				//!<異方性反射。
+			unsigned int materialID = 0;	//!<マテリアルID。
 		};
 		static const int NUM_POINT_LIGHT = 1024;
 		MaterialParam m_materialParam;				//マテリアルパラメータ。
@@ -73,6 +73,7 @@ namespace tkEngine{
 		{
 			m_renderContext = &rc;
 		}
+		//デフォルトのマテリアルＩＤは0
 		void SetMaterialID(unsigned int materialID)
 		{
 			m_materialParam.materialID = materialID;

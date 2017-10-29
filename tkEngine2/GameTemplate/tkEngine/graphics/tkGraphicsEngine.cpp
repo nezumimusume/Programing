@@ -76,7 +76,7 @@ namespace tkEngine{
 		sd.BufferDesc.Height = m_frameBufferHeight;	//フレームバッファの高さ。
 		sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;	//フレームバッファのフォーマット。R8G8B8A8の32bit。
 		sd.BufferDesc.RefreshRate.Numerator = 60;			//モニタのリフレッシュレート。(バックバッファとフロントバッファを入れ替えるタイミングとなる。)
-		sd.BufferDesc.RefreshRate.Denominator = 1;			//@todo なんやろこれ？たぶん２にしたら30fpsになる。あとで試す。
+		sd.BufferDesc.RefreshRate.Denominator = 1;			//２にしたら30fpsになる。あとで試す。
 		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;	//サーフェスまたはリソースを出力レンダー ターゲットとして使用します。
 		sd.OutputWindow = hwnd;
 		sd.SampleDesc.Count = 1;							//ピクセル単位のマルチサンプリングの数。MSAAはなし。

@@ -13,6 +13,8 @@ namespace tkEngine{
 	 */
 	class CSkinModel : Noncopyable{
 	public:
+		typedef std::function<void(CSkeleton&)>		OnPostUpdateSkeleton;
+
 		/*!
 		*@brief QueryEffectsを実行したときのコールバックに渡される引数構造体。
 		*/
@@ -32,7 +34,11 @@ namespace tkEngine{
 		*@param[in]		rot		回転。
 		*@param[in]		scale	拡大。
 		*/
-		void Update(const CVector3& trans, const CQuaternion& rot, const CVector3& scale);
+		void Update(
+			const CVector3& trans, 
+			const CQuaternion& rot, 
+			const CVector3& scale
+		);
 		
 		/*!
 		*@brief	描画
