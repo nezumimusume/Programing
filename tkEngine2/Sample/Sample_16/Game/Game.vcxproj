@@ -724,6 +724,11 @@
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">$(ProjectDir)/Resource/modelData/%(Filename).dds</ContentOutput>
     </ImageContentTask>
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\shader\dithering.fx">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />
