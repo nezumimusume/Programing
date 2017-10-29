@@ -42,25 +42,25 @@ void Game::Update()
 {
 	//上下左右のキー入力による移動処理。
 	//Aボタンが押されたら待機モーションを再生する。
-	//if (Pad(0).IsTrigger(enButtonA)) {
-	//	//Play関数の第二引数は補完時間。
-	//	m_animation.Play(enAnimationClip_idle, 0.2f);
-	//}
-	////Bボタンが押されたら走りアニメーションを再生する。
-	//else if (Pad(0).IsTrigger(enButtonB)) {
-	//	m_animation.Play(enAnimationClip_run, 0.2f);
-	//}
-	////Yボタンが押されたら歩きアニメーションを再生する。
-	//else if (Pad(0).IsTrigger(enButtonY)) {
-	//	m_animation.Play(enAnimationClip_walk, 0.2f);
-	//}
-	//else if (Pad(0).IsTrigger(enButtonX)) {
-	//	m_animation.Play(enAnimationClip_jump, 0.2f);
-	//}
-	//else if (Pad(0).IsTrigger(enButtonRB1)) {
-	//	m_animation.Play(enAnimationClip_damage, 0.2f);
-	//}
-	//
+	if (Pad(0).IsTrigger(enButtonA)) {
+		//Play関数の第二引数は補完時間。
+		m_animation.Play(enAnimationClip_idle, 0.2f);
+	}
+	//Bボタンが押されたら走りアニメーションを再生する。
+	else if (Pad(0).IsTrigger(enButtonB)) {
+		m_animation.Play(enAnimationClip_run, 0.2f);
+	}
+	//Yボタンが押されたら歩きアニメーションを再生する。
+	else if (Pad(0).IsTrigger(enButtonY)) {
+		m_animation.Play(enAnimationClip_walk, 0.2f);
+	}
+	else if (Pad(0).IsTrigger(enButtonX)) {
+		m_animation.Play(enAnimationClip_jump, 0.2f);
+	}
+	else if (Pad(0).IsTrigger(enButtonRB1)) {
+		m_animation.Play(enAnimationClip_damage, 0.2f);
+	}
+	
 	
 	m_animation.Update(GameTime().GetFrameDeltaTime());
 	CQuaternion qRot = CQuaternion::Identity;
