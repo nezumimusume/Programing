@@ -320,6 +320,9 @@
     <ClInclude Include="random\tkRandom.h">
       <Filter>Source Files\random</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\GameTemplate\tkEngine\graphics\postEffect\tkDithering.h">
+      <Filter>Source Files\graphics\postEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -507,6 +510,9 @@
     </ClCompile>
     <ClCompile Include="random\tkRandom.cpp">
       <Filter>Source Files\random</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\GameTemplate\tkEngine\graphics\postEffect\tkDithering.cpp">
+      <Filter>Source Files\graphics\postEffect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

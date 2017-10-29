@@ -29,6 +29,7 @@ namespace tkEngine{
 		m_fxaa.Init(config);
 		m_tonemap.Init(config);
 		m_bloom.Init(config);
+		m_dithering.Init(config);
 		InitFullScreenQuadPrimitive();
 	}
 	void CPostEffect::Render(CRenderContext& rc)
@@ -36,6 +37,7 @@ namespace tkEngine{
 		m_tonemap.Render(rc, this);
 		m_bloom.Render(rc, this);
 		m_fxaa.Render(rc);
+		m_dithering.Render(rc);
 	}
 	void CPostEffect::InitFullScreenQuadPrimitive()
 	{

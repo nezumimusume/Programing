@@ -35,18 +35,6 @@
     </CLInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Assets\shader\modelCB.h">
-      <Filter>Assets\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\shader\modelSRV.h">
-      <Filter>Assets\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\shader\modelStruct.h">
-      <Filter>Assets\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\shader\sampleBRDF.h">
-      <Filter>Assets\shader</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc">
@@ -98,13 +86,14 @@
     <CustomBuild Include="Assets\animData\damage.tka">
       <Filter>Assets\animData</Filter>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Assets\shader\sprite.fx">
+    <CustomBuild Include="Assets\shader\modelCB.h" />
+    <CustomBuild Include="Assets\shader\modelSRV.h" />
+    <CustomBuild Include="Assets\shader\modelStruct.h" />
+    <CustomBuild Include="Assets\shader\sampleBRDF.h" />
+    <CustomBuild Include="Assets\shader\sprite.fx" />
+    <CustomBuild Include="Assets\shader\tonemap.fx" />
+    <CustomBuild Include="Assets\shader\dithering.fx">
       <Filter>Assets\shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Assets\shader\tonemap.fx">
-      <Filter>Assets\shader</Filter>
-    </FxCompile>
+    </CustomBuild>
   </ItemGroup>
 </Project>

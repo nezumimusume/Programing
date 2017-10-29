@@ -33,14 +33,14 @@ namespace tkEngine{
 	/*!
 	* @brief	Bloomのコンフィグ
 	*/
-	struct SBloomConfig {
-		bool	isEnable;		//!<ブルームが有効かどうかのフラグ。
+	struct SBloomConfig {		
+		bool	isEnable = false;		//!<ブルームが有効かどうかのフラグ。
 	};
 	/*!
 	* @brief	リフレクションマップのコンフィグ
 	*/
 	struct SReflectionMapConfig {
-		bool	isEnable;				//!<リフレクションマップが有効かどうかのフラグ。
+		bool	isEnable = false;				//!<リフレクションマップが有効かどうかのフラグ。
 		int		reflectionMapWidth;		//!<リフレクションマップの幅。
 		int		reflectionMapHeight;	//!<リフレクションマップの高さ。
 	};
@@ -48,25 +48,31 @@ namespace tkEngine{
 	* @brief	被写界深度のコンフィグ。
 	*/
 	struct SDofConfig {
-		bool isEnable;					//被写界深度が有効かどうかのフラグ。
+		bool isEnable = false;					//被写界深度が有効かどうかのフラグ。
 	};
 	/*!
 	* @brief	アンチエイリアスのコンフィグ。
 	*/
 	struct SAAConfig {
-		bool isEnable;					//アンチエイリアスが有効かどうかのフラグ。
+		bool isEnable = false;					//アンチエイリアスが有効かどうかのフラグ。
 	};
 	/*!
 	* @brief	モーションブラーのコンフィグ。
 	*/
 	struct SMotionBlurConfig {
-		bool isEnable;
+		bool isEnable = false;
 	};
 	/*!
 	* @brief	トーンマップのコンフィグ。
 	*/
 	struct STonemapConfig {
-		bool isEnable;
+		bool isEnable = false;
+	};
+	/*!
+	* @brief	ディザリングのコンフィグ。
+	*/
+	struct SDitheringConfig {
+		bool isEnable = false;
 	};
 	/*!
 	 * @brief	グラフィックスコンフィグ。
@@ -80,5 +86,6 @@ namespace tkEngine{
 		SAAConfig				aaConfig;				//!<アンチエイリアスのコンフィグ。
 		SMotionBlurConfig		motionBlurConfig;		//<!モーションブラーのコンフィグ。
 		STonemapConfig			tonemapConfig;			//!<トーンマップのコンフィグ。
+		SDitheringConfig		ditheringConfig;		//!<ディザリング。
 	};
 }

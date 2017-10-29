@@ -23,6 +23,6 @@ public:
 	CQuaternion m_rotation = CQuaternion::Identity;	//âÒì]ÅB
 	CAnimationClip m_animClip[enAnimationClip_num];
 	CAnimation m_animation;
-
+	prefab::CDirectionLight* m_directionLight = nullptr;
 };
 

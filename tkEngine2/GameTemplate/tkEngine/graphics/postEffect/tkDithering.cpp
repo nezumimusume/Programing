@@ -1,27 +1,28 @@
 /*!
- *@brief	FXAA
+ * @brief	ディザリング。
  */
+
 #include "tkEngine/tkEnginePreCompile.h"
-#include "tkEngine/graphics/postEffect/tkFxaa.h"
+#include "tkEngine/graphics/postEffect/tkDithering.h"
 #include "tkEngine/graphics/tkPresetRenderState.h"
+
+
 namespace tkEngine{
-	CFxaa::CFxaa()
+	CDithering::CDithering()
 	{
 	}
-	CFxaa::~CFxaa()
+	CDithering::~CDithering()
+	{
+	}
+	void CDithering::Release()
+	{
+	}
+	void CDithering::Init(const SGraphicsConfig& config)
 	{
 		Release();
-	}
-	void CFxaa::Release()
-	{
-		m_samplerState.Release();
-	}
-	void CFxaa::Init(const SGraphicsConfig& config)
-	{
-		Release();
-		m_isEnable = config.aaConfig.isEnable;
-		m_vsShader.Load("shader/fxaa.fx", "VSMain", CShader::EnType::VS);
-		m_psShader.Load("shader/fxaa.fx", "PSMain", CShader::EnType::PS);
+		m_isEnable = config.ditheringConfig.isEnable;
+		m_vsShader.Load("shader/dithering.fx", "VSMain", CShader::EnType::VS);
+		m_psShader.Load("shader/dithering.fx", "PSMain", CShader::EnType::PS);
 		//サンプラを作成。
 		D3D11_SAMPLER_DESC desc;
 		ZeroMemory(&desc, sizeof(desc));
@@ -31,12 +32,13 @@ namespace tkEngine{
 		desc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
 		m_samplerState.Create(desc);
 	}
-	void CFxaa::Render(CRenderContext& rc)
+	void CDithering::Render(CRenderContext& rc)
 	{
 		if (!m_isEnable) {
 			return;
 		}
-		BeginGPUEvent(L"enRenderStep_AntiAlias");
+		BeginGPUEvent(L"enRenderStep_Dithering");
+
 		//レンダリングステートをFXAA用に設定するようにする。
 		rc.OMSetDepthStencilState(DepthStencilState::disable, 0);
 		//現在のレンダリングターゲットを取得。
@@ -56,6 +58,8 @@ namespace tkEngine{
 
 		GraphicsEngine().GetPostEffect().DrawFullScreenQuad(rc);
 		rc.OMSetDepthStencilState(DepthStencilState::SceneRender, 0);
+		EndGPUEvent();
+
 		EndGPUEvent();
 	}
 }
