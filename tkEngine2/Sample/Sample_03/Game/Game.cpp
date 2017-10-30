@@ -22,11 +22,12 @@ bool Game::Start()
 	m_skinModel.Init(m_skinModelData);
 
 	//アニメーションクリップのロード。
-	m_animClips[enAnimationClip_idle].Load(L"animData/idle.tka", L"idle");
-	m_animClips[enAnimationClip_run].Load(L"animData/run.tka", L"run");
-	m_animClips[enAnimationClip_walk].Load(L"animData/walk.tka", L"walk");
+	m_animClips[enAnimationClip_idle].Load(L"animData/idle.tka");
+	m_animClips[enAnimationClip_run].Load(L"animData/run.tka");
+	m_animClips[enAnimationClip_walk].Load(L"animData/walk.tka");
 	//ループフラグを設定する。<-走りアニメーションはループフラグを設定していないので
 	//ワンショット再生で停止する。
+	m_animClips[enAnimationClip_run].SetLoopFlag(true);
 	m_animClips[enAnimationClip_idle].SetLoopFlag(true);
 	m_animClips[enAnimationClip_walk].SetLoopFlag(true);
 	//ロードしたアニメーションクリップを使ってアニメーションを初期化する。

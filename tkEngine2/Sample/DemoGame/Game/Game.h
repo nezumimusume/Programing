@@ -18,7 +18,7 @@ private:
 private:
 	Player*	m_player = nullptr;		//!<ƒvƒŒƒCƒ„[
 	Background* m_background = nullptr;
-	prefab::CDirectionLight* m_directionLight = nullptr;
 	GameCamera* m_gameCamera = nullptr;
+	std::vector<prefab::CPointLight*> m_pointLight;
 };
 
