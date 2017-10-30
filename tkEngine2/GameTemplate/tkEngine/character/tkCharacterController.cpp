@@ -149,9 +149,9 @@ namespace tkEngine {
 					//とても小さい値のことです。
 					break;
 				}
-				//カプセルコライダーの中心座標 + 0.2の座標をposTmpに求める。
+				//カプセルコライダーの中心座標 + 高さ*0.1の座標をposTmpに求める。
 				CVector3 posTmp = m_position;
-				posTmp.y += m_height * 0.5f + m_radius + 0.2f;
+				posTmp.y += m_height * 0.5f + m_radius + m_height * 0.1f;
 				//レイを作成。
 				btTransform start, end;
 				start.setIdentity();
