@@ -23,6 +23,9 @@
     <Filter Include="Assets\shader">
       <UniqueIdentifier>{54b6fd2c-2161-4183-8b37-1b8a36deceff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\loc">
+      <UniqueIdentifier>{406e583e-64de-4bd8-8f81-f013062a50ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -95,27 +98,42 @@
     <CustomBuild Include="Assets\animData\damage.tka">
       <Filter>Assets\animData</Filter>
     </CustomBuild>
-    <CustomBuild Include="Assets\shader\modelCB.h" />
-    <CustomBuild Include="Assets\shader\modelSRV.h" />
-    <CustomBuild Include="Assets\shader\modelStruct.h" />
-    <CustomBuild Include="Assets\shader\sampleBRDF.h" />
-    <CustomBuild Include="Assets\shader\sprite.fx" />
-    <CustomBuild Include="Assets\shader\tonemap.fx" />
     <CustomBuild Include="Assets\shader\dithering.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\animData\KneelDown.tka">
+      <Filter>Assets\animData</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\sprite.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\tonemap.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\modelStruct.h">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\modelSRV.h">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\modelCB.h">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\sampleBRDF.h">
       <Filter>Assets\shader</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\modelData\utc_spec.tga">
+    <ImageContentTask Include="Assets\modelData\utc_spec.tga">
       <Filter>Assets\modelData</Filter>
-    </Image>
-    <Image Include="Assets\modelData\utc_nomal.tga">
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\modelData\utc_nomal.tga">
       <Filter>Assets\modelData</Filter>
-    </Image>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\animData\KneelDown.tka">
-      <Filter>Assets\animData</Filter>
+    <None Include="Assets\loc\light.tks">
+      <Filter>Assets\loc</Filter>
     </None>
   </ItemGroup>
 </Project>

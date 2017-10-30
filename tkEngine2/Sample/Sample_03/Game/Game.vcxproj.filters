@@ -93,4 +93,9 @@
       <Filter>Assets\animData</Filter>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Assets\shader\dithering.fx">
+      <Filter>Assets\shader</Filter>
+    </FxCompile>
+  </ItemGroup>
 </Project>

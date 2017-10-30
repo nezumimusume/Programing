@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "Background.h"
-#include "tkEngine/light/tkDirectionLight.h"
+#include "tkEngine/light/tkPointLight.h"
 #include "GameCamera.h"
 
 Game::Game()
@@ -15,17 +15,37 @@ Game::~Game()
 }
 void Game::InitSceneLight()
 {
-	//ディレクションライトをシーンに追加。
-	m_directionLight = NewGO<prefab::CDirectionLight>(0);
-	m_directionLight->SetDirection({ 0.707f, -0.707f, 0.0f });
-	m_directionLight->SetColor({ 100.5f, 100.5f, 100.5f, 1.0f });
+	CSkeleton ligLoc;
+	ligLoc.Load(L"loc/light.tks");
+	for (int i = 1; i < ligLoc.GetNumBones(); i++) {
+		CBone* bone = ligLoc.GetBone(i);
+		prefab::CPointLight* ptLig = NewGO<prefab::CPointLight>(0);
+		const CMatrix& mat = bone->GetBindPoseMatrix();
+		CVector3 pos;
+		pos.x = mat.m[3][0];
+		pos.y = mat.m[3][2];
+		pos.z = -mat.m[3][1];
+		ptLig->SetPosition(pos);
+		ptLig->SetColor({
+			200.0f,
+			200.0f,
+			100.0f,
+			1.0f
+		});
+		ptLig->SetAttn({
+			550.0f,
+			3.0f,
+			0.1f
+		});
+		m_pointLight.push_back(ptLig);
+	}
 
 }
 bool Game::Start()
 {
 	//カメラを設定。
 	MainCamera().SetTarget({ 0.0f, 50.0f, 0.0f });
-	MainCamera().SetPosition({ 0.0f, 250.0f, 350.0f });
+	MainCamera().SetPosition({ 0.0f, 300.0f, 300.0f });
 	MainCamera().SetNear(1.0f);
 	MainCamera().SetFar(10000.0f);
 	MainCamera().Update();
@@ -44,7 +64,9 @@ void Game::OnDestroy()
 {
 	DeleteGO(m_player);
 	DeleteGO(m_background);
-	DeleteGO(m_directionLight);
+	for (auto pt : m_pointLight) {
+		DeleteGO(pt);
+	}
 	DeleteGO(m_gameCamera);
 }
 void Game::Update()

@@ -3,6 +3,7 @@
  */
 #include "stdafx.h"
 #include "Background.h"
+#include "tkEngine/graphics/tkPresetRenderState.h"
 
 bool Background::Start()
 {
@@ -17,7 +18,23 @@ bool Background::Start()
 	m_rigidBody.Create(rbInfo);
 	PhysicsWorld().AddRigidBody(m_rigidBody);
 
+	//背景描画用のラスタライザステートを作る。
+	D3D11_RASTERIZER_DESC desc = {};
+	ID3D11Device* pd3d = GraphicsEngine().GetD3DDevice();
+	desc.CullMode = D3D11_CULL_NONE;
+	desc.FillMode = D3D11_FILL_SOLID;
+	desc.DepthClipEnable = true;
+	desc.MultisampleEnable = true;
+
+	pd3d->CreateRasterizerState(&desc, &m_rasterizerState);
+
 	return true;
+}
+void Background::OnDestroy()
+{
+	if (m_rasterizerState) {
+		m_rasterizerState->Release();
+	}
 }
 void Background::Update()
 {
@@ -25,5 +42,7 @@ void Background::Update()
 }
 void Background::Render(CRenderContext& rc)
 {
+	rc.RSSetState(m_rasterizerState);
 	m_skinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
+	rc.RSSetState(RasterizerState::sceneRender);
 }
