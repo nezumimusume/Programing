@@ -26,6 +26,9 @@
     <Filter Include="Assets\loc">
       <UniqueIdentifier>{406e583e-64de-4bd8-8f81-f013062a50ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\animData\animData">
+      <UniqueIdentifier>{a184aebb-2fc4-4ba3-8fe1-33b59bf98545}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -34,6 +37,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Enemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -44,6 +48,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Enemy.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc">
@@ -55,6 +60,9 @@
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Assets\modelData\background.FBX">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\enemy.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
   </ItemGroup>
@@ -122,6 +130,10 @@
     <CustomBuild Include="Assets\shader\sampleBRDF.h">
       <Filter>Assets\shader</Filter>
     </CustomBuild>
+    <CustomBuild Include="Assets\loc\light.tks" />
+    <CustomBuild Include="Assets\animData\enemy\idle.tka">
+      <Filter>Assets\animData\animData</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\modelData\utc_spec.tga">
@@ -132,8 +144,8 @@
     </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\loc\light.tks">
-      <Filter>Assets\loc</Filter>
+    <None Include="Assets\modelData\enemy.tks">
+      <Filter>Assets\modelData</Filter>
     </None>
   </ItemGroup>
 </Project>
