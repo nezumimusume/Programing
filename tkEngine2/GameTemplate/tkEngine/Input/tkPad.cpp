@@ -51,7 +51,7 @@ namespace tkEngine{
 			{ enButtonA			, 'J' },
 			{ enButtonB			, 'K' },
 			{ enButtonY			, 'I' },
-			{ enButtonX			, 'O' },
+			{ enButtonX			, 'L' },
 			{ enButtonSelect	, VK_SPACE },
 			{ enButtonStart		, VK_RETURN },
 			{ enButtonRB1		, '7' },
