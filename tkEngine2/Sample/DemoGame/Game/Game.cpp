@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "Background.h"
+#include "Enemy.h"
 #include "tkEngine/light/tkPointLight.h"
 #include "GameCamera.h"
 
@@ -58,6 +59,9 @@ bool Game::Start()
 	CVector3 dir = { 1.0f, -1.0f, -1.0f };
 	dir.Normalize();
 	GraphicsEngine().GetShadowMap().SetLightDirection(dir);
+
+	Enemy* enemy = NewGO <Enemy>(0);
+	m_enemyList.push_back(enemy);
 	return true;
 }
 void Game::OnDestroy() 

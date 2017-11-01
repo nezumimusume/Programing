@@ -123,7 +123,7 @@ void Player::Update()
 	m_position = m_charaCon.Execute(GameTime().GetFrameDeltaTime(), m_moveSpeed);
 	CQuaternion q = m_rotation;
 	q.Multiply(qRot);
-	m_skinModel.Update(m_position, q, CVector3::One);
+	m_skinModel.Update(m_position, q, {3.0f, 3.0f, 3.0f});
 }
 void Player::OnDestroy()
 {

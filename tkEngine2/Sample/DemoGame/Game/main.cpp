@@ -16,17 +16,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	initParam.hInstance = hInstance;
 	initParam.screenWidth = 1280;
 	initParam.screenHeight = 720;
-	initParam.frameBufferWidth = 1280;
-	initParam.frameBufferHeight = 720;
+	initParam.frameBufferWidth = 320;
+	initParam.frameBufferHeight = 180;
 	//影の設定。
 	initParam.graphicsConfing.shadowRenderConfig.isEnable = true;
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapWidth = 1024;
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapHeight = 1024;
 	initParam.graphicsConfing.shadowRenderConfig.isEnableSoftShadow = true;
 	//アンチ
-	initParam.graphicsConfing.aaConfig.isEnable = true;
+	initParam.graphicsConfing.aaConfig.isEnable = false;
 	//Bloom
-	initParam.graphicsConfing.bloomConfig.isEnable = true;
+	initParam.graphicsConfing.bloomConfig.isEnable = false;
 	//tonemap
 	initParam.graphicsConfing.tonemapConfig.isEnable = true;
 	//ディザリング。
