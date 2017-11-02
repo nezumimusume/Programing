@@ -94,3 +94,20 @@ public:
 private:
 	CVector3 m_beforePos = CVector3::Zero;
 };
+
+class Command_WalkForwardRight : public ICommand {
+public:
+	Command_WalkForwardRight()
+	{
+	}
+	~Command_WalkForwardRight()
+	{
+	}
+	void Execute(GameActor& actor) override;
+	/*!
+	*@brief		アンドゥを実行。
+	*/
+	void Undo(GameActor& actor) override;
+private:
+	CVector3 m_beforePos = CVector3::Zero;
+};

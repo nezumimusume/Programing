@@ -134,6 +134,12 @@
     <CustomBuild Include="Assets\animData\enemy\idle.tka">
       <Filter>Assets\animData\animData</Filter>
     </CustomBuild>
+    <CustomBuild Include="Assets\animData\enemy\run.tka">
+      <Filter>Assets\animData\animData</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\modelData\enemy.tks">
+      <Filter>Assets\modelData</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\modelData\utc_spec.tga">
@@ -142,10 +148,5 @@
     <ImageContentTask Include="Assets\modelData\utc_nomal.tga">
       <Filter>Assets\modelData</Filter>
     </ImageContentTask>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\modelData\enemy.tks">
-      <Filter>Assets\modelData</Filter>
-    </None>
   </ItemGroup>
 </Project>

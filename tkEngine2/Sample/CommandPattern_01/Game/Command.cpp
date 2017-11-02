@@ -59,3 +59,16 @@ void Command_WalkLeft::Undo(GameActor& actor)
 {
 	actor.SetPosition(m_beforePos);
 }
+
+void Command_WalkForwardRight::Execute(GameActor& actor)
+{
+	m_beforePos = actor.GetPosition();
+	actor.Walk({ -200.0f, 0.0f, -200.0f });
+}
+/*!
+*@brief		アンドゥを実行。
+*/
+void Command_WalkForwardRight::Undo(GameActor& actor)
+{
+	actor.SetPosition(m_beforePos);
+}

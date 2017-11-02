@@ -19,8 +19,11 @@ bool Enemy::Start()
 
 	m_animClip[enAnimationClip_idle].Load(L"animData/enemy/idle.tka");
 	m_animClip[enAnimationClip_idle].SetLoopFlag(true);
+	m_animClip[enAnimationClip_run].Load(L"animData/enemy/run.tka");
+	m_animClip[enAnimationClip_run].SetLoopFlag(true);
+
 	m_animation.Init(m_skinModelData, m_animClip, enAnimationClip_num);
-	m_animation.Play(enAnimationClip_idle);
+	m_animation.Play(enAnimationClip_run);
 	return true;
 }
 void Enemy::Update()

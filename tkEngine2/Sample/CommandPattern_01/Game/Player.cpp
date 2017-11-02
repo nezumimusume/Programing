@@ -28,7 +28,10 @@ void Player::Update()
 	//			 右斜め前は前進＋右のキー入力で行いなさい。
 	//Question 2 Command.h,cppに左斜め前に移動するコマンドを追加して、移動できるようにしなさい。
 	//			 左斜め前は前進＋左のキー入力で行いなさい。
-	if (Pad(0).IsPress(enButtonY)) {
+	if (Pad(0).IsPress(enButtonY)
+		&& Pad(0).IsPress(enButtonX)) {
+		command = std::make_shared<Command_WalkForwardRight>();
+	}else if (Pad(0).IsPress(enButtonY)) {
 		//前に進むコマンドを生成。
 		command =std::make_shared<Command_WalkForward>();
 	}else if (Pad(0).IsPress(enButtonB)) {
