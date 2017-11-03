@@ -16,6 +16,7 @@ Game::~Game()
 }
 void Game::InitSceneLight()
 {
+	//ライトを配置。
 	CSkeleton ligLoc;
 	ligLoc.Load(L"loc/light.tks");
 	for (int i = 1; i < ligLoc.GetNumBones(); i++) {
@@ -41,6 +42,22 @@ void Game::InitSceneLight()
 		m_pointLight.push_back(ptLig);
 	}
 
+	//敵を配置
+	CSkeleton enemyLoc;
+	enemyLoc.Load(L"loc/enemy.tks");
+	for (int i = 1; i < enemyLoc.GetNumBones(); i++) {
+		CBone* bone = enemyLoc.GetBone(i);
+		Enemy* enemy = NewGO <Enemy>(0);
+		m_enemyList.push_back(enemy);
+	
+		const CMatrix& mat = bone->GetBindPoseMatrix();
+		CVector3 pos;
+		pos.x = mat.m[3][0];
+		pos.y = mat.m[3][2];
+		pos.z = -mat.m[3][1];
+		enemy->SetPosition(pos);
+	}
+
 }
 bool Game::Start()
 {
@@ -60,8 +77,7 @@ bool Game::Start()
 	dir.Normalize();
 	GraphicsEngine().GetShadowMap().SetLightDirection(dir);
 
-	Enemy* enemy = NewGO <Enemy>(0);
-	m_enemyList.push_back(enemy);
+	
 	return true;
 }
 void Game::OnDestroy() 

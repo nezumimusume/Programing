@@ -29,7 +29,7 @@ bool Enemy::Start()
 void Enemy::Update()
 {
 	m_animation.Update(GameTime().GetFrameDeltaTime());
-	m_skinModel.Update(CVector3::Zero, CQuaternion::Identity, {3.0f, 3.0f, 3.0f});
+	m_skinModel.Update(m_position, CQuaternion::Identity, {3.0f, 3.0f, 3.0f});
 }
 void Enemy::Render(CRenderContext& rc)
 {
