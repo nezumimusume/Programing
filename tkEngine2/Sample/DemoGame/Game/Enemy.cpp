@@ -23,7 +23,7 @@ bool Enemy::Start()
 	m_animClip[enAnimationClip_run].SetLoopFlag(true);
 
 	m_animation.Init(m_skinModelData, m_animClip, enAnimationClip_num);
-	m_animation.Play(enAnimationClip_run);
+	m_animation.Play(enAnimationClip_idle);
 	return true;
 }
 void Enemy::Update()

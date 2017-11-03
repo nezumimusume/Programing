@@ -4,6 +4,7 @@
 #include "tkEngine/tkEnginePrecompile.h"
 #include "tkEngine/graphics/tkSkeleton.h"
 #include "tkEngine/graphics/tkSkinModelShaderConst.h"
+#include <comdef.h> 
 
 namespace tkEngine {
 	namespace {
@@ -104,7 +105,19 @@ namespace tkEngine {
 				parentId
 			);
 
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+			//ボーンのバリデーションチェック。
+			//maxScriptでやりたいところではあるが、とりあえずこっち。
+			auto it = std::find_if(m_bones.begin(), m_bones.end(), [&](auto& bone) {return wcscmp(boneName, bone->GetName()) == 0;  });
+			if (it != m_bones.end()) {
+				//同名のボーンが見つかった。
+				_bstr_t b(boneName);
+				const char* c = b;
+				TK_WARNING_MESSAGE_BOX("同名のボーンが見つかりました。未定の動作です。データを修正してください。%s", c);
+			}
+#endif
 			m_bones.push_back(std::move(bone));
+
 
 		}
 		fclose(fp);
