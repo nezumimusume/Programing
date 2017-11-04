@@ -17,6 +17,7 @@ bool GameCamera::Start()
 	//カメラのニアクリップとファークリップを設定する。
 	MainCamera().SetNear(1.0f);
 	MainCamera().SetFar(10000.0f);
+	m_springCamera.Init(MainCamera(), 1200.0f, false, 20.0f);
 	return true;
 }
 void GameCamera::Update()
@@ -30,9 +31,21 @@ void GameCamera::Update()
 	CVector3 toPos = { 0.0f, 350.0f, 550.0f };
 	CVector3 pos = target + toPos;	//キャラクタを斜め上から見ているような視点にする。
 	//メインカメラに注視点と視点を設定する。
-	MainCamera().SetTarget(target);
-	MainCamera().SetPosition(pos);
-
-	//カメラの更新。
-	MainCamera().Update();
+	m_springCamera.SetTarget(target);
+	m_springCamera.SetPosition(pos);
+	m_springCamera.Update();
+}
+void GameCamera::NotifyGameOver()
+{
+	//バネカメラをリフレッシュ。
+	m_springCamera.Refresh();
+	//バネカメラを非アクティブにする。
+	m_isActive = false;
+}
+void GameCamera::NotifyRestart()
+{
+	//バネカメラをリフレッシュ。
+	m_springCamera.Refresh();
+	//バネカメラを非アクティブにする。
+	m_isActive = true;
 }

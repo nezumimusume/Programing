@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Enemy.h"
-
-
+#include "Player.h"
+#include "Game.h"
 Enemy::Enemy() :
 	m_pathMoveLoop(this, m_movePath)
 {
@@ -27,12 +27,38 @@ bool Enemy::Start()
 	m_animation.Play(enAnimationClip_idle);
 
 	m_charaCon.Init(20.0f, 100.0f, -1800.0f, m_position);
+	m_player = FindGO<Player>("Player");
+	m_game = FindGO<Game>("Game");
 	return true;
+}
+
+void Enemy::NotifyRestart()
+{
+	m_isFindPlayer = false;
+}
+void Enemy::SearchPlayer()
+{
+	CVector3 toPlayer = m_player->GetPosition() - m_position;
+	if (toPlayer.Length() < 400.0f) {
+		//視野角を判定。
+		toPlayer.Normalize();
+
+		float angle = acosf(toPlayer.Dot(m_forward));
+		if (fabsf(angle) < CMath::PI * 0.25f) {
+			//視野角45度以内。
+			//ゲームにゲームオーバーを通知。
+			Game* game = FindGO<Game>("Game");
+			game->NotifyGameOver();
+			m_isFindPlayer = true;
+		}
+	}
 }
 void Enemy::Update()
 {
-	m_pathMoveLoop.Update();
-
+	if (!m_game->IsGameOver()) {
+		SearchPlayer();
+		m_pathMoveLoop.Update();
+	}
 	m_animation.Update(GameTime().GetFrameDeltaTime());
 	const CVector3 scale = { 3.0f, 3.0f, 3.0f };
 	m_skinModel.Update(m_position, m_rotation, scale);

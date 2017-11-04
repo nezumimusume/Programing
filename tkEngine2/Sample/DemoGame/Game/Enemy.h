@@ -4,6 +4,8 @@
 #include "EnemyPathMoveLoop.h"
 #include "tkEngine/character/tkCharacterController.h"
 
+class Player;
+class Game;
 class Enemy : public IGameObject
 {
 public:
@@ -51,7 +53,7 @@ public:
 	 *@brief	アニメーションを再生。
 	 *@param[in]	animNo		アニメーション番号。
 	 */
-	void PlayAnimation(EnAnimationClip animNo )
+	void PlayAnimation(EnAnimationClip animNo)
 	{
 		m_animation.Play(animNo);
 	}
@@ -66,6 +68,22 @@ public:
 	{
 		return m_forward;
 	}
+	/*!
+	 *@brief	プレイヤーを発見したか判定。
+	 */
+	bool IsFindPlayer() const
+	{
+		return m_isFindPlayer;
+	}
+	/*!
+	 *@brief	リスタートを通知。
+	 */
+	void NotifyRestart();
+private:
+	/*!
+	 *@brief	プレイヤーを索敵
+	 */
+	void SearchPlayer();
 private:
 	
 	
@@ -79,5 +97,8 @@ private:
 	EnemyPathMoveLoop m_pathMoveLoop;				//!<パスのループ移動思考。
 	CCharacterController m_charaCon;				//!<キャラクタコントローラ。
 	CVector3 m_forward = CVector3::AxisZ;			//!<エネミーの前方方向。
+	Player* m_player = nullptr;						//!<プレイヤー。
+	Game* m_game = nullptr;
+	bool m_isFindPlayer = false;					//!<プレイヤーを発見。
 };
 

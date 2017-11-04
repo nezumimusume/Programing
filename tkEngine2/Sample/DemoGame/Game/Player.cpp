@@ -1,5 +1,6 @@
 
 #include "stdafx.h"
+#include "Game.h"
 #include "Player.h"
 #include "tkEngine/light/tkDirectionLight.h"
 
@@ -37,6 +38,7 @@ bool Player::Start()
 	m_charaLight->SetLightingMaterialIDGroup(1 << enMaterialID_Chara);
 	m_charaLight->SetColor({ 300.0f, 300.0f, 300.0f, 1.0f });
 	m_charaCon.Init(20.0f, 100.0f, -1800.0f, m_position);
+	m_game = FindGO<Game>("Game");
 	return true;
 }
 void Player::Turn()
@@ -84,8 +86,14 @@ void Player::UpdateFSM()
 			m_state = enState_Idle;
 		}
 		break;
-	case enState_GameOver:
-		break;
+	case enState_GameOver: {
+		if (!m_animation.IsPlaying()) {
+			m_game->NotifyRestart();
+		}
+		m_moveSpeed.x = 0.0f;
+		m_moveSpeed.z = 0.0f;
+
+	}break;
 	}
 }
 void Player::Move()
@@ -110,20 +118,34 @@ void Player::Move()
 }
 void Player::Update()
 {
-	
 	UpdateFSM();
+	//キャラクタを移動させる。
+	m_position = m_charaCon.Execute(GameTime().GetFrameDeltaTime(), m_moveSpeed);
+	
 	//キャラライトはカメラの方向にする。
 	m_charaLight->SetDirection(MainCamera().GetForward());
-	m_animation.Update(GameTime().GetFrameDeltaTime());
 	CQuaternion qRot = CQuaternion::Identity;
 	qRot.SetRotationDeg(CVector3::AxisX, 90.0f);	//寝てるので起こす。
 													//ワールド行列を更新。
-
-	//キャラクタを移動させる。
-	m_position = m_charaCon.Execute(GameTime().GetFrameDeltaTime(), m_moveSpeed);
 	CQuaternion q = m_rotation;
 	q.Multiply(qRot);
 	m_skinModel.Update(m_position, q, CVector3::One);
+	m_animation.Update(GameTime().GetFrameDeltaTime());
+}
+
+void Player::NotifyGameOver()
+{
+	m_animation.Play(enAnimationClip_KneelDown);
+	m_charaCon.SetPosition(m_position);
+	m_state = enState_GameOver;
+}
+
+void Player::NotifyRestart()
+{
+	m_animation.Play(enAnimationClip_idle);
+	m_state = enState_Idle;
+	m_position = CVector3::Zero;
+	m_charaCon.SetPosition(m_position);
 }
 void Player::OnDestroy()
 {

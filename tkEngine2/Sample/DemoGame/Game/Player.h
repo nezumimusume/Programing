@@ -5,7 +5,7 @@
 #pragma once
 
 #include "tkEngine/character/tkCharacterController.h"
-
+class Game;
 class Player : public IGameObject{
 public:
 
@@ -17,6 +17,14 @@ public:
 	{
 		return m_position;
 	}
+	/*!
+	 *@brief	ゲームオーバーを通血。
+	 */
+	void NotifyGameOver();
+	/*!
+	 *@brief	リスタートを通知。
+	 */
+	void NotifyRestart();
 private:
 	void UpdateFSM();
 	void Move();
@@ -51,4 +59,5 @@ private:
 	CShaderResourceView m_normalMap;		//法線マップ。
 	CShaderResourceView m_specMap;			//スペキュラマップ。
 	EnState m_state = enState_Idle;
+	Game* m_game = nullptr;
 };

@@ -43,6 +43,8 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="EnemyPathMoveLoop.cpp" />
+    <ClCompile Include="GameOverControl.cpp" />
+    <ClCompile Include="GameOverCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -56,6 +58,8 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="EnemyPathMoveLoop.h" />
+    <ClInclude Include="GameOverControl.h" />
+    <ClInclude Include="GameOverCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc">
@@ -152,6 +156,18 @@
     <CustomBuild Include="Assets\loc\enemy.tks">
       <Filter>Assets\loc</Filter>
     </CustomBuild>
+    <CustomBuild Include="Assets\pathData\enemy04_path.tks">
+      <Filter>Assets\pathData</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\pathData\enemy02_path.tks">
+      <Filter>Assets\pathData</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\pathData\enemy01_path.tks">
+      <Filter>Assets\pathData</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\pathData\enemy05_path.tks">
+      <Filter>Assets\pathData</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\modelData\utc_spec.tga">
@@ -160,16 +176,5 @@
     <ImageContentTask Include="Assets\modelData\utc_nomal.tga">
       <Filter>Assets\modelData</Filter>
     </ImageContentTask>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\pathData\enemy01_path.tks">
-      <Filter>Assets\pathData</Filter>
-    </None>
-    <None Include="Assets\pathData\enemy02_path.tks">
-      <Filter>Assets\pathData</Filter>
-    </None>
-    <None Include="Assets\pathData\enemy04_path.tks">
-      <Filter>Assets\pathData</Filter>
-    </None>
   </ItemGroup>
 </Project>

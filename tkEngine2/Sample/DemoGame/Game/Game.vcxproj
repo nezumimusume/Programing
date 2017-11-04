@@ -708,6 +708,8 @@
     <ClCompile Include="EnemyPathMoveLoop.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="GameOverCamera.cpp" />
+    <ClCompile Include="GameOverControl.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -766,6 +768,8 @@
     <ClInclude Include="EnemyPathMoveLoop.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="GameOverCamera.h" />
+    <ClInclude Include="GameOverControl.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="Player.h" />
     <CLInclude Include="resource.h" />
@@ -1080,6 +1084,11 @@
       <FileType>Document</FileType>
     </CustomBuild>
     <CustomBuild Include="Assets\pathData\enemy04_path.tks">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\pathData\enemy05_path.tks">
       <FileType>Document</FileType>
     </CustomBuild>
   </ItemGroup>

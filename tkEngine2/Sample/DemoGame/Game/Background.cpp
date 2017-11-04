@@ -32,6 +32,7 @@ bool Background::Start()
 }
 void Background::OnDestroy()
 {
+	PhysicsWorld().RemoveRigidBody(m_rigidBody);
 	if (m_rasterizerState) {
 		m_rasterizerState->Release();
 	}

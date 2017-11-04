@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include "tkEngine/light/tkPointLight.h"
 #include "GameCamera.h"
+#include "GameOverControl.h"
 
 Game::Game()
 {
@@ -89,7 +90,28 @@ void Game::OnDestroy()
 	for (auto pt : m_pointLight) {
 		DeleteGO(pt);
 	}
+	for (auto enemy : m_enemyList) {
+		DeleteGO(enemy);
+	}
 	DeleteGO(m_gameCamera);
+}
+void Game::NotifyGameOver()
+{
+	m_isGameOver = true;
+	m_player->NotifyGameOver();
+	m_gameCamera->NotifyGameOver();
+	//ゲームオーバー制御を作成。
+	m_gameOverControl = NewGO<GameOverControl>(0);
+}
+void Game::NotifyRestart()
+{
+	m_isGameOver = false;
+	m_gameCamera->NotifyRestart();
+	m_player->NotifyRestart();
+	for (auto& enemy : m_enemyList) {
+		enemy->NotifyRestart();
+	}
+	DeleteGO(m_gameOverControl);
 }
 void Game::Update()
 {
