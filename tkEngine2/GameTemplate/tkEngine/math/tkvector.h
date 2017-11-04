@@ -241,14 +241,36 @@ namespace tkEngine{
 			DirectX::XMVECTOR xmv1 = DirectX::XMLoadFloat3(&vMin.vec);
 			DirectX::XMStoreFloat3(&vec, DirectX::XMVectorMin(xmv0, xmv1));
 		}
+		/*!
+		 *@brief	‰ÁZ‘ã“ü‰‰ZqB
+		 */
 		const CVector3& operator+=(const CVector3& _v)
 		{
 			Add(_v);
 			return *this;
 		}
+		/*!
+		*@brief@æZ‘ã“ü‰‰ZqB
+		*/
 		const CVector3& operator*=(float s) 
 		{
 			Scale(s);
+			return *this;
+		}
+		/*!
+		*@brief	Œ¸Z‘ã“ü‰‰ZqB
+		*/
+		const CVector3& operator-=(const CVector3& _v)
+		{
+			Subtract(_v);
+			return *this;
+		}
+		/*!
+		 *@brief	œZ‘ã“ü‰‰ZqB
+		 */
+		const CVector3& operator/=(const float s)
+		{
+			Div(s);
 			return *this;
 		}
 	};
@@ -526,6 +548,27 @@ namespace tkEngine{
 		TVector result;
 		result = v;
 		result.Scale(s);
+		return result;
+	}
+	/*!
+	*@brief	ƒxƒNƒgƒ‹‚ÌœZB
+	*/
+	template<class TVector>
+	static inline TVector operator/(const TVector& v, float s)
+	{
+		TVector result;
+		result = v;
+		result.Div(s);
+		return result;
+	}
+	/*!
+	*@brief	ƒxƒNƒgƒ‹“¯m‚ÌŒ¸ZB
+	*/
+	template<class TVector>
+	static inline TVector operator-(const TVector& v0, const TVector& v1)
+	{
+		TVector result;
+		result.Subtract(v0, v1);
 		return result;
 	}
 }

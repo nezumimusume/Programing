@@ -22,5 +22,6 @@ private:
 	Background* m_background = nullptr;
 	GameCamera* m_gameCamera = nullptr;
 	std::vector<prefab::CPointLight*> m_pointLight;
+
 };
 

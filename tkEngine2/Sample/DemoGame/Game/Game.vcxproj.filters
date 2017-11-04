@@ -29,6 +29,9 @@
     <Filter Include="Assets\animData\animData">
       <UniqueIdentifier>{a184aebb-2fc4-4ba3-8fe1-33b59bf98545}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\pathData">
+      <UniqueIdentifier>{3bac8ca1-9e8d-4237-8c0b-7cecc3146e2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -38,6 +41,8 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Path.cpp" />
+    <ClCompile Include="EnemyPathMoveLoop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -49,6 +54,8 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Path.h" />
+    <ClInclude Include="EnemyPathMoveLoop.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc">
@@ -142,6 +149,9 @@
     <CustomBuild Include="Assets\loc\light.tks">
       <Filter>Assets\loc</Filter>
     </CustomBuild>
+    <CustomBuild Include="Assets\loc\enemy.tks">
+      <Filter>Assets\loc</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\modelData\utc_spec.tga">
@@ -152,8 +162,14 @@
     </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\loc\enemy.tks">
-      <Filter>Assets\loc</Filter>
+    <None Include="Assets\pathData\enemy01_path.tks">
+      <Filter>Assets\pathData</Filter>
+    </None>
+    <None Include="Assets\pathData\enemy02_path.tks">
+      <Filter>Assets\pathData</Filter>
+    </None>
+    <None Include="Assets\pathData\enemy04_path.tks">
+      <Filter>Assets\pathData</Filter>
     </None>
   </ItemGroup>
 </Project>

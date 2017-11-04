@@ -24,9 +24,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapHeight = 1024;
 	initParam.graphicsConfing.shadowRenderConfig.isEnableSoftShadow = true;
 	//アンチ
-	initParam.graphicsConfing.aaConfig.isEnable = false;
+	initParam.graphicsConfing.aaConfig.isEnable = true;
 	//Bloom
-	initParam.graphicsConfing.bloomConfig.isEnable = false;
+	initParam.graphicsConfing.bloomConfig.isEnable = true;
 	//tonemap
 	initParam.graphicsConfing.tonemapConfig.isEnable = true;
 	//ディザリング。

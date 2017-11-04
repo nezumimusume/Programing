@@ -87,6 +87,13 @@ namespace tkEngine{
 		{
 			m_isShadowReceiver = flag;
 		}
+		/*!
+		 *@brief	ワールド行列を取得。
+		 */
+		const CMatrix& GetWorldMatrix() const
+		{
+			return m_worldMatrix;
+		}
 	private:
 		struct SVSConstantBuffer {
 			CMatrix mWorld;

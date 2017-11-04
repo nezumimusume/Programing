@@ -705,9 +705,11 @@
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyPathMoveLoop.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Path.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -761,8 +763,10 @@
     </CustomBuild>
     <ClInclude Include="Background.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyPathMoveLoop.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Path.h" />
     <ClInclude Include="Player.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -1063,6 +1067,19 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Assets\loc\enemy.tks">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\pathData\enemy01_path.tks">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\pathData\enemy02_path.tks">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="Assets\pathData\enemy04_path.tks">
       <FileType>Document</FileType>
     </CustomBuild>
   </ItemGroup>

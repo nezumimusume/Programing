@@ -2,7 +2,8 @@
 #include "Enemy.h"
 
 
-Enemy::Enemy()
+Enemy::Enemy() :
+	m_pathMoveLoop(this, m_movePath)
 {
 }
 
@@ -24,12 +25,24 @@ bool Enemy::Start()
 
 	m_animation.Init(m_skinModelData, m_animClip, enAnimationClip_num);
 	m_animation.Play(enAnimationClip_idle);
+
+	m_charaCon.Init(20.0f, 100.0f, -1800.0f, m_position);
 	return true;
 }
 void Enemy::Update()
 {
+	m_pathMoveLoop.Update();
+
 	m_animation.Update(GameTime().GetFrameDeltaTime());
-	m_skinModel.Update(m_position, CQuaternion::Identity, {3.0f, 3.0f, 3.0f});
+	const CVector3 scale = { 3.0f, 3.0f, 3.0f };
+	m_skinModel.Update(m_position, m_rotation, scale);
+	const CMatrix& mWorld = m_skinModel.GetWorldMatrix();
+	
+	CMatrix mRot;
+	mRot.MakeRotationFromQuaternion(m_rotation);
+	m_forward.x = mRot.m[2][0];
+	m_forward.y = mRot.m[2][1];
+	m_forward.z = mRot.m[2][2];
 }
 void Enemy::Render(CRenderContext& rc)
 {

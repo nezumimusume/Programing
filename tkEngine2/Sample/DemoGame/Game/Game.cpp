@@ -56,8 +56,10 @@ void Game::InitSceneLight()
 		pos.y = mat.m[3][2];
 		pos.z = -mat.m[3][1];
 		enemy->SetPosition(pos);
+		wchar_t moveFilePath[256];
+		swprintf_s(moveFilePath, L"pathData/enemy0%d_path.tks", i);
+		enemy->Init(moveFilePath);
 	}
-
 }
 bool Game::Start()
 {
