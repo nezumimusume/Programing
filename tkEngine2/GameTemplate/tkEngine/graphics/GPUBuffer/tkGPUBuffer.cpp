@@ -12,6 +12,7 @@ namespace tkEngine{
 	}
 	CGPUBuffer::~CGPUBuffer()
 	{
+		Release();
 	}
 	void CGPUBuffer::Release()
 	{

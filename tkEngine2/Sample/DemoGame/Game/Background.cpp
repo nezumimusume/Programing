@@ -5,12 +5,16 @@
 #include "Background.h"
 #include "tkEngine/graphics/tkPresetRenderState.h"
 
+
 bool Background::Start()
 {
+
 	m_skinModelData.Load(L"modelData/Background.cmo");
+
 	m_skinModel.Init(m_skinModelData);
 	m_skinModel.SetShadowReceiverFlag(true);
 	m_skinModel.SetShadowCasterFlag(true);
+
 	m_meshCollider.CreateFromSkinModel(m_skinModel, nullptr);
 	RigidBodyInfo rbInfo;
 	rbInfo.collider = &m_meshCollider;
@@ -27,6 +31,7 @@ bool Background::Start()
 	desc.MultisampleEnable = true;
 
 	pd3d->CreateRasterizerState(&desc, &m_rasterizerState);
+
 
 	return true;
 }

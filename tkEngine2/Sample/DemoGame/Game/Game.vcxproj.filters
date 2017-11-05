@@ -200,4 +200,9 @@
       <Filter>Assets\modelData</Filter>
     </ImageContentTask>
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\sound\coinGet.wav">
+      <Filter>Assets\sound</Filter>
+    </Media>
+  </ItemGroup>
 </Project>

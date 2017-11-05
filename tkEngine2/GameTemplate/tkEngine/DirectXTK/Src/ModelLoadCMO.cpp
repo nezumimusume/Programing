@@ -688,7 +688,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
                 m.effect = fxFactory.CreateEffect( info, nullptr );
             }
 
-            CreateInputLayout( d3dDevice, m.effect.get(), &m.il, enableSkinning );
+			CreateInputLayout( d3dDevice, m.effect.get(), &m.il, enableSkinning );
         }
 
         // Build mesh parts

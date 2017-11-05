@@ -22,8 +22,10 @@ namespace tkEngine{
 		CMatrix mBias;
 		mBias.MakeRotationX(CMath::PI * -0.5f);
 		m_stridingMeshInterface = std::make_unique<btTriangleIndexVertexArray>();
+		int numMesh = 0;
 		model.FindMesh(
 			[&](const auto& mesh){
+				numMesh++;
 				ID3D11DeviceContext* deviceContext = GraphicsEngine().GetD3DDeviceContext();
 				//頂点バッファを作成。
 				{

@@ -14,3 +14,7 @@ enum EnMaterialID {
 	enMaterialID_Chara = 1,
 	enMaterialID_Star,
 };
+
+enum EnGameObjectTags {
+	enGameObject_Star = 100,
+};

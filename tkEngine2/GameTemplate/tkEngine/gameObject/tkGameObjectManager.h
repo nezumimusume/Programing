@@ -155,13 +155,13 @@ namespace tkEngine{
 		*@brief	指定したタグのいずれかがが含まれるゲームオブジェクトを検索して、見つかった場合指定されたコールバック関数を呼び出す。
 		*/
 		
-		void FindGameObjectsWithTag(unsigned int tags, void (*func)(IGameObject* go) )
+		void FindGameObjectsWithTag(unsigned int tags, std::function<void(IGameObject* go)>func)
 		{
 			for (auto& goList : m_gameObjectListArray) {
 				for (auto& go : goList) {
 					unsigned int goTags = go->GetTags();
 					if ((goTags & tags) != 0) {
-						(*func)(go);
+						func(go);
 					}
 				}
 			}
@@ -223,7 +223,7 @@ namespace tkEngine{
 	/*!
 	*@brief	指定したタグのいずれかがが含まれるゲームオブジェクトを検索して、見つかった場合指定されたコールバック関数を呼び出す。
 	*/
-	static inline 	void FindGameObjectsWithTag(unsigned int tags, void (*func)(IGameObject* go))
+	static inline 	void FindGameObjectsWithTag(unsigned int tags, std::function<void(IGameObject* go)>func)
 	{
 		GameObjectManager().FindGameObjectsWithTag(tags, func);
 	}

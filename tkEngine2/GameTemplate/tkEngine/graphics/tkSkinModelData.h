@@ -46,6 +46,18 @@ namespace tkEngine{
 			m_psShader.Load("shader/model.fx", "PSMain", CShader::EnType::PS);
 			m_psRenderToDepthShader.Load("shader/model.fx", "PSMain_RenderDepth", CShader::EnType::PS);
 		}
+		virtual ~CModelEffect()
+		{
+			if (m_diffuseTex) {
+				m_diffuseTex->Release();
+			}
+			if (m_normalMap) {
+				m_normalMap->Release();
+			}
+			if (m_specularMap) {
+				m_specularMap->Release();
+			}
+		}
 		void __cdecl Apply(ID3D11DeviceContext* deviceContext) override;
 		
 		void __cdecl GetVertexShaderBytecode(void const** pShaderByteCode, size_t* pByteCodeLength) override
@@ -60,10 +72,12 @@ namespace tkEngine{
 		void SetNormalMap(ID3D11ShaderResourceView* tex)
 		{
 			m_normalMap = tex;
+			m_normalMap->AddRef();
 		}
 		void SetSpecularMap(ID3D11ShaderResourceView* tex)
 		{
 			m_specularMap = tex;
+			m_specularMap->AddRef();
 		}
 		void SetMatrialName(const wchar_t* matName)
 		{

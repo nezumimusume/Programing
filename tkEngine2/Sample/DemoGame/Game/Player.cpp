@@ -74,7 +74,7 @@ void Player::Turn()
 void Player::UpdateFSM()
 {
 	Turn();
-	static float JUMP_SPEED = 530.0f;
+	static float JUMP_SPEED = 630.0f;
 	switch (m_state) {
 	case enState_Idle:
 		Move();

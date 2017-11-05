@@ -32,9 +32,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//ディザリング。
 	initParam.graphicsConfing.ditheringConfig.isEnable = true;
 
-	GraphicsEngine().GetShadowMap().SetFar(10000.0f);
-	GraphicsEngine().GetShadowMap().SetNear(10.0f);
-
+	MainCamera().SetNear(100.0f);
+	MainCamera().SetFar(10000.0f);
+	GraphicsEngine().GetShadowMap().SetFar(5000.0f);
+	GraphicsEngine().GetShadowMap().SetNear(500.0f);
+	
 	//エンジンを初期化。
 	if (Engine().Init(initParam) == true) {
 		NewGO<Game>(0, "Game");

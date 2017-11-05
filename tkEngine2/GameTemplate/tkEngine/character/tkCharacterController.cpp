@@ -251,17 +251,20 @@ namespace tkEngine {
 			callback.me = m_rigidBody.GetBody();
 			callback.startPos.Set(start.getOrigin());
 			//衝突検出。
-			PhysicsWorld().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
-			if (callback.isHit) {
-				//当たった。
-				moveSpeed.y = 0.0f;
-				m_isJump = false;
-				m_isOnGround = true;
-				nextPosition.y = callback.hitPos.y;
-			}
-			else {
-				//地面上にいない。
-				m_isOnGround = false;
+			if(fabsf(endPos.y - callback.startPos.y) > FLT_EPSILON){
+				PhysicsWorld().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
+				if (callback.isHit) {
+					//当たった。
+					moveSpeed.y = 0.0f;
+					m_isJump = false;
+					m_isOnGround = true;
+					nextPosition.y = callback.hitPos.y;
+				}
+				else {
+					//地面上にいない。
+					m_isOnGround = false;
+
+				}
 			}
 		}
 		//移動確定。

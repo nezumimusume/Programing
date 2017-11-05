@@ -11,7 +11,7 @@ namespace tkEngine{
 	class CGPUBuffer : Noncopyable{
 	public:
 		CGPUBuffer();
-		~CGPUBuffer();
+		virtual ~CGPUBuffer();
 		/*!
 		* @brief	GPUBufferを作成。
 		*@param[in]	pInitData		初期データ。

@@ -47,7 +47,6 @@ private:
 	GameCamera* m_gameCamera = nullptr;
 	GameOverControl* m_gameOverControl = nullptr;	//!<ゲームオーバーコントロール。
 	std::vector<prefab::CPointLight*> m_pointLight;
-	std::vector<Star*> m_starList;					//!<星のリスト。
 	bool m_isGameOver = false;
 	prefab::CSoundSource* m_bgmSource = nullptr;	//!<BGM
 };

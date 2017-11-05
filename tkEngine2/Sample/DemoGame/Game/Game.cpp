@@ -8,6 +8,8 @@
 #include "GameOverControl.h"
 #include "star.h"
 
+//#define CLASH_DEBUB
+
 Game::Game()
 {
 }
@@ -68,7 +70,6 @@ void Game::InitSceneLight()
 	for (int i = 1; i < starLoc.GetNumBones(); i++) {
 		CBone* bone = starLoc.GetBone(i);
 		Star* star = NewGO <Star>(0);
-		m_starList.push_back(star);
 
 		const CMatrix& mat = bone->GetBindPoseMatrix();
 		CVector3 pos;
@@ -76,11 +77,14 @@ void Game::InitSceneLight()
 		pos.y = mat.m[3][2];
 		pos.z = -mat.m[3][1];
 		star->SetPosition(pos);
+		star->SetTags(enGameObject_Star);	//タグを設定。
 	}
 
 }
 bool Game::Start()
 {
+#ifndef CLASH_DEBUB
+	
 	//カメラを設定。
 	MainCamera().SetTarget({ 0.0f, 50.0f, 0.0f });
 	MainCamera().SetPosition({ 0.0f, 300.0f, 300.0f });
@@ -99,7 +103,7 @@ bool Game::Start()
 	m_bgmSource = NewGO<prefab::CSoundSource>(0);
 	m_bgmSource->Init("sound/normalBGM.wav");
 	m_bgmSource->Play(true);
-	
+#endif
 	return true;
 }
 void Game::OnDestroy() 
@@ -114,6 +118,11 @@ void Game::OnDestroy()
 	}
 	DeleteGO(m_gameCamera);
 	DeleteGO(m_bgmSource);
+	//Starを削除。
+	FindGameObjectsWithTag(enGameObject_Star, [](IGameObject* go) {
+		DeleteGO(go);
+	});
+	NewGO<Game>(0, "Game");
 }
 void Game::NotifyGameOver()
 {
@@ -135,6 +144,28 @@ void Game::NotifyRestart()
 }
 void Game::Update()
 {
+#ifndef CLASH_DEBUB
+	//クリア判定
+	int coinCount = 0;
+	FindGameObjectsWithTag(enGameObject_Star, [&](IGameObject* go) {
+		coinCount++;
+	});
+	if (coinCount == 0) {
+		//全部のコインを取った。
+		TK_WARNING_MESSAGE_BOX("くりあ～");
+		DeleteGO(this);
+	}
+#else
+	if (Pad(0).IsTrigger(enButtonA)) {
+		if (m_background == nullptr) {
+			m_background = NewGO<Background>(0);
+		}
+		else {
+			DeleteGO(m_background);
+			m_background = nullptr;
+		}
+	}
+#endif
 }
 void Game::Render(CRenderContext& rc)
 {
