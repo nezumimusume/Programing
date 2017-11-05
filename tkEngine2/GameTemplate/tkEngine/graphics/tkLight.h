@@ -31,6 +31,17 @@ namespace tkEngine{
 		CVector4	attn;			//!<減衰定数。xはポイントライトの影響が届く範囲。yはポイントライトの減衰率に影響を与えます。
 									//!<yが大きくなると、減衰が強くなります。1.0で線形の減衰率になります。z,wは未使用。
 		unsigned int lightingMaterialIDGroup;	//!<ライトの影響を与えるマテリアルIDのグループ。
-
+	};
+	/*!
+	 * @brief	スポットライト。
+	 * このパラメータを変更したら、LightCulling.fxとmodelStruct.hを変更するように。
+	 */
+	struct SSpotLight{
+		CVector3	position;		//!<位置。
+		CVector3	direction;		//!<方向。
+		CVector3	color;			//!<カラー。
+		CVector4	attn;			//!<減衰定数。xはポイントライトの影響が届く範囲。yはポイントライトの減衰率に影響を与えます。
+									//!<yが大きくなると、減衰が強くなります。1.0で線形の減衰率になります。z,wは未使用。
+		unsigned int lightingMaterialIDGroup;	//!<ライトの影響を与えるマテリアルIDのグループ。
 	};
 }

@@ -40,7 +40,7 @@ void Path::Load(const wchar_t* filePath)
 		pos.y = mat.m[3][2];
 		pos.z = -mat.m[3][1];
 		int pointNo = _wtoi(bone->GetName());
-#ifdef BUILD_LEVEL != BUILD_LEVEL_MASTER
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
 		if (pointNo == 0) {
 			TK_WARNING_MESSAGE_BOX("パスのノードのボーンの名前が不正です。");
 			m_pointList.clear();

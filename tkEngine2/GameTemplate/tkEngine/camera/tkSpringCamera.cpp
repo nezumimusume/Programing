@@ -129,6 +129,8 @@ namespace tkEngine {
 	)
 	{
 		m_camera = &camera;
+		SetTarget(m_camera->GetTarget());
+		SetPosition(m_camera->GetPosition());
 		m_isEnableCollisionSolver = isEnableCollisionSolver;
 		m_cameraCollisionSolver.Init(sphereCollisionRadius);
 		m_targetMoveSpeed = CVector3::Zero;

@@ -52,7 +52,6 @@ namespace tkEngine {
 		FILE* fp = _wfopen(filePath, L"rb");
 
 		if (fp == nullptr) {
-			TK_WARNING("ファイルを開くことに失敗しました。");
 			return false;
 		}
 		//骨の数を取得。

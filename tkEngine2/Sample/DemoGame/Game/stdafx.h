@@ -12,4 +12,5 @@ using namespace tkEngine;
 
 enum EnMaterialID {
 	enMaterialID_Chara = 1,
+	enMaterialID_Star,
 };

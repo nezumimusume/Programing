@@ -6,6 +6,7 @@
 #include "tkEngine/light/tkPointLight.h"
 #include "GameCamera.h"
 #include "GameOverControl.h"
+#include "star.h"
 
 Game::Game()
 {
@@ -61,6 +62,22 @@ void Game::InitSceneLight()
 		swprintf_s(moveFilePath, L"pathData/enemy0%d_path.tks", i);
 		enemy->Init(moveFilePath);
 	}
+	//êØÇîzíu
+	CSkeleton starLoc;
+	starLoc.Load(L"loc/star.tks");
+	for (int i = 1; i < starLoc.GetNumBones(); i++) {
+		CBone* bone = starLoc.GetBone(i);
+		Star* star = NewGO <Star>(0);
+		m_starList.push_back(star);
+
+		const CMatrix& mat = bone->GetBindPoseMatrix();
+		CVector3 pos;
+		pos.x = mat.m[3][0];
+		pos.y = mat.m[3][2];
+		pos.z = -mat.m[3][1];
+		star->SetPosition(pos);
+	}
+
 }
 bool Game::Start()
 {
@@ -79,7 +96,9 @@ bool Game::Start()
 	CVector3 dir = { 1.0f, -1.0f, -1.0f };
 	dir.Normalize();
 	GraphicsEngine().GetShadowMap().SetLightDirection(dir);
-
+	m_bgmSource = NewGO<prefab::CSoundSource>(0);
+	m_bgmSource->Init("sound/normalBGM.wav");
+	m_bgmSource->Play(true);
 	
 	return true;
 }
@@ -94,6 +113,7 @@ void Game::OnDestroy()
 		DeleteGO(enemy);
 	}
 	DeleteGO(m_gameCamera);
+	DeleteGO(m_bgmSource);
 }
 void Game::NotifyGameOver()
 {

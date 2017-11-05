@@ -3,7 +3,30 @@
 #include "Game.h"
 #include "Player.h"
 #include "tkEngine/light/tkDirectionLight.h"
+#include "tkEngine/sound/tkSoundSource.h"
 
+class CSoundEmitter : public IGameObject {
+private:
+	float m_timer = 0.0f;
+	float m_emitTime = 0.0f;
+	std::string m_filePath;
+public:
+	void Init(float emitTime, const char* filePath)
+	{
+		m_emitTime = emitTime;
+		m_filePath = filePath;
+	}
+	void Update()
+	{
+		m_timer += GameTime().GetFrameDeltaTime();
+		if (m_timer > m_emitTime) {
+			prefab::CSoundSource* s = NewGO<prefab::CSoundSource>(0);
+			s->Init("sound/uni1482.wav");
+			s->Play(false);
+			DeleteGO(this);
+		}
+	}
+};
 bool Player::Start()
 {
 	//モデルデータをロード。
@@ -36,8 +59,8 @@ bool Player::Start()
 	m_charaLight = NewGO<prefab::CDirectionLight>(0);
 	m_charaLight->SetDirection({ 1.0f, 0.0f, 0.0f });
 	m_charaLight->SetLightingMaterialIDGroup(1 << enMaterialID_Chara);
-	m_charaLight->SetColor({ 300.0f, 300.0f, 300.0f, 1.0f });
-	m_charaCon.Init(20.0f, 100.0f, -1800.0f, m_position);
+	m_charaLight->SetColor({ 50.0f, 50.0f, 50.0f, 1.0f });
+	m_charaCon.Init(20.0f, 78.0f, -1800.0f, m_position);
 	m_game = FindGO<Game>("Game");
 	return true;
 }
@@ -137,6 +160,8 @@ void Player::NotifyGameOver()
 {
 	m_animation.Play(enAnimationClip_KneelDown);
 	m_charaCon.SetPosition(m_position);
+	CSoundEmitter* emitter = NewGO<CSoundEmitter>(0);
+	emitter->Init(0.6f, "sound/uni1482.wav");
 	m_state = enState_GameOver;
 }
 

@@ -32,6 +32,9 @@
     <Filter Include="Assets\pathData">
       <UniqueIdentifier>{3bac8ca1-9e8d-4237-8c0b-7cecc3146e2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\sound">
+      <UniqueIdentifier>{3bbea22d-df1d-435f-be29-0a48b18dd17a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -45,6 +48,7 @@
     <ClCompile Include="EnemyPathMoveLoop.cpp" />
     <ClCompile Include="GameOverControl.cpp" />
     <ClCompile Include="GameOverCamera.cpp" />
+    <ClCompile Include="star.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -60,6 +64,7 @@
     <ClInclude Include="EnemyPathMoveLoop.h" />
     <ClInclude Include="GameOverControl.h" />
     <ClInclude Include="GameOverCamera.h" />
+    <ClInclude Include="star.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc">
@@ -74,6 +79,9 @@
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Assets\modelData\enemy.FBX">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\star.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
   </ItemGroup>
@@ -167,6 +175,21 @@
     </CustomBuild>
     <CustomBuild Include="Assets\pathData\enemy05_path.tks">
       <Filter>Assets\pathData</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\sound\uni1479.wav">
+      <Filter>Assets\sound</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\sound\uni1482.wav">
+      <Filter>Assets\sound</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\sound\uni1519.wav">
+      <Filter>Assets\sound</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\sound\normalBGM.wav">
+      <Filter>Assets\sound</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\loc\star.tks">
+      <Filter>Assets\loc</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

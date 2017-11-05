@@ -108,7 +108,6 @@ PSInput VSMain(VSInput In)
 	psIn.uv = In.uv;
 	return psIn;
 }
-
 float4 PSMain( PSInput In ) : SV_Target0
 {
 	float2 texSize;
