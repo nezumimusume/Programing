@@ -49,3 +49,10 @@ void GameCamera::NotifyRestart()
 	//バネカメラを非アクティブにする。
 	m_isActive = true;
 }
+void GameCamera::NotifyGameClear()
+{
+	//バネカメラをリフレッシュ。
+	m_springCamera.Refresh();
+	//バネカメラを非アクティブにする。
+	m_isActive = false;
+}

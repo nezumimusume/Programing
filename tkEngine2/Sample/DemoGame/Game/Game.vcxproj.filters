@@ -49,6 +49,8 @@
     <ClCompile Include="GameOverControl.cpp" />
     <ClCompile Include="GameOverCamera.cpp" />
     <ClCompile Include="star.cpp" />
+    <ClCompile Include="GameClearControl.cpp" />
+    <ClCompile Include="GameClearCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -65,6 +67,8 @@
     <ClInclude Include="GameOverControl.h" />
     <ClInclude Include="GameOverCamera.h" />
     <ClInclude Include="star.h" />
+    <ClInclude Include="GameClearControl.h" />
+    <ClInclude Include="GameClearCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc">
@@ -204,5 +208,13 @@
     <Media Include="Assets\sound\coinGet.wav">
       <Filter>Assets\sound</Filter>
     </Media>
+    <Media Include="Assets\sound\uni1518.wav">
+      <Filter>Assets\sound</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\animData\clear.tka">
+      <Filter>Assets\animData</Filter>
+    </None>
   </ItemGroup>
 </Project>

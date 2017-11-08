@@ -4,12 +4,14 @@
 #include "Game.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "GameCamera.h"
 
 GameOverControl::GameOverControl()
 {
+	//
+	FindGO<Player>("Player")->NotifyGameOver();
+	FindGO<GameCamera>("GameCamera")->NotifyGameOver();
 }
-
-
 GameOverControl::~GameOverControl()
 {
 }

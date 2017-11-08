@@ -21,7 +21,7 @@ public:
 		m_timer += GameTime().GetFrameDeltaTime();
 		if (m_timer > m_emitTime) {
 			prefab::CSoundSource* s = NewGO<prefab::CSoundSource>(0);
-			s->Init("sound/uni1482.wav");
+			s->Init(m_filePath.c_str());
 			s->Play(false);
 			DeleteGO(this);
 		}
@@ -49,11 +49,13 @@ bool Player::Start()
 	m_animClip[enAnimationClip_jump].Load(L"animData/jump.tka");
 	m_animClip[enAnimationClip_damage].Load(L"animData/damage.tka");
 	m_animClip[enAnimationClip_KneelDown].Load(L"animData/KneelDown.tka");
+	m_animClip[enAnimationClip_Clear].Load(L"animData/Clear.tka");
 	for (auto& animClip : m_animClip) {
 		animClip.SetLoopFlag(true);
 	}
 	m_animClip[enAnimationClip_jump].SetLoopFlag(false);
 	m_animClip[enAnimationClip_KneelDown].SetLoopFlag(false);
+	m_animClip[enAnimationClip_Clear].SetLoopFlag(false);
 	m_animation.Init(m_skinModelData, m_animClip, enAnimationClip_num);
 	m_animation.Play(enAnimationClip_idle);
 	m_charaLight = NewGO<prefab::CDirectionLight>(0);
@@ -117,6 +119,25 @@ void Player::UpdateFSM()
 		m_moveSpeed.z = 0.0f;
 
 	}break;
+	case enState_WaitStartGameClear:
+		m_timer += GameTime().GetFrameDeltaTime();
+		if (m_timer > 0.5f) {
+			m_animation.Play(enAnimationClip_Clear);
+			CSoundEmitter* emitter = NewGO<CSoundEmitter>(0);
+			emitter->Init(0.3f, "sound/uni1518.wav");
+			m_state = enState_GameClear;
+			m_timer = 0.0f;
+		}
+		break;
+	case enState_GameClear: {
+		m_timer += GameTime().GetFrameDeltaTime();
+		if (m_timer > 4.0f) {
+			//ÉQÅ[ÉÄèIÇÌÇËÅB
+			DeleteGO(m_game);
+		}
+		m_moveSpeed.x = 0.0f;
+		m_moveSpeed.z = 0.0f;
+	}break;
 	}
 }
 void Player::Move()
@@ -154,17 +175,26 @@ void Player::Update()
 	q.Multiply(qRot);
 	m_skinModel.Update(m_position, q, CVector3::One);
 	m_animation.Update(GameTime().GetFrameDeltaTime());
+
+	CMatrix mRot;
+	mRot.MakeRotationFromQuaternion(m_rotation);
+	m_forward.x = mRot.m[2][0];
+	m_forward.y = mRot.m[2][1];
+	m_forward.z = mRot.m[2][2];
 }
 
 void Player::NotifyGameOver()
 {
 	m_animation.Play(enAnimationClip_KneelDown);
-	m_charaCon.SetPosition(m_position);
 	CSoundEmitter* emitter = NewGO<CSoundEmitter>(0);
 	emitter->Init(0.6f, "sound/uni1482.wav");
 	m_state = enState_GameOver;
 }
 
+void Player::NotifyGameClear()
+{
+	m_state = enState_WaitStartGameClear;
+}
 void Player::NotifyRestart()
 {
 	m_animation.Play(enAnimationClip_idle);

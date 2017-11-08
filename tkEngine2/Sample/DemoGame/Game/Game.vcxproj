@@ -708,6 +708,8 @@
     <ClCompile Include="EnemyPathMoveLoop.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="GameClearCamera.cpp" />
+    <ClCompile Include="GameClearControl.cpp" />
     <ClCompile Include="GameOverCamera.cpp" />
     <ClCompile Include="GameOverControl.cpp" />
     <ClCompile Include="main.cpp" />
@@ -769,6 +771,8 @@
     <ClInclude Include="EnemyPathMoveLoop.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="GameClearCamera.h" />
+    <ClInclude Include="GameClearControl.h" />
     <ClInclude Include="GameOverCamera.h" />
     <ClInclude Include="GameOverControl.h" />
     <ClInclude Include="Path.h" />
@@ -1122,6 +1126,16 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Assets\sound\coinGet.wav">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\sound\uni1518.wav">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\animData\clear.tka">
       <FileType>Document</FileType>
     </CustomBuild>
   </ItemGroup>

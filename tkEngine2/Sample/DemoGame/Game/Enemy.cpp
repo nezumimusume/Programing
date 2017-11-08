@@ -55,7 +55,7 @@ void Enemy::SearchPlayer()
 }
 void Enemy::Update()
 {
-	if (!m_game->IsGameOver()) {
+	if (!m_game->IsGameOver() && !m_game->IsGameClear()) {
 		SearchPlayer();
 		m_pathMoveLoop.Update();
 	}

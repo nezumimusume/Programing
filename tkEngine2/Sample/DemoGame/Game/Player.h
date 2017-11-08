@@ -17,6 +17,10 @@ public:
 	{
 		return m_position;
 	}
+	const CVector3& GetForward() const
+	{
+		return m_forward;
+	}
 	/*!
 	 *@brief	ゲームオーバーを通血。
 	 */
@@ -25,6 +29,10 @@ public:
 	 *@brief	リスタートを通知。
 	 */
 	void NotifyRestart();
+	/*!
+	 *@brief	ゲームクリアー。
+	 */
+	void NotifyGameClear();
 private:
 	void UpdateFSM();
 	void Move();
@@ -39,6 +47,7 @@ private:
 		enAnimationClip_jump,
 		enAnimationClip_damage,
 		enAnimationClip_KneelDown,
+		enAnimationClip_Clear,
 		enAnimationClip_num,
 	};
 	enum EnState {
@@ -46,6 +55,8 @@ private:
 		enState_Run,
 		enState_Jump,
 		enState_GameOver,
+		enState_WaitStartGameClear,
+		enState_GameClear,
 	};
 	CSkinModel 		m_skinModel;		//!<スキンモデル。
 	CSkinModelData	m_skinModelData;	//!<スキンモデルデータ。
@@ -58,6 +69,8 @@ private:
 	CVector3 m_moveSpeed = CVector3::Zero;
 	CShaderResourceView m_normalMap;		//法線マップ。
 	CShaderResourceView m_specMap;			//スペキュラマップ。
+	CVector3 m_forward;						//プレイヤーの前方。
 	EnState m_state = enState_Idle;
 	Game* m_game = nullptr;
+	float m_timer = 0.0f;
 };

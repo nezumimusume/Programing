@@ -9,6 +9,8 @@ class GameCamera;
 class Enemy;
 class GameOverControl;
 class Star;
+class GameClearControl;
+
 class Game : public IGameObject
 {
 public:
@@ -24,6 +26,10 @@ public:
 	bool IsGameOver() const
 	{
 		return m_isGameOver;
+	}
+	bool IsGameClear() const
+	{
+		return m_isGameClear;
 	}
 	/*!
 	 *@brief	敵を検索。
@@ -46,8 +52,10 @@ private:
 	Background* m_background = nullptr;
 	GameCamera* m_gameCamera = nullptr;
 	GameOverControl* m_gameOverControl = nullptr;	//!<ゲームオーバーコントロール。
+	GameClearControl* m_gameClearControl = nullptr;	//!<ゲームクリアコントロール。
 	std::vector<prefab::CPointLight*> m_pointLight;
 	bool m_isGameOver = false;
+	bool m_isGameClear = false;
 	prefab::CSoundSource* m_bgmSource = nullptr;	//!<BGM
 };
 

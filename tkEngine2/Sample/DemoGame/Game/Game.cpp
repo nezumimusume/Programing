@@ -6,6 +6,7 @@
 #include "tkEngine/light/tkPointLight.h"
 #include "GameCamera.h"
 #include "GameOverControl.h"
+#include "GameClearControl.h"
 #include "star.h"
 
 //#define CLASH_DEBUB
@@ -33,9 +34,9 @@ void Game::InitSceneLight()
 		pos.z = -mat.m[3][1];
 		ptLig->SetPosition(pos);
 		ptLig->SetColor({
-			200.0f,
-			200.0f,
 			100.0f,
+			100.0f,
+			10.0f,
 			1.0f
 		});
 		ptLig->SetAttn({
@@ -53,7 +54,7 @@ void Game::InitSceneLight()
 		CBone* bone = enemyLoc.GetBone(i);
 		Enemy* enemy = NewGO <Enemy>(0);
 		m_enemyList.push_back(enemy);
-	
+		enemy->SetTags(enGameObject_Enemy);
 		const CMatrix& mat = bone->GetBindPoseMatrix();
 		CVector3 pos;
 		pos.x = mat.m[3][0];
@@ -94,7 +95,7 @@ bool Game::Start()
 
 	m_player = NewGO<Player>(0, "Player");
 	m_background = NewGO<Background>(0);
-	m_gameCamera = NewGO<GameCamera>(0);
+	m_gameCamera = NewGO<GameCamera>(0, "GameCamera");
 	//シーンライトを初期化。
 	InitSceneLight();
 	CVector3 dir = { 1.0f, -1.0f, -1.0f };
@@ -122,13 +123,14 @@ void Game::OnDestroy()
 	FindGameObjectsWithTag(enGameObject_Star, [](IGameObject* go) {
 		DeleteGO(go);
 	});
+	DeleteGO(m_gameClearControl);
+	//ゲーム再起動。
 	NewGO<Game>(0, "Game");
 }
 void Game::NotifyGameOver()
 {
 	m_isGameOver = true;
-	m_player->NotifyGameOver();
-	m_gameCamera->NotifyGameOver();
+	
 	//ゲームオーバー制御を作成。
 	m_gameOverControl = NewGO<GameOverControl>(0);
 }
@@ -150,10 +152,11 @@ void Game::Update()
 	FindGameObjectsWithTag(enGameObject_Star, [&](IGameObject* go) {
 		coinCount++;
 	});
-	if (coinCount == 0) {
+	if (coinCount == 0 && !m_isGameClear) {
 		//全部のコインを取った。
-		TK_WARNING_MESSAGE_BOX("くりあ～");
-		DeleteGO(this);
+		m_isGameClear = true;
+		//ゲームクリア制御を作成。
+		m_gameClearControl = NewGO<GameClearControl>(0);
 	}
 #else
 	if (Pad(0).IsTrigger(enButtonA)) {

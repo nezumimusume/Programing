@@ -16,5 +16,6 @@ enum EnMaterialID {
 };
 
 enum EnGameObjectTags {
-	enGameObject_Star = 100,
+	enGameObject_Star = 1,
+	enGameObject_Enemy = 1 << 1,
 };

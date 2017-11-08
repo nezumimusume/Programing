@@ -39,6 +39,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	//エンジンを初期化。
 	if (Engine().Init(initParam) == true) {
+		GraphicsEngine().GetTonemap().SetLuminance(0.32f);
 		NewGO<Game>(0, "Game");
 		//ゲームループを実行。
 		Engine().RunGameLoop();

@@ -12,6 +12,7 @@ public:
 	void Update();
 	void NotifyGameOver();
 	void NotifyRestart();
+	void NotifyGameClear();
 private:
 	Player* m_player;	//プレイヤー。
 	CSpringCamera m_springCamera;	//!<バネカメラ。
