@@ -2,6 +2,7 @@
 #include "star.h"
 #include "tkEngine/light/tkDirectionLight.h"
 #include "Player.h"
+#include "StarRenderer.h"
 
 prefab::CDirectionLight* Star::m_starLight = nullptr;
 
@@ -13,12 +14,6 @@ Star::~Star()
 }
 bool Star::Start()
 {
-	m_skinModelData.Load(L"modelData/star.cmo");
-	m_skinModel.Init(m_skinModelData);
-	m_skinModel.FindMaterial([&](CModelEffect* material) {
-		//ƒ}ƒeƒŠƒAƒ‹‚h‚c‚ðÝ’è‚·‚éB
-		material->SetMaterialID(enMaterialID_Star);
-	});
 	if (m_starLight == nullptr) {
 		m_starLight = NewGO<prefab::CDirectionLight>(0);
 		m_starLight->SetDirection({ 0.0f, 0.0f, -1.0f });
@@ -52,9 +47,6 @@ void Star::Update()
 			DeleteGO(this);
 		}
 	}
-	m_skinModel.Update(m_position, m_rotation, {20.0f, 20.0f, 20.0f});
+	m_renderer->UpdateWorldMatrix(m_position, m_rotation, { 20.0f, 20.0f, 20.0f });
 }
-void Star::Render(CRenderContext& rc)
-{
-	m_skinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
-}
+

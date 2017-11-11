@@ -8,6 +8,7 @@
 #include "GameOverControl.h"
 #include "GameClearControl.h"
 #include "star.h"
+#include "StarRenderer.h"
 
 //#define CLASH_DEBUB
 
@@ -65,13 +66,17 @@ void Game::InitSceneLight()
 		swprintf_s(moveFilePath, L"pathData/enemy0%d_path.tks", i);
 		enemy->Init(moveFilePath);
 	}
+	
 	//星を配置
 	CSkeleton starLoc;
 	starLoc.Load(L"loc/star.tks");
+	//星のレンダラーを作成。
+	m_starRenderer = NewGO<StarRenderer>(0);
+	m_starRenderer->Init(starLoc.GetNumBones()-1);
 	for (int i = 1; i < starLoc.GetNumBones(); i++) {
 		CBone* bone = starLoc.GetBone(i);
 		Star* star = NewGO <Star>(0);
-
+		star->Init(*m_starRenderer);
 		const CMatrix& mat = bone->GetBindPoseMatrix();
 		CVector3 pos;
 		pos.x = mat.m[3][0];

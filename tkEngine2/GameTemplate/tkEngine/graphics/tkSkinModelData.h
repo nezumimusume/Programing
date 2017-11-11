@@ -17,7 +17,9 @@ namespace tkEngine{
 		std::wstring m_materialName;	//!<マテリアル名。
 		CShader m_vsShader;
 		CShader m_psShader;
+		CShader m_vsShaderInstancing;		//!<頂点シェーダー。インスタンシング用。
 		CShader m_vsRenderToDepthShader;	//!<Z値書き込み用の頂点シェーダー。
+		CShader m_vsRenderToDepthShaderInstancing;	//!<Z値書き込み用の頂点シェーダー。インスタンシング用。
 		CShader m_psRenderToDepthShader;	//!<Z値書き込み用のピクセルシェーダー。
 		ID3D11ShaderResourceView* m_diffuseTex = nullptr;
 		ID3D11ShaderResourceView* m_normalMap = nullptr;
@@ -38,6 +40,7 @@ namespace tkEngine{
 		MaterialParam m_materialParam;				//マテリアルパラメータ。
 		CConstantBuffer m_materialParamCB;			//マテリアルパラメータ用の定数バッファ。
 		CRenderContext* m_renderContext = nullptr;	//レンダリングコンテキスト。
+		int m_numInstance = 1;						//描画するインスタンスの数。
 	public:
 		CModelEffect()
 		{
@@ -87,6 +90,10 @@ namespace tkEngine{
 		{
 			m_renderContext = &rc;
 		}
+		void SetNumInstance(int numInstance)
+		{
+			m_numInstance = numInstance;
+		}
 		//デフォルトのマテリアルＩＤは0
 		void SetMaterialID(unsigned int materialID)
 		{
@@ -107,6 +114,8 @@ namespace tkEngine{
 		{
 			m_vsShader.Load("shader/model.fx", "VSMain", CShader::EnType::VS);
 			m_vsRenderToDepthShader.Load("shader/model.fx", "VSMain_RenderDepth", CShader::EnType::VS);
+			m_vsRenderToDepthShaderInstancing.Load("shader/model.fx", "VSMainInstancing_RenderDepth", CShader::EnType::VS);
+			m_vsShaderInstancing.Load("shader/model.fx", "VSMainInstancing", CShader::EnType::VS);
 			isSkining = false;
 		}
 	};

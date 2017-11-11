@@ -51,6 +51,7 @@
     <ClCompile Include="star.cpp" />
     <ClCompile Include="GameClearControl.cpp" />
     <ClCompile Include="GameClearCamera.cpp" />
+    <ClCompile Include="StarRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -69,6 +70,7 @@
     <ClInclude Include="star.h" />
     <ClInclude Include="GameClearControl.h" />
     <ClInclude Include="GameClearCamera.h" />
+    <ClInclude Include="StarRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc">
@@ -195,6 +197,9 @@
     <CustomBuild Include="Assets\loc\star.tks">
       <Filter>Assets\loc</Filter>
     </CustomBuild>
+    <CustomBuild Include="Assets\sound\coinGet.wav" />
+    <CustomBuild Include="Assets\sound\uni1518.wav" />
+    <CustomBuild Include="Assets\animData\clear.tka" />
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\modelData\utc_spec.tga">
@@ -203,18 +208,5 @@
     <ImageContentTask Include="Assets\modelData\utc_nomal.tga">
       <Filter>Assets\modelData</Filter>
     </ImageContentTask>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Assets\sound\coinGet.wav">
-      <Filter>Assets\sound</Filter>
-    </Media>
-    <Media Include="Assets\sound\uni1518.wav">
-      <Filter>Assets\sound</Filter>
-    </Media>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\animData\clear.tka">
-      <Filter>Assets\animData</Filter>
-    </None>
   </ItemGroup>
 </Project>

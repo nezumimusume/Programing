@@ -30,5 +30,6 @@ namespace tkEngine{
 		enSkinModelSRVReg_PointLight,				//!<ポイントライトのリスト。
 		enSkinModelSRVReg_PointLightListInTile,		//!<タイルに含まれるポイントライトのリスト。
 		enSkinModelSRVReg_BoneMatrix,				//!<ボーン行列。
+		enSkinModelSRVReg_InstanceMatrix,			//!<インスタンシング用の行列。
 	};
 }

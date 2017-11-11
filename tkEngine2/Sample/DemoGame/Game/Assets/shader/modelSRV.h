@@ -8,7 +8,8 @@ StructuredBuffer<SPointLight> pointLightList : register(t101);
 StructuredBuffer<uint> pointLightListInTile : register(t102);
 //ボーン行列
 StructuredBuffer<float4x4> boneMatrix : register(t103);
-
+//インスタンシング描画用
+StructuredBuffer<float4x4> instanceMatrix : register(t104);
 
 
 Texture2D<float4> albedoTexture : register(t0);	//アルベドテクスチャ。

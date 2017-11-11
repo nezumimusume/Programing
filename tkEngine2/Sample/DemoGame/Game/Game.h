@@ -10,6 +10,7 @@ class Enemy;
 class GameOverControl;
 class Star;
 class GameClearControl;
+class StarRenderer;
 
 class Game : public IGameObject
 {
@@ -53,6 +54,7 @@ private:
 	GameCamera* m_gameCamera = nullptr;
 	GameOverControl* m_gameOverControl = nullptr;	//!<ゲームオーバーコントロール。
 	GameClearControl* m_gameClearControl = nullptr;	//!<ゲームクリアコントロール。
+	StarRenderer* m_starRenderer = nullptr;
 	std::vector<prefab::CPointLight*> m_pointLight;
 	bool m_isGameOver = false;
 	bool m_isGameClear = false;

@@ -257,7 +257,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\GameTemplate\tkEngine\graphics\postEffect\tkDithering.h" />
     <ClInclude Include="camera\tkCameraCollisionSolver.h" />
     <ClInclude Include="camera\tkSpringCamera.h" />
     <ClInclude Include="character\tkCharacterController.h" />
@@ -280,6 +279,7 @@
     <ClInclude Include="graphics\GPUView\tkShaderResourceView.h" />
     <ClInclude Include="graphics\GPUView\tkUnorderedAccessView.h" />
     <ClInclude Include="graphics\postEffect\tkBloom.h" />
+    <ClInclude Include="graphics\postEffect\tkDithering.h" />
     <ClInclude Include="graphics\postEffect\tkFxaa.h" />
     <ClInclude Include="graphics\postEffect\tkPostEffect.h" />
     <ClInclude Include="graphics\postEffect\tkTonemap.h" />
@@ -340,7 +340,6 @@
     <ClInclude Include="util\tkUtil.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\GameTemplate\tkEngine\graphics\postEffect\tkDithering.cpp" />
     <ClCompile Include="camera\tkCameraCollisionSolver.cpp" />
     <ClCompile Include="camera\tkSpringCamera.cpp" />
     <ClCompile Include="character\tkCharacterController.cpp" />
@@ -360,6 +359,7 @@
     <ClCompile Include="graphics\GPUView\tkShaderResourceView.cpp" />
     <ClCompile Include="graphics\GPUView\tkUnorderedAccessView.cpp" />
     <ClCompile Include="graphics\postEffect\tkBloom.cpp" />
+    <ClCompile Include="graphics\postEffect\tkDithering.cpp" />
     <ClCompile Include="graphics\postEffect\tkFxaa.cpp" />
     <ClCompile Include="graphics\postEffect\tkPostEffect.cpp" />
     <ClCompile Include="graphics\postEffect\tkTonemap.cpp" />

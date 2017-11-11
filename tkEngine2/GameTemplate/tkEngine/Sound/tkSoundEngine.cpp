@@ -105,6 +105,7 @@ namespace tkEngine{
 		XAUDIO2_VOICE_DETAILS voiceDetails;
 		m_masteringVoice->GetVoiceDetails(&voiceDetails);
 		m_masteringVoice->GetChannelMask(&m_channelMask);
+		
 		m_nChannels = voiceDetails.InputChannels;
 
 		//リバーブエフェクトを作成。

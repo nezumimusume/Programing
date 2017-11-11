@@ -15,8 +15,9 @@ namespace tkEngine{
 	CSkinModel::~CSkinModel()
 	{
 	}
-	void CSkinModel::Init(CSkinModelData& modelData)
+	void CSkinModel::Init(CSkinModelData& modelData, int numInstance)
 	{
+		m_numInstance = numInstance;
 		m_skinModelData = &modelData;
 		m_cb.Create(NULL, sizeof(SVSConstantBuffer));
 		m_shadowCaster.Create(this);
@@ -28,9 +29,21 @@ namespace tkEngine{
 		desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
 		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		m_samplerState.Create(desc);
+
+		if (numInstance > 1) {
+			//インスタンシング用のデータを作成。
+			m_instancingData.reset(new CMatrix[numInstance]);
+			D3D11_BUFFER_DESC desc;
+			ZeroMemory(&desc, sizeof(desc));
+			desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;	//SRVとしてバインド可能。
+			desc.ByteWidth = sizeof(CMatrix) * numInstance;
+			desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+			desc.StructureByteStride = sizeof(CMatrix);
+			m_instancingDataSB.Create(m_instancingData.get(), desc);
+		}
 	}
 	
-	void CSkinModel::Update(const CVector3& trans, const CQuaternion& rot, const CVector3& scale)
+	void CSkinModel::UpdateWorldMatrix(const CVector3& trans, const CQuaternion& rot, const CVector3& scale)
 	{
 		//3dsMaxと軸を合わせるためのバイアス。
 		CMatrix mBias;
@@ -42,6 +55,35 @@ namespace tkEngine{
 		mTrans.MakeTranslation(trans);
 		m_worldMatrix.Mul(mScale, mRot);
 		m_worldMatrix.Mul(m_worldMatrix, mTrans);
+	}
+	void CSkinModel::Update(const CVector3& trans, const CQuaternion& rot, const CVector3& scale)
+	{		
+		UpdateWorldMatrix(trans, rot, scale);
+		GraphicsEngine().GetZPrepass().AddSkinModel(this);
+		if (m_isShadowCaster) {
+			GraphicsEngine().GetShadowMap().Entry(&m_shadowCaster);
+		}
+
+	}
+	
+	void CSkinModel::UpdateInstancingData(
+		const CVector3& trans,
+		const CQuaternion& rot,
+		const CVector3& scale )
+	{		
+		UpdateWorldMatrix(trans, rot, scale);
+		if (m_updateInstance < m_numInstance) {
+			//インスタンシングデータを更新する。
+			m_instancingData[m_updateInstance] = m_worldMatrix;
+			m_updateInstance++;
+		}
+		else {
+			TK_WARNING("invalid UpdateInstancingData.");
+		}
+	}
+	
+	void CSkinModel::PostUpdateInstancingData()
+	{
 		GraphicsEngine().GetZPrepass().AddSkinModel(this);
 		if (m_isShadowCaster) {
 			GraphicsEngine().GetShadowMap().Entry(&m_shadowCaster);
@@ -53,9 +95,15 @@ namespace tkEngine{
 		const CMatrix& projMatrix
 	)
 	{
+		
 		(void)renderContext;
 		if (m_skinModelData == nullptr) {
 			return;
+		}
+		if (m_numInstance > 1) {
+			//インスタンシング用のデータを更新。
+			renderContext.UpdateSubresource(m_instancingDataSB, m_instancingData.get());
+			renderContext.VSSetShaderResource(enSkinModelSRVReg_InstanceMatrix, m_instancingDataSB.GetSRV());
 		}
 		//スケルトン更新。
 		m_skinModelData->GetSkeleton().Update(m_worldMatrix);
@@ -78,17 +126,29 @@ namespace tkEngine{
 		renderContext.PSSetSampler(0, m_samplerState);
 		m_skinModelData->GetSkeleton().Render(renderContext);
 
-		//レンダリング子テキストをエフェクトに設定する。
+		
 		m_skinModelData->FindMesh([&](auto& mesh) {
 			CModelEffect* effect = reinterpret_cast<CModelEffect*>(mesh->effect.get());
+			//レンダリングコンテキストをエフェクトに設定する。
 			effect->SetRenderContext(renderContext);
+			//インスタンスの数を設定。
+			if (m_updateInstance > 1) {
+				effect->SetNumInstance(m_updateInstance);
+			}
+			else {
+				effect->SetNumInstance(1);
+			}
+			
 		});
 		m_skinModelData->GetBody().Draw(
 			GraphicsEngine().GetD3DDeviceContext(),
 			state,
 			m_worldMatrix,
 			viewMatrix,
-			projMatrix
+			projMatrix,
+			false,
+			nullptr,
+			m_updateInstance > 1 ? m_updateInstance : 1
 		);
 	}
 }

@@ -1,5 +1,6 @@
 #pragma once
 class Player;
+class StarRenderer;
 
 class Star : public IGameObject
 {
@@ -8,7 +9,13 @@ public:
 	~Star();
 	bool Start() override;
 	void Update() override;
-	void Render(CRenderContext& rc) override;
+	/*!
+	 *@brief	初期化。
+	 */
+	void Init(StarRenderer& starRenderer)
+	{
+		m_renderer = &starRenderer;
+	}
 	/*!
 	 *@brief	座標を設定。
 	 */
@@ -24,8 +31,7 @@ public:
 		return m_position;
 	}
 private:
-	CSkinModel		m_skinModel;		//!<スキンモデル。
-	CSkinModelData	m_skinModelData;	//!<スキンモデルデータ。
+	StarRenderer*	m_renderer = nullptr;					//!<レンダラー。
 	CVector3		m_position = CVector3::Zero;			//!<座標。
 	CQuaternion		m_rotation = CQuaternion::Identity;
 	static prefab::CDirectionLight* m_starLight;

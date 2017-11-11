@@ -89,6 +89,7 @@ namespace tkEngine {
 	{
 		
 		m_sw.Start();
+		
 		//パッドの更新。
 		for (auto& pad : m_pad) {
 			pad.Update();
@@ -97,12 +98,13 @@ namespace tkEngine {
 		m_soundEngine.Update();
 		//GameObjectManager更新
 		GameObjectManager().Execute();
+		
 		//物理エンジンの更新。
 		m_physicsWorld.Update();
 		m_graphicsEngine.EndRender();
 		
 		m_sw.Stop();
-
+		
 		/*if (m_sw.GetElapsed() < 1.0f / 30.0f) {
 			//30fpsに間に合っているなら眠る。
 			DWORD sleepTime = static_cast<DWORD>(max(0.0, (1.0 / 30.0)*1000.0 - (DWORD)m_sw.GetElapsedMillisecond()));
