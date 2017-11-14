@@ -10,7 +10,6 @@
 #include "star.h"
 #include "StarRenderer.h"
 
-//#define CLASH_DEBUB
 
 Game::Game()
 {
@@ -89,7 +88,7 @@ void Game::InitSceneLight()
 }
 bool Game::Start()
 {
-#ifndef CLASH_DEBUB
+
 	
 	//カメラを設定。
 	MainCamera().SetTarget({ 0.0f, 50.0f, 0.0f });
@@ -109,7 +108,7 @@ bool Game::Start()
 	m_bgmSource = NewGO<prefab::CSoundSource>(0);
 	m_bgmSource->Init("sound/normalBGM.wav");
 	m_bgmSource->Play(true);
-#endif
+
 	return true;
 }
 void Game::OnDestroy() 
@@ -131,6 +130,7 @@ void Game::OnDestroy()
 	DeleteGO(m_gameClearControl);
 	//ゲーム再起動。
 	NewGO<Game>(0, "Game");
+	
 }
 void Game::NotifyGameOver()
 {
@@ -151,7 +151,6 @@ void Game::NotifyRestart()
 }
 void Game::Update()
 {
-#ifndef CLASH_DEBUB
 	//クリア判定
 	int coinCount = 0;
 	FindGameObjectsWithTag(enGameObject_Star, [&](IGameObject* go) {
@@ -163,18 +162,19 @@ void Game::Update()
 		//ゲームクリア制御を作成。
 		m_gameClearControl = NewGO<GameClearControl>(0);
 	}
-#else
-	if (Pad(0).IsTrigger(enButtonA)) {
-		if (m_background == nullptr) {
-			m_background = NewGO<Background>(0);
-		}
-		else {
-			DeleteGO(m_background);
-			m_background = nullptr;
-		}
-	}
-#endif
+
 }
 void Game::Render(CRenderContext& rc)
 {
+}
+void Game::PostRender(CRenderContext& rc) 
+{
+	m_fontTest.Begin();
+	m_fontTest.Draw(L"Hello World", { 0.0f, 0.0f }, {1.0f, 0.0f, 0.0f, 1.0f});
+	m_fontTest.Draw(L"ＨＥＬＬＯ　ＷＯＲＬＤ", { 0.0f, 60.0f }, { 0.0f, 1.0f, 0.0f, 1.0f });
+	m_fontTest.Draw(L"ゆにぃぃぃ", { 0.0f, 120.0f } , { 0.0f, 0.0f, 1.0f, 1.0f });
+	m_fontTest.Draw(L"無駄無駄無駄無駄", { 0.0f, 180.0f }, { 0.0f, 1.0f, 1.0f, 1.0f });
+	m_fontTest.Draw(L"ユニィィィィ", { 0.0f, 240.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
+	
+	m_fontTest.End();
 }

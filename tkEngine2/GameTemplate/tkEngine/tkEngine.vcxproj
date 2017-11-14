@@ -271,6 +271,7 @@
     <ClInclude Include="graphics\animation\tkAnimation.h" />
     <ClInclude Include="graphics\animation\tkAnimationClip.h" />
     <ClInclude Include="graphics\animation\tkAnimationPlayController.h" />
+    <ClInclude Include="graphics\font\tkFont.h" />
     <ClInclude Include="graphics\GPUBuffer\tkConstantBuffer.h" />
     <ClInclude Include="graphics\GPUBuffer\tkGPUBuffer.h" />
     <ClInclude Include="graphics\GPUBuffer\tkIndexBuffer.h" />
@@ -351,6 +352,7 @@
     <ClCompile Include="graphics\animation\tkAnimation.cpp" />
     <ClCompile Include="graphics\animation\tkAnimationClip.cpp" />
     <ClCompile Include="graphics\animation\tkAnimationPlayController.cpp" />
+    <ClCompile Include="graphics\font\tkFont.cpp" />
     <ClCompile Include="graphics\GPUBuffer\tkConstantBuffer.cpp" />
     <ClCompile Include="graphics\GPUBuffer\tkGPUBuffer.cpp" />
     <ClCompile Include="graphics\GPUBuffer\tkIndexBuffer.cpp" />

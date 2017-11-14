@@ -183,6 +183,24 @@ namespace tkEngine{
 		{
 			return m_shaderResources;
 		}
+		/*!
+		*@brief	SpriteBatchの取得。
+		*@details
+		* ゲーム層では使用しないように。
+		*/
+		DirectX::SpriteBatch* GetSpriteBatch() const
+		{
+			return m_spriteBatch.get();
+		}
+		/*!
+		*@brief	SpriteFontの取得。
+		*@details
+		* ゲーム層では使用しないように。
+		*/
+		DirectX::SpriteFont* GetSpriteFont() const
+		{
+			return m_spriteFont.get();
+		}
 	private:
 		ID3D11Device*			m_pd3dDevice = nullptr;						//!<D3D11デバイス。
 		CRenderContext			m_renderContext;							//!<レンダリングコンテキスト。
@@ -204,5 +222,7 @@ namespace tkEngine{
 		ID3D11RenderTargetView*	m_backBufferRT = nullptr;					//!<バックバッファのレンダリングターゲットビュー。
 		ID3DUserDefinedAnnotation* m_userAnnoation = nullptr;
 		CShaderResources		m_shaderResources;							//!<シェーダーリソース。
+		std::unique_ptr<DirectX::SpriteBatch>	m_spriteBatch;				//!<スプライトバッチ。
+		std::unique_ptr<DirectX::SpriteFont>	m_spriteFont;				//!<スプライトフォント。
 	};
 }

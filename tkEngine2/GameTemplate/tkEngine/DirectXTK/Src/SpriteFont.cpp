@@ -317,29 +317,28 @@ void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ wc
 
     XMVECTOR baseOffset = origin;
 
-    // If the text is mirrored, offset the start position accordingly.
-    if (effects)
-    {
-        baseOffset -= MeasureString(text) * axisIsMirroredTable[effects & 3];
-    }
 
+	//•¶Žš—ñ‚Ì•‚Æ‚‚³‚ð‹‚ß‚éB
+	float strWidth = 0.0f;
+	float strHeight = 0.0f;
+	pImpl->ForEachGlyph(text, [&](Glyph const* glyph, float x, float y, float advance)
+	{
+		strWidth = x + advance;
+		strHeight = std::max<float>(strHeight, glyph->Subrect.bottom - glyph->Subrect.top);
+	});
+	//‹‚Ü‚Á‚½•¶Žš’·‚©‚çbaseOffset‚ðŒvŽZ‚·‚éB
+	XMFLOAT2 _origin;
+	XMStoreFloat2(&_origin, origin);
+	_origin.x = strWidth * _origin.x;
+	_origin.y = strHeight * _origin.y;
+	baseOffset = XMLoadFloat2(&_origin);
+	
     // Draw each character in turn.
     pImpl->ForEachGlyph(text, [&](Glyph const* glyph, float x, float y, float advance)
     {
         UNREFERENCED_PARAMETER(advance);
 
         XMVECTOR offset = XMVectorMultiplyAdd(XMVectorSet(x, y + glyph->YOffset, 0, 0), axisDirectionTable[effects & 3], baseOffset);
-        
-        if (effects)
-        {
-            // For mirrored characters, specify bottom and/or right instead of top left.
-            XMVECTOR glyphRect = XMConvertVectorIntToFloat(XMLoadInt4(reinterpret_cast<uint32_t const*>(&glyph->Subrect)), 0);
-
-            // xy = glyph width/height.
-            glyphRect = XMVectorSwizzle<2, 3, 0, 1>(glyphRect) - glyphRect;
-
-            offset = XMVectorMultiplyAdd(glyphRect, axisIsMirroredTable[effects & 3], offset);
-        }
 
         spriteBatch->Draw(pImpl->texture.Get(), position, &glyph->Subrect, color, rotation, offset, scale, effects, layerDepth);
     });

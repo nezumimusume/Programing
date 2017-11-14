@@ -22,6 +22,7 @@ namespace tkEngine{
 			this->y = y;
 		}
 		union {
+			DirectX::XMFLOAT2 vec;
 			struct { float x, y; };
 			float v[2];
 		};
@@ -284,6 +285,7 @@ namespace tkEngine{
 			struct { float x, y, z, w; };
 			float v[4];
 		};
+		static const CVector4 White;
 	public:
 		operator DirectX::XMVECTOR() const
 		{

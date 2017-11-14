@@ -18,7 +18,7 @@ bool Star::Start()
 		m_starLight = NewGO<prefab::CDirectionLight>(0);
 		m_starLight->SetDirection({ 0.0f, 0.0f, -1.0f });
 		m_starLight->SetLightingMaterialIDGroup(1 << enMaterialID_Star);
-		m_starLight->SetColor({ 300.0f, 300.0f, 300.0f, 1.0f });
+		m_starLight->SetColor({ 30.0f, 30.0f, 30.0f, 1.0f });
 	}
 	m_player = FindGO<Player>("Player");
 	return true;

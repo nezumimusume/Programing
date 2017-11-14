@@ -197,9 +197,15 @@
     <CustomBuild Include="Assets\loc\star.tks">
       <Filter>Assets\loc</Filter>
     </CustomBuild>
-    <CustomBuild Include="Assets\sound\coinGet.wav" />
-    <CustomBuild Include="Assets\sound\uni1518.wav" />
-    <CustomBuild Include="Assets\animData\clear.tka" />
+    <CustomBuild Include="Assets\sound\coinGet.wav">
+      <Filter>Assets\sound</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\sound\uni1518.wav">
+      <Filter>Assets\sound</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\animData\clear.tka">
+      <Filter>Assets\animData</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\modelData\utc_spec.tga">
@@ -208,5 +214,10 @@
     <ImageContentTask Include="Assets\modelData\utc_nomal.tga">
       <Filter>Assets\modelData</Filter>
     </ImageContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\sprite\utc_all2_light.png">
+      <Filter>Assets\sprite</Filter>
+    </Image>
   </ItemGroup>
 </Project>

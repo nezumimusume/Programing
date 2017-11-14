@@ -78,6 +78,9 @@
     <Filter Include="Source Files\random">
       <UniqueIdentifier>{d8a78ab4-52cd-40ff-ac95-f7b0cee31efa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphics\font">
+      <UniqueIdentifier>{c0cb2d6c-1afb-4850-8b84-ce9bd2d27599}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameObject\tkGameObjectManager.h">
@@ -323,6 +326,9 @@
     <ClInclude Include="graphics\postEffect\tkDithering.h">
       <Filter>Source Files\graphics\postEffect</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\font\tkFont.h">
+      <Filter>Source Files\graphics\font</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -513,6 +519,9 @@
     </ClCompile>
     <ClCompile Include="graphics\postEffect\tkDithering.cpp">
       <Filter>Source Files\graphics\postEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\font\tkFont.cpp">
+      <Filter>Source Files\graphics\font</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

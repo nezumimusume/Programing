@@ -10,6 +10,9 @@ namespace tkEngine{
 	class CSkinModelData;
 	/*!
 	 *@brief	スキンモデル。
+	 *@details
+	 * スキンあり、なしモデルの表示をサポートするクラス。</br>
+	 * 複数のインスタンスを一度の関数コールで描画することができるインスタンシング描画もサポートしている。</br>
 	 */
 	class CSkinModel : Noncopyable{
 	public:
@@ -26,11 +29,11 @@ namespace tkEngine{
 		/*!
 		*@brief	初期化
 		*@param[in]	modelData		モデルデータ。
-		*@param[in] numInstance		インスタンスの数。1より大きい場合インスタンシング描画が行われます。
-		*							インスタンシング描画を行う場合は、Update関数にインスタンス番号を渡して、
+		*@param[in] maxInstance		インスタンスの最大数。1より大きい場合インスタンシング描画が行われます。
+		*							インスタンシング描画を行う場合は、UpdateInstance関数を使用して、
 		*							インスタンス固有のデータを更新する必要があります。
 		*/
-		void Init(CSkinModelData& modelData, int numInstance = 1);
+		void Init(CSkinModelData& modelData, int maxInstance = 1);
 		/*!
 		*@brief	更新。
 		*@details
@@ -59,16 +62,16 @@ namespace tkEngine{
 			const CQuaternion& rot,
 			const CVector3& scale);
 		/*!
-		*@brief	インスタンスデータの更新前に呼び出してください。
+		*@brief	インスタンスデータの更新開始時に呼び出してください。
 		*/
-		void PreUpdateInstancingData()
+		void BeginUpdateInstancingData()
 		{
-			m_updateInstance = 0;
+			m_numInstance = 0;
 		}
 		/*!
-		 *@brief	全てのインスタンスデータの更新が完了したのちに呼び出す必要がある更新関数。
+		 *@brief	全てのインスタンスデータの更新終わったら呼び出してください。
 		 */
-		void PostUpdateInstancingData();
+		void EndUpdateInstancingData();
 		/*!
 		*@brief	描画
 		*@param[in] renderContext	レンダリングコンテキスト。
@@ -146,7 +149,7 @@ namespace tkEngine{
 		CSamplerState m_samplerState;		//!<サンプラステート。@todo ひとまとめにした方がいい。
 		std::unique_ptr<CMatrix[]>	m_instancingData;		//!<インスタンシング描画用のデータ。
 		CStructuredBuffer	m_instancingDataSB;				//!<インスタンシング描画用のストラクチャーバッファ。
-		int m_numInstance = 1;								//!<インスタンスの数。
-		int m_updateInstance = 0;							//!<行列が更新されたインスタンスの数。
+		int m_maxInstance = 1;								//!<インスタンスの最大数
+		int m_numInstance = 0;								//!<インスタンスの数。
 	};
 }

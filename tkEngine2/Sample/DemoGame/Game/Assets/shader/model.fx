@@ -79,10 +79,10 @@ float4x4 CalcSkinMatrix(VSInputNmTxWeights In)
 /*!--------------------------------------------------------------------------------------
  * @brief	スキンなしモデル用の頂点シェーダーのコアプログラム。
 -------------------------------------------------------------------------------------- */
-PSInput VSMainCore( VSInputNmTxVcTangent In, float4 worldPos )
+PSInput VSMainCore( VSInputNmTxVcTangent In, float4x4 worldMat )
 {
-	float4 pos = worldPos;
 	PSInput psInput = (PSInput)0;
+	float4 pos = mul(worldMat, In.Position);
 	psInput.Pos = pos;
 	pos = mul(mView, pos);
 	psInput.posInView = pos;
@@ -90,8 +90,8 @@ PSInput VSMainCore( VSInputNmTxVcTangent In, float4 worldPos )
 	psInput.posInProj = pos;
 	psInput.Position = pos;
 	psInput.TexCoord = In.TexCoord;
-	psInput.Normal = normalize(mul(mWorld, In.Normal));
-	psInput.Tangent = normalize(mul(mWorld, In.Tangent));
+	psInput.Normal = normalize(mul(worldMat, In.Normal));
+	psInput.Tangent = normalize(mul(worldMat, In.Tangent));
     return psInput;
 }
 /*!--------------------------------------------------------------------------------------
@@ -99,18 +99,14 @@ PSInput VSMainCore( VSInputNmTxVcTangent In, float4 worldPos )
 -------------------------------------------------------------------------------------- */
 PSInput VSMain( VSInputNmTxVcTangent In ) 
 {
-	float4 pos;
-	pos = mul(mWorld, In.Position);
-	return VSMainCore(In, pos);
+	return VSMainCore(In, mWorld);
 }
 /*!--------------------------------------------------------------------------------------
  * @brief	スキンなしモデル用の頂点シェーダー(インスタンシング描画用)。
 -------------------------------------------------------------------------------------- */
 PSInput VSMainInstancing( VSInputNmTxVcTangent In, uint instanceID : SV_InstanceID )
 {
-	float4 pos;
-	pos = mul(instanceMatrix[instanceID], In.Position);
-	return VSMainCore(In, pos);
+	return VSMainCore(In, instanceMatrix[instanceID]);
 }
 /*!--------------------------------------------------------------------------------------
  * @brief	スキンありモデル用の頂点シェーダー。

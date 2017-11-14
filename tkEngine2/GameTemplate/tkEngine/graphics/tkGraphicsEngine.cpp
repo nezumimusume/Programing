@@ -153,6 +153,10 @@ namespace tkEngine{
 		m_copyVS.Load("shader/copy.fx", "VSMain", CShader::EnType::VS);
 		m_copyPS.Load("shader/copy.fx", "PSMain", CShader::EnType::PS);
 
+		//フォント用のデータの初期化。
+		m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(m_pImmediateContext);
+		m_spriteFont = std::make_unique<DirectX::SpriteFont>(m_pd3dDevice, L"font/myfile.spritefont");
+
 		//2Dカメラの初期化。
 		m_2dCamera.SetTarget(CVector3::Zero);
 		m_2dCamera.SetPosition({0.0f, 0.0f, -10.0f});
@@ -189,6 +193,7 @@ namespace tkEngine{
 		//入力レイアウトを設定。
 		m_renderContext.IASetInputLayout(m_copyVS.GetInputLayout());
 		m_renderContext.PSSetShaderResource(0, m_mainRenderTarget[m_currentMainRenderTarget].GetRenderTargetSRV());
+		m_renderContext.RSSetState(RasterizerState::spriteRender);
 		//ポストエフェクトのフルスクリーン描画の機能を使う。
 		m_postEffect.DrawFullScreenQuad(m_renderContext);
 		pBackBuffer->Release();

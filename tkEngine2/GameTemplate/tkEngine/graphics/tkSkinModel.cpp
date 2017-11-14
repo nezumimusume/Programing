@@ -15,9 +15,9 @@ namespace tkEngine{
 	CSkinModel::~CSkinModel()
 	{
 	}
-	void CSkinModel::Init(CSkinModelData& modelData, int numInstance)
+	void CSkinModel::Init(CSkinModelData& modelData, int maxInstance)
 	{
-		m_numInstance = numInstance;
+		m_maxInstance = maxInstance;
 		m_skinModelData = &modelData;
 		m_cb.Create(NULL, sizeof(SVSConstantBuffer));
 		m_shadowCaster.Create(this);
@@ -30,13 +30,13 @@ namespace tkEngine{
 		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		m_samplerState.Create(desc);
 
-		if (numInstance > 1) {
+		if (maxInstance > 1) {
 			//インスタンシング用のデータを作成。
-			m_instancingData.reset(new CMatrix[numInstance]);
+			m_instancingData.reset(new CMatrix[maxInstance]);
 			D3D11_BUFFER_DESC desc;
 			ZeroMemory(&desc, sizeof(desc));
 			desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;	//SRVとしてバインド可能。
-			desc.ByteWidth = sizeof(CMatrix) * numInstance;
+			desc.ByteWidth = sizeof(CMatrix) * maxInstance;
 			desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 			desc.StructureByteStride = sizeof(CMatrix);
 			m_instancingDataSB.Create(m_instancingData.get(), desc);
@@ -63,6 +63,7 @@ namespace tkEngine{
 		if (m_isShadowCaster) {
 			GraphicsEngine().GetShadowMap().Entry(&m_shadowCaster);
 		}
+		m_numInstance = 1;
 
 	}
 	
@@ -72,17 +73,17 @@ namespace tkEngine{
 		const CVector3& scale )
 	{		
 		UpdateWorldMatrix(trans, rot, scale);
-		if (m_updateInstance < m_numInstance) {
+		if (m_numInstance < m_maxInstance) {
 			//インスタンシングデータを更新する。
-			m_instancingData[m_updateInstance] = m_worldMatrix;
-			m_updateInstance++;
+			m_instancingData[m_numInstance] = m_worldMatrix;
+			m_numInstance++;
 		}
 		else {
 			TK_WARNING("invalid UpdateInstancingData.");
 		}
 	}
 	
-	void CSkinModel::PostUpdateInstancingData()
+	void CSkinModel::EndUpdateInstancingData()
 	{
 		GraphicsEngine().GetZPrepass().AddSkinModel(this);
 		if (m_isShadowCaster) {
@@ -100,7 +101,7 @@ namespace tkEngine{
 		if (m_skinModelData == nullptr) {
 			return;
 		}
-		if (m_numInstance > 1) {
+		if (m_maxInstance > 1) {
 			//インスタンシング用のデータを更新。
 			renderContext.UpdateSubresource(m_instancingDataSB, m_instancingData.get());
 			renderContext.VSSetShaderResource(enSkinModelSRVReg_InstanceMatrix, m_instancingDataSB.GetSRV());
@@ -132,23 +133,25 @@ namespace tkEngine{
 			//レンダリングコンテキストをエフェクトに設定する。
 			effect->SetRenderContext(renderContext);
 			//インスタンスの数を設定。
-			if (m_updateInstance > 1) {
-				effect->SetNumInstance(m_updateInstance);
+			if (m_numInstance > 1) {
+				effect->SetNumInstance(m_numInstance);
 			}
 			else {
 				effect->SetNumInstance(1);
 			}
 			
 		});
-		m_skinModelData->GetBody().Draw(
-			GraphicsEngine().GetD3DDeviceContext(),
-			state,
-			m_worldMatrix,
-			viewMatrix,
-			projMatrix,
-			false,
-			nullptr,
-			m_updateInstance > 1 ? m_updateInstance : 1
-		);
+		if (m_numInstance > 0) {
+			m_skinModelData->GetBody().Draw(
+				GraphicsEngine().GetD3DDeviceContext(),
+				state,
+				m_worldMatrix,
+				viewMatrix,
+				projMatrix,
+				false,
+				nullptr,
+				m_numInstance > 1 ? m_numInstance : 1
+			);
+		}
 	}
 }

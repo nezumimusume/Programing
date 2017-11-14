@@ -61,7 +61,7 @@ bool Player::Start()
 	m_charaLight = NewGO<prefab::CDirectionLight>(0);
 	m_charaLight->SetDirection({ 1.0f, 0.0f, 0.0f });
 	m_charaLight->SetLightingMaterialIDGroup(1 << enMaterialID_Chara);
-	m_charaLight->SetColor({ 50.0f, 50.0f, 50.0f, 1.0f });
+	m_charaLight->SetColor({ 10.0f, 10.0f, 10.0f, 1.0f });
 	m_charaCon.Init(20.0f, 78.0f, -1800.0f, m_position);
 	m_game = FindGO<Game>("Game");
 	return true;
@@ -128,6 +128,8 @@ void Player::UpdateFSM()
 			m_state = enState_GameClear;
 			m_timer = 0.0f;
 		}
+		m_moveSpeed.x = 0.0f;
+		m_moveSpeed.z = 0.0f;
 		break;
 	case enState_GameClear: {
 		m_timer += GameTime().GetFrameDeltaTime();

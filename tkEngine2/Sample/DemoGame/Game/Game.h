@@ -1,7 +1,7 @@
 #pragma once
 
 #include "tkEngine/sound/tkSoundSource.h"
-
+#include "tkEngine/graphics/font/tkFont.h"
 
 class Player;
 class Background;
@@ -21,6 +21,7 @@ public:
 	bool Start() override;
 	void Update() override;
 	void Render(CRenderContext& rc) override;
+	void PostRender(CRenderContext& rc) override;
 	void OnDestroy()override;
 	void NotifyGameOver();
 	void NotifyRestart();
@@ -59,5 +60,6 @@ private:
 	bool m_isGameOver = false;
 	bool m_isGameClear = false;
 	prefab::CSoundSource* m_bgmSource = nullptr;	//!<BGM
+	CFont m_fontTest;
 };
 
