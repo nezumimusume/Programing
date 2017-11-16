@@ -17,7 +17,7 @@ bool StarRenderer::Start()
 {
 	m_skinModelData.Load(L"modelData/star.cmo");
 	m_skinModel.Init(m_skinModelData, m_numStar);
-	
+	m_skinModel.SetShadowCasterFlag(true);
 	m_skinModel.FindMaterial([&](CModelEffect* material) {
 		//ƒ}ƒeƒŠƒAƒ‹‚h‚c‚ðÝ’è‚·‚éB
 		material->SetMaterialID(enMaterialID_Star);

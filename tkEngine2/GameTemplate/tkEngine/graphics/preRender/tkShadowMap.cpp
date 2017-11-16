@@ -179,8 +179,13 @@ namespace tkEngine{
 			m_shadowCbEntity.mLVP[i] = m_LVPMatrix[i];
 			
 			lightOffset = cameraDirXZ;
-			lightOffset.Scale(shadowAreaTbl[i]);
-			lightPos.Add(lightOffset);
+			lightOffset *= shadowAreaTbl[i] * 0.5f;
+			
+			if (i < NUM_SHADOW_MAP - 1) {
+				lightOffset += cameraDirXZ * shadowAreaTbl[i + 1] * 0.5f;
+			}
+			lightPos += lightOffset;
+			
 			nearPlaneZ = farPlaneZ;
 		}
 	}

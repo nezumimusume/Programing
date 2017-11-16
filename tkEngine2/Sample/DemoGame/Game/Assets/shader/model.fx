@@ -39,8 +39,8 @@ int CalcShadow( float3 worldPos )
 				}
 				if( depth > shadow_val.r + 0.006f ){
 					shadow = 1;
-					break;
 				}
+				break;
 			}
 		}
 	}

@@ -169,6 +169,7 @@ void Game::Render(CRenderContext& rc)
 }
 void Game::PostRender(CRenderContext& rc) 
 {
+#if 0
 	m_fontTest.Begin();
 	m_fontTest.Draw(L"Hello World", { 0.0f, 0.0f }, {1.0f, 0.0f, 0.0f, 1.0f});
 	m_fontTest.Draw(L"‚g‚d‚k‚k‚n@‚v‚n‚q‚k‚c", { 0.0f, 60.0f }, { 0.0f, 1.0f, 0.0f, 1.0f });
@@ -177,4 +178,5 @@ void Game::PostRender(CRenderContext& rc)
 	m_fontTest.Draw(L"ƒ†ƒjƒBƒBƒBƒB", { 0.0f, 240.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
 	
 	m_fontTest.End();
+#endif
 }
