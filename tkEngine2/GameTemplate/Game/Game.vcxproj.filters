@@ -17,6 +17,9 @@
     <Filter Include="Assets\shader">
       <UniqueIdentifier>{a961ab0f-689c-4adf-940a-ffea33655653}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\font">
+      <UniqueIdentifier>{9ce24419-5cae-4de8-84f5-336ce6bdb0e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -79,6 +82,12 @@
     </CustomBuild>
     <CustomBuild Include="Assets\modelData\unityChan.tks">
       <Filter>Assets\modelData</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\dithering.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\font\myfile.spritefont">
+      <Filter>Assets\font</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
