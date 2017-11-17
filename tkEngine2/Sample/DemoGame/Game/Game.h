@@ -57,6 +57,7 @@ private:
 	GameClearControl* m_gameClearControl = nullptr;	//!<ゲームクリアコントロール。
 	StarRenderer* m_starRenderer = nullptr;
 	std::vector<prefab::CPointLight*> m_pointLight;
+	prefab::CDirectionLight* m_directionLight = nullptr;
 	bool m_isGameOver = false;
 	bool m_isGameClear = false;
 	prefab::CSoundSource* m_bgmSource = nullptr;	//!<BGM

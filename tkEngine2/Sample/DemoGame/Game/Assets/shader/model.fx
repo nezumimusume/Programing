@@ -331,5 +331,6 @@ float4 PSMain( PSInput In ) : SV_Target0
  */
 float4 PSMain_RenderDepth( PSInput_RenderToDepth In ) : SV_Target0
 {
-	return In.posInProj.z / In.posInProj.w;
+	float z = In.posInProj.z / In.posInProj.w;
+	return float4(z, z*z, 0.0f, 1.0f);
 }

@@ -24,6 +24,13 @@ namespace tkEngine{
 			*/
 			void SetDirection(const CVector3& direction);
 			/*!
+			 *@brief	ディレクションライトを取得。
+			 */
+			const CVector3& GetDirection() const
+			{
+				return m_light.direction;
+			}
+			/*!
 			*@brief ライトのカラーを設定。
 			*@param[in]	color	ライトのカラー。
 			*/

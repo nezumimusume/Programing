@@ -10,6 +10,8 @@
 #include "tkEngine/tkEngineStruct.h"
 #include "tkEngine/physics/tkPhysics.h"
 #include "tkEngine/random/tkRandom.h"
+#include "tkEngine/graphics/font/tkFont.h"
+
 namespace tkEngine{
 	/*!
 	 *@brief	エンジン。
@@ -132,6 +134,11 @@ namespace tkEngine{
 		int						m_screenHeight = 0;							//!<スクリーンの高さ。
 		CPad					m_pad[CPad::CONNECT_PAD_MAX];				//!<ゲームパッド。
 		CRandom					m_random;									//!<乱数。
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+		std::unique_ptr<CFont>	m_font;
+		float					m_fps = 30.0f;
+		float					m_timeTotal = 0.0f;
+#endif
 	public:
 		CStopwatch				m_sw;
 	};

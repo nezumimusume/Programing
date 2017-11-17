@@ -35,6 +35,9 @@ namespace tkEngine {
 		m_physicsWorld.Init();
 		//乱数を初期化。
 		m_random.Init((unsigned long)time(NULL));
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+		m_font = std::make_unique<CFont>();
+#endif
 		return true;
 	}
 	bool CEngine::InitWindow( const SInitParam& initParam )
@@ -101,10 +104,39 @@ namespace tkEngine {
 		
 		//物理エンジンの更新。
 		m_physicsWorld.Update();
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+		static int count = 0;
+		m_timeTotal += m_sw.GetElapsed();
+		count++;
+		if (count == 30) {
+			m_fps = 1.0f / (m_timeTotal / count);
+			m_timeTotal = 0.0f;
+			count = 0;
+			
+		}
+		
+		m_font->Begin();
+		wchar_t fps[256];
+		swprintf_s(fps, L"FPS = %f", m_fps);
+		float w = GraphicsEngine().GetFrameBufferWidth();
+		float h = GraphicsEngine().GetFrameBufferHeight();
+		m_font->Draw(
+			fps, 
+			{ 
+				w * -0.5f,
+				h * 0.5f
+			},
+			CVector4::White,
+			0.0f,
+			1.0f,
+			{0.0f, 1.0f}
+		);
+		m_font->End();
+#endif
 		m_graphicsEngine.EndRender();
 		
 		m_sw.Stop();
-		
+		Log("time = %f\n", m_sw.GetElapsedMillisecond());
 		/*if (m_sw.GetElapsed() < 1.0f / 30.0f) {
 			//30fpsに間に合っているなら眠る。
 			DWORD sleepTime = static_cast<DWORD>(max(0.0, (1.0 / 30.0)*1000.0 - (DWORD)m_sw.GetElapsedMillisecond()));

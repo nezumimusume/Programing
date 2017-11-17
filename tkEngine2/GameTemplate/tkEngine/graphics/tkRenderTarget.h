@@ -8,7 +8,7 @@ namespace tkEngine{
 	/*!
 	 * @brief	レンダリングターゲット。
 	 */
-	class CRenderTarget{
+	class CRenderTarget {
 	public:
 		CRenderTarget();
 		~CRenderTarget();
@@ -74,6 +74,18 @@ namespace tkEngine{
 		ID3D11DepthStencilView* GetDepthStencilView()
 		{
 			return m_depthStencilView;
+		}
+		/*!
+		*@brief	デプスステンシルビューを設定。
+		*/
+		void SetDepthStencilView(ID3D11DepthStencilView* view)
+		{
+			if (m_depthStencilView != nullptr) {
+				//現在のデプスステンシルビューをリリース。
+				m_depthStencilView->Release();
+			}
+			m_depthStencilView = view;
+			m_depthStencilView->AddRef();
 		}
 		/*!
 		 *@brief	レンダリングターゲットの幅を取得。

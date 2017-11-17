@@ -4,6 +4,7 @@
 #include "Background.h"
 #include "Enemy.h"
 #include "tkEngine/light/tkPointLight.h"
+#include "tkEngine/light/tkDirectionLight.h"
 #include "GameCamera.h"
 #include "GameOverControl.h"
 #include "GameClearControl.h"
@@ -22,6 +23,11 @@ Game::~Game()
 void Game::InitSceneLight()
 {
 	//ライトを配置。
+	CVector3 dir = { 1.0f, -1.0f, -1.0f };
+	dir.Normalize();
+	m_directionLight = NewGO<prefab::CDirectionLight>(0);
+	m_directionLight->SetDirection(dir);
+	m_directionLight->SetColor({30.0f, 30.0f, 30.0f, 1.0f});
 	CSkeleton ligLoc;
 	ligLoc.Load(L"loc/light.tks");
 	for (int i = 1; i < ligLoc.GetNumBones(); i++) {
@@ -34,9 +40,16 @@ void Game::InitSceneLight()
 		pos.z = -mat.m[3][1];
 		ptLig->SetPosition(pos);
 		ptLig->SetColor({
+#if 0 //@todo 物理ベースの時のライト。
+			400.0f,
+			400.0f,
+			100.0f,
+#else
 			100.0f,
 			100.0f,
 			10.0f,
+#endif
+			
 			1.0f
 		});
 		ptLig->SetAttn({
@@ -102,9 +115,8 @@ bool Game::Start()
 	m_gameCamera = NewGO<GameCamera>(0, "GameCamera");
 	//シーンライトを初期化。
 	InitSceneLight();
-	CVector3 dir = { 1.0f, -1.0f, -1.0f };
-	dir.Normalize();
-	GraphicsEngine().GetShadowMap().SetLightDirection(dir);
+	
+	GraphicsEngine().GetShadowMap().SetLightDirection(m_directionLight->GetDirection());
 	m_bgmSource = NewGO<prefab::CSoundSource>(0);
 	m_bgmSource->Init("sound/normalBGM.wav");
 	m_bgmSource->Play(true);

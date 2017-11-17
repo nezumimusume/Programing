@@ -19,18 +19,23 @@ namespace tkEngine{
 	}
 	void CZPrepass::Init()
 	{
+		CGraphicsEngine& ge = GraphicsEngine();
 		//深度値書き込み用のレンダリングターゲットの作成。
 		DXGI_SAMPLE_DESC multiSampleDesc;
 		multiSampleDesc.Count = 1;
 		multiSampleDesc.Quality = 0;
 		m_depthBuffer.Create(
-			GraphicsEngine().GetFrameBufferWidth(),
-			GraphicsEngine().GetFrameBufferHeight(),
+			ge.GetFrameBufferWidth(),
+			ge.GetFrameBufferHeight(),
 			1,
 			1,
 			DXGI_FORMAT_R32_FLOAT,
-			DXGI_FORMAT_D24_UNORM_S8_UINT,
+			DXGI_FORMAT_UNKNOWN,	//Zバッファは作らない。
 			multiSampleDesc
+		);
+		//Zバッファはメインレンダリングターゲットのものを使用する。
+		m_depthBuffer.SetDepthStencilView(
+			ge.GetMainRenderTarget().GetDepthStencilView()
 		);
 	}
 	void CZPrepass::Render(CRenderContext& rc) 
