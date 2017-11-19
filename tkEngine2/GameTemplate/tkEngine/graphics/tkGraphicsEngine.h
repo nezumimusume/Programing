@@ -107,6 +107,20 @@ namespace tkEngine{
 			return m_frameBufferHeight;
 		}
 		/*!
+		 *@brief	2D空間のスクリーンの幅。
+		 */
+		int Get2DSpaceScreenWidth() const
+		{
+			return m_2dSpaceScreenWidth;
+		}
+		/*!
+		*@brief	2D空間のスクリーンの高さ。
+		*/
+		int Get2DSpaceScreenHeight() const
+		{
+			return m_2dSpaceScreenHeight;
+		}
+		/*!
 		* @brief	メインレンダリングターゲットを切り替え。
 		*/
 		void ToggleMainRenderTarget()
@@ -224,5 +238,7 @@ namespace tkEngine{
 		CShaderResources		m_shaderResources;							//!<シェーダーリソース。
 		std::unique_ptr<DirectX::SpriteBatch>	m_spriteBatch;				//!<スプライトバッチ。
 		std::unique_ptr<DirectX::SpriteFont>	m_spriteFont;				//!<スプライトフォント。
+		int						m_2dSpaceScreenWidth = 1280;				//!<2D空間のスクリーンの幅。2Dはこの座標系を前提に表示されていれば、解像度が変わっても大丈夫。
+		int						m_2dSpaceScreenHeight = 720;				//!<2D空間のスクリーンの高さ。2Dはこの座標系を前提に表示されていれば、解像度が変わっても大丈夫。
 	};
 }

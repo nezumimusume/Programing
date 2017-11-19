@@ -118,8 +118,8 @@ namespace tkEngine {
 		m_font->Begin();
 		wchar_t fps[256];
 		swprintf_s(fps, L"FPS = %f", m_fps);
-		float w = GraphicsEngine().GetFrameBufferWidth();
-		float h = GraphicsEngine().GetFrameBufferHeight();
+		float w = GraphicsEngine().Get2DSpaceScreenWidth();
+		float h = GraphicsEngine().Get2DSpaceScreenHeight();
 		m_font->Draw(
 			fps, 
 			{ 

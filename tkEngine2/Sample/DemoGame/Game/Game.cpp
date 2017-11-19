@@ -101,8 +101,6 @@ void Game::InitSceneLight()
 }
 bool Game::Start()
 {
-
-	
 	//カメラを設定。
 	MainCamera().SetTarget({ 0.0f, 50.0f, 0.0f });
 	MainCamera().SetPosition({ 0.0f, 300.0f, 300.0f });
@@ -121,6 +119,16 @@ bool Game::Start()
 	m_bgmSource->Init("sound/normalBGM.wav");
 	m_bgmSource->Play(true);
 
+	//タイマー用のフォントを初期化。
+	m_timerFont = std::make_unique<DirectX::SpriteFont>(
+		GraphicsEngine().GetD3DDevice(),
+		L"font/hato_pop.spritefont"
+	);
+	m_fontTest.SetFont(m_timerFont.get());
+	m_fontTest.SetShadowParam(true, 2.0f, CVector4::Black);
+
+	m_scoreFontPosition.x = -620.0f ;
+	m_scoreFontPosition.y = 280.0f;
 	return true;
 }
 void Game::OnDestroy() 
@@ -146,6 +154,9 @@ void Game::OnDestroy()
 }
 void Game::NotifyGameOver()
 {
+	if (m_isGameClear) {
+		return;
+	}
 	m_isGameOver = true;
 	
 	//ゲームオーバー制御を作成。
@@ -159,21 +170,35 @@ void Game::NotifyRestart()
 	for (auto& enemy : m_enemyList) {
 		enemy->NotifyRestart();
 	}
+	m_waitTimer = 0.0f;
+	GraphicsEngine().GetTonemap().Reset();
 	DeleteGO(m_gameOverControl);
 }
 void Game::Update()
 {
+	m_waitTimer += GameTime().GetFrameDeltaTime();
+	if (m_waitTimer < 0.1f) {
+		//ゲームが開始して0.1秒経過するまでトーンマップの明暗順応はやらない。
+		GraphicsEngine().GetTonemap().Reset();
+	}
+	m_timer = max( 0.0f, m_timer - GameTime().GetFrameDeltaTime() );
 	//クリア判定
 	int coinCount = 0;
 	FindGameObjectsWithTag(enGameObject_Star, [&](IGameObject* go) {
 		coinCount++;
 	});
-	if (coinCount == 0 && !m_isGameClear) {
+	if ((coinCount == 0 || m_timer <= 0.0f) 
+		&& !m_isGameClear 
+		&& !m_isGameOver
+		&& m_player->IsPossibleClear()
+	) {
 		//全部のコインを取った。
 		m_isGameClear = true;
 		//ゲームクリア制御を作成。
 		m_gameClearControl = NewGO<GameClearControl>(0);
+		m_timer = 0.0f;
 	}
+	
 
 }
 void Game::Render(CRenderContext& rc)
@@ -181,14 +206,40 @@ void Game::Render(CRenderContext& rc)
 }
 void Game::PostRender(CRenderContext& rc) 
 {
-#if 0
+	wchar_t text[256];
+	int minute = (int)m_timer / 60;
+	int sec = (int)m_timer % 60;
+	swprintf_s(text, L"%02d:%02d", minute, sec);
 	m_fontTest.Begin();
-	m_fontTest.Draw(L"Hello World", { 0.0f, 0.0f }, {1.0f, 0.0f, 0.0f, 1.0f});
-	m_fontTest.Draw(L"ＨＥＬＬＯ　ＷＯＲＬＤ", { 0.0f, 60.0f }, { 0.0f, 1.0f, 0.0f, 1.0f });
-	m_fontTest.Draw(L"ゆにぃぃぃ", { 0.0f, 120.0f } , { 0.0f, 0.0f, 1.0f, 1.0f });
-	m_fontTest.Draw(L"無駄無駄無駄無駄", { 0.0f, 180.0f }, { 0.0f, 1.0f, 1.0f, 1.0f });
-	m_fontTest.Draw(L"ユニィィィィ", { 0.0f, 240.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
 	
+	//文字を描画。
+	m_fontTest.Draw(
+		L"TIME ", 
+		{ -620.0f, 340.0f }, 
+		{ 1.0f, 0.0f, 0.0f, 1.0f }, 
+		0.0f, 
+		0.8f, 
+		{ 0.0f, 1.0f}
+	);
+	m_fontTest.Draw(
+		text,
+		{ -465.0f, 340.0f }, 
+		{ 1.0f, 0.0f, 0.0f, 1.0f },
+		0.0f,
+		0.8f,
+		{ 0.0f, 1.0f }
+	);
+
+	//コインの取得枚数を表示。
+	swprintf_s(text, L"STAR %04d", m_coinCount);
+	m_fontTest.Draw(
+		text,
+		m_scoreFontPosition,
+		{ 1.0f, 1.0f, 0.0f, 1.0f },
+		0.0f,
+		m_scoreFontScale,
+		{ 0.0f, 1.0f }
+	);
+
 	m_fontTest.End();
-#endif
 }

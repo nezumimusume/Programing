@@ -27,8 +27,10 @@ bool GameOverControl::Start()
 	Enemy* enemy = game->FindEnemy([&](Enemy* enemy) {
 		return enemy->IsFindPlayer(); 
 	});
-	m_gameOverCamera = NewGO<GameOverCamera>(0, "GameOverCamera");
-	m_gameOverCamera->Init(*FindGO<Player>("Player"), *enemy);
+	if (enemy) {
+		m_gameOverCamera = NewGO<GameOverCamera>(0, "GameOverCamera");
+		m_gameOverCamera->Init(*FindGO<Player>("Player"), *enemy);
+	}
 	return true;
 }
 void GameOverControl::Update()
