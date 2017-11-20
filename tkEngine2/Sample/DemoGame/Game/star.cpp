@@ -3,6 +3,7 @@
 #include "tkEngine/light/tkDirectionLight.h"
 #include "Player.h"
 #include "StarRenderer.h"
+#include "Game.h"
 
 prefab::CDirectionLight* Star::m_starLight = nullptr;
 
@@ -27,7 +28,8 @@ void Star::Update()
 {
 	if (!m_isGet) {
 		CVector3 dist = m_player->GetPosition() - m_position;
-		if (dist.Length() < 100.0f) {
+		if (dist.Length() < 130.0f) {
+			FindGO<Game>("Game")->AddGetStarCount();
 			//コインゲット。
 			prefab::CSoundSource* s = NewGO<prefab::CSoundSource>(0);
 			s->Init("sound/coinGet.wav");
@@ -38,11 +40,14 @@ void Star::Update()
 		}
 	}
 	else {
+		
 		m_position.y += m_jumpSpeed * GameTime().GetFrameDeltaTime();
 		m_jumpSpeed -= 980.0f * GameTime().GetFrameDeltaTime();
 		CQuaternion qAddRot;
 		qAddRot.SetRotation(CVector3::AxisY, 0.2f);
 		m_rotation.Multiply(qAddRot);
+		
+		
 		if (m_jumStartPosY > m_position.y) {
 			DeleteGO(this);
 		}

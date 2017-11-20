@@ -170,8 +170,8 @@ namespace tkEngine{
 			}
 			CMatrix proj;
 			proj.MakeOrthoProjectionMatrix(
-				w * 1.5f,	//‚¿‚å‚¢‘¾‚ç‚¹‚éB
-				h * 1.5f,
+				w * 2.0f,	//‚¿‚å‚¢‘¾‚ç‚¹‚éB
+				h * 2.0f,
 				m_near,
 				m_far
 			);

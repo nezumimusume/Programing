@@ -28,6 +28,7 @@ namespace tkEngine{
 		{
 			m_light.direction = direction;
 		}
+		
 		void CDirectionLight::SetColor(const CVector4& color)
 		{
 			m_light.color = color;

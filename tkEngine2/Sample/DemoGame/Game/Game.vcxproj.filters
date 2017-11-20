@@ -214,10 +214,11 @@
     <ImageContentTask Include="Assets\modelData\utc_nomal.tga">
       <Filter>Assets\modelData</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Assets\sprite\utc_all2_light.png" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\sprite\utc_all2_light.png">
-      <Filter>Assets\sprite</Filter>
-    </Image>
+    <None Include="Assets\font\hato_pop.spritefont">
+      <Filter>Assets\font</Filter>
+    </None>
   </ItemGroup>
 </Project>

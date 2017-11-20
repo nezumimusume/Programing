@@ -18,6 +18,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	initParam.screenHeight = 720;
 	initParam.frameBufferWidth = 1280;
 	initParam.frameBufferHeight = 720;
+	initParam.screenWidth2D = 1280;
+	initParam.screenHeight2D = 720;
 	//影の設定。
 	initParam.graphicsConfing.shadowRenderConfig.isEnable = true;
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapWidth = 2048;
@@ -39,7 +41,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	//エンジンを初期化。
 	if (Engine().Init(initParam) == true) {
-		GraphicsEngine().GetTonemap().SetLuminance(0.32f);
+		GraphicsEngine().GetTonemap().SetLuminance(0.34f);
 		SoundEngine().GetMasteringVoice()->SetVolume(0.2f);
 		NewGO<Game>(0, "Game");
 		//ゲームループを実行。

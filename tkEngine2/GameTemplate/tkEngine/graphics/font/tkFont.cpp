@@ -9,6 +9,7 @@ namespace tkEngine{
 	{
 		m_spriteBatch = GraphicsEngine().GetSpriteBatch();
 		m_spriteFont = GraphicsEngine().GetSpriteFont();
+		m_scaleMat.MakeScaling({ GraphicsEngine().GetFrameBufferWidth() / 1280.0f, GraphicsEngine().GetFrameBufferHeight() / 720.0f, 1.0f });
 	}
 	CFont::~CFont()
 	{
@@ -16,7 +17,15 @@ namespace tkEngine{
 
 	void CFont::Begin()
 	{
-		m_spriteBatch->Begin();
+		m_spriteBatch->Begin(
+			DirectX::SpriteSortMode_Deferred,
+			nullptr,
+			nullptr,
+			nullptr,
+			nullptr,
+			nullptr,
+			m_scaleMat
+		);
 	}
 	void CFont::End()
 	{
@@ -34,10 +43,42 @@ namespace tkEngine{
 		DirectX::XMFLOAT2 tkFloat2Zero(0, 0);
 		//座標系をスプライトと合わせる。
 		CVector2 pos = position;
-		float frameBufferHalfWidth = GraphicsEngine().GetFrameBufferWidth() * 0.5f;
-		float frameBufferHalfHeight = GraphicsEngine().GetFrameBufferHeight() * 0.5f;
+		float frameBufferHalfWidth = GraphicsEngine().Get2DSpaceScreenWidth() * 0.5f;
+		float frameBufferHalfHeight = GraphicsEngine().Get2DSpaceScreenHeight() * 0.5f;
 		pos.x += frameBufferHalfWidth;
 		pos.y = -pos.y + frameBufferHalfHeight;
+
+		
+		if (m_isDrawShadow) {
+			//影を書く。
+			CVector2 offsetTbl[] = {
+				{ m_shadowOffset , 0.0f},
+				{ -m_shadowOffset , 0.0f },
+				{ 0.0f , m_shadowOffset },
+				{ 0.0f , -m_shadowOffset },
+
+				{ m_shadowOffset ,  m_shadowOffset },
+				{ m_shadowOffset ,  -m_shadowOffset },
+				{ -m_shadowOffset , m_shadowOffset },
+				{ -m_shadowOffset , -m_shadowOffset },
+			};
+			for (auto offset : offsetTbl) {
+
+				CVector2 sPos = pos;
+				sPos.x += offset.x;
+				sPos.y += offset.y;
+				m_spriteFont->DrawString(
+					m_spriteBatch,
+					text,
+					sPos.vec,
+					m_shadowColor,
+					rotation,
+					DirectX::XMFLOAT2(pivot.x, pivot.y),
+					scale
+				);
+			}
+
+		}
 		m_spriteFont->DrawString(
 			m_spriteBatch,
 			text,

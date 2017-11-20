@@ -2,9 +2,13 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "Player.h"
+#include "GameCamera.h"
 #include "tkEngine/light/tkDirectionLight.h"
 #include "tkEngine/sound/tkSoundSource.h"
 
+namespace {
+	const CVector3 START_POS = { -1088.16589f, 67.87, -567.0f };
+}
 class CSoundEmitter : public IGameObject {
 private:
 	float m_timer = 0.0f;
@@ -53,6 +57,7 @@ bool Player::Start()
 	for (auto& animClip : m_animClip) {
 		animClip.SetLoopFlag(true);
 	}
+	m_position = START_POS;
 	m_animClip[enAnimationClip_jump].SetLoopFlag(false);
 	m_animClip[enAnimationClip_KneelDown].SetLoopFlag(false);
 	m_animClip[enAnimationClip_Clear].SetLoopFlag(false);
@@ -76,6 +81,11 @@ void Player::Turn()
 void Player::UpdateFSM()
 {
 	Turn();
+	if (m_position.y < -1000.0f && !m_game->IsGameOver() ) {
+		//初期位置に戻る。
+		Game* game = FindGO<Game>("Game");
+		game->NotifyGameOver();
+	}
 	static float JUMP_SPEED = 630.0f;
 	switch (m_state) {
 	case enState_Idle:
@@ -132,11 +142,7 @@ void Player::UpdateFSM()
 		m_moveSpeed.z = 0.0f;
 		break;
 	case enState_GameClear: {
-		m_timer += GameTime().GetFrameDeltaTime();
-		if (m_timer > 4.0f) {
-			//ゲーム終わり。
-			DeleteGO(m_game);
-		}
+		
 		m_moveSpeed.x = 0.0f;
 		m_moveSpeed.z = 0.0f;
 	}break;
@@ -201,8 +207,9 @@ void Player::NotifyRestart()
 {
 	m_animation.Play(enAnimationClip_idle);
 	m_state = enState_Idle;
-	m_position = CVector3::Zero;
+	m_position = START_POS;
 	m_charaCon.SetPosition(m_position);
+	m_moveSpeed = CVector3::Zero;
 }
 void Player::OnDestroy()
 {

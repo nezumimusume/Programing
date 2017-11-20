@@ -45,7 +45,30 @@ public:
 		}		
 		return findEnemy;
 	}
-
+	void AddGetStarCount()
+	{
+		m_coinCount++;
+	}
+	DirectX::SpriteFont* GetFont() const
+	{
+		return m_timerFont.get();
+	}
+	const CVector2& GetScorePosition()
+	{
+		return m_scoreFontPosition;
+	}
+	void SetScorePosition(const CVector2& pos)
+	{
+		m_scoreFontPosition = pos;
+	}
+	float GetScoreFontScale()
+	{
+		return m_scoreFontScale;
+	}
+	void SetScoreFontScale( float scale )
+	{
+		m_scoreFontScale = scale;
+	}
 private:
 	void InitSceneLight();
 private:
@@ -57,9 +80,17 @@ private:
 	GameClearControl* m_gameClearControl = nullptr;	//!<ゲームクリアコントロール。
 	StarRenderer* m_starRenderer = nullptr;
 	std::vector<prefab::CPointLight*> m_pointLight;
+	prefab::CDirectionLight* m_directionLight = nullptr;
 	bool m_isGameOver = false;
 	bool m_isGameClear = false;
 	prefab::CSoundSource* m_bgmSource = nullptr;	//!<BGM
 	CFont m_fontTest;
+	float m_timer = 90.0f;								//!<タイマー
+	std::unique_ptr<DirectX::SpriteFont> m_timerFont;	//!<タイマー用のフォント。
+	CVector2 m_scoreFontPosition;
+	float m_scoreFontScale = 0.8f;
+	int m_coinCount = 0;
+	float m_waitTimer = 0.0f;
+	bool m_isToneMapReset = false;
 };
 

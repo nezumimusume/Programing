@@ -6,7 +6,7 @@
 
 #include "tkEngine/character/tkCharacterController.h"
 class Game;
-class Player : public IGameObject{
+class Player : public IGameObject {
 public:
 
 	bool Start() override;
@@ -33,6 +33,20 @@ public:
 	 *@brief	ゲームクリアー。
 	 */
 	void NotifyGameClear();
+	/*!
+	 *@brief	クリアできる？
+	 */
+	bool IsPossibleClear() const
+	{
+		if (m_state != enState_Jump
+			&& m_state != enState_GameOver
+			&& m_state != enState_WaitStartGameClear
+			&& m_state != enState_GameClear)
+		{
+			return true;
+		}
+		return false;
+	}
 private:
 	void UpdateFSM();
 	void Move();

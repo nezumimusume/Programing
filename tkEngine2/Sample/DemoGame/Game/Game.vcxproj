@@ -1144,6 +1144,11 @@
   <ItemGroup>
     <ImageContentTask Include="Assets\sprite\utc_all2_light.png" />
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\font\hato_pop.spritefont">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />
