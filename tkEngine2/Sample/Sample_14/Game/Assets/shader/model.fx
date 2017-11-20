@@ -39,8 +39,8 @@ int CalcShadow( float3 worldPos )
 				}
 				if( depth > shadow_val.r + 0.006f ){
 					shadow = 1;
-					break;
 				}
+				break;
 			}
 		}
 	}
@@ -77,13 +77,12 @@ float4x4 CalcSkinMatrix(VSInputNmTxWeights In)
     return skinning;
 }
 /*!--------------------------------------------------------------------------------------
- * @brief	スキンなしモデル用の頂点シェーダー。
+ * @brief	スキンなしモデル用の頂点シェーダーのコアプログラム。
 -------------------------------------------------------------------------------------- */
-PSInput VSMain( VSInputNmTxVcTangent In ) 
+PSInput VSMainCore( VSInputNmTxVcTangent In, float4x4 worldMat )
 {
 	PSInput psInput = (PSInput)0;
-	float4 pos;
-	pos = mul(mWorld, In.Position);
+	float4 pos = mul(worldMat, In.Position);
 	psInput.Pos = pos;
 	pos = mul(mView, pos);
 	psInput.posInView = pos;
@@ -91,9 +90,23 @@ PSInput VSMain( VSInputNmTxVcTangent In )
 	psInput.posInProj = pos;
 	psInput.Position = pos;
 	psInput.TexCoord = In.TexCoord;
-	psInput.Normal = normalize(mul(mWorld, In.Normal));
-	psInput.Tangent = normalize(mul(mWorld, In.Tangent));
+	psInput.Normal = normalize(mul(worldMat, In.Normal));
+	psInput.Tangent = normalize(mul(worldMat, In.Tangent));
     return psInput;
+}
+/*!--------------------------------------------------------------------------------------
+ * @brief	スキンなしモデル用の頂点シェーダー。
+-------------------------------------------------------------------------------------- */
+PSInput VSMain( VSInputNmTxVcTangent In ) 
+{
+	return VSMainCore(In, mWorld);
+}
+/*!--------------------------------------------------------------------------------------
+ * @brief	スキンなしモデル用の頂点シェーダー(インスタンシング描画用)。
+-------------------------------------------------------------------------------------- */
+PSInput VSMainInstancing( VSInputNmTxVcTangent In, uint instanceID : SV_InstanceID )
+{
+	return VSMainCore(In, instanceMatrix[instanceID]);
 }
 /*!--------------------------------------------------------------------------------------
  * @brief	スキンありモデル用の頂点シェーダー。
@@ -120,6 +133,7 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
     return psInput;
 }
 
+
 /*!
  *@brief	Z値を書き込むためだけの描画パスで使用される頂点シェーダー。
  *			スキンなしモデル用
@@ -137,7 +151,27 @@ PSInput_RenderToDepth VSMain_RenderDepth(VSInputNmTxVcTangent In)
 	psInput.posInProj = pos;
 	return psInput;
 }
+/*!
+ *@brief	Z値を書き込むためだけの描画パスで使用される頂点シェーダー。
+ *			スキンなしインスタンシングモデル用
+ *@details
+ * 現在はシャドウマップ作成とZPrepassで使用されています。
+ */
 
+PSInput_RenderToDepth VSMainInstancing_RenderDepth(
+	VSInputNmTxVcTangent In, 
+	uint instanceID : SV_InstanceID
+)
+{
+	PSInput_RenderToDepth psInput = (PSInput_RenderToDepth)0;
+	float4 pos;
+	pos = mul(instanceMatrix[instanceID], In.Position);
+	pos = mul(mView, pos);
+	pos = mul(mProj, pos);
+	psInput.Position = pos;
+	psInput.posInProj = pos;
+	return psInput;
+}
 /*!
  *@brief	Z値を書き込むためだけの描画パスで使用される頂点シェーダー。
  *			スキンありモデル用。
@@ -164,6 +198,44 @@ PSInput_RenderToDepth VSMainSkin_RenderDepth(VSInputNmTxWeights In)
 //--------------------------------------------------------------------------------------
 float4 PSMain( PSInput In ) : SV_Target0
 {
+#if 0
+	//アルベド。
+	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
+	float4 color = albedo * float4(ambientLight, 1.0f);
+	int shadow = CalcShadow(In.Pos);
+	if(shadow != 0){
+		color.xyz *= 0.5f;
+	}
+	//視点までのベクトルを求める。
+	float3 toEye = normalize(eyePos - In.Pos);
+	//従ベクトルを計算する。
+	float3 biNormal = normalize(cross(In.Tangent, In.Normal));
+	//法線を計算。
+	float3 normal = normalize(In.Normal);
+	float toEyeLen = length(toEye);
+	float3 toEyeDir = float3(1.0f, 0.0f, 0.0f);
+	if(toEyeLen > 0.001f){
+		toEyeDir = toEye / toEyeLen;
+	}
+	
+	float3 toEyeReflection = -toEyeDir + 2.0f * dot(normal, toEyeDir) * normal;
+	
+	//ポイントライトを計算。
+	color.xyz += CalcPointLight(
+		albedo,
+		In.Pos, 
+		In.posInProj, 
+		normal,
+		In.Tangent,
+		biNormal,
+		toEyeDir,
+		toEyeReflection, 
+		1.0f,
+		0.0f
+	);
+	
+	return color;
+#else
 	float3 lig = 0.0f;
 	//視点までのベクトルを求める。
 	float3 toEye = normalize(eyePos - In.Pos);
@@ -248,7 +320,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 		return float4(1.0f, 0.0f, 0.0f, 1.0f);
 	}
     return float4(finalColor, 1.0f); 
-
+#endif
 }
 
 

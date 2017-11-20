@@ -23,6 +23,9 @@
     <Filter Include="Assets\level">
       <UniqueIdentifier>{1e0ba0ea-cc9e-45a1-9d45-4b5de48af929}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\font">
+      <UniqueIdentifier>{91190699-a3c2-4a01-925c-ff6a4dcc4e8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -113,6 +116,12 @@
     </CustomBuild>
     <CustomBuild Include="Assets\level\level_00.tks">
       <Filter>Assets\level</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\dithering.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\font\myfile.spritefont">
+      <Filter>Assets\font</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

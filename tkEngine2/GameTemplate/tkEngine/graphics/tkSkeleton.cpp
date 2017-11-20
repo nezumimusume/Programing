@@ -112,7 +112,7 @@ namespace tkEngine {
 				//同名のボーンが見つかった。
 				_bstr_t b(boneName);
 				const char* c = b;
-				TK_WARNING_MESSAGE_BOX("同名のボーンが見つかりました。未定の動作です。データを修正してください。%s", c);
+				//TK_WARNING_MESSAGE_BOX("同名のボーンが見つかりました。未定の動作です。データを修正してください。%s", c);
 			}
 #endif
 			m_bones.push_back(std::move(bone));
