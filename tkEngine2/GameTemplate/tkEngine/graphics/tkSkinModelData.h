@@ -15,6 +15,8 @@ namespace tkEngine{
 	class CModelEffect : public DirectX::IEffect {
 	protected:
 		std::wstring m_materialName;	//!<マテリアル名。
+		CShader* m_pVSShader = nullptr;
+		CShader* m_pPSShader = nullptr;
 		CShader m_vsShader;
 		CShader m_psShader;
 		CShader m_vsShaderInstancing;		//!<頂点シェーダー。インスタンシング用。
@@ -48,6 +50,7 @@ namespace tkEngine{
 			m_materialParamCB.Create(&m_materialParam, sizeof(m_materialParam));
 			m_psShader.Load("shader/model.fx", "PSMain", CShader::EnType::PS);
 			m_psRenderToDepthShader.Load("shader/model.fx", "PSMain_RenderDepth", CShader::EnType::PS);
+			m_pPSShader = &m_psShader;
 		}
 		virtual ~CModelEffect()
 		{
@@ -103,6 +106,31 @@ namespace tkEngine{
 		{
 			return wcscmp(name, m_materialName.c_str()) == 0;
 		}
+		/*!
+		*@brief	enRenderStep_Render3DModelToSceneの時に使用される頂点シェーダーを設定。
+		*  
+		*/
+		void SetRender3DModelVSShader(CShader& vsShader)
+		{
+			m_pVSShader = &vsShader;
+		}
+		/*!
+		*@brief	enRenderStep_Render3DModelToSceneの時に使用されるピクセルシェーダーを設定。
+		*
+		*/
+		void SetRender3DModelPSShader(CShader& psShader)
+		{
+			m_pPSShader = &psShader;
+		}
+		/*!
+		*@brief	enRenderStep_Render3DModelToSceneの時に使用されるシェーダーをデフォルトシェーダーにする。
+		*
+		*/
+		void SetRender3DModelDefaultShader()
+		{
+			m_pVSShader = &m_vsShader;
+			m_pPSShader = &m_psShader;
+		}
 	};
 	/*!
 	*@brief
@@ -116,6 +144,7 @@ namespace tkEngine{
 			m_vsRenderToDepthShader.Load("shader/model.fx", "VSMain_RenderDepth", CShader::EnType::VS);
 			m_vsRenderToDepthShaderInstancing.Load("shader/model.fx", "VSMainInstancing_RenderDepth", CShader::EnType::VS);
 			m_vsShaderInstancing.Load("shader/model.fx", "VSMainInstancing", CShader::EnType::VS);
+			m_pVSShader = &m_vsShader;
 			isSkining = false;
 		}
 	};
@@ -129,6 +158,7 @@ namespace tkEngine{
 		{
 			m_vsShader.Load("shader/model.fx", "VSMainSkin", CShader::EnType::VS);
 			m_vsRenderToDepthShader.Load("shader/model.fx", "VSMainSkin_RenderDepth", CShader::EnType::VS);
+			m_pVSShader = &m_vsShader;
 			isSkining = true;
 		}
 	};

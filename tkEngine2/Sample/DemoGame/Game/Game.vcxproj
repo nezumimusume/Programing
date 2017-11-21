@@ -715,6 +715,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerSilhouette.cpp" />
     <ClCompile Include="star.cpp" />
     <ClCompile Include="StarRenderer.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -778,6 +779,7 @@
     <ClInclude Include="GameOverControl.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerSilhouette.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="star.h" />
     <ClInclude Include="StarRenderer.h" />

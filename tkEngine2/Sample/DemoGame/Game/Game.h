@@ -11,6 +11,7 @@ class GameOverControl;
 class Star;
 class GameClearControl;
 class StarRenderer;
+class PlayerSilhouette;
 
 class Game : public IGameObject
 {
@@ -72,8 +73,8 @@ public:
 private:
 	void InitSceneLight();
 private:
-	Player*	m_player = nullptr;			//!<プレイヤー
-	std::vector<Enemy*> m_enemyList;	//!<エネミーのリスト。
+	Player*	m_player = nullptr;						//!<プレイヤー
+	std::vector<Enemy*> m_enemyList;				//!<エネミーのリスト。
 	Background* m_background = nullptr;
 	GameCamera* m_gameCamera = nullptr;
 	GameOverControl* m_gameOverControl = nullptr;	//!<ゲームオーバーコントロール。
@@ -81,9 +82,10 @@ private:
 	StarRenderer* m_starRenderer = nullptr;
 	std::vector<prefab::CPointLight*> m_pointLight;
 	prefab::CDirectionLight* m_directionLight = nullptr;
+	PlayerSilhouette* m_playerSilhouette = nullptr;
 	bool m_isGameOver = false;
 	bool m_isGameClear = false;
-	prefab::CSoundSource* m_bgmSource = nullptr;	//!<BGM
+	prefab::CSoundSource* m_bgmSource = nullptr;		//!<BGM
 	CFont m_fontTest;
 	float m_timer = 90.0f;								//!<タイマー
 	std::unique_ptr<DirectX::SpriteFont> m_timerFont;	//!<タイマー用のフォント。

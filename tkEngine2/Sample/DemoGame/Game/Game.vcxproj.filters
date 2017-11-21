@@ -52,6 +52,7 @@
     <ClCompile Include="GameClearControl.cpp" />
     <ClCompile Include="GameClearCamera.cpp" />
     <ClCompile Include="StarRenderer.cpp" />
+    <ClCompile Include="PlayerSilhouette.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -71,6 +72,7 @@
     <ClInclude Include="GameClearControl.h" />
     <ClInclude Include="GameClearCamera.h" />
     <ClInclude Include="StarRenderer.h" />
+    <ClInclude Include="PlayerSilhouette.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc">
@@ -206,6 +208,7 @@
     <CustomBuild Include="Assets\animData\clear.tka">
       <Filter>Assets\animData</Filter>
     </CustomBuild>
+    <CustomBuild Include="Assets\font\hato_pop.spritefont" />
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\modelData\utc_spec.tga">
@@ -215,10 +218,5 @@
       <Filter>Assets\modelData</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Assets\sprite\utc_all2_light.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\font\hato_pop.spritefont">
-      <Filter>Assets\font</Filter>
-    </None>
   </ItemGroup>
 </Project>

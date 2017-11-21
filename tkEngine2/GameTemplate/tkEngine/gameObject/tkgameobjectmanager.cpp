@@ -50,6 +50,7 @@ namespace tkEngine{
 		renderContext.ClearRenderTargetView(0, ClearColor);
 		renderContext.RSSetViewport(0.0f, 0.0f, (float)GraphicsEngine().GetFrameBufferWidth(), (float)GraphicsEngine().GetFrameBufferHeight());
 		renderContext.RSSetState(RasterizerState::sceneRender);
+		renderContext.OMSetDepthStencilState(DepthStencilState::SceneRender, 0);
 		//プリレンダリング。
 		GraphicsEngine().GetPreRender().Render(renderContext);
 		BeginGPUEvent(L"enRenderStep_Render3DModelToScene");

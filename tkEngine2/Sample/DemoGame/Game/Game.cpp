@@ -10,7 +10,7 @@
 #include "GameClearControl.h"
 #include "star.h"
 #include "StarRenderer.h"
-
+#include "PlayerSilhouette.h"
 
 Game::Game()
 {
@@ -60,6 +60,26 @@ void Game::InitSceneLight()
 		m_pointLight.push_back(ptLig);
 	}
 
+	
+
+}
+bool Game::Start()
+{
+	//カメラを設定。
+	MainCamera().SetTarget({ 0.0f, 50.0f, 0.0f });
+	MainCamera().SetPosition({ 0.0f, 300.0f, 300.0f });
+	MainCamera().SetNear(1.0f);
+	MainCamera().SetFar(10000.0f);
+	MainCamera().Update();
+
+	m_player = NewGO<Player>(0, "Player");
+	m_background = NewGO<Background>(0);
+	m_gameCamera = NewGO<GameCamera>(0, "GameCamera");
+	//シーンライトを初期化。
+	InitSceneLight();
+	//プレイヤーのシルエットを作成。
+	m_playerSilhouette = NewGO<PlayerSilhouette>(0);
+
 	//敵を配置
 	CSkeleton enemyLoc;
 	enemyLoc.Load(L"loc/enemy.tks");
@@ -78,13 +98,13 @@ void Game::InitSceneLight()
 		swprintf_s(moveFilePath, L"pathData/enemy0%d_path.tks", i);
 		enemy->Init(moveFilePath);
 	}
-	
+
 	//星を配置
 	CSkeleton starLoc;
 	starLoc.Load(L"loc/star.tks");
 	//星のレンダラーを作成。
 	m_starRenderer = NewGO<StarRenderer>(0);
-	m_starRenderer->Init(starLoc.GetNumBones()-1);
+	m_starRenderer->Init(starLoc.GetNumBones() - 1);
 	for (int i = 1; i < starLoc.GetNumBones(); i++) {
 		CBone* bone = starLoc.GetBone(i);
 		Star* star = NewGO <Star>(0);
@@ -98,22 +118,6 @@ void Game::InitSceneLight()
 		star->SetTags(enGameObject_Star);	//タグを設定。
 	}
 
-}
-bool Game::Start()
-{
-	//カメラを設定。
-	MainCamera().SetTarget({ 0.0f, 50.0f, 0.0f });
-	MainCamera().SetPosition({ 0.0f, 300.0f, 300.0f });
-	MainCamera().SetNear(1.0f);
-	MainCamera().SetFar(10000.0f);
-	MainCamera().Update();
-
-	m_player = NewGO<Player>(0, "Player");
-	m_background = NewGO<Background>(0);
-	m_gameCamera = NewGO<GameCamera>(0, "GameCamera");
-	//シーンライトを初期化。
-	InitSceneLight();
-	
 	GraphicsEngine().GetShadowMap().SetLightDirection(m_directionLight->GetDirection());
 	m_bgmSource = NewGO<prefab::CSoundSource>(0);
 	m_bgmSource->Init("sound/normalBGM.wav");

@@ -47,6 +47,13 @@ public:
 		}
 		return false;
 	}
+	/*!
+	*@brief	スキンモデルの取得。
+	*/
+	CSkinModel& GetModel()
+	{
+		return m_skinModel;
+	}
 private:
 	void UpdateFSM();
 	void Move();
