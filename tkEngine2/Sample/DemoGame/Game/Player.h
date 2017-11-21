@@ -51,7 +51,7 @@ private:
 	void UpdateFSM();
 	void Move();
 	void Turn();
-	
+	void AnimationController();
 	
 private:
 	enum EnAnimationClip {

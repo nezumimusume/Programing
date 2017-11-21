@@ -25,7 +25,8 @@ namespace tkEngine{
 		enSkinModelSRVReg_ShadowMap_0,				//!<シャドウマップ
 		enSkinModelSRVReg_ShadowMap_1,				//!<シャドウマップ
 		enSkinModelSRVReg_ShadowMap_2,				//!<シャドウマップ
-		
+		enSkinModelSRVReg_DepthTexture,				//!<深度テクスチャ。
+
 		enSkinModelSRVReg_DirectionLight = 100,		//!<ディレクションライト。
 		enSkinModelSRVReg_PointLight,				//!<ポイントライトのリスト。
 		enSkinModelSRVReg_PointLightListInTile,		//!<タイルに含まれるポイントライトのリスト。

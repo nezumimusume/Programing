@@ -199,6 +199,28 @@ PSInput_RenderToDepth VSMainSkin_RenderDepth(VSInputNmTxWeights In)
 float4 PSMain( PSInput In ) : SV_Target0
 {
 #if 1
+	//エッジを描画する
+	{
+		float2 screenUV = In.posInProj.xy / In.posInProj.w;
+		screenUV *= float2(0.5f, -0.5f);
+		screenUV += 0.5f;
+		float depth = depthTexture.Sample(Sampler, screenUV).r;
+		
+		//上と右のテクセルを調べて、大きく深度値が異なっていたらエッジとみなす。
+		float2 texSize;
+		float level;
+		depthTexture.GetDimensions( 0, texSize.x, texSize.y, level );
+		float2 uv = screenUV + float2(2.0f / texSize.x, 0.0f);
+		float depth2 = depthTexture.Sample(Sampler, uv).r;
+		if(abs(depth - depth2) > 0.0001f){
+			return float4(0.0f, 0.0f, 0.0f, 1.0f);
+		}
+		uv = screenUV + float2(0.0f, 2.0f / texSize.y);
+		depth2 = depthTexture.Sample(Sampler, uv).r;
+		if(abs(depth - depth2) > 0.0001f){
+			return float4(0.0f, 0.0f, 0.0f, 1.0f);
+		}
+	}
 	//アルベド。
 	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
 	float4 color = albedo * float4(ambientLight, 1.0f);

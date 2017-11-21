@@ -7,6 +7,8 @@
 #include <future>
 #include "tkEngine/graphics/preRender/tkPreRender.h"
 #include "tkEngine/graphics/tkPresetRenderState.h"
+#include "tkEngine/graphics/tkSkinModelShaderConst.h"
+
 namespace tkEngine{
 	void CGameObjectManager::Execute()
 	{
@@ -58,7 +60,7 @@ namespace tkEngine{
 		LightManager().Render(renderContext);
 		//‰e‚ð—Ž‚Æ‚·‚½‚ß‚Ìî•ñ‚ð“]‘—B
 		GraphicsEngine().GetShadowMap().SendShadowReceiveParamToGPU(renderContext);
-
+		
 		for (GameObjectList objList : m_gameObjectListArray) {
 			for (IGameObject* obj : objList) {
 				obj->PreRenderWrapper(renderContext);

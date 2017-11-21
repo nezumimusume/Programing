@@ -67,58 +67,59 @@ bool Player::Start()
 	m_charaLight->SetDirection({ 1.0f, 0.0f, 0.0f });
 	m_charaLight->SetLightingMaterialIDGroup(1 << enMaterialID_Chara);
 	m_charaLight->SetColor({ 10.0f, 10.0f, 10.0f, 1.0f });
-	m_charaCon.Init(20.0f, 78.0f, -1800.0f, m_position);
+	m_charaCon.Init(20.0f, 68.0f, -1800.0f, m_position);
 	m_game = FindGO<Game>("Game");
 	return true;
 }
 void Player::Turn()
 {
-	if (m_moveSpeed.LengthSq() < 0.01f) {
+	CVector3 moveSpeedXZ = m_moveSpeed;
+	moveSpeedXZ.y = 0.0f;
+	moveSpeedXZ.Normalize();
+	if (moveSpeedXZ.LengthSq() < 1.0f) {
 		return;
 	}
-	m_rotation.SetRotation(CVector3::Up, atan2f(m_moveSpeed.x, m_moveSpeed.z));
+	m_rotation.SetRotation(CVector3::Up, atan2f(moveSpeedXZ.x, moveSpeedXZ.z));
 }
 void Player::UpdateFSM()
 {
-	Turn();
-	if (m_position.y < -1000.0f && !m_game->IsGameOver() ) {
-		//初期位置に戻る。
-		Game* game = FindGO<Game>("Game");
-		game->NotifyGameOver();
-	}
+	
 	static float JUMP_SPEED = 630.0f;
 	switch (m_state) {
 	case enState_Idle:
+		m_moveSpeed.x = 0.0f;
+		m_moveSpeed.z = 0.0f;
 		Move();
 		if (Pad(0).IsTrigger(enButtonA)) {
 			m_charaCon.Jump();
 			m_moveSpeed.y = JUMP_SPEED;
-			m_animation.Play(enAnimationClip_jump, 0.2f);
 			m_state = enState_Jump;
-		}else if (m_moveSpeed.LengthSq() > 0.0f) {
+		}else if (m_moveSpeed.LengthSq() > 0.001f) {
 			//入力がある。
-			m_animation.Play(enAnimationClip_run, 0.2f);
 			m_state = enState_Run;
 		}
 		break;
 	case enState_Run:
 		Move();
 		
-		if (m_moveSpeed.LengthSq() < 0.01f) {
+		if (m_moveSpeed.LengthSq() < 50.0f * 50.0f) {
 			//入力がなくなった。
-			m_animation.Play(enAnimationClip_idle, 0.2f);
 			m_state = enState_Idle;
 		}else if (Pad(0).IsTrigger(enButtonA)) {
 			m_charaCon.Jump();
 			m_moveSpeed.y = JUMP_SPEED;
-			m_animation.Play(enAnimationClip_jump, 0.2f);
 			m_state = enState_Jump;
 		}
 		break;
 	case enState_Jump:
 		if (!m_charaCon.IsJump()) {
-			m_animation.Play(enAnimationClip_idle, 0.2f);
-			m_state = enState_Idle;
+			if (m_moveSpeed.LengthSq() < 50.0f * 50.0f) {
+				//入力がなくなった。
+				m_state = enState_Idle;
+			}
+			else {
+				m_state = enState_Run;
+			}
 		}
 		break;
 	case enState_GameOver: {
@@ -132,7 +133,7 @@ void Player::UpdateFSM()
 	case enState_WaitStartGameClear:
 		m_timer += GameTime().GetFrameDeltaTime();
 		if (m_timer > 0.5f) {
-			m_animation.Play(enAnimationClip_Clear);
+			
 			CSoundEmitter* emitter = NewGO<CSoundEmitter>(0);
 			emitter->Init(0.3f, "sound/uni1518.wav");
 			m_state = enState_GameClear;
@@ -150,26 +151,69 @@ void Player::UpdateFSM()
 }
 void Player::Move()
 {
-	static float MOVE_SPEED = 600.0f;
+	static float MOVE_SPEED = 2400.0f;
 	float x = Pad(0).GetLStickXF();
 	float y = Pad(0).GetLStickYF();
 
-	CVector3 moveForwardXZ = MainCamera().GetForward();
-	CVector3 moveRightXZ = MainCamera().GetRight();
-	moveForwardXZ.y = 0.0f;
-	moveForwardXZ.Normalize();
-	moveRightXZ.y = 0.0f;
-	moveRightXZ.Normalize();
-	moveForwardXZ *= y * MOVE_SPEED;
-	moveRightXZ *= x * MOVE_SPEED;
+	//加速度を計算。
+	CVector3 accForwardXZ = MainCamera().GetForward();
+	CVector3 accRightXZ = MainCamera().GetRight();
+	accForwardXZ.y = 0.0f;
+	accForwardXZ.Normalize();
+	accRightXZ.y = 0.0f;
+	accRightXZ.Normalize();
+	accForwardXZ *= y * MOVE_SPEED * GameTime().GetFrameDeltaTime();
+	accRightXZ *= x * MOVE_SPEED * GameTime().GetFrameDeltaTime();
 
-	m_moveSpeed.x = 0.0f;
-	m_moveSpeed.z = 0.0f;
-	m_moveSpeed += moveForwardXZ;
-	m_moveSpeed += moveRightXZ;
+	//摩擦力。
+	CVector3 friction = m_moveSpeed;
+	friction *= -3.0f;
+	m_moveSpeed.x += friction.x * GameTime().GetFrameDeltaTime();
+	m_moveSpeed.z += friction.z * GameTime().GetFrameDeltaTime();
+	//加速度を加える。
+	m_moveSpeed += accForwardXZ;
+	m_moveSpeed += accRightXZ;
+}
+void Player::AnimationController()
+{
+	if (m_state == enState_Jump) {
+		m_animation.Play(enAnimationClip_jump, 0.2f);
+	}
+	else if( m_state == enState_Run
+		|| m_state == enState_Idle
+	){
+		if (m_moveSpeed.LengthSq() > 600.0f * 600.0f) {
+			//走りモーション。
+			m_animation.Play(enAnimationClip_run, 0.2f);
+		}
+		else if (m_moveSpeed.LengthSq() > 50.0f * 50.0f) {
+			//走りモーション。
+			m_animation.Play(enAnimationClip_walk, 0.2f);
+		}
+		else {
+			//待機モーション
+			m_animation.Play(enAnimationClip_idle, 0.2f);
+		}
+	}
+	else if (m_state == enState_GameClear) {
+		m_animation.Play(enAnimationClip_Clear);
+	}
+	else if (m_state == enState_GameOver) {
+		m_animation.Play(enAnimationClip_KneelDown);
+	}
 }
 void Player::Update()
 {
+	AnimationController();
+
+	Turn();
+	
+	if (m_position.y < -1000.0f && !m_game->IsGameOver()) {
+		//初期位置に戻る。
+		Game* game = FindGO<Game>("Game");
+		game->NotifyGameOver();
+	}
+
 	UpdateFSM();
 	//キャラクタを移動させる。
 	m_position = m_charaCon.Execute(GameTime().GetFrameDeltaTime(), m_moveSpeed);
@@ -193,7 +237,6 @@ void Player::Update()
 
 void Player::NotifyGameOver()
 {
-	m_animation.Play(enAnimationClip_KneelDown);
 	CSoundEmitter* emitter = NewGO<CSoundEmitter>(0);
 	emitter->Init(0.6f, "sound/uni1482.wav");
 	m_state = enState_GameOver;
