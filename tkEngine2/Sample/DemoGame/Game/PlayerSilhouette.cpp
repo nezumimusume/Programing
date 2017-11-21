@@ -2,6 +2,7 @@
 #include "PlayerSilhouette.h"
 #include "Player.h"
 #include "tkEngine/graphics/tkPresetRenderState.h"
+#include "tkEngine/graphics/tkSkinModelShaderConst.h"
 
 PlayerSilhouette::PlayerSilhouette()
 {
@@ -38,6 +39,7 @@ bool PlayerSilhouette::Start()
 
 	pd3d->CreateDepthStencilState(&desc, &m_depthStencilState);
 	m_psShader.Load("shader/model.fx", "PSMain_Silhouette", CShader::EnType::PS);
+	m_texture.CreateFromDDSTextureFromFile(L"modelData/UnityChanLogo.dds");
 	return true;
 }
 void PlayerSilhouette::Update()
@@ -45,12 +47,12 @@ void PlayerSilhouette::Update()
 }
 void PlayerSilhouette::Render(CRenderContext& rc)
 {
-	return;
 	rc.OMSetDepthStencilState(m_depthStencilState, 0);
 	//シルエット描画用のシェーダーに差し替える。
 	m_playerModel->FindMaterial([&](CModelEffect* effect) {
 		effect->SetRender3DModelPSShader(m_psShader);
 	});
+	rc.PSSetShaderResource(enSkinModelSRVReg_SilhouetteTexture, m_texture);
 	m_playerModel->Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
 	rc.OMSetDepthStencilState(DepthStencilState::SceneRender, 0);
 	//

@@ -11,5 +11,6 @@ private:
 	CSkinModel* m_playerModel = nullptr;
 	ID3D11DepthStencilState* m_depthStencilState = nullptr;
 	CShader m_psShader;	//シルエット描画で使用するピクセルシェーダー。
+	CShaderResourceView m_texture;	//シルエットで表示するテクスチャ
 };
 

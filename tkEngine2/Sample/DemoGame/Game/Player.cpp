@@ -261,7 +261,6 @@ void Player::OnDestroy()
 
 void Player::Render(CRenderContext& rc)
 {
-	return;
 	//•`‰æB
 	m_skinModel.Draw(
 		rc, 

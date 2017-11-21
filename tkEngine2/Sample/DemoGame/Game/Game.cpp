@@ -72,14 +72,15 @@ bool Game::Start()
 	MainCamera().SetFar(10000.0f);
 	MainCamera().Update();
 
-	m_player = NewGO<Player>(0, "Player");
+	
 	m_background = NewGO<Background>(0);
 	m_gameCamera = NewGO<GameCamera>(0, "GameCamera");
 	//シーンライトを初期化。
 	InitSceneLight();
 	//プレイヤーのシルエットを作成。
 	m_playerSilhouette = NewGO<PlayerSilhouette>(0);
-
+	//プレイヤーを描画。
+	m_player = NewGO<Player>(0, "Player");
 	//敵を配置
 	CSkeleton enemyLoc;
 	enemyLoc.Load(L"loc/enemy.tks");
@@ -152,6 +153,7 @@ void Game::OnDestroy()
 		DeleteGO(go);
 	});
 	DeleteGO(m_gameClearControl);
+	DeleteGO(m_playerSilhouette);
 	//ゲーム再起動。
 	NewGO<Game>(0, "Game");
 	

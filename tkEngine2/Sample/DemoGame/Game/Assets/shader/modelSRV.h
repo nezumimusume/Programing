@@ -19,7 +19,6 @@ Texture2D<float4> specularMap : register(t2);	//スペキュラマップ。
 Texture2D<float4> shadowMap_0 : register(t3);	//シャドウマップ。
 Texture2D<float4> shadowMap_1 : register(t4);	//シャドウマップ。
 Texture2D<float4> shadowMap_2 : register(t5);	//シャドウマップ。
-Texture2D<float4> depthTexture : register(t6);	//深度テクスチャ。
-
+Texture2D<float4> silhouetteTexture : register(t6);	//シルエットテクスチャ。
 sampler Sampler : register(s0);
 

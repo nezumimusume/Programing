@@ -208,7 +208,9 @@
     <CustomBuild Include="Assets\animData\clear.tka">
       <Filter>Assets\animData</Filter>
     </CustomBuild>
-    <CustomBuild Include="Assets\font\hato_pop.spritefont" />
+    <CustomBuild Include="Assets\font\hato_pop.spritefont">
+      <Filter>Assets\font</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\modelData\utc_spec.tga">
@@ -218,5 +220,10 @@
       <Filter>Assets\modelData</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Assets\sprite\utc_all2_light.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\modelData\UnityChanLogo.png">
+      <Filter>Assets\modelData</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -199,28 +199,7 @@ PSInput_RenderToDepth VSMainSkin_RenderDepth(VSInputNmTxWeights In)
 float4 PSMain( PSInput In ) : SV_Target0
 {
 #if 1
-	//エッジを描画する
-	{
-		float2 screenUV = In.posInProj.xy / In.posInProj.w;
-		screenUV *= float2(0.5f, -0.5f);
-		screenUV += 0.5f;
-		float depth = depthTexture.Sample(Sampler, screenUV).r;
-		
-		//上と右のテクセルを調べて、大きく深度値が異なっていたらエッジとみなす。
-		float2 texSize;
-		float level;
-		depthTexture.GetDimensions( 0, texSize.x, texSize.y, level );
-		float2 uv = screenUV + float2(2.0f / texSize.x, 0.0f);
-		float depth2 = depthTexture.Sample(Sampler, uv).r;
-		if(abs(depth - depth2) > 0.0001f){
-			return float4(0.0f, 0.0f, 0.0f, 1.0f);
-		}
-		uv = screenUV + float2(0.0f, 2.0f / texSize.y);
-		depth2 = depthTexture.Sample(Sampler, uv).r;
-		if(abs(depth - depth2) > 0.0001f){
-			return float4(0.0f, 0.0f, 0.0f, 1.0f);
-		}
-	}
+
 	//アルベド。
 	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
 	float4 color = albedo * float4(ambientLight, 1.0f);
@@ -359,9 +338,14 @@ float4 PSMain_RenderDepth( PSInput_RenderToDepth In ) : SV_Target0
 
 /*!
  *@brief	シルエット描画。
+ * GameDemoのためのスペシャルシェーダー。
  */
 float4 PSMain_Silhouette( PSInput In ) : SV_Target0
 {
+	float2 screenPos = In.posInProj.xy / In.posInProj.w;
+	screenPos = screenPos * float2( 0.5f, -0.5f ) + 0.5f;
+	
+#if 1 ////ディザリングを試す。
 	//ディザパターン
 	static const int pattern[] = {
 	    0, 32,  8, 40,  2, 34, 10, 42,   /* 8x8 Bayer ordered dithering  */
@@ -373,16 +357,19 @@ float4 PSMain_Silhouette( PSInput In ) : SV_Target0
 	    15, 47,  7, 39, 13, 45,  5, 37,
 	    63, 31, 55, 23, 61, 29, 53, 21 
 	};
-	return float4(1.0f, 0.0f, 0.0f, 1.0f);
-	float2 screenPos = In.posInProj.xy / In.posInProj.w;
-	screenPos = screenPos * 0.5f + 0.5f;
-	
-	//ディザリングを試す。
-	float2 uv = fmod(screenPos * 1000.0f, 8.0f);
+	screenPos.x *= 1.7777f;
+	float2 uv = fmod(screenPos * 200.0f, 8.0f);
 	float t = 0.0f;
-	int x = (int)clamp(uv.x, 0.0f, 7.0f );
-	int y = (int)clamp(uv.y, 0.0f, 7.0f );
+	int x = (int)uv.x;
+	int y = (int)uv.y;
 	int index = y * 8 + x;
-	t = (float)pattern[index] / 256.0f;
+	t = (float)pattern[index] / 64.0f;
+	//ディザ
+	clip(t - 0.5f);
 	return float4(t, t, t, 1.0f);
+
+#else
+	screenPos.x *= 1.7777f;		//アスペクト比をかける。
+	return silhouetteTexture.Sample(Sampler, screenPos * 12.0f) * 4.0f;
+#endif
 }
