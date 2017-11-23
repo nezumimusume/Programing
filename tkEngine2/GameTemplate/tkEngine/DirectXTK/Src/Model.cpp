@@ -186,7 +186,7 @@ void ModelMesh::PrepareForRendering(
     }
 
     deviceContext->OMSetBlendState(blendState, nullptr, 0xFFFFFFFF);
-    deviceContext->OMSetDepthStencilState(depthStencilState, 0);
+    //deviceContext->OMSetDepthStencilState(depthStencilState, 0);
 
     // Set the rasterizer state.
     /*if (wireframe)

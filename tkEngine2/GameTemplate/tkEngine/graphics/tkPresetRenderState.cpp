@@ -45,7 +45,7 @@ namespace tkEngine{
 		ZeroMemory(&desc, sizeof(desc));
 		ID3D11Device* pd3d = ge.GetD3DDevice();
 		desc.DepthEnable = true;
-		desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+		desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 		desc.StencilEnable = false;
 		desc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
