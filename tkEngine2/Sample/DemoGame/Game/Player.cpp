@@ -107,11 +107,14 @@ void Player::UpdateFSM()
 			m_state = enState_Idle;
 		}else if (Pad(0).IsTrigger(enButtonA)) {
 			m_charaCon.Jump();
+			//この時点でのXZ方向の速度を記憶しておく。
+			m_moveSpeedWhenStartJump = m_moveSpeed.Length();
 			m_moveSpeed.y = JUMP_SPEED;
 			m_state = enState_Jump;
 		}
 		break;
 	case enState_Jump:
+		Move();
 		if (!m_charaCon.IsJump()) {
 			if (m_moveSpeed.LengthSq() < 50.0f * 50.0f) {
 				//入力がなくなった。
@@ -151,7 +154,8 @@ void Player::UpdateFSM()
 }
 void Player::Move()
 {
-	static float MOVE_SPEED = 2400.0f;
+	float MOVE_SPEED = 2400.0f;
+	static float MOVE_SPEED_JUMP = 1400.0f;
 	float x = Pad(0).GetLStickXF();
 	float y = Pad(0).GetLStickYF();
 
@@ -162,17 +166,43 @@ void Player::Move()
 	accForwardXZ.Normalize();
 	accRightXZ.y = 0.0f;
 	accRightXZ.Normalize();
-	accForwardXZ *= y * MOVE_SPEED * GameTime().GetFrameDeltaTime();
-	accRightXZ *= x * MOVE_SPEED * GameTime().GetFrameDeltaTime();
+	if (m_state == enState_Jump) {
+		//ジャンプ中でも緩く方向転換できるようにする。
+		accForwardXZ *= y * MOVE_SPEED_JUMP * GameTime().GetFrameDeltaTime();
+		accRightXZ *= x * MOVE_SPEED_JUMP * GameTime().GetFrameDeltaTime();
+	}
+	else {
+		accForwardXZ *= y * MOVE_SPEED * GameTime().GetFrameDeltaTime();
+		accRightXZ *= x * MOVE_SPEED * GameTime().GetFrameDeltaTime();
+	}
 
 	//摩擦力。
 	CVector3 friction = m_moveSpeed;
-	friction *= -3.0f;
+	if (m_state == enState_Jump) {
+		//ジャンプ中の摩擦力。
+		friction *= -1.0f;
+	}
+	else {
+		friction *= -3.0f;
+	}
+	
 	m_moveSpeed.x += friction.x * GameTime().GetFrameDeltaTime();
 	m_moveSpeed.z += friction.z * GameTime().GetFrameDeltaTime();
 	//加速度を加える。
 	m_moveSpeed += accForwardXZ;
 	m_moveSpeed += accRightXZ;
+	if (m_state == enState_Jump) {
+		//移動速度に制限を加える。
+		//ジャンプ中にジャンプ前より早くなることはない。
+		CVector3 moveSpeedXZ = { m_moveSpeed.x, 0.0f, m_moveSpeed.z };
+
+		if (moveSpeedXZ.LengthSq() > m_moveSpeedWhenStartJump * m_moveSpeedWhenStartJump) {
+			moveSpeedXZ.Normalize();
+			moveSpeedXZ *= m_moveSpeedWhenStartJump;
+			m_moveSpeed.x = moveSpeedXZ.x;
+			m_moveSpeed.z = moveSpeedXZ.z;
+		}
+	}
 }
 void Player::AnimationController()
 {

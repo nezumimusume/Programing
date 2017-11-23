@@ -93,5 +93,6 @@ private:
 	CVector3 m_forward;						//プレイヤーの前方。
 	EnState m_state = enState_Idle;
 	Game* m_game = nullptr;
+	float m_moveSpeedWhenStartJump;			//ジャンプを開始したときの移動速度。
 	float m_timer = 0.0f;
 };
