@@ -106,9 +106,11 @@ namespace tkEngine{
 		cb.WVP = m_world;
 		cb.WVP.Mul(cb.WVP, viewMatrix);
 		cb.WVP.Mul(cb.WVP, projMatrix);
+		cb.mulColor = m_mulColor;
 
 		rc.UpdateSubresource(m_cb, &cb);
 		rc.VSSetConstantBuffer(0, m_cb);
+		rc.PSSetConstantBuffer(0, m_cb);
 		rc.PSSetShaderResource(0, *m_textureSRV);
 		rc.PSSetShader(m_ps);
 		rc.VSSetShader(m_vs);

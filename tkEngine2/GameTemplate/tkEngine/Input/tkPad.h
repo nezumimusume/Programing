@@ -81,6 +81,29 @@ namespace tkEngine{
 			return m_press[button] != 0;
 		}
 		/*!
+		*@brief	何かのボタンが押されているか判定
+		*@return	trueが返ってきたら押されている。
+		*/
+		bool IsPressAnyKey() const
+		{
+			return IsPress(enButtonUp)
+				|| IsPress(enButtonDown)
+				|| IsPress(enButtonLeft)
+				|| IsPress(enButtonRight)
+				|| IsPress(enButtonA)
+				|| IsPress(enButtonB)
+				|| IsPress(enButtonX)
+				|| IsPress(enButtonY)
+				|| IsPress(enButtonSelect)
+				|| IsPress(enButtonStart)
+				|| IsPress(enButtonRB1)
+				|| IsPress(enButtonRB2)
+				|| IsPress(enButtonRB3)
+				|| IsPress(enButtonLB1)
+				|| IsPress(enButtonLB2)
+				|| IsPress(enButtonLB3);
+		}
+		/*!
 		*@brief	左スティックのX軸の入力量を取得。
 		*@return	-1.0～1.0の正規化された値を返す。
 		*/

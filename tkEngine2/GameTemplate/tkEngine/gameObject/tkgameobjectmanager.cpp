@@ -81,6 +81,8 @@ namespace tkEngine{
 
 		//2DìIÇ»Ç‡ÇÃÇÃï`âÊÅB
 		BeginGPUEvent(L"enRenderStep_Render2DToScene");
+		float blendFactor[4] = { 0.0f };
+		renderContext.OMSetBlendState(AlphaBlendState::trans, blendFactor, 0xFFFFFFFF);
 		renderContext.RSSetState(RasterizerState::spriteRender);
 		renderContext.OMSetDepthStencilState(DepthStencilState::spriteRender, 0);
 		renderContext.SetRenderStep(enRenderStep_Render2DToScene);

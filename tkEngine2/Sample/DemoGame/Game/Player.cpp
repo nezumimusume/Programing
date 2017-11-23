@@ -155,7 +155,7 @@ void Player::UpdateFSM()
 void Player::Move()
 {
 	float MOVE_SPEED = 2400.0f;
-	static float MOVE_SPEED_JUMP = 1400.0f;
+	static float MOVE_SPEED_JUMP = 1000.0f;
 	float x = Pad(0).GetLStickXF();
 	float y = Pad(0).GetLStickYF();
 

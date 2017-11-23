@@ -34,6 +34,14 @@ namespace tkEngine{
 			m_textureSRV = &tex;
 		}
 		/*!
+		* @brief	乗算カラーを設定。
+		*@param[in]	mulColor	乗算カラー。
+		*/
+		void SetMulColor(const CVector4& mulColor)
+		{
+			m_mulColor = mulColor;
+		}
+		/*!
 		*@brief	更新
 		*@param[in]	trans		平行移動。
 		*@param[in]	rot			回転。
@@ -55,6 +63,7 @@ namespace tkEngine{
 	private:
 		struct SSpriteCB {
 			CMatrix WVP;		//ワールドビュープロジェクション行列。
+			CVector4 mulColor;	//乗算カラー。
 		};
 		CVector3				m_position = CVector3::Zero;	//!<座標。
 		CQuaternion				m_rotation = CQuaternion::Identity;		//!<回転
@@ -62,6 +71,7 @@ namespace tkEngine{
 		CMatrix					m_world = CMatrix::Identity;	//!<ワールド行列。
 		CShader					m_ps;							//!<ピクセルシェーダー。
 		CShader					m_vs;							//!<頂点シェーダー。
+		CVector4				m_mulColor = CVector4::White;	//!<乗算カラー。
 		CPrimitive				m_primitive;					//!<プリミティブ。
 		CShaderResourceView*	m_textureSRV = nullptr;			//!<テクスチャ。
 		CConstantBuffer			m_cb;

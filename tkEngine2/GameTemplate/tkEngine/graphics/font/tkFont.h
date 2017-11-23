@@ -24,11 +24,11 @@ namespace tkEngine{
 		/*!
 		 * @brief	描画開始。
 		 */
-		void Begin();
+		void Begin(CRenderContext& rc);
 		/*!
 		 * @brief	描画終了。
 		 */
-		void End();
+		void End(CRenderContext& rc);
 		/*!
 		 * @brief	描画。
 		 *@param[in]	text		表示したいテキスト。

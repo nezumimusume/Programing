@@ -12,6 +12,7 @@ class Star;
 class GameClearControl;
 class StarRenderer;
 class PlayerSilhouette;
+class Fade;
 
 class Game : public IGameObject
 {
@@ -73,6 +74,10 @@ public:
 private:
 	void InitSceneLight();
 private:
+	enum EnState {
+		enState_FadeIn,	//!<フェードイン中。
+		enState_InGame,	//!<インゲーム中。
+	};
 	Player*	m_player = nullptr;						//!<プレイヤー
 	std::vector<Enemy*> m_enemyList;				//!<エネミーのリスト。
 	Background* m_background = nullptr;
@@ -94,5 +99,7 @@ private:
 	int m_coinCount = 0;
 	float m_waitTimer = 0.0f;
 	bool m_isToneMapReset = false;
+	EnState m_state = enState_FadeIn;
+	Fade* m_fade = nullptr;
 };
 

@@ -3,6 +3,7 @@
  */
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/graphics/font/tkFont.h"
+#include "tkEngine/graphics/tkPresetRenderState.h"
 
 namespace tkEngine{
 	CFont::CFont()
@@ -15,7 +16,7 @@ namespace tkEngine{
 	{
 	}
 
-	void CFont::Begin()
+	void CFont::Begin(CRenderContext& rc)
 	{
 		m_spriteBatch->Begin(
 			DirectX::SpriteSortMode_Deferred,
@@ -27,9 +28,14 @@ namespace tkEngine{
 			m_scaleMat
 		);
 	}
-	void CFont::End()
+	void CFont::End(CRenderContext& rc)
 	{
 		m_spriteBatch->End();
+		//レンダリングステートを戻す。
+		float blendFactor[4] = { 0.0f };
+		rc.OMSetBlendState(AlphaBlendState::trans, 0, 0xFFFFFFFF);
+		rc.RSSetState(RasterizerState::spriteRender);
+		rc.OMSetDepthStencilState(DepthStencilState::spriteRender, 0);
 	}
 	void CFont::Draw(
 		wchar_t const* text,

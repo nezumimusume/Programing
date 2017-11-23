@@ -130,6 +130,15 @@ namespace tkEngine{
 				m_sourceVoice->SetVolume(vol);
 			}
 			/*!
+			* @brief	ボリュームを取得。
+			*/
+			float GetVolume() const
+			{
+				float vol;
+				m_sourceVoice->GetVolume(&vol);
+				return vol;
+			}
+			/*!
 			* @brief	音源の座標を設定。
 			* @details
 			*  3Dサウンドの時に必要になります。

@@ -53,6 +53,8 @@
     <ClCompile Include="GameClearCamera.cpp" />
     <ClCompile Include="StarRenderer.cpp" />
     <ClCompile Include="PlayerSilhouette.cpp" />
+    <ClCompile Include="Title.cpp" />
+    <ClCompile Include="Fade.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -73,6 +75,8 @@
     <ClInclude Include="GameClearCamera.h" />
     <ClInclude Include="StarRenderer.h" />
     <ClInclude Include="PlayerSilhouette.h" />
+    <ClInclude Include="Title.h" />
+    <ClInclude Include="Fade.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc">
@@ -219,11 +223,27 @@
     <ImageContentTask Include="Assets\modelData\utc_nomal.tga">
       <Filter>Assets\modelData</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Assets\sprite\utc_all2_light.png" />
+    <ImageContentTask Include="Assets\sprite\utc_all2_light.png">
+      <Filter>Assets\modelData</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\modelData\UnityChanLogo.png">
+      <Filter>Assets\modelData</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\modelData\UnityChanLogo.png">
-      <Filter>Assets\modelData</Filter>
+    <Image Include="Assets\sprite\title.jpg.png">
+      <Filter>Assets\sprite</Filter>
     </Image>
+    <Image Include="Assets\sprite\fade.png">
+      <Filter>Assets\sprite</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\sound\title.wav">
+      <Filter>Assets\sound</Filter>
+    </Media>
+    <Media Include="Assets\sound\press_key.wav">
+      <Filter>Assets\sound</Filter>
+    </Media>
   </ItemGroup>
 </Project>

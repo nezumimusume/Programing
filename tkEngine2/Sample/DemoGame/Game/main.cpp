@@ -3,6 +3,8 @@
  */
 #include "stdafx.h"
 #include "Game.h"
+#include "Title.h"
+#include "Fade.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
@@ -43,7 +45,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	if (Engine().Init(initParam) == true) {
 		GraphicsEngine().GetTonemap().SetLuminance(0.34f);
 		SoundEngine().GetMasteringVoice()->SetVolume(0.2f);
-		NewGO<Game>(0, "Game");
+		//NewGO<Game>(0, "Game");
+		NewGO<Fade>(1, "Fade");
+		NewGO<Title>(0);
 		//ゲームループを実行。
 		Engine().RunGameLoop();
 	}

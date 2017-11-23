@@ -115,7 +115,7 @@ namespace tkEngine {
 			
 		}
 		
-		m_font->Begin();
+		m_font->Begin(GraphicsEngine().GetRenderContext());
 		wchar_t fps[256];
 		swprintf_s(fps, L"FPS = %f", m_fps);
 		float w = GraphicsEngine().Get2DSpaceScreenWidth();
@@ -131,7 +131,7 @@ namespace tkEngine {
 			1.0f,
 			{0.0f, 1.0f}
 		);
-		m_font->End();
+		m_font->End(GraphicsEngine().GetRenderContext());
 #endif
 		m_graphicsEngine.EndRender();
 		

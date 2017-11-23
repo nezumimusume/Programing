@@ -13,6 +13,7 @@ public:
 	void OnDestroy() override;
 	void PostRender(CRenderContext& rc);
 private:
+	bool m_isWaitFade = false;
 	bool m_isEnd = false;
 	GameClearCamera* m_gameClearCamera = nullptr;
 	float m_timer = 0.0f;

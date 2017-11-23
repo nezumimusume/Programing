@@ -11,6 +11,7 @@
 #include "star.h"
 #include "StarRenderer.h"
 #include "PlayerSilhouette.h"
+#include "Fade.h"
 
 Game::Game()
 {
@@ -118,12 +119,12 @@ bool Game::Start()
 		star->SetPosition(pos);
 		star->SetTags(enGameObject_Star);	//タグを設定。
 	}
-
+	m_fade = FindGO<Fade>("Fade");
 	GraphicsEngine().GetShadowMap().SetLightDirection(m_directionLight->GetDirection());
 	m_bgmSource = NewGO<prefab::CSoundSource>(0);
 	m_bgmSource->Init("sound/normalBGM.wav");
-	m_bgmSource->Play(true);
-
+	
+	
 	//タイマー用のフォントを初期化。
 	m_timerFont = std::make_unique<DirectX::SpriteFont>(
 		GraphicsEngine().GetD3DDevice(),
@@ -134,6 +135,9 @@ bool Game::Start()
 
 	m_scoreFontPosition.x = -620.0f ;
 	m_scoreFontPosition.y = 280.0f;
+	
+	m_fade->StartFadeIn();
+	m_state = enState_FadeIn;
 	return true;
 }
 void Game::OnDestroy() 
@@ -182,33 +186,44 @@ void Game::NotifyRestart()
 }
 void Game::Update()
 {
-	m_waitTimer += GameTime().GetFrameDeltaTime();
-	if (m_waitTimer < 0.1f) {
-		//ゲームが開始して0.1秒経過するまでトーンマップの明暗順応はやらない。
+	switch (m_state) {
+	case enState_FadeIn:
 		GraphicsEngine().GetTonemap().Reset();
+		if (!m_fade->IsFade()) {
+			m_bgmSource->Play(true);
+			m_state = enState_InGame;
+		}
+		break;
+	case enState_InGame: {
+		m_waitTimer += GameTime().GetFrameDeltaTime();
+		if (m_waitTimer < 0.1f) {
+			//ゲームが開始して0.1秒経過するまでトーンマップの明暗順応はやらない。
+			GraphicsEngine().GetTonemap().Reset();
+		}
+		m_timer = max(0.0f, m_timer - GameTime().GetFrameDeltaTime());
+		//クリア判定
+		int coinCount = 0;
+		FindGameObjectsWithTag(enGameObject_Star, [&](IGameObject* go) {
+			(void)go;
+			coinCount++;
+		});
+		if ((coinCount == 0 || m_timer <= 0.0f)
+			&& !m_isGameClear
+			&& !m_isGameOver
+			&& m_player->IsPossibleClear()
+			) {
+			//全部のコインを取った。
+			m_isGameClear = true;
+			//ゲームクリア制御を作成。
+			m_gameClearControl = NewGO<GameClearControl>(0);
+			m_timer = 0.0f;
+		}
+	}break;
 	}
-	m_timer = max( 0.0f, m_timer - GameTime().GetFrameDeltaTime() );
-	//クリア判定
-	int coinCount = 0;
-	FindGameObjectsWithTag(enGameObject_Star, [&](IGameObject* go) {
-		coinCount++;
-	});
-	if ((coinCount == 0 || m_timer <= 0.0f) 
-		&& !m_isGameClear 
-		&& !m_isGameOver
-		&& m_player->IsPossibleClear()
-	) {
-		//全部のコインを取った。
-		m_isGameClear = true;
-		//ゲームクリア制御を作成。
-		m_gameClearControl = NewGO<GameClearControl>(0);
-		m_timer = 0.0f;
-	}
-	
-
 }
 void Game::Render(CRenderContext& rc)
 {
+	(void)rc;
 }
 void Game::PostRender(CRenderContext& rc) 
 {
@@ -216,7 +231,7 @@ void Game::PostRender(CRenderContext& rc)
 	int minute = (int)m_timer / 60;
 	int sec = (int)m_timer % 60;
 	swprintf_s(text, L"%02d:%02d", minute, sec);
-	m_fontTest.Begin();
+	m_fontTest.Begin(rc);
 	
 	//文字を描画。
 	m_fontTest.Draw(
@@ -247,5 +262,5 @@ void Game::PostRender(CRenderContext& rc)
 		{ 0.0f, 1.0f }
 	);
 
-	m_fontTest.End();
+	m_fontTest.End(rc);
 }
