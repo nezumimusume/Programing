@@ -201,6 +201,6 @@ namespace tkEngine{
 		pBackBuffer->Release();
 		m_renderContext.PSUnsetShaderResource(0);
 		//フラーッシュ
-		m_pSwapChain->Present(0, 0);
+		m_pSwapChain->Present(1, 0);
 	}
 }
