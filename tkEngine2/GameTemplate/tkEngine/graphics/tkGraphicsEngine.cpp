@@ -121,7 +121,7 @@ namespace tkEngine{
 			1,
 			1,
 			DXGI_FORMAT_R16G16B16A16_FLOAT,
-			DXGI_FORMAT_D24_UNORM_S8_UINT,
+			DXGI_FORMAT_D32_FLOAT,
 			multiSampleDesc
 		);
 		ret = m_mainRenderTarget[1].Create(
@@ -130,7 +130,7 @@ namespace tkEngine{
 			1,
 			1,
 			DXGI_FORMAT_R16G16B16A16_FLOAT,
-			DXGI_FORMAT_D24_UNORM_S8_UINT,
+			DXGI_FORMAT_D32_FLOAT,
 			multiSampleDesc
 		);
 		if (!ret) {

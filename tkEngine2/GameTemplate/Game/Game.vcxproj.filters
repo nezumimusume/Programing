@@ -20,6 +20,9 @@
     <Filter Include="Assets\font">
       <UniqueIdentifier>{9ce24419-5cae-4de8-84f5-336ce6bdb0e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\animData">
+      <UniqueIdentifier>{8febfab2-0b65-4b9f-b760-6ce9f75f8996}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -40,6 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\unityChan.fbx">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\Doragon.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
   </ItemGroup>
@@ -89,5 +95,13 @@
     <CustomBuild Include="Assets\font\myfile.spritefont">
       <Filter>Assets\font</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\modelData\Doragon.tks">
+      <Filter>Assets\modelData</Filter>
+    </None>
+    <None Include="Assets\animData\idle.tka">
+      <Filter>Assets\animData</Filter>
+    </None>
   </ItemGroup>
 </Project>

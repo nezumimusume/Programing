@@ -642,6 +642,7 @@
     <ResourceCompile Include="Game.rc" />
   </ItemGroup>
   <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\Doragon.FBX" />
     <MeshContentTask Include="Assets\modelData\unityChan.fbx" />
   </ItemGroup>
   <ItemGroup>
@@ -679,6 +680,16 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Assets\font\myfile.spritefont">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\modelData\Doragon.tks">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\animData\idle.tka">
       <FileType>Document</FileType>
     </CustomBuild>
   </ItemGroup>

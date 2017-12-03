@@ -136,7 +136,7 @@ namespace tkEngine {
 		m_graphicsEngine.EndRender();
 		
 		m_sw.Stop();
-		Log("time = %f\n", m_sw.GetElapsedMillisecond());
+		
 		/*if (m_sw.GetElapsed() < 1.0f / 30.0f) {
 			//30fps‚ÉŠÔ‚É‡‚Á‚Ä‚¢‚é‚È‚ç–°‚éB
 			DWORD sleepTime = static_cast<DWORD>(max(0.0, (1.0 / 30.0)*1000.0 - (DWORD)m_sw.GetElapsedMillisecond()));

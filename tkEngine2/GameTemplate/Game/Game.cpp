@@ -18,15 +18,18 @@ bool Game::Start()
 	MainCamera().Update();
 
 	//モデルデータをロード。
-	skinModelData.Load(L"modelData/unityChan.cmo");
+	skinModelData.Load(L"modelData/Doragon.cmo");
 	skinModel.Init(skinModelData);
-
-
+	m_animClip[0].Load(L"animData/idle.tka");
+	m_animClip[0].SetLoopFlag(true);
+	m_animation.Init(skinModelData, m_animClip, 1);
+	m_animation.Play(0);
 	return true;
 }
 void Game::Update()
 {
-	skinModel.Update(CVector3::Zero, CQuaternion::Identity, CVector3::One);
+	m_animation.Update(GameTime().GetFrameDeltaTime());
+	skinModel.Update(CVector3::Zero, CQuaternion::Identity, {0.1f, 0.1f, 0.1f});
 }
 void Game::Render(CRenderContext& rc)
 {

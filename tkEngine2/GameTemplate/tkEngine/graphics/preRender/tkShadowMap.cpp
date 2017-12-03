@@ -39,7 +39,7 @@ namespace tkEngine{
 				1, 
 				1,
 				DXGI_FORMAT_R32_FLOAT,
-				DXGI_FORMAT_D24_UNORM_S8_UINT, 
+				DXGI_FORMAT_D32_FLOAT,
 				multiSampleDesc
 			);
 		}
