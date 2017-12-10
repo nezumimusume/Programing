@@ -51,8 +51,19 @@ namespace tkEngine{
 		{
 			return m_isValid;
 		}
+		
+		/*!
+		*@brief SRVに関連付けされているテクスチャの情報を取得する。
+		*/
+		void GetTextureDesc(D3D11_TEXTURE2D_DESC& desc) const
+		{
+			ID3D11Texture2D* tex;
+			m_srv->GetResource((ID3D11Resource**)&tex);
+			tex->GetDesc(&desc);
+			tex->Release();
+		}
 	private:
-		ID3D11ShaderResourceView*		m_srv = nullptr;
-		bool							m_isValid = false;	//!<有効なデータ？
+		ID3D11ShaderResourceView*	m_srv = nullptr;
+		bool						m_isValid = false;		//!<有効なデータ？
 	};
 }

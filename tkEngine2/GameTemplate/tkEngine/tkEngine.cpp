@@ -106,7 +106,7 @@ namespace tkEngine {
 		m_physicsWorld.Update();
 #if BUILD_LEVEL != BUILD_LEVEL_MASTER
 		static int count = 0;
-		m_timeTotal += m_sw.GetElapsed();
+		m_timeTotal += (float)m_sw.GetElapsed();
 		count++;
 		if (count == 30) {
 			m_fps = 1.0f / (m_timeTotal / count);
@@ -118,8 +118,8 @@ namespace tkEngine {
 		m_font->Begin(GraphicsEngine().GetRenderContext());
 		wchar_t fps[256];
 		swprintf_s(fps, L"FPS = %f", m_fps);
-		float w = GraphicsEngine().Get2DSpaceScreenWidth();
-		float h = GraphicsEngine().Get2DSpaceScreenHeight();
+		float w = (float)GraphicsEngine().Get2DSpaceScreenWidth();
+		float h = (float)GraphicsEngine().Get2DSpaceScreenHeight();
 		m_font->Draw(
 			fps, 
 			{ 

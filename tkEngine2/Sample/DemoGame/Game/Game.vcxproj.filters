@@ -215,6 +215,12 @@
     <CustomBuild Include="Assets\font\hato_pop.spritefont">
       <Filter>Assets\font</Filter>
     </CustomBuild>
+    <CustomBuild Include="Assets\sound\title.wav">
+      <Filter>Assets\sound</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\sound\press_key.wav">
+      <Filter>Assets\sound</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\modelData\utc_spec.tga">
@@ -229,21 +235,16 @@
     <ImageContentTask Include="Assets\modelData\UnityChanLogo.png">
       <Filter>Assets\modelData</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Assets\sprite\title.png">
+      <Filter>Assets\sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\sprite\fade.png">
+      <Filter>Assets\sprite</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\sprite\title.jpg.png">
-      <Filter>Assets\sprite</Filter>
-    </Image>
-    <Image Include="Assets\sprite\fade.png">
-      <Filter>Assets\sprite</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Assets\sound\title.wav">
-      <Filter>Assets\sound</Filter>
-    </Media>
-    <Media Include="Assets\sound\press_key.wav">
-      <Filter>Assets\sound</Filter>
-    </Media>
+    <FxCompile Include="Assets\shader\blur.fx">
+      <Filter>Assets\shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

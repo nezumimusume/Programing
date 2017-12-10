@@ -12,12 +12,14 @@
 
 /*!
  *@brief	影を計算。
+ *@return 影が落ちる確率が返ります。0.0なら影が落ちない。1.0なら影が落ちる。
  */
-int CalcShadow( float3 worldPos )
+float CalcShadow( float3 worldPos )
 {
-	int shadow = 0;
+	float shadow = 0.0f;
 	//ちょっと適当。
 	if(isShadowReceiver){
+	#if 0
 		//影を落とす。
 		[unroll]
 		for(int i = 0; i < NUM_SHADOW_MAP; i++ ){
@@ -38,11 +40,46 @@ int CalcShadow( float3 worldPos )
 					shadow_val = shadowMap_2.Sample(Sampler, shadowMapUV ).r;
 				}
 				if( depth > shadow_val.r + 0.006f ){
-					shadow = 1;
+					//影が落ちている。
+					shadow = 1.0f;
 				}
 				break;
 			}
 		}
+	#else
+		//VSM
+		//影を落とす。
+		[unroll]
+		for(int i = 0; i < NUM_SHADOW_MAP; i++ ){
+			float4 posInLVP = mul(mLVP[i], float4(worldPos, 1.0f) );
+			posInLVP.xyz /= posInLVP.w;
+			
+			float depth = min(posInLVP.z / posInLVP.w, 1.0f);
+			
+			//uv座標に変換。
+			float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
+			float2 shadow_val = 1.0f;
+
+			if(shadowMapUV.x < 0.99f && shadowMapUV.y < 0.99f && shadowMapUV.x > 0.01f && shadowMapUV.y > 0.01f){
+				if(i == 0){
+					shadow_val = vsm_0.Sample(Sampler, shadowMapUV ).rg;
+				}else if(i == 1){
+					shadow_val = vsm_1.Sample(Sampler, shadowMapUV ).rg;
+				}else if(i == 2){
+					shadow_val = vsm_2.Sample(Sampler, shadowMapUV ).rg;
+				}
+
+			// σ^2
+				float depth_sq = shadow_val.r * shadow_val.r;
+		        float variance = max(shadow_val.g - depth_sq, 0.0006f);
+				float md = depth - shadow_val.r;
+		        float P = variance / ( variance + md * md );
+				shadow =  1.0f - pow( P, 5.0f );
+
+				break;
+			}
+		}
+	#endif
 	}
 	return shadow;
 }
@@ -198,13 +235,13 @@ PSInput_RenderToDepth VSMainSkin_RenderDepth(VSInputNmTxWeights In)
 //--------------------------------------------------------------------------------------
 float4 PSMain( PSInput In ) : SV_Target0
 {
-#if 1
+#if 0
 
 	//アルベド。
 	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
 	float4 color = albedo * float4(ambientLight, 1.0f);
 	int shadow = CalcShadow(In.Pos);
-	if(shadow != 0){
+	if(shadow == 1){
 		color.xyz *= 0.5f;
 	}
 	//視点までのベクトルを求める。
@@ -264,11 +301,11 @@ float4 PSMain( PSInput In ) : SV_Target0
 	float3 toEyeReflection = -toEyeDir + 2.0f * dot(normal, toEyeDir) * normal;
 	
 	//影を計算。
-	int shadow = CalcShadow(In.Pos);	
+	float shadow = CalcShadow(In.Pos);	
 	//ディレクションライト
 	float3 finalColor = 0.0f;
-	if(shadow == 0){
-		//影が落ちている場合はディレクションライトはカットする。
+	if(shadow < 0.99f){ 
+		//影が落ちる可能性が低い場合のみ計算する。
 		finalColor = CalcDirectionLight(
 			albedo,
 			In.Pos, 
@@ -279,7 +316,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 			toEyeReflection, 
 			roughness,
 			specPow
-		);
+		) * (1.0f - shadow);
 	}
 	
 	//ポイントライトを計算。
@@ -333,7 +370,9 @@ float4 PSMain( PSInput In ) : SV_Target0
 float4 PSMain_RenderDepth( PSInput_RenderToDepth In ) : SV_Target0
 {
 	float z = In.posInProj.z / In.posInProj.w;
-	return float4(z, z*z, 0.0f, 1.0f);
+	float dx = ddx(z);
+	float dy = ddy(z);
+	return float4(z, z*z+0.25f*(dx*dx+dy*dy), 0.0f, 1.0f);
 }
 
 /*!

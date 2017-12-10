@@ -59,6 +59,14 @@ namespace tkEngine{
 		void OMSetDepthStencilState(ID3D11DepthStencilState *pDepthStencilState, UINT StencilRef)
 		{
 			m_pD3DDeviceContext->OMSetDepthStencilState(pDepthStencilState, StencilRef);
+			m_currentDepthStencilState = pDepthStencilState;
+		}
+		/*!
+		* @brief	DepthStencilステートを取得する。
+		*/
+		ID3D11DepthStencilState* GetDepthStencilState() const
+		{
+			return m_currentDepthStencilState;
 		}
 		/*!
 		 * @brief	レンダリングターゲットビューを設定。
@@ -411,7 +419,7 @@ namespace tkEngine{
 			m_renderStep = step;
 		}
 	private:
-		
+		ID3D11DepthStencilState*		m_currentDepthStencilState = nullptr;	//!<現在のデプスステンシルステート。
 		ID3D11DeviceContext*			m_pD3DDeviceContext = nullptr;	//!<D3Dデバイスコンテキスト。
 		D3D11_VIEWPORT 					m_viewport;						//!<ビューポート。
 		CRenderTarget*					m_renderTargetViews[MRT_MAX] = { nullptr };

@@ -329,6 +329,9 @@
     <ClInclude Include="graphics\font\tkFont.h">
       <Filter>Source Files\graphics\font</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\tkBlur.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -522,6 +525,9 @@
     </ClCompile>
     <ClCompile Include="graphics\font\tkFont.cpp">
       <Filter>Source Files\graphics\font</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkBlur.cpp">
+      <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
