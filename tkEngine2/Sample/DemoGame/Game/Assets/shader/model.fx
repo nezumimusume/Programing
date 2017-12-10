@@ -19,7 +19,6 @@ float CalcShadow( float3 worldPos )
 	float shadow = 0.0f;
 	//ちょっと適当。
 	if(isShadowReceiver){
-	#if 0
 		//影を落とす。
 		[unroll]
 		for(int i = 0; i < NUM_SHADOW_MAP; i++ ){
@@ -33,53 +32,35 @@ float CalcShadow( float3 worldPos )
 			float2 shadow_val = 1.0f;
 			if(shadowMapUV.x < 0.99f && shadowMapUV.y < 0.99f && shadowMapUV.x > 0.01f && shadowMapUV.y > 0.01f){
 				if(i == 0){
+				#if 0 
+					//通常
 					shadow_val = shadowMap_0.Sample(Sampler, shadowMapUV ).r;
+				#else
+					//VSM
+					shadow_val = vsm.Sample(Sampler, shadowMapUV ).rg;
+					float depth_sq = shadow_val.r * shadow_val.r;
+			        float variance = max(shadow_val.g - depth_sq, 0.0006f);
+					float md = depth - shadow_val.r;
+			        float P = variance / ( variance + md * md );
+					shadow =  1.0f - pow( P, 5.0f );
+					break;
+				#endif
 				}else if(i == 1){
 					shadow_val = shadowMap_1.Sample(Sampler, shadowMapUV ).r;
+					if( depth > shadow_val.r + 0.006f ){
+						//影が落ちている。
+						shadow = 1.0f;
+					}
 				}else if(i == 2){
 					shadow_val = shadowMap_2.Sample(Sampler, shadowMapUV ).r;
-				}
-				if( depth > shadow_val.r + 0.006f ){
-					//影が落ちている。
-					shadow = 1.0f;
+					if( depth > shadow_val.r + 0.006f ){
+						//影が落ちている。
+						shadow = 1.0f;
+					}
 				}
 				break;
 			}
 		}
-	#else
-		//VSM
-		//影を落とす。
-		[unroll]
-		for(int i = 0; i < NUM_SHADOW_MAP; i++ ){
-			float4 posInLVP = mul(mLVP[i], float4(worldPos, 1.0f) );
-			posInLVP.xyz /= posInLVP.w;
-			
-			float depth = min(posInLVP.z / posInLVP.w, 1.0f);
-			
-			//uv座標に変換。
-			float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
-			float2 shadow_val = 1.0f;
-
-			if(shadowMapUV.x < 0.99f && shadowMapUV.y < 0.99f && shadowMapUV.x > 0.01f && shadowMapUV.y > 0.01f){
-				if(i == 0){
-					shadow_val = vsm_0.Sample(Sampler, shadowMapUV ).rg;
-				}else if(i == 1){
-					shadow_val = vsm_1.Sample(Sampler, shadowMapUV ).rg;
-				}else if(i == 2){
-					shadow_val = vsm_2.Sample(Sampler, shadowMapUV ).rg;
-				}
-
-			// σ^2
-				float depth_sq = shadow_val.r * shadow_val.r;
-		        float variance = max(shadow_val.g - depth_sq, 0.0006f);
-				float md = depth - shadow_val.r;
-		        float P = variance / ( variance + md * md );
-				shadow =  1.0f - pow( P, 5.0f );
-
-				break;
-			}
-		}
-	#endif
 	}
 	return shadow;
 }

@@ -89,6 +89,6 @@ namespace tkEngine{
 		CMatrix	m_LVPMatrix[NUM_SHADOW_MAP] = { CMatrix::Identity };				//!<ライトビュープロジェクション行列。
 		SShadowCb m_shadowCbEntity;
 		CConstantBuffer m_shadowCb;							//!<影を落とす時に使用する定数バッファ。
-		CBlur m_blur[NUM_SHADOW_MAP];						//!<ブラー処理。
+		CBlur m_blur;										//!<ブラー処理。
 	};
 }
