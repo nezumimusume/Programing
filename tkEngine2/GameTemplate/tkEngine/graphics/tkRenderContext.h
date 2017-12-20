@@ -418,6 +418,24 @@ namespace tkEngine{
 		{
 			m_renderStep = step;
 		}
+		/*!
+		* @brief	ID3D11DeviceContext::ResolveSubresourceと同じ。
+		*/
+		void ResolveSubresource(
+			ID3D11Resource* dstResource, 
+			UINT DstSubresource,
+			ID3D11Resource *pSrcResource,
+			UINT SrcSubresource,
+			DXGI_FORMAT Format)
+		{
+			m_pD3DDeviceContext->ResolveSubresource(
+				dstResource,
+				DstSubresource,
+				pSrcResource,
+				SrcSubresource,
+				Format
+			);
+		}
 	private:
 		ID3D11DepthStencilState*		m_currentDepthStencilState = nullptr;	//!<現在のデプスステンシルステート。
 		ID3D11DeviceContext*			m_pD3DDeviceContext = nullptr;	//!<D3Dデバイスコンテキスト。

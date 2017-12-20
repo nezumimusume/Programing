@@ -4,8 +4,9 @@
 
 #pragma once
 
+#if 0 //@todo ソフトシャドウのコミット忘れのため。
 #include "tkEngine/graphics/tkBlur.h"
-
+#endif
 namespace tkEngine{
 	class IShadowCaster;
 	/*!
@@ -89,6 +90,8 @@ namespace tkEngine{
 		CMatrix	m_LVPMatrix[NUM_SHADOW_MAP] = { CMatrix::Identity };				//!<ライトビュープロジェクション行列。
 		SShadowCb m_shadowCbEntity;
 		CConstantBuffer m_shadowCb;							//!<影を落とす時に使用する定数バッファ。
+#if 0 //@todo ソフトシャドウのコミット忘れのため。
 		CBlur m_blur;										//!<ブラー処理。
+#endif
 	};
 }

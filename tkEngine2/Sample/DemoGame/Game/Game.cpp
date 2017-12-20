@@ -41,7 +41,7 @@ void Game::InitSceneLight()
 		pos.z = -mat.m[3][1];
 		ptLig->SetPosition(pos);
 		ptLig->SetColor({
-#if 1 //@todo 物理ベースの時のライト。
+#if 0 //@todo 物理ベースの時のライト。
 			400.0f,
 			400.0f,
 			100.0f,

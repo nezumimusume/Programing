@@ -21,9 +21,7 @@ namespace tkEngine{
 	{
 		CGraphicsEngine& ge = GraphicsEngine();
 		//深度値書き込み用のレンダリングターゲットの作成。
-		DXGI_SAMPLE_DESC multiSampleDesc;
-		multiSampleDesc.Count = 1;
-		multiSampleDesc.Quality = 0;
+		
 		m_depthBuffer.Create(
 			ge.GetFrameBufferWidth(),
 			ge.GetFrameBufferHeight(),
@@ -31,7 +29,7 @@ namespace tkEngine{
 			1,
 			DXGI_FORMAT_R32_FLOAT,
 			DXGI_FORMAT_UNKNOWN,	//Zバッファは作らない。
-			multiSampleDesc
+			ge.GetMainRenderTargetMSAADesc()
 		);
 		//Zバッファはメインレンダリングターゲットのものを使用する。
 		m_depthBuffer.SetDepthStencilView(
@@ -61,5 +59,7 @@ namespace tkEngine{
 		//レンダリングターゲットを差し戻す。
 		rc.OMSetRenderTargets(numRenderTargetViews, oldRenderTargets);
 		EndGPUEvent();
+		//MSAAリゾルブ。
+		m_depthBuffer.ResovleMSAATexture(rc);
 	}
 }
