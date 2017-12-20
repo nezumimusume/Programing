@@ -143,7 +143,12 @@ namespace tkEngine{
 			rc.PSSetConstantBuffer(0, m_cbCalcLuminanceLog);
 			rc.VSSetShader(m_vsShader);
 			rc.PSSetShader(m_psCalcLuminanceLogAvarageShader);
-			rc.PSSetShaderResource(0, ge.GetMainRenderTarget().GetRenderTargetSRV());
+
+			//メインレンダリングターゲットをテクスチャとして使用するのでリゾルブをかます。
+			CRenderTarget& mainRT = ge.GetMainRenderTarget();
+			mainRT.ResovleMSAATexture(rc);
+
+			rc.PSSetShaderResource(0, mainRT.GetRenderTargetSRV());
 			postEffect->DrawFullScreenQuad(rc);
 			ge.EndGPUEvent();
 		}
@@ -236,6 +241,7 @@ namespace tkEngine{
 
 		
 		CShaderResourceView& sceneSRV = ge.GetMainRenderTarget().GetRenderTargetSRV();
+		ge.GetMainRenderTarget().ResovleMSAATexture(rc);
 		ge.ToggleMainRenderTarget();
 		CRenderTarget* rts[] = {
 			&ge.GetMainRenderTarget()

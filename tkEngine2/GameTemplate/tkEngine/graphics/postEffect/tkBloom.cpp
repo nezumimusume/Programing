@@ -152,10 +152,13 @@ namespace tkEngine{
 			CRenderTarget* rts[] = {
 				&m_luminanceRT
 			};
-			
+			//メインレンダリングターゲットをテクスチャとして使用するのでリゾルブをかます。
+			CRenderTarget& mainRT = ge.GetMainRenderTarget();
+			mainRT.ResovleMSAATexture(rc);
+
 			rc.OMSetRenderTargets(1, rts);
 			rc.ClearRenderTargetView(0, clearColor);
-			rc.PSSetShaderResource(0, ge.GetMainRenderTarget().GetRenderTargetSRV());
+			rc.PSSetShaderResource(0, mainRT.GetRenderTargetSRV());
 			rc.VSSetShader(m_vsShader);
 			//入力レイアウトを設定。
 			rc.IASetInputLayout(m_vsShader.GetInputLayout());
@@ -253,7 +256,6 @@ namespace tkEngine{
 
 			//アルファブレンディングをもとに戻す。
 			rc.OMSetBlendState(AlphaBlendState::trans, 0, 0xFFFFFFFF);
-			
 		}
 
 		Engine().GetGraphicsEngine().EndGPUEvent();

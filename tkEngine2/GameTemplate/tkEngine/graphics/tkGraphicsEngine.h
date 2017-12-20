@@ -168,6 +168,13 @@ namespace tkEngine{
 			return m_lightManager;
 		}
 		/*!
+		*@brief	メインレンダリングターゲットのMSAAの設定を取得。
+		*/
+		const DXGI_SAMPLE_DESC& GetMainRenderTargetMSAADesc() const
+		{
+			return m_mainRenderTargetMSAADesc;
+		}
+		/*!
 		*@brief	GPUイベント開始。
 		*@param[in]		eventName		イベントの名前。
 		*/
@@ -228,6 +235,7 @@ namespace tkEngine{
 		CCamera					m_2dCamera;									//!<2Dカメラ。
 		int						m_frameBufferWidth = 0;						//!<フレームバッファの幅。これが内部解像度。
 		int						m_frameBufferHeight = 0;					//!<フレームバッファの高さ。これが内部解像度。
+		DXGI_SAMPLE_DESC		m_mainRenderTargetMSAADesc;					//!<メインレンダリングターゲットのMSAAの設定。
 		D3D_DRIVER_TYPE			m_driverType = D3D_DRIVER_TYPE_NULL;		//!<ドライバの種類のオプション。
 		D3D_FEATURE_LEVEL		m_featureLevel = D3D_FEATURE_LEVEL_11_0;	//!<Direct3D デバイスのターゲットとなる機能セット。
 		CLightManager			m_lightManager;								//!<ライトの管理者。

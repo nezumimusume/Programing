@@ -79,3 +79,4 @@
 #include "tkEngine/sound/tkSoundSource.h"
 #include "tkEngine/graphics/animation/tkAnimation.h"
 #include "tkEngine/graphics/2D/tkSprite.h"
+#include "tkEngine/graphics/tkGraphicsEngine_inline.h"

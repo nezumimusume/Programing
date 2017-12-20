@@ -32,9 +32,13 @@ float CalcShadow( float3 worldPos )
 			float2 shadow_val = 1.0f;
 			if(shadowMapUV.x < 0.99f && shadowMapUV.y < 0.99f && shadowMapUV.x > 0.01f && shadowMapUV.y > 0.01f){
 				if(i == 0){
-				#if 0 
+				#if 1//@todo ソフトシャドウのコミット忘れのため。
 					//通常
 					shadow_val = shadowMap_0.Sample(Sampler, shadowMapUV ).r;
+					if (depth > shadow_val.r + 0.006f) {
+						//影が落ちている。
+						shadow = 1.0f;
+					}
 				#else
 					//VSM
 					shadow_val = vsm.Sample(Sampler, shadowMapUV ).rg;
@@ -216,8 +220,7 @@ PSInput_RenderToDepth VSMainSkin_RenderDepth(VSInputNmTxWeights In)
 //--------------------------------------------------------------------------------------
 float4 PSMain( PSInput In ) : SV_Target0
 {
-#if 0
-
+#if 1
 	//アルベド。
 	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
 	float4 color = albedo * float4(ambientLight, 1.0f);

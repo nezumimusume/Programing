@@ -39,16 +39,17 @@ namespace tkEngine{
 		}
 		BeginGPUEvent(L"enRenderStep_Dithering");
 
-		//レンダリングステートをFXAA用に設定するようにする。
+		//レンダリングステートをディザようにする。
 		rc.OMSetDepthStencilState(DepthStencilState::disable, 0);
 		//現在のレンダリングターゲットを取得。
 		CRenderTarget& rt = Engine().GetGraphicsEngine().GetMainRenderTarget();
+		rt.ResovleMSAATexture(rc);
 		//レンダリングターゲットを切り替える。
 		Engine().GetGraphicsEngine().ToggleMainRenderTarget();
 		CRenderTarget* renderTargets[] = {
 			&Engine().GetGraphicsEngine().GetMainRenderTarget()
 		};
-		
+		rc.OMSetBlendState(AlphaBlendState::disable, 0, 0xFFFFFFFF);
 		rc.PSSetSampler(0, m_samplerState);
 		rc.OMSetRenderTargets(1, renderTargets);
 		rc.PSSetShaderResource(0, rt.GetRenderTargetSRV());

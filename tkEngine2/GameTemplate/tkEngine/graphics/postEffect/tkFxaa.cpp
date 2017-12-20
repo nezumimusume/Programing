@@ -41,6 +41,9 @@ namespace tkEngine{
 		rc.OMSetDepthStencilState(DepthStencilState::disable, 0);
 		//現在のレンダリングターゲットを取得。
 		CRenderTarget& rt = Engine().GetGraphicsEngine().GetMainRenderTarget();
+		rt.ResovleMSAATexture(rc);	//テクスチャとして使用するのでリゾルブ。
+
+		rc.OMSetBlendState(AlphaBlendState::disable, 0, 0xFFFFFFFF);
 		//レンダリングターゲットを切り替える。
 		Engine().GetGraphicsEngine().ToggleMainRenderTarget();
 		CRenderTarget* renderTargets[] = {

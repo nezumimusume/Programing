@@ -43,7 +43,9 @@ namespace tkEngine{
 				multiSampleDesc
 			);
 		}
+#if 0 //@todo ソフトシャドウのコミット忘れのため。
 		m_blur.Init(m_shadowMapRT[0].GetRenderTargetSRV());
+#endif
 		m_shadowCb.Create(&m_shadowCbEntity, sizeof(m_shadowCbEntity));
 		return true;
 	}
@@ -229,10 +231,12 @@ namespace tkEngine{
 
 			//ブラーをかける。
 			BeginGPUEvent(L"Blur");
+#if 0 //@todo ソフトシャドウのコミット忘れのため。
 			if (i == 0) {
 				//1枚目だけブラーをかける。
 				m_blur.Execute(rc);
 			}
+#endif
 			EndGPUEvent();
 		}
 		m_shadowCaster.clear();
@@ -253,6 +257,8 @@ namespace tkEngine{
 		for (int i = 0; i < NUM_SHADOW_MAP; i++) {
 			rc.PSSetShaderResource(enSkinModelSRVReg_ShadowMap_0 + i, m_shadowMapRT[i].GetRenderTargetSRV());
 		}
+#if 0 //@todo ソフトシャドウのコミット忘れのため。
 		rc.PSSetShaderResource(enSkinModelSRVReg_VSM_0, m_blur.GetResultSRV());
+#endif
 	}
 }

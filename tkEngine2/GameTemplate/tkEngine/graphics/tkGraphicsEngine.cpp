@@ -111,18 +111,29 @@ namespace tkEngine{
 		if (FAILED(hr)) {
 			return false;
 		}
-		DXGI_SAMPLE_DESC multiSampleDesc;
-		ZeroMemory(&multiSampleDesc, sizeof(multiSampleDesc));
-		multiSampleDesc.Count = 1;
-		multiSampleDesc.Quality = 0;
+		ZeroMemory(&m_mainRenderTargetMSAADesc, sizeof(m_mainRenderTargetMSAADesc));
+		m_mainRenderTargetMSAADesc.Count = 1;
+		m_mainRenderTargetMSAADesc.Quality = 0;
+		for (int i = 1; i <= 4; i <<= 1)
+		{
+			UINT Quality;
+			if (SUCCEEDED(m_pd3dDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_D24_UNORM_S8_UINT, i, &Quality)))
+			{
+				if (0 < Quality)
+				{
+					m_mainRenderTargetMSAADesc.Count = i;
+					m_mainRenderTargetMSAADesc.Quality = Quality - 1;
+				}
+			}
+		}
 		bool ret = m_mainRenderTarget[0].Create(
 			m_frameBufferWidth,
 			m_frameBufferHeight,
 			1,
 			1,
 			DXGI_FORMAT_R16G16B16A16_FLOAT,
-			DXGI_FORMAT_D32_FLOAT,
-			multiSampleDesc
+			DXGI_FORMAT_D24_UNORM_S8_UINT,
+			m_mainRenderTargetMSAADesc
 		);
 		ret = m_mainRenderTarget[1].Create(
 			m_frameBufferWidth,
@@ -130,8 +141,8 @@ namespace tkEngine{
 			1,
 			1,
 			DXGI_FORMAT_R16G16B16A16_FLOAT,
-			DXGI_FORMAT_D32_FLOAT,
-			multiSampleDesc
+			DXGI_FORMAT_D24_UNORM_S8_UINT,
+			m_mainRenderTargetMSAADesc
 		);
 		if (!ret) {
 			return false;
@@ -194,6 +205,8 @@ namespace tkEngine{
 		m_renderContext.PSSetShader(m_copyPS);
 		//入力レイアウトを設定。
 		m_renderContext.IASetInputLayout(m_copyVS.GetInputLayout());
+		//リゾルブ。
+		m_mainRenderTarget[m_currentMainRenderTarget].ResovleMSAATexture(m_renderContext);
 		m_renderContext.PSSetShaderResource(0, m_mainRenderTarget[m_currentMainRenderTarget].GetRenderTargetSRV());
 		m_renderContext.RSSetState(RasterizerState::spriteRender);
 		//ポストエフェクトのフルスクリーン描画の機能を使う。

@@ -5,6 +5,8 @@
 #pragma once
 
 namespace tkEngine{
+
+	class CRenderContext;
 	/*!
 	 * @brief	レンダリングターゲット。
 	 */
@@ -98,6 +100,13 @@ namespace tkEngine{
 		{
 			return m_height;
 		}
+		/*!
+		*@brief	MSAAテクスチャのリゾルブ。
+		*@details 
+		* MSAAが有効になっているレンダリングターゲットのテクスチャをSRVとして使用したい場合に呼び出してください。。
+		*/
+		inline void ResovleMSAATexture(CRenderContext& rc);
+		
 	private:
 		ID3D11Texture2D*			m_renderTarget = nullptr;			//!<レンダリングターゲットとなるテクスチャ。
 		ID3D11RenderTargetView*		m_renderTargetView = nullptr;		//!<レンダーターゲットビュー。
@@ -105,6 +114,9 @@ namespace tkEngine{
 		ID3D11DepthStencilView*		m_depthStencilView = nullptr;		//!<デプスステンシルビュー。
 		CShaderResourceView			m_renderTargetSRV;					//!<レンダリングターゲットのSRV。
 		CUnorderedAccessView		m_renderTargetUAV;					//!<レンダリングターゲットのUAV。
+		ID3D11Texture2D*			m_resolveTextureMSAA = nullptr;		//!<MSAAが有効の時にリゾルブされたテクスチャ。
+		bool						m_isMSAA = false;					//!<MSAAが有効？
+		DXGI_FORMAT					m_textureFormat = DXGI_FORMAT_UNKNOWN;	//!<テクスチャのフォーマット。
 		int m_width = 0;
 		int m_height = 0;
 	};
