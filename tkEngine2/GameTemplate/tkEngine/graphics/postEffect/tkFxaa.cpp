@@ -31,7 +31,7 @@ namespace tkEngine{
 		desc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
 		m_samplerState.Create(desc);
 	}
-	void CFxaa::Render(CRenderContext& rc)
+	void CFxaa::Render(CRenderContext& rc, CPostEffect* postEffect)
 	{
 		if (!m_isEnable) {
 			return;
@@ -40,14 +40,15 @@ namespace tkEngine{
 		//レンダリングステートをFXAA用に設定するようにする。
 		rc.OMSetDepthStencilState(DepthStencilState::disable, 0);
 		//現在のレンダリングターゲットを取得。
-		CRenderTarget& rt = Engine().GetGraphicsEngine().GetMainRenderTarget();
-		rt.ResovleMSAATexture(rc);	//テクスチャとして使用するのでリゾルブ。
+		CRenderTarget& rt = postEffect->GetFinalRenderTarget();
+		
 
 		rc.OMSetBlendState(AlphaBlendState::disable, 0, 0xFFFFFFFF);
 		//レンダリングターゲットを切り替える。
-		Engine().GetGraphicsEngine().ToggleMainRenderTarget();
+		postEffect->ToggleFinalRenderTarget();
+		
 		CRenderTarget* renderTargets[] = {
-			&Engine().GetGraphicsEngine().GetMainRenderTarget()
+			&postEffect->GetFinalRenderTarget()
 		};
 		rc.PSSetSampler(0, m_samplerState);
 		rc.OMSetRenderTargets(1, renderTargets);

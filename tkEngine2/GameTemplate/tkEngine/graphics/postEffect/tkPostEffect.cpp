@@ -31,13 +31,24 @@ namespace tkEngine{
 		m_bloom.Init(config);
 		m_dithering.Init(config);
 		InitFullScreenQuadPrimitive();
+		InitFinalRenderTarget();
 	}
 	void CPostEffect::Render(CRenderContext& rc)
 	{
+		//メインレンダリングターゲットの内容をリゾルブ。
+		rc.ResolveSubresource(
+			GetFinalRenderTarget().GetRenderTarget(),
+			0,
+			GraphicsEngine().GetMainRenderTarget().GetRenderTarget(),
+			0,
+			GetFinalRenderTarget().GetRenderTargetTextureFormat()
+		);
 		m_tonemap.Render(rc, this);
 		m_bloom.Render(rc, this);
-		m_fxaa.Render(rc);
-		m_dithering.Render(rc);
+		m_fxaa.Render(rc, this);
+		m_dithering.Render(rc, this);
+		//
+		GraphicsEngine().EndPostEffect(rc);
 	}
 	void CPostEffect::InitFullScreenQuadPrimitive()
 	{
@@ -77,5 +88,32 @@ namespace tkEngine{
 	void CPostEffect::DrawFullScreenQuad(CRenderContext& rc)
 	{
 		m_fullscreenQuad.Draw(rc);
+	}
+	void CPostEffect::InitFinalRenderTarget()
+	{
+		DXGI_SAMPLE_DESC sampleDesc;
+		//ポストなのでMSAAはなし。
+		ZeroMemory(&sampleDesc, sizeof(sampleDesc));
+		sampleDesc.Count = 1;
+		sampleDesc.Quality = 0;
+		CRenderTarget& mainRt = GraphicsEngine().GetMainRenderTarget();
+		m_finalRenderTarget[0].Create(
+			mainRt.GetWidth(),
+			mainRt.GetHeight(),
+			1,
+			1,
+			mainRt.GetRenderTargetTextureFormat(),
+			DXGI_FORMAT_UNKNOWN,
+			sampleDesc
+		);
+		m_finalRenderTarget[1].Create(
+			mainRt.GetWidth(),
+			mainRt.GetHeight(),
+			1,
+			1,
+			mainRt.GetRenderTargetTextureFormat(),
+			DXGI_FORMAT_UNKNOWN,
+			sampleDesc
+		);
 	}
 }

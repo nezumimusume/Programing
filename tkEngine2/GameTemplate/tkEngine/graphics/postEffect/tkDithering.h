@@ -27,7 +27,7 @@ namespace tkEngine{
 		*@brief	描画。
 		*@param[in]		rc		レンダリングコンテキスト。
 		*/
-		void Render(CRenderContext& rc);
+		void Render(CRenderContext& rc, CPostEffect* postEffect);
 	private:
 		bool m_isEnable = false;		//!<有効？
 		CShader m_vsShader;				//!<頂点シェーダー

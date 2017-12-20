@@ -144,11 +144,10 @@ namespace tkEngine{
 			rc.VSSetShader(m_vsShader);
 			rc.PSSetShader(m_psCalcLuminanceLogAvarageShader);
 
-			//メインレンダリングターゲットをテクスチャとして使用するのでリゾルブをかます。
-			CRenderTarget& mainRT = ge.GetMainRenderTarget();
-			mainRT.ResovleMSAATexture(rc);
+			
+			CRenderTarget& rt = postEffect->GetFinalRenderTarget();
 
-			rc.PSSetShaderResource(0, mainRT.GetRenderTargetSRV());
+			rc.PSSetShaderResource(0, rt.GetRenderTargetSRV());
 			postEffect->DrawFullScreenQuad(rc);
 			ge.EndGPUEvent();
 		}
@@ -240,13 +239,15 @@ namespace tkEngine{
 		CalcLuminanceAvarage(rc, postEffect);
 
 		
-		CShaderResourceView& sceneSRV = ge.GetMainRenderTarget().GetRenderTargetSRV();
-		ge.GetMainRenderTarget().ResovleMSAATexture(rc);
-		ge.ToggleMainRenderTarget();
+		CShaderResourceView& sceneSRV = postEffect->GetFinalRenderTarget().GetRenderTargetSRV();
+		
+		postEffect->ToggleFinalRenderTarget();
+
+		CRenderTarget& rt = postEffect->GetFinalRenderTarget();
 		CRenderTarget* rts[] = {
-			&ge.GetMainRenderTarget()
+			&rt
 		};
-		rc.RSSetViewport(0.0f, 0.0f, ge.GetMainRenderTarget().GetWidth(), ge.GetMainRenderTarget().GetHeight());
+		rc.RSSetViewport(0.0f, 0.0f, rt.GetWidth(), rt.GetHeight());
 		rc.OMSetRenderTargets(1, rts);
 		rc.PSSetShaderResource(0, sceneSRV);
 		rc.PSSetShaderResource(1, m_avgRT[m_currentAvgRT].GetRenderTargetSRV());

@@ -43,9 +43,9 @@ namespace tkEngine{
 				multiSampleDesc
 			);
 		}
-#if 0 //@todo ソフトシャドウのコミット忘れのため。
+
 		m_blur.Init(m_shadowMapRT[0].GetRenderTargetSRV());
-#endif
+
 		m_shadowCb.Create(&m_shadowCbEntity, sizeof(m_shadowCbEntity));
 		return true;
 	}
@@ -228,16 +228,15 @@ namespace tkEngine{
 				caster->Render(rc, m_LVPMatrix[i]);
 			}
 			EndGPUEvent();
-
-			//ブラーをかける。
-			BeginGPUEvent(L"Blur");
-#if 0 //@todo ソフトシャドウのコミット忘れのため。
+#if 0
 			if (i == 0) {
+				//ブラーをかける。
+				BeginGPUEvent(L"Blur");
 				//1枚目だけブラーをかける。
 				m_blur.Execute(rc);
+				EndGPUEvent();
 			}
-#endif
-			EndGPUEvent();
+#endif		
 		}
 		m_shadowCaster.clear();
 		//レンダリングターゲットを差し戻す。
@@ -257,7 +256,7 @@ namespace tkEngine{
 		for (int i = 0; i < NUM_SHADOW_MAP; i++) {
 			rc.PSSetShaderResource(enSkinModelSRVReg_ShadowMap_0 + i, m_shadowMapRT[i].GetRenderTargetSRV());
 		}
-#if 0 //@todo ソフトシャドウのコミット忘れのため。
+#if 0
 		rc.PSSetShaderResource(enSkinModelSRVReg_VSM_0, m_blur.GetResultSRV());
 #endif
 	}

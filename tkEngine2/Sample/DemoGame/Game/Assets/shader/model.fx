@@ -46,7 +46,7 @@ float CalcShadow( float3 worldPos )
 			        float variance = max(shadow_val.g - depth_sq, 0.0006f);
 					float md = depth - shadow_val.r;
 			        float P = variance / ( variance + md * md );
-					shadow =  1.0f - pow( P, 50.0f );
+					shadow =  1.0f - pow( P, 200.0f );
 					break;
 				#endif
 				}else if(i == 1){
@@ -224,10 +224,10 @@ float4 PSMain( PSInput In ) : SV_Target0
 	//アルベド。
 	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
 	float4 color = albedo * float4(ambientLight, 1.0f);
-	int shadow = CalcShadow(In.Pos);
-	if(shadow == 1){
-		color.xyz *= 0.5f;
-	}
+	float shadow = CalcShadow(In.Pos);
+	
+	color.xyz *= lerp( 1.0f, 0.5f, shadow);
+	
 	//視点までのベクトルを求める。
 	float3 toEye = normalize(eyePos - In.Pos);
 	//従ベクトルを計算する。

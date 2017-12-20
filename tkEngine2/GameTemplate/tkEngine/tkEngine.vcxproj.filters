@@ -332,6 +332,12 @@
     <ClInclude Include="graphics\tkGBuffer.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\tkGraphicsEngine_Inline.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\tkBlur.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -527,6 +533,9 @@
       <Filter>Source Files\graphics\font</Filter>
     </ClCompile>
     <ClCompile Include="graphics\tkGBuffer.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\tkBlur.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>

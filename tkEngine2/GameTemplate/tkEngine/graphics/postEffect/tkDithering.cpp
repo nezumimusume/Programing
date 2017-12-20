@@ -32,7 +32,7 @@ namespace tkEngine{
 		desc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
 		m_samplerState.Create(desc);
 	}
-	void CDithering::Render(CRenderContext& rc)
+	void CDithering::Render(CRenderContext& rc, CPostEffect* postEffect)
 	{
 		if (!m_isEnable) {
 			return;
@@ -42,12 +42,11 @@ namespace tkEngine{
 		//レンダリングステートをディザようにする。
 		rc.OMSetDepthStencilState(DepthStencilState::disable, 0);
 		//現在のレンダリングターゲットを取得。
-		CRenderTarget& rt = Engine().GetGraphicsEngine().GetMainRenderTarget();
-		rt.ResovleMSAATexture(rc);
+		CRenderTarget& rt = postEffect->GetFinalRenderTarget();
 		//レンダリングターゲットを切り替える。
-		Engine().GetGraphicsEngine().ToggleMainRenderTarget();
+		postEffect->ToggleFinalRenderTarget();
 		CRenderTarget* renderTargets[] = {
-			&Engine().GetGraphicsEngine().GetMainRenderTarget()
+			&postEffect->GetFinalRenderTarget()
 		};
 		rc.OMSetBlendState(AlphaBlendState::disable, 0, 0xFFFFFFFF);
 		rc.PSSetSampler(0, m_samplerState);
@@ -58,7 +57,7 @@ namespace tkEngine{
 		//入力レイアウトを設定。
 		rc.IASetInputLayout(m_vsShader.GetInputLayout());
 
-		GraphicsEngine().GetPostEffect().DrawFullScreenQuad(rc);
+		postEffect->DrawFullScreenQuad(rc);
 		rc.OMSetDepthStencilState(DepthStencilState::SceneRender, 0);
 		rc.PSUnsetShaderResource(0);
 		EndGPUEvent();

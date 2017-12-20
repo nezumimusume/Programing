@@ -30,8 +30,8 @@ namespace tkEngine{
 			m_pImmediateContext->ClearState();
 			m_pImmediateContext = nullptr;
 		}
-		m_mainRenderTarget[0].Release();
-		m_mainRenderTarget[1].Release();
+		m_mainRenderTarget.Release();
+		
 		if (m_pSwapChain) {
 			m_pSwapChain->Release();
 			m_pSwapChain = nullptr;
@@ -45,7 +45,8 @@ namespace tkEngine{
 			m_pd3dDevice = nullptr;
 		}
 	}
-	bool CGraphicsEngine::Init(HWND hwnd, const SInitParam& initParam)
+	
+	bool CGraphicsEngine::InitD3DDeviceAndSwapChain(HWND hwnd, const SInitParam& initParam)
 	{
 		UINT createDeviceFlags = 0;
 #ifdef _DEBUG
@@ -100,10 +101,14 @@ namespace tkEngine{
 			//スワップチェインを作成できなかった。
 			return false;
 		}
-
+		return true;
+	}
+	
+	bool CGraphicsEngine::InitBackBuffer()
+	{
 		//書き込み先になるレンダリングターゲットを作成。
 		ID3D11Texture2D* pBackBuffer = NULL;
-		hr = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+		HRESULT hr = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
 		if (FAILED(hr)) {
 			return false;
 		}
@@ -111,13 +116,19 @@ namespace tkEngine{
 		if (FAILED(hr)) {
 			return false;
 		}
+		return true;
+	}
+	bool CGraphicsEngine::InitMainRenderTarget()
+	{
+		//MSAAの設定をする。	
 		ZeroMemory(&m_mainRenderTargetMSAADesc, sizeof(m_mainRenderTargetMSAADesc));
 		m_mainRenderTargetMSAADesc.Count = 1;
 		m_mainRenderTargetMSAADesc.Quality = 0;
+		//最高でMSAAx4
 		for (int i = 1; i <= 4; i <<= 1)
 		{
 			UINT Quality;
-			if (SUCCEEDED(m_pd3dDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_D24_UNORM_S8_UINT, i, &Quality)))
+			if (SUCCEEDED(m_pd3dDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_D32_FLOAT, i, &Quality)))
 			{
 				if (0 < Quality)
 				{
@@ -126,31 +137,40 @@ namespace tkEngine{
 				}
 			}
 		}
-		bool ret = m_mainRenderTarget[0].Create(
+		bool ret = m_mainRenderTarget.Create(
 			m_frameBufferWidth,
 			m_frameBufferHeight,
 			1,
 			1,
 			DXGI_FORMAT_R16G16B16A16_FLOAT,
-			DXGI_FORMAT_D24_UNORM_S8_UINT,
+			DXGI_FORMAT_D32_FLOAT,
 			m_mainRenderTargetMSAADesc
 		);
-		ret = m_mainRenderTarget[1].Create(
-			m_frameBufferWidth,
-			m_frameBufferHeight,
-			1,
-			1,
-			DXGI_FORMAT_R16G16B16A16_FLOAT,
-			DXGI_FORMAT_D24_UNORM_S8_UINT,
-			m_mainRenderTargetMSAADesc
-		);
+		
 		if (!ret) {
+			//作成失敗
+			return false;
+		}
+		return true;
+	}
+	bool CGraphicsEngine::Init(HWND hwnd, const SInitParam& initParam)
+	{
+		//D3Dデバイスとスワップチェインの作成。
+		if (!InitD3DDeviceAndSwapChain(hwnd, initParam)) {
+			return false;
+		}
+		//バックバッファの作成。
+		if (!InitBackBuffer()) {
+			return false;
+		}
+		//メインレンダリングターゲットの初期化。
+		if (!InitMainRenderTarget()) {
 			return false;
 		}
 		//レンダリングコンテキストの初期化。
 		m_renderContext.Init(m_pImmediateContext);
 		CRenderTarget* renderTargets[] = {
-			&m_mainRenderTarget[0]
+			&m_mainRenderTarget
 		};
 		m_renderContext.OMSetRenderTargets(1, renderTargets);
 		//ビューポートを設定。
@@ -191,28 +211,35 @@ namespace tkEngine{
 	void CGraphicsEngine::BeginRender()
 	{
 	}
-	void CGraphicsEngine::EndRender()
+	/*!
+	*@brief	ポストエフェクトの処理が完了したときに呼ばれる処理。
+	*@details
+	* ゲーム層では使用しないように。
+	*/
+	void CGraphicsEngine::EndPostEffect(CRenderContext& rc)
 	{
-		m_lightManager.EndRender(m_renderContext);
 		//バックバッファにメインレンダリングターゲットの内容をコピー。
 		ID3D11Texture2D* pBackBuffer = NULL;
 		m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
 		ID3D11RenderTargetView* rts[] = {
-			m_backBufferRT 
+			m_backBufferRT
 		};
 		m_pImmediateContext->OMSetRenderTargets(1, rts, nullptr);
-		m_renderContext.VSSetShader(m_copyVS);
-		m_renderContext.PSSetShader(m_copyPS);
+		rc.VSSetShader(m_copyVS);
+		rc.PSSetShader(m_copyPS);
 		//入力レイアウトを設定。
-		m_renderContext.IASetInputLayout(m_copyVS.GetInputLayout());
-		//リゾルブ。
-		m_mainRenderTarget[m_currentMainRenderTarget].ResovleMSAATexture(m_renderContext);
-		m_renderContext.PSSetShaderResource(0, m_mainRenderTarget[m_currentMainRenderTarget].GetRenderTargetSRV());
-		m_renderContext.RSSetState(RasterizerState::spriteRender);
+		rc.IASetInputLayout(m_copyVS.GetInputLayout());
+		rc.PSSetShaderResource(0, m_postEffect.GetFinalRenderTarget().GetRenderTargetSRV());
+		rc.RSSetState(RasterizerState::spriteRender);
 		//ポストエフェクトのフルスクリーン描画の機能を使う。
-		m_postEffect.DrawFullScreenQuad(m_renderContext);
+		m_postEffect.DrawFullScreenQuad(rc);
 		pBackBuffer->Release();
-		m_renderContext.PSUnsetShaderResource(0);
+		rc.PSUnsetShaderResource(0);
+	}
+	void CGraphicsEngine::EndRender()
+	{
+		m_lightManager.EndRender(m_renderContext);
+		
 		//フラーッシュ
 		m_pSwapChain->Present(1, 0);
 	}

@@ -101,6 +101,13 @@ namespace tkEngine{
 			return m_height;
 		}
 		/*!
+		 *@brief	レンダリングターゲットのテクスチャのフォーマットを取得。
+		 */
+		const DXGI_FORMAT& GetRenderTargetTextureFormat() const
+		{
+			return m_textureFormat;
+		}
+		/*!
 		*@brief	MSAAテクスチャのリゾルブ。
 		*@details 
 		* MSAAが有効になっているレンダリングターゲットのテクスチャをSRVとして使用したい場合に呼び出してください。。

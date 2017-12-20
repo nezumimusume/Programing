@@ -120,19 +120,13 @@ namespace tkEngine{
 		{
 			return m_2dSpaceScreenHeight;
 		}
-		/*!
-		* @brief	メインレンダリングターゲットを切り替え。
-		*/
-		void ToggleMainRenderTarget()
-		{
-			m_currentMainRenderTarget ^= 1;
-		}
+		
 		/*!
 		* @brief	メインレンダリングターゲットの取得。
 		*/
 		CRenderTarget& GetMainRenderTarget()
 		{
-			return m_mainRenderTarget[m_currentMainRenderTarget];
+			return m_mainRenderTarget;
 		}
 		/*!
 		* @brief	描画開始。
@@ -222,13 +216,31 @@ namespace tkEngine{
 		{
 			return m_spriteFont.get();
 		}
+		/*!
+		*@brief	ポストエフェクトの処理が完了したときに呼ばれる処理。
+		*@details
+		* ゲーム層では使用しないように。
+		*/
+		void EndPostEffect(CRenderContext& rc);
+	private:
+		/*!
+		 *@brief	D3Dデバイスとスワップチェインの初期化。
+		 */
+		bool InitD3DDeviceAndSwapChain(HWND hwnd, const SInitParam& initParam);
+		/*!
+		 *@brief	バックバッファの初期化。
+		 */
+		bool InitBackBuffer();
+		/*!
+		 *@brief	メインレンダリングターゲットの初期化。
+		 */
+		bool InitMainRenderTarget();
 	private:
 		ID3D11Device*			m_pd3dDevice = nullptr;						//!<D3D11デバイス。
 		CRenderContext			m_renderContext;							//!<レンダリングコンテキスト。
 		ID3D11DeviceContext*	m_pImmediateContext = nullptr;				//!<D3D11即時デバイスコンテキスト。
 		IDXGISwapChain*			m_pSwapChain = nullptr;						//!<SwapChain。
-		int						m_currentMainRenderTarget = 0;				//!<現在のメインレンダリングターゲット。
-		CRenderTarget			m_mainRenderTarget[2];						//!<メインレンダリングターゲット。
+		CRenderTarget			m_mainRenderTarget;							//!<メインレンダリングターゲット。
 		CPreRender				m_preRender;								//!<プリレンダリング。
 		CPostEffect				m_postEffect;								//!<ポストエフェクト。
 		CCamera					m_mainCamera;								//!<メインカメラ。

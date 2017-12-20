@@ -152,13 +152,13 @@ namespace tkEngine{
 			CRenderTarget* rts[] = {
 				&m_luminanceRT
 			};
-			//メインレンダリングターゲットをテクスチャとして使用するのでリゾルブをかます。
-			CRenderTarget& mainRT = ge.GetMainRenderTarget();
-			mainRT.ResovleMSAATexture(rc);
+			
+			CRenderTarget& finalRT = postEffect->GetFinalRenderTarget();
+			
 
 			rc.OMSetRenderTargets(1, rts);
 			rc.ClearRenderTargetView(0, clearColor);
-			rc.PSSetShaderResource(0, mainRT.GetRenderTargetSRV());
+			rc.PSSetShaderResource(0, finalRT.GetRenderTargetSRV());
 			rc.VSSetShader(m_vsShader);
 			//入力レイアウトを設定。
 			rc.IASetInputLayout(m_vsShader.GetInputLayout());
@@ -240,10 +240,11 @@ namespace tkEngine{
 		}
 		//最終合成。
 		{
+			CRenderTarget& finalRT = postEffect->GetFinalRenderTarget();
 			CRenderTarget* rts[] = {
-				&ge.GetMainRenderTarget()
+				&finalRT
 			};
-			rc.RSSetViewport(0.0f, 0.0f, ge.GetFrameBufferWidth(), ge.GetFrameBufferHeight());
+			rc.RSSetViewport(0.0f, 0.0f, finalRT.GetWidth(), finalRT.GetHeight());
 			rc.OMSetRenderTargets(1, rts);
 			// アルファブレンディングを加算合成にする。
 			rc.OMSetBlendState(AlphaBlendState::add, 0, 0xFFFFFFFF);
