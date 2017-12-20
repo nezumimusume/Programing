@@ -42,7 +42,7 @@ float CalcShadow( float3 worldPos )
 			        float variance = max(shadow_val.g - depth_sq, 0.0006f);
 					float md = depth - shadow_val.r;
 			        float P = variance / ( variance + md * md );
-					shadow =  1.0f - pow( P, 5.0f );
+					shadow =  1.0f - pow( P, 50.0f );
 					break;
 				#endif
 				}else if(i == 1){
