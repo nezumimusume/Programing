@@ -27,6 +27,7 @@ namespace tkEngine{
 			nearPlane = TK_UNIT_M(10.0f);
 			farPlane = TK_UNIT_M(100.0f);
 			lightHeight = TK_UNIT_M(20.0f);
+			depthOffset = 0.0002f;
 		}
 		bool 	isEnable;				//!<影を落とす処理が有効かどうかのフラグ。
 		int		shadowMapWidth;			//!<シャドウマップの幅。
@@ -34,6 +35,7 @@ namespace tkEngine{
 		float	nearPlane;				//!<近平面までの距離。				
 		float	farPlane;				//!<遠平面までの距離。
 		float	lightHeight;			//!<ライトの高さ。
+		float	depthOffset = 0.0002f;	//!<シャドウオフセット。この値を大きくすると、影が落ちにくくなる。
 		bool	isEnableSoftShadow;		//!<ソフトシャドウが有効かどうかのフラグ。
 	};
 	/*!

@@ -84,6 +84,7 @@ namespace tkEngine{
 		 */
 		struct SShadowCb {
 			CMatrix mLVP[NUM_SHADOW_MAP];
+			float depthOffset;
 		};
 		bool m_isEnable = false;							//!<影の処理が有効？
 		CVector3 m_lightDirection = CVector3::Down;			//!<ライトの方向。
