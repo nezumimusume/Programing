@@ -24,7 +24,10 @@ namespace tkEngine{
 		m_isEnable = config.isEnable;
 		m_far = config.farPlane;
 		m_near = config.nearPlane;
-		m_shadowCbEntity.depthOffset = config.depthOffset;
+		
+		m_shadowCbEntity.depthOffset[0] = config.depthOffset[0];
+		m_shadowCbEntity.depthOffset[1] = config.depthOffset[1];
+		m_shadowCbEntity.depthOffset[2] = config.depthOffset[2];
 		if (m_isEnable == false) {
 			return true;
 		}
@@ -116,8 +119,8 @@ namespace tkEngine{
 		lightViewRot.m[2][3] = 0.0f;
 
 		float shadowAreaTbl[NUM_SHADOW_MAP] = {
-			UnitM(4.0f),
 			UnitM(8.0f),
+			UnitM(16.0f),
 			UnitM(32.0f)
 		};
 

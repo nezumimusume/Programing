@@ -11,7 +11,7 @@ namespace tkEngine{
 	 */
 	class CShadowMap : Noncopyable{
 	public:
-		static const int NUM_SHADOW_MAP = 3;	//シャドウマップの枚数。
+		
 		/*!
 		 * @brief	コンストラクタ。
 		 */
@@ -82,7 +82,7 @@ namespace tkEngine{
 		struct SShadowCb {
 			CMatrix mLVP[NUM_SHADOW_MAP];
 			CVector4 texOffset[NUM_SHADOW_MAP];
-			float depthOffset;
+			float depthOffset[NUM_SHADOW_MAP];
 		};
 		bool m_isEnable = false;							//!<影の処理が有効？
 		CVector3 m_lightDirection = CVector3::Down;			//!<ライトの方向。

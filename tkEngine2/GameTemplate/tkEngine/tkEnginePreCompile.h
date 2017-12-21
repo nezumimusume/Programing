@@ -33,6 +33,7 @@
 #define TK_SYSTEM_UNIT			TK_SYSTEM_UNIT_CM
 
 namespace tkEngine {
+
 	static inline float UnitCM(float param)
 	{
 #if TK_SYSTEM_UNIT==TK_SYSTEM_UNIT_CM
@@ -60,6 +61,8 @@ namespace tkEngine {
 		return 0.0f;
 #endif
 	}
+
+	static const int NUM_SHADOW_MAP = 3;	//シャドウマップの枚数。
 }
 #include <windows.h>
 #include <d3d11.h>

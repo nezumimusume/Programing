@@ -43,5 +43,5 @@ cbuffer MaterialParamCb : register(b2){
 cbuffer ShadowCb : register( b3 ){
 	float4x4 mLVP[NUM_SHADOW_MAP];		//!<ライトビュープロジェクション行列。
 	float4 texOffset[NUM_SHADOW_MAP];	//!<シャドウマップのサイズ。
-	float depthOffset;
+	float4 depthOffset;
 };

@@ -27,16 +27,18 @@ namespace tkEngine{
 			nearPlane = UnitM(10.0f);
 			farPlane = UnitM(100.0f);
 			lightHeight = UnitM(20.0f);
-			depthOffset = 0.0002f;
+			depthOffset[0] = 0.0002f;
+			depthOffset[1] = 0.0002f;
+			depthOffset[2] = 0.0002f;
 		}
-		bool 	isEnable;				//!<影を落とす処理が有効かどうかのフラグ。
-		int		shadowMapWidth;			//!<シャドウマップの幅。
-		int		shadowMapHeight;		//!<シャドウマップの高さ。
-		float	nearPlane;				//!<近平面までの距離。				
-		float	farPlane;				//!<遠平面までの距離。
-		float	lightHeight;			//!<ライトの高さ。
-		float	depthOffset = 0.0002f;	//!<シャドウオフセット。この値を大きくすると、影が落ちにくくなる。
-		bool	isEnableSoftShadow;		//!<ソフトシャドウが有効かどうかのフラグ。
+		bool 	isEnable;						//!<影を落とす処理が有効かどうかのフラグ。
+		int		shadowMapWidth;					//!<シャドウマップの幅。
+		int		shadowMapHeight;				//!<シャドウマップの高さ。
+		float	nearPlane;						//!<近平面までの距離。				
+		float	farPlane;						//!<遠平面までの距離。
+		float	lightHeight;					//!<ライトの高さ。
+		float	depthOffset[NUM_SHADOW_MAP];	//!<シャドウオフセット。この値を大きくすると、影が落ちにくくなる。
+		bool	isEnableSoftShadow;				//!<ソフトシャドウが有効かどうかのフラグ。
 	};
 	/*!
 	* @brief	Bloomのコンフィグ
