@@ -11,6 +11,86 @@
 
 
 /*!
+ *@brief	影が落ちる確率を計算する。
+ */
+float CalcShadowPercentPCF4x4(Texture2D<float4> tex, float2 uv, float2 offset, float depth)
+{
+	float2 offsetTbl[] = {
+		float2(	 -1.5f * offset.x, -1.5f * offset.y),
+		float2(	 -0.5f * offset.x, -1.5f * offset.y),
+		float2(   0.5f * offset.x, -1.5f * offset.y),
+		float2(	  1.5f * offset.x, -1.5f * offset.y),
+
+		float2(	 -1.5f * offset.x, -0.5f * offset.y),
+		float2(	 -0.5f * offset.x, -0.5f * offset.y),
+		float2(	  0.5f * offset.x, -0.5f * offset.y),
+		float2(	  1.5f * offset.x, -0.5f * offset.y),
+
+		float2(	-1.5f * offset.x, 0.5f * offset.y),
+		float2(	-0.5f * offset.x, 0.5f * offset.y),
+		float2(	 0.5f * offset.x, 0.5f * offset.y),
+		float2(	 1.5f * offset.x, 0.5f * offset.y),
+
+		float2(	-1.5f * offset.x, 1.5f * offset.y),
+		float2(	-0.5f * offset.x, 1.5f * offset.y),
+		float2(	 0.5f * offset.x, 1.5f * offset.y),
+		float2(	 1.5f * offset.x, 1.5f * offset.y),
+		
+	};
+	float weightTbl[] = {
+		1,2,2,1,
+		2,3,3,2,
+		2,3,3,2,
+		1,2,2,1,
+	};
+	float percent = 0.0f;
+	float shadow_val=0.0f;
+	float totalWeight = 0.0f;
+	for (int i = 0; i < 16; i++) {
+		shadow_val = tex.Sample(Sampler, uv + offsetTbl[i]).r;
+		totalWeight += weightTbl[i];
+		if (depth > shadow_val.r + depthOffset) {
+			//影が落ちている。
+			percent += 1.0f * weightTbl[i];
+		}
+	}
+	percent /= totalWeight;
+	return percent;
+}
+/*!
+*@brief	影が落ちる確率を計算する。
+*/
+float CalcShadowPercentPCF2x2(Texture2D<float4> tex, float2 uv, float2 offset, float depth)
+{
+	float2 offsetTbl[] = {
+		float2(-0.5f * offset.x, -0.5f * offset.y),
+		float2(0.5f * offset.x, -0.5f * offset.y),
+		float2(-0.5f * offset.x, 0.5f * offset.y),
+		float2(0.5f * offset.x, 0.5f * offset.y),
+
+	};
+
+	float percent = 0.0f;
+	float shadow_val = 0.0f;
+	for (int i = 0; i < 4; i++) {
+		shadow_val = tex.Sample(Sampler, uv + offsetTbl[i]).r;
+		if (depth > shadow_val.r + depthOffset) {
+			//影が落ちている。
+			percent += 1.0f;
+		}
+	}
+	percent /= 4.0f;
+	return percent;
+}
+float CalcShadowPercent(Texture2D<float4> tex, float2 uv, float2 offset, float depth)
+{
+	float shadow_val = tex.Sample(Sampler, uv).r;
+	if (depth > shadow_val.r + depthOffset) {
+		return 1.0f;
+	}
+	return 0.0f;
+}
+/*!
  *@brief	影を計算。
  *@return 影が落ちる確率が返ります。0.0なら影が落ちない。1.0なら影が落ちる。
  */
@@ -29,38 +109,17 @@ float CalcShadow( float3 worldPos )
 			
 			//uv座標に変換。
 			float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
-			float2 shadow_val = 1.0f;
-			if(shadowMapUV.x < 0.99f && shadowMapUV.y < 0.99f && shadowMapUV.x > 0.01f && shadowMapUV.y > 0.01f){
+			float shadow_val = 1.0f;
+			if(shadowMapUV.x < 0.95f && shadowMapUV.y < 0.95f && shadowMapUV.x > 0.05f && shadowMapUV.y > 0.05f){
 				if(i == 0){
-				#if 1//@todo ソフトシャドウのコミット忘れのため。
-					//通常
-					shadow_val = shadowMap_0.Sample(Sampler, shadowMapUV ).r;
-					if (depth > shadow_val.r + depthOffset) {
-						//影が落ちている。
-						shadow = 1.0f;
-					}
-				#else
-					//VSM
-					shadow_val = vsm.Sample(Sampler, shadowMapUV ).rg;
-					float depth_sq = shadow_val.r * shadow_val.r;
-			        float variance = max(shadow_val.g - depth_sq, depthOffset);
-					float md = depth - shadow_val.r;
-			        float P = variance / ( variance + md * md );
-					shadow =  1.0f - pow( P, 50.0f );
-					break;
-				#endif
+					//PCF4x4
+					shadow = CalcShadowPercentPCF4x4(shadowMap_0, shadowMapUV, texOffset[i], depth);
 				}else if(i == 1){
-					shadow_val = shadowMap_1.Sample(Sampler, shadowMapUV ).r;
-					if( depth > shadow_val.r + depthOffset){
-						//影が落ちている。
-						shadow = 1.0f;
-					}
+					//PCF2x2
+					shadow = CalcShadowPercentPCF2x2(shadowMap_1, shadowMapUV, texOffset[i], depth);
 				}else if(i == 2){
-					shadow_val = shadowMap_2.Sample(Sampler, shadowMapUV ).r;
-					if( depth > shadow_val.r + depthOffset){
-						//影が落ちている。
-						shadow = 1.0f;
-					}
+					//ソフトシャドウなし。
+					shadow = CalcShadowPercent(shadowMap_2, shadowMapUV, texOffset[i], depth);
 				}
 				break;
 			}
@@ -353,9 +412,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 float4 PSMain_RenderDepth( PSInput_RenderToDepth In ) : SV_Target0
 {
 	float z = In.posInProj.z / In.posInProj.w;
-	float dx = ddx(z);
-	float dy = ddy(z);
-	return float4(z, z*z+0.25f*(dx*dx+dy*dy), 0.0f, 1.0f);
+	return z;
 }
 
 /*!

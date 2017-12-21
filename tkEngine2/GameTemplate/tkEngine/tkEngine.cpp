@@ -35,6 +35,7 @@ namespace tkEngine {
 		m_physicsWorld.Init();
 		//—”‚ğ‰Šú‰»B
 		m_random.Init((unsigned long)time(NULL));
+
 #if BUILD_LEVEL != BUILD_LEVEL_MASTER
 		m_font = std::make_unique<CFont>();
 #endif

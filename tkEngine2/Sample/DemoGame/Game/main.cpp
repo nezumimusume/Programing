@@ -26,9 +26,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	initParam.graphicsConfing.shadowRenderConfig.isEnable = true;
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapWidth = 2048;
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapHeight = 2048;
-	initParam.graphicsConfing.shadowRenderConfig.lightHeight = TK_UNIT_M(100.0f);
-	initParam.graphicsConfing.shadowRenderConfig.nearPlane = TK_UNIT_M(50.0f);
-	initParam.graphicsConfing.shadowRenderConfig.farPlane = TK_UNIT_M(500.0f);
+	initParam.graphicsConfing.shadowRenderConfig.lightHeight = UnitM(50.0f);
+	initParam.graphicsConfing.shadowRenderConfig.nearPlane = UnitM(20.0f);
+	initParam.graphicsConfing.shadowRenderConfig.farPlane = UnitM(500.0f);
 	initParam.graphicsConfing.shadowRenderConfig.isEnableSoftShadow = true;
 	//ƒAƒ“ƒ`
 	initParam.graphicsConfing.aaConfig.isEnable = true;

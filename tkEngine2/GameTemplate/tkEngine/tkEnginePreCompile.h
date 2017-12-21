@@ -32,35 +32,35 @@
 
 #define TK_SYSTEM_UNIT			TK_SYSTEM_UNIT_CM
 
-
-static inline float TK_UNIT_CM(float param)
-{
+namespace tkEngine {
+	static inline float UnitCM(float param)
+	{
 #if TK_SYSTEM_UNIT==TK_SYSTEM_UNIT_CM
-	//基本単位がcmならそのまま返す。
-	return param;
+		//基本単位がcmならそのまま返す。
+		return param;
 #elif TK_SYSTEM_UNIT==TK_SYSTEM_UNIT_M
-	//メートル単位に戻す。
-	return param * 0.01f;
+		//メートル単位に戻す。
+		return param * 0.01f;
 #else
-	TK_ASSERT(0, "単位設定が不正です。");
-	return 0.0f;
+		TK_ASSERT(0, "単位設定が不正です。");
+		return 0.0f;
 #endif
-}
+	}
 
-static inline float TK_UNIT_M(float param)
-{
+	static inline float UnitM(float param)
+	{
 #if TK_SYSTEM_UNIT==TK_SYSTEM_UNIT_CM
-	//基本単位がcmなので*100
-	return param * 100.0f;
+		//基本単位がcmなので*100
+		return param * 100.0f;
 #elif TK_SYSTEM_UNIT==TK_SYSTEM_UNIT_M
-	//メートル単位なのでそのまま。
-	return param;
+		//メートル単位なのでそのまま。
+		return param;
 #else
-	TK_ASSERT(0, "単位設定が不正です。");
-	return 0.0f;
+		TK_ASSERT(0, "単位設定が不正です。");
+		return 0.0f;
 #endif
+	}
 }
-
 #include <windows.h>
 #include <d3d11.h>
 #include <D3Dcompiler.h>

@@ -220,6 +220,20 @@ void Game::Update()
 		}
 	}break;
 	}
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+	CQuaternion qRot;
+	qRot.SetRotation(CVector3::AxisY, Pad(0).GetRStickXF() * 0.05f);
+	
+	CVector3 lightDir = m_directionLight->GetDirection();
+	qRot.Multiply(lightDir);
+	CVector3 rotAxis;
+	rotAxis.Cross(lightDir, CVector3::Up);
+	qRot.SetRotation(rotAxis, Pad(0).GetRStickYF() * 0.05f);
+	qRot.Multiply(lightDir);
+
+	m_directionLight->SetDirection(lightDir);
+	GraphicsEngine().GetShadowMap().SetLightDirection(m_directionLight->GetDirection());
+#endif
 }
 void Game::Render(CRenderContext& rc)
 {

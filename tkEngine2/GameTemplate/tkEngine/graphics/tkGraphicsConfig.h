@@ -24,9 +24,9 @@ namespace tkEngine{
 			shadowMapWidth = 512;
 			shadowMapHeight = 512;
 			isEnableSoftShadow = false;
-			nearPlane = TK_UNIT_M(10.0f);
-			farPlane = TK_UNIT_M(100.0f);
-			lightHeight = TK_UNIT_M(20.0f);
+			nearPlane = UnitM(10.0f);
+			farPlane = UnitM(100.0f);
+			lightHeight = UnitM(20.0f);
 			depthOffset = 0.0002f;
 		}
 		bool 	isEnable;				//!<影を落とす処理が有効かどうかのフラグ。

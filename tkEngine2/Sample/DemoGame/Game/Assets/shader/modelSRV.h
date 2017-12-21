@@ -20,7 +20,6 @@ Texture2D<float4> shadowMap_0 : register(t3);	//シャドウマップ。
 Texture2D<float4> shadowMap_1 : register(t4);	//シャドウマップ。
 Texture2D<float4> shadowMap_2 : register(t5);	//シャドウマップ。
 Texture2D<float4> silhouetteTexture : register(t6);	//シルエットテクスチャ。
-Texture2D<float4> vsm : register(t7);	//VSM。
 
 
 sampler Sampler : register(s0);

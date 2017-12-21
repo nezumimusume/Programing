@@ -42,13 +42,13 @@ namespace tkEngine{
 				wh[i][1], 
 				1, 
 				1,
-				DXGI_FORMAT_R32G32_FLOAT,
+				DXGI_FORMAT_R32_FLOAT,
 				DXGI_FORMAT_D32_FLOAT,
 				multiSampleDesc
 			);
+			m_shadowCbEntity.texOffset[i].x = 1.0f / wh[i][0];
+			m_shadowCbEntity.texOffset[i].y = 1.0f / wh[i][1];
 		}
-
-		m_blur.Init(m_shadowMapRT[0].GetRenderTargetSRV());
 
 		m_shadowCb.Create(&m_shadowCbEntity, sizeof(m_shadowCbEntity));
 		return true;
@@ -116,8 +116,8 @@ namespace tkEngine{
 		lightViewRot.m[2][3] = 0.0f;
 
 		float shadowAreaTbl[NUM_SHADOW_MAP] = {
+			UnitM(4.0f),
 			UnitM(8.0f),
-			UnitM(16.0f),
 			UnitM(32.0f)
 		};
 
@@ -240,15 +240,7 @@ namespace tkEngine{
 				caster->Render(rc, m_LVPMatrix[i]);
 			}
 			EndGPUEvent();
-#if 0
-			if (i == 0) {
-				//ブラーをかける。
-				BeginGPUEvent(L"Blur");
-				//1枚目だけブラーをかける。
-				m_blur.Execute(rc);
-				EndGPUEvent();
-			}
-#endif		
+
 		}
 		m_shadowCaster.clear();
 		//レンダリングターゲットを差し戻す。
@@ -268,8 +260,5 @@ namespace tkEngine{
 		for (int i = 0; i < NUM_SHADOW_MAP; i++) {
 			rc.PSSetShaderResource(enSkinModelSRVReg_ShadowMap_0 + i, m_shadowMapRT[i].GetRenderTargetSRV());
 		}
-#if 0
-		rc.PSSetShaderResource(enSkinModelSRVReg_VSM_0, m_blur.GetResultSRV());
-#endif
 	}
 }
