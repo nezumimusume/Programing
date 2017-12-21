@@ -22,6 +22,50 @@ bool GameCamera::Start()
 }
 void GameCamera::Update()
 {
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+	if (m_isDebugCamera) {
+		float debugCameraSpeed = 8.0f;
+		if (Pad(0).IsPress(enButtonUp) ){
+			if (Pad(0).IsPress(enButtonRB2)) {
+				MainCamera().m_debugCameraPosition.y += debugCameraSpeed;
+				MainCamera().m_debugCameraTarget.y += debugCameraSpeed;
+			}
+			else {
+				MainCamera().m_debugCameraPosition += MainCamera().GetForward() * debugCameraSpeed;
+				MainCamera().m_debugCameraTarget += MainCamera().GetForward() * debugCameraSpeed;
+			}
+		}
+		if (Pad(0).IsPress(enButtonDown)) {
+			if (Pad(0).IsPress(enButtonRB2)) {
+				MainCamera().m_debugCameraPosition.y -= debugCameraSpeed;
+				MainCamera().m_debugCameraTarget.y -= debugCameraSpeed;
+			}
+			else {
+				MainCamera().m_debugCameraPosition += MainCamera().GetForward() * -debugCameraSpeed;
+				MainCamera().m_debugCameraTarget += MainCamera().GetForward() * -debugCameraSpeed;
+			}
+		}
+		if (Pad(0).IsPress(enButtonRight)) {
+			MainCamera().m_debugCameraPosition += MainCamera().GetRight() * debugCameraSpeed;
+			MainCamera().m_debugCameraTarget += MainCamera().GetRight() * debugCameraSpeed;
+		}
+		if (Pad(0).IsPress(enButtonLeft)) {
+			MainCamera().m_debugCameraPosition += MainCamera().GetRight() * -debugCameraSpeed;
+			MainCamera().m_debugCameraTarget += MainCamera().GetRight() * -debugCameraSpeed;
+		}
+		MainCamera().Update();
+		return;
+	}
+	else {
+		if (Pad(0).IsPress(enButtonStart)
+			&& Pad(0).IsPress(enButtonDown)) {
+			MainCamera().m_isDebugCamera = true;
+			MainCamera().m_debugCameraPosition = MainCamera().GetPosition();
+			MainCamera().m_debugCameraTarget = MainCamera().GetTarget();
+			m_isDebugCamera = true;
+		}
+	}
+#endif
 	//カメラを更新。
 	//注視点を計算する。
 	CVector3 target = m_player->GetPosition();

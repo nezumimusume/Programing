@@ -11,6 +11,8 @@ namespace tkEngine{
 	struct SInitParam{
 		SInitParam(){
 			memset(this, 0, sizeof(SInitParam));
+			graphicsConfing.shadowRenderConfig.Init();
+			graphicsConfing.tonemapConfig.Init();
 			gameObjectPrioMax = 32;
 		}
 		HINSTANCE hInstance;				//!<アプリケーションインスタンス。

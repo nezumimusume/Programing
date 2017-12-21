@@ -24,6 +24,43 @@
 #define BUILD_LEVEL		BUILD_LEVEL_PREVIEW
 #endif
 
+/*!
+ *@brief	システム単位
+ */
+#define TK_SYSTEM_UNIT_CM		0		//基本単位cm
+#define TK_SYSTEM_UNIT_M		1		//基本単位m
+
+#define TK_SYSTEM_UNIT			TK_SYSTEM_UNIT_CM
+
+
+static inline float TK_UNIT_CM(float param)
+{
+#if TK_SYSTEM_UNIT==TK_SYSTEM_UNIT_CM
+	//基本単位がcmならそのまま返す。
+	return param;
+#elif TK_SYSTEM_UNIT==TK_SYSTEM_UNIT_M
+	//メートル単位に戻す。
+	return param * 0.01f;
+#else
+	TK_ASSERT(0, "単位設定が不正です。");
+	return 0.0f;
+#endif
+}
+
+static inline float TK_UNIT_M(float param)
+{
+#if TK_SYSTEM_UNIT==TK_SYSTEM_UNIT_CM
+	//基本単位がcmなので*100
+	return param * 100.0f;
+#elif TK_SYSTEM_UNIT==TK_SYSTEM_UNIT_M
+	//メートル単位なのでそのまま。
+	return param;
+#else
+	TK_ASSERT(0, "単位設定が不正です。");
+	return 0.0f;
+#endif
+}
+
 #include <windows.h>
 #include <d3d11.h>
 #include <D3Dcompiler.h>

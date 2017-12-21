@@ -24,10 +24,16 @@ namespace tkEngine{
 			shadowMapWidth = 512;
 			shadowMapHeight = 512;
 			isEnableSoftShadow = false;
+			nearPlane = TK_UNIT_M(10.0f);
+			farPlane = TK_UNIT_M(100.0f);
+			lightHeight = TK_UNIT_M(20.0f);
 		}
 		bool 	isEnable;				//!<影を落とす処理が有効かどうかのフラグ。
 		int		shadowMapWidth;			//!<シャドウマップの幅。
 		int		shadowMapHeight;		//!<シャドウマップの高さ。
+		float	nearPlane;				//!<近平面までの距離。				
+		float	farPlane;				//!<遠平面までの距離。
+		float	lightHeight;			//!<ライトの高さ。
 		bool	isEnableSoftShadow;		//!<ソフトシャドウが有効かどうかのフラグ。
 	};
 	/*!
@@ -66,7 +72,13 @@ namespace tkEngine{
 	* @brief	トーンマップのコンフィグ。
 	*/
 	struct STonemapConfig {
+		void Init()
+		{
+			isEnable = false;
+			luminance = 0.34f;
+		}
 		bool isEnable = false;
+		float luminance = 0.34f;			//明るさ。値が大きいほど明るくなります。
 	};
 	/*!
 	* @brief	ディザリングのコンフィグ。

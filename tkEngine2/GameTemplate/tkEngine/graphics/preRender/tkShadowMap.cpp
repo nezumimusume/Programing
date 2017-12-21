@@ -20,7 +20,10 @@ namespace tkEngine{
 	bool CShadowMap::Init(const SShadowRenderConfig& config)
 	{
 		Release();
+		m_lightHeight = config.lightHeight;
 		m_isEnable = config.isEnable;
+		m_far = config.farPlane;
+		m_near = config.nearPlane;
 		if (m_isEnable == false) {
 			return true;
 		}
@@ -79,6 +82,7 @@ namespace tkEngine{
 		}
 		cameraDirXZ.y = 0.0f;
 		cameraDirXZ.Normalize();
+		//ライトビュー行列の回転成分をを計算する。
 		CVector3 lightViewForward = m_lightDirection;
 		CVector3 lightViewUp;
 		if (fabsf(lightViewForward.y) > 0.999f) {
@@ -92,7 +96,7 @@ namespace tkEngine{
 		CVector3 lgihtViewRight;
 		lgihtViewRight.Cross(lightViewUp, lightViewForward);
 		lgihtViewRight.Normalize();
-		//ライトビューはカメラの横方向を上、カメラの下方向を前、カメラの前方向を横とするといい感じになるよ。
+		
 		CMatrix lightViewRot;
 		//ライトビューの横を設定する。
 		lightViewRot.m[0][0] = lgihtViewRight.x;
@@ -111,18 +115,17 @@ namespace tkEngine{
 		lightViewRot.m[2][3] = 0.0f;
 
 		float shadowAreaTbl[NUM_SHADOW_MAP] = {
-			400,
-			800,
-			1600
+			TK_UNIT_M(8.0f),
+			TK_UNIT_M(16.0f),
+			TK_UNIT_M(32.0f)
 		};
 
 		//ライトビューのターゲットを計算。
-		float toFarplane = m_far - m_near;
 		CVector3 lightTarget;
 		lightTarget = MainCamera().GetPosition();
 		lightTarget.y = MainCamera().GetTarget().y;
 		lightTarget += cameraDirXZ * shadowAreaTbl[0] * 0.5f;
-		CVector3 lightPos = lightTarget + m_lightDirection * toFarplane * -0.5f;
+		CVector3 lightPos = lightTarget + m_lightDirection * -m_lightHeight;
 		CVector3 lightOffset;
 		SShadowCb shadowCB;
 		float nearPlaneZ = 0.0f;
@@ -139,7 +142,7 @@ namespace tkEngine{
 			mLightView.Inverse(mLightView);	//ライトビュー完成。
 											//続いてプロジェクション行列。
 			float halfViewAngle = MainCamera().GetViewAngle() * 0.5f;
-			//視推台の4頂点をライト空間に変換してAABBを求めめて、正射影の幅と高さを求める。
+			//視推台の4頂点をライト空間に変換してAABBを求めて、正射影の幅と高さを求める。
 			float w, h;
 			CVector3 v[4];
 			{
@@ -173,8 +176,8 @@ namespace tkEngine{
 			}
 			CMatrix proj;
 			proj.MakeOrthoProjectionMatrix(
-				w * 2.0f,	//ちょい太らせる。
-				h * 2.0f,
+				w * 1.5f,	//ちょい太らせる。
+				h * 1.5f,
 				m_near,
 				m_far
 			);

@@ -71,6 +71,13 @@ namespace tkEngine{
 		{
 			m_near = Near;
 		}
+		/*!
+		 *@brief	ライトの高さを設定。
+		 */
+		void SetLightHeight(float h)
+		{
+			m_lightHeight = h;
+		}
 	private:
 		/*!
 		 *@brief	この中身を変更したら、modelCB.hのShadowCbも変更するように。
@@ -82,6 +89,7 @@ namespace tkEngine{
 		CVector3 m_lightDirection = CVector3::Down;			//!<ライトの方向。
 		float m_near = 0.1f;								//!<近平面。
 		float m_far = 100.0f;								//!<遠平面。
+		float m_lightHeight = TK_UNIT_M(20.0f);				//!<ライトの高さ。
 		float m_accpect = 1.0f;								//!<アスペクト。不要？
 		float m_shadowAreaW[NUM_SHADOW_MAP] = {0};			//!<影を落とす範囲の幅。
 		float m_shadowAreaH[NUM_SHADOW_MAP] = {0};			//!<影を落とす範囲の高さ。

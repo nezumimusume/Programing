@@ -35,7 +35,7 @@ float CalcShadow( float3 worldPos )
 				#if 1//@todo ソフトシャドウのコミット忘れのため。
 					//通常
 					shadow_val = shadowMap_0.Sample(Sampler, shadowMapUV ).r;
-					if (depth > shadow_val.r + 0.006f) {
+					if (depth > shadow_val.r + 0.0002f) {
 						//影が落ちている。
 						shadow = 1.0f;
 					}
@@ -51,13 +51,13 @@ float CalcShadow( float3 worldPos )
 				#endif
 				}else if(i == 1){
 					shadow_val = shadowMap_1.Sample(Sampler, shadowMapUV ).r;
-					if( depth > shadow_val.r + 0.006f ){
+					if( depth > shadow_val.r + 0.0002f ){
 						//影が落ちている。
 						shadow = 1.0f;
 					}
 				}else if(i == 2){
 					shadow_val = shadowMap_2.Sample(Sampler, shadowMapUV ).r;
-					if( depth > shadow_val.r + 0.006f ){
+					if( depth > shadow_val.r + 0.0002f ){
 						//影が落ちている。
 						shadow = 1.0f;
 					}
@@ -225,7 +225,6 @@ float4 PSMain( PSInput In ) : SV_Target0
 	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
 	float4 color = albedo * float4(ambientLight, 1.0f);
 	float shadow = CalcShadow(In.Pos);
-	
 	color.xyz *= lerp( 1.0f, 0.5f, shadow);
 	
 	//視点までのベクトルを求める。

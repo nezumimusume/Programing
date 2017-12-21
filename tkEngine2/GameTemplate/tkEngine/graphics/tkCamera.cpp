@@ -29,6 +29,19 @@ namespace tkEngine{
 	 */
 	void CCamera::Update()
 	{
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+
+		if (m_isDebugCamera) {
+			//デバッグモード。ビュー行列のみ変更する。
+			//ビュー行列の算出
+			m_viewMatrix.MakeLookAt(m_debugCameraPosition, m_debugCameraTarget, m_up);
+			//ビュープロジェクション行列の作成。
+			m_viewProjectionMatrix.Mul(m_viewMatrix, m_projectionMatrix);
+			//ビュー行列の逆行列を計算。
+			m_viewMatrixInv.Inverse(m_viewMatrix);
+			return;
+		}
+#endif
 		if(m_isNeedUpdateProjectionMatrix){
 			if (m_updateProjMatrixFunc == enUpdateProjMatrixFunc_Perspective) {
 				float aspect = (float)GraphicsEngine().GetFrameBufferWidth() / (float)GraphicsEngine().GetFrameBufferHeight();

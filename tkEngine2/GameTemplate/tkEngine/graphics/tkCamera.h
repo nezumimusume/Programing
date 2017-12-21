@@ -203,6 +203,13 @@ namespace tkEngine{
 		*@param[in]		worldPos		ワールド座標。
 		*/
 		void CalcScreenPositionFromWorldPosition(CVector2& screenPos, const CVector3& worldPos) const;
+
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+		CVector3    m_debugCameraPosition = CVector3::Zero; //!<デバッグカメラの座標。
+		CVector3	m_debugCameraTarget = CVector3::Zero;	//!<デバッグカメラの注視点。
+		bool		m_isDebugCamera = false;
+#endif
+
 	protected:
 		float		m_targetToPositionLen = 1.0f;		//!<注視点と視点まで距離。
 		CVector3	m_position;							//!<カメラ位置。
@@ -223,6 +230,7 @@ namespace tkEngine{
 		float		m_height = 720.0f;
 		EnUpdateProjMatrixFunc m_updateProjMatrixFunc = enUpdateProjMatrixFunc_Perspective;	//!<プロジェクション行列の更新の仕方。
 		bool		m_isNeedUpdateProjectionMatrix;
+
 	};
 }
 #endif //_TKCAMERA_H_

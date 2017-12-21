@@ -85,7 +85,7 @@ namespace tkEngine{
 				multiSampleDesc
 			);
 		}
-		m_tonemapParam.midddleGray = 0.22f;
+		m_tonemapParam.midddleGray = config.tonemapConfig.luminance;
 		m_cbTonemapCommon.Create(&m_tonemapParam, sizeof(m_tonemapParam));
 		m_vsShader.Load("shader/tonemap.fx", "VSMain", CShader::EnType::VS);
 		m_psCalcLuminanceLogAvarageShader.Load("shader/tonemap.fx", "PSCalcLuminanceLogAvarage", CShader::EnType::PS);

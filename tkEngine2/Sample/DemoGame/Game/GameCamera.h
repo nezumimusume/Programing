@@ -16,5 +16,8 @@ public:
 private:
 	Player* m_player;	//プレイヤー。
 	CSpringCamera m_springCamera;	//!<バネカメラ。
+#if BUILD_LEVEL != BUILD_LEVEL_MASTER
+	bool m_isDebugCamera = false;
+#endif
 };
 
