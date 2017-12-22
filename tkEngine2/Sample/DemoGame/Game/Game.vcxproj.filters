@@ -245,4 +245,9 @@
       <Filter>Assets\sprite</Filter>
     </ImageContentTask>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Assets\shader\shadowBlur.fx">
+      <Filter>Assets\shader</Filter>
+    </FxCompile>
+  </ItemGroup>
 </Project>

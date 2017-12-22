@@ -60,6 +60,7 @@ namespace tkEngine{
 	{		
 		UpdateWorldMatrix(trans, rot, scale);
 		GraphicsEngine().GetZPrepass().AddSkinModel(this);
+		GraphicsEngine().GetGBufferRender().AddSkinModel(this);
 		if (m_isShadowCaster) {
 			GraphicsEngine().GetShadowMap().Entry(&m_shadowCaster);
 		}
@@ -86,6 +87,7 @@ namespace tkEngine{
 	void CSkinModel::EndUpdateInstancingData()
 	{
 		GraphicsEngine().GetZPrepass().AddSkinModel(this);
+		GraphicsEngine().GetGBufferRender().AddSkinModel(this);
 		if (m_isShadowCaster) {
 			GraphicsEngine().GetShadowMap().Entry(&m_shadowCaster);
 		}

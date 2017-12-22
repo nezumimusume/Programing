@@ -9,6 +9,7 @@
 #include "tkEngine/graphics/preRender/tkZPrepass.h"
 #include "tkEngine/graphics/preRender/tkLightCulling.h"
 #include "tkEngine/graphics/preRender/tkShadowMap.h"
+#include "tkEngine/graphics/preRender/tkGBufferRender.h"
 
 namespace tkEngine{
 	/*!
@@ -55,11 +56,19 @@ namespace tkEngine{
 		{
 			return m_shadowMap;
 		}
+		/*!
+		 *@brief	G-Bufferを取得。
+		 */
+		CGBufferRender& GetGBufferRender()
+		{
+			return m_gbufferRender;
+		}
 	private:
 		SGraphicsConfig	m_config;			//!<コンフィグ。
 		CZPrepass		m_zprepass;			//!<ZPrepass。
 		CLightCulling	m_lightCulling;		//!<ライトカリング。
 		CShadowMap		m_shadowMap;		//!<シャドウマップ。
+		CGBufferRender	m_gbufferRender;	//!<G-Buffer。
 	};
 }
 #endif //_TKPRERENDER_H_

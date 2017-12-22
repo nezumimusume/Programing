@@ -25,6 +25,7 @@ namespace tkEngine{
 		enRenderStep_LightCulling,				//!<ライトカリング。
 		enRenderStep_ZPrepass,					//!<ZPrepass。
 		enRenderStep_RenderToShadowMap,			//!<シャドウマップへの書き込みステップ。
+		enRenderStep_RenderGBuffer,				//!<G-Bufferの作成ステップ。
 		enRenderStep_Render3DModelToScene,		//!<3Dモデルをシーンに描画。
 		enRenderStep_Bloom,						//!<ブルーム。
 		enRenderStep_Toonmap,					//!<トーンマップ。

@@ -11,77 +11,8 @@
 
 
 /*!
- *@brief	影が落ちる確率を計算する。
+ * @brief	影が落ちる確率を計算。
  */
-float CalcShadowPercentPCF4x4(Texture2D<float4> tex, float2 uv, float2 offset, float depth, float dOffset)
-{
-	float2 offsetTbl[] = {
-		float2(	 -1.5f * offset.x, -1.5f * offset.y),
-		float2(	 -0.5f * offset.x, -1.5f * offset.y),
-		float2(   0.5f * offset.x, -1.5f * offset.y),
-		float2(	  1.5f * offset.x, -1.5f * offset.y),
-
-		float2(	 -1.5f * offset.x, -0.5f * offset.y),
-		float2(	 -0.5f * offset.x, -0.5f * offset.y),
-		float2(	  0.5f * offset.x, -0.5f * offset.y),
-		float2(	  1.5f * offset.x, -0.5f * offset.y),
-
-		float2(	-1.5f * offset.x, 0.5f * offset.y),
-		float2(	-0.5f * offset.x, 0.5f * offset.y),
-		float2(	 0.5f * offset.x, 0.5f * offset.y),
-		float2(	 1.5f * offset.x, 0.5f * offset.y),
-
-		float2(	-1.5f * offset.x, 1.5f * offset.y),
-		float2(	-0.5f * offset.x, 1.5f * offset.y),
-		float2(	 0.5f * offset.x, 1.5f * offset.y),
-		float2(	 1.5f * offset.x, 1.5f * offset.y),
-		
-	};
-	float weightTbl[] = {
-		1,2,2,1,
-		2,3,3,2,
-		2,3,3,2,
-		1,2,2,1,
-	};
-	float percent = 0.0f;
-	float shadow_val=0.0f;
-	float totalWeight = 0.0f;
-	for (int i = 0; i < 16; i++) {
-		shadow_val = tex.Sample(Sampler, uv + offsetTbl[i]).r;
-		totalWeight += weightTbl[i];
-		if (depth > shadow_val.r + dOffset) {
-			//影が落ちている。
-			percent += 1.0f * weightTbl[i];
-		}
-	}
-	percent /= totalWeight;
-	return percent;
-}
-/*!
-*@brief	影が落ちる確率を計算する。
-*/
-float CalcShadowPercentPCF2x2(Texture2D<float4> tex, float2 uv, float2 offset, float depth, float dOffset)
-{
-	float2 offsetTbl[] = {
-		float2(-0.5f * offset.x, -0.5f * offset.y),
-		float2(0.5f * offset.x, -0.5f * offset.y),
-		float2(-0.5f * offset.x, 0.5f * offset.y),
-		float2(0.5f * offset.x, 0.5f * offset.y),
-
-	};
-
-	float percent = 0.0f;
-	float shadow_val = 0.0f;
-	for (int i = 0; i < 4; i++) {
-		shadow_val = tex.Sample(Sampler, uv + offsetTbl[i]).r;
-		if (depth > shadow_val.r + dOffset) {
-			//影が落ちている。
-			percent += 1.0f;
-		}
-	}
-	percent /= 4.0f;
-	return percent;
-}
 float CalcShadowPercent(Texture2D<float4> tex, float2 uv, float2 offset, float depth, float dOffset)
 {
 	float shadow_val = tex.Sample(Sampler, uv).r;
@@ -112,13 +43,10 @@ float CalcShadow( float3 worldPos )
 			float shadow_val = 1.0f;
 			if(shadowMapUV.x < 0.95f && shadowMapUV.y < 0.95f && shadowMapUV.x > 0.05f && shadowMapUV.y > 0.05f){
 				if(i == 0){
-					//PCF4x4
-					shadow = CalcShadowPercentPCF4x4(shadowMap_0, shadowMapUV, texOffset[i], depth, depthOffset.x);
+					shadow = CalcShadowPercent(shadowMap_0, shadowMapUV, texOffset[i], depth, depthOffset.x);
 				}else if(i == 1){
-					//PCF2x2
-					shadow = CalcShadowPercentPCF2x2(shadowMap_1, shadowMapUV, texOffset[i], depth, depthOffset.y);
+					shadow = CalcShadowPercent(shadowMap_1, shadowMapUV, texOffset[i], depth, depthOffset.y);
 				}else if(i == 2){
-					//ソフトシャドウなし。
 					shadow = CalcShadowPercent(shadowMap_2, shadowMapUV, texOffset[i], depth, depthOffset.z);
 				}
 				break;
@@ -283,7 +211,9 @@ float4 PSMain( PSInput In ) : SV_Target0
 	//アルベド。
 	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
 	float4 color = albedo * float4(ambientLight, 1.0f);
-	float shadow = CalcShadow(In.Pos);
+	float2 uv = In.posInProj.xy / In.posInProj.w;
+	uv = (uv * float2(0.5f, -0.5f)) + 0.5f;
+	float shadow = softShadowMap.Sample(Sampler, uv).r ;
 	color.xyz *= lerp( 1.0f, 0.5f, shadow);
 	
 	//視点までのベクトルを求める。
@@ -343,7 +273,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 	float3 toEyeReflection = -toEyeDir + 2.0f * dot(normal, toEyeDir) * normal;
 	
 	//影を計算。
-	float shadow = CalcShadow(In.Pos);	
+	float shadow = softShadowMap.Sample(Sampler, uv).r ;	
 	//ディレクションライト
 	float3 finalColor = 0.0f;
 	if(shadow < 0.99f){ 
@@ -414,7 +344,17 @@ float4 PSMain_RenderDepth( PSInput_RenderToDepth In ) : SV_Target0
 	float z = In.posInProj.z / In.posInProj.w;
 	return z;
 }
-
+/*!
+ * @brief	G-Buffer書き込み用の描画パスで使用されるピクセルシェーダー。
+ */
+PSOutput_RenderGBuffer PSMain_RenderGBuffer( PSInput In )
+{
+	PSOutput_RenderGBuffer Out = (PSOutput_RenderGBuffer)0;
+	//法線はまだ出さない。
+	//シャドウマスクのみ出力する。
+	Out.shadow = CalcShadow(In.Pos);
+	return Out;
+}
 /*!
  *@brief	シルエット描画。
  * GameDemoのためのスペシャルシェーダー。

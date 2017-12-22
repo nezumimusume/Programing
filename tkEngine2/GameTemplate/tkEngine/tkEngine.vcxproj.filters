@@ -329,13 +329,16 @@
     <ClInclude Include="graphics\font\tkFont.h">
       <Filter>Source Files\graphics\font</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\tkGBuffer.h">
-      <Filter>Source Files\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="graphics\tkGraphicsEngine_Inline.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
     <ClInclude Include="graphics\tkBlur.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\GameTemplate\tkEngine\graphics\preRender\tkGBufferRender.h">
+      <Filter>Source Files\graphics\preRender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\GameTemplate\tkEngine\graphics\tkShadowBlur.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -532,10 +535,13 @@
     <ClCompile Include="graphics\font\tkFont.cpp">
       <Filter>Source Files\graphics\font</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\tkGBuffer.cpp">
+    <ClCompile Include="graphics\tkBlur.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\tkBlur.cpp">
+    <ClCompile Include="..\..\..\GameTemplate\tkEngine\graphics\preRender\tkGBufferRender.cpp">
+      <Filter>Source Files\graphics\preRender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\GameTemplate\tkEngine\graphics\tkShadowBlur.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>

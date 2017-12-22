@@ -23,6 +23,7 @@ namespace tkEngine{
 		CShader m_vsRenderToDepthShader;	//!<Z値書き込み用の頂点シェーダー。
 		CShader m_vsRenderToDepthShaderInstancing;	//!<Z値書き込み用の頂点シェーダー。インスタンシング用。
 		CShader m_psRenderToDepthShader;	//!<Z値書き込み用のピクセルシェーダー。
+		CShader m_psRenderToGBufferShader;	//!<G-Buffer書き込み用のピクセルシェーダー。
 		ID3D11ShaderResourceView* m_diffuseTex = nullptr;
 		ID3D11ShaderResourceView* m_normalMap = nullptr;
 		ID3D11ShaderResourceView* m_specularMap = nullptr;
@@ -50,6 +51,7 @@ namespace tkEngine{
 			m_materialParamCB.Create(&m_materialParam, sizeof(m_materialParam));
 			m_psShader.Load("shader/model.fx", "PSMain", CShader::EnType::PS);
 			m_psRenderToDepthShader.Load("shader/model.fx", "PSMain_RenderDepth", CShader::EnType::PS);
+			m_psRenderToGBufferShader.Load("shader/model.fx", "PSMain_RenderGBuffer", CShader::EnType::PS);
 			m_pPSShader = &m_psShader;
 		}
 		virtual ~CModelEffect()

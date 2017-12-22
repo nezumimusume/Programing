@@ -79,6 +79,18 @@ namespace tkEngine{
 				}
 				deviceContext->PSSetShader((ID3D11PixelShader*)m_psRenderToDepthShader.GetBody(), NULL, 0);
 				break;
+			case enRenderStep_RenderGBuffer:
+				if (m_numInstance == 1) {
+					//通常描画。
+					deviceContext->VSSetShader((ID3D11VertexShader*)m_pVSShader->GetBody(), NULL, 0);
+				}
+				else {
+					//インスタンス描画。
+					deviceContext->VSSetShader((ID3D11VertexShader*)m_vsShaderInstancing.GetBody(), NULL, 0);
+				}
+				deviceContext->PSSetShader((ID3D11PixelShader*)m_psRenderToGBufferShader.GetBody(), NULL, 0);
+				
+				break;
 			default:
 				break;
 			}

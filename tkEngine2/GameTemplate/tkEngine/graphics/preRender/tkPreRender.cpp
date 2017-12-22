@@ -21,6 +21,7 @@ namespace tkEngine{
 		m_zprepass.Init();
 		m_lightCulling.Init();
 		m_shadowMap.Init(config.shadowRenderConfig);
+		m_gbufferRender.Init();
 	}
 	
 	void CPreRender::Update() 
@@ -33,6 +34,7 @@ namespace tkEngine{
 		m_zprepass.Render(rc);
 		m_lightCulling.Render(rc);
 		m_shadowMap.RenderToShadowMap(rc);
+		m_gbufferRender.Render(rc);
 	}
 
 }

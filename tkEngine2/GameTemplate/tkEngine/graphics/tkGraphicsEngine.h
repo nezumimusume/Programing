@@ -44,6 +44,13 @@ namespace tkEngine{
 		*/
 		void Release();
 		/*!
+		 *@brief	CGBufferRender‚Ìæ“¾B
+		 */
+		CGBufferRender& GetGBufferRender()
+		{
+			return m_preRender.GetGBufferRender();
+		}
+		/*!
 		* @brief	ZPrepass‚Ìæ“¾B
 		*/
 		CZPrepass& GetZPrepass()

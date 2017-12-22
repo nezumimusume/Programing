@@ -75,6 +75,13 @@ namespace tkEngine{
 		{
 			m_lightHeight = h;
 		}
+		/*!
+		 *@brief	ソフトシャドウが有効？
+		 */
+		bool IsEnableSoftShadow() const
+		{
+			return m_isEnableSoftShadow;
+		}
 	private:
 		/*!
 		 *@brief	この中身を変更したら、modelCB.hのShadowCbも変更するように。
@@ -97,5 +104,6 @@ namespace tkEngine{
 		CMatrix	m_LVPMatrix[NUM_SHADOW_MAP] = { CMatrix::Identity };				//!<ライトビュープロジェクション行列。
 		SShadowCb m_shadowCbEntity;
 		CConstantBuffer m_shadowCb;							//!<影を落とす時に使用する定数バッファ。
+		bool m_isEnableSoftShadow = false;					//!<ソフトシャドウが有効？
 	};
 }

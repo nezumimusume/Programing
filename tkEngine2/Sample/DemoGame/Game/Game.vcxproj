@@ -269,7 +269,7 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <AdditionalIncludeDirectories>..\..\..\DXUT11\Core;..\..\..\DXUT11\Optional;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;DEBUG;PROFILE;_WINDOWS;D3DXFX_LARGEADDRESS_HANDLE;BT_NO_SIMD_OPERATOR_OVERLOADS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;DEBUG;PROFILE;_WINDOWS;D3DXFX_LARGEADDRESS_HANDLE;BT_NO_SIMD_OPERATOR_OVERLOADS;%(PreprocessorDefinitions);TK_MASTER</PreprocessorDefinitions>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -541,7 +541,7 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <AdditionalIncludeDirectories>..\..\..\DXUT11\Core;..\..\..\DXUT11\Optional;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;D3DXFX_LARGEADDRESS_HANDLE;BT_NO_SIMD_OPERATOR_OVERLOADS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;D3DXFX_LARGEADDRESS_HANDLE;BT_NO_SIMD_OPERATOR_OVERLOADS;TK_MASTER</PreprocessorDefinitions>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -1183,6 +1183,11 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Assets\shader\blur.fx">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\shader\shadowBlur.fx">
       <FileType>Document</FileType>
     </CustomBuild>
   </ItemGroup>
