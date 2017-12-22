@@ -11,8 +11,77 @@
 
 
 /*!
- * @brief	影が落ちる確率を計算。
+ *@brief	影が落ちる確率を計算する。
  */
+float CalcShadowPercentPCF4x4(Texture2D<float4> tex, float2 uv, float2 offset, float depth, float dOffset)
+{
+	float2 offsetTbl[] = {
+		float2(	 -1.5f * offset.x, -1.5f * offset.y),
+		float2(	 -0.5f * offset.x, -1.5f * offset.y),
+		float2(   0.5f * offset.x, -1.5f * offset.y),
+		float2(	  1.5f * offset.x, -1.5f * offset.y),
+
+		float2(	 -1.5f * offset.x, -0.5f * offset.y),
+		float2(	 -0.5f * offset.x, -0.5f * offset.y),
+		float2(	  0.5f * offset.x, -0.5f * offset.y),
+		float2(	  1.5f * offset.x, -0.5f * offset.y),
+
+		float2(	-1.5f * offset.x, 0.5f * offset.y),
+		float2(	-0.5f * offset.x, 0.5f * offset.y),
+		float2(	 0.5f * offset.x, 0.5f * offset.y),
+		float2(	 1.5f * offset.x, 0.5f * offset.y),
+
+		float2(	-1.5f * offset.x, 1.5f * offset.y),
+		float2(	-0.5f * offset.x, 1.5f * offset.y),
+		float2(	 0.5f * offset.x, 1.5f * offset.y),
+		float2(	 1.5f * offset.x, 1.5f * offset.y),
+		
+	};
+	float weightTbl[] = {
+		1,2,2,1,
+		2,3,3,2,
+		2,3,3,2,
+		1,2,2,1,
+	};
+	float percent = 0.0f;
+	float shadow_val=0.0f;
+	float totalWeight = 0.0f;
+	for (int i = 0; i < 16; i++) {
+		shadow_val = tex.Sample(Sampler, uv + offsetTbl[i]).r;
+		totalWeight += weightTbl[i];
+		if (depth > shadow_val.r + dOffset) {
+			//影が落ちている。
+			percent += 1.0f * weightTbl[i];
+		}
+	}
+	percent /= totalWeight;
+	return percent;
+}
+/*!
+*@brief	影が落ちる確率を計算する。
+*/
+float CalcShadowPercentPCF2x2(Texture2D<float4> tex, float2 uv, float2 offset, float depth, float dOffset)
+{
+	float2 offsetTbl[] = {
+		float2(-0.5f * offset.x, -0.5f * offset.y),
+		float2(0.5f * offset.x, -0.5f * offset.y),
+		float2(-0.5f * offset.x, 0.5f * offset.y),
+		float2(0.5f * offset.x, 0.5f * offset.y),
+
+	};
+
+	float percent = 0.0f;
+	float shadow_val = 0.0f;
+	for (int i = 0; i < 4; i++) {
+		shadow_val = tex.Sample(Sampler, uv + offsetTbl[i]).r;
+		if (depth > shadow_val.r + dOffset) {
+			//影が落ちている。
+			percent += 1.0f;
+		}
+	}
+	percent /= 4.0f;
+	return percent;
+}
 float CalcShadowPercent(Texture2D<float4> tex, float2 uv, float2 offset, float depth, float dOffset)
 {
 	float shadow_val = tex.Sample(Sampler, uv).r;
@@ -43,9 +112,9 @@ float CalcShadow( float3 worldPos )
 			float shadow_val = 1.0f;
 			if(shadowMapUV.x < 0.95f && shadowMapUV.y < 0.95f && shadowMapUV.x > 0.05f && shadowMapUV.y > 0.05f){
 				if(i == 0){
-					shadow = CalcShadowPercent(shadowMap_0, shadowMapUV, texOffset[i], depth, depthOffset.x);
+					shadow = CalcShadowPercentPCF4x4(shadowMap_0, shadowMapUV, texOffset[i], depth, depthOffset.x);
 				}else if(i == 1){
-					shadow = CalcShadowPercent(shadowMap_1, shadowMapUV, texOffset[i], depth, depthOffset.y);
+					shadow = CalcShadowPercentPCF2x2(shadowMap_1, shadowMapUV, texOffset[i], depth, depthOffset.y);
 				}else if(i == 2){
 					shadow = CalcShadowPercent(shadowMap_2, shadowMapUV, texOffset[i], depth, depthOffset.z);
 				}
@@ -207,7 +276,7 @@ PSInput_RenderToDepth VSMainSkin_RenderDepth(VSInputNmTxWeights In)
 //--------------------------------------------------------------------------------------
 float4 PSMain( PSInput In ) : SV_Target0
 {
-#if 1
+#if 0
 	//アルベド。
 	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
 	float4 color = albedo * float4(ambientLight, 1.0f);
@@ -273,6 +342,8 @@ float4 PSMain( PSInput In ) : SV_Target0
 	float3 toEyeReflection = -toEyeDir + 2.0f * dot(normal, toEyeDir) * normal;
 	
 	//影を計算。
+	float2 uv = In.posInProj.xy / In.posInProj.w;
+	uv = (uv * float2(0.5f, -0.5f)) + 0.5f;
 	float shadow = softShadowMap.Sample(Sampler, uv).r ;	
 	//ディレクションライト
 	float3 finalColor = 0.0f;
