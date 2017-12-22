@@ -24,7 +24,7 @@ namespace tkEngine{
 		m_isEnable = config.isEnable;
 		m_far = config.farPlane;
 		m_near = config.nearPlane;
-		m_isEnableSoftShadow = config.isEnableSoftShadow;
+		m_softShadowLevel = config.softShadowLevel;
 
 		m_shadowCbEntity.depthOffset[0] = config.depthOffset[0];
 		m_shadowCbEntity.depthOffset[1] = config.depthOffset[1];

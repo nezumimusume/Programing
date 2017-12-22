@@ -13,6 +13,7 @@ namespace tkEngine{
 		enSkinModelCBReg_Light,		//!<ライト用の定数バッファ。
 		enSkinModelCBReg_Material,	//!<マテリアルパラメータ。
 		enSkinModelCBReg_Shadow,	//!<影。
+		enSkinModelCBReg_GBuffer,	//!<G-Buffer。
 		
 	};
 	/*!

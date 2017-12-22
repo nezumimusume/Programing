@@ -91,10 +91,10 @@ float CalcShadowPercent(Texture2D<float4> tex, float2 uv, float2 offset, float d
 	return 0.0f;
 }
 /*!
- *@brief	影を計算。
+ *@brief	ソフト影を計算。
  *@return 影が落ちる確率が返ります。0.0なら影が落ちない。1.0なら影が落ちる。
  */
-float CalcShadow( float3 worldPos )
+float CalcSoftShadow( float3 worldPos )
 {
 	float shadow = 0.0f;
 	//ちょっと適当。
@@ -115,6 +115,40 @@ float CalcShadow( float3 worldPos )
 					shadow = CalcShadowPercentPCF4x4(shadowMap_0, shadowMapUV, texOffset[i], depth, depthOffset.x);
 				}else if(i == 1){
 					shadow = CalcShadowPercentPCF2x2(shadowMap_1, shadowMapUV, texOffset[i], depth, depthOffset.y);
+				}else if(i == 2){
+					shadow = CalcShadowPercent(shadowMap_2, shadowMapUV, texOffset[i], depth, depthOffset.z);
+				}
+				break;
+			}
+		}
+	}
+	return shadow;
+}
+/*!
+ *@brief	ソフト影を計算。
+ *@return 影が落ちる確率が返ります。0.0なら影が落ちない。1.0なら影が落ちる。
+ */
+float CalcShadow( float3 worldPos )
+{
+	float shadow = 0.0f;
+	//ちょっと適当。
+	if(isShadowReceiver){
+		//影を落とす。
+		[unroll]
+		for(int i = 0; i < NUM_SHADOW_MAP; i++ ){
+			float4 posInLVP = mul(mLVP[i], float4(worldPos, 1.0f) );
+			posInLVP.xyz /= posInLVP.w;
+			
+			float depth = min(posInLVP.z / posInLVP.w, 1.0f);
+			
+			//uv座標に変換。
+			float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
+			float shadow_val = 1.0f;
+			if(shadowMapUV.x < 0.95f && shadowMapUV.y < 0.95f && shadowMapUV.x > 0.05f && shadowMapUV.y > 0.05f){
+				if(i == 0){
+					shadow = CalcShadowPercent(shadowMap_0, shadowMapUV, texOffset[i], depth, depthOffset.x);
+				}else if(i == 1){
+					shadow = CalcShadowPercent(shadowMap_1, shadowMapUV, texOffset[i], depth, depthOffset.y);
 				}else if(i == 2){
 					shadow = CalcShadowPercent(shadowMap_2, shadowMapUV, texOffset[i], depth, depthOffset.z);
 				}
@@ -422,8 +456,14 @@ PSOutput_RenderGBuffer PSMain_RenderGBuffer( PSInput In )
 {
 	PSOutput_RenderGBuffer Out = (PSOutput_RenderGBuffer)0;
 	//法線はまだ出さない。
-	//シャドウマスクのみ出力する。
-	Out.shadow = CalcShadow(In.Pos);
+	//シャドウマスク出力する。
+	if(isPCFShadowMap){
+		//PCFをかける。
+		Out.shadow = CalcSoftShadow(In.Pos);
+	}else{
+		//何もしない。
+		Out.shadow = CalcShadow(In.Pos);
+	}
 	return Out;
 }
 /*!

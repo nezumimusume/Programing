@@ -23,7 +23,7 @@ namespace tkEngine{
 			isEnable = false;
 			shadowMapWidth = 512;
 			shadowMapHeight = 512;
-			isEnableSoftShadow = false;
+			softShadowLevel = EnSoftShadowQualityLevel::enNone;
 			nearPlane = UnitM(10.0f);
 			farPlane = UnitM(100.0f);
 			lightHeight = UnitM(20.0f);
@@ -38,7 +38,8 @@ namespace tkEngine{
 		float	farPlane;						//!<遠平面までの距離。
 		float	lightHeight;					//!<ライトの高さ。
 		float	depthOffset[NUM_SHADOW_MAP];	//!<シャドウオフセット。この値を大きくすると、影が落ちにくくなる。
-		bool	isEnableSoftShadow;				//!<ソフトシャドウが有効かどうかのフラグ。
+		EnSoftShadowQualityLevel	softShadowLevel;				//!<ソフトシャドウの品質レベル。値が大きいほど品質が上がる。最大２
+												//0：ハードシャドウ、1：ScreenSpaceSoftShadow、2:ScreenSpaceSoftShadow + PCF
 	};
 	/*!
 	* @brief	Bloomのコンフィグ

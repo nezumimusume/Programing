@@ -78,9 +78,9 @@ namespace tkEngine{
 		/*!
 		 *@brief	ソフトシャドウが有効？
 		 */
-		bool IsEnableSoftShadow() const
+		EnSoftShadowQualityLevel GetSoftShadowLevel() const
 		{
-			return m_isEnableSoftShadow;
+			return m_softShadowLevel;
 		}
 	private:
 		/*!
@@ -104,6 +104,6 @@ namespace tkEngine{
 		CMatrix	m_LVPMatrix[NUM_SHADOW_MAP] = { CMatrix::Identity };				//!<ライトビュープロジェクション行列。
 		SShadowCb m_shadowCbEntity;
 		CConstantBuffer m_shadowCb;							//!<影を落とす時に使用する定数バッファ。
-		bool m_isEnableSoftShadow = false;					//!<ソフトシャドウが有効？
+		EnSoftShadowQualityLevel m_softShadowLevel = EnSoftShadowQualityLevel::enNone;							//!<ソフトシャドウのレベル。
 	};
 }
