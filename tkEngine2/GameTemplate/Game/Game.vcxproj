@@ -642,7 +642,6 @@
     <ResourceCompile Include="Game.rc" />
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\Doragon.FBX" />
     <MeshContentTask Include="Assets\modelData\unityChan.fbx" />
   </ItemGroup>
   <ItemGroup>
@@ -684,12 +683,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="Assets\modelData\Doragon.tks">
-      <FileType>Document</FileType>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="Assets\animData\idle.tka">
+    <CustomBuild Include="Assets\shader\shadowBlur.fx">
       <FileType>Document</FileType>
     </CustomBuild>
   </ItemGroup>

@@ -14,4 +14,3 @@ call .\Sample\cleanup.bat
 popd
 
 @echo クリーンアップ終了
-pause

@@ -5,6 +5,7 @@
 
 pushd %CURRENT_DIR%
 
+@call .\cleanup.bat
 @call .\Sample\setup.bat
 
 @rem maxScript‚ğƒRƒs[

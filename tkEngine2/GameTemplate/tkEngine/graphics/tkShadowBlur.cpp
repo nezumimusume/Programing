@@ -5,6 +5,7 @@
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/graphics/tkShadowBlur.h"
 #include "tkEngine/graphics/tkPresetRenderState.h"
+#include "tkEngine/graphics/tkSkinModelShaderConst.h"
 
 namespace tkEngine{
 	namespace {
@@ -158,6 +159,7 @@ namespace tkEngine{
 			CRenderTarget* rts[] = {
 				&m_yBlurRT
 			};
+			rc.PSUnsetShaderResource(enSkinModelSRVReg_SoftShadowMap);
 			rc.UpdateSubresource(m_cbBlur, &m_blurParam);
 			rc.OMSetRenderTargets(1, rts);
 			rc.ClearRenderTargetView(0, clearColor);
