@@ -120,16 +120,16 @@ namespace tkEngine{
 		lightViewRot.m[2][3] = 0.0f;
 
 		float shadowAreaTbl[NUM_SHADOW_MAP] = {
-			UnitM(6.0f),
-			UnitM(16.0f),
-			UnitM(32.0f)
+			UnitM(2.0f),
+			UnitM(4.0f),
+			UnitM(4.0f)
 		};
 
 		//ライトビューのターゲットを計算。
 		CVector3 lightTarget;
 		lightTarget = MainCamera().GetPosition();
 		lightTarget.y = MainCamera().GetTarget().y;
-		lightTarget += cameraDirXZ * shadowAreaTbl[0] * 0.5f;
+		lightTarget += cameraDirXZ ;
 		CVector3 lightPos = lightTarget + m_lightDirection * -m_lightHeight;
 		
 		SShadowCb shadowCB;

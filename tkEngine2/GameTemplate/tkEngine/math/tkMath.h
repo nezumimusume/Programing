@@ -9,6 +9,7 @@ namespace tkEngine{
 	class CMath{
 	public:
 		static const float PI;
+		static const float PI2;
 		/*!
 		 * @brief	degree‚©‚çradian‚É•ÏŠ·B
 		 */

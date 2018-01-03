@@ -138,16 +138,7 @@ namespace tkEngine {
 		
 		m_sw.Stop();
 		
-		/*if (m_sw.GetElapsed() < 1.0f / 30.0f) {
-			//30fpsÇ…ä‘Ç…çáÇ¡ÇƒÇ¢ÇÈÇ»ÇÁñ∞ÇÈÅB
-			DWORD sleepTime = static_cast<DWORD>(max(0.0, (1.0 / 30.0)*1000.0 - (DWORD)m_sw.GetElapsedMillisecond()));
-			Sleep(sleepTime);
-			GameTime().SetFrameDeltaTime(1.0f / 30.0f);
-		}
-		else {
-			//ä‘Ç…çáÇ¡ÇƒÇ¢Ç»Ç¢ÅB*/
-			GameTime().SetFrameDeltaTime((float)m_sw.GetElapsed());
-		//}
+		GameTime().PushFrameDeltaTime((float)m_sw.GetElapsed());
 	}
 	LRESULT CALLBACK CEngine::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{

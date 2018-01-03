@@ -98,13 +98,12 @@ namespace tkEngine {
 	}
 
 
-	void CCharacterController::Init(float radius, float height, float gravity, const CVector3& position)
+	void CCharacterController::Init(float radius, float height, const CVector3& position)
 	{
 		m_position = position;
 		//コリジョン作成。
 		m_radius = radius;
 		m_height = height;
-		m_gravity = gravity;
 		m_collider.Create(radius, height);
 
 		//剛体を初期化。
@@ -123,8 +122,6 @@ namespace tkEngine {
 	}
 	const CVector3& CCharacterController::Execute(float deltaTime, CVector3& moveSpeed)
 	{
-		//速度に重力加速度を加える。
-		moveSpeed.y += m_gravity * deltaTime;
 		//次の移動先となる座標を計算する。
 		CVector3 nextPosition = m_position;
 		//速度からこのフレームでの移動量を求める。オイラー積分。

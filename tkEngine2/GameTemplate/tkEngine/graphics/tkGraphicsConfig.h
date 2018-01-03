@@ -30,6 +30,7 @@ namespace tkEngine{
 			depthOffset[0] = 0.0002f;
 			depthOffset[1] = 0.0002f;
 			depthOffset[2] = 0.0002f;
+			offsetTexelWorld = 0.05f;
 		}
 		bool 	isEnable;						//!<影を落とす処理が有効かどうかのフラグ。
 		int		shadowMapWidth;					//!<シャドウマップの幅。
@@ -38,6 +39,7 @@ namespace tkEngine{
 		float	farPlane;						//!<遠平面までの距離。
 		float	lightHeight;					//!<ライトの高さ。
 		float	depthOffset[NUM_SHADOW_MAP];	//!<シャドウオフセット。この値を大きくすると、影が落ちにくくなる。
+		float	offsetTexelWorld;				//!<ブラーの時にフェッチするオフセット座標。ワールド空間の量。値が大きいほど大きくボケる。
 		EnSoftShadowQualityLevel	softShadowLevel;				//!<ソフトシャドウの品質レベル。値が大きいほど品質が上がる。最大２
 												//0：ハードシャドウ、1：ScreenSpaceSoftShadow、2:ScreenSpaceSoftShadow + PCF
 	};

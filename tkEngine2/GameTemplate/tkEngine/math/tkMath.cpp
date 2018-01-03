@@ -6,4 +6,5 @@
 
 namespace tkEngine{
 	const float CMath::PI = 3.14159265358979323846f;
+	const float CMath::PI2 = CMath::PI * 2.0f;
 }

@@ -22,7 +22,7 @@ namespace tkEngine{
 	/*!
 	*@brief	èâä˙âªÅB
 	*/
-	void CGBufferRender::Init()
+	void CGBufferRender::Init(const SGraphicsConfig& config)
 	{
 		CGraphicsEngine& ge = GraphicsEngine();
 		
@@ -54,7 +54,8 @@ namespace tkEngine{
 			ge.GetMainRenderTarget().GetDepthStencilView()
 		);
 
-		m_shadowBlur.Init(m_GBuffer[enGBufferShadow].GetRenderTargetSRV(), 5.0f);
+		m_shadowBlur.Init(m_GBuffer[enGBufferShadow].GetRenderTargetSRV(), 5.0f, config.shadowRenderConfig);
+		
 		m_cb.Create(NULL, sizeof(m_cbEntity));
 	}
 	

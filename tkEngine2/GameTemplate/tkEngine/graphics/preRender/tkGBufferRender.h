@@ -23,7 +23,7 @@ namespace tkEngine{
 		/*!
 		 *@brief	初期化。
 		 */
-		void Init();
+		void Init(const SGraphicsConfig& config);
 		/*!
 		*@brief	スキンモデルを追加。
 		*/

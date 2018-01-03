@@ -88,13 +88,14 @@ namespace tkEngine{
 		 * この関数を使用してnewしたオブジェクトは必ずDeleteGameObjectを実行することでdeleteされます。
 		 *@param[in]	prio		実行優先順位。
 		 *@param[in]	objectName	オブジェクト名。
+		 *@param[in]	ctorArgs	コンストラクタに渡す可変長引数。
 		 */
-		template<class T>
-		T* NewGameObject(GameObjectPrio prio, const char* objectName = nullptr)
+		template<class T, class... TArgs>
+		T* NewGameObject(GameObjectPrio prio, const char* objectName, TArgs... ctorArgs)
 		{
 			(void*)objectName;
 			TK_ASSERT( prio <= m_gameObjectPriorityMax, "ゲームオブジェクトの優先度の最大数が大きすぎます。");
-			T* newObject = new T();
+			T* newObject = new T(ctorArgs...);
 			newObject->Awake();
 			newObject->SetMarkNewFromGameObjectManager();
 			m_gameObjectListArray.at(prio).push_back(newObject);
@@ -194,12 +195,13 @@ namespace tkEngine{
 	/*!
 	 *@brief	ゲームオブジェクト生成のヘルパー関数。
 	 *@param[in]	priority	プライオリティ。
-	 *@param[in]	objectName	オブジェクト名。
+	 *@param[in]	objectName	オブジェクト名。(NULLの指定可）
+	 *@param[in]	ctorArgs	コンストラクタに渡す可変長引数。
 	 */
-	template<class T>
-	static inline T* NewGO( int priority, const char* objectName = nullptr)
+	template<class T, class... TArgs>
+	static inline T* NewGO( int priority, const char* objectName, TArgs... ctorArgs)
 	{
-		return GameObjectManager().NewGameObject<T>( (GameObjectPrio)priority, objectName );
+		return GameObjectManager().NewGameObject<T>( (GameObjectPrio)priority, objectName, ctorArgs...);
 	}
 	/*!
 	 *@brief	ゲームオブジェクト削除のヘルパー関数。

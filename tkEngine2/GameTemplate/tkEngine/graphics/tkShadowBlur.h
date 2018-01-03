@@ -25,7 +25,7 @@ namespace tkEngine{
 		 *@param[in]	srcTexture		元テクスチャ。
 		 *@param[in]	blurIntensity	ブラーの強さ。値が大きいほどボケる。
 		 */
-		void Init( CShaderResourceView& srcTexture, float blurIntensity = 25.0f );
+		void Init( CShaderResourceView& srcTexture, float blurIntensity, const SShadowRenderConfig& shadowConfig);
 		/*!
 		 * @brief	ブラーを実行。
 		 */
@@ -53,6 +53,7 @@ namespace tkEngine{
 			float weights[NUM_WEIGHTS];
 			CMatrix mtxProj;
 			CMatrix mtxProjInv;
+			float offsetTexelWorld;		// ブラーの時にフェッチするオフセット座標。ワールド空間の量。値が大きいほど大きくボケる。
 		};
 		SBlurParam m_blurParam;				//!<ブラー用のパラメータ。
 		CConstantBuffer m_cbBlur;			//!<ブラー用のパラメータの定数バッファ。

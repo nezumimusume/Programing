@@ -43,11 +43,14 @@ namespace tkEngine{
 		}
 	}
 	
-	void CSkinModel::UpdateWorldMatrix(const CVector3& trans, const CQuaternion& rot, const CVector3& scale)
+	void CSkinModel::UpdateWorldMatrix(const CVector3& trans, const CQuaternion& rot, const CVector3& scale, EnFbxUpAxis enUpdateAxis)
 	{
 		//3dsMaxと軸を合わせるためのバイアス。
-		CMatrix mBias;
-		mBias.MakeRotationX(CMath::PI * -0.5f);
+		CMatrix mBias = CMatrix::Identity;
+		if (enUpdateAxis == enFbxUpAxisZ) {
+			//Z-up
+			mBias.MakeRotationX(CMath::PI * -0.5f);
+		}
 		CMatrix mScale, mTrans, mRot;
 		mScale.MakeScaling(scale);
 		mRot.MakeRotationFromQuaternion(rot);
@@ -56,9 +59,9 @@ namespace tkEngine{
 		m_worldMatrix.Mul(mScale, mRot);
 		m_worldMatrix.Mul(m_worldMatrix, mTrans);
 	}
-	void CSkinModel::Update(const CVector3& trans, const CQuaternion& rot, const CVector3& scale)
+	void CSkinModel::Update(const CVector3& trans, const CQuaternion& rot, const CVector3& scale, EnFbxUpAxis enUpdateAxis)
 	{		
-		UpdateWorldMatrix(trans, rot, scale);
+		UpdateWorldMatrix(trans, rot, scale, enUpdateAxis);
 		GraphicsEngine().GetZPrepass().AddSkinModel(this);
 		GraphicsEngine().GetGBufferRender().AddSkinModel(this);
 		if (m_isShadowCaster) {
@@ -71,9 +74,10 @@ namespace tkEngine{
 	void CSkinModel::UpdateInstancingData(
 		const CVector3& trans,
 		const CQuaternion& rot,
-		const CVector3& scale )
+		const CVector3& scale,
+		EnFbxUpAxis enUpdateAxis )
 	{		
-		UpdateWorldMatrix(trans, rot, scale);
+		UpdateWorldMatrix(trans, rot, scale, enUpdateAxis);
 		if (m_numInstance < m_maxInstance) {
 			//インスタンシングデータを更新する。
 			m_instancingData[m_numInstance] = m_worldMatrix;

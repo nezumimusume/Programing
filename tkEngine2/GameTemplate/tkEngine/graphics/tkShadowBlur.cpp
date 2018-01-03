@@ -20,7 +20,7 @@ namespace tkEngine{
 	CShadowBlur::~CShadowBlur()
 	{
 	}
-	void CShadowBlur::Init( CShaderResourceView& srcTexture, float blurIntensity )
+	void CShadowBlur::Init( CShaderResourceView& srcTexture, float blurIntensity, const SShadowRenderConfig& shadowConfig)
 	{
 		m_srcTexture = &srcTexture;
 		m_blurIntensity = blurIntensity;
@@ -101,6 +101,7 @@ namespace tkEngine{
 		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
 		samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		m_samplerState.Create(samplerDesc);
+		m_blurParam.offsetTexelWorld = shadowConfig.offsetTexelWorld;
 
 	}
 	void CShadowBlur::UpdateWeight(float dispersion)
@@ -122,7 +123,7 @@ namespace tkEngine{
 		UpdateWeight(m_blurIntensity);
 		m_blurParam.mtxProj = MainCamera().GetProjectionMatrix();
 		m_blurParam.mtxProjInv.Inverse(m_blurParam.mtxProj);
-
+		
 		CRenderTarget* oldRenderTargets[MRT_MAX];
 		unsigned int numRenderTargetViews;
 

@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns:atg="http://atg.xbox.com" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{ed0b04a6-fecd-4a2c-a462-59a8f4639f36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{8e114980-c1a3-4ada-ad7c-83caadf5daeb}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Assets\modelData">
+      <UniqueIdentifier>{06086914-6aa4-4cad-9b07-6f9d357f04df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\sprite">
+      <UniqueIdentifier>{a6ce300a-b532-440d-b914-b4661d3015ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\shader">
+      <UniqueIdentifier>{a961ab0f-689c-4adf-940a-ffea33655653}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\font">
+      <UniqueIdentifier>{9ce24419-5cae-4de8-84f5-336ce6bdb0e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\animData">
+      <UniqueIdentifier>{8febfab2-0b65-4b9f-b760-6ce9f75f8996}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{81c10668-6a8e-46e8-af90-40c1b42eaffd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BackGround">
+      <UniqueIdentifier>{ced08107-877e-4fd4-8864-38b3573bd0bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\animData\Player">
+      <UniqueIdentifier>{e88df1b6-ffef-4068-9728-4fb4bb1096c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player\FSM">
+      <UniqueIdentifier>{8b7425f0-2c9b-4def-836f-8a4bb1c7acf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{f61a67e4-82c7-4635-b267-6329e5ec3412}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CLInclude Include="resource.h">
+      <Filter>Resource Files</Filter>
+    </CLInclude>
+    <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\stdafx.h" />
+    <ClInclude Include="src\Player\Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Player\PlayerAnimator.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Player\PlayerConst.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Player\PlayerMove.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Player\PlayerRenderer.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Player\PlayerTurn.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Player\FSM\PlayerState.h">
+      <Filter>Player\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Player\FSM\PlayerStateMachine.h">
+      <Filter>Player\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Player\FSM\IPlayerState.h">
+      <Filter>Player\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BackGround\BackGround.h">
+      <Filter>BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera\GameCamera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\shader\tonemap.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\bloom.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\copy.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\fxaa.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\LightCulling.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\model.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\modelCB.h">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\modelSRV.h">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\modelStruct.h">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\sampleBRDF.h">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\sprite.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\LightingFunction.h">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\dithering.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\font\myfile.spritefont">
+      <Filter>Assets\font</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\shadowBlur.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\modelData\Thethief_H.tks">
+      <Filter>Assets\modelData</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\animData\Player\idle.tka">
+      <Filter>Assets\animData\Player</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\animData\Player\run.tka">
+      <Filter>Assets\animData\Player</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\animData\Player\walk.tka">
+      <Filter>Assets\animData\Player</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\modelData\Thethief_H.FBX">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\background.FBX">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Assets\modelData\Thethief_N.tga">
+      <Filter>Assets\modelData</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\modelData\Thethief_S.tga">
+      <Filter>Assets\modelData</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\modelData\Thethief_wuqi_N.tga">
+      <Filter>Assets\modelData</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Assets\modelData\Thethief_wuqi_S.tga">
+      <Filter>Assets\modelData</Filter>
+    </ImageContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\stdafx.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\Player\Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Player\PlayerAnimator.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Player\PlayerConst.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Player\PlayerMove.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Player\PlayerRenderer.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Player\PlayerTurn.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Player\FSM\PlayerStateMachine.cpp">
+      <Filter>Player\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Player\FSM\PlayerState.cpp">
+      <Filter>Player\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BackGround\BackGround.cpp">
+      <Filter>BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Camera\GameCamera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

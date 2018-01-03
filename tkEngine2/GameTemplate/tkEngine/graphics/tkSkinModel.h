@@ -16,6 +16,13 @@ namespace tkEngine{
 	 */
 	class CSkinModel : Noncopyable{
 	public:
+		/*!
+		*@brief	FBXの上方向。
+		*/
+		enum EnFbxUpAxis {
+			enFbxUpAxisY,		//Y-up
+			enFbxUpAxisZ,		//Z-up
+		};
 		typedef std::function<void(CSkeleton&)>		OnPostUpdateSkeleton;
 
 		/*!
@@ -42,11 +49,13 @@ namespace tkEngine{
 		*@param[in]		trans		平行移動。
 		*@param[in]		rot			回転。
 		*@param[in]		scale		拡大。
+		*@param[in]		enUpdateAxis	fbxの上方向。
 		*/
 		void Update(
 			const CVector3& trans, 
 			const CQuaternion& rot, 
-			const CVector3& scale
+			const CVector3& scale,
+			EnFbxUpAxis enUpdateAxis = enFbxUpAxisZ
 		);
 		/*!
 		 *@brief	インスタンシング用のデータの更新。
@@ -56,11 +65,15 @@ namespace tkEngine{
 		 *@param[in]		trans		平行移動。
 		 *@param[in]		rot			回転。
 		 *@param[in]		scale		拡大。
+		 *@param[in]		enUpdateAxis	fbxの上方向。
+
 		 */
 		void UpdateInstancingData(
 			const CVector3& trans,
 			const CQuaternion& rot,
-			const CVector3& scale);
+			const CVector3& scale,
+			EnFbxUpAxis enUpdateAxis = enFbxUpAxisZ
+		);
 		/*!
 		*@brief	インスタンスデータの更新開始時に呼び出してください。
 		*/
@@ -131,7 +144,7 @@ namespace tkEngine{
 		/*!
 		 *@brief	ワールド行列の更新。
 		 */
-		void UpdateWorldMatrix(const CVector3& trans, const CQuaternion& rot, const CVector3& scale);
+		void UpdateWorldMatrix(const CVector3& trans, const CQuaternion& rot, const CVector3& scale, EnFbxUpAxis enUpdateAxis);
 	private:
 		struct SVSConstantBuffer {
 			CMatrix mWorld;

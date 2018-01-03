@@ -13,7 +13,7 @@ namespace tkEngine {
 			float positionTarget,
 			float& moveSpeed)
 		{
-			float deltaTime = min(1.0f / 30.0f, GameTime().GetFrameDeltaTime());
+			float deltaTime = GameTime().GetFrameDeltaTime();
 
 			float dampingRate = 0.2f;
 			float distance;
@@ -93,15 +93,21 @@ namespace tkEngine {
 				moveSpeed.Scale(maxMoveSpeed);
 			}
 			CVector3 newPos = positionNow;
-			CVector3 addPos = moveSpeed;
-			addPos.Scale(deltaTime);
-			newPos.Add(addPos);
-			vt.Subtract(positionTarget, newPos);
-			vt.Normalize();
-			if (vt.Dot(originalDir) < 0.0f) {
-				//目標座標を超えた。
+			if (moveSpeed.Length() < 1.0f) {
 				newPos = positionTarget;
 				moveSpeed = CVector3::Zero;
+			}
+			else {
+				CVector3 addPos = moveSpeed;
+				addPos.Scale(deltaTime);
+				newPos.Add(addPos);
+				vt.Subtract(positionTarget, newPos);
+				vt.Normalize();
+				if (vt.Dot(originalDir) < 0.0f) {
+					//目標座標を超えた。
+					newPos = positionTarget;
+					moveSpeed = CVector3::Zero;
+				}
 			}
 			return newPos;
 		}
