@@ -23,8 +23,15 @@ void CPlayerStateMachine::ChangeState(CPlayerConst::EnState nextState)
 	case CPlayerConst::enState_Walk:
 		m_currentState = &m_walkState;
 		break;
+	case CPlayerConst::enState_Jump:
+		m_currentState = &m_jumpState;
+		break;
 	}
-	AddGO(0, m_currentState, nullptr);
+	//ステートが切り替わったことをリスナーに通知。
+	for (auto func : m_changeStateListener) {
+		func(nextState);
+	}
+	AddGO(GetPriority(), m_currentState, nullptr);
 }
 bool CPlayerStateMachine::Start()
 {

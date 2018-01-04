@@ -16,6 +16,7 @@ public:
 		enState_Idle,		//!<待機ステート。
 		enState_Walk,		//!<歩きステート。
 		enState_Run,		//!<走りステート。
+		enState_Jump,		//!<ジャンプステート。
 		enState_Invalid,	//!<無効ステート。
 	};
 };

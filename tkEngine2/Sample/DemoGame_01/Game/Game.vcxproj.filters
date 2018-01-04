@@ -38,6 +38,9 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{f61a67e4-82c7-4635-b267-6329e5ec3412}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Player\Animation">
+      <UniqueIdentifier>{9155103a-b197-427d-b4ea-c0c26a6b360a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -46,9 +49,6 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\Player\Player.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Player\PlayerAnimator.h">
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="src\Player\PlayerConst.h">
@@ -77,6 +77,9 @@
     </ClInclude>
     <ClInclude Include="Src\Camera\GameCamera.h">
       <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Player\Animation\PlayerAnimator.h">
+      <Filter>Player\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -172,9 +175,6 @@
     <ClCompile Include="src\Player\Player.cpp">
       <Filter>Player</Filter>
     </ClCompile>
-    <ClCompile Include="src\Player\PlayerAnimator.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
     <ClCompile Include="src\Player\PlayerConst.cpp">
       <Filter>Player</Filter>
     </ClCompile>
@@ -199,5 +199,19 @@
     <ClCompile Include="Src\Camera\GameCamera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Player\Animation\PlayerAnimator.cpp">
+      <Filter>Player\Animation</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\animData\Player\jump.tka">
+      <Filter>Assets\animData\Player</Filter>
+    </None>
+    <None Include="Assets\animData\Player\jump_end.tka">
+      <Filter>Assets\animData\Player</Filter>
+    </None>
+    <None Include="Assets\animData\Player\jump_start.tka">
+      <Filter>Assets\animData\Player</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -18,7 +18,14 @@ bool CPlayerMove::Start()
 {
 	m_charaCon.Init(15.0f, 50.0f, m_player->GetPosition());
 	m_gameCamera = FindGO<CGameCamera>("GameCamera");
+	//ステート切り替えのリスナーを登録。
+	m_player->AddChangeStateListner([&](CPlayerConst::EnState nextState) {
+		OnChangeState(nextState);
+	});
 	return true;
+}
+void CPlayerMove::OnChangeState(CPlayerConst::EnState nextState)
+{
 }
 void CPlayerMove::Update()
 {
@@ -53,14 +60,21 @@ void CPlayerMove::Update()
 	//まずはXZ平面での移動速度。
 	CVector3 moveSpeed;
 	moveSpeed = forward + right;
-	//続いてY方向。
-	float addYSpeed = -980.0f * GameTime().GetFrameDeltaTime();	//重力による速度増加を計算。
-	moveSpeed.y = m_moveSpeed.y + addYSpeed;
-
-	//計算終わり。
-	m_moveSpeed = moveSpeed;
+	if (m_player->IsApplyGravity()) {
+		//続いてY方向。
+		float addYSpeed = -980.0f * GameTime().GetFrameDeltaTime();	//重力による速度増加を計算。
+		moveSpeed.y = m_moveSpeed.y + addYSpeed;
+	}
 	
+	//計算終わり。
+	m_moveSpeed = moveSpeed + m_addMoveSpeed;
+	
+
 	//計算された移動速度を使って移動させる。
 	CVector3 pos = m_charaCon.Execute(GameTime().GetFrameDeltaTime(), m_moveSpeed);
 	m_player->SetPosition(pos);
+	
+	//外部から加算されている力をクリアする。
+	m_addMoveSpeed = CVector3::Zero;
+	
 }

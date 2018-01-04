@@ -69,7 +69,7 @@ void CGameCamera::Update()
 		}
 	}
 
-	//新しい注視点をアクターの座標から決める。
+	//新しい注視点をプレイヤーの座標から決める。
 	CVector3 target = m_player->GetPosition();
 	target.y += TARGET_OFFSET_Y;
 

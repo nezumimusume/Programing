@@ -41,3 +41,28 @@ public:
 		IPlayerState(pl, psm) {}
 	void Update() override final;
 };
+/*!
+*@brief	ジャンプステート。
+*/
+class CPlayerStateJump : public IPlayerState {
+public:
+	CPlayerStateJump(CPlayer* pl, CPlayerStateMachine* psm) :
+		IPlayerState(pl, psm) {}
+	bool Start() override final
+	{
+		m_waitTimer = 2;
+		
+		return true;
+	}
+	void Update() override final;
+	/*!
+	* @brief	移動できるか判定
+	*/
+	bool IsMove() const override;
+	/*!
+	 *@brief	重力の影響を受けるか判定。
+	 */
+	bool IsApplyGravity() const override;
+private:
+	int m_waitTimer = 1;
+};

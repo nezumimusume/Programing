@@ -1,5 +1,7 @@
 /*!
  * @brief	プレイヤーレンダラー
+ *@details
+ * プレイヤーの描画関係の処理を行うクラスです。
  */
 
 #include "stdafx.h"
@@ -7,7 +9,7 @@
 #include "Player/PlayerRenderer.h"
 
 
-bool CPlayerRenderer::Start()
+void CPlayerRenderer::Awake()
 {
 	m_skinModelData.Load(L"modelData/Thethief_H.cmo");
 	m_skinModel.Init(m_skinModelData);
@@ -20,6 +22,7 @@ bool CPlayerRenderer::Start()
 	m_specMap.CreateFromDDSTextureFromFile(L"modelData/Thethief_S.dds");
 	m_wnormalMap.CreateFromDDSTextureFromFile(L"modelData/Thethief_wuqi_N.dds");
 	m_wspecMap.CreateFromDDSTextureFromFile(L"modelData/Thethief_wuqi_S.dds");
+	//法線マップとスペキュラマップをモデルに貼る。
 	m_skinModel.FindMaterial([&](CModelEffect* material)
 	{
 		if (material->EqualMaterialName(L"bodyMat")) {
@@ -32,12 +35,10 @@ bool CPlayerRenderer::Start()
 			material->SetSpecularMap(m_wspecMap.GetBody());
 		}
 	});
-	return true;
 }
 
 void CPlayerRenderer::Update()
 {
-	
 	CQuaternion qRot;
 	qRot.SetRotation(CVector3::AxisX, CMath::PI * 0.5f);
 	qRot.Multiply(m_player->GetRotation(), qRot);

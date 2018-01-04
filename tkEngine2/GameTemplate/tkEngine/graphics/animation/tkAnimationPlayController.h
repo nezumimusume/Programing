@@ -80,6 +80,22 @@ namespace tkEngine{
 		{
 			return m_isPlaying;
 		}
+		/*!
+		 *@brief	フリーズしているボーンの平行移動量を取得する。
+		 */
+		CVector3 GetFreezeBoneTranslate() const
+		{
+			return m_freezeBoneTranslate;
+		}
+	private:
+		/*!
+		 *@brief	指定されたボーンのアニメーションをフリーズする。
+		 */
+		void ExecuteFreezeBone();
+		/*!
+		 *@brief	フリーズさせるボーンのワールド行列を求める。
+		 */
+		void CalcFreezeBoneWorldMatrix(CBone& bone, const CMatrix& parentMatrix, CMatrix& freezeBoneMatrix);
 	private:
 		CAnimationClip*			m_animationClip = nullptr;		//!<アニメーションクリップ。
 		int						m_currentKeyFrameNo = 0;	//!<現在再生中のキーフレーム番号。
@@ -88,5 +104,7 @@ namespace tkEngine{
 		float					m_interpolateTime;		//!<補完時間
 		float					m_interpolateEndTime;	//!<補完終了時間
 		bool					m_isPlaying = false;	//!<再生中？
+		CSkeleton*				m_skeleton = nullptr;	//!<スケルトン。
+		CVector3				m_freezeBoneTranslate = CVector3::Zero;	//!<フリーズしているボーンの平行移動量。
 	};
 }

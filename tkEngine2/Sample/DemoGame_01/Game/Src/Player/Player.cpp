@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Player/Player.h"
 #include "Player/PlayerRenderer.h"
-#include "Player/PlayerAnimator.h"
+#include "Player/Animation/PlayerAnimator.h"
 
 
 
@@ -31,11 +31,12 @@ void CPlayer::OnDestroy()
 }
 bool CPlayer::Start()
 {
-	AddGO(0, &m_playerRenderer, nullptr);
-	AddGO(0, &m_playerAnimator, nullptr);
-	AddGO(0, &m_playerStateMachine, nullptr);
-	AddGO(0, &m_playerMove, nullptr);
-	AddGO(0, &m_playerTurn, nullptr);
+	AddGO(enPlayerComponentPrio_Renderer, &m_playerRenderer, nullptr);
+	AddGO(enPlayerComponentPrio_Animator, &m_playerAnimator, nullptr);
+	AddGO(enPlayerComponentPrio_StateMachine, &m_playerStateMachine, nullptr);
+	AddGO(enPlayerComponentPrio_Move, &m_playerMove, nullptr);
+	AddGO(enPlayerComponentPrio_Turn, &m_playerTurn, nullptr);
+	
 	return true;
 }
 

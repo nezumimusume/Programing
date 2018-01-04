@@ -241,6 +241,6 @@ namespace tkEngine{
 		m_lightManager.EndRender(m_renderContext);
 		
 		//フラーッシュ
-		m_pSwapChain->Present(1, 0);
+		m_pSwapChain->Present(2, 0);
 	}
 }

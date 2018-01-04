@@ -196,6 +196,13 @@ namespace tkEngine{
 		{
 			return m_skeleton;
 		}
+		/*!
+		*@brief	スケルトンを取得。
+		*/
+		const CSkeleton& GetSkeleton() const
+		{
+			return m_skeleton;
+		}
 		typedef std::function<void(std::unique_ptr<DirectX::ModelMeshPart>&)>		OnFindMesh;
 		typedef std::function<void(CModelEffect*)>	OnFindMaterial;
 		/*!

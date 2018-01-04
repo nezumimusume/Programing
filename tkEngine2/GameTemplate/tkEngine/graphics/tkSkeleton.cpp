@@ -101,7 +101,8 @@ namespace tkEngine {
 				boneName,
 				bindPoseMatrix,
 				invBindPoseMatrix,
-				parentId
+				parentId,
+				i
 			);
 
 #if BUILD_LEVEL != BUILD_LEVEL_MASTER

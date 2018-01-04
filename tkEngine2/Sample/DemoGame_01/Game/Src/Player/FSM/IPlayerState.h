@@ -20,6 +20,13 @@ public:
 	{
 		return true;
 	}
+	/*!
+	 *@brief	d—Í‚Ì‰e‹¿‚ğó‚¯‚é‚©”»’èB
+	 */
+	virtual bool IsApplyGravity() const
+	{
+		return true;
+	}
 protected:
 	CPlayer* m_player = nullptr;
 	CPlayerStateMachine* m_psm = nullptr;

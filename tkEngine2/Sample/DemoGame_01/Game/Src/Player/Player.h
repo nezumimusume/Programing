@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Player/PlayerAnimator.h"
+#include "Player/Animation/PlayerAnimator.h"
 #include "Player/PlayerRenderer.h"
 #include "Player/FSM/PlayerStateMachine.h"
 #include "Player/PlayerMove.h"
@@ -12,6 +12,17 @@
 
 class CPlayer : public IGameObject {
 public:
+	/*!
+	* @brief	プレイヤのコンポーネントのプライオリティ。
+	*/
+	enum EnPlayerComponentPrio {
+		enPlayerComponentPrio_StateMachine,		//ステートマシーン。
+		enPlayerComponentPrio_Move,				//移動処理。
+		enPlayerComponentPrio_Turn,				//旋回処理。
+		enPlayerComponentPrio_Animator,			//アニメータ。
+		enPlayerComponentPrio_Renderer,			//レンダラー。
+
+	};
 	/*!
 	 * @brief	コンストラクタ。
 	 */
@@ -108,6 +119,63 @@ public:
 	{
 		return m_playerStateMachine.GetCurrentState();
 	}
+	
+	/*!
+	*@brief	重力の影響を受けるか判定。
+	*/
+	bool IsApplyGravity() const
+	{
+		return m_playerStateMachine.IsApplyGravity();
+	}
+	/*!
+	 *@brief	アニメーターを取得。
+	 */
+	const CPlayerAnimator& GetAnimator() const
+	{
+		return m_playerAnimator;
+	}
+	/*!
+	 *@brief	ボーンの名前からボーンIDを検索。
+	 */
+	int FindBoneID(const wchar_t* boneName) const
+	{
+		return m_playerRenderer.GetSkinModelData().GetSkeleton().FindBoneID(boneName);
+	}
+	/*!
+	*@brief	ボーンを取得。
+	*/
+	CBone* GetBone(int boneNo)
+	{
+		return m_playerRenderer.GetSkinModelData().GetSkeleton().GetBone(boneNo);
+	}
+	/*!
+	*@brief	速度を加える。
+	*/
+	void AddMoveSpeed(CVector3 speed)
+	{
+		m_playerMove.AddMoveSpeed(speed);
+	}
+	/*!
+	*@brief	ステート切り替えのリスナーを登録。
+	*/
+	void AddChangeStateListner(CPlayerStateMachine::OnChangeState listner)
+	{
+		m_playerStateMachine.AddChangeStateListner(listner);
+	}
+	/*!
+	 *@brief	プレイヤーが地面にいるか判定。
+	 */
+	bool IsOnGround() const
+	{
+		return m_playerMove.IsOnGround();
+	}
+	/*!
+	 *@brief	プレイヤーにジャンプ中であることを通知。
+	 */
+	void Jump()
+	{
+		m_playerMove.Jump();
+	}
 private:
 	CPlayerRenderer m_playerRenderer;				//プレイヤレンダラ。
 	CPlayerAnimator m_playerAnimator;				//アニメータ。
@@ -118,5 +186,4 @@ private:
 	CQuaternion m_rotation = CQuaternion::Identity;	//回転。
 	CVector3 m_forward = CVector3::Front;			//プレイヤーの前方方向。
 	CVector3 m_forwardXZ = CVector3::Front;			//プレイヤーのXZ平面での前方方向。
-	
 };
