@@ -11,9 +11,9 @@ namespace tkEngine{
 	/*!
 	 * @brief	行列。
 	 */
-	class CMatrix{
+	class CMatrix {
 	public:
-	
+
 		union {
 			DirectX::XMFLOAT4X4 mat;
 			struct {
@@ -43,7 +43,7 @@ namespace tkEngine{
 		{
 
 		}
-		CMatrix(const DirectX::XMFLOAT4X4& m) 
+		CMatrix(const DirectX::XMFLOAT4X4& m)
 		{
 			mat = m;
 		}
@@ -73,24 +73,24 @@ namespace tkEngine{
 		void Mul(CVector3& vOut) const
 		{
 			DirectX::XMStoreFloat3(
-				&vOut.vec, 
+				&vOut.vec,
 				DirectX::XMVector3Transform(vOut, *this)
 			);
 		}
 		void Mul(CVector4& vOut) const
 		{
-			DirectX::XMStoreFloat4( 
-				&vOut.vec, 
-				DirectX::XMVector4Transform(vOut, *this) 
+			DirectX::XMStoreFloat4(
+				&vOut.vec,
+				DirectX::XMVector4Transform(vOut, *this)
 			);
 		}
 		/*!
 		 *@brief	平行移動行列を作成。
 		 */
-		void MakeTranslation( const CVector3& trans ) 
+		void MakeTranslation(const CVector3& trans)
 		{
-			DirectX::XMStoreFloat4x4( 
-				&mat, 
+			DirectX::XMStoreFloat4x4(
+				&mat,
 				DirectX::XMMatrixTranslationFromVector(trans)
 			);
 		}
@@ -131,7 +131,7 @@ namespace tkEngine{
 		 *@brief	クォータニオンから回転行列を作成。
 		 *@param[in]	q		クォータニオン
 		 */
-		void MakeRotationFromQuaternion( const CQuaternion& q )
+		void MakeRotationFromQuaternion(const CQuaternion& q)
 		{
 			DirectX::XMStoreFloat4x4(
 				&mat,
@@ -143,7 +143,7 @@ namespace tkEngine{
 		*@param[in]	axis	回転軸。
 		*@param[in]	angle	回転角度
 		*/
-		void MakeRotationAxis(const CVector3& axis, float angle )
+		void MakeRotationAxis(const CVector3& axis, float angle)
 		{
 			DirectX::XMStoreFloat4x4(
 				&mat,
@@ -173,7 +173,7 @@ namespace tkEngine{
 			float aspect,
 			float fNear,
 			float fFar
-			)
+		)
 		{
 			DirectX::XMStoreFloat4x4(
 				&mat,
@@ -187,7 +187,7 @@ namespace tkEngine{
 		*@param[in]	fNear		近平面。
 		*@param[in]	fFar		遠平面。
 		*/
-		void MakeOrthoProjectionMatrix( float w, float h, float fNear, float fFar )
+		void MakeOrthoProjectionMatrix(float w, float h, float fNear, float fFar)
 		{
 			DirectX::XMStoreFloat4x4(
 				&mat,
@@ -200,7 +200,7 @@ namespace tkEngine{
 		 *@param[in]	target		注視点。
 		 *@param[in]	up			カメラの上方向。
 		 */
-		void MakeLookAt( const CVector3& position, const CVector3& target, const CVector3& up )
+		void MakeLookAt(const CVector3& position, const CVector3& target, const CVector3& up)
 		{
 			DirectX::XMStoreFloat4x4(
 				&mat,
@@ -212,7 +212,7 @@ namespace tkEngine{
 		 *@details
 		 * *this = m0 * m1
 		 */
-		void Mul( const CMatrix& m0, const CMatrix& m1 )
+		void Mul(const CMatrix& m0, const CMatrix& m1)
 		{
 			DirectX::XMFLOAT4X4 lm;
 			DirectX::XMStoreFloat4x4(
@@ -225,12 +225,16 @@ namespace tkEngine{
 		 *@brief	逆行列を計算。
 		 *@param[in]	m	元になる行列。
 		 */
-		void Inverse( const CMatrix& _m )
+		void Inverse(const CMatrix& _m)
 		{
 			DirectX::XMStoreFloat4x4(
 				&mat,
 				DirectX::XMMatrixInverse(NULL, _m)
 			);
+		}
+		void Inverse()
+		{
+			Inverse(*this);
 		}
 		void Transpose()
 		{

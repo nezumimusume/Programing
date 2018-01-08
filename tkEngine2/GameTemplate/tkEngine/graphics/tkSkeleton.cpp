@@ -4,20 +4,12 @@
 #include "tkEngine/tkEnginePrecompile.h"
 #include "tkEngine/graphics/tkSkeleton.h"
 #include "tkEngine/graphics/tkSkinModelShaderConst.h"
+#include "tkEngine/graphics/animation/tkAnimation.h"
 #include <comdef.h> 
 
 namespace tkEngine {
 	namespace {
-		void UpdateBoneWorldMatrix(CBone& bone, const CMatrix& parentMatrix)
-		{
-			CMatrix mBoneWorld;
-			CMatrix localMatrix = bone.GetLocalMatrix();
-			mBoneWorld.Mul(localMatrix, parentMatrix);
-			bone.SetWorldMatrix(mBoneWorld);
-			for (auto childBone : bone.GetChildren()) {
-				UpdateBoneWorldMatrix(*childBone, mBoneWorld);
-			}
-		}
+		
 	}
 	void CBone::CalcWorldTRS(CVector3& trans, CQuaternion& rot, CVector3& scale)
 	{
@@ -45,6 +37,19 @@ namespace tkEngine {
 	}
 	CSkeleton::~CSkeleton()
 	{
+	}
+	void CSkeleton::UpdateBoneWorldMatrix(CBone& bone, const CMatrix& parentMatrix)
+	{
+		CMatrix mBoneWorld;
+		CMatrix localMatrix = bone.GetLocalMatrix();
+		mBoneWorld.Mul(localMatrix, parentMatrix);
+		if (isnan(mBoneWorld.m[3][0])) {
+			int hoge = 0;
+		}
+		bone.SetWorldMatrix(mBoneWorld);
+		for (auto childBone : bone.GetChildren()) {
+			UpdateBoneWorldMatrix(*childBone, mBoneWorld);
+		}
 	}
 	bool CSkeleton::Load(const wchar_t* filePath)
 	{
@@ -170,6 +175,10 @@ namespace tkEngine {
 			UpdateBoneWorldMatrix(*bone, mWorld);
 		}
 
+		if (m_animation != nullptr) {
+			m_animation->PostProcess();
+		}
+
 		//ボーン行列を計算。
 		int boneNo = 0;
 		for (auto& bonePtr : m_bones) {
@@ -178,6 +187,7 @@ namespace tkEngine {
 			m_boneMatrixs[boneNo] = mBone;
 			boneNo++;
 		}
+		
 	}
 	void CSkeleton::Render(CRenderContext& rc)
 	{

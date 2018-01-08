@@ -5,6 +5,7 @@
 
 
 namespace tkEngine{
+	class CAnimation;
 	/*!
 	*@brief	ボーン。
 	*/
@@ -122,7 +123,9 @@ namespace tkEngine{
 		*@param[out]	scale		拡大率の格納先。
 		*/
 		void CalcWorldTRS(CVector3& trans, CQuaternion& rot, CVector3& scale);
+		
 	private:
+	
 		std::wstring	m_boneName;
 		int				m_parentId = -1;	//!<親のボーン番号。
 		int				m_boneId = -1;		//!<ボーン番号。
@@ -141,6 +144,8 @@ namespace tkEngine{
 	 */
 	class CSkeleton : Noncopyable {
 	public:
+		using OnPostProcessSkeletonUpdate = std::function<void()>;
+
 		CSkeleton();
 		~CSkeleton();
 		
@@ -199,16 +204,33 @@ namespace tkEngine{
 		 *@brief	描画処理から呼ばれる処理。
 		 */
 		void Render(CRenderContext& rc);
+		/*!
+		*@brief	スケルトンの更新が終わった時に呼ばれるコールバック関数を追加。
+		*/
+		void SetAnimation(CAnimation*  anim)
+		{
+			m_animation = anim;
+		}
+		/*!
+		*@brief	ボーンのワールド行列の更新関数。
+		*@details
+		* 通常はユーザーがこの関数を呼び出す必要はありません。
+		*@param[in]	bone		更新するボーン。
+		*@param[in]	parentMatrix	親のボーンのワールド行列。
+		*/
+		static 	void UpdateBoneWorldMatrix(CBone& bone, const CMatrix& parentMatrix);
 	private:
 		/*!
 		*@brief	すべでのボーンの追加が完了したときに呼び出す必要がある処理。
 		*/
 		void OnCompleteAddedAllBones();
 	private:
+
 		static const int BONE_MAX = 512;	//!<ボーンの最大数。
 		typedef std::unique_ptr<CBone>	CBonePtr;
 		std::vector<CBonePtr>	m_bones;	//!<ボーンの配列。
 		std::unique_ptr<CMatrix[]>	m_boneMatrixs;	//!<ボーン行列。
 		CStructuredBuffer			m_boneMatrixSB;	//!<ボーン行列のストラクチャーバッファ。
+		CAnimation*					m_animation = nullptr;	//!<このスケルトンを動かしているアニメーション。
 	};
 }

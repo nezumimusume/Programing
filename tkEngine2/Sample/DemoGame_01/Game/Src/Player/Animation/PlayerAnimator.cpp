@@ -11,6 +11,7 @@
 bool CPlayerJumpAnimCtr::Start()
 {
 	m_animator.PlayAnimation(CPlayerAnimator::enAnimationClip_Jump, 0.2f);
+	//@todo FootIK用のパラメータを設定する。
 	//プレイヤーにジャンプ中であることを通知する。
 	m_player.Jump();
 	m_state = enState_PlayJump;
@@ -81,11 +82,21 @@ bool CPlayerAnimator::Start()
 	m_animClips[enAnimationClip_JumpEnd].Load(L"animData/player/jump_end.tka");
 	m_animClips[enAnimationClip_JumpEnd].SetLoopFlag(false);
 
-	m_animation.Init(m_player->GetPlayerRenderer().GetSkinModelData(), m_animClips, enANimationClip_Num);
+	m_animation.Init(m_player->GetPlayerRenderer().GetSkinModel(), m_animClips, enANimationClip_Num);
 	m_currentAnimClip = enAnimationClip_Idle;
 	m_animation.Play(enAnimationClip_Idle);
 
-	
+	//FootIKのパラメータを作成する。
+	CAnimationFootIK::SFootIKParam footIKParam;
+	footIKParam.footBoneName_0 = L"thief_Bip01_L_Toe0";
+	footIKParam.footBoneName_1 = L"thief_Bip01_R_Toe0";
+	footIKParam.rootBoneName = L"thief_Bip01_Spine";
+	footIKParam.footCapsuleColliderHeight_0 = UnitCM(2.0f);
+	footIKParam.footCapsuleColliderHeight_1 = UnitCM(2.0f);
+	footIKParam.footCapsuleColliderRadius_0 = UnitCM(1.0f);
+	footIKParam.footCapsuleColliderRadius_0 = UnitCM(1.0f);
+	m_animation.EnableFootIK(footIKParam);
+
 	return true;
 }
 void CPlayerAnimator::OnChangeState(CPlayerConst::EnState nextState)
@@ -109,5 +120,4 @@ void CPlayerAnimator::OnChangeState(CPlayerConst::EnState nextState)
 }
 void CPlayerAnimator::Update()
 {	
-	m_animation.Update(GameTime().GetFrameDeltaTime());
 }

@@ -140,6 +140,22 @@ namespace tkEngine{
 		{
 			return m_worldMatrix;
 		}
+		/*!
+		*@brief	スキンモデルデータを取得。
+		*/
+		CSkinModelData* GetSkinModelData() const
+		{
+			return m_skinModelData;
+		}
+		/*!
+		*@brief	アニメーションを設定。
+		*@details
+		* エンジン内部で使用されています。ユーザーは使用しないでください。
+		*/
+		void SetAnimation(CAnimation* animation)
+		{
+			m_animation = animation;
+		}
 	private:
 		/*!
 		 *@brief	ワールド行列の更新。
@@ -153,6 +169,7 @@ namespace tkEngine{
 			CVector4 screenParam;
 			int isShadowReceiver;
 		};
+		CAnimation* m_animation = nullptr;
 		CSkinModelData*	m_skinModelData = nullptr;
 		CMatrix m_worldMatrix = CMatrix::Identity;
 		CConstantBuffer m_cb;			//定数バッファ。

@@ -13,11 +13,15 @@ namespace tkEngine{
 	}
 	CAnimation::~CAnimation()
 	{
+		if (m_skeleton != nullptr) {
+		}
 	}
-	void CAnimation::Init(CSkinModelData& skinModelData, CAnimationClip animClipList[], int numAnimClip)
+	void CAnimation::Init(CSkinModel& skinModel, CAnimationClip animClipList[], int numAnimClip)
 	{
 		TK_ASSERT(animClipList != nullptr, "animClipListがNULLです。");
-		m_skeleton = &skinModelData.GetSkeleton();
+		m_skeleton = &skinModel.GetSkinModelData()->GetSkeleton();
+		m_skeleton->SetAnimation(this);
+		skinModel.SetAnimation(this);
 		for (int i = 0; i < numAnimClip; i++) {
 			m_animationClips.push_back(&animClipList[i]);
 		}
@@ -26,6 +30,7 @@ namespace tkEngine{
 		}
 		
 		Play(0);
+		m_footIK.Init(m_skeleton);
 	}
 	/*!
 	 * @brief	ローカルポーズの更新。
@@ -113,10 +118,13 @@ namespace tkEngine{
 		}
 		m_numAnimationPlayController = numAnimationPlayController;
 	}
-	/*!
-	* @brief	アニメーションを進める。
-	*@param[in]	deltaTime		アニメーションを進める時間(単位：秒)。
-	*/
+	
+	void CAnimation::PostProcess()
+	{
+		//FootIKを実行。
+		m_footIK.Update();
+	}
+	
 	void CAnimation::Update(float deltaTime)
 	{
 		if (m_numAnimationPlayController == 0) {

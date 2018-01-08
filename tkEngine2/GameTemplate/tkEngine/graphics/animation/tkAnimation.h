@@ -6,6 +6,7 @@
 
 #include "tkEngine/graphics/animation/tkAnimationClip.h"
 #include "tkEngine/graphics/animation/tkAnimationPlayController.h"
+#include "tkEngine/graphics/animation/postProcess/tkAnimationFootIK.h"
 
 namespace tkEngine{
 	
@@ -15,20 +16,17 @@ namespace tkEngine{
 	 */
 	class CAnimation {
 	public:
+
 		CAnimation();
 		~CAnimation();
 		/*!
 		 *@brief	初期化。
-		 *@param[in]	skinModelData	スキンモデルデータ、
+		 *@param[in]	skinModel		アニメーションさせるスキンモデル。
 		 *@param[in]	animeClipList	アニメーションクリップの配列。
 		 *@param[in]	numAnimClip		アニメーションクリップの数。
 		 */
-		void Init(CSkinModelData& skinModelData, CAnimationClip animClipList[], int numAnimClip);
-		/*!
-		* @brief	アニメーションを進める。
-		*@param[in]	deltaTime		アニメーションを進める時間(単位：秒)。
-		*/
-		void Update(float deltaTime);
+		void Init(CSkinModel& skinModel, CAnimationClip animClipList[], int numAnimClip);
+		
 		/*!
 		 *@brief	アニメーションの再生。
 		 *@param[in]	clipName			アニメーションクリップの名前。
@@ -42,16 +40,16 @@ namespace tkEngine{
 			}
 			auto it = std::find_if(
 				m_animationClips.begin(),
-				m_animationClips.end(), 
+				m_animationClips.end(),
 				[clipName](auto& clip) {
-					return wcscmp(clip->GetName(), clipName ) == 0;
-				}
+				return wcscmp(clip->GetName(), clipName) == 0;
+			}
 			);
 			if (it == m_animationClips.end()) {
 				TK_WARNING("not found clip");
 				return;
 			}
-			
+
 			PlayCommon(*it, interpolateTime);
 		}
 		/*!
@@ -77,7 +75,7 @@ namespace tkEngine{
 			);
 			if (it == m_animationClips.end()) {
 				//見つからなかった。
-				return ;
+				return;
 			}
 			(*it)->SetLoopFlag(flag);
 		}
@@ -99,6 +97,39 @@ namespace tkEngine{
 			int lastIndex = GetLastAnimationControllerIndex();
 			return m_animationPlayController[lastIndex].GetFreezeBoneTranslate();
 		}
+		/*!
+		*@brief	アニメーションのポスト処理を実行。
+		*@details
+		* CSkeleton::Updateから呼ばれている。ユーザーが呼び出す必要はないので、使用しないでください。
+		*/
+		void PostProcess();
+		/*!
+		*@brief	FootIKを有効にする。
+		*@details
+		* FootIKは足を地面にめり込まないようにする処理です。
+		*@param[in]	param		FootIKのパラメータ。
+		*/
+		void EnableFootIK(CAnimationFootIK::SFootIKParam& param)
+		{
+			m_footIK.Enable(param);
+		}
+		/*!
+		*@brief	FootIKを無効にする。
+		*@details
+		* FootIKは足を地面にめり込まないようにする処理です。
+		*/
+		void DisableFootIK()
+		{
+			m_footIK.Disable();
+		}
+		/*!
+		* @brief	アニメーションを進める。
+		*@details
+		* エンジン内部から呼ばれます。
+		* ユーザーは使用しないでください。
+		*@param[in]	deltaTime		アニメーションを進める時間(単位：秒)。
+		*/
+		void Update(float deltaTime);
 	private:
 		void PlayCommon(CAnimationClip* nextClip, float interpolateTime)
 		{
@@ -130,6 +161,7 @@ namespace tkEngine{
 		void UpdateGlobalPose();
 		
 	private:
+		
 		/*!
 		 *@brief	最終ポーズになるアニメーションのリングバッファ上でのインデックスを取得。
 		 */
@@ -156,5 +188,6 @@ namespace tkEngine{
 		float m_interpolateTime = 0.0f;
 		float m_interpolateTimeEnd = 0.0f;
 		bool m_isInterpolate = false;				//!<補間中？
+		CAnimationFootIK m_footIK;					//!<FootIK。
 	};
 }

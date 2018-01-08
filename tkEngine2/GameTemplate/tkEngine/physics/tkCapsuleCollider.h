@@ -6,6 +6,7 @@
 
 #include "tkEngine/Physics/tkICollider.h"
 
+
 namespace tkEngine{
 	class CCapsuleCollider : public ICollider
 	{
@@ -24,12 +25,24 @@ namespace tkEngine{
 		void Create(float radius, float height)
 		{
 			shape = new btCapsuleShape(radius, height);
+			this->radius = radius;
+			this->height = height;
 		}
-		btCollisionShape* GetBody() override
+		btCollisionShape* GetBody() const override
 		{
 			return shape;
 		}
+		float GetRadius() const
+		{
+			return radius;
+		}
+		float GetHeight() const
+		{
+			return height;
+		}
 	private:
-		btCapsuleShape*		shape;
+		btCapsuleShape*		shape = nullptr;
+		float radius = 0.0f;
+		float height = 0.0f;
 	};
 }

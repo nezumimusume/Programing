@@ -68,6 +68,14 @@ namespace tkEngine{
 			GraphicsEngine().GetShadowMap().Entry(&m_shadowCaster);
 		}
 		m_numInstance = 1;
+		
+		//アニメーションを更新。
+		if (m_animation != nullptr) {
+			m_animation->Update(GameTime().GetFrameDeltaTime());
+		}
+
+		//スケルトン更新。
+		m_skinModelData->GetSkeleton().Update(m_worldMatrix);
 
 	}
 	
@@ -86,6 +94,15 @@ namespace tkEngine{
 		else {
 			TK_WARNING("invalid UpdateInstancingData.");
 		}
+
+		//アニメーションを更新。
+		if (m_animation != nullptr) {
+			m_animation->Update(1.0f / 30.0f);
+		}
+
+		//スケルトン更新。
+		m_skinModelData->GetSkeleton().Update(m_worldMatrix);
+
 	}
 	
 	void CSkinModel::EndUpdateInstancingData()
@@ -112,9 +129,7 @@ namespace tkEngine{
 			renderContext.UpdateSubresource(m_instancingDataSB, m_instancingData.get());
 			renderContext.VSSetShaderResource(enSkinModelSRVReg_InstanceMatrix, m_instancingDataSB.GetSRV());
 		}
-		//スケルトン更新。
-		m_skinModelData->GetSkeleton().Update(m_worldMatrix);
-
+		
 		static DirectX::CommonStates state(GraphicsEngine().GetD3DDevice());
 		//定数バッファを更新。
 		SVSConstantBuffer vsCb;

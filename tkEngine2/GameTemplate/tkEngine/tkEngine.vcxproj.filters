@@ -81,6 +81,9 @@
     <Filter Include="Source Files\graphics\font">
       <UniqueIdentifier>{c0cb2d6c-1afb-4850-8b84-ce9bd2d27599}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphics\animation\postProcess">
+      <UniqueIdentifier>{0b0bc95d-56d3-4a0e-83aa-7510bcf95f35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameObject\tkGameObjectManager.h">
@@ -344,6 +347,9 @@
     <ClInclude Include="physics\tkPhysicsStaticObject.h">
       <Filter>Source Files\physics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\GameTemplate\tkEngine\graphics\animation\postProcess\tkAnimationFootIK.h">
+      <Filter>Source Files\graphics\animation\postProcess</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -549,6 +555,9 @@
     </ClCompile>
     <ClCompile Include="physics\tkPhysicsStaticObject.cpp">
       <Filter>Source Files\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\GameTemplate\tkEngine\graphics\animation\postProcess\tkAnimationFootIK.cpp">
+      <Filter>Source Files\graphics\animation\postProcess</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

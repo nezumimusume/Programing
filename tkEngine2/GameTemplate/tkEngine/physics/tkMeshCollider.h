@@ -22,7 +22,7 @@ namespace tkEngine{
 		 *@param[in]	model		スキンモデル。
 		 */
 		void CreateFromSkinModel( const CSkinModel& model, const CMatrix* offsetMatrix );
-		btCollisionShape* GetBody() override
+		btCollisionShape* GetBody() const override
 		{
 			return m_meshShape.get();
 		}

@@ -3,12 +3,14 @@
  */
 
 #pragma once
+
+class btCollisionShape;
 namespace tkEngine{
 	/*!
 	 * @brief	コライダーのインターフェースクラス。
 	 */
 	class ICollider {
 	public:
-		virtual btCollisionShape* GetBody() = 0;
+		virtual btCollisionShape* GetBody() const = 0;
 	};
 }

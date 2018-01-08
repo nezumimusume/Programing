@@ -22,7 +22,7 @@ namespace tkEngine{
 		 * @brief	球体コライダーを作成。
 		 */
 		void Create( const float radius );
-		btCollisionShape* GetBody() override
+		btCollisionShape* GetBody() const override
 		{
 			return shape;
 		}
