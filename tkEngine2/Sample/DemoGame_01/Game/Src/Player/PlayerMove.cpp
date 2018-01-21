@@ -29,18 +29,6 @@ void CPlayerMove::OnChangeState(CPlayerConst::EnState nextState)
 }
 void CPlayerMove::Update()
 {
-	float lx = Pad(0).GetLStickXF();
-	float ly = Pad(0).GetLStickYF();
-	CVector3 pos = m_player->GetPosition();// m_charaCon.Execute(GameTime().GetFrameDeltaTime(), m_moveSpeed);
-	pos.x += lx;
-	if (GetAsyncKeyState(VK_SHIFT)) {
-		pos.y += ly;
-	}
-	else {
-		pos.z += ly;
-	}
-	m_player->SetPosition(pos);
-	return;/*
 	//XZ平面での移動は打ち消す。
 	m_moveSpeed.x = 0.0f;
 	m_moveSpeed.z = 0.0f;
@@ -87,6 +75,6 @@ void CPlayerMove::Update()
 	m_player->SetPosition(pos);
 	
 	//外部から加算されている力をクリアする。
-	m_addMoveSpeed = CVector3::Zero;*/
+	m_addMoveSpeed = CVector3::Zero;
 	
 }
