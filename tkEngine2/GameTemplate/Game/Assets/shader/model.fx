@@ -310,9 +310,38 @@ PSInput_RenderToDepth VSMainSkin_RenderDepth(VSInputNmTxWeights In)
 //--------------------------------------------------------------------------------------
 float4 PSMain( PSInput In ) : SV_Target0
 {
-#if 0
+#if 1
 	//アルベド。
 	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
+	float2 screenUV = In.posInProj.xy / In.posInProj.w;
+	screenUV = screenUV * float2(0.5f, -0.5f) + 0.5f;	//0.0～1.0に変更。
+	float depth = depthTexture.Sample(Sampler, screenUV).x;
+	//近傍9テクセルの深度の平均をとる。
+	float2 texSize;
+	float level;
+	depthTexture.GetDimensions(0, texSize.x, texSize.y, level);
+	float2 uvOffset = float2(1.5f / texSize.x, 1.5f / texSize.y);
+	
+	float depthTmp = depth;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(-uvOffset.x, -uvOffset.y)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(       0.0f, -uvOffset.y)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2( uvOffset.x, -uvOffset.y)).x;
+
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(-uvOffset.x, 0.0f)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2( uvOffset.x, 0.0f)).x;
+
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(-uvOffset.x, uvOffset.y)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(       0.0f, uvOffset.y)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2( uvOffset.x, uvOffset.y)).x;
+
+	depthTmp /= 9;
+
+	if (abs(depthTmp - depth) > 0.005f) {
+		return float4(0.0f, 0.0f, 0.0f, 1.0f);
+	}
+	
+	return albedo;
+
 	float4 color = albedo * float4(ambientLight, 1.0f);
 	float2 uv = In.posInProj.xy / In.posInProj.w;
 	uv = (uv * float2(0.5f, -0.5f)) + 0.5f;

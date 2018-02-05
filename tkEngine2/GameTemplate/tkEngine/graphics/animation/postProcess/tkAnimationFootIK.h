@@ -68,7 +68,14 @@ namespace tkEngine{
 			m_isEnable = false;
 		}
 	private:
+		/*!
+		 *@brief	CCD-IK法を使ったFootIKを実行。
+		 */
 		void SolverCCD_IK(const SFoot& foot, CVector3 targetPosition);
+		/*!
+		 *@brief	PIK法を使ったFootIKを実行。
+		 */
+		void SolverPIK(const SFoot& foot, CVector3 targetPosition);
 		bool CalcIKTargetPosition(const SFoot& foot, CVector3& targetPosition);
 	private:
 		int				m_rootBoneId = -1;	//!<ルートのボーンID

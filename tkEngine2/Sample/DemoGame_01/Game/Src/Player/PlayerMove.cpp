@@ -29,18 +29,6 @@ void CPlayerMove::OnChangeState(CPlayerConst::EnState nextState)
 }
 void CPlayerMove::Update()
 {
-	float lx = Pad(0).GetLStickXF();
-	float ly = Pad(0).GetLStickYF();
-	CVector3 pos = m_player->GetPosition();// m_charaCon.Execute(GameTime().GetFrameDeltaTime(), m_moveSpeed);
-	pos.x += lx;
-	if (GetAsyncKeyState(VK_SHIFT)) {
-		pos.y += ly;
-	}
-	else {
-		pos.z += ly;
-	}
-	m_player->SetPosition(pos);
-	return;/*
 	//XZ平面での移動は打ち消す。
 	m_moveSpeed.x = 0.0f;
 	m_moveSpeed.z = 0.0f;
@@ -72,21 +60,25 @@ void CPlayerMove::Update()
 	//まずはXZ平面での移動速度。
 	CVector3 moveSpeed;
 	moveSpeed = forward + right;
+#if 0 //@todo for footIKTest
 	if (m_player->IsApplyGravity()) {
 		//続いてY方向。
 		float addYSpeed = -980.0f * GameTime().GetFrameDeltaTime();	//重力による速度増加を計算。
 		moveSpeed.y = m_moveSpeed.y + addYSpeed;
 	}
-	
+#endif
 	//計算終わり。
 	m_moveSpeed = moveSpeed + m_addMoveSpeed;
 	
-
+#if 0 //@todo for footIKTest
 	//計算された移動速度を使って移動させる。
 	CVector3 pos = m_charaCon.Execute(GameTime().GetFrameDeltaTime(), m_moveSpeed);
+#else
+	CVector3 pos = m_player->GetPosition();
+	pos += m_moveSpeed * GameTime().GetFrameDeltaTime();
+#endif
 	m_player->SetPosition(pos);
 	
 	//外部から加算されている力をクリアする。
-	m_addMoveSpeed = CVector3::Zero;*/
-	
+	m_addMoveSpeed = CVector3::Zero;	
 }

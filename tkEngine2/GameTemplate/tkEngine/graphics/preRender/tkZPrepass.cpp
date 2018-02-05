@@ -39,6 +39,7 @@ namespace tkEngine{
 	void CZPrepass::Render(CRenderContext& rc) 
 	{
 		BeginGPUEvent(L"enRenderStep_ZPrepass");
+		rc.PSUnsetShaderResource(8);
 		rc.SetRenderStep(enRenderStep_ZPrepass);
 		//現在のレンダリングターゲットをバックアップする。
 		CRenderTarget* oldRenderTargets[MRT_MAX];
@@ -61,5 +62,7 @@ namespace tkEngine{
 		EndGPUEvent();
 		//MSAAリゾルブ。
 		m_depthBuffer.ResovleMSAATexture(rc);
+
+		rc.PSSetShaderResource(8, m_depthBuffer.GetRenderTargetSRV());
 	}
 }

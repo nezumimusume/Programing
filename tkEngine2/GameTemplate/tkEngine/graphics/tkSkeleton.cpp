@@ -43,9 +43,7 @@ namespace tkEngine {
 		CMatrix mBoneWorld;
 		CMatrix localMatrix = bone.GetLocalMatrix();
 		mBoneWorld.Mul(localMatrix, parentMatrix);
-		if (isnan(mBoneWorld.m[3][0])) {
-			int hoge = 0;
-		}
+	
 		bone.SetWorldMatrix(mBoneWorld);
 		for (auto childBone : bone.GetChildren()) {
 			UpdateBoneWorldMatrix(*childBone, mBoneWorld);

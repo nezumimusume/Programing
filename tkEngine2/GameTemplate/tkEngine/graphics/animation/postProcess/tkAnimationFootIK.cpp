@@ -137,7 +137,7 @@ namespace tkEngine{
 				rotateAxis.Normalize();
 
 				//適正位置に合わせるための回転行列を求める。
-				float angle = acos(toEffectorPos.Dot(toTargetPos));
+				float angle = acos(min(1.0f, toEffectorPos.Dot(toTargetPos)));
 				CQuaternion qRot;
 				qRot.SetRotation(rotateAxis, angle);
 				CMatrix mAddRot;
@@ -146,7 +146,7 @@ namespace tkEngine{
 				m.m[3][0] = 0.0f;
 				m.m[3][1] = 0.0f;
 				m.m[3][2] = 0.0f;
-				//追加回転を加える。
+				//追加の回転を加える。
 				m.Mul(m, mAddRot);
 				m.m[3][0] = currentBonePos.x;
 				m.m[3][1] = currentBonePos.y;
@@ -167,6 +167,11 @@ namespace tkEngine{
 			CSkeleton::UpdateBoneWorldMatrix(*currentBone, m_skeleton->GetBone(m_rootBoneId)->GetWorldMatrix());
 		}
 	}
+	void CAnimationFootIK::SolverPIK(const SFoot& foot, CVector3 targetPosition)
+	{
+		//関節にパーティクルを置いていく。
+		
+	}
 	void CAnimationFootIK::Update()
 	{
 		if (m_isEnable == false) {
@@ -180,9 +185,13 @@ namespace tkEngine{
 				//目標座標が求まらなかった。
 				continue;
 			}
-
+#if 0
 			//CCD-IK法を使用してIK
 			SolverCCD_IK(foot, targetPosition);
+#else
+			//PIKを使用してIK
+			SolverPIK(foot, targetPosition);
+#endif
 		}
 	}
 }
