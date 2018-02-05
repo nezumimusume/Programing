@@ -347,7 +347,7 @@
     <ClInclude Include="physics\tkPhysicsStaticObject.h">
       <Filter>Source Files\physics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\GameTemplate\tkEngine\graphics\animation\postProcess\tkAnimationFootIK.h">
+    <ClInclude Include="graphics\animation\postProcess\tkAnimationFootIK.h">
       <Filter>Source Files\graphics\animation\postProcess</Filter>
     </ClInclude>
   </ItemGroup>
@@ -556,7 +556,7 @@
     <ClCompile Include="physics\tkPhysicsStaticObject.cpp">
       <Filter>Source Files\physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\GameTemplate\tkEngine\graphics\animation\postProcess\tkAnimationFootIK.cpp">
+    <ClCompile Include="graphics\animation\postProcess\tkAnimationFootIK.cpp">
       <Filter>Source Files\graphics\animation\postProcess</Filter>
     </ClCompile>
   </ItemGroup>
