@@ -87,7 +87,7 @@ bool CPlayerAnimator::Start()
 	m_animation.Play(enAnimationClip_Idle);
 
 	//FootIKのパラメータを作成する。
-	CAnimationFootIK::SFootIKParam footIKParam;
+	/*CAnimationFootIK::SFootIKParam footIKParam;
 	footIKParam.footBoneName_0 = L"thief_Bip01_L_Toe0";
 	footIKParam.footBoneName_1 = L"thief_Bip01_R_Toe0";
 	footIKParam.rootBoneName = L"thief_Bip01_Spine";
@@ -95,7 +95,7 @@ bool CPlayerAnimator::Start()
 	footIKParam.footCapsuleColliderHeight_1 = UnitCM(2.0f);
 	footIKParam.footCapsuleColliderRadius_0 = UnitCM(1.0f);
 	footIKParam.footCapsuleColliderRadius_0 = UnitCM(1.0f);
-	m_animation.EnableFootIK(footIKParam);
+	m_animation.EnableFootIK(footIKParam);*/
 
 	return true;
 }

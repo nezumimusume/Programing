@@ -38,6 +38,7 @@ namespace tkEngine{
 			m_currentKeyFrameNo = 0;
 			m_time = 0.0f;
 			m_isPlaying = true;
+			m_freezeBoneTranslate = CVector3::Zero;
 		}
 		void SetInterpolateTime(float interpolateTime)
 		{

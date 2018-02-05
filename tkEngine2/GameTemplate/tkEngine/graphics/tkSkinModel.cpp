@@ -69,10 +69,7 @@ namespace tkEngine{
 		}
 		m_numInstance = 1;
 		
-		//アニメーションを更新。
-		if (m_animation != nullptr) {
-			m_animation->Update(GameTime().GetFrameDeltaTime());
-		}
+		
 
 		//スケルトン更新。
 		m_skinModelData->GetSkeleton().Update(m_worldMatrix);
@@ -93,11 +90,6 @@ namespace tkEngine{
 		}
 		else {
 			TK_WARNING("invalid UpdateInstancingData.");
-		}
-
-		//アニメーションを更新。
-		if (m_animation != nullptr) {
-			m_animation->Update(1.0f / 30.0f);
 		}
 
 		//スケルトン更新。
@@ -173,6 +165,12 @@ namespace tkEngine{
 				nullptr,
 				m_numInstance > 1 ? m_numInstance : 1
 			);
+		}
+
+		//アニメーションを更新。
+		if (renderContext.GetRenderStep() == enRenderStep_Render3DModelToScene 
+			&& m_animation != nullptr) {
+			m_animation->Update(GameTime().GetFrameDeltaTime());
 		}
 	}
 }
