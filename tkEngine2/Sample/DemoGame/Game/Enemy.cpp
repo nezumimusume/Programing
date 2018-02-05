@@ -23,10 +23,10 @@ bool Enemy::Start()
 	m_animClip[enAnimationClip_run].Load(L"animData/enemy/run.tka");
 	m_animClip[enAnimationClip_run].SetLoopFlag(true);
 
-	m_animation.Init(m_skinModelData, m_animClip, enAnimationClip_num);
+	m_animation.Init(m_skinModel, m_animClip, enAnimationClip_num);
 	m_animation.Play(enAnimationClip_idle);
 
-	m_charaCon.Init(20.0f, 100.0f, -1800.0f, m_position);
+	m_charaCon.Init(20.0f, 100.0f, m_position);
 	m_player = FindGO<Player>("Player");
 	m_game = FindGO<Game>("Game");
 	return true;
@@ -59,11 +59,10 @@ void Enemy::Update()
 		SearchPlayer();
 		m_pathMoveLoop.Update();
 	}
-	m_animation.Update(GameTime().GetFrameDeltaTime());
 	const CVector3 scale = { 3.0f, 3.0f, 3.0f };
 	m_skinModel.Update(m_position, m_rotation, scale);
 	const CMatrix& mWorld = m_skinModel.GetWorldMatrix();
-	
+
 	CMatrix mRot;
 	mRot.MakeRotationFromQuaternion(m_rotation);
 	m_forward.x = mRot.m[2][0];

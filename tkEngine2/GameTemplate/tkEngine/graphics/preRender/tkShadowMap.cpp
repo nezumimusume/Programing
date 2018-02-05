@@ -22,8 +22,14 @@ namespace tkEngine{
 		Release();
 		m_lightHeight = config.lightHeight;
 		m_isEnable = config.isEnable;
-		m_far = config.farPlane;
-		m_near = config.nearPlane;
+		m_far = m_lightHeight * 10.0f;
+		m_near = m_lightHeight * 0.2f;
+		if (config.farPlane > 0.0f) {
+			m_far = config.farPlane;
+		}
+		if (config.nearPlane > 0.0f) {
+			m_near = config.nearPlane;
+		}
 		m_softShadowLevel = config.softShadowLevel;
 
 		m_shadowCbEntity.depthOffset[0] = config.depthOffset[0];
@@ -32,7 +38,7 @@ namespace tkEngine{
 		if (m_isEnable == false) {
 			return true;
 		}
-		int wh[NUM_SHADOW_MAP][2] = {
+		int wh[][2] = {
 			{ config.shadowMapWidth, config.shadowMapHeight},
 			{ config.shadowMapWidth >> 1, config.shadowMapHeight >> 1},
 			{ config.shadowMapWidth >> 1, config.shadowMapHeight >> 1},
@@ -85,8 +91,8 @@ namespace tkEngine{
 			//ほぼ真上をむいている。
 			return;
 		}
-		cameraDirXZ.y = 0.0f;
-		cameraDirXZ.Normalize();
+		/*cameraDirXZ.y = 0.0f;
+		cameraDirXZ.Normalize();*/
 		//ライトビュー行列の回転成分をを計算する。
 		CVector3 lightViewForward = m_lightDirection;
 		CVector3 lightViewUp;
@@ -119,10 +125,10 @@ namespace tkEngine{
 		lightViewRot.m[2][2] = lightViewForward.z;
 		lightViewRot.m[2][3] = 0.0f;
 
-		float shadowAreaTbl[NUM_SHADOW_MAP] = {
-			UnitM(2.0f),
-			UnitM(4.0f),
-			UnitM(4.0f)
+		float shadowAreaTbl[] = {
+			m_lightHeight * 0.4f,
+			m_lightHeight * 0.8f,
+			m_lightHeight * 0.8f
 		};
 
 		//ライトビューのターゲットを計算。
@@ -140,25 +146,21 @@ namespace tkEngine{
 		//視推台を分割するようにライトビュープロジェクション行列を計算する。
 		for (int i = 0; i < NUM_SHADOW_MAP; i++) {
 			farPlaneZ = nearPlaneZ + shadowAreaTbl[i];
-			CMatrix mLightView;
-			mLightView = lightViewRot;
-			mLightView.m[3][0] = lightPos.x;
-			mLightView.m[3][1] = lightPos.y;
-			mLightView.m[3][2] = lightPos.z;
-			mLightView.m[3][3] = 1.0f;
-			mLightView.Inverse(mLightView);	//ライトビュー完成。
-											//続いてプロジェクション行列。
-			float halfViewAngle = MainCamera().GetViewAngle() ;
+			CMatrix mLightView = CMatrix::Identity;
+			float halfViewAngle = MainCamera().GetViewAngle() * 0.5f;
 			//視推台の8頂点をライト空間に変換してAABBを求めて、正射影の幅と高さを求める。
 			float w, h;
+			float fFar, fNear;
 			CVector3 v[8];
 			{
 				float t = tan(halfViewAngle);
 				CVector3 toUpperNear, toUpperFar;
 				toUpperNear = cameraUp * t * nearPlaneZ;
 				toUpperFar = cameraUp * t * farPlaneZ;
+				t *= MainCamera().GetAspect();
 				//近平面の中央座標を計算。
 				CVector3 vWk = MainCamera().GetPosition() + cameraDirXZ * nearPlaneZ;
+				lightPos = vWk;
 				v[0] = vWk + MainCamera().GetRight() * t * nearPlaneZ + toUpperNear;
 				v[1] = v[0] - toUpperNear * 2.0f;
 
@@ -167,29 +169,40 @@ namespace tkEngine{
 
 				//遠平面の中央座標を計算。
 				vWk = MainCamera().GetPosition() + cameraDirXZ * farPlaneZ;
+				lightPos += vWk;
 				v[4] = vWk + MainCamera().GetRight() * t * farPlaneZ + toUpperFar;
 				v[5] = v[4] - toUpperFar * 2.0f;
 				v[6] = vWk + MainCamera().GetRight() * -t * farPlaneZ + toUpperFar;
 				v[7] = v[6] - toUpperFar * 2.0f;
 
+				//ライト行列を作成。
+				lightPos *= 0.5f;
+				lightPos += m_lightDirection * -m_lightHeight;
+				
+				mLightView = lightViewRot;
+				mLightView.m[3][0] = lightPos.x;
+				mLightView.m[3][1] = lightPos.y;
+				mLightView.m[3][2] = lightPos.z;
+				mLightView.m[3][3] = 1.0f;
+				mLightView.Inverse(mLightView);	//ライトビュー完成。
 				//視推台を構成する8頂点が計算できたので、ライト空間に座標変換して、AABBを求める。
-				float fMax[2] = { -FLT_MAX, -FLT_MAX };
-				float fMin[2] = { FLT_MAX, FLT_MAX };
+				CVector3 vMax = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
+				CVector3 vMin = { FLT_MAX, FLT_MAX, FLT_MAX };
 				for (auto& vInLight : v) {
 					mLightView.Mul(vInLight);
-					fMax[0] = max(fMax[0], vInLight.x);
-					fMax[1] = max(fMax[1], vInLight.y);
-					fMin[0] = min(fMin[0], vInLight.x);
-					fMin[1] = min(fMin[1], vInLight.y);
-			}
+					vMax.Max(vInLight);
+					vMin.Min(vInLight);
+					
+				}
 #if 1
-				w = fMax[0] - fMin[0];
-				h = fMax[1] - fMin[1];
+				w = max(fabsf(vMax.x), fabsf(vMin.x)) * 2.0f;
+				h = max(fabsf(vMax.y), fabsf(vMin.y)) * 2.0f;
+				
 #else
 				w = fMax[1] - fMin[1];
 				h = fMax[0] - fMin[0];
 #endif
-		}
+			}
 			CMatrix proj;
 			proj.MakeOrthoProjectionMatrix(
 				w * 1.2f,	//ちょい太らせる。
@@ -200,11 +213,6 @@ namespace tkEngine{
 			m_LVPMatrix[i].Mul(mLightView, proj);
 			m_shadowCbEntity.mLVP[i] = m_LVPMatrix[i];
 			
-			lightPos += cameraDirXZ * shadowAreaTbl[i] * 0.5f;
-		
-			if (i < NUM_SHADOW_MAP - 1) {
-				lightPos += cameraDirXZ * shadowAreaTbl[i + 1] * 0.5f;
-			}
 			nearPlaneZ = farPlaneZ;
 		}
 	}

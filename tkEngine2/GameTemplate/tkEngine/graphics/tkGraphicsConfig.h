@@ -24,8 +24,8 @@ namespace tkEngine{
 			shadowMapWidth = 512;
 			shadowMapHeight = 512;
 			softShadowLevel = EnSoftShadowQualityLevel::enNone;
-			nearPlane = UnitM(10.0f);
-			farPlane = UnitM(100.0f);
+			nearPlane = -1.0f;
+			farPlane = -1.0f;
 			lightHeight = UnitM(20.0f);
 			depthOffset[0] = 0.0002f;
 			depthOffset[1] = 0.0002f;
@@ -35,8 +35,8 @@ namespace tkEngine{
 		bool 	isEnable;						//!<影を落とす処理が有効かどうかのフラグ。
 		int		shadowMapWidth;					//!<シャドウマップの幅。
 		int		shadowMapHeight;				//!<シャドウマップの高さ。
-		float	nearPlane;						//!<近平面までの距離。				
-		float	farPlane;						//!<遠平面までの距離。
+		float	nearPlane;						//!<近平面までの距離。(設定を行わなければ自動計算されます。)				
+		float	farPlane;						//!<遠平面までの距離。(設定を行わなければ自動計算されます。)				
 		float	lightHeight;					//!<ライトの高さ。
 		float	depthOffset[NUM_SHADOW_MAP];	//!<シャドウオフセット。この値を大きくすると、影が落ちにくくなる。
 		float	offsetTexelWorld;				//!<ブラーの時にフェッチするオフセット座標。ワールド空間の量。値が大きいほど大きくボケる。

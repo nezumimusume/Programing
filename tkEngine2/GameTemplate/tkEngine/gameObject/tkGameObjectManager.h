@@ -204,6 +204,19 @@ namespace tkEngine{
 		return GameObjectManager().NewGameObject<T>( (GameObjectPrio)priority, objectName, ctorArgs...);
 	}
 	/*!
+	*@brief	ゲームオブジェクト生成のヘルパー関数。
+	*@details
+	* 削除候補。
+	*@param[in]	priority	プライオリティ。
+	*@param[in]	objectName	オブジェクト名。(NULLの指定可）
+	*@param[in]	ctorArgs	コンストラクタに渡す可変長引数。
+	*/
+	template<class T>
+	static inline T* NewGO(int priority)
+	{
+		return GameObjectManager().NewGameObject<T>((GameObjectPrio)priority, nullptr);
+	}
+	/*!
 	 *@brief	ゲームオブジェクト削除のヘルパー関数。
 	 * NewGOを使用して作成したオブジェクトは必ずDeleteGOを実行するように。
 	 *@param[in]	go		削除するゲームオブジェクト。

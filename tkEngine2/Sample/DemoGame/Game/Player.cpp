@@ -61,13 +61,13 @@ bool Player::Start()
 	m_animClip[enAnimationClip_jump].SetLoopFlag(false);
 	m_animClip[enAnimationClip_KneelDown].SetLoopFlag(false);
 	m_animClip[enAnimationClip_Clear].SetLoopFlag(false);
-	m_animation.Init(m_skinModelData, m_animClip, enAnimationClip_num);
+	m_animation.Init(m_skinModel, m_animClip, enAnimationClip_num);
 	m_animation.Play(enAnimationClip_idle);
 	m_charaLight = NewGO<prefab::CDirectionLight>(0);
 	m_charaLight->SetDirection({ 1.0f, 0.0f, 0.0f });
 	m_charaLight->SetLightingMaterialIDGroup(1 << enMaterialID_Chara);
 	m_charaLight->SetColor({ 10.0f, 10.0f, 10.0f, 1.0f });
-	m_charaCon.Init(20.0f, 68.0f, -1800.0f, m_position);
+	m_charaCon.Init(20.0f, 68.0f, m_position);
 	m_game = FindGO<Game>("Game");
 	return true;
 }
@@ -191,6 +191,7 @@ void Player::Move()
 	//加速度を加える。
 	m_moveSpeed += accForwardXZ;
 	m_moveSpeed += accRightXZ;
+	m_moveSpeed.y += -1800.0f * GameTime().GetFrameDeltaTime();
 	if (m_state == enState_Jump) {
 		//移動速度に制限を加える。
 		//ジャンプ中にジャンプ前より早くなることはない。
@@ -256,7 +257,6 @@ void Player::Update()
 	CQuaternion q = m_rotation;
 	q.Multiply(qRot);
 	m_skinModel.Update(m_position, q, CVector3::One);
-	m_animation.Update(GameTime().GetFrameDeltaTime());
 
 	CMatrix mRot;
 	mRot.MakeRotationFromQuaternion(m_rotation);

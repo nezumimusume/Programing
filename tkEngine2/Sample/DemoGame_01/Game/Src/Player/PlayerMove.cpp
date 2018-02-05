@@ -60,7 +60,7 @@ void CPlayerMove::Update()
 	//まずはXZ平面での移動速度。
 	CVector3 moveSpeed;
 	moveSpeed = forward + right;
-#if 0 //@todo for footIKTest
+#if 1 //@todo for footIKTest
 	if (m_player->IsApplyGravity()) {
 		//続いてY方向。
 		float addYSpeed = -980.0f * GameTime().GetFrameDeltaTime();	//重力による速度増加を計算。
@@ -70,7 +70,7 @@ void CPlayerMove::Update()
 	//計算終わり。
 	m_moveSpeed = moveSpeed + m_addMoveSpeed;
 	
-#if 0 //@todo for footIKTest
+#if 1 //@todo for footIKTest
 	//計算された移動速度を使って移動させる。
 	CVector3 pos = m_charaCon.Execute(GameTime().GetFrameDeltaTime(), m_moveSpeed);
 #else

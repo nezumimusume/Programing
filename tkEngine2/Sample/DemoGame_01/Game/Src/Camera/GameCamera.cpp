@@ -13,7 +13,7 @@ bool CGameCamera::Start()
 {
 	m_player = FindGO<CPlayer>("Player");
 	m_springCamera.Init(MainCamera(), 500.0f, true, 5.0f);
-	CVector3 toCameraPos = { 0.0f, 20.0f, 115.0f };
+	CVector3 toCameraPos = { 0.0f, 0.0f, 115.0f };
 
 	CVector3 target = m_player->GetPosition();
 	target.y += TARGET_OFFSET_Y;

@@ -195,6 +195,13 @@ namespace tkEngine{
 			return m_right;
 		}
 		/*!
+		 *@brief	アスペクト比を取得。
+		 */
+		float GetAspect() const
+		{
+			return m_aspect;
+		}
+		/*!
 		* @brief	ワールド座標からスクリーン座標を計算する。
 		*@details
 		* 計算されるスクリーン座標は画面の中心を{0,0}、左上を{画面の幅*-0.5,画面の高さ*-0.5}</br>

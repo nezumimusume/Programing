@@ -23,8 +23,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapWidth = 2048;
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapHeight = 2048;
 	initParam.graphicsConfing.shadowRenderConfig.lightHeight = UnitM(5.0f);
-	initParam.graphicsConfing.shadowRenderConfig.nearPlane = UnitM(1.0f);
-	initParam.graphicsConfing.shadowRenderConfig.farPlane = UnitM(40.0f);
 	initParam.graphicsConfing.shadowRenderConfig.depthOffset[0] = 0.001f;
 	initParam.graphicsConfing.shadowRenderConfig.depthOffset[1] = 0.01f;
 	initParam.graphicsConfing.shadowRenderConfig.depthOffset[2] = 0.02f;
@@ -36,9 +34,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	initParam.graphicsConfing.bloomConfig.isEnable = true;
 	//tonemap
 	initParam.graphicsConfing.tonemapConfig.isEnable = true;
-
-	GraphicsEngine().GetShadowMap().SetFar(1000.0f);
-	GraphicsEngine().GetShadowMap().SetNear(50.0f);
 
 	//ÉGÉìÉWÉìÇèâä˙âªÅB
 	if (Engine().Init(initParam) == true) {

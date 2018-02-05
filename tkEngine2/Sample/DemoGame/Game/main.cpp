@@ -26,9 +26,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	initParam.graphicsConfing.shadowRenderConfig.isEnable = true;
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapWidth = 2048;
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapHeight = 2048;
-	initParam.graphicsConfing.shadowRenderConfig.lightHeight = UnitM(50.0f);
-	initParam.graphicsConfing.shadowRenderConfig.nearPlane = UnitM(20.0f);
-	initParam.graphicsConfing.shadowRenderConfig.farPlane = UnitM(500.0f);
+	initParam.graphicsConfing.shadowRenderConfig.lightHeight = UnitM(20.0f);
 	initParam.graphicsConfing.shadowRenderConfig.depthOffset[0] = 0.0001f;
 	initParam.graphicsConfing.shadowRenderConfig.depthOffset[1] = 0.001f;
 	initParam.graphicsConfing.shadowRenderConfig.depthOffset[2] = 0.002f;
@@ -50,7 +48,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		SoundEngine().GetMasteringVoice()->SetVolume(0.1f);
 		//NewGO<Game>(0, "Game");
 		NewGO<Fade>(1, "Fade");
-		NewGO<Title>(0);
+		NewGO<Title>(0, nullptr);
 		//ゲームループを実行。
 		Engine().RunGameLoop();
 	}

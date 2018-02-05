@@ -26,14 +26,14 @@ void Game::InitSceneLight()
 	//ライトを配置。
 	CVector3 dir = { 1.0f, -1.0f, -1.0f };
 	dir.Normalize();
-	m_directionLight = NewGO<prefab::CDirectionLight>(0);
+	m_directionLight = NewGO<prefab::CDirectionLight>(0, nullptr);
 	m_directionLight->SetDirection(dir);
 	m_directionLight->SetColor({30.0f, 30.0f, 30.0f, 1.0f});
 	CSkeleton ligLoc;
 	ligLoc.Load(L"loc/light.tks");
 	for (int i = 1; i < ligLoc.GetNumBones(); i++) {
 		CBone* bone = ligLoc.GetBone(i);
-		prefab::CPointLight* ptLig = NewGO<prefab::CPointLight>(0);
+		prefab::CPointLight* ptLig = NewGO<prefab::CPointLight>(0, nullptr);
 		const CMatrix& mat = bone->GetBindPoseMatrix();
 		CVector3 pos;
 		pos.x = mat.m[3][0];
@@ -74,12 +74,12 @@ bool Game::Start()
 	MainCamera().Update();
 
 	
-	m_background = NewGO<Background>(0);
+	m_background = NewGO<Background>(0, nullptr);
 	m_gameCamera = NewGO<GameCamera>(0, "GameCamera");
 	//シーンライトを初期化。
 	InitSceneLight();
 	//プレイヤーのシルエットを作成。
-	m_playerSilhouette = NewGO<PlayerSilhouette>(0);
+	m_playerSilhouette = NewGO<PlayerSilhouette>(0, nullptr);
 	//プレイヤーを描画。
 	m_player = NewGO<Player>(0, "Player");
 	//敵を配置
@@ -87,7 +87,7 @@ bool Game::Start()
 	enemyLoc.Load(L"loc/enemy.tks");
 	for (int i = 1; i < enemyLoc.GetNumBones(); i++) {
 		CBone* bone = enemyLoc.GetBone(i);
-		Enemy* enemy = NewGO <Enemy>(0);
+		Enemy* enemy = NewGO <Enemy>(0, nullptr);
 		m_enemyList.push_back(enemy);
 		enemy->SetTags(enGameObject_Enemy);
 		const CMatrix& mat = bone->GetBindPoseMatrix();
@@ -105,11 +105,11 @@ bool Game::Start()
 	CSkeleton starLoc;
 	starLoc.Load(L"loc/star.tks");
 	//星のレンダラーを作成。
-	m_starRenderer = NewGO<StarRenderer>(0);
+	m_starRenderer = NewGO<StarRenderer>(0, nullptr);
 	m_starRenderer->Init(starLoc.GetNumBones() - 1);
 	for (int i = 1; i < starLoc.GetNumBones(); i++) {
 		CBone* bone = starLoc.GetBone(i);
-		Star* star = NewGO <Star>(0);
+		Star* star = NewGO <Star>(0, nullptr);
 		star->Init(*m_starRenderer);
 		const CMatrix& mat = bone->GetBindPoseMatrix();
 		CVector3 pos;
@@ -121,7 +121,7 @@ bool Game::Start()
 	}
 	m_fade = FindGO<Fade>("Fade");
 	GraphicsEngine().GetShadowMap().SetLightDirection(m_directionLight->GetDirection());
-	m_bgmSource = NewGO<prefab::CSoundSource>(0);
+	m_bgmSource = NewGO<prefab::CSoundSource>(0, nullptr);
 	m_bgmSource->Init("sound/normalBGM.wav");
 	
 	
@@ -170,7 +170,7 @@ void Game::NotifyGameOver()
 	m_isGameOver = true;
 	
 	//ゲームオーバー制御を作成。
-	m_gameOverControl = NewGO<GameOverControl>(0);
+	m_gameOverControl = NewGO<GameOverControl>(0, nullptr);
 }
 void Game::NotifyRestart()
 {
@@ -215,7 +215,7 @@ void Game::Update()
 			//全部のコインを取った。
 			m_isGameClear = true;
 			//ゲームクリア制御を作成。
-			m_gameClearControl = NewGO<GameClearControl>(0);
+			m_gameClearControl = NewGO<GameClearControl>(0, nullptr);
 			m_timer = 0.0f;
 		}
 	}break;

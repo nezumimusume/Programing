@@ -68,9 +68,6 @@ namespace tkEngine{
 			GraphicsEngine().GetShadowMap().Entry(&m_shadowCaster);
 		}
 		m_numInstance = 1;
-		
-		
-
 		//スケルトン更新。
 		m_skinModelData->GetSkeleton().Update(m_worldMatrix);
 

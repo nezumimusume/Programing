@@ -10,7 +10,7 @@ namespace tkEngine{
 		m_near(1.1f),
 		m_far(1000.0f),
 		m_viewAngle(CMath::DegToRad(60.0f)),
-		m_aspect(0.0f),
+		m_aspect(1.0f),
 		m_isNeedUpdateProjectionMatrix(true),
 		m_position( CVector3::Zero),
 		m_up( CVector3::Up),
@@ -42,13 +42,13 @@ namespace tkEngine{
 			return;
 		}
 #endif
+		m_aspect = (float)GraphicsEngine().GetFrameBufferWidth() / (float)GraphicsEngine().GetFrameBufferHeight();
 		if(m_isNeedUpdateProjectionMatrix){
 			if (m_updateProjMatrixFunc == enUpdateProjMatrixFunc_Perspective) {
-				float aspect = (float)GraphicsEngine().GetFrameBufferWidth() / (float)GraphicsEngine().GetFrameBufferHeight();
 				//ìßéãïœä∑çsóÒÇåvéZÅB
 				m_projectionMatrix.MakeProjectionMatrix(
 					m_viewAngle,
-					aspect,
+					m_aspect,
 					m_near,
 					m_far
 				);
