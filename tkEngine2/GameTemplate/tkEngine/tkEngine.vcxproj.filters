@@ -84,6 +84,9 @@
     <Filter Include="Source Files\graphics\animation\postProcess">
       <UniqueIdentifier>{0b0bc95d-56d3-4a0e-83aa-7510bcf95f35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\effect">
+      <UniqueIdentifier>{162307ff-f352-4982-aba8-3ed5c31db5bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameObject\tkGameObjectManager.h">

@@ -1,0 +1,55 @@
+﻿  Culling3D.Grid.cpp
+  Culling3D.Layer.cpp
+c:\github\programing\tkengine2\gametemplate\tkengine\effekseerruntime130\src\effekseer\effekseer\culling\Culling3D.h(152): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。 (ソース ファイルをコンパイルしています Effekseer\Culling\Culling3D.Grid.cpp)
+c:\github\programing\tkengine2\gametemplate\tkengine\effekseerruntime130\src\effekseer\effekseer\culling\Culling3D.h(152): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。 (ソース ファイルをコンパイルしています Effekseer\Culling\Culling3D.Layer.cpp)
+  Culling3D.Matrix44.cpp
+  Culling3D.ObjectInternal.cpp
+c:\github\programing\tkengine2\gametemplate\tkengine\effekseerruntime130\src\effekseer\effekseer\culling\Culling3D.h(152): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。 (ソース ファイルをコンパイルしています Effekseer\Culling\Culling3D.ObjectInternal.cpp)
+c:\github\programing\tkengine2\gametemplate\tkengine\effekseerruntime130\src\effekseer\effekseer\culling\Culling3D.ObjectInternal.h(41): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。 (ソース ファイルをコンパイルしています Effekseer\Culling\Culling3D.ObjectInternal.cpp)
+c:\github\programing\tkengine2\gametemplate\tkengine\effekseerruntime130\src\effekseer\effekseer\culling\Culling3D.h(152): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。 (ソース ファイルをコンパイルしています Effekseer\Culling\Culling3D.Matrix44.cpp)
+  Culling3D.ReferenceObject.cpp
+  Culling3D.Vector3DF.cpp
+c:\github\programing\tkengine2\gametemplate\tkengine\effekseerruntime130\src\effekseer\effekseer\culling\Culling3D.h(152): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。 (ソース ファイルをコンパイルしています Effekseer\Culling\Culling3D.ReferenceObject.cpp)
+c:\github\programing\tkengine2\gametemplate\tkengine\effekseerruntime130\src\effekseer\effekseer\culling\Culling3D.h(152): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。 (ソース ファイルをコンパイルしています Effekseer\Culling\Culling3D.Vector3DF.cpp)
+Effekseer\Culling\Culling3D.Vector3DF.cpp(120): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+  Culling3D.WorldInternal.cpp
+  Effekseer.Client.cpp
+c:\github\programing\tkengine2\gametemplate\tkengine\effekseerruntime130\src\effekseer\effekseer\culling\Culling3D.h(152): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。 (ソース ファイルをコンパイルしています Effekseer\Culling\Culling3D.WorldInternal.cpp)
+  Effekseer.Color.cpp
+  Effekseer.CriticalSection.cpp
+  Effekseer.DefaultEffectLoader.cpp
+  Effekseer.DefaultFile.cpp
+  Effekseer.Effect.cpp
+  Effekseer.EffectNode.cpp
+  Effekseer.EffectNodeModel.cpp
+  Effekseer.EffectNodeRibbon.cpp
+  Effekseer.EffectNodeRing.cpp
+  Effekseer.EffectNodeRoot.cpp
+  Effekseer.EffectNodeSprite.cpp
+  Effekseer.EffectNodeTrack.cpp
+  Effekseer.FCurves.cpp
+  Effekseer.Instance.cpp
+  Effekseer.InstanceContainer.cpp
+Effekseer\Effekseer.EffectNodeTrack.cpp(141): warning C4244: '初期化中': 'const float' から 'int32_t' への変換です。データが失われる可能性があります。
+Effekseer\Effekseer.EffectNodeTrack.cpp(142): warning C4244: '初期化中': 'const float' から 'int32_t' への変換です。データが失われる可能性があります。
+Effekseer\Effekseer.EffectNodeTrack.cpp(204): warning C4244: '初期化中': 'float' から 'int32_t' への変換です。データが失われる可能性があります。
+Effekseer\Effekseer.EffectNodeTrack.cpp(205): warning C4244: '初期化中': 'float' から 'int32_t' への変換です。データが失われる可能性があります。
+Effekseer\Effekseer.EffectNodeTrack.cpp(233): warning C4244: '初期化中': 'float' から 'int32_t' への変換です。データが失われる可能性があります。
+Effekseer\Effekseer.EffectNodeTrack.cpp(234): warning C4244: '初期化中': 'float' から 'int32_t' への変換です。データが失われる可能性があります。
+  Effekseer.InstanceGlobal.cpp
+  Effekseer.InstanceGroup.cpp
+Effekseer\Effekseer.Instance.cpp(1373): warning C4244: '引数': 'float' から 'int32_t' への変換です。データが失われる可能性があります。
+Effekseer\Effekseer.Instance.cpp(1374): warning C4244: '引数': 'float' から 'int32_t' への変換です。データが失われる可能性があります。
+Effekseer\Effekseer.Instance.cpp(1375): warning C4244: '引数': 'float' から 'int32_t' への変換です。データが失われる可能性があります。
+Effekseer\Effekseer.Instance.cpp(1376): warning C4244: '引数': 'float' から 'int32_t' への変換です。データが失われる可能性があります。
+  Effekseer.Setting.cpp
+  Effekseer.Manager.cpp
+  Effekseer.Matrix43.cpp
+  Effekseer.Matrix44.cpp
+  Effekseer.RectF.cpp
+  Effekseer.Server.cpp
+  Effekseer.Socket.cpp
+  Effekseer.Thread.cpp
+  Effekseer.Vector2D.cpp
+  Effekseer.Vector3D.cpp
+  Effekseer.vcxproj -> C:\GitHub\Programing\tkEngine2\GameTemplate\tkEngine\EffekseerRuntime130\src\Effekseer\..\lib\x86\Effekseer.Release.lib
