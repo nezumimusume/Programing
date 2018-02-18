@@ -81,6 +81,7 @@ namespace tkEngine{
 		{
 			return m_viewMatrix;
 		}
+		
 		/*!
 		 * @brief	プロジェクション行列を取得。
 		 */

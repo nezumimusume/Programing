@@ -31,6 +31,7 @@ namespace tkEngine{
 		m_width = w;
 		m_height = h;
 		m_textureFormat = colorFormat;
+		m_depthStencliFormat = depthStencilFormat;
 		if (multiSampleDesc.Count > 1) {
 			//MSAA‚ª—LŒøB
 			m_isMSAA = true;

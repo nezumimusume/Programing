@@ -259,6 +259,11 @@ namespace tkEngine{
 			rc.OMSetBlendState(AlphaBlendState::trans, 0, 0xFFFFFFFF);
 		}
 
+		rc.PSUnsetShaderResource(0);
+		rc.PSUnsetShaderResource(1);
+		rc.PSUnsetShaderResource(2);
+		rc.PSUnsetShaderResource(3);
+
 		Engine().GetGraphicsEngine().EndGPUEvent();
 	}
 }

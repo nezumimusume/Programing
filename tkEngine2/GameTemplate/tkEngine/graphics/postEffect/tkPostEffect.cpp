@@ -43,6 +43,8 @@ namespace tkEngine{
 			0,
 			GetFinalRenderTarget().GetRenderTargetTextureFormat()
 		);
+
+
 		m_tonemap.Render(rc, this);
 		m_bloom.Render(rc, this);
 		m_fxaa.Render(rc, this);

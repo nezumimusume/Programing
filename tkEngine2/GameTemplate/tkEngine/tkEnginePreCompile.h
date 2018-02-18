@@ -84,6 +84,9 @@ namespace tkEngine {
 #include "btBulletDynamicsCommon.h"
 #include "BulletCollision\CollisionDispatch\btGhostObject.h"
 
+#include "Effekseer.h"
+#include "EffekseerRendererDX11.h"
+
 #include "DirectXTK/Inc/Model.h"
 #include "DirectXTK/Inc/Effects.h"	
 #include "DirectXTK/Inc/CommonStates.h"

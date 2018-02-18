@@ -202,6 +202,8 @@ namespace tkEngine{
 		DepthStencilState::Init(*this);
 		RasterizerState::Init(*this);
 		
+		//エフェクトエンジンの初期化。
+		m_effectEngine.Init();
 #if BUILD_LEVEL != BUILD_LEVEL_MASTER
 		m_pImmediateContext->QueryInterface(__uuidof(ID3DUserDefinedAnnotation), (void**)&m_userAnnoation);
 #endif

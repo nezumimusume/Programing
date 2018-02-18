@@ -11,6 +11,7 @@
 #include "tkengine/light/tkLightManager.h"
 #include "tkEngine/graphics/postEffect/tkPostEffect.h"
 #include "tkEngine/resource/tkShaderResources.h"
+#include "tkEngine/graphics/effect/tkEffectEngine.h"
 
 namespace tkEngine{
 	
@@ -56,6 +57,13 @@ namespace tkEngine{
 		CZPrepass& GetZPrepass()
 		{
 			return m_preRender.GetZPrepass();
+		}
+		/*!
+		 *@brief	エフェクトエンジンの取得。
+		 */
+		CEffectEngine& GetEffectEngine()
+		{
+			return m_effectEngine;
 		}
 		/*!
 		* @brief	シャドウマップを取得。
@@ -252,6 +260,7 @@ namespace tkEngine{
 		CPostEffect				m_postEffect;								//!<ポストエフェクト。
 		CCamera					m_mainCamera;								//!<メインカメラ。
 		CCamera					m_2dCamera;									//!<2Dカメラ。
+		CEffectEngine			m_effectEngine;								//!<エフェクトエンジン。
 		int						m_frameBufferWidth = 0;						//!<フレームバッファの幅。これが内部解像度。
 		int						m_frameBufferHeight = 0;					//!<フレームバッファの高さ。これが内部解像度。
 		DXGI_SAMPLE_DESC		m_mainRenderTargetMSAADesc;					//!<メインレンダリングターゲットのMSAAの設定。

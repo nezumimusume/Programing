@@ -71,6 +71,13 @@ namespace tkEngine{
 			return m_renderTargetUAV;
 		}
 		/*!
+		*@brief	デプスステンシルの取得。
+		*/
+		ID3D11Texture2D* GetDepthStencil()
+		{
+			return m_depthStencil;
+		}
+		/*!
 		*@brief	デプスステンシルビューの取得。
 		*/
 		ID3D11DepthStencilView* GetDepthStencilView()
@@ -103,9 +110,16 @@ namespace tkEngine{
 		/*!
 		 *@brief	レンダリングターゲットのテクスチャのフォーマットを取得。
 		 */
-		const DXGI_FORMAT& GetRenderTargetTextureFormat() const
+		DXGI_FORMAT GetRenderTargetTextureFormat() const
 		{
 			return m_textureFormat;
+		}
+		/*!
+		 *@brief	デプスステンシルのフォーマットを取得。
+		 */
+		DXGI_FORMAT GetDepthStencilFormat() const
+		{
+			return m_depthStencliFormat;
 		}
 		/*!
 		*@brief	MSAAテクスチャのリゾルブ。
@@ -124,6 +138,7 @@ namespace tkEngine{
 		ID3D11Texture2D*			m_resolveTextureMSAA = nullptr;		//!<MSAAが有効の時にリゾルブされたテクスチャ。
 		bool						m_isMSAA = false;					//!<MSAAが有効？
 		DXGI_FORMAT					m_textureFormat = DXGI_FORMAT_UNKNOWN;	//!<テクスチャのフォーマット。
+		DXGI_FORMAT					m_depthStencliFormat = DXGI_FORMAT_UNKNOWN;	//!<デプスステンシルバッファのフォーマット。
 		int m_width = 0;
 		int m_height = 0;
 	};

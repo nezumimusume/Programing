@@ -41,6 +41,9 @@ namespace tkEngine{
 		UpdateSceneGraph();
 		//ライトを更新。
 		LightManager().Update();
+		//エフェクトを更新。
+		GraphicsEngine().GetEffectEngine().Update();
+
 		//画面をクリア
 		float ClearColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f }; //red,green,blue,alpha
 		CRenderTarget* renderTargets[] = {
@@ -75,7 +78,11 @@ namespace tkEngine{
 			}
 		}
 
+		
 		EndGPUEvent();
+
+		//エフェクトを描画。
+		GraphicsEngine().GetEffectEngine().Render(renderContext);
 
 		//ポストエフェクト。
 		GraphicsEngine().GetPostEffect().Render(renderContext);

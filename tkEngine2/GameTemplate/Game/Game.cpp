@@ -14,14 +14,16 @@ bool Game::Start()
 {
 	//カメラを設定。
 	MainCamera().SetTarget({ 0.0f, 10.0f, 0.0f });
-	MainCamera().SetNear(10.0f);
-	MainCamera().SetFar(30.0f);
-	MainCamera().SetPosition({ 0.0f, 10.0f, 20.0f });
+	MainCamera().SetNear(0.1f);
+	MainCamera().SetFar(100.0f);
+	MainCamera().SetPosition({ 30.0f, 10.0f, 0.0f });
 	MainCamera().Update();
 	
 	//モデルデータをロード。
 	skinModelData.Load(L"modelData/unityChan.cmo");
 	skinModel.Init(skinModelData);
+	LightManager().SetAmbientLight({ 10.0f, 10.0f, 10.0f });
+	//エフェクトを作成
 	
 	return true;
 }
@@ -30,10 +32,17 @@ void Game::Update()
 	static float angle = 0.0f;
 	
 	angle += 0.01f;
-	/*CQuaternion qRot;
-	qRot.SetRotation(CVector3::AxisY, angle);
-	skinModel.Update(CVector3::Zero, qRot, {0.1f, 0.1f, 0.1f});*/
-	skinModel.Update(CVector3::Zero, CQuaternion::Identity, { 0.1f, 0.1f, 0.1f });
+	if (Pad(0).IsTrigger(enButtonA)) {
+		prefab::CEffect* effect = NewGO<prefab::CEffect>(0);
+		effect->Init(L"effect/test.efk");
+		effect->Play();
+		CVector3 emitPos = m_pos;
+		emitPos.y += 10.0f;
+		effect->SetPosition(emitPos);
+	}
+	m_pos.z += Pad(0).GetLStickXF();
+	m_pos.y += Pad(0).GetLStickYF();
+	skinModel.Update(m_pos, CQuaternion::Identity, { 0.1f, 0.1f, 0.1f });
 }
 void Game::Render(CRenderContext& rc)
 {

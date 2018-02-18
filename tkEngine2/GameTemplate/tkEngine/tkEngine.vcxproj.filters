@@ -84,8 +84,8 @@
     <Filter Include="Source Files\graphics\animation\postProcess">
       <UniqueIdentifier>{0b0bc95d-56d3-4a0e-83aa-7510bcf95f35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\effect">
-      <UniqueIdentifier>{162307ff-f352-4982-aba8-3ed5c31db5bc}</UniqueIdentifier>
+    <Filter Include="Source Files\graphics\effect">
+      <UniqueIdentifier>{0b3f229e-73d3-4518-87de-e76fe4388cfc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -353,6 +353,12 @@
     <ClInclude Include="graphics\animation\postProcess\tkAnimationFootIK.h">
       <Filter>Source Files\graphics\animation\postProcess</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\effect\tkEffectEngine.h">
+      <Filter>Source Files\graphics\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\effect\tkEffect.h">
+      <Filter>Source Files\graphics\effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -561,6 +567,12 @@
     </ClCompile>
     <ClCompile Include="graphics\animation\postProcess\tkAnimationFootIK.cpp">
       <Filter>Source Files\graphics\animation\postProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\effect\tkEffectEngine.cpp">
+      <Filter>Source Files\graphics\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\effect\tkEffect.cpp">
+      <Filter>Source Files\graphics\effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
