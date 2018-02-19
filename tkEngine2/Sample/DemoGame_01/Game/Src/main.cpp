@@ -35,7 +35,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//tonemap
 	initParam.graphicsConfing.tonemapConfig.isEnable = true;
 	initParam.graphicsConfing.tonemapConfig.luminance = 0.5f;
-
+	hoge
 	//ƒGƒ“ƒWƒ“‚ğ‰Šú‰»B
 	if (Engine().Init(initParam) == true) {
 		NewGO<Game>(0, nullptr);
