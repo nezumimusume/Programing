@@ -34,6 +34,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	initParam.graphicsConfing.bloomConfig.isEnable = true;
 	//tonemap
 	initParam.graphicsConfing.tonemapConfig.isEnable = true;
+	initParam.graphicsConfing.tonemapConfig.luminance = 0.5f;
 
 	//ƒGƒ“ƒWƒ“‚ğ‰Šú‰»B
 	if (Engine().Init(initParam) == true) {

@@ -88,6 +88,11 @@ namespace tkEngine{
 		/*!
 		*@brief	描画
 		*@param[in] renderContext	レンダリングコンテキスト。
+		*/
+		void Draw(CRenderContext& renderContext);
+		/*!
+		*@brief	描画
+		*@param[in] renderContext	レンダリングコンテキスト。
 		*@param[in]	viewMatrix		ビュー行列。
 		*@param[in]	projMatrix		プロジェクション行列。
 		*/

@@ -29,7 +29,7 @@ bool CGameCamera::Start()
 
 	m_springCamera.SetFar(10000.0f);
 	m_springCamera.SetNear(1.0f);
-	m_springCamera.SetDampingRate(1.3f);
+	m_springCamera.SetDampingRate(1.0f);
 
 
 	return true;
@@ -88,7 +88,7 @@ void CGameCamera::Update()
 		toCameraPos.y = 0.0f;
 		toCameraPos.Normalize();
 		//ちょっとづつ追尾。
-		float weight = 0.7f;	//このウェイトの値は0.0～1.0の値をとる。1.0に近づくほど追尾が強くなる。
+		float weight = 0.5f;	//このウェイトの値は0.0～1.0の値をとる。1.0に近づくほど追尾が強くなる。
 		toCameraPos = toCameraPos * weight + toCameraPosXZ * (1.0f - weight);
 		toCameraPos.Normalize();
 		toCameraPos *= toCameraPosXZLen;

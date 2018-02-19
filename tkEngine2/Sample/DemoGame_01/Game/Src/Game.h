@@ -4,6 +4,7 @@
 #include "Player/Player.h"
 #include "BackGround/BackGround.h"
 
+class Enemy;
 
 class Game : public IGameObject
 {
@@ -18,6 +19,7 @@ private:
 	CPlayer m_player;			//!<プレイヤー
 	CBackGround m_bg;			//!<背景。
 	CGameCamera m_gameCamera;	//!<ゲームカメラ。
+	std::vector<Enemy*> m_enemyList;	//!<敵のリスト。
 	prefab::CDirectionLight* m_directionLig = nullptr;	//!<ディレクションライト。
 };
 

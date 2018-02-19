@@ -126,9 +126,9 @@ namespace tkEngine{
 		lightViewRot.m[2][3] = 0.0f;
 
 		float shadowAreaTbl[] = {
-			m_lightHeight * 0.4f,
-			m_lightHeight * 0.8f,
-			m_lightHeight * 0.8f
+			m_lightHeight * 0.6f,
+			m_lightHeight * 2.4f,
+			m_lightHeight * 6.0f
 		};
 
 		//ライトビューのターゲットを計算。

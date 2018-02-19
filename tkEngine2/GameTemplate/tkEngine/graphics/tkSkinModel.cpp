@@ -102,6 +102,11 @@ namespace tkEngine{
 			GraphicsEngine().GetShadowMap().Entry(&m_shadowCaster);
 		}
 	}
+	
+	void CSkinModel::Draw(CRenderContext& renderContext)
+	{
+		Draw(renderContext, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
+	}
 	void CSkinModel::Draw(
 		CRenderContext& renderContext, 
 		const CMatrix& viewMatrix, 

@@ -41,6 +41,15 @@
     <Filter Include="Player\Animation">
       <UniqueIdentifier>{9155103a-b197-427d-b4ea-c0c26a6b360a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{9223a660-3eca-4a4b-8be6-0f9a3314addf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\animData\Enemy">
+      <UniqueIdentifier>{a5ce3f64-ed1d-4636-8100-e1b6b831bdb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\loc">
+      <UniqueIdentifier>{e50f5d57-4bd3-48a7-823d-64f032f29a5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -80,6 +89,9 @@
     </ClInclude>
     <ClInclude Include="Src\Player\Animation\PlayerAnimator.h">
       <Filter>Player\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Enemy\Enemy.h">
+      <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +174,9 @@
     <MeshContentTask Include="Assets\modelData\background.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\enemy_00.FBX">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\modelData\Thethief_N.tga">
@@ -211,5 +226,19 @@
     <ClCompile Include="Src\Player\Animation\PlayerAnimator.cpp">
       <Filter>Player\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Enemy\Enemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\modelData\enemy_00.tks">
+      <Filter>Assets\modelData</Filter>
+    </None>
+    <None Include="Assets\animData\Enemy\idle.tka">
+      <Filter>Assets\animData\Enemy</Filter>
+    </None>
+    <None Include="Assets\loc\enemyLoc.tks">
+      <Filter>Assets\loc</Filter>
+    </None>
   </ItemGroup>
 </Project>
