@@ -18,13 +18,10 @@ namespace tkEngine{
 			 */
 			void Release();
 			/*!
-			 *@brief	エフェクトをロード。
-			 */
-			void Init(const wchar_t* filePath);
-			/*!
 			 *@brief	エフェクトを再生。
+			 *@param[in]	filePath		再生するエフェクトのファイルパス。
 			 */
-			void Play();
+			void Play(const wchar_t* filePath);
 			/*!
 			 *@brief	座標を設定。
 			 */
@@ -39,6 +36,9 @@ namespace tkEngine{
 			{
 				m_rotation = rot;
 			}
+			/*!
+			 *@brief	エフェクトが再生中か判定。
+			 */
 			bool IsPlay() const
 			{
 				return GraphicsEngine().GetEffectEngine().GetEffekseerManager().GetShown(m_handle);

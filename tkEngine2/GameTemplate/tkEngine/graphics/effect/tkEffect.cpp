@@ -24,14 +24,10 @@ namespace tkEngine {
 			}
 			ES_SAFE_RELEASE(m_effect);
 		}
-		void CEffect::Init(const wchar_t* filePath)
+		
+		void CEffect::Play(const wchar_t* filePath)
 		{
 			m_effect = GraphicsEngine().GetEffectEngine().CreateEffekseerEffect(filePath);
-
-		}
-
-		void CEffect::Play()
-		{
 			m_handle = GraphicsEngine().GetEffectEngine().Play(m_effect);
 		}
 		void CEffect::Update()
