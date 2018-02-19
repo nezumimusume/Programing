@@ -48,6 +48,13 @@ struct PSInput_RenderToDepth{
 	float4 posInProj	: TEXCOORD0;		//正規化座標系での座標。
 };
 
+/*!
+ * @brief	G-Buffer描画用のピクセルシェーダーからの出力。
+ */
+struct PSOutput_RenderGBuffer{
+	float4 normal		: SV_Target0;		//法線。
+	float shadow		: SV_Target1;		//シャドウ。
+};
 
 /*!
  * @brief	ディレクションライト。

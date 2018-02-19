@@ -14,6 +14,9 @@
     <Filter Include="Assets\shader">
       <UniqueIdentifier>{14bb8c81-21ec-4b33-9f1c-cf2cd1640114}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\font">
+      <UniqueIdentifier>{a3ff6228-aa14-4b24-ac2d-2f1c89aec216}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -75,6 +78,18 @@
       <Filter>Assets\shader</Filter>
     </CustomBuild>
     <CustomBuild Include="Assets\shader\sprite.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\font\myfile.spritefont">
+      <Filter>Assets\font</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\dithering.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\blur.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\shadowBlur.fx">
       <Filter>Assets\shader</Filter>
     </CustomBuild>
   </ItemGroup>

@@ -34,7 +34,6 @@ cbuffer CBBlur : register(b0)
 	float4 weight;				//!<重み。
 	float4x4	mtxProj;		// 投影行列
 	float4x4 	mtxProjInv;		// 投影行列の逆行列。
-	float offsetTexelWorld;		// ブラーの時にフェッチするオフセット座標。ワールド空間の量。値が大きいほど大きくボケる。
 };
 /*!
  * @brief	Xブラー頂点シェーダー。
@@ -92,13 +91,13 @@ float4 PSXBlur( PS_BlurInput In ) : SV_Target0
 	//X軸方向に調べる。
 	float2 offset[4];
 	for(int i = 0; i < 4; i++){
-		posInCamera.x += offsetTexelWorld;
+		posInCamera.x += 1.5f;
 		float4 pos = posInCamera;
 		pos = mul(mtxProj, pos);
 		offset[i] = (pos.xy / pos.w) * float2(0.5f, -0.5f) + 0.5f;
 		float4 posInCamera2 = CalcUVToPosInCamera(offset[i]);
 		
-		if(abs(posInCamera.z - posInCamera2.z) < 5.0f){
+		if(abs(posInCamera.z - posInCamera2.z) < 10.0f){
 			offset[i] -= In.uv ;
 		}else{
 			offset[i] = 0.0f;
@@ -121,13 +120,13 @@ float4 PSYBlur( PS_BlurInput In ) : SV_Target0
 	//X軸方向に調べる。
 	float2 offset[4];
 	for(int i = 0; i < 4; i++){
-		posInCamera.y += offsetTexelWorld;
+		posInCamera.y += 1.5f;
 		float4 pos = posInCamera;
 		pos = mul(mtxProj, pos);
 		offset[i] = (pos.xy / pos.w) * float2(0.5f, -0.5f) + 0.5f;
 		float4 posInCamera2 = CalcUVToPosInCamera(offset[i]);
 		
-		if(abs(posInCamera.z - posInCamera2.z) < 5.0f){
+		if(abs(posInCamera.z - posInCamera2.z) < 10.0f){
 			offset[i] -= In.uv ;
 		}else{
 			offset[i] = 0.0f;

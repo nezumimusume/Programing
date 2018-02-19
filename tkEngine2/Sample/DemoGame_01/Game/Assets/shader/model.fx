@@ -111,7 +111,7 @@ float CalcSoftShadow( float3 worldPos )
 			float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
 			float shadow_val = 1.0f;
 			if(shadowMapUV.x < 0.95f && shadowMapUV.y < 0.95f && shadowMapUV.x > 0.05f && shadowMapUV.y > 0.05f){
-				if(i == 0){					
+				if(i == 0){
 					shadow = CalcShadowPercentPCF4x4(shadowMap_0, shadowMapUV, texOffset[i], depth, depthOffset.x);
 				}else if(i == 1){
 					shadow = CalcShadowPercentPCF2x2(shadowMap_1, shadowMapUV, texOffset[i], depth, depthOffset.y);
@@ -313,6 +313,35 @@ float4 PSMain( PSInput In ) : SV_Target0
 #if 0
 	//アルベド。
 	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
+	float2 screenUV = In.posInProj.xy / In.posInProj.w;
+	screenUV = screenUV * float2(0.5f, -0.5f) + 0.5f;	//0.0～1.0に変更。
+	float depth = depthTexture.Sample(Sampler, screenUV).x;
+	//近傍9テクセルの深度の平均をとる。
+	float2 texSize;
+	float level;
+	depthTexture.GetDimensions(0, texSize.x, texSize.y, level);
+	float2 uvOffset = float2(1.5f / texSize.x, 1.5f / texSize.y);
+	
+	float depthTmp = depth;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(-uvOffset.x, -uvOffset.y)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(       0.0f, -uvOffset.y)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2( uvOffset.x, -uvOffset.y)).x;
+
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(-uvOffset.x, 0.0f)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2( uvOffset.x, 0.0f)).x;
+
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(-uvOffset.x, uvOffset.y)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(       0.0f, uvOffset.y)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2( uvOffset.x, uvOffset.y)).x;
+
+	depthTmp /= 9;
+
+	if (abs(depthTmp - depth) > 0.005f) {
+		return float4(0.0f, 0.0f, 0.0f, 1.0f);
+	}
+	
+	return albedo;
+
 	float4 color = albedo * float4(ambientLight, 1.0f);
 	float2 uv = In.posInProj.xy / In.posInProj.w;
 	uv = (uv * float2(0.5f, -0.5f)) + 0.5f;

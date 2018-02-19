@@ -11,11 +11,92 @@
 
 
 /*!
- *@brief	影を計算。
+ *@brief	影が落ちる確率を計算する。
  */
-int CalcShadow( float3 worldPos )
+float CalcShadowPercentPCF4x4(Texture2D<float4> tex, float2 uv, float2 offset, float depth, float dOffset)
 {
-	int shadow = 0;
+	float2 offsetTbl[] = {
+		float2(	 -1.5f * offset.x, -1.5f * offset.y),
+		float2(	 -0.5f * offset.x, -1.5f * offset.y),
+		float2(   0.5f * offset.x, -1.5f * offset.y),
+		float2(	  1.5f * offset.x, -1.5f * offset.y),
+
+		float2(	 -1.5f * offset.x, -0.5f * offset.y),
+		float2(	 -0.5f * offset.x, -0.5f * offset.y),
+		float2(	  0.5f * offset.x, -0.5f * offset.y),
+		float2(	  1.5f * offset.x, -0.5f * offset.y),
+
+		float2(	-1.5f * offset.x, 0.5f * offset.y),
+		float2(	-0.5f * offset.x, 0.5f * offset.y),
+		float2(	 0.5f * offset.x, 0.5f * offset.y),
+		float2(	 1.5f * offset.x, 0.5f * offset.y),
+
+		float2(	-1.5f * offset.x, 1.5f * offset.y),
+		float2(	-0.5f * offset.x, 1.5f * offset.y),
+		float2(	 0.5f * offset.x, 1.5f * offset.y),
+		float2(	 1.5f * offset.x, 1.5f * offset.y),
+		
+	};
+	float weightTbl[] = {
+		1,2,2,1,
+		2,3,3,2,
+		2,3,3,2,
+		1,2,2,1,
+	};
+	float percent = 0.0f;
+	float shadow_val=0.0f;
+	float totalWeight = 0.0f;
+	for (int i = 0; i < 16; i++) {
+		shadow_val = tex.Sample(Sampler, uv + offsetTbl[i]).r;
+		totalWeight += weightTbl[i];
+		if (depth > shadow_val.r + dOffset) {
+			//影が落ちている。
+			percent += 1.0f * weightTbl[i];
+		}
+	}
+	percent /= totalWeight;
+	return percent;
+}
+/*!
+*@brief	影が落ちる確率を計算する。
+*/
+float CalcShadowPercentPCF2x2(Texture2D<float4> tex, float2 uv, float2 offset, float depth, float dOffset)
+{
+	float2 offsetTbl[] = {
+		float2(-0.5f * offset.x, -0.5f * offset.y),
+		float2(0.5f * offset.x, -0.5f * offset.y),
+		float2(-0.5f * offset.x, 0.5f * offset.y),
+		float2(0.5f * offset.x, 0.5f * offset.y),
+
+	};
+
+	float percent = 0.0f;
+	float shadow_val = 0.0f;
+	for (int i = 0; i < 4; i++) {
+		shadow_val = tex.Sample(Sampler, uv + offsetTbl[i]).r;
+		if (depth > shadow_val.r + dOffset) {
+			//影が落ちている。
+			percent += 1.0f;
+		}
+	}
+	percent /= 4.0f;
+	return percent;
+}
+float CalcShadowPercent(Texture2D<float4> tex, float2 uv, float2 offset, float depth, float dOffset)
+{
+	float shadow_val = tex.Sample(Sampler, uv).r;
+	if (depth > shadow_val.r + dOffset) {
+		return 1.0f;
+	}
+	return 0.0f;
+}
+/*!
+ *@brief	ソフト影を計算。
+ *@return 影が落ちる確率が返ります。0.0なら影が落ちない。1.0なら影が落ちる。
+ */
+float CalcSoftShadow( float3 worldPos )
+{
+	float shadow = 0.0f;
 	//ちょっと適当。
 	if(isShadowReceiver){
 		//影を落とす。
@@ -28,19 +109,50 @@ int CalcShadow( float3 worldPos )
 			
 			//uv座標に変換。
 			float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
-			float2 shadow_val = 1.0f;
-			if(shadowMapUV.x < 0.99f && shadowMapUV.y < 0.99f && shadowMapUV.x > 0.01f && shadowMapUV.y > 0.01f){
+			float shadow_val = 1.0f;
+			if(shadowMapUV.x < 0.95f && shadowMapUV.y < 0.95f && shadowMapUV.x > 0.05f && shadowMapUV.y > 0.05f){
 				if(i == 0){
-					shadow_val = shadowMap_0.Sample(Sampler, shadowMapUV ).r;
+					shadow = CalcShadowPercentPCF4x4(shadowMap_0, shadowMapUV, texOffset[i], depth, depthOffset.x);
 				}else if(i == 1){
-					shadow_val = shadowMap_1.Sample(Sampler, shadowMapUV ).r;
+					shadow = CalcShadowPercentPCF2x2(shadowMap_1, shadowMapUV, texOffset[i], depth, depthOffset.y);
 				}else if(i == 2){
-					shadow_val = shadowMap_2.Sample(Sampler, shadowMapUV ).r;
+					shadow = CalcShadowPercent(shadowMap_2, shadowMapUV, texOffset[i], depth, depthOffset.z);
 				}
-				if( depth > shadow_val.r + 0.006f ){
-					shadow = 1;
-					break;
+				break;
+			}
+		}
+	}
+	return shadow;
+}
+/*!
+ *@brief	ソフト影を計算。
+ *@return 影が落ちる確率が返ります。0.0なら影が落ちない。1.0なら影が落ちる。
+ */
+float CalcShadow( float3 worldPos )
+{
+	float shadow = 0.0f;
+	//ちょっと適当。
+	if(isShadowReceiver){
+		//影を落とす。
+		[unroll]
+		for(int i = 0; i < NUM_SHADOW_MAP; i++ ){
+			float4 posInLVP = mul(mLVP[i], float4(worldPos, 1.0f) );
+			posInLVP.xyz /= posInLVP.w;
+			
+			float depth = min(posInLVP.z / posInLVP.w, 1.0f);
+			
+			//uv座標に変換。
+			float2 shadowMapUV = float2(0.5f, -0.5f) * posInLVP.xy  + float2(0.5f, 0.5f);
+			float shadow_val = 1.0f;
+			if(shadowMapUV.x < 0.95f && shadowMapUV.y < 0.95f && shadowMapUV.x > 0.05f && shadowMapUV.y > 0.05f){
+				if(i == 0){
+					shadow = CalcShadowPercent(shadowMap_0, shadowMapUV, texOffset[i], depth, depthOffset.x);
+				}else if(i == 1){
+					shadow = CalcShadowPercent(shadowMap_1, shadowMapUV, texOffset[i], depth, depthOffset.y);
+				}else if(i == 2){
+					shadow = CalcShadowPercent(shadowMap_2, shadowMapUV, texOffset[i], depth, depthOffset.z);
 				}
+				break;
 			}
 		}
 	}
@@ -77,13 +189,12 @@ float4x4 CalcSkinMatrix(VSInputNmTxWeights In)
     return skinning;
 }
 /*!--------------------------------------------------------------------------------------
- * @brief	スキンなしモデル用の頂点シェーダー。
+ * @brief	スキンなしモデル用の頂点シェーダーのコアプログラム。
 -------------------------------------------------------------------------------------- */
-PSInput VSMain( VSInputNmTxVcTangent In ) 
+PSInput VSMainCore( VSInputNmTxVcTangent In, float4x4 worldMat )
 {
 	PSInput psInput = (PSInput)0;
-	float4 pos;
-	pos = mul(mWorld, In.Position);
+	float4 pos = mul(worldMat, In.Position);
 	psInput.Pos = pos;
 	pos = mul(mView, pos);
 	psInput.posInView = pos;
@@ -91,9 +202,23 @@ PSInput VSMain( VSInputNmTxVcTangent In )
 	psInput.posInProj = pos;
 	psInput.Position = pos;
 	psInput.TexCoord = In.TexCoord;
-	psInput.Normal = normalize(mul(mWorld, In.Normal));
-	psInput.Tangent = normalize(mul(mWorld, In.Tangent));
+	psInput.Normal = normalize(mul(worldMat, In.Normal));
+	psInput.Tangent = normalize(mul(worldMat, In.Tangent));
     return psInput;
+}
+/*!--------------------------------------------------------------------------------------
+ * @brief	スキンなしモデル用の頂点シェーダー。
+-------------------------------------------------------------------------------------- */
+PSInput VSMain( VSInputNmTxVcTangent In ) 
+{
+	return VSMainCore(In, mWorld);
+}
+/*!--------------------------------------------------------------------------------------
+ * @brief	スキンなしモデル用の頂点シェーダー(インスタンシング描画用)。
+-------------------------------------------------------------------------------------- */
+PSInput VSMainInstancing( VSInputNmTxVcTangent In, uint instanceID : SV_InstanceID )
+{
+	return VSMainCore(In, instanceMatrix[instanceID]);
 }
 /*!--------------------------------------------------------------------------------------
  * @brief	スキンありモデル用の頂点シェーダー。
@@ -120,6 +245,7 @@ PSInput VSMainSkin( VSInputNmTxWeights In )
     return psInput;
 }
 
+
 /*!
  *@brief	Z値を書き込むためだけの描画パスで使用される頂点シェーダー。
  *			スキンなしモデル用
@@ -137,7 +263,27 @@ PSInput_RenderToDepth VSMain_RenderDepth(VSInputNmTxVcTangent In)
 	psInput.posInProj = pos;
 	return psInput;
 }
+/*!
+ *@brief	Z値を書き込むためだけの描画パスで使用される頂点シェーダー。
+ *			スキンなしインスタンシングモデル用
+ *@details
+ * 現在はシャドウマップ作成とZPrepassで使用されています。
+ */
 
+PSInput_RenderToDepth VSMainInstancing_RenderDepth(
+	VSInputNmTxVcTangent In, 
+	uint instanceID : SV_InstanceID
+)
+{
+	PSInput_RenderToDepth psInput = (PSInput_RenderToDepth)0;
+	float4 pos;
+	pos = mul(instanceMatrix[instanceID], In.Position);
+	pos = mul(mView, pos);
+	pos = mul(mProj, pos);
+	psInput.Position = pos;
+	psInput.posInProj = pos;
+	return psInput;
+}
 /*!
  *@brief	Z値を書き込むためだけの描画パスで使用される頂点シェーダー。
  *			スキンありモデル用。
@@ -164,6 +310,74 @@ PSInput_RenderToDepth VSMainSkin_RenderDepth(VSInputNmTxWeights In)
 //--------------------------------------------------------------------------------------
 float4 PSMain( PSInput In ) : SV_Target0
 {
+#if 0
+	//アルベド。
+	float4 albedo = float4(albedoTexture.Sample(Sampler, In.TexCoord).xyz, 1.0f);
+	float2 screenUV = In.posInProj.xy / In.posInProj.w;
+	screenUV = screenUV * float2(0.5f, -0.5f) + 0.5f;	//0.0～1.0に変更。
+	float depth = depthTexture.Sample(Sampler, screenUV).x;
+	//近傍9テクセルの深度の平均をとる。
+	float2 texSize;
+	float level;
+	depthTexture.GetDimensions(0, texSize.x, texSize.y, level);
+	float2 uvOffset = float2(1.5f / texSize.x, 1.5f / texSize.y);
+	
+	float depthTmp = depth;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(-uvOffset.x, -uvOffset.y)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(       0.0f, -uvOffset.y)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2( uvOffset.x, -uvOffset.y)).x;
+
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(-uvOffset.x, 0.0f)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2( uvOffset.x, 0.0f)).x;
+
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(-uvOffset.x, uvOffset.y)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2(       0.0f, uvOffset.y)).x;
+	depthTmp += depthTexture.Sample(Sampler, screenUV + float2( uvOffset.x, uvOffset.y)).x;
+
+	depthTmp /= 9;
+
+	if (abs(depthTmp - depth) > 0.005f) {
+		return float4(0.0f, 0.0f, 0.0f, 1.0f);
+	}
+	
+	return albedo;
+
+	float4 color = albedo * float4(ambientLight, 1.0f);
+	float2 uv = In.posInProj.xy / In.posInProj.w;
+	uv = (uv * float2(0.5f, -0.5f)) + 0.5f;
+	float shadow = softShadowMap.Sample(Sampler, uv).r ;
+	color.xyz *= lerp( 1.0f, 0.5f, shadow);
+	
+	//視点までのベクトルを求める。
+	float3 toEye = normalize(eyePos - In.Pos);
+	//従ベクトルを計算する。
+	float3 biNormal = normalize(cross(In.Tangent, In.Normal));
+	//法線を計算。
+	float3 normal = normalize(In.Normal);
+	float toEyeLen = length(toEye);
+	float3 toEyeDir = float3(1.0f, 0.0f, 0.0f);
+	if(toEyeLen > 0.001f){
+		toEyeDir = toEye / toEyeLen;
+	}
+	
+	float3 toEyeReflection = -toEyeDir + 2.0f * dot(normal, toEyeDir) * normal;
+	
+	//ポイントライトを計算。
+	color.xyz += CalcPointLight(
+		albedo,
+		In.Pos, 
+		In.posInProj, 
+		normal,
+		In.Tangent,
+		biNormal,
+		toEyeDir,
+		toEyeReflection, 
+		1.0f,
+		0.0f
+	);
+	
+	return color;
+#else
 	float3 lig = 0.0f;
 	//視点までのベクトルを求める。
 	float3 toEye = normalize(eyePos - In.Pos);
@@ -191,11 +405,13 @@ float4 PSMain( PSInput In ) : SV_Target0
 	float3 toEyeReflection = -toEyeDir + 2.0f * dot(normal, toEyeDir) * normal;
 	
 	//影を計算。
-	int shadow = CalcShadow(In.Pos);	
+	float2 uv = In.posInProj.xy / In.posInProj.w;
+	uv = (uv * float2(0.5f, -0.5f)) + 0.5f;
+	float shadow = softShadowMap.Sample(Sampler, uv).r ;	
 	//ディレクションライト
 	float3 finalColor = 0.0f;
-	if(shadow == 0){
-		//影が落ちている場合はディレクションライトはカットする。
+	if(shadow < 0.99f){ 
+		//影が落ちる可能性が低い場合のみ計算する。
 		finalColor = CalcDirectionLight(
 			albedo,
 			In.Pos, 
@@ -206,7 +422,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 			toEyeReflection, 
 			roughness,
 			specPow
-		);
+		) * (1.0f - shadow);
 	}
 	
 	//ポイントライトを計算。
@@ -248,7 +464,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 		return float4(1.0f, 0.0f, 0.0f, 1.0f);
 	}
     return float4(finalColor, 1.0f); 
-
+#endif
 }
 
 
@@ -259,5 +475,60 @@ float4 PSMain( PSInput In ) : SV_Target0
  */
 float4 PSMain_RenderDepth( PSInput_RenderToDepth In ) : SV_Target0
 {
-	return In.posInProj.z / In.posInProj.w;
+	float z = In.posInProj.z / In.posInProj.w;
+	return z;
+}
+/*!
+ * @brief	G-Buffer書き込み用の描画パスで使用されるピクセルシェーダー。
+ */
+PSOutput_RenderGBuffer PSMain_RenderGBuffer( PSInput In )
+{
+	PSOutput_RenderGBuffer Out = (PSOutput_RenderGBuffer)0;
+	//法線はまだ出さない。
+	//シャドウマスク出力する。
+	if(isPCFShadowMap){
+		//PCFをかける。
+		Out.shadow = CalcSoftShadow(In.Pos);
+	}else{
+		//何もしない。
+		Out.shadow = CalcShadow(In.Pos);
+	}
+	return Out;
+}
+/*!
+ *@brief	シルエット描画。
+ * GameDemoのためのスペシャルシェーダー。
+ */
+float4 PSMain_Silhouette( PSInput In ) : SV_Target0
+{
+	float2 screenPos = In.posInProj.xy / In.posInProj.w;
+	screenPos = screenPos * float2( 0.5f, -0.5f ) + 0.5f;
+	
+#if 1 ////ディザリングを試す。
+	//ディザパターン
+	static const int pattern[] = {
+	    0, 32,  8, 40,  2, 34, 10, 42,   /* 8x8 Bayer ordered dithering  */
+	    48, 16, 56, 24, 50, 18, 58, 26,  /* pattern.  Each input pixel   */
+	    12, 44,  4, 36, 14, 46,  6, 38,  /* is scaled to the 0..63 range */
+	    60, 28, 52, 20, 62, 30, 54, 22,  /* before looking in this table */
+	    3, 35, 11, 43,  1, 33,  9, 41,   /* to determine the action.     */
+	    51, 19, 59, 27, 49, 17, 57, 25,
+	    15, 47,  7, 39, 13, 45,  5, 37,
+	    63, 31, 55, 23, 61, 29, 53, 21 
+	};
+	screenPos.x *= 1.7777f;
+	float2 uv = fmod(screenPos * 200.0f, 8.0f);
+	float t = 0.0f;
+	int x = (int)uv.x;
+	int y = (int)uv.y;
+	int index = y * 8 + x;
+	t = (float)pattern[index] / 64.0f;
+	//ディザ
+	clip(t - 0.5f);
+	return float4(t, t, t, 1.0f);
+
+#else
+	screenPos.x *= 1.7777f;		//アスペクト比をかける。
+	return silhouetteTexture.Sample(Sampler, screenPos * 12.0f) * 4.0f;
+#endif
 }

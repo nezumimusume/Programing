@@ -42,4 +42,13 @@ cbuffer MaterialParamCb : register(b2){
  */
 cbuffer ShadowCb : register( b3 ){
 	float4x4 mLVP[NUM_SHADOW_MAP];		//!<ライトビュープロジェクション行列。
+	float4 texOffset[NUM_SHADOW_MAP];	//!<シャドウマップのサイズ。
+	float4 depthOffset;
+};
+
+/*!
+ * @brief	GBuffer用の定数バッファ。
+ */
+cbuffer GBufferCb : register( b4 ){
+	int isPCFShadowMap;
 };

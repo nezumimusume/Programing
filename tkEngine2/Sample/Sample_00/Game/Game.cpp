@@ -30,5 +30,5 @@ void Game::Update()
 void Game::Render(CRenderContext& rc)
 {
 	//ï`âÊÅB
-	m_skinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
+	m_skinModel.Draw(rc);
 }
