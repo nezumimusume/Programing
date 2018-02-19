@@ -13,8 +13,6 @@ public:
 
 	//アニメーションを初期化。
 	void InitAnimation();
-	//アニメーション制御。
-	void AnimationControl();
 	//移動処理。
 	void Move();
 	void Turn();

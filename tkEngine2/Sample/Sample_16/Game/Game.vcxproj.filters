@@ -20,6 +20,9 @@
     <Filter Include="Assets\animData">
       <UniqueIdentifier>{8aa7c920-4557-4ad5-9a6f-a9f3408f7603}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\font">
+      <UniqueIdentifier>{06048802-2f69-451e-afb0-4dbfc8be47d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -103,6 +106,15 @@
     </CustomBuild>
     <CustomBuild Include="Assets\shader\dithering.fx">
       <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\shadowBlur.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\blur.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\font\myfile.spritefont">
+      <Filter>Assets\font</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

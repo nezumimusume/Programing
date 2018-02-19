@@ -44,7 +44,6 @@
 　　Player.cpp,hのTurn関数にサンプルが記述されている。
 ・Sample_13
 　　サウンドを再生するサンプル。。
-　　Game.cpp,hのTurn関数にサンプルが記述されている。
 ・Sample_14
 　　マップチップのサンプル。
 ・Sample_15

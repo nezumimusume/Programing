@@ -22,7 +22,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	initParam.graphicsConfing.shadowRenderConfig.isEnable = true;
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapWidth = 1024;
 	initParam.graphicsConfing.shadowRenderConfig.shadowMapHeight = 1024;
-	initParam.graphicsConfing.shadowRenderConfig.isEnableSoftShadow = true;
+
 	//ƒAƒ“ƒ`
 	initParam.graphicsConfing.aaConfig.isEnable = true;
 	//Bloom

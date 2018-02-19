@@ -22,26 +22,11 @@ bool Game::Start()
 	//モデルデータをロード。
 	skinModelData.Load(L"modelData/unityChan.cmo");
 	skinModel.Init(skinModelData);
-	LightManager().SetAmbientLight({ 10.0f, 10.0f, 10.0f });
-	//エフェクトを作成
 	
 	return true;
 }
 void Game::Update()
 {
-	static float angle = 0.0f;
-	
-	angle += 0.01f;
-	if (Pad(0).IsTrigger(enButtonA)) {
-		prefab::CEffect* effect = NewGO<prefab::CEffect>(0);
-		effect->Init(L"effect/test.efk");
-		effect->Play();
-		CVector3 emitPos = m_pos;
-		emitPos.y += 10.0f;
-		effect->SetPosition(emitPos);
-	}
-	m_pos.z += Pad(0).GetLStickXF();
-	m_pos.y += Pad(0).GetLStickYF();
 	skinModel.Update(m_pos, CQuaternion::Identity, { 0.1f, 0.1f, 0.1f });
 }
 void Game::Render(CRenderContext& rc)

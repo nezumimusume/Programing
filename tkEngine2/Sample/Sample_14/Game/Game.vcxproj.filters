@@ -123,5 +123,11 @@
     <CustomBuild Include="Assets\font\myfile.spritefont">
       <Filter>Assets\font</Filter>
     </CustomBuild>
+    <CustomBuild Include="Assets\shader\shadowBlur.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\blur.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

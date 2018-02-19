@@ -17,6 +17,9 @@
     <Filter Include="Assets\shader">
       <UniqueIdentifier>{ec15e408-a953-4672-a93b-f7d36b81a954}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\font">
+      <UniqueIdentifier>{68a0778e-feb3-4c11-b5fd-1e91428ee431}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -79,6 +82,18 @@
     </CustomBuild>
     <CustomBuild Include="Assets\modelData\Thethief_H.tks">
       <Filter>Assets\modelData</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\blur.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\dithering.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\shadowBlur.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\font\myfile.spritefont">
+      <Filter>Assets\font</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

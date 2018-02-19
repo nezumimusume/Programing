@@ -17,6 +17,9 @@
     <Filter Include="Assets\shader">
       <UniqueIdentifier>{d3627b0a-69a2-43b8-9f65-d595e8bcde84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\font">
+      <UniqueIdentifier>{b9e8dc58-9b8d-4e63-971f-b3b27bdd0e95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -79,6 +82,18 @@
     </CustomBuild>
     <CustomBuild Include="Assets\shader\sampleBRDF.h">
       <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\shadowBlur.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\dithering.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\blur.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\font\myfile.spritefont">
+      <Filter>Assets\font</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

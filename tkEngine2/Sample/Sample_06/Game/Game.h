@@ -21,7 +21,7 @@ public:
 	/////////////////////////////////////////////
 	CSprite m_sprite;				//スプライト。
 	CShaderResourceView m_texture;	//テクスチャ。
-	CVector3	m_position;			//座標。
+	CVector3	m_position = CVector3::Zero;		//座標。
 	CQuaternion m_rotation = CQuaternion::Identity;	//回転。
 };
 

@@ -18,7 +18,6 @@ bool Player::Start()
 	m_charaCon.Init(
 		20.0,			//半径。 
 		50.0f,			//高さ。
-		-980.0f,		//重力、
 		m_position		//初期位置。
 	);
 	//アニメーションを初期化。
@@ -36,7 +35,7 @@ void Player::InitAnimation()
 	m_animationClip[enAnimationClip_run].SetLoopFlag(true);
 	m_animationClip[enAnimationClip_walk].SetLoopFlag(true);
 	//アニメーションを初期化。
-	m_animation.Init(m_skinModelData, m_animationClip, enAnimationClip_num);
+	m_animation.Init(m_skinModel, m_animationClip, enAnimationClip_num);
 	//待機アニメーションを流す。
 	m_animation.Play(enAnimationClip_idle);
 }
@@ -62,6 +61,7 @@ void Player::Move()
 	//XZ成分の移動速度をクリア。
 	m_moveSpeed.x = 0.0f;
 	m_moveSpeed.z = 0.0f;
+	m_moveSpeed.y -= 980.0f * GameTime().GetFrameDeltaTime();
 	m_moveSpeed += cameraForward * lStick_y * 200.0f;	//奥方向への移動速度を代入。
 	m_moveSpeed += cameraRight * lStick_x * 200.0f;		//右方向への移動速度を加算。
 

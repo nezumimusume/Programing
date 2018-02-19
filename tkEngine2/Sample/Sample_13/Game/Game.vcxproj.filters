@@ -23,6 +23,9 @@
     <Filter Include="Assets\sound">
       <UniqueIdentifier>{d26ba2d7-ca54-4487-b0c8-feee0588896c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\font">
+      <UniqueIdentifier>{1581d9bb-a525-4eb2-90d2-7adf8e109d90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -109,6 +112,18 @@
     </CustomBuild>
     <CustomBuild Include="Assets\sound\PlayerDead.wav">
       <Filter>Assets\sound</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\shadowBlur.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\dithering.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\blur.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\font\myfile.spritefont">
+      <Filter>Assets\font</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

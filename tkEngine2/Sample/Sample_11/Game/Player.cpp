@@ -18,7 +18,6 @@ bool Player::Start()
 	m_charaCon.Init(
 		20.0,			//半径。 
 		50.0f,			//高さ。
-		-980.0f,		//重力、
 		m_position		//初期位置。
 	);
 	//アニメーションを初期化。
@@ -36,14 +35,9 @@ void Player::InitAnimation()
 	m_animationClip[enAnimationClip_run].SetLoopFlag(true);
 	m_animationClip[enAnimationClip_walk].SetLoopFlag(true);
 	//アニメーションを初期化。
-	m_animation.Init(m_skinModelData, m_animationClip, enAnimationClip_num);
+	m_animation.Init(m_skinModel, m_animationClip, enAnimationClip_num);
 	//待機アニメーションを流す。
 	m_animation.Play(enAnimationClip_idle);
-}
-void Player::AnimationControl()
-{
-	//アニメーションを進める。
-	m_animation.Update(GameTime().GetFrameDeltaTime());
 }
 
 void Player::Move()
@@ -62,7 +56,8 @@ void Player::Move()
 	//XZ成分の移動速度をクリア。
 	m_moveSpeed.x = 0.0f;
 	m_moveSpeed.z = 0.0f;
-	m_moveSpeed += cameraForward * lStick_y * 200.0f;	//奥方向への移動速度を代入。
+	m_moveSpeed.y -= 980.0f * GameTime().GetFrameDeltaTime();
+	m_moveSpeed += cameraForward * lStick_y * 200.0f;	//奥方向への移動速度を加算。
 	m_moveSpeed += cameraRight * lStick_x * 200.0f;		//右方向への移動速度を加算。
 
 	if (Pad(0).IsTrigger(enButtonA) //Aボタンが押されたら
@@ -79,14 +74,11 @@ void Player::Update()
 {
 	//移動処理。
 	Move();
-	//アニメーションコントロール。
-	AnimationControl();
+	
 	//ワールド行列を更新。
-	CQuaternion qBias;
-	qBias.SetRotationDeg(CVector3::AxisX, 90.0f);	//3dsMaxで設定されているアニメーションでキャラが回転しているので、補正を入れる。
-	m_skinModel.Update(m_position, qBias, CVector3::One);
+	m_skinModel.Update(m_position, CQuaternion::Identity, CVector3::One, CSkinModel::enFbxUpAxisY);
 }
 void Player::Render(CRenderContext& rc)
 {
-	m_skinModel.Draw(rc, MainCamera().GetViewMatrix(), MainCamera().GetProjectionMatrix());
+	m_skinModel.Draw(rc);
 }

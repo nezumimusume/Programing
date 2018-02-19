@@ -20,6 +20,9 @@
     <Filter Include="Assets\animData">
       <UniqueIdentifier>{8aa7c920-4557-4ad5-9a6f-a9f3408f7603}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\font">
+      <UniqueIdentifier>{849511fc-6d55-4676-b93f-6c67e402420e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -100,6 +103,18 @@
     </CustomBuild>
     <CustomBuild Include="Assets\animData\idle.tka">
       <Filter>Assets\animData</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\shadowBlur.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\dithering.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\shader\blur.fx">
+      <Filter>Assets\shader</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\font\myfile.spritefont">
+      <Filter>Assets\font</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

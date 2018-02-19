@@ -18,7 +18,6 @@ bool Player::Start()
 	m_charaCon.Init(
 		20.0,			//半径。 
 		50.0f,			//高さ。
-		-980.0f,		//重力、
 		m_position		//初期位置。
 	);
 	//アニメーションを初期化。
@@ -36,7 +35,7 @@ void Player::InitAnimation()
 	m_animationClip[enAnimationClip_run].SetLoopFlag(true);
 	m_animationClip[enAnimationClip_walk].SetLoopFlag(true);
 	//アニメーションを初期化。
-	m_animation.Init(m_skinModelData, m_animationClip, enAnimationClip_num);
+	m_animation.Init(m_skinModel, m_animationClip, enAnimationClip_num);
 	//待機アニメーションを流す。
 	m_animation.Play(enAnimationClip_idle);
 }
@@ -50,6 +49,7 @@ void Player::Update()
 	//このフレームの移動量を求める。
 	m_moveSpeed.x = Pad(0).GetLStickXF() * -150.0f;
 	m_moveSpeed.z = Pad(0).GetLStickYF() * -150.0f;
+	m_moveSpeed.y -= 980.0f * GameTime().GetFrameDeltaTime();
 	if (Pad(0).IsTrigger(enButtonA) //Aボタンが押されたら
 		&& m_charaCon.IsOnGround()  //かつ、地面に居たら
 	) {
