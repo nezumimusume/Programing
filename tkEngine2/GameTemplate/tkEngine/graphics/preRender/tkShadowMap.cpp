@@ -40,7 +40,7 @@ namespace tkEngine{
 		}
 		int wh[][2] = {
 			{ config.shadowMapWidth, config.shadowMapHeight},
-			{ config.shadowMapWidth >> 1, config.shadowMapHeight >> 1},
+			{ config.shadowMapWidth, config.shadowMapHeight >> 1},
 			{ config.shadowMapWidth >> 1, config.shadowMapHeight >> 1},
 		};
 		DXGI_SAMPLE_DESC multiSampleDesc;
@@ -126,9 +126,9 @@ namespace tkEngine{
 		lightViewRot.m[2][3] = 0.0f;
 
 		float shadowAreaTbl[] = {
-			m_lightHeight * 0.6f,
-			m_lightHeight * 2.4f,
-			m_lightHeight * 6.0f
+			m_lightHeight * 0.4f,
+			m_lightHeight * 0.8f,
+			m_lightHeight * 1.6f
 		};
 
 		//ライトビューのターゲットを計算。

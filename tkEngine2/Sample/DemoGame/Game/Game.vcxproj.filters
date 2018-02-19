@@ -224,6 +224,7 @@
     <CustomBuild Include="Assets\shader\blur.fx">
       <Filter>Assets\shader</Filter>
     </CustomBuild>
+    <CustomBuild Include="Assets\shader\shadowBlur.fx" />
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Assets\modelData\utc_spec.tga">
@@ -244,10 +245,5 @@
     <ImageContentTask Include="Assets\sprite\fade.png">
       <Filter>Assets\sprite</Filter>
     </ImageContentTask>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Assets\shader\shadowBlur.fx">
-      <Filter>Assets\shader</Filter>
-    </FxCompile>
   </ItemGroup>
 </Project>

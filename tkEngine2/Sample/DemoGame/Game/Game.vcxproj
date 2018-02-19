@@ -110,7 +110,7 @@
     <LinkIncremental>true</LinkIncremental>
     <GenerateManifest>true</GenerateManifest>
     <ExecutablePath>$(DXSDK_DIR)Utilities\bin\x86;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\Program Files %28x86%29\Windows Kits\8.1\Include\um;$(ProjectDir);$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/../tkEngine/bulletPhysics/src;$(ProjectDir)/Src</IncludePath>
+    <IncludePath>C:\Program Files %28x86%29\Windows Kits\8.1\Include\um;$(ProjectDir);$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/../tkEngine/bulletPhysics/src;$(ProjectDir)/Src;$(ProjectDir)/../tkEngine/EffekseerRuntime130/src/include</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Windows Kits\8.1\Lib\winv6.3\um\x86;$(ProjectDir)/../tkEngine/DirectXTK/Bin/Desktop_2015_Win10/Win32/Debug;$(ProjectDir)/Debug;$(LibraryPath)</LibraryPath>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
@@ -121,7 +121,7 @@
     <LinkIncremental>true</LinkIncremental>
     <GenerateManifest>true</GenerateManifest>
     <ExecutablePath>$(DXSDK_DIR)Utilities\bin\x86;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\Program Files %28x86%29\Windows Kits\8.1\Include\um;$(ProjectDir);$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/../tkEngine/bulletPhysics/src;$(ProjectDir)/Src</IncludePath>
+    <IncludePath>C:\Program Files %28x86%29\Windows Kits\8.1\Include\um;$(ProjectDir);$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/../tkEngine/bulletPhysics/src;$(ProjectDir)/Src;$(ProjectDir)/../tkEngine/EffekseerRuntime130/src/include</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Windows Kits\8.1\Lib\winv6.3\um\x86;$(ProjectDir)/../tkEngine/DirectXTK/Bin/Desktop_2015_Win10/Win32/Release;$(ProjectDir)/Release;$(LibraryPath)</LibraryPath>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
@@ -132,7 +132,7 @@
     <LinkIncremental>true</LinkIncremental>
     <GenerateManifest>true</GenerateManifest>
     <ExecutablePath>$(DXSDK_DIR)Utilities\bin\x86;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\Program Files %28x86%29\Windows Kits\8.1\Include\um;$(ProjectDir);$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/../tkEngine/bulletPhysics/src;$(ProjectDir)/Src</IncludePath>
+    <IncludePath>C:\Program Files %28x86%29\Windows Kits\8.1\Include\um;$(ProjectDir);$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/../tkEngine/bulletPhysics/src;$(ProjectDir)/Src;$(ProjectDir)/../tkEngine/EffekseerRuntime130/src/include</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Windows Kits\8.1\Lib\winv6.3\um\x86;$(ProjectDir)/../tkEngine/DirectXTK/Bin/Desktop_2015_Win10/Win32/Release;$(ProjectDir)/Preview;$(LibraryPath)</LibraryPath>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
@@ -143,7 +143,7 @@
     <LinkIncremental>true</LinkIncremental>
     <GenerateManifest>true</GenerateManifest>
     <ExecutablePath>$(DXSDK_DIR)Utilities\bin\x64;$(DXSDK_DIR)Utilities\bin\x86;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\Program Files %28x86%29\Windows Kits\8.1\Include\um;$(ProjectDir);$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/../tkEngine/bulletPhysics/src;$(ProjectDir)/Src</IncludePath>
+    <IncludePath>C:\Program Files %28x86%29\Windows Kits\8.1\Include\um;$(ProjectDir);$(ProjectDir)/../;$(IncludePath);$(ProjectDir)/../tkEngine/bulletPhysics/src;$(ProjectDir)/Src;$(ProjectDir)/../tkEngine/EffekseerRuntime130/src/include</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Windows Kits\8.1\Lib\winv6.3\um\x64;$(ProjectDir)/../tkEngine/DirectXTK/Bin/Desktop_2015_Win10/x64/Debug;$(ProjectDir)/x64/Debug;$(LibraryPath)</LibraryPath>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
@@ -168,7 +168,7 @@
     <LinkIncremental>false</LinkIncremental>
     <GenerateManifest>true</GenerateManifest>
     <ExecutablePath>$(DXSDK_DIR)Utilities\bin\x64;$(DXSDK_DIR)Utilities\bin\x86;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\Program Files %28x86%29\Windows Kits\8.1\Include\um;$(ProjectDir);$(ProjectDir)/../;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)/../tkEngine/bulletPhysics/src;$(ProjectDir)/Src</IncludePath>
+    <IncludePath>C:\Program Files %28x86%29\Windows Kits\8.1\Include\um;$(ProjectDir);$(ProjectDir)/../;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)/../tkEngine/bulletPhysics/src;$(ProjectDir)/Src;$(ProjectDir)/../tkEngine/EffekseerRuntime130/src/include</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Windows Kits\8.1\Lib\winv6.3\um\x64;$(ProjectDir)/../tkEngine/DirectXTK/Bin/Desktop_2015_Win10/x64/Release;$(ProjectDir)/x64/Release;$(LibraryPath)</LibraryPath>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
@@ -179,7 +179,7 @@
     <LinkIncremental>false</LinkIncremental>
     <GenerateManifest>true</GenerateManifest>
     <ExecutablePath>$(DXSDK_DIR)Utilities\bin\x64;$(DXSDK_DIR)Utilities\bin\x86;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\Program Files %28x86%29\Windows Kits\8.1\Include\um;$(ProjectDir);$(ProjectDir)/../;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)/../tkEngine/bulletPhysics/src;$(ProjectDir)/Src</IncludePath>
+    <IncludePath>C:\Program Files %28x86%29\Windows Kits\8.1\Include\um;$(ProjectDir);$(ProjectDir)/../;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)/../tkEngine/bulletPhysics/src;$(ProjectDir)/Src;$(ProjectDir)/../tkEngine/EffekseerRuntime130/src/include</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Windows Kits\8.1\Lib\winv6.3\um\x64;$(ProjectDir)/../tkEngine/DirectXTK/Bin/Desktop_2015_Win10/x64/Preview;$(ProjectDir)/x64/Preview;$(LibraryPath)</LibraryPath>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
