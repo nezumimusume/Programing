@@ -1,0 +1,14 @@
+﻿################################################################################
+# この .gitignore ファイルは Microsoft(R) Visual Studio によって自動的に作成されました。
+################################################################################
+
+/tkEngine2/Sample/Sample_03/Game/Resource
+/tkEngine2/Sample/Sample_03/Game/_Program Files (x86)_Microsoft Visual Studio 14.0_Common7_IDE_Extensions_Microsoft_VsGraphics_Assets_Effects_Phong.dgsl.cso
+/tkEngine2/Sample/Sample_03/Game/_GitHub_Programing_tkEngine2_Sample_Sample__03_Game_Assets_modelData_Thethief__wuqi__D.tga.dds
+/tkEngine2/Sample/Sample_03/Game/_GitHub_Programing_tkEngine2_Sample_Sample__03_Game_Assets_modelData_Thethief__D.tga.dds
+/tkEngine2/Sample/Sample_03/Game/Game.vcxproj.user
+/tkEngine2/Sample/Sample_03/Game/Game.VC.db
+/tkEngine2/Sample/Sample_03/tkTools
+/tkEngine2/Sample/Sample_03/tkEngine
+/tkEngine2/Sample/Sample_03/Game/Debug
+/tkEngine2/Sample/Sample_03/Game/.vs/Game/v14
