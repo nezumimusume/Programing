@@ -3,6 +3,7 @@
 #include "Camera/GameCamera.h"
 #include "Player/Player.h"
 #include "BackGround/BackGround.h"
+#include "tkEngine/light/tkPointLight.h"
 
 class Enemy;
 
@@ -20,6 +21,7 @@ private:
 	CBackGround m_bg;			//!<背景。
 	CGameCamera m_gameCamera;	//!<ゲームカメラ。
 	std::vector<Enemy*> m_enemyList;	//!<敵のリスト。
+	std::vector<prefab::CPointLight*>	m_pointLightList;	//!<ポイントライトのリスト。
 	prefab::CDirectionLight* m_directionLig = nullptr;	//!<ディレクションライト。
 };
 

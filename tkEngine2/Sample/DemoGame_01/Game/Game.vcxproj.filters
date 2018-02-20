@@ -172,9 +172,6 @@
     <CustomBuild Include="Assets\animData\Player\jump_start.tka">
       <Filter>Assets\animData\Player</Filter>
     </CustomBuild>
-    <CustomBuild Include="Assets\modelData\enemy_00.tks" />
-    <CustomBuild Include="Assets\animData\Enemy\idle.tka" />
-    <CustomBuild Include="Assets\loc\enemyLoc.tks" />
     <CustomBuild Include="Assets\effect\Texture\Burst01.png">
       <Filter>Assets\effect\texture</Filter>
     </CustomBuild>
@@ -241,6 +238,15 @@
     <CustomBuild Include="Assets\effect\test3.efk">
       <Filter>Assets\effect</Filter>
     </CustomBuild>
+    <CustomBuild Include="Assets\loc\enemyLoc.tks">
+      <Filter>Assets\loc</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\modelData\enemy_00.tks">
+      <Filter>Assets\modelData</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\animData\Enemy\idle.tka">
+      <Filter>Assets\animData\Enemy</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\Thethief_H.FBX">
@@ -304,5 +310,10 @@
     <ClCompile Include="Src\Enemy\Enemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\loc\pointLightLoc.tks">
+      <Filter>Assets\loc</Filter>
+    </None>
   </ItemGroup>
 </Project>
