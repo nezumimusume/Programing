@@ -144,10 +144,7 @@ namespace tkEngine{
 			rc.VSSetShader(m_vsShader);
 			rc.PSSetShader(m_psCalcLuminanceLogAvarageShader);
 
-			
-			CRenderTarget& rt = postEffect->GetFinalRenderTarget();
-
-			rc.PSSetShaderResource(0, rt.GetRenderTargetSRV());
+			rc.PSSetShaderResource(0, GraphicsEngine().GetMainRenderTarget().GetRenderTargetSRV());
 			postEffect->DrawFullScreenQuad(rc);
 			ge.EndGPUEvent();
 		}
@@ -239,11 +236,9 @@ namespace tkEngine{
 		CalcLuminanceAvarage(rc, postEffect);
 
 		
-		CShaderResourceView& sceneSRV = postEffect->GetFinalRenderTarget().GetRenderTargetSRV();
+		CShaderResourceView& sceneSRV = GraphicsEngine().GetMainRenderTarget().GetRenderTargetSRV();
 		
-		postEffect->ToggleFinalRenderTarget();
-
-		CRenderTarget& rt = postEffect->GetFinalRenderTarget();
+		CRenderTarget& rt = GraphicsEngine().GetMainRenderTarget();
 		CRenderTarget* rts[] = {
 			&rt
 		};

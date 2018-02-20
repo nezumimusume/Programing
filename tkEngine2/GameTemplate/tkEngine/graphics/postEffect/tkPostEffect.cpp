@@ -36,6 +36,13 @@ namespace tkEngine{
 	void CPostEffect::Render(CRenderContext& rc)
 	{
 		//メインレンダリングターゲットの内容をリゾルブ。
+		GraphicsEngine().GetMainRenderTarget().ResovleMSAATexture(rc);
+		m_tonemap.Render(rc, this);
+
+		//エフェクトを描画
+		GraphicsEngine().GetEffectEngine().Render(rc);
+
+		//メインレンダリングターゲットの内容を最終合成用のレンダリングターゲットに描画。
 		rc.ResolveSubresource(
 			GetFinalRenderTarget().GetRenderTarget(),
 			0,
@@ -44,8 +51,6 @@ namespace tkEngine{
 			GetFinalRenderTarget().GetRenderTargetTextureFormat()
 		);
 
-
-		m_tonemap.Render(rc, this);
 		m_bloom.Render(rc, this);
 		m_fxaa.Render(rc, this);
 		m_dithering.Render(rc, this);
