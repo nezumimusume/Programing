@@ -53,5 +53,7 @@ namespace tkEngine{
 		EffekseerRenderer::Renderer*	m_renderer = nullptr;
 		CRenderTarget m_addEffectBuffer;
 		std::vector<int>	m_renderFlags;
+		CShader		m_copyVS;					//!<コピー用の頂点シェーダー。
+		CShader		m_copyPS;					//!<コピー用の頂点シェーダー。
 	};
 }

@@ -4,6 +4,7 @@
 
 #include "tkEngine/tkEnginePreCompile.h"
 #include "tkEngine/graphics/effect/tkEffectEngine.h"
+#include "tkEngine/graphics/tkPresetRenderState.h"
 
 namespace tkEngine {
 	CEffectEngine::CEffectEngine()
@@ -66,6 +67,9 @@ namespace tkEngine {
 		);
 
 		m_renderFlags.resize(1024);
+		//コピー用のシェーダーをロード。
+		m_copyVS.Load("shader/copy.fx", "VSMain", CShader::EnType::VS);
+		m_copyPS.Load("shader/copy.fx", "PSMain", CShader::EnType::PS);
 	}
 	
 	Effekseer::Effect* CEffectEngine::CreateEffekseerEffect(const wchar_t* filePath)
@@ -159,6 +163,28 @@ namespace tkEngine {
 			rc.OMSetRenderTargets(numRenderTargetViews, oldRenderTargets);
 			//MSAAリゾルブ。
 			m_addEffectBuffer.ResovleMSAATexture(rc);
+
+			rc.PSSetShaderResource(0, m_addEffectBuffer.GetRenderTargetSRV());
+			rc.PSSetShader(m_copyPS);
+			rc.VSSetShader(m_copyVS);
+			rc.IASetInputLayout(m_copyVS.GetInputLayout());
+
+			ID3D11DepthStencilState* oldDepthStencil = rc.GetDepthStencilState();
+			ID3D11RasterizerState* oldRSState = rc.GetRSState();
+			ID3D11BlendState* oldBlendState = rc.GetBlendState();
+
+
+			rc.RSSetState(RasterizerState::spriteRender);
+			rc.OMSetDepthStencilState(DepthStencilState::disable, 0);
+			rc.OMSetBlendState(AlphaBlendState::add, 0, 0xFFFFFFFF);
+
+			ps->DrawFullScreenQuad(rc);
+
+			//戻す。
+			rc.OMSetDepthStencilState(oldDepthStencil, 0);
+			rc.RSSetState(oldRSState);
+			rc.OMSetBlendState(oldBlendState, 0, 0xFFFFFFFF);
+
 		}
 
 		//ノードの描画フラグを全部戻す。
