@@ -79,10 +79,7 @@ namespace tkEngine{
 		}
 
 		
-		EndGPUEvent();
-
-		//エフェクトを描画。
-		GraphicsEngine().GetEffectEngine().Render(renderContext);
+		EndGPUEvent();		
 
 		//ポストエフェクト。
 		GraphicsEngine().GetPostEffect().Render(renderContext);

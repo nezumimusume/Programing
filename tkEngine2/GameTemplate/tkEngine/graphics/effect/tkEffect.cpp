@@ -32,11 +32,13 @@ namespace tkEngine {
 		}
 		void CEffect::Update()
 		{
-			CMatrix mTrans, mRot, mBaseMat;
+			CMatrix mTrans, mRot, mScale, mBase;
 			mTrans.MakeTranslation(m_position);
 			mRot.MakeRotationFromQuaternion(m_rotation);
-			mBaseMat.Mul(mRot, mTrans);
-			GraphicsEngine().GetEffectEngine().GetEffekseerManager().SetBaseMatrix(m_handle, mBaseMat);
+			mScale.MakeScaling(m_scale);
+			mBase.Mul(mScale, mRot);
+			mBase.Mul(mBase, mTrans);
+			GraphicsEngine().GetEffectEngine().GetEffekseerManager().SetBaseMatrix(m_handle, mBase);
 			if (IsPlay() == false) {
 				//çƒê∂äÆóπÇµÇΩÇÁèIÇÌÇÈÅB
 				DeleteGO(this);
