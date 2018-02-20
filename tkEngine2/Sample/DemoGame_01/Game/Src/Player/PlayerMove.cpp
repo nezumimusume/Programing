@@ -26,6 +26,7 @@ bool CPlayerMove::Start()
 }
 void CPlayerMove::OnChangeState(CPlayerConst::EnState nextState)
 {
+	(void)nextState;
 }
 void CPlayerMove::Update()
 {

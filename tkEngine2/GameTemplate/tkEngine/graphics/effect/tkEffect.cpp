@@ -22,12 +22,18 @@ namespace tkEngine {
 				GraphicsEngine().GetEffectEngine().Stop(m_handle);
 				m_handle = -1;
 			}
-			ES_SAFE_RELEASE(m_effect);
 		}
 		
 		void CEffect::Play(const wchar_t* filePath)
 		{
-			m_effect = GraphicsEngine().GetEffectEngine().CreateEffekseerEffect(filePath);
+			int nameKey = CUtil::MakeHash(filePath);
+			CEffectEngine& ee = GraphicsEngine().GetEffectEngine();
+			m_effect = ee.GetResourceManager().GetResource(nameKey);
+			if (m_effect == nullptr) {
+				//ñ¢ìoò^ÅB
+				m_effect = ee.CreateEffekseerEffect(filePath);
+				ee.GetResourceManager().RegistResource(nameKey, m_effect);
+			}
 			m_handle = GraphicsEngine().GetEffectEngine().Play(m_effect);
 		}
 		void CEffect::Update()

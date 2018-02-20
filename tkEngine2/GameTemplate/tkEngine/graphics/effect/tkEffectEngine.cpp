@@ -29,6 +29,7 @@ namespace tkEngine {
 			m_finalCombineAddBlendState->Release();
 			m_finalCombineAddBlendState = nullptr;
 		}
+		m_resourcetManager.Release();
 	}
 	void CEffectEngine::Init()
 	{
@@ -54,8 +55,7 @@ namespace tkEngine {
 		m_manager->SetModelLoader(m_renderer->CreateModelLoader());
 
 		CGraphicsEngine& ge = GraphicsEngine();
-		//深度値書き込み用のレンダリングターゲットの作成。
-
+		//加算もの書き込み用のレンダリングターゲットの作成。
 		m_addEffectBuffer.Create(
 			ge.GetFrameBufferWidth(),
 			ge.GetFrameBufferHeight(),

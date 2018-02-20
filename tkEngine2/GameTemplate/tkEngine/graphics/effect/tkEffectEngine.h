@@ -4,12 +4,15 @@
 
 #pragma once
 
+#include "tkEngine/resource/tkResourceManager.h"
+
 namespace tkEngine{
 	class CPostEffect;
+	using CEffectResourceManager = TResourceManager<Effekseer::Effect>;
 	/*!
 	 * @brief	エフェクトエンジン。
 	 */
-	class CEffectEngine : Noncopyable{
+	class CEffectEngine : Noncopyable {
 	public:
 		CEffectEngine();
 		~CEffectEngine();
@@ -48,7 +51,15 @@ namespace tkEngine{
 		 *@brief	Effekseerのエフェクトの停止。
 		 */
 		void Stop(Effekseer::Handle handle);
+		/*!
+		 *@brief	リソースマネージャを取得。
+		 */
+		CEffectResourceManager& GetResourceManager()
+		{
+			return m_resourcetManager;
+		}
 	private:
+		CEffectResourceManager m_resourcetManager;	//リソースマネージャ。
 		Effekseer::Manager*	m_manager= nullptr;
 		EffekseerRenderer::Renderer*	m_renderer = nullptr;
 		CRenderTarget m_addEffectBuffer;
