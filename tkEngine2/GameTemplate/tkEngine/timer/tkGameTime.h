@@ -27,7 +27,7 @@ namespace tkEngine{
 		/*!
 		 *@brief	1フレームの経過時間を取得(単位・秒)。
 		 */
-		float GetFrameDeltaTime() const
+		const float GetFrameDeltaTime() const
 		{
 			//固定FPSにする。可変は要検討。
 			return 1.0f / 30.0f;

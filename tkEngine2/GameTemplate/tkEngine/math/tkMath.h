@@ -8,19 +8,19 @@
 namespace tkEngine{
 	class CMath{
 	public:
-		static const float PI;
-		static const float PI2;
+		static constexpr float PI = 3.14159265358979323846f;
+		static constexpr float PI2 = PI * 2.0f;
 		/*!
 		 * @brief	degree‚©‚çradian‚É•ÏŠ·B
 		 */
-		static float DegToRad( float deg )
+		constexpr static inline float DegToRad( float deg )
 		{
 			return deg * (PI/180.0f);
 		}
 		/*!
 		 * @brief	radian‚©‚çdegree‚É•ÏŠ·B
 		 */
-		static float RadToDeg( float rad )
+		constexpr static inline float RadToDeg( float rad )
 		{
 			return rad / (PI/180.0f);
 		}
@@ -30,7 +30,7 @@ namespace tkEngine{
 		 *  ret = t0 + (t1-t0) + rate;
 		 *@param[in]	t		•âŠÔ—¦	0.0`1.0
 		 */
-		static inline float Lerp(float rate, float t0, float t1)
+		constexpr static inline float Lerp(float rate, float t0, float t1)
 		{
 			return t0 + (t1 - t0)*rate;
 		}

@@ -34,7 +34,7 @@
 
 namespace tkEngine {
 
-	static inline float UnitCM(float param)
+	static constexpr inline float UnitCM(float param)
 	{
 #if TK_SYSTEM_UNIT==TK_SYSTEM_UNIT_CM
 		//基本単位がcmならそのまま返す。
@@ -48,7 +48,7 @@ namespace tkEngine {
 #endif
 	}
 
-	static inline float UnitM(float param)
+	static constexpr inline float UnitM(float param)
 	{
 #if TK_SYSTEM_UNIT==TK_SYSTEM_UNIT_CM
 		//基本単位がcmなので*100
@@ -62,7 +62,7 @@ namespace tkEngine {
 #endif
 	}
 
-	static const int NUM_SHADOW_MAP = 3;	//シャドウマップの枚数。
+	static constexpr int NUM_SHADOW_MAP = 3;	//シャドウマップの枚数。
 }
 #include <windows.h>
 #include <d3d11.h>

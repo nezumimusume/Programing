@@ -40,7 +40,7 @@ namespace tkEngine{
 		}
 		int wh[][2] = {
 			{ config.shadowMapWidth, config.shadowMapHeight},
-			{ config.shadowMapWidth, config.shadowMapHeight >> 1},
+			{ config.shadowMapWidth >> 1, config.shadowMapHeight >> 1},
 			{ config.shadowMapWidth >> 1, config.shadowMapHeight >> 1},
 		};
 		DXGI_SAMPLE_DESC multiSampleDesc;

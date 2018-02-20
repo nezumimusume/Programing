@@ -22,7 +22,5 @@ Texture2D<float4> shadowMap_2 : register(t5);	//シャドウマップ。
 Texture2D<float4> silhouetteTexture : register(t6);	//シルエットテクスチャ。
 Texture2D<float4> softShadowMap : register(t7);		//ソフトシャドウマップ。
 
-Texture2D<float4> depthTexture : register(t8);
-
 sampler Sampler : register(s0);
 
