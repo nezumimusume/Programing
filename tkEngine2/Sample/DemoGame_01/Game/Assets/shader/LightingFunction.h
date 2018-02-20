@@ -5,10 +5,8 @@
 
 #define TILE_WIDTH	16		//タイルの幅。
 
-float3 CalcSpecular(float3 lightDir, float4 lightColor, float3 toEyeReflection, float specPow)
-{
-	return lightColor.xyz * pow(max(0.0f, dot(-lightDir,toEyeReflection)), 2 ) * lightColor.w * specPow;
-}
+
+
 /*!
  * @brief	ディレクションライトの影響を計算。
  *@param[in]	albedo			アルベド。

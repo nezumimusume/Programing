@@ -420,15 +420,9 @@ float4 PSMain( PSInput In ) : SV_Target0
 		roughness,
 		specPow
 	);
-	
-	// brightness
-	float brightness = 1.0f;
-    finalColor *= brightness;
-/*
-    // exposure
-    float exposure = 1.0f;
-    finalColor *= pow( 2.0, exposure );
-  */  
+
+
+	//ÉKÉìÉ}ï‚ê≥ÅB
     float gamma = 2.2f;
     finalColor = max( 0.0f, pow( finalColor, 1.0 / gamma ) );
     if(isnan(finalColor.x) || isnan(finalColor.y) || isnan(finalColor.z)){
