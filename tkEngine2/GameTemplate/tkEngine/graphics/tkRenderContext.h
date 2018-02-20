@@ -1,6 +1,6 @@
 /*!
- * @brief	レンダリングコンテキスト
- */
+* @brief	レンダリングコンテキスト
+*/
 
 #pragma once
 
@@ -15,7 +15,7 @@
 #include "tkEngine/graphics/tkSamplerState.h"
 #include "tkEngine/graphics/tkRenderTarget.h"
 
-namespace tkEngine{
+namespace tkEngine {
 	class CVertexBuffer;
 	class CRenderTarget;
 	/*!
@@ -33,15 +33,15 @@ namespace tkEngine{
 		enRenderStep_AntiAlias,					//!<アンチエイリアス。
 		enRenderStep_Render2DToScene,			//!<2Dをシーンに描画。
 	};
-	class CRenderContext : Noncopyable{
+	class CRenderContext : Noncopyable {
 	public:
-		
-		CRenderContext(){}
-		~CRenderContext(){}
+
+		CRenderContext() {}
+		~CRenderContext() {}
 		/*!
-		 * @brief	初期化。
-		 *@param[in]	pD3DDeviceContext	D3Dデバイスコンテキスト。開放は呼び出しもとで行ってください。
-		 */
+		* @brief	初期化。
+		*@param[in]	pD3DDeviceContext	D3Dデバイスコンテキスト。開放は呼び出しもとで行ってください。
+		*/
 		void Init(ID3D11DeviceContext* pD3DDeviceContext);
 		/*!
 		* @brief	Blendステートを設定する。
@@ -50,8 +50,15 @@ namespace tkEngine{
 		*/
 		void OMSetBlendState(ID3D11BlendState *pBlendState, const FLOAT BlendFactor[4], UINT SampleMask)
 		{
+			m_currentBlendState = pBlendState;
 			m_pD3DDeviceContext->OMSetBlendState(pBlendState, BlendFactor, SampleMask);
-			
+		}
+		/*!
+		*@brief	現在のBlendステートを取得する。
+		*/
+		ID3D11BlendState* GetBlendState()
+		{
+			return m_currentBlendState;
 		}
 		/*!
 		* @brief	DepthStencilステートを設定する。
@@ -71,12 +78,12 @@ namespace tkEngine{
 			return m_currentDepthStencilState;
 		}
 		/*!
-		 * @brief	レンダリングターゲットビューを設定。
-		 * @details
-		 *  ID3D11DeviceContext::OMSetRenderTargetsと同じ。
-		 *@param[in]	NumViews		バインドするレンダリングターゲットの数。
-		 *@param[in]	renderTarget	バインドするレンダリングターゲットの配列へのポインタ。
-		 */
+		* @brief	レンダリングターゲットビューを設定。
+		* @details
+		*  ID3D11DeviceContext::OMSetRenderTargetsと同じ。
+		*@param[in]	NumViews		バインドするレンダリングターゲットの数。
+		*@param[in]	renderTarget	バインドするレンダリングターゲットの配列へのポインタ。
+		*/
 		void OMSetRenderTargets(unsigned int NumViews, CRenderTarget* renderTarget[]);
 		/*!
 		* @brief	現在バインドされているレンダリングターゲットビューを取得。
@@ -89,13 +96,13 @@ namespace tkEngine{
 			numViews = m_numRenderTargetView;
 		}
 		/*!
-		 * @brief	ビューポートを設定。
-		 *@param[in]	topLeftX	ビューポートの左上のX座標。
-		 *@param[in]	topLeftY	ビューポートの左上のY座標。
-		 *@param[in]	width		ビューポートの幅。
-		 *@param[in]	height		ビューポートの高さ。
-		 */
-		void RSSetViewport( float topLeftX, float topLeftY, float width, float height )
+		* @brief	ビューポートを設定。
+		*@param[in]	topLeftX	ビューポートの左上のX座標。
+		*@param[in]	topLeftY	ビューポートの左上のY座標。
+		*@param[in]	width		ビューポートの幅。
+		*@param[in]	height		ビューポートの高さ。
+		*/
+		void RSSetViewport(float topLeftX, float topLeftY, float width, float height)
 		{
 			m_viewport.Width = width;
 			m_viewport.Height = height;
@@ -110,13 +117,22 @@ namespace tkEngine{
 		*/
 		void RSSetState(ID3D11RasterizerState *pRasterizerState)
 		{
+			m_currentRasterrizerState = pRasterizerState;
 			m_pD3DDeviceContext->RSSetState(pRasterizerState);
 		}
 		/*!
-		 * @brief	レンダリングターゲットをクリア。
-		 *@param[in]	rtNo	レンダリングターゲットの番号。
-		 *@param[in]	clearColor	クリアカラー。
-		 */
+		*@brief	現在のラスタライザステートを取得。
+		*/
+		ID3D11RasterizerState* GetRSState() const
+		{
+			return m_currentRasterrizerState;
+		}
+		/*!
+		* @brief	レンダリングターゲットをクリア。
+		*@param[in]	rtNo	レンダリングターゲットの番号。
+		*@param[in]	clearColor	クリアカラー。
+		*@param[in]	isClearDepthStencil	デプスステンシルバッファもクリアする？
+		*/
 		void ClearRenderTargetView(unsigned int rtNo, float* clearColor, bool isClearDepthStencil = true)
 		{
 			if (rtNo < m_numRenderTargetView
@@ -262,7 +278,7 @@ namespace tkEngine{
 		*/
 		void CSSetConstantBuffer(
 			UINT slotNo,
-			CConstantBuffer& cb	
+			CConstantBuffer& cb
 		)
 		{
 			m_pD3DDeviceContext->CSSetConstantBuffers(slotNo, 1, &cb.GetBody());
@@ -272,7 +288,7 @@ namespace tkEngine{
 		*@param[in]	slotNo		スロット番号
 		*@param[in]	srv			シェーダーリソースビュー。
 		*/
-		void CSSetShaderResource(int slotNo, CShaderResourceView& srv) 
+		void CSSetShaderResource(int slotNo, CShaderResourceView& srv)
 		{
 			m_pD3DDeviceContext->CSSetShaderResources(slotNo, 1, &srv.GetBody());
 		}
@@ -359,11 +375,11 @@ namespace tkEngine{
 		{
 			if (destRes.GetBody() != nullptr
 				&& srcRes.GetBody() != nullptr
-			) {
+				) {
 				m_pD3DDeviceContext->CopyResource(destRes.GetBody(), srcRes.GetBody());
 			}
 		}
-		
+
 		void CopyResource(ID3D11Resource* destRes, ID3D11Resource* srcRes)
 		{
 			if (destRes != nullptr
@@ -397,7 +413,7 @@ namespace tkEngine{
 		*@param[in]		srcRes		コピー元。
 		*/
 		template<class TBuffer, class SrcBuffer>
-		void UpdateSubresource( TBuffer& gpuBuffer, const SrcBuffer* buffer)
+		void UpdateSubresource(TBuffer& gpuBuffer, const SrcBuffer* buffer)
 		{
 			if (gpuBuffer.GetBody() != nullptr) {
 				m_pD3DDeviceContext->UpdateSubresource(gpuBuffer.GetBody(), 0, NULL, buffer, 0, 0);
@@ -424,7 +440,7 @@ namespace tkEngine{
 		* @brief	ID3D11DeviceContext::ResolveSubresourceと同じ。
 		*/
 		void ResolveSubresource(
-			ID3D11Resource* dstResource, 
+			ID3D11Resource* dstResource,
 			UINT DstSubresource,
 			ID3D11Resource *pSrcResource,
 			UINT SrcSubresource,
@@ -440,6 +456,8 @@ namespace tkEngine{
 		}
 	private:
 		ID3D11DepthStencilState*		m_currentDepthStencilState = nullptr;	//!<現在のデプスステンシルステート。
+		ID3D11RasterizerState*			m_currentRasterrizerState = nullptr;	//!<現在のラスタライザステート。
+		ID3D11BlendState*				m_currentBlendState = nullptr;			//!<現在のブレンドステート。
 		ID3D11DeviceContext*			m_pD3DDeviceContext = nullptr;	//!<D3Dデバイスコンテキスト。
 		D3D11_VIEWPORT 					m_viewport;						//!<ビューポート。
 		CRenderTarget*					m_renderTargetViews[MRT_MAX] = { nullptr };

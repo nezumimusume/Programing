@@ -40,7 +40,7 @@ namespace tkEngine{
 		m_tonemap.Render(rc, this);
 
 		//エフェクトを描画
-		GraphicsEngine().GetEffectEngine().Render(rc);
+		GraphicsEngine().GetEffectEngine().Render(rc, this);
 
 		//メインレンダリングターゲットの内容を最終合成用のレンダリングターゲットに描画。
 		rc.ResolveSubresource(

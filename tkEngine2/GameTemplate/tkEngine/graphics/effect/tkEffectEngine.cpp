@@ -25,6 +25,10 @@ namespace tkEngine {
 			m_renderer->Destroy();
 			m_renderer = nullptr;
 		}
+		if (m_finalCombineAddBlendState != nullptr) {
+			m_finalCombineAddBlendState->Release();
+			m_finalCombineAddBlendState = nullptr;
+		}
 	}
 	void CEffectEngine::Init()
 	{
@@ -57,7 +61,7 @@ namespace tkEngine {
 			ge.GetFrameBufferHeight(),
 			1,
 			1,
-			DXGI_FORMAT_R32_FLOAT,
+			DXGI_FORMAT_R8G8B8A8_UNORM,
 			DXGI_FORMAT_UNKNOWN,	//Zバッファは作らない。
 			ge.GetMainRenderTargetMSAADesc()
 		);
@@ -70,6 +74,21 @@ namespace tkEngine {
 		//コピー用のシェーダーをロード。
 		m_copyVS.Load("shader/copy.fx", "VSMain", CShader::EnType::VS);
 		m_copyPS.Load("shader/copy.fx", "PSMain", CShader::EnType::PS);
+
+		D3D11_BLEND_DESC blendDesc;
+		ZeroMemory(&blendDesc, sizeof(blendDesc));
+		ID3D11Device* pd3d = ge.GetD3DDevice();
+
+		blendDesc.RenderTarget[0].BlendEnable = true;
+		blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+		blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_COLOR;
+		blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+		blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+		blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_RED | D3D11_COLOR_WRITE_ENABLE_BLUE | D3D11_COLOR_WRITE_ENABLE_GREEN;
+		pd3d->CreateBlendState(&blendDesc, &m_finalCombineAddBlendState);
+
 	}
 	
 	Effekseer::Effect* CEffectEngine::CreateEffekseerEffect(const wchar_t* filePath)
@@ -176,7 +195,7 @@ namespace tkEngine {
 
 			rc.RSSetState(RasterizerState::spriteRender);
 			rc.OMSetDepthStencilState(DepthStencilState::disable, 0);
-			rc.OMSetBlendState(AlphaBlendState::add, 0, 0xFFFFFFFF);
+			rc.OMSetBlendState(m_finalCombineAddBlendState, 0, 0xFFFFFFFF);
 
 			ps->DrawFullScreenQuad(rc);
 
