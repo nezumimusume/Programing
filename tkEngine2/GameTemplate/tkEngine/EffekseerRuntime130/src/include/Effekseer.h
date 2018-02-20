@@ -9,7 +9,7 @@
 #include <string.h>
 #include <atomic>
 #include <stdint.h>
-
+#include <functional>
 //----------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------
@@ -1495,6 +1495,14 @@ public:
 	\~Japanese	モデルパラメーターを取得する。
 	*/
 	virtual EffectModelParameter GetEffectModelParameter() = 0;
+	/*!
+	*@brief	描画フラグを設定。
+	*/
+	virtual void SetRenderFlag(bool flag) = 0;
+	/*!
+	*@brief	描画るフラグを取得。
+	*/
+	virtual bool GetRenderFlag() const = 0;
 };
 
 //----------------------------------------------------------------------------------
@@ -2000,6 +2008,11 @@ public:
 		@brief	現在存在するエフェクトのハンドルからカリングの空間を配置しなおす。
 	*/
 	virtual void RessignCulling() = 0;
+	/*!
+	*@brief	ノードに対してクエリを行う。
+	*@param[in]	callback	ノードに対する処理。。
+	*/
+	virtual void QueryNode(std::function<void(EffectNode* node)> callback) = 0;
 };
 //----------------------------------------------------------------------------------
 //

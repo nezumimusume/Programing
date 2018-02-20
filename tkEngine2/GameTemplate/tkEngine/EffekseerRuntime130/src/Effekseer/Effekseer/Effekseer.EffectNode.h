@@ -799,6 +799,20 @@ protected:
 	// 初期化
 	void Initialize();
 
+	/*!
+	*@brief	描画フラグを設定。
+	*/
+	void SetRenderFlag(bool flag) override final
+	{
+		IsRendered = flag;
+	}
+	/*!
+	*@brief	描画るフラグを取得。
+	*/
+	bool GetRenderFlag() const override final
+	{
+		return IsRendered;
+	}
 public:
 
 	/**
@@ -810,7 +824,7 @@ public:
 		\~japanese For nodes that are not normally rendered, the rendering type is changed to become a node that does not render. However, when color inheritance is done, it becomes a node which does not perform drawing only.
 	*/
 	bool IsRendered;
-
+	
 	ParameterCommonValues		CommonValues;
 
 	ParameterTranslationType	TranslationType;

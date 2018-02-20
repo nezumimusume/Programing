@@ -1368,7 +1368,21 @@ void ManagerImplemented::UpdateHandle( DrawSet& drawSet, float deltaFrame )
 		drawSet.GlobalPointer->AddUpdatedFrame( df );
 	}
 }
+//----------------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------------
+void ManagerImplemented::QueryNode(std::function<void(EffectNode* node)> callback)
+{
+	for (size_t i = 0; i < m_renderingDrawSets.size(); i++)
+	{
+		DrawSet& drawSet = m_renderingDrawSets[i];
 
+		if (drawSet.IsShown && drawSet.IsAutoDrawing)
+		{
+			drawSet.InstanceContainerPointer->QuaryNode(callback);
+		}
+	}
+}
 //----------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------

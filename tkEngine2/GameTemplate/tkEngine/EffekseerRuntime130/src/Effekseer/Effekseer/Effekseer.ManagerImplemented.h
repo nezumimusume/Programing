@@ -527,7 +527,11 @@ public:
 		更新する前にBeginUpdate、更新し終わった後にEndUpdateを実行する必要がある。
 	*/
 	void UpdateHandle( Handle handle, float deltaFrame = 1.0f );
-
+	/*!
+	*@brief	ノードに対してクエリを行う。
+	*@param[in]	callback	ノードに対する処理。。
+	*/
+	void QueryNode(std::function<void(EffectNode* node)> callback) override;
 private:
 	void UpdateHandle( DrawSet& drawSet, float deltaFrame );
 

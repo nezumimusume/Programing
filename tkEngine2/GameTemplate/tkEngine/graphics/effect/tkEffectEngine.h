@@ -5,6 +5,7 @@
 #pragma once
 
 namespace tkEngine{
+	class CPostEffect;
 	/*!
 	 * @brief	エフェクトエンジン。
 	 */
@@ -27,7 +28,7 @@ namespace tkEngine{
 		/*!
 		 *@brief	描画。
 		 */
-		void Render(CRenderContext& rc);
+		void Render(CRenderContext& rc, CPostEffect* ps);
 		/*!
 		 *@brief	Effekseerのエフェクトを作成。
 		 */
@@ -50,5 +51,7 @@ namespace tkEngine{
 	private:
 		Effekseer::Manager*	m_manager= nullptr;
 		EffekseerRenderer::Renderer*	m_renderer = nullptr;
+		CRenderTarget m_addEffectBuffer;
+		std::vector<int>	m_renderFlags;
 	};
 }

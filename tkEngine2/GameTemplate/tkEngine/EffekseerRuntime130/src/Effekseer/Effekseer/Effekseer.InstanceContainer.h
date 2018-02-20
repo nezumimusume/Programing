@@ -92,7 +92,10 @@ public:
 	void Draw( bool recursive );
 
 	void KillAllInstances(  bool recursive );
-
+	/*!
+	 *@brief	ノードに対するクエリを行う。
+	 */
+	void QuaryNode(std::function<void(EffectNode* node)> callback );
 	InstanceGlobal* GetRootInstance();
 };
 

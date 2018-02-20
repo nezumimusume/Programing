@@ -232,7 +232,18 @@ void InstanceContainer::RemoveForcibly( bool recursive )
 		}
 	}
 }
-
+//----------------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------------
+void InstanceContainer::QuaryNode(std::function<void(EffectNode* node)> callback)
+{
+	callback(m_pEffectNode);
+	//子供に対してクエリを行う。
+	for (int i = 0; i < m_ChildrenCount; i++)
+	{
+		m_Children[i]->QuaryNode(callback);
+	}
+}
 //----------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------

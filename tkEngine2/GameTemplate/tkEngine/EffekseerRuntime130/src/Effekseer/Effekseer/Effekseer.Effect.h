@@ -274,6 +274,14 @@ public:
 	\~Japanese	モデルパラメーターを取得する。
 	*/
 	virtual EffectModelParameter GetEffectModelParameter() = 0;
+	/*!
+	 *@brief	描画フラグを設定。
+	 */
+	virtual void SetRenderFlag(bool flag) = 0;
+	/*!
+	 *@brief	描画るフラグを取得。
+	 */
+	virtual bool GetRenderFlag() const = 0;
 };
 
 //----------------------------------------------------------------------------------
