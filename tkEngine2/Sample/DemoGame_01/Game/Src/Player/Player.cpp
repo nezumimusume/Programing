@@ -6,7 +6,7 @@
 #include "Player/Player.h"
 #include "Player/PlayerRenderer.h"
 #include "Player/Animation/PlayerAnimator.h"
-
+#include "tkEngine/graphics/effect/tkEffect.h"
 
 
 CPlayer::CPlayer() :
@@ -53,6 +53,34 @@ void CPlayer::Update()
 	m_forwardXZ = m_forward;
 	m_forwardXZ.y = 0.0f;
 	m_forwardXZ.Normalize();
+
+	//エフェクトテスト
+	if (Pad(0).IsTrigger(enButtonX)) {
+		prefab::CEffect* effect = NewGO<prefab::CEffect>(0);
+		effect->Play(L"effect/test.efk");
+		CVector3 pos = m_position;
+		pos.y += UnitM(0.5f);
+		effect->SetPosition(pos);
+		effect->SetRotation(m_rotation);
+		effect->SetScale({ 3.0f, 3.0f, 3.0f });
+	}
+	if (Pad(0).IsTrigger(enButtonY)) {
+		prefab::CEffect* effect = NewGO<prefab::CEffect>(0);
+		effect->Play(L"effect/test2.efk");
+		CVector3 pos = m_position;
+		pos.y += UnitM(0.5f);
+		effect->SetPosition(pos);
+		effect->SetRotation(m_rotation);
+		effect->SetScale({ 3.0f, 3.0f, 3.0f });
+	}
+	if (Pad(0).IsTrigger(enButtonB)) {
+		prefab::CEffect* effect = NewGO<prefab::CEffect>(0);
+		effect->Play(L"effect/test3.efk");
+		CVector3 pos = m_position;
+		pos.y += UnitM(0.01f);
+		effect->SetPosition(pos);
+		effect->SetScale({ 3.0f, 3.0f, 3.0f });
+	}
 }
 
 void CPlayer::Render(CRenderContext& rc)

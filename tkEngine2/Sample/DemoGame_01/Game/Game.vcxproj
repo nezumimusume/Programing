@@ -785,6 +785,38 @@
       <FileType>Document</FileType>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\effect\Texture\Burst01.png" />
+    <CustomBuild Include="Assets\effect\Texture\Cloud01.png" />
+    <CustomBuild Include="Assets\effect\Texture\Flame01.png" />
+    <CustomBuild Include="Assets\effect\Texture\LaserMain01.png" />
+    <CustomBuild Include="Assets\effect\Texture\LaserMain02.png" />
+    <CustomBuild Include="Assets\effect\Texture\Particle01.png" />
+    <CustomBuild Include="Assets\effect\Texture\Particle02.png" />
+    <CustomBuild Include="Assets\effect\Texture\Particle03.png" />
+    <CustomBuild Include="Assets\effect\Texture\Particle04_bokashistrong_hard.png" />
+    <CustomBuild Include="Assets\effect\Texture\Particle04_bokashistrong_soft.png" />
+    <CustomBuild Include="Assets\effect\Texture\Particle04_bokashi_hard.png" />
+    <CustomBuild Include="Assets\effect\Texture\Particle04_bokashi_soft.png" />
+    <CustomBuild Include="Assets\effect\Texture\Particle04_clear_hard.png" />
+    <CustomBuild Include="Assets\effect\Texture\Particle04_clear_soft.png" />
+    <CustomBuild Include="Assets\effect\Texture\Splash01.png" />
+    <CustomBuild Include="Assets\effect\Texture\SwordLine01.png" />
+    <CustomBuild Include="Assets\effect\Texture\Thunder01.png" />
+    <CustomBuild Include="Assets\effect\Texture\Wind01.png" />
+    <CustomBuild Include="Assets\effect\Texture\wind02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\effect\test.efk">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\test2.efk">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\test3.efk">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

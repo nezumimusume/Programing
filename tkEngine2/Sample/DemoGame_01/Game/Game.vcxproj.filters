@@ -50,6 +50,12 @@
     <Filter Include="Assets\loc">
       <UniqueIdentifier>{e50f5d57-4bd3-48a7-823d-64f032f29a5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\effect">
+      <UniqueIdentifier>{93a226a3-7b3e-4fac-98c4-65ce8cbd48af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\effect\texture">
+      <UniqueIdentifier>{5ec70e9d-6412-4e60-b33b-7853669d2046}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -166,6 +172,9 @@
     <CustomBuild Include="Assets\animData\Player\jump_start.tka">
       <Filter>Assets\animData\Player</Filter>
     </CustomBuild>
+    <CustomBuild Include="Assets\modelData\enemy_00.tks" />
+    <CustomBuild Include="Assets\animData\Enemy\idle.tka" />
+    <CustomBuild Include="Assets\loc\enemyLoc.tks" />
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\Thethief_H.FBX">
@@ -231,14 +240,73 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\modelData\enemy_00.tks">
-      <Filter>Assets\modelData</Filter>
+    <Image Include="Assets\effect\Texture\Particle04_bokashistrong_hard.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\Particle04_bokashistrong_soft.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\Particle04_clear_hard.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\Particle04_clear_soft.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\Splash01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\SwordLine01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\Thunder01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\Wind01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\wind02.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\Burst01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\Cloud01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\Flame01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\LaserMain01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\LaserMain02.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\Particle01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\Particle02.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\Particle03.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\Particle04_bokashi_hard.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+    <Image Include="Assets\effect\Texture\Particle04_bokashi_soft.png">
+      <Filter>Assets\effect\texture</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\effect\test2.efk">
+      <Filter>Assets\effect</Filter>
     </None>
-    <None Include="Assets\animData\Enemy\idle.tka">
-      <Filter>Assets\animData\Enemy</Filter>
+    <None Include="Assets\effect\test3.efk">
+      <Filter>Assets\effect</Filter>
     </None>
-    <None Include="Assets\loc\enemyLoc.tks">
-      <Filter>Assets\loc</Filter>
+    <None Include="Assets\effect\test.efk">
+      <Filter>Assets\effect</Filter>
     </None>
   </ItemGroup>
 </Project>
