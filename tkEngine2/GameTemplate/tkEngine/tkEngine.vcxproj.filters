@@ -359,6 +359,9 @@
     <ClInclude Include="graphics\effect\tkEffect.h">
       <Filter>Source Files\graphics\effect</Filter>
     </ClInclude>
+    <ClInclude Include="util\tkLocData.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">

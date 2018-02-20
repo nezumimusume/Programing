@@ -348,6 +348,7 @@
     <ClInclude Include="tkEngineConst.h" />
     <ClInclude Include="tkEnginePreCompile.h" />
     <ClInclude Include="tkEngineStruct.h" />
+    <ClInclude Include="util\tkLocData.h" />
     <ClInclude Include="util\tkNameKey.h" />
     <ClInclude Include="util\tkUtil.h" />
   </ItemGroup>

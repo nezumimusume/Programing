@@ -62,7 +62,7 @@ void CPlayer::Update()
 		pos.y += UnitM(0.5f);
 		effect->SetPosition(pos);
 		effect->SetRotation(m_rotation);
-		effect->SetScale({ 3.0f, 3.0f, 3.0f });
+		effect->SetScale({ 4.0f, 4.0f, 4.0f });
 	}
 	if (Pad(0).IsTrigger(enButtonY)) {
 		prefab::CEffect* effect = NewGO<prefab::CEffect>(0);
@@ -71,7 +71,7 @@ void CPlayer::Update()
 		pos.y += UnitM(0.5f);
 		effect->SetPosition(pos);
 		effect->SetRotation(m_rotation);
-		effect->SetScale({ 3.0f, 3.0f, 3.0f });
+		effect->SetScale({ 4.0f, 4.0f, 4.0f });
 	}
 	if (Pad(0).IsTrigger(enButtonB)) {
 		prefab::CEffect* effect = NewGO<prefab::CEffect>(0);
@@ -79,7 +79,15 @@ void CPlayer::Update()
 		CVector3 pos = m_position;
 		pos.y += UnitM(0.01f);
 		effect->SetPosition(pos);
-		effect->SetScale({ 3.0f, 3.0f, 3.0f });
+		effect->SetScale({ 4.0f, 4.0f, 4.0f });
+	}
+	if (Pad(0).IsTrigger(enButtonUp)) {
+		prefab::CEffect* effect = NewGO<prefab::CEffect>(0);
+		effect->Play(L"effect/test4.efk");
+		CVector3 pos = m_position;
+		pos.y += UnitM(0.1f);
+		effect->SetPosition(pos);
+		effect->SetScale({ 5.0f, 5.0f, 5.0f });
 	}
 }
 

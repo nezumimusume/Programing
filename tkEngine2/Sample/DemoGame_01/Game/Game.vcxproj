@@ -822,6 +822,34 @@
       <FileType>Document</FileType>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\effect\test4.efk">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Assets\effect\Texture\Burst_1.png" />
+    <CustomBuild Include="Assets\effect\Texture\Burst_2.png" />
+    <CustomBuild Include="Assets\effect\Texture\ExperimentalBlur.png" />
+    <CustomBuild Include="Assets\effect\Texture\ExperimentalNoise.png" />
+    <CustomBuild Include="Assets\effect\Texture\Fire.png" />
+    <CustomBuild Include="Assets\effect\Texture\Fire_Blur.png" />
+    <CustomBuild Include="Assets\effect\Texture\Fire_Single.png" />
+    <CustomBuild Include="Assets\effect\Texture\Glass.png" />
+    <CustomBuild Include="Assets\effect\Texture\Halo.png" />
+    <CustomBuild Include="Assets\effect\Texture\IntensiveLine.png" />
+    <CustomBuild Include="Assets\effect\Texture\NoiseAnimation.png" />
+    <CustomBuild Include="Assets\effect\Texture\Particle_Hard.png" />
+    <CustomBuild Include="Assets\effect\Texture\Particle_Soft.png" />
+    <CustomBuild Include="Assets\effect\Texture\Shockwave.png" />
+    <CustomBuild Include="Assets\effect\Texture\Smoke.png" />
+    <CustomBuild Include="Assets\effect\Texture\Splash.png" />
+    <CustomBuild Include="Assets\effect\Texture\Star.png" />
+    <CustomBuild Include="Assets\effect\Texture\Tentacle.png" />
+    <CustomBuild Include="Assets\effect\Texture\Thunder_Bold.png" />
+    <CustomBuild Include="Assets\effect\Texture\Thunder_Thin.png" />
+    <CustomBuild Include="Assets\effect\Texture\Wind.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

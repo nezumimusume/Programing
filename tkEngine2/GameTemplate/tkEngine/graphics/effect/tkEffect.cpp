@@ -32,6 +32,9 @@ namespace tkEngine {
 			if (m_effect == nullptr) {
 				//未登録。
 				m_effect = ee.CreateEffekseerEffect(filePath);
+				if (m_effect == nullptr) {
+					TK_WARNING_MESSAGE_BOX("エフェクトのロードに失敗しました。%ls", filePath);
+				}
 				ee.GetResourceManager().RegistResource(nameKey, m_effect);
 			}
 			m_handle = GraphicsEngine().GetEffectEngine().Play(m_effect);

@@ -5,6 +5,7 @@
 #include "tkEngine/light/tkDirectionLight.h"
 #include "Enemy\Enemy.h"
 #include "tkEngine/light/tkPointLight.h"
+#include "tkEngine/util/tkLocData.h"
 
 CVector3 toPosition = {0.0f, 30.0f, 100.0f};
 Game::Game()
@@ -39,32 +40,21 @@ bool Game::Start()
 	LightManager().SetAmbientLight({ 0.2f, 0.2f, 0.2f });
 	AddGO(0, &m_player, "Player");
 	
-	CSkeleton enemyLoc;
+	CLocData enemyLoc;
 	enemyLoc.Load(L"loc/enemyLoc.tks");
-	for (int i = 1; i < enemyLoc.GetNumBones(); i++) {
-		//先頭はダミー。
-		auto bone = enemyLoc.GetBone(i);
+	for (int i = 0; i < enemyLoc.GetNumObject(); i++) {
 		auto enemy = NewGO<Enemy>(0, "Enemey");
-		const auto& mat = bone->GetBindPoseMatrix();
-		auto pos = CVector3::Zero;
-		pos.x = mat.m[3][0];
-		pos.y = mat.m[3][2] + 10.0f;
-		pos.z = -mat.m[3][1];
 		m_enemyList.push_back(enemy);
+		CVector3 pos = enemyLoc.GetObjectPosition(i);
+		pos.y += 10.0f;
 		enemy->SetPosition(pos);
 	}
 	//ポイントライトを配置。
-	CSkeleton ligLoc;
+	CLocData ligLoc;
 	ligLoc.Load(L"loc/pointLightLoc.tks");
-	for (int i = 1; i < ligLoc.GetNumBones(); i++) {
-		auto bone = ligLoc.GetBone(i);
-		auto* pointLig = NewGO<prefab::CPointLight>(0);
-		const auto& mat = bone->GetBindPoseMatrix();
-		auto pos = CVector3::Zero;
-		pos.x = mat.m[3][0];
-		pos.y = mat.m[3][2];
-		pos.z = -mat.m[3][1];
-		pointLig->SetPosition(pos);
+	for (int i = 0; i < ligLoc.GetNumObject(); i++) {
+		auto pointLig = NewGO<prefab::CPointLight>(0);
+		pointLig->SetPosition(ligLoc.GetObjectPosition(i));
 		pointLig->SetColor({
 			10.0f,
 			10.0f,
