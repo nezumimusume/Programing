@@ -38,9 +38,8 @@ namespace tkEngine{
 			for (int i = 1; i < locData.GetNumBones(); i++) {
 				SObjectData objData;
 				auto bone = locData.GetBone(i);
-				const auto& mat = bone->GetBindPoseMatrix();
+
 				CVector3 scale;
-				
 				bone->CalcWorldTRS(objData.position, objData.rotation, scale);
 
 				//3dsMaxとは軸が違うので、補正を入れる。
@@ -56,6 +55,7 @@ namespace tkEngine{
 
 				m_objectData.push_back(std::move(objData));
 			}
+			return true;
 		}
 		/*!
 		*@brief	配置されているオブジェクトの数を取得。

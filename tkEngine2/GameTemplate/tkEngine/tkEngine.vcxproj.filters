@@ -362,6 +362,9 @@
     <ClInclude Include="util\tkLocData.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\tkDirectXModelResource.h">
+      <Filter>Source Files\resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject\tkTransform.cpp">
@@ -576,6 +579,9 @@
     </ClCompile>
     <ClCompile Include="graphics\effect\tkEffect.cpp">
       <Filter>Source Files\graphics\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\tkDirectXModelResource.cpp">
+      <Filter>Source Files\resource</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

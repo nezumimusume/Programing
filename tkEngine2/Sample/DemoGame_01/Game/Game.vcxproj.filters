@@ -196,124 +196,124 @@
     <CustomBuild Include="Assets\loc\pointLightLoc.tks">
       <Filter>Assets\loc</Filter>
     </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Burst_1.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Burst_2.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Burst01.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Cloud01.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\ExperimentalBlur.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\ExperimentalNoise.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Fire.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Fire_Blur.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Fire_Single.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Flame01.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Glass.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Halo.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\IntensiveLine.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\LaserMain01.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\LaserMain02.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\NoiseAnimation.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Particle_Hard.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Particle_Soft.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Particle01.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Particle02.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Particle03.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Particle04_bokashi_hard.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Particle04_bokashi_soft.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Particle04_bokashistrong_hard.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Particle04_bokashistrong_soft.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Particle04_clear_hard.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Particle04_clear_soft.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Shockwave.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Smoke.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Splash.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Splash01.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Star.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\SwordLine01.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Tentacle.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Thunder_Bold.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Thunder_Thin.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Thunder01.png">
-      <Filter>Assets\effect\texture</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\Wind.png">
+    <CustomBuild Include="Assets\effect\Texture\wind02.png">
       <Filter>Assets\effect\texture</Filter>
     </CustomBuild>
     <CustomBuild Include="Assets\effect\Texture\Wind01.png">
       <Filter>Assets\effect\texture</Filter>
     </CustomBuild>
-    <CustomBuild Include="Assets\effect\Texture\wind02.png">
+    <CustomBuild Include="Assets\effect\Texture\Wind.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Thunder01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Thunder_Thin.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Thunder_Bold.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Tentacle.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\SwordLine01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Star.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Splash01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Splash.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Smoke.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Shockwave.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Particle04_clear_soft.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Particle04_clear_hard.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Particle04_bokashistrong_soft.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Particle04_bokashistrong_hard.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Particle04_bokashi_soft.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Particle04_bokashi_hard.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Particle03.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Particle02.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Particle01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Particle_Soft.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Particle_Hard.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\NoiseAnimation.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\LaserMain02.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\LaserMain01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\IntensiveLine.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Halo.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Glass.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Flame01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Fire_Single.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Fire_Blur.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Fire.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\ExperimentalNoise.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\ExperimentalBlur.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Cloud01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Burst01.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Burst_2.png">
+      <Filter>Assets\effect\texture</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Assets\effect\Texture\Burst_1.png">
       <Filter>Assets\effect\texture</Filter>
     </CustomBuild>
   </ItemGroup>

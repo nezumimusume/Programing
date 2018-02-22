@@ -63,5 +63,6 @@ namespace tkEngine{
 #else // _DEBUG
 #define TK_LOG( format, ... )
 #define TK_WARNING(format, ... )
+#define TK_WARNING_MESSAGE_BOX(format, ... )
 #endif // _DEBUG
 #endif // _TKLOG_H_

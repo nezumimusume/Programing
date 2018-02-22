@@ -12,6 +12,7 @@
 #include "tkEngine/graphics/postEffect/tkPostEffect.h"
 #include "tkEngine/resource/tkShaderResources.h"
 #include "tkEngine/graphics/effect/tkEffectEngine.h"
+#include "tkEngine/resource/tkDirectXModelResource.h"
 
 namespace tkEngine{
 	
@@ -32,7 +33,7 @@ namespace tkEngine{
 	* 独自のモデルシェーダーを記述する場合は下記の注意が必要です。
 	*    tレジスタの100番以降とbレジスタの1番はエンジンが使用しているため、使ってはならない。
 	*/
-	class CGraphicsEngine : Noncopyable{
+	class CGraphicsEngine : Noncopyable {
 	public:
 		CGraphicsEngine();
 		~CGraphicsEngine();
@@ -135,7 +136,7 @@ namespace tkEngine{
 		{
 			return m_2dSpaceScreenHeight;
 		}
-		
+
 		/*!
 		* @brief	メインレンダリングターゲットの取得。
 		*/
@@ -237,6 +238,13 @@ namespace tkEngine{
 		* ゲーム層では使用しないように。
 		*/
 		void EndPostEffect(CRenderContext& rc);
+		/*!
+		*@brief	DirectXモデルリソースの取得。
+		*/
+		CDirectXModelResource& GetDirectXModelResource()
+		{
+			return m_directXModelResource;
+		}
 	private:
 		/*!
 		 *@brief	D3Dデバイスとスワップチェインの初期化。
@@ -276,5 +284,6 @@ namespace tkEngine{
 		std::unique_ptr<DirectX::SpriteFont>	m_spriteFont;				//!<スプライトフォント。
 		int						m_2dSpaceScreenWidth = 1280;				//!<2D空間のスクリーンの幅。2Dはこの座標系を前提に表示されていれば、解像度が変わっても大丈夫。
 		int						m_2dSpaceScreenHeight = 720;				//!<2D空間のスクリーンの高さ。2Dはこの座標系を前提に表示されていれば、解像度が変わっても大丈夫。
+		CDirectXModelResource	m_directXModelResource;						//!<DirectXモデルリソースの管理者。
 	};
 }

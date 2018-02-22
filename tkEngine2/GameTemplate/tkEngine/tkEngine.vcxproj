@@ -335,6 +335,7 @@
     <ClInclude Include="policy\tkNoncopyable.h" />
     <ClInclude Include="policy\tkScopedResource.h" />
     <ClInclude Include="random\tkRandom.h" />
+    <ClInclude Include="Resource\tkDirectXModelResource.h" />
     <ClInclude Include="Resource\tkResourceManager.h" />
     <ClInclude Include="Resource\tkShaderResources.h" />
     <ClInclude Include="Sound\tkSoundEngine.h" />
@@ -417,6 +418,7 @@
     <ClCompile Include="physics\tkRigidBody.cpp" />
     <ClCompile Include="physics\tkSphereCollider.cpp" />
     <ClCompile Include="random\tkRandom.cpp" />
+    <ClCompile Include="Resource\tkDirectXModelResource.cpp" />
     <ClCompile Include="Resource\tkShaderResources.cpp" />
     <ClCompile Include="Sound\tkSoundEngine.cpp" />
     <ClCompile Include="Sound\tkSoundSource.cpp" />
