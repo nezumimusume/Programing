@@ -103,30 +103,6 @@ rollout tkExporter "tkExporter" width:194 height:248
 				Messagebox "ファイルの保存に失敗しました"
 			)
 			FClose file
-			
-			--テキストファイル版
-			/*file = createfile "C:/GitHub/Programing/tkEngine2_Sandbox/Game/Assets/modelData/hoge.txt"
-			try(
-				for o in g_objectParams do (
-					
-					format "objName : %\n" o.objName to:file
-					format "localPos : %\n" o.localPos to:file
-					format "localRot : %\n" o.localRot to:file
-				--	format "parentName : %\n" o.parentName to:file
-					
-					--バインドポーズを出力。
-					for i = 1 to 4 do(
-						format "bindPose :%\n" o.bindPose[i] to:file
-					)
-					--バインドポーズの逆数を出力。
-					for i = 1 to 4 do(
-						format "invBindPose : %\n" o.invBindPose[i] to:file
-					)
-				)
-			)catch(
-				Messagebox "ファイルの保存に失敗しました"
-			)
-			close file*/
 		)
 	)
 	
@@ -158,7 +134,30 @@ rollout tkExporter "tkExporter" width:194 height:248
 			file = fopen filepath "wb"
 			--ヘッダーを出力
 			WriteLong file numKey
+			--アニメーションイベントの数を出力
+			numNoteTrack = numNoteTracks selection[1]
+
+			if numNoteTrack > 0 then(
+				--ノートキーの数を出力
+				nt = getNoteTrack selection[1] 1
+				WriteLong file nt.keys.count
+				for k in nt.keys do(
+					--イベントが発生する時間を出力
+					if k.time >= numKey then(
+						exit
+					)
+					invokeTime = k.time * deltaTime
+					
+					WriteFloat file invokeTime
+					WriteByte file k.value.count
+					WriteString file k.value
+					break()
+				)
+			)else(
+				WriteLong file 0
+			)
 			
+			--アニメーションの情報を出力。
 			for i=startFrame to endFrame do(
 				boneId = 0
 				keyTime = (i - startFrame) * deltaTime
@@ -205,11 +204,9 @@ rollout tkExporter "tkExporter" width:194 height:248
 						WriteFloat file transformMatrix[i].z
 					)
 					boneId +=1
-
 				)
-				
 			)
-			FClose file
+			fclose file
 		)
 	)
 	/*
@@ -221,7 +218,6 @@ rollout tkExporter "tkExporter" width:194 height:248
 			Messagebox "出力するスケルトンのルートのオブジェクトを選択して下さい。。。"
 		)else(
 			g_objectParams = #()
-			break
 			BuildOutputNodeInfo selection[1] -1
 			SaveSkeleton()
 		)
@@ -237,7 +233,11 @@ rollout tkExporter "tkExporter" width:194 height:248
 			--とりあえず全クリップ出力する。
 			g_objectParams = #()
 			BuildOutputNodeInfo selection[1] -1
-			SaveAnimationClip()
+			try(
+				SaveAnimationClip()
+			)catch(
+				messageBox "ファイルの保存に失敗しました"
+			)
 		)
 	)
 )
