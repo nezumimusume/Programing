@@ -22,7 +22,7 @@ namespace tkEngine{
 		Release();
 		m_lightHeight = config.lightHeight;
 		m_isEnable = config.isEnable;
-		m_far = m_lightHeight * 10.0f;
+		m_far = m_lightHeight * 2.0f;
 		m_near = m_lightHeight * 0.2f;
 		if (config.farPlane > 0.0f) {
 			m_far = config.farPlane;
@@ -40,7 +40,7 @@ namespace tkEngine{
 		}
 		int wh[][2] = {
 			{ config.shadowMapWidth, config.shadowMapHeight},
-			{ config.shadowMapWidth >> 1, config.shadowMapHeight >> 1},
+			{ config.shadowMapWidth, config.shadowMapHeight >> 1},
 			{ config.shadowMapWidth >> 1, config.shadowMapHeight >> 1},
 		};
 		DXGI_SAMPLE_DESC multiSampleDesc;
@@ -194,19 +194,13 @@ namespace tkEngine{
 					vMin.Min(vInLight);
 					
 				}
-#if 1
-				w = max(fabsf(vMax.x), fabsf(vMin.x)) * 2.0f;
-				h = max(fabsf(vMax.y), fabsf(vMin.y)) * 2.0f;
-				
-#else
-				w = fMax[1] - fMin[1];
-				h = fMax[0] - fMin[0];
-#endif
+				w = vMax.x - vMin.x;
+				h = vMax.y - vMin.y;
 			}
 			CMatrix proj;
 			proj.MakeOrthoProjectionMatrix(
-				w * 1.2f,	//ÇøÇÂÇ¢ëæÇÁÇπÇÈÅB
-				h * 1.2f,
+				w,	//ÇøÇÂÇ¢ëæÇÁÇπÇÈÅB
+				h,
 				m_near,
 				m_far
 			);
