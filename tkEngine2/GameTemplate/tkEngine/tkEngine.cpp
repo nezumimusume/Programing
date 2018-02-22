@@ -15,18 +15,18 @@ namespace tkEngine {
 	{
 		Final();
 	}
-	bool CEngine::Init( const SInitParam& initParam )
+	bool CEngine::Init(const SInitParam& initParam)
 	{
 		//カレントディレクトリをResourceに。
 		SetCurrentDirectory("Resource");
 		//ウィンドウ初期化。
-		if(!InitWindow(initParam)){
+		if (!InitWindow(initParam)) {
 			return false;
 		}
 		//GameObjectManagerの初期化。
 		GameObjectManager().Init(initParam.gameObjectPrioMax);
 		//GraphicsEngineの初期化。
-		if(!m_graphicsEngine.Init(m_hWnd, initParam)){
+		if (!m_graphicsEngine.Init(m_hWnd, initParam)) {
 			return false;
 		}
 		//SoundEngineの初期化
@@ -41,11 +41,11 @@ namespace tkEngine {
 #endif
 		return true;
 	}
-	bool CEngine::InitWindow( const SInitParam& initParam )
+	bool CEngine::InitWindow(const SInitParam& initParam)
 	{
 		TK_ASSERT(initParam.screenHeight != 0, "screenHeight is zero");
 		TK_ASSERT(initParam.screenWidth != 0, "screenWidth is zero");
-		
+
 		m_screenHeight = initParam.screenHeight;
 		m_screenWidth = initParam.screenWidth;
 		WNDCLASSEX wc =
@@ -63,8 +63,12 @@ namespace tkEngine {
 		ShowWindow(m_hWnd, initParam.nCmdShow);
 		return m_hWnd != nullptr;
 	}
-	
-	
+	void CEngine::ResourceUnload()
+	{
+		m_graphicsEngine.GetDirectXModelResource().Release();
+		m_graphicsEngine.GetEffectEngine().GetResourceManager().Release();
+		m_soundEngine.GetWaveFileBank().ReleaseAll();
+	}
 	void CEngine::Final()
 	{
 		m_physicsWorld.Release();

@@ -110,6 +110,13 @@ namespace tkEngine{
 		{
 			return m_random;
 		}
+		/*!
+		*@brief		リソースのアンロード。
+		*@details
+		* 常駐リソース以外のリソースをすべてアンロードします。
+		* シーンの切り替えなどで、リソースのアンロードが必要な場合に使用してください。
+		*/
+		void ResourceUnload();
 	private:
 		/*!
 		 *@brief	ウィンドウ初期化。

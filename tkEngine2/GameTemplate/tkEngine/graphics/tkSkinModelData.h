@@ -211,8 +211,7 @@ namespace tkEngine{
 		 */
 		void FindMesh(OnFindMesh findMesh);
 	private:
-		
-		std::unique_ptr<DirectX::Model> m_modelDx;
+		DirectX::Model* m_modelDx = nullptr;
 		CSkeleton	m_skeleton;
 	};
 }

@@ -143,16 +143,8 @@ namespace tkEngine{
 		m_skeleton.Load(skeletonFilePath.c_str());
 
 		//モデルデータをロード。
-		m_modelDx = DirectX::Model::CreateFromCMO(
-			GraphicsEngine().GetD3DDevice(), 
-			filePath,
-			effectFactory, 
-			false,
-			false,
-			onFindBone
-		);
-		
-
+		m_modelDx = GraphicsEngine().GetDirectXModelResource().Load(filePath, m_skeleton);
+	
 		return true;
 	}
 	void CSkinModelData::FindMesh(OnFindMesh findMesh)
